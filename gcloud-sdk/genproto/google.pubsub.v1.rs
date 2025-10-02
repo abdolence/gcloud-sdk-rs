@@ -2855,6 +2855,11 @@ pub struct StreamingPullRequest {
     /// `INVALID_ARGUMENT`.
     #[prost(int64, tag = "8")]
     pub max_outstanding_bytes: i64,
+    /// Optional. The protocol version used by the client. This property can only
+    /// be set on the initial StreamingPullRequest. If it is set on a subsequent
+    /// request, the stream will be aborted with status `INVALID_ARGUMENT`.
+    #[prost(int64, tag = "10")]
+    pub protocol_version: i64,
 }
 /// Response for the `StreamingPull` method. This response is used to stream
 /// messages from the server to the client.

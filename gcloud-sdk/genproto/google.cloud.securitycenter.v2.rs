@@ -141,6 +141,10 @@ pub mod ai_model {
         VertexAi = 1,
         /// Google Kubernetes Engine.
         Gke = 2,
+        /// Google Compute Engine.
+        Gce = 3,
+        /// Fine tuned model.
+        FineTunedModel = 4,
     }
     impl DeploymentPlatform {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -152,6 +156,8 @@ pub mod ai_model {
                 Self::Unspecified => "DEPLOYMENT_PLATFORM_UNSPECIFIED",
                 Self::VertexAi => "VERTEX_AI",
                 Self::Gke => "GKE",
+                Self::Gce => "GCE",
+                Self::FineTunedModel => "FINE_TUNED_MODEL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -160,6 +166,8 @@ pub mod ai_model {
                 "DEPLOYMENT_PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
                 "VERTEX_AI" => Some(Self::VertexAi),
                 "GKE" => Some(Self::Gke),
+                "GCE" => Some(Self::Gce),
+                "FINE_TUNED_MODEL" => Some(Self::FineTunedModel),
                 _ => None,
             }
         }

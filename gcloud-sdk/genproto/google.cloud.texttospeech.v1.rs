@@ -185,12 +185,41 @@ pub mod multi_speaker_markup {
         pub text: ::prost::alloc::string::String,
     }
 }
+/// Configuration for a single speaker in a Gemini TTS multi-speaker setup.
+/// Enables dialogue between two speakers.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MultispeakerPrebuiltVoice {
+    /// Required. The speaker alias of the voice. This is the user-chosen speaker
+    /// name that is used in the multispeaker text input, such as "Speaker1".
+    #[prost(string, tag = "1")]
+    pub speaker_alias: ::prost::alloc::string::String,
+    /// Required. The speaker ID of the voice. See
+    /// <https://cloud.google.com/text-to-speech/docs/gemini-tts#voice_options>
+    /// for available values.
+    #[prost(string, tag = "2")]
+    pub speaker_id: ::prost::alloc::string::String,
+}
+/// Configuration for a multi-speaker text-to-speech setup. Enables the use of up
+/// to two distinct voices in a single synthesis request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiSpeakerVoiceConfig {
+    /// Required. A list of configurations for the voices of the speakers. Exactly
+    /// two speaker voice configurations must be provided.
+    #[prost(message, repeated, tag = "2")]
+    pub speaker_voice_configs: ::prost::alloc::vec::Vec<MultispeakerPrebuiltVoice>,
+}
 /// Contains text input to be synthesized. Either `text` or `ssml` must be
 /// supplied. Supplying both or neither returns
 /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]. The
 /// input size is limited to 5000 bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
+    /// This system instruction is supported only for controllable/promptable voice
+    /// models. If this system instruction is used, we pass the unedited text to
+    /// Gemini-TTS. Otherwise, a default system instruction is used. AI Studio
+    /// calls this system instruction, Style Instructions.
+    #[prost(string, optional, tag = "6")]
+    pub prompt: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The pronunciation customizations are applied to the input. If
     /// this is set, the input is synthesized using the given pronunciation
     /// customizations.
@@ -233,7 +262,7 @@ pub mod synthesis_input {
     }
 }
 /// Description of which voice to use for a synthesis request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VoiceSelectionParams {
     /// Required. The language (and potentially also the region) of the voice
     /// expressed as a [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
@@ -274,6 +303,11 @@ pub struct VoiceSelectionParams {
     /// matching the specified configuration.
     #[prost(string, tag = "6")]
     pub model_name: ::prost::alloc::string::String,
+    /// Optional. The configuration for a Gemini multi-speaker text-to-speech
+    /// setup. Enables the use of two distinct voices in a single synthesis
+    /// request.
+    #[prost(message, optional, tag = "7")]
+    pub multi_speaker_voice_config: ::core::option::Option<MultiSpeakerVoiceConfig>,
 }
 /// Description of audio data to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -440,17 +474,17 @@ pub struct StreamingSynthesizeConfig {
     pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
 }
 /// Input to be synthesized.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSynthesisInput {
     /// This is system instruction supported only for controllable voice models.
     #[prost(string, optional, tag = "6")]
     pub prompt: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1, 5")]
+    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1, 5, 7")]
     pub input_source: ::core::option::Option<streaming_synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `StreamingSynthesisInput`.
 pub mod streaming_synthesis_input {
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum InputSource {
         /// The raw text to be synthesized. It is recommended that each input
         /// contains complete, terminating sentences, which results in better prosody
@@ -461,6 +495,10 @@ pub mod streaming_synthesis_input {
         /// other voices.
         #[prost(string, tag = "5")]
         Markup(::prost::alloc::string::String),
+        /// Multi-speaker markup for Gemini TTS. This field may not
+        /// be used with any other voices.
+        #[prost(message, tag = "7")]
+        MultiSpeakerMarkup(super::MultiSpeakerMarkup),
     }
 }
 /// Request message for the `StreamingSynthesize` method. Multiple

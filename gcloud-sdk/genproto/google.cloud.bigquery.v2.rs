@@ -377,8 +377,9 @@ pub mod foreign_type_info {
         }
     }
 }
-/// Data policy option proto, it currently supports name only, will support
-/// precedence later.
+/// Data policy option. For more information, see
+/// [Mask data by applying data policies to a
+/// column](<https://cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column/>).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataPolicyOption {
     /// Data policy resource name in the form of
@@ -430,7 +431,8 @@ pub struct TableFieldSchema {
     /// access control. If not set, defaults to empty policy_tags.
     #[prost(message, optional, tag = "9")]
     pub policy_tags: ::core::option::Option<table_field_schema::PolicyTagList>,
-    /// Optional. Data policy options, will replace the data_policies.
+    /// Optional. Data policies attached to this field, used for field-level access
+    /// control.
     #[prost(message, repeated, tag = "21")]
     pub data_policies: ::prost::alloc::vec::Vec<DataPolicyOption>,
     /// Optional. Maximum length of values of this field for STRINGS or BYTES.
@@ -485,6 +487,15 @@ pub struct TableFieldSchema {
     /// Optional. See documentation for precision.
     #[prost(int64, tag = "12")]
     pub scale: i64,
+    /// Optional. Precision (maximum number of total digits in base 10) for seconds
+    /// of TIMESTAMP type.
+    ///
+    /// Possible values include:
+    ///
+    /// * 6 (Default, for TIMESTAMP type with microsecond precision)
+    /// * 12 (For TIMESTAMP type with picosecond precision)
+    #[prost(message, optional, tag = "27")]
+    pub timestamp_precision: ::core::option::Option<i64>,
     /// Optional. Specifies the rounding mode to be used when storing values of
     /// NUMERIC and BIGNUMERIC type.
     #[prost(enumeration = "table_field_schema::RoundingMode", tag = "15")]
@@ -2445,6 +2456,26 @@ pub struct ExternalDataConfiguration {
     /// SQL-style values.
     #[prost(string, optional, tag = "31")]
     pub timestamp_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// Precisions (maximum number of total digits in base 10) for seconds
+    /// of TIMESTAMP types that are allowed to the destination table for
+    /// autodetection mode.
+    ///
+    /// Available for the formats: CSV.
+    ///
+    /// For the CSV Format, Possible values include:
+    /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
+    /// columns
+    /// \[6, 12\]: timestamp(6) for all auto detected TIMESTAMP columns that have
+    /// less than 6 digits of subseconds.
+    /// timestamp(12) for all auto detected TIMESTAMP columns that have
+    /// more than 6 digits of subseconds.
+    /// \[12\]: timestamp(12) for all auto detected TIMESTAMP columns.
+    ///
+    /// The order of the elements in this array is ignored.
+    /// Inputs that have higher precision than the highest target precision in this
+    /// array will be truncated.
+    #[prost(int32, repeated, tag = "32")]
+    pub timestamp_target_precision: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ExternalDataConfiguration`.
 pub mod external_data_configuration {
@@ -3106,8 +3137,9 @@ pub struct JobConfigurationQuery {
     #[prost(message, optional, tag = "35")]
     pub system_variables: ::core::option::Option<SystemVariables>,
     /// Allows the schema of the destination table to be updated as a side effect
-    /// of the query job. Schema update options are supported in two cases:
+    /// of the query job. Schema update options are supported in three cases:
     /// when writeDisposition is WRITE_APPEND;
+    /// when writeDisposition is WRITE_TRUNCATE_DATA;
     /// when writeDisposition is WRITE_TRUNCATE and the destination table is a
     /// partition of a table, specified by partition decorators. For normal tables,
     /// WRITE_TRUNCATE will always overwrite the schema.
@@ -3417,8 +3449,9 @@ pub struct JobConfigurationLoad {
     /// Allows the schema of the destination table to be updated as a side effect
     /// of the load job if a schema is autodetected or supplied in the job
     /// configuration.
-    /// Schema update options are supported in two cases:
+    /// Schema update options are supported in three cases:
     /// when writeDisposition is WRITE_APPEND;
+    /// when writeDisposition is WRITE_TRUNCATE_DATA;
     /// when writeDisposition is WRITE_TRUNCATE and the destination table is a
     /// partition of a table, specified by partition decorators. For normal tables,
     /// WRITE_TRUNCATE will always overwrite the schema.
@@ -3577,6 +3610,26 @@ pub struct JobConfigurationLoad {
     /// behavior backward-compatible.
     #[prost(enumeration = "job_configuration_load::SourceColumnMatch", tag = "58")]
     pub source_column_match: i32,
+    /// Precisions (maximum number of total digits in base 10) for seconds
+    /// of TIMESTAMP types that are allowed to the destination table for
+    /// autodetection mode.
+    ///
+    /// Available for the formats: CSV.
+    ///
+    /// For the CSV Format, Possible values include:
+    /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
+    /// columns
+    /// \[6, 12\]: timestamp(6) for all auto detected TIMESTAMP columns that have
+    /// less than 6 digits of subseconds.
+    /// timestamp(12) for all auto detected TIMESTAMP columns that have
+    /// more than 6 digits of subseconds.
+    /// \[12\]: timestamp(12) for all auto detected TIMESTAMP columns.
+    ///
+    /// The order of the elements in this array is ignored.
+    /// Inputs that have higher precision than the highest target precision in this
+    /// array will be truncated.
+    #[prost(int32, repeated, tag = "59")]
+    pub timestamp_target_precision: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `JobConfigurationLoad`.
 pub mod job_configuration_load {
@@ -3881,18 +3934,20 @@ pub struct JobConfiguration {
     /// of non-query jobs is undefined.
     #[prost(message, optional, tag = "5")]
     pub dry_run: ::core::option::Option<bool>,
-    /// Optional. Job timeout in milliseconds. If this time limit is exceeded,
-    /// BigQuery will attempt to stop a longer job, but may not always succeed in
-    /// canceling it before the job completes. For example, a job that takes more
-    /// than 60 seconds to complete has a better chance of being stopped than a job
-    /// that takes 10 seconds to complete.
+    /// Optional. Job timeout in milliseconds relative to the job creation time. If
+    /// this time limit is exceeded, BigQuery attempts to stop the job, but might
+    /// not always succeed in canceling it before the job completes. For example, a
+    /// job that takes more than 60 seconds to complete has a better chance of
+    /// being stopped than a job that takes 10 seconds to complete.
     #[prost(message, optional, tag = "6")]
     pub job_timeout_ms: ::core::option::Option<i64>,
-    /// Optional. INTERNAL: DO NOT USE. The maximum rate of slot consumption to
-    /// allow for this job.
+    /// Optional. A target limit on the rate of slot consumption by this job. If
+    /// set to a value > 0, BigQuery will attempt to limit the rate of slot
+    /// consumption by this job to keep it below the configured limit, even if the
+    /// job is eligible for more slots based on fair scheduling. The unused slots
+    /// will be available for other jobs and queries to use.
     ///
-    /// If set, the number of slots used to execute the job will be throttled
-    /// to try and keep its slot consumption below the requested rate.
+    /// Note: This feature is not yet generally available.
     #[prost(int32, optional, tag = "12")]
     pub max_slots: ::core::option::Option<i32>,
     /// The labels associated with this job. You can use these to organize and
@@ -4249,6 +4304,8 @@ pub mod model {
             Quarterly = 5,
             /// Yearly period, 365 days or irregular.
             Yearly = 6,
+            /// Hourly period, 1 hour.
+            Hourly = 7,
         }
         impl SeasonalPeriodType {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -4264,6 +4321,7 @@ pub mod model {
                     Self::Monthly => "MONTHLY",
                     Self::Quarterly => "QUARTERLY",
                     Self::Yearly => "YEARLY",
+                    Self::Hourly => "HOURLY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4276,6 +4334,7 @@ pub mod model {
                     "MONTHLY" => Some(Self::Monthly),
                     "QUARTERLY" => Some(Self::Quarterly),
                     "YEARLY" => Some(Self::Yearly),
+                    "HOURLY" => Some(Self::Hourly),
                     _ => None,
                 }
             }
@@ -5640,6 +5699,114 @@ pub mod model {
             /// The apriori support minimum. Applies to contribution analysis models.
             #[prost(double, optional, tag = "107")]
             pub min_apriori_support: ::core::option::Option<f64>,
+            /// The idle TTL of the endpoint before the resources get destroyed. The
+            /// default value is 6.5 hours.
+            #[prost(message, optional, tag = "115")]
+            pub endpoint_idle_ttl: ::core::option::Option<::prost_types::Duration>,
+            /// The type of the machine used to deploy and serve the model.
+            #[prost(string, optional, tag = "117")]
+            pub machine_type: ::core::option::Option<::prost::alloc::string::String>,
+            /// The minimum number of machine replicas that will be always deployed on
+            /// an endpoint. This value must be greater than or equal to 1. The default
+            /// value is 1.
+            #[prost(int64, optional, tag = "118")]
+            pub min_replica_count: ::core::option::Option<i64>,
+            /// The maximum number of machine replicas that will be deployed on an
+            /// endpoint. The default value is equal to min_replica_count.
+            #[prost(int64, optional, tag = "119")]
+            pub max_replica_count: ::core::option::Option<i64>,
+            /// Specifies the reservation affinity type used to configure a Vertex AI
+            /// resource. The default value is `NO_RESERVATION`.
+            #[prost(
+                enumeration = "training_options::ReservationAffinityType",
+                optional,
+                tag = "120"
+            )]
+            pub reservation_affinity_type: ::core::option::Option<i32>,
+            /// Corresponds to the label key of a reservation resource used by Vertex
+            /// AI. To target a SPECIFIC_RESERVATION by name, use
+            /// `compute.googleapis.com/reservation-name` as the key and specify the
+            /// name of your reservation as its value.
+            #[prost(string, optional, tag = "121")]
+            pub reservation_affinity_key: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Corresponds to the label values of a reservation resource used by
+            /// Vertex AI. This must be the full resource name of the reservation or
+            /// reservation block.
+            #[prost(string, repeated, tag = "122")]
+            pub reservation_affinity_values: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// The id that uniquely identifies an external model.
+            #[prost(oneof = "training_options::ExternalModelId", tags = "113, 114")]
+            pub external_model_id: ::core::option::Option<
+                training_options::ExternalModelId,
+            >,
+        }
+        /// Nested message and enum types in `TrainingOptions`.
+        pub mod training_options {
+            /// Supported reservation affinity types to configure a Vertex AI
+            /// resource.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ReservationAffinityType {
+                /// Default value.
+                Unspecified = 0,
+                /// No reservation.
+                NoReservation = 1,
+                /// Any reservation.
+                AnyReservation = 2,
+                /// Specific reservation.
+                SpecificReservation = 3,
+            }
+            impl ReservationAffinityType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "RESERVATION_AFFINITY_TYPE_UNSPECIFIED",
+                        Self::NoReservation => "NO_RESERVATION",
+                        Self::AnyReservation => "ANY_RESERVATION",
+                        Self::SpecificReservation => "SPECIFIC_RESERVATION",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "RESERVATION_AFFINITY_TYPE_UNSPECIFIED" => {
+                            Some(Self::Unspecified)
+                        }
+                        "NO_RESERVATION" => Some(Self::NoReservation),
+                        "ANY_RESERVATION" => Some(Self::AnyReservation),
+                        "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                        _ => None,
+                    }
+                }
+            }
+            /// The id that uniquely identifies an external model.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum ExternalModelId {
+                /// The id of a Hugging Face model. For example, `google/gemma-2-2b-it`.
+                #[prost(string, tag = "113")]
+                HuggingFaceModelId(::prost::alloc::string::String),
+                /// The name of a Vertex model garden publisher model. Format is
+                /// `publishers/{publisher}/models/{model}@{optional_version_id}`.
+                #[prost(string, tag = "114")]
+                ModelGardenModelName(::prost::alloc::string::String),
+            }
         }
         /// Information about a single iteration of the training run.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7440,8 +7607,8 @@ pub struct ExternalServiceCost {
     #[prost(int64, tag = "5")]
     pub reserved_slot_count: i64,
     /// The billing method used for the external job.
-    /// This field is only used when billed on the services sku, set to
-    /// "SERVICES_SKU". Otherwise, it is unspecified for backward compatibility.
+    /// This field, set to `SERVICES_SKU`, is only used when billing under the
+    /// services SKU. Otherwise, it is unspecified for backward compatibility.
     #[prost(string, tag = "6")]
     pub billing_method: ::prost::alloc::string::String,
 }
@@ -7843,6 +8010,19 @@ pub mod index_unused_reason {
         }
     }
 }
+/// Statistics for index pruning.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IndexPruningStats {
+    /// The base table reference.
+    #[prost(message, optional, tag = "1")]
+    pub base_table: ::core::option::Option<TableReference>,
+    /// The number of parallel inputs before index pruning.
+    #[prost(int64, optional, tag = "2")]
+    pub pre_index_pruning_parallel_input_count: ::core::option::Option<i64>,
+    /// The number of parallel inputs after index pruning.
+    #[prost(int64, optional, tag = "3")]
+    pub post_index_pruning_parallel_input_count: ::core::option::Option<i64>,
+}
 /// Indicates the stored columns usage in the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredColumnsUsage {
@@ -7957,6 +8137,12 @@ pub struct SearchStatistics {
     /// `indexUsageMode` is `FULLY_USED`, this field is not populated.
     #[prost(message, repeated, tag = "2")]
     pub index_unused_reasons: ::prost::alloc::vec::Vec<IndexUnusedReason>,
+    /// Search index pruning statistics, one for each base table that has a search
+    /// index. If a base table does not have a search index or the index does not
+    /// help with pruning on the base table, then there is no pruning statistics
+    /// for that table.
+    #[prost(message, repeated, tag = "3")]
+    pub index_pruning_stats: ::prost::alloc::vec::Vec<IndexPruningStats>,
 }
 /// Nested message and enum types in `SearchStatistics`.
 pub mod search_statistics {
@@ -8119,6 +8305,64 @@ pub struct LoadQueryStatistics {
     #[prost(message, optional, tag = "5")]
     pub bad_records: ::core::option::Option<i64>,
 }
+/// Statistics related to Incremental Query Results. Populated as part of
+/// JobStatistics2. This feature is not yet available.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IncrementalResultStats {
+    /// Reason why incremental query results are/were not written by the query.
+    #[prost(enumeration = "incremental_result_stats::DisabledReason", tag = "1")]
+    pub disabled_reason: i32,
+    /// The time at which the result table's contents were completely replaced.
+    /// May be absent if no results have been written or the query has completed.
+    #[prost(message, optional, tag = "2")]
+    pub result_set_last_replace_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the result table's contents were modified.
+    /// May be absent if no results have been written or the query has completed.
+    #[prost(message, optional, tag = "3")]
+    pub result_set_last_modify_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `IncrementalResultStats`.
+pub mod incremental_result_stats {
+    /// Reason why incremental query results are/were not written by the query.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DisabledReason {
+        /// Disabled reason not specified.
+        Unspecified = 0,
+        /// Some other reason.
+        Other = 1,
+    }
+    impl DisabledReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DISABLED_REASON_UNSPECIFIED",
+                Self::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISABLED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
+    }
+}
 /// Statistics for a query job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics2 {
@@ -8164,10 +8408,10 @@ pub struct JobStatistics2 {
     /// Output only. Slot-milliseconds for the job.
     #[prost(message, optional, tag = "8")]
     pub total_slot_ms: ::core::option::Option<i64>,
-    /// Output only. Total slot-milliseconds for the job that run on external
-    /// services and billed on the service SKU. This field is only populated for
+    /// Output only. Total slot milliseconds for the job that ran on external
+    /// services and billed on the services SKU. This field is only populated for
     /// jobs that have external service costs, and is the total of the usage for
-    /// costs whose billing method is "SERVICES_SKU".
+    /// costs whose billing method is `"SERVICES_SKU"`.
     #[prost(int64, optional, tag = "52")]
     pub total_services_sku_slot_ms: ::core::option::Option<i64>,
     /// Output only. Whether the query result was fetched from the query cache.
@@ -8368,6 +8612,10 @@ pub struct JobStatistics2 {
     /// tables.
     #[prost(message, optional, tag = "43")]
     pub metadata_cache_statistics: ::core::option::Option<MetadataCacheStatistics>,
+    /// Output only. Statistics related to incremental query results, if enabled
+    /// for the query. This feature is not yet available.
+    #[prost(message, optional, tag = "53")]
+    pub incremental_result_stats: ::core::option::Option<IncrementalResultStats>,
 }
 /// Statistics for a load job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8694,6 +8942,13 @@ pub struct JobStatistics {
     /// at the time of this update.
     #[prost(enumeration = "ReservationEdition", tag = "24")]
     pub edition: i32,
+    /// Output only. The reservation group path of the reservation assigned to this
+    /// job. This field has a limit of 10 nested reservation groups. This is to
+    /// maintain consistency between reservatins info schema and jobs info schema.
+    /// The first reservation group is the root reservation group and the last is
+    /// the leaf or lowest level reservation group.
+    #[prost(string, repeated, tag = "26")]
+    pub reservation_group_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `JobStatistics`.
 pub mod job_statistics {
@@ -9023,6 +9278,19 @@ pub mod materialized_view {
         }
     }
 }
+/// The column metadata index pruning statistics.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PruningStats {
+    /// The number of partitions matched.
+    #[prost(int64, optional, tag = "1")]
+    pub post_cmeta_pruning_partition_count: ::core::option::Option<i64>,
+    /// The number of parallel inputs scanned.
+    #[prost(int64, optional, tag = "2")]
+    pub pre_cmeta_pruning_parallel_input_count: ::core::option::Option<i64>,
+    /// The number of parallel inputs matched.
+    #[prost(int64, optional, tag = "3")]
+    pub post_cmeta_pruning_parallel_input_count: ::core::option::Option<i64>,
+}
 /// Table level detail on the usage of metadata caching. Only set for Metadata
 /// caching eligible tables referenced in the query.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9049,6 +9317,9 @@ pub struct TableMetadataCacheUsage {
     /// type](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.type>).
     #[prost(string, tag = "6")]
     pub table_type: ::prost::alloc::string::String,
+    /// The column metadata index pruning statistics.
+    #[prost(message, optional, tag = "7")]
+    pub pruning_stats: ::core::option::Option<PruningStats>,
 }
 /// Nested message and enum types in `TableMetadataCacheUsage`.
 pub mod table_metadata_cache_usage {
@@ -9641,12 +9912,13 @@ pub struct QueryRequest {
     /// if a job does not need to be created.
     #[prost(int64, optional, tag = "26")]
     pub job_timeout_ms: ::core::option::Option<i64>,
-    /// Optional. INTERNAL: DO NOT USE. The maximum rate of slot consumption to
-    /// allow for this job.
+    /// Optional. A target limit on the rate of slot consumption by this query. If
+    /// set to a value > 0, BigQuery will attempt to limit the rate of slot
+    /// consumption by this query to keep it below the configured limit, even if
+    /// the query is eligible for more slots based on fair scheduling. The unused
+    /// slots will be available for other jobs and queries to use.
     ///
-    /// If set, the number of slots used to execute the job will be throttled
-    /// to try and keep its slot consumption below the requested rate. This limit
-    /// is best effort.
+    /// Note: This feature is not yet generally available.
     #[prost(int32, optional, tag = "28")]
     pub max_slots: ::core::option::Option<i32>,
     /// Optional. Custom encryption configuration (e.g., Cloud KMS keys)

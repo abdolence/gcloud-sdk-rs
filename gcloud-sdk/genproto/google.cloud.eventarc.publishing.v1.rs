@@ -85,6 +85,12 @@ pub mod cloud_event {
         #[prost(string, tag = "7")]
         TextData(::prost::alloc::string::String),
         /// Optional. Proto data.
+        ///
+        /// NOTE: The `protoData` field only functions as expected when the payload
+        /// is specifically a `CloudEvent` message type, and can't be used for
+        /// arbitrary protocol buffer messages. For any other protocol buffer type,
+        /// you must serialize your proto message into bytes, and use the
+        /// `binaryData` field instead.
         #[prost(message, tag = "8")]
         ProtoData(::prost_types::Any),
     }

@@ -2291,7 +2291,7 @@ pub mod inspect_data_source_details {
         #[prost(message, optional, tag = "3")]
         pub job_config: ::core::option::Option<super::InspectJobConfig>,
     }
-    /// All result fields mentioned below are updated while the job is processing.
+    /// All Result fields are updated while the job is processing.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// Total size in bytes that were processed.
@@ -2426,6 +2426,64 @@ pub mod deidentify_data_source_details {
         >,
     }
 }
+/// Locations at which a feature can be used.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LocationSupport {
+    /// The current scope for location on this feature. This may expand over time.
+    #[prost(enumeration = "location_support::RegionalizationScope", tag = "1")]
+    pub regionalization_scope: i32,
+    /// Specific locations where the feature may be used.
+    /// Examples: us-central1, us, asia, global
+    /// If scope is ANY_LOCATION, no regions will be listed.
+    #[prost(string, repeated, tag = "2")]
+    pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `LocationSupport`.
+pub mod location_support {
+    /// The location scope for a feature.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RegionalizationScope {
+        /// Invalid.
+        Unspecified = 0,
+        /// Feature may be used with one or more regions. See locations for details.
+        Regional = 1,
+        /// Feature may be used anywhere. Default value.
+        AnyLocation = 2,
+    }
+    impl RegionalizationScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REGIONALIZATION_SCOPE_UNSPECIFIED",
+                Self::Regional => "REGIONAL",
+                Self::AnyLocation => "ANY_LOCATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REGIONALIZATION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGIONAL" => Some(Self::Regional),
+                "ANY_LOCATION" => Some(Self::AnyLocation),
+                _ => None,
+            }
+        }
+    }
+}
 /// InfoType description.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeDescription {
@@ -2442,6 +2500,9 @@ pub struct InfoTypeDescription {
     /// request.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
+    /// Locations at which this feature can be used. May change over time.
+    #[prost(message, optional, tag = "6")]
+    pub location_support: ::core::option::Option<LocationSupport>,
     /// A sample that is a true positive for this infoType.
     #[prost(string, tag = "8")]
     pub example: ::prost::alloc::string::String,
@@ -2498,6 +2559,8 @@ pub mod info_type_category {
         Armenia = 51,
         /// The infoType is typically used in Australia.
         Australia = 3,
+        /// The infoType is typically used in Austria.
+        Austria = 53,
         /// The infoType is typically used in Azerbaijan.
         Azerbaijan = 48,
         /// The infoType is typically used in Belarus.
@@ -2605,6 +2668,7 @@ pub mod info_type_category {
                 Self::Argentina => "ARGENTINA",
                 Self::Armenia => "ARMENIA",
                 Self::Australia => "AUSTRALIA",
+                Self::Austria => "AUSTRIA",
                 Self::Azerbaijan => "AZERBAIJAN",
                 Self::Belarus => "BELARUS",
                 Self::Belgium => "BELGIUM",
@@ -2662,6 +2726,7 @@ pub mod info_type_category {
                 "ARGENTINA" => Some(Self::Argentina),
                 "ARMENIA" => Some(Self::Armenia),
                 "AUSTRALIA" => Some(Self::Australia),
+                "AUSTRIA" => Some(Self::Austria),
                 "AZERBAIJAN" => Some(Self::Azerbaijan),
                 "BELARUS" => Some(Self::Belarus),
                 "BELGIUM" => Some(Self::Belgium),
@@ -2934,7 +2999,7 @@ pub mod quasi_id {
         InfoType(super::InfoType),
         /// A column can be tagged with a custom tag. In this case, the user must
         /// indicate an auxiliary table that contains statistical information on
-        /// the possible values of this column (below).
+        /// the possible values of this column.
         #[prost(string, tag = "3")]
         CustomTag(::prost::alloc::string::String),
         /// If no semantic tag is indicated, we infer the statistical model from
@@ -2974,7 +3039,7 @@ pub mod statistical_table {
         pub field: ::core::option::Option<super::FieldId>,
         /// A column can be tagged with a custom tag. In this case, the user must
         /// indicate an auxiliary table that contains statistical information on
-        /// the possible values of this column (below).
+        /// the possible values of this column.
         #[prost(string, tag = "2")]
         pub custom_tag: ::prost::alloc::string::String,
     }
@@ -3098,7 +3163,7 @@ pub mod privacy_metric {
                 InfoType(super::super::super::InfoType),
                 /// A column can be tagged with a custom tag. In this case, the user must
                 /// indicate an auxiliary table that contains statistical information on
-                /// the possible values of this column (below).
+                /// the possible values of this column.
                 #[prost(string, tag = "3")]
                 CustomTag(::prost::alloc::string::String),
                 /// If no semantic tag is indicated, we infer the statistical model from
@@ -5276,12 +5341,12 @@ pub mod action {
             super::TransformationDetailsStorageConfig,
         >,
         /// List of user-specified file type groups to transform. If specified, only
-        /// the files with these file types will be transformed. If empty, all
-        /// supported files will be transformed. Supported types may be automatically
-        /// added over time. If a file type is set in this field that isn't supported
-        /// by the Deidentify action then the job will fail and will not be
-        /// successfully created/started. Currently the only file types supported
-        /// are: IMAGES, TEXT_FILES, CSV, TSV.
+        /// the files with these file types are transformed. If empty, all
+        /// supported files are transformed. Supported types may be automatically
+        /// added over time. Any unsupported file types that are set in this field
+        /// are excluded from de-identification. An error is recorded for each
+        /// unsupported file in the TransformationDetails output table. Currently the
+        /// only file types supported are: IMAGES, TEXT_FILES, CSV, TSV.
         #[prost(enumeration = "super::FileType", repeated, tag = "8")]
         pub file_types_to_transform: ::prost::alloc::vec::Vec<i32>,
         /// Where to store the output.
@@ -8820,10 +8885,14 @@ pub struct ListTableDataProfilesRequest {
     /// Supported syntax:
     ///
     /// * Filter expressions are made up of one or more restrictions.
+    ///
     /// * Restrictions can be combined by `AND` or `OR` logical operators. A
     ///   sequence of restrictions implicitly uses `AND`.
+    ///
     /// * A restriction has the form of `{field} {operator} {value}`.
+    ///
     /// * Supported fields/values:
+    ///
     ///   * `project_id` - The Google Cloud project ID.
     ///   * `dataset_id` - The BigQuery dataset ID.
     ///   * `table_id` - The ID of the BigQuery table.
@@ -9091,7 +9160,8 @@ pub struct TableDataProfile {
     /// May be empty if the profile is still being generated.
     #[prost(message, optional, tag = "21")]
     pub profile_status: ::core::option::Option<ProfileStatus>,
-    /// State of a profile.
+    /// State of a profile. This will always be set to DONE when the table data
+    /// profile is written to another service like BigQuery or Pub/Sub.
     #[prost(enumeration = "table_data_profile::State", tag = "22")]
     pub state: i32,
     /// The sensitivity score of this table.
@@ -9157,6 +9227,9 @@ pub struct TableDataProfile {
     /// Resources related to this profile.
     #[prost(message, repeated, tag = "41")]
     pub related_resources: ::prost::alloc::vec::Vec<RelatedResource>,
+    /// Domains associated with the profile.
+    #[prost(message, repeated, tag = "47")]
+    pub domains: ::prost::alloc::vec::Vec<Domain>,
 }
 /// Nested message and enum types in `TableDataProfile`.
 pub mod table_data_profile {
@@ -9633,6 +9706,9 @@ pub struct FileStoreDataProfile {
     /// Resources related to this profile.
     #[prost(message, repeated, tag = "26")]
     pub related_resources: ::prost::alloc::vec::Vec<RelatedResource>,
+    /// Domains associated with the profile.
+    #[prost(message, repeated, tag = "27")]
+    pub domains: ::prost::alloc::vec::Vec<Domain>,
 }
 /// Nested message and enum types in `FileStoreDataProfile`.
 pub mod file_store_data_profile {
@@ -9825,10 +9901,14 @@ pub struct ListFileStoreDataProfilesRequest {
     /// Supported syntax:
     ///
     /// * Filter expressions are made up of one or more restrictions.
+    ///
     /// * Restrictions can be combined by `AND` or `OR` logical operators. A
     ///   sequence of restrictions implicitly uses `AND`.
+    ///
     /// * A restriction has the form of `{field} {operator} {value}`.
+    ///
     /// * Supported fields/values:
+    ///
     ///   * `project_id` - The Google Cloud project ID.
     ///   * `account_id` - The AWS account ID.
     ///   * `file_store_path` - The path like "gs://bucket".
@@ -10401,42 +10481,185 @@ pub mod file_cluster_type {
 /// ProcessingLocation will redirect OCR to a location where OCR is provided.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProcessingLocation {
-    /// Image processing will fall back using this configuration.
+    /// Image processing falls back using this configuration.
     #[prost(message, optional, tag = "1")]
     pub image_fallback_location: ::core::option::Option<
         processing_location::ImageFallbackLocation,
     >,
+    /// Document processing falls back using this configuration.
+    #[prost(message, optional, tag = "2")]
+    pub document_fallback_location: ::core::option::Option<
+        processing_location::DocumentFallbackLocation,
+    >,
 }
 /// Nested message and enum types in `ProcessingLocation`.
 pub mod processing_location {
-    /// Processing will happen in a multi-region that contains the current region
+    /// Processing occurs in a multi-region that contains the current region
     /// if available.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MultiRegionProcessing {}
-    /// Processing will happen in the global region.
+    /// Processing occurs in the global region.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GlobalProcessing {}
-    /// Configure image processing to fall back to the configured processing option
-    /// below if unavailable in the request location.
+    /// Configure image processing to fall back to any of the following processing
+    /// options if image processing is unavailable in the original request
+    /// location.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ImageFallbackLocation {
-        /// Processing will happen in a multi-region that contains the current region
+        /// Processing occurs in a multi-region that contains the current region
         /// if available.
         #[prost(message, optional, tag = "100")]
         pub multi_region_processing: ::core::option::Option<MultiRegionProcessing>,
-        /// Processing will happen in the global region.
+        /// Processing occurs in the global region.
+        #[prost(message, optional, tag = "200")]
+        pub global_processing: ::core::option::Option<GlobalProcessing>,
+    }
+    /// Configure document processing to fall back to any of the following
+    /// processing options if document processing is unavailable in the original
+    /// request location.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DocumentFallbackLocation {
+        /// Processing occurs in a multi-region that contains the current region
+        /// if available.
+        #[prost(message, optional, tag = "100")]
+        pub multi_region_processing: ::core::option::Option<MultiRegionProcessing>,
+        /// Processing occurs in the global region.
         #[prost(message, optional, tag = "200")]
         pub global_processing: ::core::option::Option<GlobalProcessing>,
     }
 }
 /// Collection of findings saved to a Cloud Storage bucket. This is used as the
 /// proto schema for textproto files created when specifying a cloud storage
-/// path to save inspection findings.
+/// path to save Inspect findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SaveToGcsFindingsOutput {
     /// List of findings.
     #[prost(message, repeated, tag = "1")]
     pub findings: ::prost::alloc::vec::Vec<Finding>,
+}
+/// A domain represents a thematic category that a data profile can fall under.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Domain {
+    /// A domain category that this profile is related to.
+    #[prost(enumeration = "domain::Category", tag = "1")]
+    pub category: i32,
+    /// The collection of signals that influenced selection of the category.
+    #[prost(enumeration = "domain::Signal", repeated, tag = "2")]
+    pub signals: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `Domain`.
+pub mod domain {
+    /// This enum defines the various domain categories a data profile can fall
+    /// under.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Category {
+        /// Category unspecified.
+        Unspecified = 0,
+        /// Indicates that the data profile is related to artificial intelligence.
+        /// When set, all findings stored to Security Command Center will set the
+        /// corresponding AI domain field of `Finding` objects.
+        Ai = 1,
+        /// Indicates that the data profile is related to code.
+        Code = 2,
+    }
+    impl Category {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CATEGORY_UNSPECIFIED",
+                Self::Ai => "AI",
+                Self::Code => "CODE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AI" => Some(Self::Ai),
+                "CODE" => Some(Self::Code),
+                _ => None,
+            }
+        }
+    }
+    /// The signal used to determine the category.
+    /// This list may increase over time.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Signal {
+        /// Unused.
+        Unspecified = 0,
+        /// One or more machine learning models are present.
+        Model = 1,
+        /// A table appears to be a text embedding.
+        TextEmbedding = 2,
+        /// The [Cloud SQL Vertex
+        /// AI](<https://cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>)
+        /// plugin is installed on the database.
+        VertexPlugin = 3,
+        /// Support for [Cloud SQL vector
+        /// embeddings](<https://cloud.google.com/sql/docs/mysql/enable-vector-search>)
+        /// is enabled on the database.
+        VectorPlugin = 4,
+        /// Source code is present.
+        SourceCode = 5,
+        /// If the service determines the category type. For example, Vertex AI
+        /// assets would always have a `Category` of `AI`.
+        Service = 6,
+    }
+    impl Signal {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SIGNAL_UNSPECIFIED",
+                Self::Model => "MODEL",
+                Self::TextEmbedding => "TEXT_EMBEDDING",
+                Self::VertexPlugin => "VERTEX_PLUGIN",
+                Self::VectorPlugin => "VECTOR_PLUGIN",
+                Self::SourceCode => "SOURCE_CODE",
+                Self::Service => "SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SIGNAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODEL" => Some(Self::Model),
+                "TEXT_EMBEDDING" => Some(Self::TextEmbedding),
+                "VERTEX_PLUGIN" => Some(Self::VertexPlugin),
+                "VECTOR_PLUGIN" => Some(Self::VectorPlugin),
+                "SOURCE_CODE" => Some(Self::SourceCode),
+                "SERVICE" => Some(Self::Service),
+                _ => None,
+            }
+        }
+    }
 }
 /// Enum of possible outcomes of transformations. SUCCESS if transformation and
 /// storing of transformation was successful, otherwise, reason for not

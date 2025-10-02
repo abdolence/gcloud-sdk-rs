@@ -172,6 +172,13 @@ pub mod reservation {
         /// that was successfully replicated to the secondary.
         #[prost(message, optional, tag = "3")]
         pub last_replication_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The time at which a soft failover for the reservation and
+        /// its associated datasets was initiated. After this field is set, all
+        /// subsequent changes to the reservation will be rejected unless a hard
+        /// failover overrides this operation. This field will be cleared once the
+        /// failover is complete.
+        #[prost(message, optional, tag = "4")]
+        pub soft_failover_start_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The scaling mode for the reservation. This enum determines how the
     /// reservation scales up and down.
@@ -557,6 +564,11 @@ pub struct FailoverReservationRequest {
     /// `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. A parameter that determines how writes that are pending
+    /// replication are handled after a failover is initiated. If not specified,
+    /// HARD failover mode is used by default.
+    #[prost(enumeration = "FailoverMode", tag = "2")]
+    pub failover_mode: i32,
 }
 /// The request for
 /// \[ReservationService.CreateCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
@@ -1086,6 +1098,45 @@ impl Edition {
             "STANDARD" => Some(Self::Standard),
             "ENTERPRISE" => Some(Self::Enterprise),
             "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+            _ => None,
+        }
+    }
+}
+/// The failover mode when a user initiates a failover on a reservation
+/// determines how writes that arepending replication are handled after the
+/// failover is initiated.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FailoverMode {
+    /// Invalid value.
+    Unspecified = 0,
+    /// When customers initiate a soft failover, BigQuery will wait until all
+    /// committed writes are replicated to the secondary. This mode requires both
+    /// regions to be available for the failover to succeed and prevents data loss.
+    Soft = 1,
+    /// When customers initiate a hard failover, BigQuery will not wait until all
+    /// committed writes are replicated to the secondary. There can be data loss
+    /// for hard failover.
+    Hard = 2,
+}
+impl FailoverMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FAILOVER_MODE_UNSPECIFIED",
+            Self::Soft => "SOFT",
+            Self::Hard => "HARD",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FAILOVER_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOFT" => Some(Self::Soft),
+            "HARD" => Some(Self::Hard),
             _ => None,
         }
     }

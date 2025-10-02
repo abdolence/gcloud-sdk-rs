@@ -97,6 +97,40 @@ pub struct Api {
     /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
     #[prost(string, tag = "15")]
     pub selected_version: ::prost::alloc::string::String,
+    /// Optional. The api requirement doc associated with the API resource.
+    /// Carinality is 1 for this attribute. This maps to the following system
+    /// defined attribute:
+    /// `projects/{project}/locations/{location}/attributes/system-api-requirements`
+    /// attribute. The value of the attribute should be a proper URI, and in case
+    /// of Cloud Storage URI, it should point to a Cloud Storage object,
+    /// not a directory.
+    #[prost(message, optional, tag = "16")]
+    pub api_requirements: ::core::option::Option<AttributeValues>,
+    /// Optional. Fingerprint of the API resource.
+    #[prost(string, tag = "17")]
+    pub fingerprint: ::prost::alloc::string::String,
+    /// Output only. The list of sources and metadata from the sources of the API
+    /// resource.
+    #[prost(message, repeated, tag = "18")]
+    pub source_metadata: ::prost::alloc::vec::Vec<SourceMetadata>,
+    /// Optional. The api functional requirements associated with the API resource.
+    /// Carinality is 1 for this attribute.
+    /// This maps to the following system defined attribute:
+    /// `projects/{project}/locations/{location}/attributes/system-api-functional-requirements`
+    /// attribute. The value of the attribute should be a proper URI, and in case
+    /// of Cloud Storage URI, it should point to a Cloud Storage object,
+    /// not a directory.
+    #[prost(message, optional, tag = "19")]
+    pub api_functional_requirements: ::core::option::Option<AttributeValues>,
+    /// Optional. The api technical requirements associated with the API resource.
+    /// Carinality is 1 for this attribute. This maps to the following system
+    /// defined attribute:
+    /// `projects/{project}/locations/{location}/attributes/system-api-technical-requirements`
+    /// attribute. The value of the attribute should be a proper URI, and in case
+    /// of Cloud Storage URI, it should point to a Cloud Storage object,
+    /// not a directory.
+    #[prost(message, optional, tag = "20")]
+    pub api_technical_requirements: ::core::option::Option<AttributeValues>,
 }
 /// Represents a version of the API resource in API hub. This is also referred
 /// to as the API version.
@@ -194,6 +228,10 @@ pub struct Version {
     /// `projects/{project}/locations/{location}/deployments/{deployment}`
     #[prost(string, tag = "16")]
     pub selected_deployment: ::prost::alloc::string::String,
+    /// Output only. The list of sources and metadata from the sources of the
+    /// version.
+    #[prost(message, repeated, tag = "17")]
+    pub source_metadata: ::prost::alloc::vec::Vec<SourceMetadata>,
 }
 /// Represents a spec associated with an API version in the API
 /// Hub. Note that specs of various types can be uploaded, however
@@ -258,6 +296,9 @@ pub struct Spec {
     /// Specification (OAS) parsing.
     #[prost(enumeration = "spec::ParsingMode", tag = "12")]
     pub parsing_mode: i32,
+    /// Output only. The list of sources and metadata from the sources of the spec.
+    #[prost(message, repeated, tag = "13")]
+    pub source_metadata: ::prost::alloc::vec::Vec<SourceMetadata>,
 }
 /// Nested message and enum types in `Spec`.
 pub mod spec {
@@ -345,9 +386,12 @@ pub struct Deployment {
     /// attribute.
     #[prost(message, optional, tag = "5")]
     pub deployment_type: ::core::option::Option<AttributeValues>,
-    /// Required. A URI to the runtime resource. This URI can be used to manage the
-    /// resource. For example, if the runtime resource is of type APIGEE_PROXY,
-    /// then this field will contain the URI to the management UI of the proxy.
+    /// Required. The resource URI identifies the deployment within its gateway.
+    /// For Apigee gateways, its recommended to use the format:
+    /// organizations/{org}/environments/{env}/apis/{api}.
+    /// For ex: if a proxy with name `orders` is deployed in `staging`
+    /// environment of `cymbal` organization, the resource URI would be:
+    /// `organizations/cymbal/environments/staging/apis/orders`.
     #[prost(string, tag = "6")]
     pub resource_uri: ::prost::alloc::string::String,
     /// Required. The endpoints at which this deployment resource is listening for
@@ -395,12 +439,48 @@ pub struct Deployment {
         ::prost::alloc::string::String,
         AttributeValues,
     >,
+    /// Output only. The list of sources and metadata from the sources of the
+    /// deployment.
+    #[prost(message, repeated, tag = "14")]
+    pub source_metadata: ::prost::alloc::vec::Vec<SourceMetadata>,
+    /// Optional. The uri where users can navigate to for the management of the
+    /// deployment. This maps to the following system defined attribute:
+    /// `projects/{project}/locations/{location}/attributes/system-management-url`
+    /// The number of values for this attribute will be based on the
+    /// cardinality of the attribute. The same can be retrieved via GetAttribute
+    /// API. The value of the attribute should be a valid URL.
+    #[prost(message, optional, tag = "15")]
+    pub management_url: ::core::option::Option<AttributeValues>,
+    /// Optional. The uri where additional source specific information for this
+    /// deployment can be found. This maps to the following system defined
+    /// attribute:
+    /// `projects/{project}/locations/{location}/attributes/system-source-uri`
+    /// The number of values for this attribute will be based on the
+    /// cardinality of the attribute. The same can be retrieved via GetAttribute
+    /// API. The value of the attribute should be a valid URI, and in case
+    /// of Cloud Storage URI, it should point to a Cloud Storage object,
+    /// not a directory.
+    #[prost(message, optional, tag = "16")]
+    pub source_uri: ::core::option::Option<AttributeValues>,
+    /// Optional. The project to which the deployment belongs.
+    /// For GCP gateways, this will refer to the project identifier.
+    /// For others like Edge/OPDK, this will refer to the org identifier.
+    #[prost(string, tag = "17")]
+    pub source_project: ::prost::alloc::string::String,
+    /// Optional. The environment at source for the deployment.
+    /// For example: prod, dev, staging, etc.
+    #[prost(string, tag = "18")]
+    pub source_environment: ::prost::alloc::string::String,
 }
 /// Represents an operation contained in an API version in the API Hub.
 /// An operation is added/updated/deleted in an API version when a new spec is
 /// added or an existing spec is updated/deleted in a version.
 /// Currently, an operation will be created only corresponding to OpenAPI spec as
 /// parsing is supported for OpenAPI spec.
+/// Alternatively operations can be managed via create,update and delete APIs,
+/// creation of apiOperation can be possible only for version with no parsed
+/// operations and update/delete can be possible only for operations created via
+/// create API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiOperation {
     /// Identifier. The name of the operation.
@@ -409,12 +489,16 @@ pub struct ApiOperation {
     /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The name of the spec from where the operation was parsed.
-    /// Format is
+    /// Output only. The name of the spec will be of the format:
     /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
+    /// Note:The name of the spec will be empty if the operation is created via
+    /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\] API.
     #[prost(string, tag = "2")]
     pub spec: ::prost::alloc::string::String,
-    /// Output only. Operation details.
+    /// Optional. Operation details.
+    /// Note: Even though this field is optional, it is required for
+    /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\]
+    /// API and we will fail the request if not provided.
     #[prost(message, optional, tag = "3")]
     pub details: ::core::option::Option<OperationDetails>,
     /// Output only. The time at which the operation was created.
@@ -432,6 +516,10 @@ pub struct ApiOperation {
         ::prost::alloc::string::String,
         AttributeValues,
     >,
+    /// Output only. The list of sources and metadata from the sources of the API
+    /// operation.
+    #[prost(message, repeated, tag = "7")]
+    pub source_metadata: ::prost::alloc::vec::Vec<SourceMetadata>,
 }
 /// Represents a definition for example schema, request, response definitions
 /// contained in an API version.
@@ -742,6 +830,8 @@ pub mod attribute {
         Json = 2,
         /// Attribute's value is of type string.
         String = 3,
+        /// Attribute's value is of type uri.
+        Uri = 4,
     }
     impl DataType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -754,6 +844,7 @@ pub mod attribute {
                 Self::Enum => "ENUM",
                 Self::Json => "JSON",
                 Self::String => "STRING",
+                Self::Uri => "URI",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -763,6 +854,7 @@ pub mod attribute {
                 "ENUM" => Some(Self::Enum),
                 "JSON" => Some(Self::Json),
                 "STRING" => Some(Self::String),
+                "URI" => Some(Self::Uri),
                 _ => None,
             }
         }
@@ -872,16 +964,16 @@ pub mod open_api_spec_details {
 /// The operation details parsed from the spec.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationDetails {
-    /// Output only. Description of the operation behavior.
+    /// Optional. Description of the operation behavior.
     /// For OpenAPI spec, this will map to `operation.description` in the
     /// spec, in case description is empty, `operation.summary` will be used.
     #[prost(string, tag = "1")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. Additional external documentation for this operation.
+    /// Optional. Additional external documentation for this operation.
     /// For OpenAPI spec, this will map to `operation.documentation` in the spec.
     #[prost(message, optional, tag = "2")]
     pub documentation: ::core::option::Option<Documentation>,
-    /// Output only. For OpenAPI spec, this will be set if `operation.deprecated`is
+    /// Optional. For OpenAPI spec, this will be set if `operation.deprecated`is
     /// marked as `true` in the spec.
     #[prost(bool, tag = "3")]
     pub deprecated: bool,
@@ -900,10 +992,16 @@ pub mod operation_details {
 /// The HTTP Operation.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpOperation {
-    /// Output only. The path details for the Operation.
+    /// Optional. The path details for the Operation.
+    /// Note: Even though this field is optional, it is required for
+    /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\]
+    /// API and we will fail the request if not provided.
     #[prost(message, optional, tag = "1")]
     pub path: ::core::option::Option<Path>,
-    /// Output only. Operation method
+    /// Optional. Operation method
+    /// Note: Even though this field is optional, it is required for
+    /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\]
+    /// API and we will fail the request if not provided.
     #[prost(enumeration = "http_operation::Method", tag = "2")]
     pub method: i32,
 }
@@ -980,10 +1078,13 @@ pub mod http_operation {
 /// The path details derived from the spec.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Path {
-    /// Output only. Complete path relative to server endpoint.
+    /// Optional. Complete path relative to server endpoint.
+    /// Note: Even though this field is optional, it is required for
+    /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\]
+    /// API and we will fail the request if not provided.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
-    /// Output only. A short description for the path applicable to all operations.
+    /// Optional. A short description for the path applicable to all operations.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
 }
@@ -1028,7 +1129,7 @@ pub struct AttributeValues {
     #[prost(string, tag = "1")]
     pub attribute: ::prost::alloc::string::String,
     /// The attribute values associated with the resource.
-    #[prost(oneof = "attribute_values::Value", tags = "2, 3, 4")]
+    #[prost(oneof = "attribute_values::Value", tags = "2, 3, 4, 5")]
     pub value: ::core::option::Option<attribute_values::Value>,
 }
 /// Nested message and enum types in `AttributeValues`.
@@ -1063,12 +1164,16 @@ pub mod attribute_values {
         /// type is JSON.
         #[prost(message, tag = "4")]
         JsonValues(StringAttributeValues),
+        /// The attribute values associated with a resource in case attribute data
+        /// type is URL, URI or IP, like gs://bucket-name/object-name.
+        #[prost(message, tag = "5")]
+        UriValues(StringAttributeValues),
     }
 }
 /// A dependency resource defined in the API hub describes a dependency directed
 /// from a consumer to a supplier entity. A dependency can be defined between two
-/// \[Operations\]\[google.cloud.apihub.v1.Operation\] or between
-/// an \[Operation\]\[google.cloud.apihub.v1.Operation\] and \[External
+/// \[Operations\]\[google.cloud.apihub.v1.ApiOperation\] or between
+/// an \[Operation\]\[google.cloud.apihub.v1.ApiOperation\] and \[External
 /// API\]\[google.cloud.apihub.v1.ExternalApi\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dependency {
@@ -1379,7 +1484,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have \[Operation.error\]\[\] value with a
+    /// have \[Operation.error\]\[google.longrunning.Operation.error\] value with a
     /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
@@ -1429,12 +1534,72 @@ pub mod api_hub_instance {
     /// Available configurations to provision an ApiHub Instance.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Config {
-        /// Required. The Customer Managed Encryption Key (CMEK) used for data
+        /// Optional. The Customer Managed Encryption Key (CMEK) used for data
         /// encryption. The CMEK name should follow the format of
         /// `projects/(\[^/\]+)/locations/(\[^/\]+)/keyRings/(\[^/\]+)/cryptoKeys/(\[^/\]+)`,
         /// where the location must match the instance location.
+        /// If the CMEK is not provided, a GMEK will be created for the instance.
         #[prost(string, tag = "1")]
         pub cmek_key_name: ::prost::alloc::string::String,
+        /// Optional. If true, the search will be disabled for the instance. The
+        /// default value is false.
+        #[prost(bool, tag = "2")]
+        pub disable_search: bool,
+        /// Optional. The name of the Vertex AI location where the data store is
+        /// stored.
+        #[prost(string, tag = "3")]
+        pub vertex_location: ::prost::alloc::string::String,
+        /// Optional. Encryption type for the region. If the encryption type is CMEK,
+        /// the cmek_key_name must be provided. If no encryption type is provided,
+        /// GMEK will be used.
+        #[prost(enumeration = "config::EncryptionType", tag = "4")]
+        pub encryption_type: i32,
+    }
+    /// Nested message and enum types in `Config`.
+    pub mod config {
+        /// Types of data encryption.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EncryptionType {
+            /// Encryption type unspecified.
+            Unspecified = 0,
+            /// Default encryption using Google managed encryption key.
+            Gmek = 1,
+            /// Encryption using customer managed encryption key.
+            Cmek = 2,
+        }
+        impl EncryptionType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ENCRYPTION_TYPE_UNSPECIFIED",
+                    Self::Gmek => "GMEK",
+                    Self::Cmek => "CMEK",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GMEK" => Some(Self::Gmek),
+                    "CMEK" => Some(Self::Cmek),
+                    _ => None,
+                }
+            }
+        }
     }
     /// State of the ApiHub Instance.
     #[derive(
@@ -1536,6 +1701,814 @@ pub struct ExternalApi {
     /// Output only. Last update timestamp.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// ConfigValueOption represents an option for a config variable of type enum or
+/// multi select.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConfigValueOption {
+    /// Required. Id of the option.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. Display name of the option.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Description of the option.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Secret provides a reference to entries in Secret Manager.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Secret {
+    /// Required. The resource name of the secret version in the format,
+    /// format as: `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "1")]
+    pub secret_version: ::prost::alloc::string::String,
+}
+/// ConfigVariableTemplate represents a configuration variable template present
+/// in a Plugin Config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigVariableTemplate {
+    /// Required. ID of the config variable. Must be unique within the
+    /// configuration.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. Type of the parameter: string, int, bool etc.
+    #[prost(enumeration = "config_variable_template::ValueType", tag = "2")]
+    pub value_type: i32,
+    /// Optional. Description.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Regular expression in RE2 syntax used for validating the `value`
+    /// of a `ConfigVariable`.
+    #[prost(string, tag = "4")]
+    pub validation_regex: ::prost::alloc::string::String,
+    /// Optional. Flag represents that this `ConfigVariable` must be provided for a
+    /// PluginInstance.
+    #[prost(bool, tag = "5")]
+    pub required: bool,
+    /// Optional. Enum options. To be populated if `ValueType` is `ENUM`.
+    #[prost(message, repeated, tag = "6")]
+    pub enum_options: ::prost::alloc::vec::Vec<ConfigValueOption>,
+    /// Optional. Multi select options. To be populated if `ValueType` is
+    /// `MULTI_SELECT`.
+    #[prost(message, repeated, tag = "7")]
+    pub multi_select_options: ::prost::alloc::vec::Vec<ConfigValueOption>,
+}
+/// Nested message and enum types in `ConfigVariableTemplate`.
+pub mod config_variable_template {
+    /// ValueType indicates the data type of the value.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ValueType {
+        /// Value type is not specified.
+        Unspecified = 0,
+        /// Value type is string.
+        String = 1,
+        /// Value type is integer.
+        Int = 2,
+        /// Value type is boolean.
+        Bool = 3,
+        /// Value type is secret.
+        Secret = 4,
+        /// Value type is enum.
+        Enum = 5,
+        /// Value type is multi select.
+        MultiSelect = 6,
+        /// Value type is multi string.
+        MultiString = 7,
+        /// Value type is multi int.
+        MultiInt = 8,
+    }
+    impl ValueType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VALUE_TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Int => "INT",
+                Self::Bool => "BOOL",
+                Self::Secret => "SECRET",
+                Self::Enum => "ENUM",
+                Self::MultiSelect => "MULTI_SELECT",
+                Self::MultiString => "MULTI_STRING",
+                Self::MultiInt => "MULTI_INT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALUE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INT" => Some(Self::Int),
+                "BOOL" => Some(Self::Bool),
+                "SECRET" => Some(Self::Secret),
+                "ENUM" => Some(Self::Enum),
+                "MULTI_SELECT" => Some(Self::MultiSelect),
+                "MULTI_STRING" => Some(Self::MultiString),
+                "MULTI_INT" => Some(Self::MultiInt),
+                _ => None,
+            }
+        }
+    }
+}
+/// ConfigVariable represents a additional configuration variable present in a
+/// PluginInstance Config or AuthConfig, based on a ConfigVariableTemplate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigVariable {
+    /// Output only. Key will be the
+    /// \[id\]\[google.cloud.apihub.v1.ConfigVariableTemplate.id\] to uniquely identify
+    /// the config variable.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// The values associated with the config variable.
+    #[prost(oneof = "config_variable::Value", tags = "2, 3, 4, 5, 6, 7, 8, 9")]
+    pub value: ::core::option::Option<config_variable::Value>,
+}
+/// Nested message and enum types in `ConfigVariable`.
+pub mod config_variable {
+    /// The config variable value of data type multi select.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiSelectValues {
+        /// Optional. The config variable value of data type multi select.
+        #[prost(message, repeated, tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<super::ConfigValueOption>,
+    }
+    /// The config variable value of data type multi string.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MultiStringValues {
+        /// Optional. The config variable value of data type multi string.
+        #[prost(string, repeated, tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// The config variable value of data type multi int.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MultiIntValues {
+        /// Optional. The config variable value of data type multi int.
+        #[prost(int32, repeated, packed = "false", tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// The values associated with the config variable.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// Optional. The config variable value in case of config variable of type
+        /// string.
+        #[prost(string, tag = "2")]
+        StringValue(::prost::alloc::string::String),
+        /// Optional. The config variable value in case of config variable of type
+        /// integer.
+        #[prost(int64, tag = "3")]
+        IntValue(i64),
+        /// Optional. The config variable value in case of config variable of type
+        /// boolean.
+        #[prost(bool, tag = "4")]
+        BoolValue(bool),
+        /// Optional. The config variable value in case of config variable of type
+        /// secret.
+        #[prost(message, tag = "5")]
+        SecretValue(super::Secret),
+        /// Optional. The config variable value in case of config variable of type
+        /// enum.
+        #[prost(message, tag = "6")]
+        EnumValue(super::ConfigValueOption),
+        /// Optional. The config variable value in case of config variable of type
+        /// multi select.
+        #[prost(message, tag = "7")]
+        MultiSelectValues(MultiSelectValues),
+        /// Optional. The config variable value in case of config variable of type
+        /// multi string.
+        #[prost(message, tag = "8")]
+        MultiStringValues(MultiStringValues),
+        /// Optional. The config variable value in case of config variable of type
+        /// multi integer.
+        #[prost(message, tag = "9")]
+        MultiIntValues(MultiIntValues),
+    }
+}
+/// Config for Google service account authentication.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleServiceAccountConfig {
+    /// Required. The service account to be used for authenticating request.
+    ///
+    /// The `iam.serviceAccounts.getAccessToken` permission should be granted on
+    /// this service account to the impersonator service account.
+    #[prost(string, tag = "1")]
+    pub service_account: ::prost::alloc::string::String,
+}
+/// AuthConfig represents the authentication information.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AuthConfig {
+    /// Required. The authentication type.
+    #[prost(enumeration = "AuthType", tag = "1")]
+    pub auth_type: i32,
+    /// Supported auth types.
+    #[prost(oneof = "auth_config::Config", tags = "2, 3, 4, 5")]
+    pub config: ::core::option::Option<auth_config::Config>,
+}
+/// Nested message and enum types in `AuthConfig`.
+pub mod auth_config {
+    /// Parameters to support Username and Password Authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UserPasswordConfig {
+        /// Required. Username.
+        #[prost(string, tag = "1")]
+        pub username: ::prost::alloc::string::String,
+        /// Required. Secret version reference containing the password.
+        /// The `secretmanager.versions.access` permission should be
+        /// granted to the service account accessing the secret.
+        #[prost(message, optional, tag = "2")]
+        pub password: ::core::option::Option<super::Secret>,
+    }
+    /// Parameters to support Oauth 2.0 client credentials grant authentication.
+    /// See <https://tools.ietf.org/html/rfc6749#section-1.3.4> for more details.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Oauth2ClientCredentialsConfig {
+        /// Required. The client identifier.
+        #[prost(string, tag = "1")]
+        pub client_id: ::prost::alloc::string::String,
+        /// Required. Secret version reference containing the client secret.
+        /// The `secretmanager.versions.access` permission should be
+        /// granted to the service account accessing the secret.
+        #[prost(message, optional, tag = "2")]
+        pub client_secret: ::core::option::Option<super::Secret>,
+    }
+    /// Config for authentication with API key.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ApiKeyConfig {
+        /// Required. The parameter name of the API key.
+        /// E.g. If the API request is "<https://example.com/act?api_key=<API> KEY>",
+        /// "api_key" would be the parameter name.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. The name of the SecretManager secret version resource storing
+        /// the API key. Format:
+        /// `projects/{project}/secrets/{secrete}/versions/{version}`. The
+        /// `secretmanager.versions.access` permission should be granted to the
+        /// service account accessing the secret.
+        #[prost(message, optional, tag = "2")]
+        pub api_key: ::core::option::Option<super::Secret>,
+        /// Required. The location of the API key.
+        /// The default value is QUERY.
+        #[prost(enumeration = "api_key_config::HttpElementLocation", tag = "3")]
+        pub http_element_location: i32,
+    }
+    /// Nested message and enum types in `ApiKeyConfig`.
+    pub mod api_key_config {
+        /// Enum of location an HTTP element can be.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum HttpElementLocation {
+            /// HTTP element location not specified.
+            Unspecified = 0,
+            /// Element is in the HTTP request query.
+            Query = 1,
+            /// Element is in the HTTP request header.
+            Header = 2,
+            /// Element is in the HTTP request path.
+            Path = 3,
+            /// Element is in the HTTP request body.
+            Body = 4,
+            /// Element is in the HTTP request cookie.
+            Cookie = 5,
+        }
+        impl HttpElementLocation {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "HTTP_ELEMENT_LOCATION_UNSPECIFIED",
+                    Self::Query => "QUERY",
+                    Self::Header => "HEADER",
+                    Self::Path => "PATH",
+                    Self::Body => "BODY",
+                    Self::Cookie => "COOKIE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "HTTP_ELEMENT_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    "HEADER" => Some(Self::Header),
+                    "PATH" => Some(Self::Path),
+                    "BODY" => Some(Self::Body),
+                    "COOKIE" => Some(Self::Cookie),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Supported auth types.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Config {
+        /// Google Service Account.
+        #[prost(message, tag = "2")]
+        GoogleServiceAccountConfig(super::GoogleServiceAccountConfig),
+        /// User Password.
+        #[prost(message, tag = "3")]
+        UserPasswordConfig(UserPasswordConfig),
+        /// Api Key Config.
+        #[prost(message, tag = "4")]
+        ApiKeyConfig(ApiKeyConfig),
+        /// Oauth2.0 Client Credentials.
+        #[prost(message, tag = "5")]
+        Oauth2ClientCredentialsConfig(Oauth2ClientCredentialsConfig),
+    }
+}
+/// SourceMetadata represents the metadata for a resource at the source.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SourceMetadata {
+    /// Output only. The type of the source.
+    #[prost(enumeration = "source_metadata::SourceType", tag = "2")]
+    pub source_type: i32,
+    /// Output only. The unique identifier of the resource at the source.
+    #[prost(string, tag = "3")]
+    pub original_resource_id: ::prost::alloc::string::String,
+    /// Output only. The time at which the resource was created at the source.
+    #[prost(message, optional, tag = "4")]
+    pub original_resource_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the resource was last updated at the source.
+    #[prost(message, optional, tag = "5")]
+    pub original_resource_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The source of the resource.
+    #[prost(oneof = "source_metadata::Source", tags = "1")]
+    pub source: ::core::option::Option<source_metadata::Source>,
+}
+/// Nested message and enum types in `SourceMetadata`.
+pub mod source_metadata {
+    /// PluginInstanceActionSource represents the plugin instance action source.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PluginInstanceActionSource {
+        /// Output only. The resource name of the source plugin instance.
+        /// Format is
+        /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+        #[prost(string, tag = "1")]
+        pub plugin_instance: ::prost::alloc::string::String,
+        /// Output only. The id of the plugin instance action.
+        #[prost(string, tag = "2")]
+        pub action_id: ::prost::alloc::string::String,
+    }
+    /// The possible types of the source.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SourceType {
+        /// Source type not specified.
+        Unspecified = 0,
+        /// Source type plugin.
+        Plugin = 1,
+    }
+    impl SourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                Self::Plugin => "PLUGIN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLUGIN" => Some(Self::Plugin),
+                _ => None,
+            }
+        }
+    }
+    /// The source of the resource.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Output only. The source of the resource is a plugin instance action.
+        #[prost(message, tag = "1")]
+        PluginInstanceActionSource(PluginInstanceActionSource),
+    }
+}
+/// Respresents an API Observation observed in one of the sources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DiscoveredApiObservation {
+    /// Identifier. The name of the discovered API Observation.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Style of ApiObservation
+    #[prost(enumeration = "discovered_api_observation::Style", tag = "2")]
+    pub style: i32,
+    /// Optional. The IP address (IPv4 or IPv6) of the origin server that the
+    /// request was sent to. This field can include port information. Examples:
+    /// `"192.168.1.1"`, `"10.0.0.1:80"`, `"FE80::0202:B3FF:FE1E:8329"`.
+    #[prost(string, repeated, tag = "3")]
+    pub server_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The hostname of requests processed for this Observation.
+    #[prost(string, tag = "4")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. Last event detected time stamp
+    #[prost(message, optional, tag = "5")]
+    pub last_event_detected_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The location of the observation source.
+    #[prost(string, repeated, tag = "6")]
+    pub source_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The number of observed API Operations.
+    #[prost(int64, tag = "7")]
+    pub api_operation_count: i64,
+    /// Optional. For an observation pushed from a gcp resource, this would be the
+    /// gcp project id.
+    #[prost(string, tag = "8")]
+    pub origin: ::prost::alloc::string::String,
+    /// Optional. The type of the source from which the observation was collected.
+    #[prost(
+        enumeration = "discovered_api_observation::SourceType",
+        repeated,
+        packed = "false",
+        tag = "9"
+    )]
+    pub source_types: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The number of known API Operations.
+    #[prost(int64, tag = "10")]
+    pub known_operations_count: i64,
+    /// Output only. The number of unknown API Operations.
+    #[prost(int64, tag = "11")]
+    pub unknown_operations_count: i64,
+    /// Output only. Create time stamp of the observation in API Hub.
+    #[prost(message, optional, tag = "12")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time stamp of the observation in API Hub.
+    #[prost(message, optional, tag = "13")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The metadata of the source from which the observation was
+    /// collected.
+    #[prost(message, optional, tag = "14")]
+    pub source_metadata: ::core::option::Option<SourceMetadata>,
+}
+/// Nested message and enum types in `DiscoveredApiObservation`.
+pub mod discovered_api_observation {
+    /// DiscoveredApiObservation protocol style
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Style {
+        /// Unknown style
+        Unspecified = 0,
+        /// Style is Rest API
+        Rest = 1,
+        /// Style is Grpc API
+        Grpc = 2,
+        /// Style is GraphQL API
+        Graphql = 3,
+    }
+    impl Style {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STYLE_UNSPECIFIED",
+                Self::Rest => "REST",
+                Self::Grpc => "GRPC",
+                Self::Graphql => "GRAPHQL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STYLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REST" => Some(Self::Rest),
+                "GRPC" => Some(Self::Grpc),
+                "GRAPHQL" => Some(Self::Graphql),
+                _ => None,
+            }
+        }
+    }
+    /// The possible types of the source from which the observation was collected.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SourceType {
+        /// Source type not specified.
+        Unspecified = 0,
+        /// GCP external load balancer.
+        GcpXlb = 1,
+        /// GCP internal load balancer.
+        GcpIlb = 2,
+    }
+    impl SourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                Self::GcpXlb => "GCP_XLB",
+                Self::GcpIlb => "GCP_ILB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GCP_XLB" => Some(Self::GcpXlb),
+                "GCP_ILB" => Some(Self::GcpIlb),
+                _ => None,
+            }
+        }
+    }
+}
+/// DiscoveredApiOperation represents an API Operation observed in one of the
+/// sources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveredApiOperation {
+    /// Identifier. The name of the discovered API Operation.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. First seen time stamp
+    #[prost(message, optional, tag = "3")]
+    pub first_seen_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Last seen time stamp
+    #[prost(message, optional, tag = "4")]
+    pub last_seen_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The number of occurrences of this API Operation.
+    #[prost(int64, tag = "5")]
+    pub count: i64,
+    /// Output only. The classification of the discovered API operation.
+    #[prost(enumeration = "discovered_api_operation::Classification", tag = "6")]
+    pub classification: i32,
+    /// Output only. The list of matched results for the discovered API operation.
+    /// This will be populated only if the classification is known. The current
+    /// usecase is for a single match. Keeping it repeated to support multiple
+    /// matches in future.
+    #[prost(message, repeated, tag = "7")]
+    pub match_results: ::prost::alloc::vec::Vec<discovered_api_operation::MatchResult>,
+    /// Output only. The metadata of the source from which the api operation was
+    /// collected.
+    #[prost(message, optional, tag = "8")]
+    pub source_metadata: ::core::option::Option<SourceMetadata>,
+    /// Output only. Create time stamp of the discovered API operation in API Hub.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time stamp of the discovered API operation in API Hub.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// ApiOperation protocol style
+    #[prost(oneof = "discovered_api_operation::Operation", tags = "2")]
+    pub operation: ::core::option::Option<discovered_api_operation::Operation>,
+}
+/// Nested message and enum types in `DiscoveredApiOperation`.
+pub mod discovered_api_operation {
+    /// MatchResult represents the result of matching a discovered API operation
+    /// with a catalog API operation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MatchResult {
+        /// Output only. The name of the matched API Operation.
+        ///
+        /// Format:
+        /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// The classification of the discovered API operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Classification {
+        /// Operation is not classified as known or unknown.
+        Unspecified = 0,
+        /// Operation has a matched catalog operation.
+        Known = 1,
+        /// Operation does not have a matched catalog operation.
+        Unknown = 2,
+    }
+    impl Classification {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLASSIFICATION_UNSPECIFIED",
+                Self::Known => "KNOWN",
+                Self::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLASSIFICATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "KNOWN" => Some(Self::Known),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
+    }
+    /// ApiOperation protocol style
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Optional. An HTTP Operation.
+        #[prost(message, tag = "2")]
+        HttpOperation(super::HttpOperationDetails),
+    }
+}
+/// An HTTP-based API Operation, sometimes called a "REST" Operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpOperationDetails {
+    /// Required. An HTTP Operation.
+    #[prost(message, optional, tag = "1")]
+    pub http_operation: ::core::option::Option<HttpOperation>,
+    /// Optional. Path params of HttpOperation
+    #[prost(message, repeated, tag = "2")]
+    pub path_params: ::prost::alloc::vec::Vec<http_operation_details::PathParam>,
+    /// Optional. Query params of HttpOperation
+    #[prost(map = "string, message", tag = "3")]
+    pub query_params: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        http_operation_details::QueryParam,
+    >,
+    /// Optional. Request metadata.
+    #[prost(message, optional, tag = "4")]
+    pub request: ::core::option::Option<http_operation_details::HttpRequest>,
+    /// Optional. Response metadata.
+    #[prost(message, optional, tag = "5")]
+    pub response: ::core::option::Option<http_operation_details::HttpResponse>,
+}
+/// Nested message and enum types in `HttpOperationDetails`.
+pub mod http_operation_details {
+    /// HTTP Path parameter.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PathParam {
+        /// Optional. Segment location in the path, 1-indexed
+        #[prost(int32, tag = "1")]
+        pub position: i32,
+        /// Optional. Data type of path param
+        #[prost(enumeration = "DataType", tag = "2")]
+        pub data_type: i32,
+    }
+    /// An aggregation of HTTP query parameter occurrences.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct QueryParam {
+        /// Required. Name of query param
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. The number of occurrences of this query parameter across
+        /// transactions.
+        #[prost(int64, tag = "2")]
+        pub count: i64,
+        /// Optional. Data type of path param
+        #[prost(enumeration = "DataType", tag = "3")]
+        pub data_type: i32,
+    }
+    /// An aggregation of HTTP header occurrences.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Header {
+        /// Header name.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The number of occurrences of this Header across transactions.
+        #[prost(int64, tag = "2")]
+        pub count: i64,
+        /// Data type of header
+        #[prost(enumeration = "DataType", tag = "3")]
+        pub data_type: i32,
+    }
+    /// An aggregation of HTTP requests.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HttpRequest {
+        /// Optional. Unordered map from header name to header metadata
+        #[prost(map = "string, message", tag = "1")]
+        pub headers: ::std::collections::HashMap<::prost::alloc::string::String, Header>,
+    }
+    /// An aggregation of HTTP responses.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HttpResponse {
+        /// Optional. Unordered map from header name to header metadata
+        #[prost(map = "string, message", tag = "1")]
+        pub headers: ::std::collections::HashMap<::prost::alloc::string::String, Header>,
+        /// Optional. Map of status code to observed count
+        #[prost(map = "int32, int64", tag = "2")]
+        pub response_codes: ::std::collections::HashMap<i32, i64>,
+    }
+    /// Type of data
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataType {
+        /// Unspecified data type
+        Unspecified = 0,
+        /// Boolean data type
+        Bool = 1,
+        /// Integer data type
+        Integer = 2,
+        /// Float data type
+        Float = 3,
+        /// String data type
+        String = 4,
+        /// UUID data type
+        Uuid = 5,
+    }
+    impl DataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                Self::Bool => "BOOL",
+                Self::Integer => "INTEGER",
+                Self::Float => "FLOAT",
+                Self::String => "STRING",
+                Self::Uuid => "UUID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOL" => Some(Self::Bool),
+                "INTEGER" => Some(Self::Integer),
+                "FLOAT" => Some(Self::Float),
+                "STRING" => Some(Self::String),
+                "UUID" => Some(Self::Uuid),
+                _ => None,
+            }
+        }
+    }
 }
 /// Lint state represents success or failure for linting.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1640,6 +2613,85 @@ impl Severity {
             "SEVERITY_WARNING" => Some(Self::Warning),
             "SEVERITY_INFO" => Some(Self::Info),
             "SEVERITY_HINT" => Some(Self::Hint),
+            _ => None,
+        }
+    }
+}
+/// AuthType represents the authentication type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AuthType {
+    /// Authentication type not specified.
+    Unspecified = 0,
+    /// No authentication.
+    NoAuth = 1,
+    /// Google service account authentication.
+    GoogleServiceAccount = 2,
+    /// Username and password authentication.
+    UserPassword = 3,
+    /// API Key authentication.
+    ApiKey = 4,
+    /// Oauth 2.0 client credentials grant authentication.
+    Oauth2ClientCredentials = 5,
+}
+impl AuthType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "AUTH_TYPE_UNSPECIFIED",
+            Self::NoAuth => "NO_AUTH",
+            Self::GoogleServiceAccount => "GOOGLE_SERVICE_ACCOUNT",
+            Self::UserPassword => "USER_PASSWORD",
+            Self::ApiKey => "API_KEY",
+            Self::Oauth2ClientCredentials => "OAUTH2_CLIENT_CREDENTIALS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUTH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NO_AUTH" => Some(Self::NoAuth),
+            "GOOGLE_SERVICE_ACCOUNT" => Some(Self::GoogleServiceAccount),
+            "USER_PASSWORD" => Some(Self::UserPassword),
+            "API_KEY" => Some(Self::ApiKey),
+            "OAUTH2_CLIENT_CREDENTIALS" => Some(Self::Oauth2ClientCredentials),
+            _ => None,
+        }
+    }
+}
+/// Enum for the plugin category.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PluginCategory {
+    /// Default unspecified plugin type.
+    Unspecified = 0,
+    /// API_GATEWAY plugins represent plugins built for API Gateways like Apigee.
+    ApiGateway = 1,
+    /// API_PRODUCER plugins represent plugins built for API Producers like
+    /// Cloud Run, Application Integration etc.
+    ApiProducer = 2,
+}
+impl PluginCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PLUGIN_CATEGORY_UNSPECIFIED",
+            Self::ApiGateway => "API_GATEWAY",
+            Self::ApiProducer => "API_PRODUCER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PLUGIN_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "API_GATEWAY" => Some(Self::ApiGateway),
+            "API_PRODUCER" => Some(Self::ApiProducer),
             _ => None,
         }
     }
@@ -1753,6 +2805,35 @@ pub struct ListApisRequest {
     /// * `api_style.enum_values.values.display_name` - The allowed value display
     ///   name of the api style attribute associated with the ApiResource. Allowed
     ///   comparison operator is `:`.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.id` - The
+    ///   allowed value id of the user defined enum attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-id is a placeholder that can be replaced with
+    ///   any user defined enum attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.display_name`
+    ///
+    /// * The allowed value display name of the user defined enum attribute
+    ///   associated with the Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-display-name is a placeholder that can be
+    ///   replaced with any user defined enum attribute enum name.
+    ///
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.string_values.values` - The
+    ///   allowed value of the user defined string attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-string is a placeholder that can be replaced with
+    ///   any user defined string attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.json_values.values` - The
+    ///   allowed value of the user defined JSON attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-json is a placeholder that can be replaced with
+    ///   any user defined JSON attribute name.
+    ///
+    /// A filter function is also supported in the filter string. The filter
+    /// function is `id(name)`. The `id(name)` function returns the id of the
+    /// resource name. For example, `id(name) = \"api-1\"` is equivalent to
+    /// `name = \"projects/test-project-id/locations/test-location-id/apis/api-1\"`
+    /// provided the parent is
+    /// `projects/test-project-id/locations/test-location-id`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -1775,6 +2856,10 @@ pub struct ListApisRequest {
     ///   specifies the APIs where the owner team email is *apihub@google.com* or
     ///   the display name of the allowed value associated with the team attribute
     ///   is `ApiHub Team`.
+    /// * `owner.email = \"apihub@google.com\" AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/17650f90-4a29-4971-b3c0-d5532da3764b.enum_values.values.id:    test_enum_id AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/1765\0f90-4a29-5431-b3d0-d5532da3764c.string_values.values:    test_string_value`  - The filter string specifies the APIs where the
+    ///   owner team email is *apihub@google.com* and the id of the allowed value
+    ///   associated with the user defined attribute of type enum is *test_enum_id*
+    ///   and the value of the user defined attribute of type string is *test*..
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of API resources to return. The service may
@@ -1817,8 +2902,11 @@ pub struct CreateVersionRequest {
     ///   the specified id is already used by another version in the API resource.
     /// * If not provided, a system generated id will be used.
     ///
-    /// This value should be 4-500 characters, and valid characters
-    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    /// This value should be 4-500 characters, overall resource name which will be
+    /// of format
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}`,
+    /// its length is limited to 700 characters and valid characters are
+    /// /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub version_id: ::prost::alloc::string::String,
     /// Required. The version to create.
@@ -1903,6 +2991,28 @@ pub struct ListVersionsRequest {
     /// * `accreditation.enum_values.values.display_name` - The allowed value
     ///   display name of the accreditations attribute associated with the Version.
     ///   Allowed comparison operators: `:`.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.id` - The
+    ///   allowed value id of the user defined enum attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-id is a placeholder that can be replaced with
+    ///   any user defined enum attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.display_name`
+    ///
+    /// * The allowed value display name of the user defined enum attribute
+    ///   associated with the Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-display-name is a placeholder that can be
+    ///   replaced with any user defined enum attribute enum name.
+    ///
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.string_values.values` - The
+    ///   allowed value of the user defined string attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-string is a placeholder that can be replaced with
+    ///   any user defined string attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.json_values.values` - The
+    ///   allowed value of the user defined JSON attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-json is a placeholder that can be replaced with
+    ///   any user defined JSON attribute name.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -1928,6 +3038,10 @@ pub struct ListVersionsRequest {
     ///
     /// * The id of the allowed value associated with the compliance attribute is
     ///   *gdpr-id* or *pci-dss-id*.
+    ///
+    /// * `lifecycle.enum_values.values.id: preview-id AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values:    test`  - The filter string specifies that the id of the allowed value
+    ///   associated with the lifecycle attribute of the Version is *preview-id*
+    ///   and the value of the user defined attribute of type string is *test*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of versions to return. The service may return
@@ -1972,8 +3086,11 @@ pub struct CreateSpecRequest {
     ///   resource.
     /// * If not provided, a system generated id will be used.
     ///
-    /// This value should be 4-500 characters, and valid characters
-    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    /// This value should be 4-500 characters, overall resource name which will be
+    /// of format
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`,
+    /// its length is limited to 1000 characters and valid characters are
+    /// /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub spec_id: ::prost::alloc::string::String,
     /// Required. The spec to create.
@@ -2045,6 +3162,28 @@ pub struct ListSpecsRequest {
     ///   operators: `:`.
     /// * `mime_type` - The MIME type of the Spec. Allowed comparison
     ///   operators: `=`.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.id` - The
+    ///   allowed value id of the user defined enum attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-id is a placeholder that can be replaced with
+    ///   any user defined enum attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.display_name`
+    ///
+    /// * The allowed value display name of the user defined enum attribute
+    ///   associated with the Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-display-name is a placeholder that can be
+    ///   replaced with any user defined enum attribute enum name.
+    ///
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.string_values.values` - The
+    ///   allowed value of the user defined string attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-string is a placeholder that can be replaced with
+    ///   any user defined string attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.json_values.values` - The
+    ///   allowed value of the user defined JSON attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-json is a placeholder that can be replaced with
+    ///   any user defined JSON attribute name.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2070,6 +3209,11 @@ pub struct ListSpecsRequest {
     ///
     /// * The id of the allowed value associated with the spec_type attribute is
     ///   *rest-id* or *grpc-id*.
+    ///
+    /// * `spec_type.enum_values.values.id: rest-id AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/17650f90-4a29-4971-b3c0-d5532da3764b.enum_values.values.id:    test`  - The filter string specifies that the id of the allowed value
+    ///   associated with the spec_type attribute is *rest-id* and the id of the
+    ///   allowed value associated with the user defined attribute of type enum is
+    ///   *test*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of specs to return. The service may return
@@ -2089,7 +3233,7 @@ pub struct ListSpecsRequest {
 /// The \[ListSpecs\]\[google.cloud.apihub.v1.ApiHub.ListSpecs\] method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpecsResponse {
-    /// The specs corresponding to an API.
+    /// The specs corresponding to an API Version.
     #[prost(message, repeated, tag = "1")]
     pub specs: ::prost::alloc::vec::Vec<Spec>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -2107,11 +3251,65 @@ pub struct GetSpecContentsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\]
+/// method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateApiOperationRequest {
+    /// Required. The parent resource for the operation resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID to use for the operation resource, which will become the
+    /// final component of the operation's resource name. This field is optional.
+    ///
+    /// * If provided, the same will be used. The service will throw an error if
+    ///   the specified id is already used by another operation resource in the API
+    ///   hub.
+    /// * If not provided, a system generated id will be used.
+    ///
+    /// This value should be 4-500 characters, overall resource name which
+    /// will be of format
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`,
+    /// its length is limited to 700 characters, and valid characters are
+    /// /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    #[prost(string, tag = "2")]
+    pub api_operation_id: ::prost::alloc::string::String,
+    /// Required. The operation resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub api_operation: ::core::option::Option<ApiOperation>,
+}
 /// The \[GetApiOperation\]\[google.cloud.apihub.v1.ApiHub.GetApiOperation\] method's
 /// request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApiOperationRequest {
     /// Required. The name of the operation to retrieve.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The \[UpdateApiOperation\]\[google.cloud.apihub.v1.ApiHub.UpdateApiOperation\]
+/// method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateApiOperationRequest {
+    /// Required. The apiOperation resource to update.
+    ///
+    /// The operation resource's `name` field is used to identify the operation
+    /// resource to update.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+    #[prost(message, optional, tag = "1")]
+    pub api_operation: ::core::option::Option<ApiOperation>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The \[DeleteApiOperation\]\[google.cloud.apihub.v1.ApiHub.DeleteApiOperation\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteApiOperationRequest {
+    /// Required. The name of the operation resource to delete.
     /// Format:
     /// `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
     #[prost(string, tag = "1")]
@@ -2148,6 +3346,28 @@ pub struct ListApiOperationsRequest {
     /// * `create_time` - The time at which the ApiOperation was created. The
     ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
     ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.id` - The
+    ///   allowed value id of the user defined enum attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-id is a placeholder that can be replaced with
+    ///   any user defined enum attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.display_name`
+    ///
+    /// * The allowed value display name of the user defined enum attribute
+    ///   associated with the Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-display-name is a placeholder that can be
+    ///   replaced with any user defined enum attribute enum name.
+    ///
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.string_values.values` - The
+    ///   allowed value of the user defined string attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-string is a placeholder that can be replaced with
+    ///   any user defined string attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.json_values.values` - The
+    ///   allowed value of the user defined JSON attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-json is a placeholder that can be replaced with
+    ///   any user defined JSON attribute name.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2165,6 +3385,8 @@ pub struct ListApiOperationsRequest {
     ///   12:00:00 UTC*.
     /// * `details.http_operation.method = GET OR details.http_operation.method =    POST`. - The http operation of the method of ApiOperation is *GET* or
     ///   *POST*.
+    /// * `details.deprecated = True AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values:    test`  - The filter string specifies that the ApiOperation is deprecated
+    ///   and the value of the user defined attribute of type string is *test*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of operations to return. The service may
@@ -2186,9 +3408,6 @@ pub struct ListApiOperationsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiOperationsResponse {
     /// The operations corresponding to an API version.
-    /// Only following field will be populated in the response: name,
-    /// spec, details.deprecated, details.http_operation.path.path,
-    /// details.http_operation.method and details.documentation.external_uri.
     #[prost(message, repeated, tag = "1")]
     pub api_operations: ::prost::alloc::vec::Vec<ApiOperation>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -2289,6 +3508,10 @@ pub struct ListDeploymentsRequest {
     ///   comparison operators: `=`.
     /// * `api_versions` - The API versions linked to this deployment. Allowed
     ///   comparison operators: `:`.
+    /// * `source_project` - The project/organization at source for the
+    ///   deployment. Allowed comparison operators: `=`.
+    /// * `source_environment` - The environment at source for the
+    ///   deployment. Allowed comparison operators: `=`.
     /// * `deployment_type.enum_values.values.id` - The allowed value id of the
     ///   deployment_type attribute associated with the Deployment. Allowed
     ///   comparison operators: `:`.
@@ -2304,6 +3527,35 @@ pub struct ListDeploymentsRequest {
     /// * `environment.enum_values.values.display_name` - The allowed value
     ///   display name of the environment attribute associated with the deployment.
     ///   Allowed comparison operators: `:`.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.id` - The
+    ///   allowed value id of the user defined enum attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-id is a placeholder that can be replaced with
+    ///   any user defined enum attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.enum_values.values.display_name`
+    ///
+    /// * The allowed value display name of the user defined enum attribute
+    ///   associated with the Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-enum-display-name is a placeholder that can be
+    ///   replaced with any user defined enum attribute enum name.
+    ///
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.string_values.values` - The
+    ///   allowed value of the user defined string attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-string is a placeholder that can be replaced with
+    ///   any user defined string attribute name.
+    /// * `attributes.projects/test-project-id/locations/test-location-id/    attributes/user-defined-attribute-id.json_values.values` - The
+    ///   allowed value of the user defined JSON attribute associated with the
+    ///   Resource. Allowed comparison operator is `:`. Here
+    ///   user-defined-attribute-json is a placeholder that can be replaced with
+    ///   any user defined JSON attribute name.
+    ///
+    /// A filter function is also supported in the filter string. The filter
+    /// function is `id(name)`. The `id(name)` function returns the id of the
+    /// resource name. For example, `id(name) = \"deployment-1\"` is equivalent to
+    /// `name =  \"projects/test-project-id/locations/test-location-id/deployments/deployment-1\"`
+    /// provided the parent is
+    /// `projects/test-project-id/locations/test-location-id`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2328,6 +3580,10 @@ pub struct ListDeploymentsRequest {
     ///
     /// * The allowed value id of the environment attribute Deployment is
     ///   *production-id* or string value of the slo attribute is *99.99%*.
+    ///
+    /// * `environment.enum_values.values.id: staging-id AND    attributes.projects/test-project-id/locations/test-location-id/    attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values:    test`  - The filter string specifies that the allowed value id of the
+    ///   environment attribute associated with the Deployment is *staging-id* and
+    ///   the value of the user defined attribute of type string is *test*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of deployment resources to return. The service
@@ -2562,15 +3818,17 @@ pub mod api_hub_resource {
         #[prost(message, tag = "1")]
         Api(super::Api),
         /// This represents ApiOperation resource in search results. Only name,
-        /// and description fields are populated in search results.
+        /// description, spec and details fields are populated in search results.
         #[prost(message, tag = "2")]
         Operation(super::ApiOperation),
         /// This represents Deployment resource in search results. Only name,
-        /// display_name and description fields are populated in search results.
+        /// display_name, description, deployment_type and api_versions fields are
+        /// populated in search results.
         #[prost(message, tag = "3")]
         Deployment(super::Deployment),
         /// This represents Spec resource in search results. Only name,
-        /// display_name and description fields are populated in search results.
+        /// display_name, description, spec_type and documentation fields are
+        /// populated in search results.
         #[prost(message, tag = "4")]
         Spec(super::Spec),
         /// This represents Definition resource in search results.
@@ -2578,7 +3836,8 @@ pub mod api_hub_resource {
         #[prost(message, tag = "5")]
         Definition(super::Definition),
         /// This represents Version resource in search results. Only name,
-        /// display_name and description fields are populated in search results.
+        /// display_name, description, lifecycle, compliance and accreditation fields
+        /// are populated in search results.
         #[prost(message, tag = "6")]
         Version(super::Version),
     }
@@ -2726,7 +3985,6 @@ pub struct ListDependenciesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDependenciesResponse {
     /// The dependency resources present in the API hub.
-    /// Only following field will be populated in the response: name.
     #[prost(message, repeated, tag = "1")]
     pub dependencies: ::prost::alloc::vec::Vec<Dependency>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -2821,8 +4079,6 @@ pub struct ListExternalApisRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExternalApisResponse {
     /// The External API resources present in the API hub.
-    /// Only following fields will be populated in the response: name,
-    /// display_name, documentation.external_uri.
     #[prost(message, repeated, tag = "1")]
     pub external_apis: ::prost::alloc::vec::Vec<ExternalApi>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -2993,7 +4249,7 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update an API resource in the API hub. The following fields in the
-        /// \[API\]\[\] can be updated:
+        /// \[API\]\[google.cloud.apihub.v1.Api\] can be updated:
         ///
         /// * \[display_name\]\[google.cloud.apihub.v1.Api.display_name\]
         /// * \[description\]\[google.cloud.apihub.v1.Api.description\]
@@ -3003,6 +4259,7 @@ pub mod api_hub_client {
         /// * \[team\]\[google.cloud.apihub.v1.Api.team\]
         /// * \[business_unit\]\[google.cloud.apihub.v1.Api.business_unit\]
         /// * \[maturity_level\]\[google.cloud.apihub.v1.Api.maturity_level\]
+        /// * \[api_style\]\[google.cloud.apihub.v1.Api.api_style\]
         /// * \[attributes\]\[google.cloud.apihub.v1.Api.attributes\]
         ///
         /// The
@@ -3377,6 +4634,35 @@ pub mod api_hub_client {
                 .insert(GrpcMethod::new("google.cloud.apihub.v1.ApiHub", "DeleteSpec"));
             self.inner.unary(req, path, codec).await
         }
+        /// Create an apiOperation in an API version.
+        /// An apiOperation can be created only if the version has no apiOperations
+        /// which were created by parsing a spec.
+        pub async fn create_api_operation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateApiOperationRequest>,
+        ) -> std::result::Result<tonic::Response<super::ApiOperation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHub/CreateApiOperation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHub",
+                        "CreateApiOperation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Get details about a particular operation in API version.
         pub async fn get_api_operation(
             &mut self,
@@ -3425,6 +4711,80 @@ pub mod api_hub_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.apihub.v1.ApiHub", "ListApiOperations"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update an operation in an API version. The following fields in the
+        /// \[ApiOperation resource\]\[google.cloud.apihub.v1.ApiOperation\] can be
+        /// updated:
+        ///
+        /// * \[details.description\]\[ApiOperation.details.description\]
+        /// * \[details.documentation\]\[ApiOperation.details.documentation\]
+        /// * \[details.http_operation.path\]\[ApiOperation.details.http_operation.path.path\]
+        /// * \[details.http_operation.method\]\[ApiOperation.details.http_operation.method\]
+        /// * \[details.deprecated\]\[ApiOperation.details.deprecated\]
+        /// * \[attributes\]\[google.cloud.apihub.v1.ApiOperation.attributes\]
+        ///
+        /// The
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateApiOperationRequest.update_mask\]
+        /// should be used to specify the fields being updated.
+        ///
+        /// An operation can be updated only if the operation was created via
+        /// \[CreateApiOperation\]\[google.cloud.apihub.v1.ApiHub.CreateApiOperation\] API.
+        /// If the operation was created by parsing the spec, then it can be edited by
+        /// updating the spec.
+        pub async fn update_api_operation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateApiOperationRequest>,
+        ) -> std::result::Result<tonic::Response<super::ApiOperation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHub/UpdateApiOperation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHub",
+                        "UpdateApiOperation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete an operation in an API version and we can delete only the
+        /// operations created via create API. If the operation was created by parsing
+        /// the spec, then it can be deleted by editing or deleting the spec.
+        pub async fn delete_api_operation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteApiOperationRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHub/DeleteApiOperation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHub",
+                        "DeleteApiOperation",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }
@@ -3542,10 +4902,14 @@ pub mod api_hub_client {
         /// * \[slo\]\[google.cloud.apihub.v1.Deployment.slo\]
         /// * \[environment\]\[google.cloud.apihub.v1.Deployment.environment\]
         /// * \[attributes\]\[google.cloud.apihub.v1.Deployment.attributes\]
-        ///
-        /// The
-        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask\]
-        /// should be used to specify the fields being updated.
+        /// * \[source_project\] \[google.cloud.apihub.v1.Deployment.source_project\]
+        /// * \[source_environment\]
+        ///  \[google.cloud.apihub.v1.Deployment.source_environment\]
+        /// * \[management_url\]\[google.cloud.apihub.v1.Deployment.management_url\]
+        /// * \[source_uri\]\[google.cloud.apihub.v1.Deployment.source_uri\]
+        ///  The
+        ///  \[update_mask\]\[google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask\]
+        ///  should be used to specify the fields being updated.
         pub async fn update_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeploymentRequest>,
@@ -4151,6 +5515,1152 @@ pub mod api_hub_dependencies_client {
         }
     }
 }
+/// The CollectApiData method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CollectApiDataRequest {
+    /// Required. The regional location of the API hub instance and its resources.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Required. The type of collection. Applies to all entries in
+    /// \[api_data\]\[google.cloud.apihub.v1.CollectApiDataRequest.api_data\].
+    #[prost(enumeration = "CollectionType", tag = "2")]
+    pub collection_type: i32,
+    /// Required. The plugin instance collecting the API data.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`.
+    #[prost(string, tag = "3")]
+    pub plugin_instance: ::prost::alloc::string::String,
+    /// Required. The action ID to be used for collecting the API data.
+    /// This should map to one of the action IDs specified
+    /// in action configs in the plugin.
+    #[prost(string, tag = "4")]
+    pub action_id: ::prost::alloc::string::String,
+    /// Required. The API data to be collected.
+    #[prost(message, optional, tag = "5")]
+    pub api_data: ::core::option::Option<ApiData>,
+}
+/// The API data to be collected.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApiData {
+    /// The data to be collected.
+    #[prost(oneof = "api_data::Data", tags = "1")]
+    pub data: ::core::option::Option<api_data::Data>,
+}
+/// Nested message and enum types in `ApiData`.
+pub mod api_data {
+    /// The data to be collected.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Data {
+        /// Optional. The list of API metadata.
+        #[prost(message, tag = "1")]
+        ApiMetadataList(super::ApiMetadataList),
+    }
+}
+/// The message to hold repeated API metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApiMetadataList {
+    /// Required. The list of API metadata.
+    #[prost(message, repeated, tag = "1")]
+    pub api_metadata: ::prost::alloc::vec::Vec<ApiMetadata>,
+}
+/// The API metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApiMetadata {
+    /// Required. The API resource to be pushed to Hub's collect layer. The ID of
+    /// the API resource will be generated by Hub to ensure uniqueness across all
+    /// APIs across systems.
+    #[prost(message, optional, tag = "1")]
+    pub api: ::core::option::Option<Api>,
+    /// Optional. The list of versions present in an API resource.
+    #[prost(message, repeated, tag = "2")]
+    pub versions: ::prost::alloc::vec::Vec<VersionMetadata>,
+    /// Optional. The unique identifier of the API in the system where it was
+    /// originally created.
+    #[prost(string, tag = "3")]
+    pub original_id: ::prost::alloc::string::String,
+    /// Optional. Timestamp indicating when the API was created at the source.
+    #[prost(message, optional, tag = "4")]
+    pub original_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Timestamp indicating when the API was last updated at the source.
+    #[prost(message, optional, tag = "5")]
+    pub original_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The metadata associated with a version of the API resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VersionMetadata {
+    /// Required. Represents a version of the API resource in API hub. The ID of
+    /// the version will be generated by Hub.
+    #[prost(message, optional, tag = "1")]
+    pub version: ::core::option::Option<Version>,
+    /// Optional. The specs associated with this version.
+    /// Note that an API version can be associated with multiple specs.
+    #[prost(message, repeated, tag = "2")]
+    pub specs: ::prost::alloc::vec::Vec<SpecMetadata>,
+    /// Optional. The deployments linked to this API version.
+    /// Note: A particular API version could be deployed to multiple deployments
+    /// (for dev deployment, UAT deployment, etc.)
+    #[prost(message, repeated, tag = "4")]
+    pub deployments: ::prost::alloc::vec::Vec<DeploymentMetadata>,
+    /// Optional. The unique identifier of the version in the system where it was
+    /// originally created.
+    #[prost(string, tag = "5")]
+    pub original_id: ::prost::alloc::string::String,
+    /// Optional. Timestamp indicating when the version was created at the source.
+    #[prost(message, optional, tag = "6")]
+    pub original_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Timestamp indicating when the version was last updated at the
+    /// source.
+    #[prost(message, optional, tag = "7")]
+    pub original_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The metadata associated with a spec of the API version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpecMetadata {
+    /// Required. The spec resource to be pushed to Hub's collect layer. The ID of
+    /// the spec will be generated by Hub.
+    #[prost(message, optional, tag = "1")]
+    pub spec: ::core::option::Option<Spec>,
+    /// Optional. The unique identifier of the spec in the system where it was
+    /// originally created.
+    #[prost(string, tag = "2")]
+    pub original_id: ::prost::alloc::string::String,
+    /// Optional. Timestamp indicating when the spec was created at the source.
+    #[prost(message, optional, tag = "3")]
+    pub original_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Timestamp indicating when the spec was last updated at the
+    /// source.
+    #[prost(message, optional, tag = "4")]
+    pub original_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The metadata associated with a deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeploymentMetadata {
+    /// Required. The deployment resource to be pushed to Hub's collect layer. The
+    /// ID of the deployment will be generated by Hub.
+    #[prost(message, optional, tag = "1")]
+    pub deployment: ::core::option::Option<Deployment>,
+    /// Optional. The unique identifier of the deployment in the system where it
+    /// was originally created.
+    #[prost(string, tag = "2")]
+    pub original_id: ::prost::alloc::string::String,
+    /// Optional. Timestamp indicating when the deployment was created at the
+    /// source.
+    #[prost(message, optional, tag = "3")]
+    pub original_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Timestamp indicating when the deployment was last updated at the
+    /// source.
+    #[prost(message, optional, tag = "4")]
+    pub original_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The CollectApiData method's response.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CollectApiDataResponse {}
+/// The type of the collect request.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CollectionType {
+    /// The default value. This value is used if the collection type is omitted.
+    Unspecified = 0,
+    /// The collection type is upsert. This should be used when an API is created
+    /// or updated at the source.
+    Upsert = 1,
+    /// The collection type is delete. This should be used when an API is deleted
+    /// at the source.
+    Delete = 2,
+}
+impl CollectionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "COLLECTION_TYPE_UNSPECIFIED",
+            Self::Upsert => "COLLECTION_TYPE_UPSERT",
+            Self::Delete => "COLLECTION_TYPE_DELETE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COLLECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COLLECTION_TYPE_UPSERT" => Some(Self::Upsert),
+            "COLLECTION_TYPE_DELETE" => Some(Self::Delete),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod api_hub_collect_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// This service exposes methods used for collecting various types of data from
+    /// different first party and third party sources and push it to Hub's collect
+    /// layer.
+    #[derive(Debug, Clone)]
+    pub struct ApiHubCollectClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ApiHubCollectClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ApiHubCollectClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ApiHubCollectClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ApiHubCollectClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Collect API data from a source and push it to Hub's collect layer.
+        pub async fn collect_api_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CollectApiDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCollect/CollectApiData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubCollect",
+                        "CollectApiData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// The \[CreateCuration\]\[ApiHub.CreateCuration\] method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCurationRequest {
+    /// Required. The parent resource for the curation resource.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID to use for the curation resource, which will become the
+    /// final component of the curations's resource name. This field is optional.
+    ///
+    /// * If provided, the same will be used. The service will throw an error if
+    ///   the specified ID is already used by another curation resource in the API
+    ///   hub.
+    /// * If not provided, a system generated ID will be used.
+    ///
+    /// This value should be 4-500 characters, and valid characters
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    #[prost(string, tag = "2")]
+    pub curation_id: ::prost::alloc::string::String,
+    /// Required. The curation resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub curation: ::core::option::Option<Curation>,
+}
+/// The \[GetCuration\]\[ApiHub.GetCuration\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetCurationRequest {
+    /// Required. The name of the curation resource to retrieve.
+    /// Format: `projects/{project}/locations/{location}/curations/{curation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The \[UpdateCuration\]\[ApiHub.UpdateCuration\] method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCurationRequest {
+    /// Required. The curation resource to update.
+    ///
+    /// The curation resource's `name` field is used to identify the curation
+    /// resource to update.
+    /// Format: `projects/{project}/locations/{location}/curations/{curation}`
+    #[prost(message, optional, tag = "1")]
+    pub curation: ::core::option::Option<Curation>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The \[DeleteCuration\]\[ApiHub.DeleteCuration\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCurationRequest {
+    /// Required. The name of the curation resource to delete.
+    /// Format: `projects/{project}/locations/{location}/curations/{curation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The \[ListCurations\]\[ApiHub.ListCurations\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListCurationsRequest {
+    /// Required. The parent, which owns this collection of curation resources.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of curation resources.
+    ///
+    /// A filter expression consists of a field name, a comparison
+    /// operator, and a value for filtering. The value must be a string. The
+    /// comparison operator must be one of: `<`, `>`, `:` or `=`. Filters are case
+    /// insensitive.
+    ///
+    /// The following fields in the `curation resource` are eligible for filtering:
+    ///
+    /// * `create_time` - The time at which the curation was created.
+    ///   The value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `display_name` - The display name of the curation. Allowed
+    ///   comparison operators: `=`.
+    /// * `state` - The state of the curation. Allowed comparison operators: `=`.
+    ///
+    /// Expressions are combined with either `AND` logic operator or `OR` logical
+    /// operator but not both of them together i.e. only one of the `AND` or `OR`
+    /// operator can be used throughout the filter string and both the operators
+    /// cannot be used together. No other logical operators are supported. At most
+    /// three filter fields are allowed in the filter string and if provided
+    /// more than that then `INVALID_ARGUMENT` error is returned by the API.
+    ///
+    /// Here are a few examples:
+    ///
+    /// * `create_time < \"2021-08-15T14:50:00Z\" AND create_time >    \"2021-08-10T12:00:00Z\"` -
+    ///   The curation resource was created before *2021-08-15 14:50:00 UTC* and
+    ///   after *2021-08-10 12:00:00 UTC*.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of curation resources to return. The service
+    /// may return fewer than this value. If unspecified, at most 50 curations will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListCurations` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters (except page_size) provided to
+    /// `ListCurations` must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The \[ListCurations\]\[ApiHub.ListCurations\] method's response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCurationsResponse {
+    /// The curation resources present in the API hub.
+    #[prost(message, repeated, tag = "1")]
+    pub curations: ::prost::alloc::vec::Vec<Curation>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A curation resource in the API Hub.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Curation {
+    /// Identifier. The name of the curation.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/curations/{curation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the curation.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The description of the curation.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The endpoint to be triggered for curation.
+    #[prost(message, optional, tag = "4")]
+    pub endpoint: ::core::option::Option<Endpoint>,
+    /// Output only. The plugin instances and associated actions that are using the
+    /// curation. Note: A particular curation could be used by multiple plugin
+    /// instances or multiple actions in a plugin instance.
+    #[prost(message, repeated, tag = "5")]
+    pub plugin_instance_actions: ::prost::alloc::vec::Vec<
+        curation::PluginInstanceActionId,
+    >,
+    /// Output only. The last execution state of the curation.
+    #[prost(enumeration = "curation::LastExecutionState", tag = "6")]
+    pub last_execution_state: i32,
+    /// Output only. The error code of the last execution of the curation. The
+    /// error code is populated only when the last execution state is failed.
+    #[prost(enumeration = "curation::ErrorCode", tag = "7")]
+    pub last_execution_error_code: i32,
+    /// Output only. Error message describing the failure, if any, during the last
+    /// execution of the curation.
+    #[prost(string, tag = "8")]
+    pub last_execution_error_message: ::prost::alloc::string::String,
+    /// Output only. The time at which the curation was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the curation was last updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `Curation`.
+pub mod curation {
+    /// The plugin instance and associated action that is using the curation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PluginInstanceActionId {
+        /// Output only. Plugin instance that is using the curation.
+        /// Format is
+        /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+        #[prost(string, tag = "1")]
+        pub plugin_instance: ::prost::alloc::string::String,
+        /// Output only. The action ID that is using the curation.
+        /// This should map to one of the action IDs specified
+        /// in action configs in the plugin.
+        #[prost(string, tag = "2")]
+        pub action_id: ::prost::alloc::string::String,
+    }
+    /// The state of the last execution of the curation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LastExecutionState {
+        /// Default unspecified state.
+        Unspecified = 0,
+        /// The last curation execution was successful.
+        Succeeded = 1,
+        /// The last curation execution failed.
+        Failed = 2,
+    }
+    impl LastExecutionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LAST_EXECUTION_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LAST_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The error codes for failed executions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ErrorCode {
+        /// Default unspecified error code.
+        Unspecified = 0,
+        /// The execution failed due to an internal error.
+        InternalError = 1,
+        /// The curation is not authorized to trigger the endpoint uri.
+        Unauthorized = 2,
+    }
+    impl ErrorCode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ERROR_CODE_UNSPECIFIED",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::Unauthorized => "UNAUTHORIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "UNAUTHORIZED" => Some(Self::Unauthorized),
+                _ => None,
+            }
+        }
+    }
+}
+/// The endpoint to be triggered for curation.
+/// The endpoint will be invoked with a request payload containing
+/// \[ApiMetadata\]\[google.cloud.apihub.v1.ApiHub.ApiMetadata\].
+/// Response should contain curated data in the form of
+/// \[ApiMetadata\]\[google.cloud.apihub.v1.ApiHub.ApiMetadata\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Endpoint {
+    /// The details of the endpoint to be triggered for curation.
+    #[prost(oneof = "endpoint::EndpointDetails", tags = "1")]
+    pub endpoint_details: ::core::option::Option<endpoint::EndpointDetails>,
+}
+/// Nested message and enum types in `Endpoint`.
+pub mod endpoint {
+    /// The details of the endpoint to be triggered for curation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum EndpointDetails {
+        /// Required. The details of the Application Integration endpoint to be
+        /// triggered for curation.
+        #[prost(message, tag = "1")]
+        ApplicationIntegrationEndpointDetails(
+            super::ApplicationIntegrationEndpointDetails,
+        ),
+    }
+}
+/// The details of the Application Integration endpoint to be triggered for
+/// curation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ApplicationIntegrationEndpointDetails {
+    /// Required. The endpoint URI should be a valid REST URI for triggering an
+    /// Application Integration. Format:
+    /// `<https://integrations.googleapis.com/v1/{name=projects/*/locations/*/integrations/*}:execute`>
+    /// or
+    /// `<https://{location}-integrations.googleapis.com/v1/{name=projects/*/locations/*/integrations/*}:execute`>
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Required. The API trigger ID of the Application Integration workflow.
+    #[prost(string, tag = "2")]
+    pub trigger_id: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod api_hub_curate_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// This service is used for managing curations for processing API data consumed
+    /// from collect layer.
+    #[derive(Debug, Clone)]
+    pub struct ApiHubCurateClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ApiHubCurateClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ApiHubCurateClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ApiHubCurateClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ApiHubCurateClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create a curation resource in the API hub.
+        /// Once a curation resource is created, plugin instances can start using it.
+        pub async fn create_curation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCurationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Curation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCurate/CreateCuration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubCurate",
+                        "CreateCuration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get curation resource details.
+        pub async fn get_curation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCurationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Curation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCurate/GetCuration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.apihub.v1.ApiHubCurate", "GetCuration"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List curation resources in the API hub.
+        pub async fn list_curations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCurationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCurationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCurate/ListCurations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubCurate",
+                        "ListCurations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a curation resource in the API hub. The following fields in the
+        /// \[curation\]\[google.cloud.apihub.v1.Curation\] can be updated:
+        ///
+        /// * \[display_name\]\[google.cloud.apihub.v1.Curation.display_name\]
+        /// * \[description\]\[google.cloud.apihub.v1.Curation.description\]
+        ///
+        /// The
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateApiRequest.update_mask\]
+        /// should be used to specify the fields being updated.
+        pub async fn update_curation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCurationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Curation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCurate/UpdateCuration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubCurate",
+                        "UpdateCuration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a curation resource in the API hub. A curation can only be deleted
+        /// if it's not being used by any plugin instance.
+        pub async fn delete_curation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCurationRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubCurate/DeleteCuration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubCurate",
+                        "DeleteCuration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Message for requesting list of DiscoveredApiObservations
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDiscoveredApiObservationsRequest {
+    /// Required. The parent, which owns this collection of ApiObservations.
+    /// Format:
+    /// projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of ApiObservations to return. The service may
+    /// return fewer than this value. If unspecified, at most 10
+    /// ApiObservations will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListApiObservations`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListApiObservations` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to listing DiscoveredApiObservations
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDiscoveredApiObservationsResponse {
+    /// The DiscoveredApiObservation from the specified project and location.
+    #[prost(message, repeated, tag = "1")]
+    pub discovered_api_observations: ::prost::alloc::vec::Vec<DiscoveredApiObservation>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for requesting list of DiscoveredApiOperations
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDiscoveredApiOperationsRequest {
+    /// Required. The parent, which owns this collection of
+    /// DiscoveredApiOperations. Format:
+    /// projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. DiscoveredApiOperations will be returned. The maximum value is
+    /// 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListDiscoveredApiApiOperations` call. Provide this to retrieve the
+    /// subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDiscoveredApiApiOperations` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to listing DiscoveredApiOperations
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDiscoveredApiOperationsResponse {
+    /// The DiscoveredApiOperations from the specified project, location
+    /// and DiscoveredApiObservation.
+    #[prost(message, repeated, tag = "1")]
+    pub discovered_api_operations: ::prost::alloc::vec::Vec<DiscoveredApiOperation>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for requesting a DiscoveredApiObservation
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDiscoveredApiObservationRequest {
+    /// Required. The name of the DiscoveredApiObservation to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for requesting a DiscoveredApiOperation
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDiscoveredApiOperationRequest {
+    /// Required. The name of the DiscoveredApiOperation to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod api_hub_discovery_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// This service exposes methods used to manage DiscoveredApiObservations
+    /// and DiscoveredApiOperations.
+    #[derive(Debug, Clone)]
+    pub struct ApiHubDiscoveryClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ApiHubDiscoveryClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ApiHubDiscoveryClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ApiHubDiscoveryClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ApiHubDiscoveryClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists all the DiscoveredAPIObservations in a given project and location.
+        pub async fn list_discovered_api_observations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDiscoveredApiObservationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDiscoveredApiObservationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiObservations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubDiscovery",
+                        "ListDiscoveredApiObservations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a DiscoveredAPIObservation in a given project, location and
+        /// ApiObservation.
+        pub async fn get_discovered_api_observation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDiscoveredApiObservationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DiscoveredApiObservation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiObservation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubDiscovery",
+                        "GetDiscoveredApiObservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the DiscoveredAPIOperations in a given project, location and
+        /// ApiObservation.
+        pub async fn list_discovered_api_operations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDiscoveredApiOperationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDiscoveredApiOperationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiOperations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubDiscovery",
+                        "ListDiscoveredApiOperations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a DiscoveredAPIOperation in a given project, location,
+        /// ApiObservation and ApiOperation.
+        pub async fn get_discovered_api_operation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDiscoveredApiOperationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DiscoveredApiOperation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiOperation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubDiscovery",
+                        "GetDiscoveredApiOperation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// The
 /// \[CreateHostProjectRegistration\]\[google.cloud.apihub.v1.HostProjectRegistrationService.CreateHostProjectRegistration\]
 /// method's request.
@@ -4451,7 +6961,8 @@ pub mod host_project_registration_service_client {
         }
     }
 }
-/// The \[GetStyleGuide\]\[ApiHub.GetStyleGuide\] method's request.
+/// The \[GetStyleGuide\]\[google.cloud.apihub.v1.LintingService.GetStyleGuide\]
+/// method's request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStyleGuideRequest {
     /// Required. The name of the spec to retrieve.
@@ -4460,7 +6971,9 @@ pub struct GetStyleGuideRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The \[UpdateStyleGuide\]\[ApiHub.UpdateStyleGuide\] method's request.
+/// The
+/// \[UpdateStyleGuide\]\[google.cloud.apihub.v1.LintingService.UpdateStyleGuide\]
+/// method's request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateStyleGuideRequest {
     /// Required. The Style guide resource to update.
@@ -4470,7 +6983,9 @@ pub struct UpdateStyleGuideRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The \[GetStyleGuideContents\]\[ApiHub.GetStyleGuideContents\] method's request.
+/// The
+/// \[GetStyleGuideContents\]\[google.cloud.apihub.v1.LintingService.GetStyleGuideContents\]
+/// method's request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStyleGuideContentsRequest {
     /// Required. The name of the StyleGuide whose contents need to be retrieved.
@@ -4480,7 +6995,8 @@ pub struct GetStyleGuideContentsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The \[LintSpec\]\[ApiHub.LintSpec\] method's request.
+/// The \[LintSpec\]\[google.cloud.apihub.v1.LintingService.LintSpec\] method's
+/// request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LintSpecRequest {
     /// Required. The name of the spec to be linted.
@@ -4731,7 +7247,7 @@ pub struct Plugin {
     /// (Unicode code points).
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Required. The type of the API.
+    /// Optional. The type of the API.
     /// This maps to the following system defined attribute:
     /// `projects/{project}/locations/{location}/attributes/system-plugin-type`
     /// attribute.
@@ -4739,6 +7255,7 @@ pub struct Plugin {
     /// cardinality of the attribute. The same can be retrieved via GetAttribute
     /// API. All values should be from the list of allowed values defined for the
     /// attribute.
+    /// Note this field is not required for plugins developed via plugin framework.
     #[prost(message, optional, tag = "3")]
     pub r#type: ::core::option::Option<AttributeValues>,
     /// Optional. The plugin description. Max length is 2000 characters (Unicode
@@ -4746,11 +7263,114 @@ pub struct Plugin {
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// Output only. Represents the state of the plugin.
+    /// Note this field will not be set for plugins developed via plugin
+    /// framework as the state will be managed at plugin instance level.
     #[prost(enumeration = "plugin::State", tag = "5")]
     pub state: i32,
+    /// Output only. The type of the plugin, indicating whether it is
+    /// 'SYSTEM_OWNED' or 'USER_OWNED'.
+    #[prost(enumeration = "plugin::OwnershipType", tag = "6")]
+    pub ownership_type: i32,
+    /// Optional. This field is optional. It is used to notify the plugin hosting
+    /// service for any lifecycle changes of the plugin instance and trigger
+    /// execution of plugin instance actions in case of API hub managed actions.
+    ///
+    /// This field should be provided if the plugin instance lifecycle of the
+    /// developed plugin needs to be managed from API hub. Also, in this case the
+    /// plugin hosting service interface needs to be implemented.
+    ///
+    /// This field should not be provided if the plugin wants to manage plugin
+    /// instance lifecycle events outside of hub interface and use plugin framework
+    /// for only registering of plugin and plugin instances to capture the source
+    /// of data into hub. Note, in this case the plugin hosting service interface
+    /// is not required to be implemented. Also, the plugin instance lifecycle
+    /// actions will be disabled from API hub's UI.
+    #[prost(message, optional, tag = "7")]
+    pub hosting_service: ::core::option::Option<plugin::HostingService>,
+    /// Optional. The configuration of actions supported by the plugin.
+    /// **REQUIRED**: This field must be provided when creating or updating a
+    /// Plugin. The server will reject requests if this field is missing.
+    #[prost(message, repeated, tag = "8")]
+    pub actions_config: ::prost::alloc::vec::Vec<PluginActionConfig>,
+    /// Optional. The documentation of the plugin, that explains how to set up and
+    /// use the plugin.
+    #[prost(message, optional, tag = "9")]
+    pub documentation: ::core::option::Option<Documentation>,
+    /// Optional. The category of the plugin, identifying its primary category or
+    /// purpose. This field is required for all plugins.
+    #[prost(enumeration = "PluginCategory", tag = "11")]
+    pub plugin_category: i32,
+    /// Optional. The configuration template for the plugin.
+    #[prost(message, optional, tag = "12")]
+    pub config_template: ::core::option::Option<plugin::ConfigTemplate>,
+    /// Output only. Timestamp indicating when the plugin was created.
+    #[prost(message, optional, tag = "13")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp indicating when the plugin was last updated.
+    #[prost(message, optional, tag = "14")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The type of the gateway.
+    #[prost(enumeration = "GatewayType", tag = "15")]
+    pub gateway_type: i32,
 }
 /// Nested message and enum types in `Plugin`.
 pub mod plugin {
+    /// The information related to the service implemented by the plugin
+    /// developer, used to invoke the plugin's functionality.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct HostingService {
+        /// Optional. The URI of the service implemented by the plugin developer,
+        /// used to invoke the plugin's functionality. This information is only
+        /// required for user defined plugins.
+        #[prost(string, tag = "1")]
+        pub service_uri: ::prost::alloc::string::String,
+    }
+    /// ConfigTemplate represents the configuration template for a plugin.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConfigTemplate {
+        /// Optional. The authentication template for the plugin.
+        #[prost(message, optional, tag = "1")]
+        pub auth_config_template: ::core::option::Option<
+            config_template::AuthConfigTemplate,
+        >,
+        /// Optional. The list of additional configuration variables for the plugin's
+        /// configuration.
+        #[prost(message, repeated, tag = "2")]
+        pub additional_config_template: ::prost::alloc::vec::Vec<
+            super::ConfigVariableTemplate,
+        >,
+    }
+    /// Nested message and enum types in `ConfigTemplate`.
+    pub mod config_template {
+        /// AuthConfigTemplate represents the authentication template for a plugin.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct AuthConfigTemplate {
+            /// Required. The list of authentication types supported by the plugin.
+            #[prost(
+                enumeration = "super::super::AuthType",
+                repeated,
+                packed = "false",
+                tag = "1"
+            )]
+            pub supported_auth_types: ::prost::alloc::vec::Vec<i32>,
+            /// Optional. The service account of the plugin hosting service.
+            /// This service account should be granted the required permissions on the
+            /// Auth Config parameters provided while creating the plugin instances
+            /// corresponding to this plugin.
+            ///
+            /// For example, if the plugin instance auth config requires a secret
+            /// manager secret, the service account should be granted the
+            /// secretmanager.versions.access permission on the corresponding secret,
+            /// if the plugin instance auth config contains a service account, the
+            /// service account should be granted the
+            /// iam.serviceAccounts.getAccessToken permission on the corresponding
+            /// service account.
+            #[prost(message, optional, tag = "2")]
+            pub service_account: ::core::option::Option<
+                super::super::GoogleServiceAccountConfig,
+            >,
+        }
+    }
     /// Possible states a plugin can have. Note that this enum may receive new
     /// values in the future. Consumers are advised to always code against the
     /// enum values expecting new states can be added later on.
@@ -4796,6 +7416,132 @@ pub mod plugin {
             }
         }
     }
+    /// Ownership type of the plugin.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OwnershipType {
+        /// Default unspecified type.
+        Unspecified = 0,
+        /// System owned plugins are defined by API hub and are available out of the
+        /// box in API hub.
+        SystemOwned = 1,
+        /// User owned plugins are defined by the user and need to be explicitly
+        /// added to API hub via
+        /// \[CreatePlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.CreatePlugin\] method.
+        UserOwned = 2,
+    }
+    impl OwnershipType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OWNERSHIP_TYPE_UNSPECIFIED",
+                Self::SystemOwned => "SYSTEM_OWNED",
+                Self::UserOwned => "USER_OWNED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OWNERSHIP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SYSTEM_OWNED" => Some(Self::SystemOwned),
+                "USER_OWNED" => Some(Self::UserOwned),
+                _ => None,
+            }
+        }
+    }
+}
+/// PluginActionConfig represents the configuration of an action supported by a
+/// plugin.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PluginActionConfig {
+    /// Required. The id of the action.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. The display name of the action.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. The description of the operation performed by the action.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The trigger mode supported by the action.
+    #[prost(enumeration = "plugin_action_config::TriggerMode", tag = "4")]
+    pub trigger_mode: i32,
+}
+/// Nested message and enum types in `PluginActionConfig`.
+pub mod plugin_action_config {
+    /// Execution mode of the action.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TriggerMode {
+        /// Default unspecified mode.
+        Unspecified = 0,
+        /// This action can be executed by invoking
+        /// \[ExecutePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.ExecutePluginInstanceAction\]
+        /// API with the given action id. To support this, the plugin hosting service
+        /// should handle this action id as part of execute call.
+        ApiHubOnDemandTrigger = 1,
+        /// This action will be executed on schedule by invoking
+        /// \[ExecutePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.ExecutePluginInstanceAction\]
+        /// API with the given action id. To set the schedule, the user can provide
+        /// the cron expression in the
+        /// \[PluginAction\]\[PluginAction.schedule_cron_expression\] field for a given
+        /// plugin instance. To support this, the plugin hosting service should
+        /// handle this action id as part of execute call.
+        /// Note, on demand execution will be supported by default in this trigger
+        /// mode.
+        ApiHubScheduleTrigger = 2,
+        /// The execution of this plugin is not handled by API hub. In this case,
+        /// the plugin hosting service need not handle this action id as part of
+        /// the execute call.
+        NonApiHubManaged = 3,
+    }
+    impl TriggerMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TRIGGER_MODE_UNSPECIFIED",
+                Self::ApiHubOnDemandTrigger => "API_HUB_ON_DEMAND_TRIGGER",
+                Self::ApiHubScheduleTrigger => "API_HUB_SCHEDULE_TRIGGER",
+                Self::NonApiHubManaged => "NON_API_HUB_MANAGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRIGGER_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "API_HUB_ON_DEMAND_TRIGGER" => Some(Self::ApiHubOnDemandTrigger),
+                "API_HUB_SCHEDULE_TRIGGER" => Some(Self::ApiHubScheduleTrigger),
+                "NON_API_HUB_MANAGED" => Some(Self::NonApiHubManaged),
+                _ => None,
+            }
+        }
+    }
 }
 /// The \[GetPlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.GetPlugin\] method's
 /// request.
@@ -4823,6 +7569,820 @@ pub struct DisablePluginRequest {
     /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// PluginInstanceAction represents an action which can be executed in the plugin
+/// instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PluginInstanceAction {
+    /// Required. This should map to one of the \[action
+    /// id\]\[google.cloud.apihub.v1.PluginActionConfig.id\] specified in
+    /// \[actions_config\]\[google.cloud.apihub.v1.Plugin.actions_config\] in the
+    /// plugin.
+    #[prost(string, tag = "1")]
+    pub action_id: ::prost::alloc::string::String,
+    /// Output only. The current state of the plugin action in the plugin instance.
+    #[prost(enumeration = "plugin_instance_action::State", tag = "2")]
+    pub state: i32,
+    /// Optional. The schedule for this plugin instance action. This can only be
+    /// set if the plugin supports API_HUB_SCHEDULE_TRIGGER mode for this action.
+    #[prost(string, tag = "4")]
+    pub schedule_cron_expression: ::prost::alloc::string::String,
+    /// Optional. This configuration should be provided if the plugin action is
+    /// publishing data to API hub curate layer.
+    #[prost(message, optional, tag = "5")]
+    pub curation_config: ::core::option::Option<CurationConfig>,
+    /// Optional. The time zone for the schedule cron expression. If not provided,
+    /// UTC will be used.
+    #[prost(string, tag = "7")]
+    pub schedule_time_zone: ::prost::alloc::string::String,
+    /// Optional. The service account used to publish data. Note, the service
+    /// account will only be accepted for non GCP plugins like OPDK.
+    #[prost(string, tag = "8")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Output only. The configuration of resources created for a given plugin
+    /// instance action. Note these will be returned only in case of Non-GCP
+    /// plugins like OPDK.
+    #[prost(message, optional, tag = "9")]
+    pub resource_config: ::core::option::Option<plugin_instance_action::ResourceConfig>,
+    /// The status of the plugin action.
+    #[prost(oneof = "plugin_instance_action::ActionStatus", tags = "6")]
+    pub action_status: ::core::option::Option<plugin_instance_action::ActionStatus>,
+}
+/// Nested message and enum types in `PluginInstanceAction`.
+pub mod plugin_instance_action {
+    /// The configuration of resources created for a given plugin instance action.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ResourceConfig {
+        /// Output only. The type of the action.
+        #[prost(enumeration = "super::ActionType", tag = "1")]
+        pub action_type: i32,
+        /// Output only. The pubsub topic to publish the data to. Format is
+        /// projects/{project}/topics/{topic}
+        #[prost(string, tag = "2")]
+        pub pubsub_topic: ::prost::alloc::string::String,
+    }
+    /// State represents the state of the plugin instance action.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default unspecified state.
+        Unspecified = 0,
+        /// The action is enabled in the plugin instance i.e., executions can
+        /// be triggered for this action.
+        Enabled = 1,
+        /// The action is disabled in the plugin instance i.e., no executions
+        /// can be triggered for this action. This state indicates that the user
+        /// explicitly disabled the instance, and no further action is needed unless
+        /// the user wants to re-enable it.
+        Disabled = 2,
+        /// The action in the plugin instance is being enabled.
+        Enabling = 3,
+        /// The action in the plugin instance is being disabled.
+        Disabling = 4,
+        /// The ERROR state can come while enabling/disabling plugin instance action.
+        /// Users can retrigger enable, disable via
+        /// \[EnablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.EnablePluginInstanceAction\]
+        /// and
+        /// \[DisablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.DisablePluginInstanceAction\]
+        /// to restore the action back to enabled/disabled state. Note enable/disable
+        /// on actions can only be triggered if plugin instance is in Active state.
+        Error = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Enabling => "ENABLING",
+                Self::Disabling => "DISABLING",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLING" => Some(Self::Enabling),
+                "DISABLING" => Some(Self::Disabling),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+    /// The status of the plugin action.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ActionStatus {
+        /// Optional. The execution information for the plugin instance action done
+        /// corresponding to an API hub instance.
+        #[prost(message, tag = "6")]
+        HubInstanceAction(super::ExecutionStatus),
+    }
+}
+/// Represents a plugin instance resource in the API Hub.
+/// A PluginInstance is a specific instance of a hub plugin with its own
+/// configuration, state, and execution details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PluginInstance {
+    /// Identifier. The unique name of the plugin instance resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name for this plugin instance. Max length is 255
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The authentication information for this plugin instance.
+    #[prost(message, optional, tag = "3")]
+    pub auth_config: ::core::option::Option<AuthConfig>,
+    /// Optional. The additional information for this plugin instance corresponding
+    /// to the additional config template of the plugin. This information will be
+    /// sent to plugin hosting service on each call to plugin hosted service. The
+    /// key will be the config_variable_template.display_name to uniquely identify
+    /// the config variable.
+    #[prost(map = "string, message", tag = "4")]
+    pub additional_config: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ConfigVariable,
+    >,
+    /// Output only. The current state of the plugin instance (e.g., enabled,
+    /// disabled, provisioning).
+    #[prost(enumeration = "plugin_instance::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Error message describing the failure, if any, during Create,
+    /// Delete or ApplyConfig operation corresponding to the plugin instance.This
+    /// field will only be populated if the plugin instance is in the ERROR or
+    /// FAILED state.
+    #[prost(string, tag = "6")]
+    pub error_message: ::prost::alloc::string::String,
+    /// Required. The action status for the plugin instance.
+    #[prost(message, repeated, tag = "7")]
+    pub actions: ::prost::alloc::vec::Vec<PluginInstanceAction>,
+    /// Output only. Timestamp indicating when the plugin instance was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp indicating when the plugin instance was last
+    /// updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The source project id of the plugin instance. This will be the id
+    /// of runtime project in case of gcp based plugins and org id in case of non
+    /// gcp based plugins. This field will be a required field for Google provided
+    /// on-ramp plugins.
+    #[prost(string, tag = "11")]
+    pub source_project_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PluginInstance`.
+pub mod plugin_instance {
+    /// State represents the state of the plugin instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default unspecified state.
+        Unspecified = 0,
+        /// The plugin instance is being created.
+        Creating = 1,
+        /// The plugin instance is active and ready for executions. This is the only
+        /// state where executions can run on the plugin instance.
+        Active = 2,
+        /// The updated config that contains
+        /// \[additional_config\]\[google.cloud.apihub.v1.PluginInstance.additional_config\]
+        /// and \[auth_config\]\[google.cloud.apihub.v1.PluginInstance.auth_config\] is
+        /// being applied.
+        ApplyingConfig = 3,
+        /// The ERROR state can come while applying config. Users
+        /// can retrigger
+        /// \[ApplyPluginInstanceConfig\]\[google.cloud.apihub.v1.ApiHubPlugin.ApplyPluginInstanceConfig\]
+        /// to restore the plugin instance back to active state. Note, In case the
+        /// ERROR state happens while applying config (auth_config,
+        /// additional_config), the plugin instance will reflect the config which was
+        /// trying to be applied while error happened. In order to overwrite, trigger
+        /// ApplyConfig with a new config.
+        Error = 4,
+        /// The plugin instance is in a failed state. This indicates that an
+        /// unrecoverable error occurred during a previous operation (Create,
+        /// Delete).
+        Failed = 5,
+        /// The plugin instance is being deleted. Delete is only possible if there is
+        /// no other operation running on the plugin instance and plugin instance
+        /// action.
+        Deleting = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::ApplyingConfig => "APPLYING_CONFIG",
+                Self::Error => "ERROR",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "APPLYING_CONFIG" => Some(Self::ApplyingConfig),
+                "ERROR" => Some(Self::Error),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+}
+/// The curation information for this plugin instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CurationConfig {
+    /// Required. The curation type for this plugin instance.
+    #[prost(enumeration = "CurationType", tag = "1")]
+    pub curation_type: i32,
+    /// The curation information for this plugin instance.
+    #[prost(oneof = "curation_config::CurationConfig", tags = "2")]
+    pub curation_config: ::core::option::Option<curation_config::CurationConfig>,
+}
+/// Nested message and enum types in `CurationConfig`.
+pub mod curation_config {
+    /// Custom curation information for this plugin instance.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CustomCuration {
+        /// Required. The unique name of the curation resource. This will be the name
+        /// of the curation resource in the format:
+        /// `projects/{project}/locations/{location}/curations/{curation}`
+        #[prost(string, tag = "1")]
+        pub curation: ::prost::alloc::string::String,
+    }
+    /// The curation information for this plugin instance.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum CurationConfig {
+        /// Optional. Custom curation information for this plugin instance.
+        #[prost(message, tag = "2")]
+        CustomCuration(CustomCuration),
+    }
+}
+/// The execution status for the plugin instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecutionStatus {
+    /// Output only. The current state of the execution.
+    #[prost(enumeration = "execution_status::CurrentExecutionState", tag = "1")]
+    pub current_execution_state: i32,
+    /// Output only. The last execution of the plugin instance.
+    #[prost(message, optional, tag = "2")]
+    pub last_execution: ::core::option::Option<execution_status::LastExecution>,
+}
+/// Nested message and enum types in `ExecutionStatus`.
+pub mod execution_status {
+    /// The result of the last execution of the plugin instance.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LastExecution {
+        /// Output only. The result of the last execution of the plugin instance.
+        #[prost(enumeration = "last_execution::Result", tag = "1")]
+        pub result: i32,
+        /// Output only. Error message describing the failure, if any, during the
+        /// last execution.
+        #[prost(string, tag = "2")]
+        pub error_message: ::prost::alloc::string::String,
+        /// Output only. The last execution start time of the plugin instance.
+        #[prost(message, optional, tag = "3")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The last execution end time of the plugin instance.
+        #[prost(message, optional, tag = "4")]
+        pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `LastExecution`.
+    pub mod last_execution {
+        /// Enum for the result of the last execution of the plugin instance.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Result {
+            /// Default unspecified execution result.
+            Unspecified = 0,
+            /// The plugin instance executed successfully.
+            Succeeded = 1,
+            /// The plugin instance execution failed.
+            Failed = 2,
+        }
+        impl Result {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "RESULT_UNSPECIFIED",
+                    Self::Succeeded => "SUCCEEDED",
+                    Self::Failed => "FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SUCCEEDED" => Some(Self::Succeeded),
+                    "FAILED" => Some(Self::Failed),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Enum for the current state of the execution.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CurrentExecutionState {
+        /// Default unspecified execution state.
+        Unspecified = 0,
+        /// The plugin instance is executing.
+        Running = 1,
+        /// The plugin instance is not running an execution.
+        NotRunning = 2,
+    }
+    impl CurrentExecutionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CURRENT_EXECUTION_STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::NotRunning => "NOT_RUNNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CURRENT_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "NOT_RUNNING" => Some(Self::NotRunning),
+                _ => None,
+            }
+        }
+    }
+}
+/// The \[CreatePlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.CreatePlugin\] method's
+/// request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePluginRequest {
+    /// Required. The parent resource where this plugin will be created.
+    /// Format: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID to use for the Plugin resource, which will become the
+    /// final component of the Plugin's resource name. This field is optional.
+    ///
+    /// * If provided, the same will be used. The service will throw an error if
+    ///   the specified id is already used by another Plugin resource in the API hub
+    ///   instance.
+    /// * If not provided, a system generated id will be used.
+    ///
+    /// This value should be 4-63 characters, overall resource name which will be
+    /// of format
+    /// `projects/{project}/locations/{location}/plugins/{plugin}`,
+    /// its length is limited to 1000 characters and valid characters are
+    /// /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    #[prost(string, tag = "2")]
+    pub plugin_id: ::prost::alloc::string::String,
+    /// Required. The plugin to create.
+    #[prost(message, optional, tag = "3")]
+    pub plugin: ::core::option::Option<Plugin>,
+}
+/// The \[DeletePlugin\]\[ApiHub.DeletePlugin\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeletePluginRequest {
+    /// Required. The name of the Plugin resource to delete.
+    /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The \[ListPlugins\]\[google.cloud.apihub.v1.ApiHubPlugin.ListPlugins\] method's
+/// request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListPluginsRequest {
+    /// Required. The parent resource where this plugin will be created.
+    /// Format: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of plugins.
+    ///
+    /// A filter expression consists of a field name, a comparison
+    /// operator, and a value for filtering. The value must be a string. The
+    /// comparison operator must be one of: `<`, `>` or
+    /// `=`. Filters are not case sensitive.
+    ///
+    /// The following fields in the `Plugins` are eligible for filtering:
+    ///
+    /// * `plugin_category` - The category of the Plugin. Allowed
+    ///   comparison operators: `=`.
+    ///
+    /// Expressions are combined with either `AND` logic operator or `OR` logical
+    /// operator but not both of them together i.e. only one of the `AND` or `OR`
+    /// operator can be used throughout the filter string and both the operators
+    /// cannot be used together. No other logical operators are
+    /// supported. At most three filter fields are allowed in the filter
+    /// string and if provided more than that then `INVALID_ARGUMENT` error is
+    /// returned by the API.
+    /// Here are a few examples:
+    ///
+    /// * `plugin_category = ON_RAMP` - The plugin is of category
+    ///   on ramp.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of hub plugins to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 hub plugins will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListPlugins` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters (except page_size) provided to
+    /// `ListPlugins` must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The \[ListPlugins\]\[google.cloud.apihub.v1.ApiHubPlugin.ListPlugins\] method's
+/// response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPluginsResponse {
+    /// The plugins from the specified parent resource.
+    #[prost(message, repeated, tag = "1")]
+    pub plugins: ::prost::alloc::vec::Vec<Plugin>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The
+/// \[CreatePluginInstance\]\[google.cloud.apihub.v1.ApiHubPlugin.CreatePluginInstance\]
+/// method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePluginInstanceRequest {
+    /// Required. The parent of the plugin instance resource.
+    /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID to use for the plugin instance, which will become the
+    /// final component of the plugin instance's resource name. This field is
+    /// optional.
+    ///
+    /// * If provided, the same will be used. The service will throw an error if
+    ///   the specified id is already used by another plugin instance in the plugin
+    ///   resource.
+    /// * If not provided, a system generated id will be used.
+    ///
+    /// This value should be 4-63 characters, and valid characters
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
+    #[prost(string, tag = "2")]
+    pub plugin_instance_id: ::prost::alloc::string::String,
+    /// Required. The plugin instance to create.
+    #[prost(message, optional, tag = "3")]
+    pub plugin_instance: ::core::option::Option<PluginInstance>,
+}
+/// The
+/// \[ExecutePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.ExecutePluginInstanceAction\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecutePluginInstanceActionRequest {
+    /// Required. The name of the plugin instance to execute.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The execution details for the action to execute.
+    #[prost(message, optional, tag = "2")]
+    pub action_execution_detail: ::core::option::Option<ActionExecutionDetail>,
+}
+/// The details for the action to execute.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ActionExecutionDetail {
+    /// Required. The action id of the plugin to execute.
+    #[prost(string, tag = "1")]
+    pub action_id: ::prost::alloc::string::String,
+}
+/// The
+/// \[ExecutePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.ExecutePluginInstanceAction\]
+/// method's response.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecutePluginInstanceActionResponse {}
+/// The
+/// \[GetPluginInstance\]\[google.cloud.apihub.v1.ApiHubPlugin.GetPluginInstance\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetPluginInstanceRequest {
+    /// Required. The name of the plugin instance to retrieve.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The
+/// \[ListPluginInstances\]\[google.cloud.apihub.v1.ApiHubPlugin.ListPluginInstances\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListPluginInstancesRequest {
+    /// Required. The parent resource where this plugin will be created.
+    /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`.
+    /// To list plugin instances for multiple plugins,
+    /// use the - character instead of the plugin ID.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of plugin instances.
+    ///
+    /// A filter expression consists of a field name, a comparison
+    /// operator, and a value for filtering. The value must be a string. The
+    /// comparison operator must be one of: `<`, `>` or
+    /// `=`. Filters are not case sensitive.
+    ///
+    /// The following fields in the `PluginInstances` are eligible for filtering:
+    ///
+    /// * `state` - The state of the Plugin Instance. Allowed
+    ///   comparison operators: `=`.
+    ///
+    /// A filter function is also supported in the filter string. The filter
+    /// function is `id(name)`. The `id(name)` function returns the id of the
+    /// resource name. For example, `id(name) = \"plugin-instance-1\"` is
+    /// equivalent to `name =  \"projects/test-project-id/locations/test-location-id/plugins/plugin-1/instances/plugin-instance-1\"`
+    /// provided the parent is
+    /// `projects/test-project-id/locations/test-location-id/plugins/plugin-1`.
+    ///
+    /// Expressions are combined with either `AND` logic operator or `OR` logical
+    /// operator but not both of them together i.e. only one of the `AND` or `OR`
+    /// operator can be used throughout the filter string and both the operators
+    /// cannot be used together. No other logical operators are
+    /// supported. At most three filter fields are allowed in the filter
+    /// string and if provided more than that then `INVALID_ARGUMENT` error is
+    /// returned by the API.
+    /// Here are a few examples:
+    ///
+    /// * `state = ENABLED` - The plugin instance is in enabled state.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of hub plugins to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 hub plugins will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListPluginInstances`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListPluginInstances`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The
+/// \[ListPluginInstances\]\[google.cloud.apihub.v1.ApiHubPlugin.ListPluginInstances\]
+/// method's response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPluginInstancesResponse {
+    /// The plugin instances from the specified parent resource.
+    #[prost(message, repeated, tag = "1")]
+    pub plugin_instances: ::prost::alloc::vec::Vec<PluginInstance>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The
+/// \[EnablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.EnablePluginInstanceAction\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnablePluginInstanceActionRequest {
+    /// Required. The name of the plugin instance to enable.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The action id to enable.
+    #[prost(string, tag = "2")]
+    pub action_id: ::prost::alloc::string::String,
+}
+/// The
+/// \[EnablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.EnablePluginInstanceAction\]
+/// method's response.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnablePluginInstanceActionResponse {}
+/// The
+/// \[DisablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.DisablePluginInstanceAction\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisablePluginInstanceActionRequest {
+    /// Required. The name of the plugin instance to disable.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The action id to disable.
+    #[prost(string, tag = "2")]
+    pub action_id: ::prost::alloc::string::String,
+}
+/// The
+/// \[DisablePluginInstanceAction\]\[google.cloud.apihub.v1.ApiHubPlugin.DisablePluginInstanceAction\]
+/// method's response.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisablePluginInstanceActionResponse {}
+/// The
+/// \[UpdatePluginInstance\]\[google.cloud.apihub.v1.ApiHubPlugin.UpdatePluginInstance\]
+/// method's request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePluginInstanceRequest {
+    /// Required. The plugin instance to update.
+    #[prost(message, optional, tag = "1")]
+    pub plugin_instance: ::core::option::Option<PluginInstance>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The
+/// \[DeletePluginInstance\]\[google.cloud.apihub.v1.ApiHubPlugin.DeletePluginInstance\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeletePluginInstanceRequest {
+    /// Required. The name of the plugin instance to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Enum for the action type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ActionType {
+    /// Default unspecified action type.
+    Unspecified = 0,
+    /// Action type for sync metadata.
+    SyncMetadata = 1,
+    /// Action type for sync runtime data.
+    SyncRuntimeData = 2,
+}
+impl ActionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+            Self::SyncMetadata => "SYNC_METADATA",
+            Self::SyncRuntimeData => "SYNC_RUNTIME_DATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SYNC_METADATA" => Some(Self::SyncMetadata),
+            "SYNC_RUNTIME_DATA" => Some(Self::SyncRuntimeData),
+            _ => None,
+        }
+    }
+}
+/// Enum for the gateway type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum GatewayType {
+    /// The gateway type is not specified.
+    Unspecified = 0,
+    /// The gateway type is Apigee X and Hybrid.
+    ApigeeXAndHybrid = 1,
+    /// The gateway type is Apigee Edge Public Cloud.
+    ApigeeEdgePublicCloud = 2,
+    /// The gateway type is Apigee Edge Private Cloud.
+    ApigeeEdgePrivateCloud = 3,
+    /// The gateway type is Cloud API Gateway.
+    CloudApiGateway = 4,
+    /// The gateway type is Cloud Endpoints.
+    CloudEndpoints = 5,
+    /// The gateway type is API Discovery.
+    ApiDiscovery = 6,
+    /// The gateway type for any other types of gateways.
+    Others = 7,
+}
+impl GatewayType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "GATEWAY_TYPE_UNSPECIFIED",
+            Self::ApigeeXAndHybrid => "APIGEE_X_AND_HYBRID",
+            Self::ApigeeEdgePublicCloud => "APIGEE_EDGE_PUBLIC_CLOUD",
+            Self::ApigeeEdgePrivateCloud => "APIGEE_EDGE_PRIVATE_CLOUD",
+            Self::CloudApiGateway => "CLOUD_API_GATEWAY",
+            Self::CloudEndpoints => "CLOUD_ENDPOINTS",
+            Self::ApiDiscovery => "API_DISCOVERY",
+            Self::Others => "OTHERS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GATEWAY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "APIGEE_X_AND_HYBRID" => Some(Self::ApigeeXAndHybrid),
+            "APIGEE_EDGE_PUBLIC_CLOUD" => Some(Self::ApigeeEdgePublicCloud),
+            "APIGEE_EDGE_PRIVATE_CLOUD" => Some(Self::ApigeeEdgePrivateCloud),
+            "CLOUD_API_GATEWAY" => Some(Self::CloudApiGateway),
+            "CLOUD_ENDPOINTS" => Some(Self::CloudEndpoints),
+            "API_DISCOVERY" => Some(Self::ApiDiscovery),
+            "OTHERS" => Some(Self::Others),
+            _ => None,
+        }
+    }
+}
+/// Enum for the curation type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CurationType {
+    /// Default unspecified curation type.
+    Unspecified = 0,
+    /// Default curation for API metadata will be used.
+    DefaultCurationForApiMetadata = 1,
+    /// Custom curation for API metadata will be used.
+    CustomCurationForApiMetadata = 2,
+}
+impl CurationType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CURATION_TYPE_UNSPECIFIED",
+            Self::DefaultCurationForApiMetadata => "DEFAULT_CURATION_FOR_API_METADATA",
+            Self::CustomCurationForApiMetadata => "CUSTOM_CURATION_FOR_API_METADATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CURATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEFAULT_CURATION_FOR_API_METADATA" => {
+                Some(Self::DefaultCurationForApiMetadata)
+            }
+            "CUSTOM_CURATION_FOR_API_METADATA" => {
+                Some(Self::CustomCurationForApiMetadata)
+            }
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod api_hub_plugin_client {
@@ -4916,7 +8476,7 @@ pub mod api_hub_plugin_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Get details about an API Hub plugin.
+        /// Get an API Hub plugin.
         pub async fn get_plugin(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPluginRequest>,
@@ -4996,6 +8556,344 @@ pub mod api_hub_plugin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Create an API Hub plugin resource in the API hub.
+        /// Once a plugin is created, it can be used to create plugin instances.
+        pub async fn create_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePluginRequest>,
+        ) -> std::result::Result<tonic::Response<super::Plugin>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/CreatePlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "CreatePlugin",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all the plugins in a given project and location.
+        pub async fn list_plugins(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPluginsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPluginsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/ListPlugins",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.apihub.v1.ApiHubPlugin", "ListPlugins"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a Plugin in API hub.
+        /// Note, only user owned plugins can be deleted via this method.
+        pub async fn delete_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePluginRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/DeletePlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "DeletePlugin",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Plugin instance in the API hub.
+        pub async fn create_plugin_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePluginInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/CreatePluginInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "CreatePluginInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Executes a plugin instance in the API hub.
+        pub async fn execute_plugin_instance_action(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecutePluginInstanceActionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/ExecutePluginInstanceAction",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "ExecutePluginInstanceAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get an API Hub plugin instance.
+        pub async fn get_plugin_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPluginInstanceRequest>,
+        ) -> std::result::Result<tonic::Response<super::PluginInstance>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/GetPluginInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "GetPluginInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all the plugins in a given project and location.
+        /// `-` can be used as wildcard value for {plugin_id}
+        pub async fn list_plugin_instances(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPluginInstancesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPluginInstancesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/ListPluginInstances",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "ListPluginInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Enables a plugin instance in the API hub.
+        pub async fn enable_plugin_instance_action(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnablePluginInstanceActionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/EnablePluginInstanceAction",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "EnablePluginInstanceAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Disables a plugin instance in the API hub.
+        pub async fn disable_plugin_instance_action(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisablePluginInstanceActionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/DisablePluginInstanceAction",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "DisablePluginInstanceAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a plugin instance in the API hub.
+        /// The following fields in the
+        /// \[plugin_instance\]\[google.cloud.apihub.v1.PluginInstance\] can be updated
+        /// currently:
+        ///
+        /// * \[display_name\]\[google.cloud.apihub.v1.PluginInstance.display_name\]
+        /// * \[schedule_cron_expression\]\[PluginInstance.actions.schedule_cron_expression\]
+        ///
+        /// The
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdatePluginInstanceRequest.update_mask\]
+        /// should be used to specify the fields being updated.
+        ///
+        /// To update the
+        /// \[auth_config\]\[google.cloud.apihub.v1.PluginInstance.auth_config\] and
+        /// \[additional_config\]\[google.cloud.apihub.v1.PluginInstance.additional_config\]
+        /// of the plugin instance, use the
+        /// \[ApplyPluginInstanceConfig\]\[google.cloud.apihub.v1.ApiHubPlugin.ApplyPluginInstanceConfig\]
+        /// method.
+        pub async fn update_plugin_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePluginInstanceRequest>,
+        ) -> std::result::Result<tonic::Response<super::PluginInstance>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/UpdatePluginInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "UpdatePluginInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a plugin instance in the API hub.
+        pub async fn delete_plugin_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePluginInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.ApiHubPlugin/DeletePluginInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.ApiHubPlugin",
+                        "DeletePluginInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// The
@@ -5018,6 +8916,17 @@ pub struct CreateApiHubInstanceRequest {
     /// Required. The ApiHub instance.
     #[prost(message, optional, tag = "3")]
     pub api_hub_instance: ::core::option::Option<ApiHubInstance>,
+}
+/// The
+/// \[DeleteApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.DeleteApiHubInstance\]
+/// method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteApiHubInstanceRequest {
+    /// Required. The name of the Api Hub instance to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apiHubInstances/{apiHubInstance}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The
 /// \[GetApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.GetApiHubInstance\]
@@ -5169,6 +9078,36 @@ pub mod provisioning_client {
                     GrpcMethod::new(
                         "google.cloud.apihub.v1.Provisioning",
                         "CreateApiHubInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the API hub instance.
+        pub async fn delete_api_hub_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteApiHubInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.apihub.v1.Provisioning/DeleteApiHubInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.apihub.v1.Provisioning",
+                        "DeleteApiHubInstance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

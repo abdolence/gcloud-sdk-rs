@@ -431,11 +431,16 @@ pub struct ResourceOptions {
     /// \<1.16.
     #[prost(bool, tag = "2")]
     pub v1beta1_crd: bool,
-    /// Optional. Major version of the Kubernetes cluster. This is only used to
-    /// determine which version to use for the CustomResourceDefinition resources,
-    /// `apiextensions/v1beta1` or`apiextensions/v1`.
+    /// Optional. Major and minor version of the Kubernetes cluster. This is only
+    /// used to determine which version to use for the CustomResourceDefinition
+    /// resources, `apiextensions/v1beta1` or`apiextensions/v1`.
     #[prost(string, tag = "3")]
     pub k8s_version: ::prost::alloc::string::String,
+    /// Optional. Git version of the Kubernetes cluster. This is only used to gate
+    /// the Connect Agent migration to svc.id.goog on GDC-SO 1.33.100 patch and
+    /// above.
+    #[prost(string, tag = "4")]
+    pub k8s_git_version: ::prost::alloc::string::String,
 }
 /// ResourceManifest represents a single Kubernetes resource to be applied to
 /// the cluster.
