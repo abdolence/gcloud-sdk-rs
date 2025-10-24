@@ -88,7 +88,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let read_client: GoogleApi<BigQueryReadClient<GoogleAuthMiddleware>> =
         GoogleApi::from_function(
-            BigQueryReadClient::new,
+            // Maximum row size in BigQuery is 100 MB, so this should allow for
+            // the largest possible row plus some overhead.
+            |inner| BigQueryReadClient::new(inner).max_decoding_message_size(101 * 1024 * 1024),
             "https://bigquerystorage.googleapis.com",
             None,
         )
