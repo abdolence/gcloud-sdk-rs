@@ -1898,6 +1898,1153 @@ pub mod cross_network_automation_service_client {
         }
     }
 }
+/// The `MulticloudDataTransferConfig` resource. It lists the services that you
+/// configure for Data Transfer Essentials billing and metering.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MulticloudDataTransferConfig {
+    /// Identifier. The name of the `MulticloudDataTransferConfig` resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when the `MulticloudDataTransferConfig` resource was
+    /// created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the `MulticloudDataTransferConfig` resource was
+    /// updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The etag is computed by the server, and might be sent with update and
+    /// delete requests so that the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. A description of this resource.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The number of `Destination` resources configured for the
+    /// `MulticloudDataTransferConfig` resource.
+    #[prost(int32, tag = "7")]
+    pub destinations_count: i32,
+    /// Output only. The number of `Destination` resources in use with the
+    /// `MulticloudDataTransferConfig` resource.
+    #[prost(int32, tag = "8")]
+    pub destinations_active_count: i32,
+    /// Optional. Maps services to their current or planned states. Service names
+    /// are keys, and the associated values describe the state of the service. If a
+    /// state change is expected, the value is either `ADDING` or `DELETING`,
+    /// depending on the actions taken.
+    ///
+    /// Sample output:
+    /// "services": {
+    /// "big-query": {
+    /// "states": \[
+    /// {
+    /// "effectiveTime": "2024-12-12T08:00:00Z"
+    /// "state": "ADDING",
+    /// },
+    /// \]
+    /// },
+    /// "cloud-storage": {
+    /// "states": \[
+    /// {
+    /// "state": "ACTIVE",
+    /// }
+    /// \]
+    /// }
+    /// }
+    #[prost(map = "string, message", tag = "9")]
+    pub services: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        StateTimeline,
+    >,
+    /// Output only. The Google-generated unique ID for the
+    /// `MulticloudDataTransferConfig` resource. This value is unique across all
+    /// `MulticloudDataTransferConfig` resources. If a resource is deleted and
+    /// another with the same name is created, the new resource is assigned a
+    /// different and unique ID.
+    #[prost(string, tag = "10")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// Request message to list `MulticloudDataTransferConfig` resources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMulticloudDataTransferConfigsRequest {
+    /// Required. The name of the parent resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results listed per page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The sort order of the results.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. If `true`, allows partial responses for multi-regional aggregated
+    /// list requests.
+    #[prost(bool, tag = "6")]
+    pub return_partial_success: bool,
+}
+/// Response message to list `MulticloudDataTransferConfig` resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMulticloudDataTransferConfigsResponse {
+    /// The list of `MulticloudDataTransferConfig` resources to be listed.
+    #[prost(message, repeated, tag = "1")]
+    pub multicloud_data_transfer_configs: ::prost::alloc::vec::Vec<
+        MulticloudDataTransferConfig,
+    >,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message to get the details of a `MulticloudDataTransferConfig`
+/// resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetMulticloudDataTransferConfigRequest {
+    /// Required. The name of the `MulticloudDataTransferConfig` resource to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to create a `MulticloudDataTransferConfig` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateMulticloudDataTransferConfigRequest {
+    /// Required. The name of the parent resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the `MulticloudDataTransferConfig` resource,
+    /// which becomes the final component of the `MulticloudDataTransferConfig`
+    /// resource name.
+    #[prost(string, tag = "2")]
+    pub multicloud_data_transfer_config_id: ::prost::alloc::string::String,
+    /// Required. The `MulticloudDataTransferConfig` resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub multicloud_data_transfer_config: ::core::option::Option<
+        MulticloudDataTransferConfig,
+    >,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request. This prevents
+    /// clients from accidentally creating duplicate `MulticloudDataTransferConfig`
+    /// resources.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to update a `MulticloudDataTransferConfig` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateMulticloudDataTransferConfigRequest {
+    /// Optional. `FieldMask` is used to specify the fields in the
+    /// `MulticloudDataTransferConfig` resource to be overwritten by the update.
+    /// The fields specified in `update_mask` are relative to the resource, not
+    /// the full request. A field is overwritten if it is in the mask. If you
+    /// don't specify a mask, all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The `MulticloudDataTransferConfig` resource to update.
+    #[prost(message, optional, tag = "2")]
+    pub multicloud_data_transfer_config: ::core::option::Option<
+        MulticloudDataTransferConfig,
+    >,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request. This prevents
+    /// clients from accidentally creating duplicate `MulticloudDataTransferConfig`
+    /// resources.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to delete a `MulticloudDataTransferConfig` resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteMulticloudDataTransferConfigRequest {
+    /// Required. The name of the `MulticloudDataTransferConfig` resource to
+    /// delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request. This prevents
+    /// clients from accidentally creating duplicate `MulticloudDataTransferConfig`
+    /// resources.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and might be sent with update
+    /// and delete requests so that the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The `Destination` resource. It specifies the IP prefix and the associated
+/// autonomous system numbers (ASN) that you want to include in a
+/// `MulticloudDataTransferConfig` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Destination {
+    /// Identifier. The name of the `Destination` resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when the `Destination` resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the `Destination` resource was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The etag is computed by the server, and might be sent with update and
+    /// delete requests so that the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. A description of this resource.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. Immutable. The IP prefix that represents your workload on another
+    /// CSP.
+    #[prost(string, tag = "7")]
+    pub ip_prefix: ::prost::alloc::string::String,
+    /// Required. Unordered list. The list of `DestinationEndpoint` resources
+    /// configured for the IP prefix.
+    #[prost(message, repeated, tag = "8")]
+    pub endpoints: ::prost::alloc::vec::Vec<destination::DestinationEndpoint>,
+    /// Output only. The timeline of the expected `Destination` states or the
+    /// current rest state. If a state change is expected, the value is `ADDING`,
+    /// `DELETING` or `SUSPENDING`, depending on the action specified.
+    ///
+    /// Example:
+    /// "state_timeline": {
+    /// "states": \[
+    /// {
+    /// // The time when the `Destination` resource will be activated.
+    /// "effectiveTime": "2024-12-01T08:00:00Z",
+    /// "state": "ADDING"
+    /// },
+    /// {
+    /// // The time when the `Destination` resource will be suspended.
+    /// "effectiveTime": "2024-12-01T20:00:00Z",
+    /// "state": "SUSPENDING"
+    /// }
+    /// \]
+    /// }
+    #[prost(message, optional, tag = "9")]
+    pub state_timeline: ::core::option::Option<StateTimeline>,
+    /// Output only. The Google-generated unique ID for the `Destination` resource.
+    /// This value is unique across all `Destination` resources.
+    /// If a resource is deleted and another with the same name is
+    /// created, the new resource is assigned a different and unique ID.
+    #[prost(string, tag = "10")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Destination`.
+pub mod destination {
+    /// The metadata for a `DestinationEndpoint` resource.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DestinationEndpoint {
+        /// Required. The ASN of the remote IP prefix.
+        #[prost(int64, tag = "1")]
+        pub asn: i64,
+        /// Required. The CSP of the remote IP prefix.
+        #[prost(string, tag = "2")]
+        pub csp: ::prost::alloc::string::String,
+        /// Output only. The state of the `DestinationEndpoint` resource.
+        #[prost(enumeration = "destination_endpoint::State", tag = "3")]
+        pub state: i32,
+        /// Output only. Time when the `DestinationEndpoint` resource was updated.
+        #[prost(message, optional, tag = "4")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `DestinationEndpoint`.
+    pub mod destination_endpoint {
+        /// The state of the `DestinationEndpoint` resource.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// An invalid state, which is the default case.
+            Unspecified = 0,
+            /// The `DestinationEndpoint` resource is valid.
+            Valid = 1,
+            /// The `DestinationEndpoint` resource is invalid.
+            Invalid = 2,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Valid => "VALID",
+                    Self::Invalid => "INVALID",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "VALID" => Some(Self::Valid),
+                    "INVALID" => Some(Self::Invalid),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Request message to list `Destination` resources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDestinationsRequest {
+    /// Required. The name of the parent resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results listed per page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The sort order of the results.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. If `true`, allow partial responses for multi-regional aggregated
+    /// list requests.
+    #[prost(bool, tag = "6")]
+    pub return_partial_success: bool,
+}
+/// Response message to list `Destination` resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDestinationsResponse {
+    /// The list of `Destination` resources to be listed.
+    #[prost(message, repeated, tag = "1")]
+    pub destinations: ::prost::alloc::vec::Vec<Destination>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message to get the details of a `Destination` resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDestinationRequest {
+    /// Required. The name of the `Destination` resource to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to create a `Destination` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDestinationRequest {
+    /// Required. The name of the parent resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the `Destination` resource, which becomes the
+    /// final component of the `Destination` resource name.
+    #[prost(string, tag = "2")]
+    pub destination_id: ::prost::alloc::string::String,
+    /// Required. The `Destination` resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub destination: ::core::option::Option<Destination>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request. This prevents
+    /// clients from accidentally creating duplicate `Destination`
+    /// resources.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to update a `Destination` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDestinationRequest {
+    /// Optional. `FieldMask is used to specify the fields to be overwritten in the  `Destination`resource by the update.  The fields specified in`update_mask\` are relative to the resource, not
+    /// the full request. A field is overwritten if it is in the mask. If you
+    /// don't specify a mask, all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The `Destination` resource to update.
+    #[prost(message, optional, tag = "2")]
+    pub destination: ::core::option::Option<Destination>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to delete a `Destination` resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDestinationRequest {
+    /// Required. The name of the `Destination` resource to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server waits
+    /// for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, can ignore the second request.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID
+    /// (00000000-0000-0000-0000-000000000000) isn't supported.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and might be sent with update
+    /// and delete requests so that the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The timeline of the pending states for a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StateTimeline {
+    /// Output only. The state and activation time details of the resource state.
+    #[prost(message, repeated, tag = "1")]
+    pub states: ::prost::alloc::vec::Vec<state_timeline::StateMetadata>,
+}
+/// Nested message and enum types in `StateTimeline`.
+pub mod state_timeline {
+    /// The state and activation time details of the resource state.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct StateMetadata {
+        /// Output only. The state of the resource.
+        #[prost(enumeration = "state_metadata::State", tag = "1")]
+        pub state: i32,
+        /// Output only. Accompanies only the transient states, which include
+        /// `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which
+        /// the transient state of the resource will be effective. For instance, if
+        /// the state is `ADDING`, this field shows the time when the resource state
+        /// transitions to `ACTIVE`.
+        #[prost(message, optional, tag = "2")]
+        pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `StateMetadata`.
+    pub mod state_metadata {
+        /// The state of the resource.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// An invalid state, which is the default case.
+            Unspecified = 0,
+            /// The resource is being added.
+            Adding = 1,
+            /// The resource is in use.
+            Active = 2,
+            /// The resource is being deleted.
+            Deleting = 3,
+            /// The resource is being suspended.
+            Suspending = 4,
+            /// The resource is suspended and not in use.
+            Suspended = 5,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Adding => "ADDING",
+                    Self::Active => "ACTIVE",
+                    Self::Deleting => "DELETING",
+                    Self::Suspending => "SUSPENDING",
+                    Self::Suspended => "SUSPENDED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADDING" => Some(Self::Adding),
+                    "ACTIVE" => Some(Self::Active),
+                    "DELETING" => Some(Self::Deleting),
+                    "SUSPENDING" => Some(Self::Suspending),
+                    "SUSPENDED" => Some(Self::Suspended),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// A service in your project in a region that is eligible for Data Transfer
+/// Essentials configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MulticloudDataTransferSupportedService {
+    /// Identifier. The name of the service.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The network service tier or regional endpoint supported for
+    /// the service.
+    #[prost(message, repeated, tag = "2")]
+    pub service_configs: ::prost::alloc::vec::Vec<ServiceConfig>,
+}
+/// Specifies eligibility information for the service.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ServiceConfig {
+    /// Output only. The eligibility criteria for the service.
+    #[prost(enumeration = "service_config::EligibilityCriteria", tag = "1")]
+    pub eligibility_criteria: i32,
+    /// Output only. The end time for eligibility criteria support. If not
+    /// specified, no planned end time is set.
+    #[prost(message, optional, tag = "2")]
+    pub support_end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `ServiceConfig`.
+pub mod service_config {
+    /// The eligibility information for the service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EligibilityCriteria {
+        /// The service is not eligible for Data Transfer Essentials configuration.
+        /// This is the default case.
+        Unspecified = 0,
+        /// The service is eligible for Data Transfer Essentials configuration only
+        /// for Premium Tier.
+        NetworkServiceTierPremiumOnly = 1,
+        /// The service is eligible for Data Transfer Essentials configuration only
+        /// for Standard Tier.
+        NetworkServiceTierStandardOnly = 2,
+        /// The service is eligible for Data Transfer Essentials configuration only
+        /// for the regional endpoint.
+        RequestEndpointRegionalEndpointOnly = 3,
+    }
+    impl EligibilityCriteria {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ELIGIBILITY_CRITERIA_UNSPECIFIED",
+                Self::NetworkServiceTierPremiumOnly => {
+                    "NETWORK_SERVICE_TIER_PREMIUM_ONLY"
+                }
+                Self::NetworkServiceTierStandardOnly => {
+                    "NETWORK_SERVICE_TIER_STANDARD_ONLY"
+                }
+                Self::RequestEndpointRegionalEndpointOnly => {
+                    "REQUEST_ENDPOINT_REGIONAL_ENDPOINT_ONLY"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ELIGIBILITY_CRITERIA_UNSPECIFIED" => Some(Self::Unspecified),
+                "NETWORK_SERVICE_TIER_PREMIUM_ONLY" => {
+                    Some(Self::NetworkServiceTierPremiumOnly)
+                }
+                "NETWORK_SERVICE_TIER_STANDARD_ONLY" => {
+                    Some(Self::NetworkServiceTierStandardOnly)
+                }
+                "REQUEST_ENDPOINT_REGIONAL_ENDPOINT_ONLY" => {
+                    Some(Self::RequestEndpointRegionalEndpointOnly)
+                }
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message to check if a service in your project in a region is
+/// eligible for Data Transfer Essentials configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetMulticloudDataTransferSupportedServiceRequest {
+    /// Required. The name of the service.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to list the services in your project that are eligible for
+/// Data Transfer Essentials configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMulticloudDataTransferSupportedServicesRequest {
+    /// Required. The name of the parent resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results listed per page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message to list the services in your project in regions that are
+/// eligible for Data Transfer Essentials configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMulticloudDataTransferSupportedServicesResponse {
+    /// The list of supported services.
+    #[prost(message, repeated, tag = "1")]
+    pub multicloud_data_transfer_supported_services: ::prost::alloc::vec::Vec<
+        MulticloudDataTransferSupportedService,
+    >,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod data_transfer_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// DataTransferService is the service for the Data Transfer API.
+    #[derive(Debug, Clone)]
+    pub struct DataTransferServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataTransferServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataTransferServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataTransferServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            DataTransferServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists the `MulticloudDataTransferConfig` resources in a specified project
+        /// and location.
+        pub async fn list_multicloud_data_transfer_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListMulticloudDataTransferConfigsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMulticloudDataTransferConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "ListMulticloudDataTransferConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a `MulticloudDataTransferConfig` resource.
+        pub async fn get_multicloud_data_transfer_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetMulticloudDataTransferConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::MulticloudDataTransferConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "GetMulticloudDataTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a `MulticloudDataTransferConfig` resource in a specified project
+        /// and location.
+        pub async fn create_multicloud_data_transfer_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateMulticloudDataTransferConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/CreateMulticloudDataTransferConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "CreateMulticloudDataTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a `MulticloudDataTransferConfig` resource in a specified project
+        /// and location.
+        pub async fn update_multicloud_data_transfer_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateMulticloudDataTransferConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/UpdateMulticloudDataTransferConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "UpdateMulticloudDataTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a `MulticloudDataTransferConfig` resource.
+        pub async fn delete_multicloud_data_transfer_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteMulticloudDataTransferConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/DeleteMulticloudDataTransferConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "DeleteMulticloudDataTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the `Destination` resources in a specified project and location.
+        pub async fn list_destinations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDestinationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDestinationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/ListDestinations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "ListDestinations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a `Destination` resource.
+        pub async fn get_destination(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDestinationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Destination>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/GetDestination",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "GetDestination",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a `Destination` resource in a specified project and location.
+        pub async fn create_destination(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDestinationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/CreateDestination",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "CreateDestination",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a `Destination` resource in a specified project and location.
+        pub async fn update_destination(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDestinationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/UpdateDestination",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "UpdateDestination",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a `Destination` resource.
+        pub async fn delete_destination(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDestinationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/DeleteDestination",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "DeleteDestination",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a service that is supported for Data Transfer
+        /// Essentials.
+        pub async fn get_multicloud_data_transfer_supported_service(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetMulticloudDataTransferSupportedServiceRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::MulticloudDataTransferSupportedService>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferSupportedService",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "GetMulticloudDataTransferSupportedService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the services in the project for a region that are supported for
+        /// Data Transfer Essentials.
+        pub async fn list_multicloud_data_transfer_supported_services(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListMulticloudDataTransferSupportedServicesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMulticloudDataTransferSupportedServicesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferSupportedServices",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.DataTransferService",
+                        "ListMulticloudDataTransferSupportedServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A Network Connectivity Center hub is a global management resource to which
 /// you attach spokes. A single hub can contain spokes from multiple regions.
 /// However, if any of a hub's spokes use the site-to-site data transfer feature,

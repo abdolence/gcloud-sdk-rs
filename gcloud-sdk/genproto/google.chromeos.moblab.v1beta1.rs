@@ -308,7 +308,7 @@ pub struct FindMostStableBuildResponse {
     pub build: ::core::option::Option<Build>,
 }
 /// Request message for listing build targets.
-/// -- NEXT_TAG: 3 --
+/// -- NEXT_TAG: 4 --
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBuildTargetsRequest {
     /// Optional. The number of build targets to return in a page.
@@ -318,6 +318,11 @@ pub struct ListBuildTargetsRequest {
     /// Provide this to retrieve the subsequent page.
     #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter that specifies value constraints of fields. For example,
+    /// the filter can be set as "filter='model=modelName'" to only select build
+    /// targets associated with the given model.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for listing build targets.
 /// -- NEXT_TAG: 4 --

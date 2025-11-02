@@ -103,6 +103,11 @@ pub struct AddressInfo {
 /// The audience member to be operated on.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceMember {
+    /// Optional. Defines which
+    /// \[Destination\]\[google.ads.datamanager.v1.Destination\] to send the audience
+    /// member to.
+    #[prost(string, repeated, tag = "1")]
+    pub destination_references: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The consent setting for the user.
     #[prost(message, optional, tag = "3")]
     pub consent: ::core::option::Option<Consent>,
@@ -189,7 +194,8 @@ pub struct Item {
 pub struct Destination {
     /// Optional. ID for this `Destination` resource, unique within the request.
     /// Use to reference this `Destination` in  the
-    /// \[IngestEventsRequest\]\[google.ads.datamanager.v1.IngestEventsRequest\].
+    /// \[IngestEventsRequest\]\[google.ads.datamanager.v1.IngestEventsRequest\] and
+    /// \[IngestAudienceMembersRequest\]\[google.ads.datamanager.v1.IngestAudienceMembersRequest\].
     #[prost(string, tag = "1")]
     pub reference: ::prost::alloc::string::String,
     /// Optional. The account used to make this API call. To add or remove data
@@ -213,22 +219,87 @@ pub struct Destination {
     #[prost(message, optional, tag = "4")]
     pub operating_account: ::core::option::Option<ProductAccount>,
     /// Required. The object within the product account to ingest into. For
-    /// example, a Google Ads audience ID or a Display & Video 360 audience ID.
+    /// example, a Google Ads audience ID, a Display & Video 360 audience ID or a
+    /// Google Ads conversion action ID.
     #[prost(string, tag = "5")]
     pub product_destination_id: ::prost::alloc::string::String,
 }
 /// Represents a specific account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductAccount {
-    /// Required. The product the account belongs to. For example, `GOOGLE_ADS`.
+    /// Deprecated. Use
+    /// \[`account_type`\]\[google.ads.datamanager.v1.ProductAccount.account_type\]
+    /// instead.
+    #[deprecated]
     #[prost(enumeration = "Product", tag = "1")]
     pub product: i32,
     /// Required. The ID of the account. For example, your Google Ads account ID.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
+    /// Optional. The type of the account. For example, `GOOGLE_ADS`.
+    /// Either `account_type` or the deprecated `product` is required.
+    /// If both are set, the values must match.
+    #[prost(enumeration = "product_account::AccountType", tag = "3")]
+    pub account_type: i32,
 }
-/// Represents a specific Google product. Used to locate accounts and
-/// destinations.
+/// Nested message and enum types in `ProductAccount`.
+pub mod product_account {
+    /// Represents Google account types. Used to locate accounts and
+    /// destinations.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AccountType {
+        /// Unspecified product. Should never be used.
+        Unspecified = 0,
+        /// Google Ads.
+        GoogleAds = 1,
+        /// Display & Video 360 partner.
+        DisplayVideoPartner = 2,
+        /// Display & Video 360 advertiser.
+        DisplayVideoAdvertiser = 3,
+        /// Data Partner.
+        DataPartner = 4,
+    }
+    impl AccountType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACCOUNT_TYPE_UNSPECIFIED",
+                Self::GoogleAds => "GOOGLE_ADS",
+                Self::DisplayVideoPartner => "DISPLAY_VIDEO_PARTNER",
+                Self::DisplayVideoAdvertiser => "DISPLAY_VIDEO_ADVERTISER",
+                Self::DataPartner => "DATA_PARTNER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCOUNT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_ADS" => Some(Self::GoogleAds),
+                "DISPLAY_VIDEO_PARTNER" => Some(Self::DisplayVideoPartner),
+                "DISPLAY_VIDEO_ADVERTISER" => Some(Self::DisplayVideoAdvertiser),
+                "DATA_PARTNER" => Some(Self::DataPartner),
+                _ => None,
+            }
+        }
+    }
+}
+/// Deprecated. Use
+/// \[`AccountType`\]\[google.ads.datamanager.v1.ProductAccount.AccountType\]
+/// instead. Represents a specific Google product.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Product {
@@ -276,6 +347,16 @@ pub struct DeviceInfo {
     #[prost(string, tag = "1")]
     pub user_agent: ::prost::alloc::string::String,
     /// Optional. The IP address of the device for the given context.
+    ///
+    /// **Note:** Google Ads does not support IP address matching for end users in
+    /// the European Economic Area (EEA), United Kingdom (UK), or Switzerland (CH).
+    /// Add logic to conditionally exclude sharing IP addresses from users from
+    /// these regions and ensure that you provide users with clear and
+    /// comprehensive information about the data you collect on your sites, apps,
+    /// and other properties and get consent where required by law or any
+    /// applicable Google policies. See the [About offline conversion
+    /// imports](<https://support.google.com/google-ads/answer/2998031>) page for
+    /// more details.
     #[prost(string, tag = "2")]
     pub ip_address: ::prost::alloc::string::String,
 }
@@ -311,7 +392,9 @@ pub struct GcpWrappedKeyInfo {
     #[prost(string, tag = "2")]
     pub wip_provider: ::prost::alloc::string::String,
     /// Required. Google Cloud Platform [Cloud Key Management Service resource
-    /// ID](//cloud.google.com/kms/docs/getting-resource-ids).
+    /// ID](//cloud.google.com/kms/docs/getting-resource-ids).  Should be in the
+    /// format of
+    /// "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}".
     #[prost(string, tag = "3")]
     pub kek_uri: ::prost::alloc::string::String,
     /// Required. The base64 encoded encrypted data encryption key.
@@ -357,6 +440,210 @@ pub mod gcp_wrapped_key_info {
                 "XCHACHA20_POLY1305" => Some(Self::Xchacha20Poly1305),
                 _ => None,
             }
+        }
+    }
+}
+/// Error reasons for Data Manager API.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ErrorReason {
+    /// Do not use this default value.
+    Unspecified = 0,
+    /// An internal error has occurred.
+    InternalError = 1,
+    /// The request took too long to respond.
+    DeadlineExceeded = 2,
+    /// Too many requests.
+    ResourceExhausted = 3,
+    /// Resource not found.
+    NotFound = 4,
+    /// The user does not have permission or the resource is not found.
+    PermissionDenied = 5,
+    /// There was a problem with the request.
+    InvalidArgument = 6,
+    /// Required field is missing.
+    RequiredFieldMissing = 7,
+    /// Format is invalid.
+    InvalidFormat = 8,
+    /// The HEX encoded value is malformed.
+    InvalidHexEncoding = 9,
+    /// The base64 encoded value is malformed.
+    InvalidBase64Encoding = 10,
+    /// The SHA256 encoded value is malformed.
+    InvalidSha256Format = 11,
+    /// Postal code is not valid.
+    InvalidPostalCode = 12,
+    /// Country code is not valid.
+    InvalidCountryCode = 13,
+    /// Enum value cannot be used.
+    InvalidEnumValue = 14,
+    /// Type of the user list is not applicable for this request.
+    InvalidUserListType = 15,
+    /// This audience member is not valid.
+    InvalidAudienceMember = 16,
+    /// Maximum number of audience members allowed per request is 10,000.
+    TooManyAudienceMembers = 17,
+    /// Maximum number of user identifiers allowed per audience member is 10.
+    TooManyUserIdentifiers = 18,
+    /// Maximum number of destinations allowed per request is 10.
+    TooManyDestinations = 19,
+    /// This Destination is not valid.
+    InvalidDestination = 20,
+    /// Data Partner does not have access to the operating account owned userlist.
+    DataPartnerUserListMutateNotAllowed = 21,
+    /// Mobile ID format is not valid.
+    InvalidMobileIdFormat = 22,
+    /// User list is not valid.
+    InvalidUserListId = 23,
+    /// Multiple data types are not allowed to be ingested in a single request.
+    MultipleDataTypesNotAllowed = 24,
+    /// Destination configs containing a DataPartner login account must have the
+    /// same login account across all destination configs.
+    DifferentLoginAccountsNotAllowedForDataPartner = 25,
+    /// Required terms and conditions are not accepted.
+    TermsAndConditionsNotSigned = 26,
+    /// Invalid number format.
+    InvalidNumberFormat = 27,
+    /// Conversion action ID is not valid.
+    InvalidConversionActionId = 28,
+    /// The conversion action type is not valid.
+    InvalidConversionActionType = 29,
+    /// The currency code is not supported.
+    InvalidCurrencyCode = 30,
+    /// This event is not valid.
+    InvalidEvent = 31,
+    /// Maximum number of events allowed per request is 10,000.
+    TooManyEvents = 32,
+    /// The destination account is not enabled for enhanced conversions for leads.
+    DestinationAccountNotEnabledEnhancedConversionsForLeads = 33,
+    /// Enhanced conversions can't be used for the destination account because of
+    /// Google customer data policies. Contact your Google representative..
+    DestinationAccountDataPolicyProhibitsEnhancedConversions = 34,
+    /// The destination account hasn't agreed to the terms for enhanced
+    /// conversions.
+    DestinationAccountEnhancedConversionsTermsNotSigned = 35,
+    /// Two or more destinations in the request have the same reference.
+    DuplicateDestinationReference = 36,
+    /// Events data contains no user identifiers or ad identifiers.
+    NoIdentifiersProvided = 39,
+    /// The request ID used to retrieve the status of a request is not valid.
+    /// Status can only be retrieved for requests that succeed and don't have
+    /// `validate_only=true`.
+    InvalidRequestId = 48,
+}
+impl ErrorReason {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ERROR_REASON_UNSPECIFIED",
+            Self::InternalError => "INTERNAL_ERROR",
+            Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+            Self::ResourceExhausted => "RESOURCE_EXHAUSTED",
+            Self::NotFound => "NOT_FOUND",
+            Self::PermissionDenied => "PERMISSION_DENIED",
+            Self::InvalidArgument => "INVALID_ARGUMENT",
+            Self::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
+            Self::InvalidFormat => "INVALID_FORMAT",
+            Self::InvalidHexEncoding => "INVALID_HEX_ENCODING",
+            Self::InvalidBase64Encoding => "INVALID_BASE64_ENCODING",
+            Self::InvalidSha256Format => "INVALID_SHA256_FORMAT",
+            Self::InvalidPostalCode => "INVALID_POSTAL_CODE",
+            Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+            Self::InvalidEnumValue => "INVALID_ENUM_VALUE",
+            Self::InvalidUserListType => "INVALID_USER_LIST_TYPE",
+            Self::InvalidAudienceMember => "INVALID_AUDIENCE_MEMBER",
+            Self::TooManyAudienceMembers => "TOO_MANY_AUDIENCE_MEMBERS",
+            Self::TooManyUserIdentifiers => "TOO_MANY_USER_IDENTIFIERS",
+            Self::TooManyDestinations => "TOO_MANY_DESTINATIONS",
+            Self::InvalidDestination => "INVALID_DESTINATION",
+            Self::DataPartnerUserListMutateNotAllowed => {
+                "DATA_PARTNER_USER_LIST_MUTATE_NOT_ALLOWED"
+            }
+            Self::InvalidMobileIdFormat => "INVALID_MOBILE_ID_FORMAT",
+            Self::InvalidUserListId => "INVALID_USER_LIST_ID",
+            Self::MultipleDataTypesNotAllowed => "MULTIPLE_DATA_TYPES_NOT_ALLOWED",
+            Self::DifferentLoginAccountsNotAllowedForDataPartner => {
+                "DIFFERENT_LOGIN_ACCOUNTS_NOT_ALLOWED_FOR_DATA_PARTNER"
+            }
+            Self::TermsAndConditionsNotSigned => "TERMS_AND_CONDITIONS_NOT_SIGNED",
+            Self::InvalidNumberFormat => "INVALID_NUMBER_FORMAT",
+            Self::InvalidConversionActionId => "INVALID_CONVERSION_ACTION_ID",
+            Self::InvalidConversionActionType => "INVALID_CONVERSION_ACTION_TYPE",
+            Self::InvalidCurrencyCode => "INVALID_CURRENCY_CODE",
+            Self::InvalidEvent => "INVALID_EVENT",
+            Self::TooManyEvents => "TOO_MANY_EVENTS",
+            Self::DestinationAccountNotEnabledEnhancedConversionsForLeads => {
+                "DESTINATION_ACCOUNT_NOT_ENABLED_ENHANCED_CONVERSIONS_FOR_LEADS"
+            }
+            Self::DestinationAccountDataPolicyProhibitsEnhancedConversions => {
+                "DESTINATION_ACCOUNT_DATA_POLICY_PROHIBITS_ENHANCED_CONVERSIONS"
+            }
+            Self::DestinationAccountEnhancedConversionsTermsNotSigned => {
+                "DESTINATION_ACCOUNT_ENHANCED_CONVERSIONS_TERMS_NOT_SIGNED"
+            }
+            Self::DuplicateDestinationReference => "DUPLICATE_DESTINATION_REFERENCE",
+            Self::NoIdentifiersProvided => "NO_IDENTIFIERS_PROVIDED",
+            Self::InvalidRequestId => "INVALID_REQUEST_ID",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ERROR_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "INTERNAL_ERROR" => Some(Self::InternalError),
+            "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+            "RESOURCE_EXHAUSTED" => Some(Self::ResourceExhausted),
+            "NOT_FOUND" => Some(Self::NotFound),
+            "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+            "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
+            "REQUIRED_FIELD_MISSING" => Some(Self::RequiredFieldMissing),
+            "INVALID_FORMAT" => Some(Self::InvalidFormat),
+            "INVALID_HEX_ENCODING" => Some(Self::InvalidHexEncoding),
+            "INVALID_BASE64_ENCODING" => Some(Self::InvalidBase64Encoding),
+            "INVALID_SHA256_FORMAT" => Some(Self::InvalidSha256Format),
+            "INVALID_POSTAL_CODE" => Some(Self::InvalidPostalCode),
+            "INVALID_COUNTRY_CODE" => Some(Self::InvalidCountryCode),
+            "INVALID_ENUM_VALUE" => Some(Self::InvalidEnumValue),
+            "INVALID_USER_LIST_TYPE" => Some(Self::InvalidUserListType),
+            "INVALID_AUDIENCE_MEMBER" => Some(Self::InvalidAudienceMember),
+            "TOO_MANY_AUDIENCE_MEMBERS" => Some(Self::TooManyAudienceMembers),
+            "TOO_MANY_USER_IDENTIFIERS" => Some(Self::TooManyUserIdentifiers),
+            "TOO_MANY_DESTINATIONS" => Some(Self::TooManyDestinations),
+            "INVALID_DESTINATION" => Some(Self::InvalidDestination),
+            "DATA_PARTNER_USER_LIST_MUTATE_NOT_ALLOWED" => {
+                Some(Self::DataPartnerUserListMutateNotAllowed)
+            }
+            "INVALID_MOBILE_ID_FORMAT" => Some(Self::InvalidMobileIdFormat),
+            "INVALID_USER_LIST_ID" => Some(Self::InvalidUserListId),
+            "MULTIPLE_DATA_TYPES_NOT_ALLOWED" => Some(Self::MultipleDataTypesNotAllowed),
+            "DIFFERENT_LOGIN_ACCOUNTS_NOT_ALLOWED_FOR_DATA_PARTNER" => {
+                Some(Self::DifferentLoginAccountsNotAllowedForDataPartner)
+            }
+            "TERMS_AND_CONDITIONS_NOT_SIGNED" => Some(Self::TermsAndConditionsNotSigned),
+            "INVALID_NUMBER_FORMAT" => Some(Self::InvalidNumberFormat),
+            "INVALID_CONVERSION_ACTION_ID" => Some(Self::InvalidConversionActionId),
+            "INVALID_CONVERSION_ACTION_TYPE" => Some(Self::InvalidConversionActionType),
+            "INVALID_CURRENCY_CODE" => Some(Self::InvalidCurrencyCode),
+            "INVALID_EVENT" => Some(Self::InvalidEvent),
+            "TOO_MANY_EVENTS" => Some(Self::TooManyEvents),
+            "DESTINATION_ACCOUNT_NOT_ENABLED_ENHANCED_CONVERSIONS_FOR_LEADS" => {
+                Some(Self::DestinationAccountNotEnabledEnhancedConversionsForLeads)
+            }
+            "DESTINATION_ACCOUNT_DATA_POLICY_PROHIBITS_ENHANCED_CONVERSIONS" => {
+                Some(Self::DestinationAccountDataPolicyProhibitsEnhancedConversions)
+            }
+            "DESTINATION_ACCOUNT_ENHANCED_CONVERSIONS_TERMS_NOT_SIGNED" => {
+                Some(Self::DestinationAccountEnhancedConversionsTermsNotSigned)
+            }
+            "DUPLICATE_DESTINATION_REFERENCE" => {
+                Some(Self::DuplicateDestinationReference)
+            }
+            "NO_IDENTIFIERS_PROVIDED" => Some(Self::NoIdentifiersProvided),
+            "INVALID_REQUEST_ID" => Some(Self::InvalidRequestId),
+            _ => None,
         }
     }
 }
@@ -465,7 +752,8 @@ pub struct Event {
     /// in the request.
     #[prost(string, repeated, tag = "1")]
     pub destination_references: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Required. The unique identifier for this event.
+    /// Optional. The unique identifier for this event. Required for conversions
+    /// using multiple data sources.
     #[prost(string, tag = "2")]
     pub transaction_id: ::prost::alloc::string::String,
     /// Required. The time the event occurred.
@@ -604,12 +892,595 @@ impl EventSource {
         }
     }
 }
+/// The match rate range of the upload or userlist.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MatchRateRange {
+    /// The match rate range is unknown.
+    Unknown = 0,
+    /// The match rate range is not eligible.
+    NotEligible = 1,
+    /// The match rate range is less than 20% (in the interval `[0, 20)`).
+    LessThan20 = 2,
+    /// The match rate range is between 20% and 30% (in the interval `[20, 31)`).
+    MatchRateRange20To30 = 3,
+    /// The match rate range is between 31% and 40% (in the interval `[31, 41)`).
+    MatchRateRange31To40 = 4,
+    /// The match rate range is between 41% and 50% (in the interval `[41, 51)`).
+    MatchRateRange41To50 = 5,
+    /// The match rate range is between 51% and 60% (in the interval `[51, 61)`.
+    MatchRateRange51To60 = 6,
+    /// The match rate range is between 61% and 70% (in the interval `[61, 71)`).
+    MatchRateRange61To70 = 7,
+    /// The match rate range is between 71% and 80% (in the interval `[71, 81)`).
+    MatchRateRange71To80 = 8,
+    /// The match rate range is between 81% and 90% (in the interval `[81, 91)`).
+    MatchRateRange81To90 = 9,
+    /// The match rate range is between 91% and 100% (in the interval `\[91,  100\]`).
+    MatchRateRange91To100 = 10,
+}
+impl MatchRateRange {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unknown => "MATCH_RATE_RANGE_UNKNOWN",
+            Self::NotEligible => "MATCH_RATE_RANGE_NOT_ELIGIBLE",
+            Self::LessThan20 => "MATCH_RATE_RANGE_LESS_THAN_20",
+            Self::MatchRateRange20To30 => "MATCH_RATE_RANGE_20_TO_30",
+            Self::MatchRateRange31To40 => "MATCH_RATE_RANGE_31_TO_40",
+            Self::MatchRateRange41To50 => "MATCH_RATE_RANGE_41_TO_50",
+            Self::MatchRateRange51To60 => "MATCH_RATE_RANGE_51_TO_60",
+            Self::MatchRateRange61To70 => "MATCH_RATE_RANGE_61_TO_70",
+            Self::MatchRateRange71To80 => "MATCH_RATE_RANGE_71_TO_80",
+            Self::MatchRateRange81To90 => "MATCH_RATE_RANGE_81_TO_90",
+            Self::MatchRateRange91To100 => "MATCH_RATE_RANGE_91_TO_100",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MATCH_RATE_RANGE_UNKNOWN" => Some(Self::Unknown),
+            "MATCH_RATE_RANGE_NOT_ELIGIBLE" => Some(Self::NotEligible),
+            "MATCH_RATE_RANGE_LESS_THAN_20" => Some(Self::LessThan20),
+            "MATCH_RATE_RANGE_20_TO_30" => Some(Self::MatchRateRange20To30),
+            "MATCH_RATE_RANGE_31_TO_40" => Some(Self::MatchRateRange31To40),
+            "MATCH_RATE_RANGE_41_TO_50" => Some(Self::MatchRateRange41To50),
+            "MATCH_RATE_RANGE_51_TO_60" => Some(Self::MatchRateRange51To60),
+            "MATCH_RATE_RANGE_61_TO_70" => Some(Self::MatchRateRange61To70),
+            "MATCH_RATE_RANGE_71_TO_80" => Some(Self::MatchRateRange71To80),
+            "MATCH_RATE_RANGE_81_TO_90" => Some(Self::MatchRateRange81To90),
+            "MATCH_RATE_RANGE_91_TO_100" => Some(Self::MatchRateRange91To100),
+            _ => None,
+        }
+    }
+}
+/// Error counts for each type of error.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorInfo {
+    /// A list of errors and counts per error reason. May not be populated
+    /// in all cases.
+    #[prost(message, repeated, tag = "1")]
+    pub error_counts: ::prost::alloc::vec::Vec<ErrorCount>,
+}
+/// The error count for a given error reason.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ErrorCount {
+    /// The count of records that failed to upload for a given reason.
+    #[prost(int64, tag = "1")]
+    pub record_count: i64,
+    /// The error reason of the failed records.
+    #[prost(enumeration = "ProcessingErrorReason", tag = "2")]
+    pub reason: i32,
+}
+/// Warning counts for each type of warning.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WarningInfo {
+    /// A list of warnings and counts per warning reason.
+    #[prost(message, repeated, tag = "1")]
+    pub warning_counts: ::prost::alloc::vec::Vec<WarningCount>,
+}
+/// The warning count for a given warning reason.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WarningCount {
+    /// The count of records that have a warning.
+    #[prost(int64, tag = "1")]
+    pub record_count: i64,
+    /// The warning reason.
+    #[prost(enumeration = "ProcessingWarningReason", tag = "2")]
+    pub reason: i32,
+}
+/// The processing error reason.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProcessingErrorReason {
+    /// The processing error reason is unknown.
+    Unspecified = 0,
+    /// The custom variable is invalid.
+    InvalidCustomVariable = 1,
+    /// The status of the custom variable is not enabled.
+    CustomVariableNotEnabled = 2,
+    /// The conversion is older than max supported age.
+    EventTooOld = 3,
+    /// The ad user data is denied, either by the user or in
+    /// the advertiser default settings.
+    DeniedConsent = 4,
+    /// Advertiser did not give 3P consent for the Ads core platform services.
+    NoConsent = 5,
+    /// The overall consent (determined from row level consent, request level
+    /// consent, and account settings) could not be determined for this user
+    UnknownConsent = 6,
+    /// A conversion with the same GCLID and conversion time already exists in
+    /// the system.
+    DuplicateGclid = 7,
+    /// A conversion with the same order id and conversion action combination was
+    /// already uploaded.
+    DuplicateTransactionId = 8,
+    /// The gbraid could not be decoded.
+    InvalidGbraid = 9,
+    /// The google click ID could not be decoded.
+    InvalidGclid = 10,
+    /// Merchant id contains non-digit characters.
+    InvalidMerchantId = 11,
+    /// The wbraid could not be decoded.
+    InvalidWbraid = 12,
+    /// Internal error.
+    InternalError = 13,
+    /// Enhanced conversions terms are not signed in the destination account.
+    DestinationAccountEnhancedConversionsTermsNotSigned = 14,
+    /// The event is invalid.
+    InvalidEvent = 15,
+    /// The matched transactions are less than the minimum threshold.
+    InsufficientMatchedTransactions = 16,
+    /// The transactions are less than the minimum threshold.
+    InsufficientTransactions = 17,
+    /// The event has format error.
+    InvalidFormat = 18,
+    /// The event has a decryption error.
+    DecryptionError = 19,
+    /// The DEK failed to be decrypted.
+    DekDecryptionError = 20,
+    /// The WIP is formatted incorrectly or the WIP does not exist.
+    InvalidWip = 21,
+    /// The KEK cannot decrypt data because it is the wrong KEK, or it does not
+    /// exist.
+    InvalidKek = 22,
+    /// The WIP could not be used because it was rejected by its attestation
+    /// condition.
+    WipAuthFailed = 23,
+    /// The system did not have the permissions needed to access the KEK.
+    KekPermissionDenied = 24,
+    /// Failed to decrypt the
+    /// \[UserIdentifier\]\[google.ads.datamanager.v1.UserIdentifier\] data using the
+    /// DEK.
+    UserIdentifierDecryptionError = 25,
+    /// The user attempted to ingest events with an ad identifier that isn't
+    /// from the operating account's ads.
+    ProcessingErrorOperatingAccountMismatchForAdIdentifier = 26,
+}
+impl ProcessingErrorReason {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PROCESSING_ERROR_REASON_UNSPECIFIED",
+            Self::InvalidCustomVariable => {
+                "PROCESSING_ERROR_REASON_INVALID_CUSTOM_VARIABLE"
+            }
+            Self::CustomVariableNotEnabled => {
+                "PROCESSING_ERROR_REASON_CUSTOM_VARIABLE_NOT_ENABLED"
+            }
+            Self::EventTooOld => "PROCESSING_ERROR_REASON_EVENT_TOO_OLD",
+            Self::DeniedConsent => "PROCESSING_ERROR_REASON_DENIED_CONSENT",
+            Self::NoConsent => "PROCESSING_ERROR_REASON_NO_CONSENT",
+            Self::UnknownConsent => "PROCESSING_ERROR_REASON_UNKNOWN_CONSENT",
+            Self::DuplicateGclid => "PROCESSING_ERROR_REASON_DUPLICATE_GCLID",
+            Self::DuplicateTransactionId => {
+                "PROCESSING_ERROR_REASON_DUPLICATE_TRANSACTION_ID"
+            }
+            Self::InvalidGbraid => "PROCESSING_ERROR_REASON_INVALID_GBRAID",
+            Self::InvalidGclid => "PROCESSING_ERROR_REASON_INVALID_GCLID",
+            Self::InvalidMerchantId => "PROCESSING_ERROR_REASON_INVALID_MERCHANT_ID",
+            Self::InvalidWbraid => "PROCESSING_ERROR_REASON_INVALID_WBRAID",
+            Self::InternalError => "PROCESSING_ERROR_REASON_INTERNAL_ERROR",
+            Self::DestinationAccountEnhancedConversionsTermsNotSigned => {
+                "PROCESSING_ERROR_REASON_DESTINATION_ACCOUNT_ENHANCED_CONVERSIONS_TERMS_NOT_SIGNED"
+            }
+            Self::InvalidEvent => "PROCESSING_ERROR_REASON_INVALID_EVENT",
+            Self::InsufficientMatchedTransactions => {
+                "PROCESSING_ERROR_REASON_INSUFFICIENT_MATCHED_TRANSACTIONS"
+            }
+            Self::InsufficientTransactions => {
+                "PROCESSING_ERROR_REASON_INSUFFICIENT_TRANSACTIONS"
+            }
+            Self::InvalidFormat => "PROCESSING_ERROR_REASON_INVALID_FORMAT",
+            Self::DecryptionError => "PROCESSING_ERROR_REASON_DECRYPTION_ERROR",
+            Self::DekDecryptionError => "PROCESSING_ERROR_REASON_DEK_DECRYPTION_ERROR",
+            Self::InvalidWip => "PROCESSING_ERROR_REASON_INVALID_WIP",
+            Self::InvalidKek => "PROCESSING_ERROR_REASON_INVALID_KEK",
+            Self::WipAuthFailed => "PROCESSING_ERROR_REASON_WIP_AUTH_FAILED",
+            Self::KekPermissionDenied => "PROCESSING_ERROR_REASON_KEK_PERMISSION_DENIED",
+            Self::UserIdentifierDecryptionError => {
+                "PROCESSING_ERROR_REASON_USER_IDENTIFIER_DECRYPTION_ERROR"
+            }
+            Self::ProcessingErrorOperatingAccountMismatchForAdIdentifier => {
+                "PROCESSING_ERROR_OPERATING_ACCOUNT_MISMATCH_FOR_AD_IDENTIFIER"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROCESSING_ERROR_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "PROCESSING_ERROR_REASON_INVALID_CUSTOM_VARIABLE" => {
+                Some(Self::InvalidCustomVariable)
+            }
+            "PROCESSING_ERROR_REASON_CUSTOM_VARIABLE_NOT_ENABLED" => {
+                Some(Self::CustomVariableNotEnabled)
+            }
+            "PROCESSING_ERROR_REASON_EVENT_TOO_OLD" => Some(Self::EventTooOld),
+            "PROCESSING_ERROR_REASON_DENIED_CONSENT" => Some(Self::DeniedConsent),
+            "PROCESSING_ERROR_REASON_NO_CONSENT" => Some(Self::NoConsent),
+            "PROCESSING_ERROR_REASON_UNKNOWN_CONSENT" => Some(Self::UnknownConsent),
+            "PROCESSING_ERROR_REASON_DUPLICATE_GCLID" => Some(Self::DuplicateGclid),
+            "PROCESSING_ERROR_REASON_DUPLICATE_TRANSACTION_ID" => {
+                Some(Self::DuplicateTransactionId)
+            }
+            "PROCESSING_ERROR_REASON_INVALID_GBRAID" => Some(Self::InvalidGbraid),
+            "PROCESSING_ERROR_REASON_INVALID_GCLID" => Some(Self::InvalidGclid),
+            "PROCESSING_ERROR_REASON_INVALID_MERCHANT_ID" => {
+                Some(Self::InvalidMerchantId)
+            }
+            "PROCESSING_ERROR_REASON_INVALID_WBRAID" => Some(Self::InvalidWbraid),
+            "PROCESSING_ERROR_REASON_INTERNAL_ERROR" => Some(Self::InternalError),
+            "PROCESSING_ERROR_REASON_DESTINATION_ACCOUNT_ENHANCED_CONVERSIONS_TERMS_NOT_SIGNED" => {
+                Some(Self::DestinationAccountEnhancedConversionsTermsNotSigned)
+            }
+            "PROCESSING_ERROR_REASON_INVALID_EVENT" => Some(Self::InvalidEvent),
+            "PROCESSING_ERROR_REASON_INSUFFICIENT_MATCHED_TRANSACTIONS" => {
+                Some(Self::InsufficientMatchedTransactions)
+            }
+            "PROCESSING_ERROR_REASON_INSUFFICIENT_TRANSACTIONS" => {
+                Some(Self::InsufficientTransactions)
+            }
+            "PROCESSING_ERROR_REASON_INVALID_FORMAT" => Some(Self::InvalidFormat),
+            "PROCESSING_ERROR_REASON_DECRYPTION_ERROR" => Some(Self::DecryptionError),
+            "PROCESSING_ERROR_REASON_DEK_DECRYPTION_ERROR" => {
+                Some(Self::DekDecryptionError)
+            }
+            "PROCESSING_ERROR_REASON_INVALID_WIP" => Some(Self::InvalidWip),
+            "PROCESSING_ERROR_REASON_INVALID_KEK" => Some(Self::InvalidKek),
+            "PROCESSING_ERROR_REASON_WIP_AUTH_FAILED" => Some(Self::WipAuthFailed),
+            "PROCESSING_ERROR_REASON_KEK_PERMISSION_DENIED" => {
+                Some(Self::KekPermissionDenied)
+            }
+            "PROCESSING_ERROR_REASON_USER_IDENTIFIER_DECRYPTION_ERROR" => {
+                Some(Self::UserIdentifierDecryptionError)
+            }
+            "PROCESSING_ERROR_OPERATING_ACCOUNT_MISMATCH_FOR_AD_IDENTIFIER" => {
+                Some(Self::ProcessingErrorOperatingAccountMismatchForAdIdentifier)
+            }
+            _ => None,
+        }
+    }
+}
+/// The processing warning reason.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProcessingWarningReason {
+    /// The processing warning reason is unknown.
+    Unspecified = 0,
+    /// The system did not have the permissions needed to access the KEK.
+    KekPermissionDenied = 1,
+    /// The DEK failed to be decrypted.
+    DekDecryptionError = 2,
+    /// The event has a decryption error.
+    DecryptionError = 3,
+    /// The WIP could not be used because it was rejected by its attestation
+    /// condition.
+    WipAuthFailed = 4,
+    /// The WIP is formatted incorrectly or the WIP does not exist.
+    InvalidWip = 5,
+    /// The KEK cannot decrypt data because it is the wrong KEK, or it does not
+    /// exist.
+    InvalidKek = 6,
+    /// Failed to decrypt th
+    /// \[UserIdentifier\]\[google.ads.datamanager.v1.UserIdentifier\] data using the
+    /// DEK.
+    UserIdentifierDecryptionError = 7,
+    /// Internal error.
+    InternalError = 8,
+}
+impl ProcessingWarningReason {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PROCESSING_WARNING_REASON_UNSPECIFIED",
+            Self::KekPermissionDenied => {
+                "PROCESSING_WARNING_REASON_KEK_PERMISSION_DENIED"
+            }
+            Self::DekDecryptionError => "PROCESSING_WARNING_REASON_DEK_DECRYPTION_ERROR",
+            Self::DecryptionError => "PROCESSING_WARNING_REASON_DECRYPTION_ERROR",
+            Self::WipAuthFailed => "PROCESSING_WARNING_REASON_WIP_AUTH_FAILED",
+            Self::InvalidWip => "PROCESSING_WARNING_REASON_INVALID_WIP",
+            Self::InvalidKek => "PROCESSING_WARNING_REASON_INVALID_KEK",
+            Self::UserIdentifierDecryptionError => {
+                "PROCESSING_WARNING_REASON_USER_IDENTIFIER_DECRYPTION_ERROR"
+            }
+            Self::InternalError => "PROCESSING_WARNING_REASON_INTERNAL_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROCESSING_WARNING_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "PROCESSING_WARNING_REASON_KEK_PERMISSION_DENIED" => {
+                Some(Self::KekPermissionDenied)
+            }
+            "PROCESSING_WARNING_REASON_DEK_DECRYPTION_ERROR" => {
+                Some(Self::DekDecryptionError)
+            }
+            "PROCESSING_WARNING_REASON_DECRYPTION_ERROR" => Some(Self::DecryptionError),
+            "PROCESSING_WARNING_REASON_WIP_AUTH_FAILED" => Some(Self::WipAuthFailed),
+            "PROCESSING_WARNING_REASON_INVALID_WIP" => Some(Self::InvalidWip),
+            "PROCESSING_WARNING_REASON_INVALID_KEK" => Some(Self::InvalidKek),
+            "PROCESSING_WARNING_REASON_USER_IDENTIFIER_DECRYPTION_ERROR" => {
+                Some(Self::UserIdentifierDecryptionError)
+            }
+            "PROCESSING_WARNING_REASON_INTERNAL_ERROR" => Some(Self::InternalError),
+            _ => None,
+        }
+    }
+}
+/// A request status per destination.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RequestStatusPerDestination {
+    /// A destination within a DM API request.
+    #[prost(message, optional, tag = "1")]
+    pub destination: ::core::option::Option<Destination>,
+    /// The request status of the destination.
+    #[prost(enumeration = "request_status_per_destination::RequestStatus", tag = "2")]
+    pub request_status: i32,
+    /// An error info error containing the error reason and error counts related to
+    /// the upload.
+    #[prost(message, optional, tag = "3")]
+    pub error_info: ::core::option::Option<ErrorInfo>,
+    /// A warning info containing the warning reason and warning counts related to
+    /// the upload.
+    #[prost(message, optional, tag = "7")]
+    pub warning_info: ::core::option::Option<WarningInfo>,
+    /// The status of the destination.
+    #[prost(oneof = "request_status_per_destination::Status", tags = "4, 5, 6")]
+    pub status: ::core::option::Option<request_status_per_destination::Status>,
+}
+/// Nested message and enum types in `RequestStatusPerDestination`.
+pub mod request_status_per_destination {
+    /// The status of the ingest audience members request.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestAudienceMembersStatus {
+        /// The status of the audience members ingestion to the destination.
+        #[prost(oneof = "ingest_audience_members_status::Status", tags = "1, 2, 3")]
+        pub status: ::core::option::Option<ingest_audience_members_status::Status>,
+    }
+    /// Nested message and enum types in `IngestAudienceMembersStatus`.
+    pub mod ingest_audience_members_status {
+        /// The status of the audience members ingestion to the destination.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Status {
+            /// The status of the user data ingestion to the destination.
+            #[prost(message, tag = "1")]
+            UserDataIngestionStatus(super::IngestUserDataStatus),
+            /// The status of the mobile data ingestion to the destination.
+            #[prost(message, tag = "2")]
+            MobileDataIngestionStatus(super::IngestMobileDataStatus),
+            /// The status of the pair data ingestion to the destination.
+            #[prost(message, tag = "3")]
+            PairDataIngestionStatus(super::IngestPairDataStatus),
+        }
+    }
+    /// The status of the remove audience members request.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RemoveAudienceMembersStatus {
+        /// The status of the audience members removal from the destination.
+        #[prost(oneof = "remove_audience_members_status::Status", tags = "1, 2, 3")]
+        pub status: ::core::option::Option<remove_audience_members_status::Status>,
+    }
+    /// Nested message and enum types in `RemoveAudienceMembersStatus`.
+    pub mod remove_audience_members_status {
+        /// The status of the audience members removal from the destination.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Status {
+            /// The status of the user data removal from the destination.
+            #[prost(message, tag = "1")]
+            UserDataRemovalStatus(super::RemoveUserDataStatus),
+            /// The status of the mobile data removal from the destination.
+            #[prost(message, tag = "2")]
+            MobileDataRemovalStatus(super::RemoveMobileDataStatus),
+            /// The status of the pair data removal from the destination.
+            #[prost(message, tag = "3")]
+            PairDataRemovalStatus(super::RemovePairDataStatus),
+        }
+    }
+    /// The status of the events ingestion to the destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestEventsStatus {
+        /// The total count of events sent in the upload request. Includes all
+        /// events in the request, regardless of whether they were successfully
+        /// ingested or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+    }
+    /// The status of the user data ingestion to the destination containing stats
+    /// related to the ingestion.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestUserDataStatus {
+        /// The total count of audience members sent in the upload request for the
+        /// destination. Includes all audience members in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of user identifiers sent in the upload request for the
+        /// destination. Includes all user identifiers in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "2")]
+        pub user_identifier_count: i64,
+        /// The match rate range of the upload.
+        #[prost(enumeration = "super::MatchRateRange", tag = "3")]
+        pub upload_match_rate_range: i32,
+    }
+    /// The status of the user data removal from the destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RemoveUserDataStatus {
+        /// The total count of audience members sent in the removal request. Includes
+        /// all audience members in the request, regardless of whether they were
+        /// successfully removed or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of user identifiers sent in the removal request. Includes
+        /// all user identifiers in the request, regardless of whether they were
+        /// successfully removed or not.
+        #[prost(int64, tag = "2")]
+        pub user_identifier_count: i64,
+    }
+    /// The status of the mobile data ingestion to the destination containing stats
+    /// related to the ingestion.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestMobileDataStatus {
+        /// The total count of audience members sent in the upload request for the
+        /// destination. Includes all audience members in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of mobile ids sent in the upload request for the
+        /// destination. Includes all mobile ids in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "2")]
+        pub mobile_id_count: i64,
+    }
+    /// The status of the mobile data removal from the destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RemoveMobileDataStatus {
+        /// The total count of audience members sent in the removal request. Includes
+        /// all audience members in the request, regardless of whether they were
+        /// successfully removed or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of mobile Ids sent in the removal request. Includes all
+        /// mobile ids in the request, regardless of whether they were successfully
+        /// removed or not.
+        #[prost(int64, tag = "2")]
+        pub mobile_id_count: i64,
+    }
+    /// The status of the pair data ingestion to the destination containing stats
+    /// related to the ingestion.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestPairDataStatus {
+        /// The total count of audience members sent in the upload request for the
+        /// destination. Includes all audience members in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of pair ids sent in the upload request for the
+        /// destination. Includes all pair ids in the request, regardless of
+        /// whether they were successfully ingested or not.
+        #[prost(int64, tag = "2")]
+        pub pair_id_count: i64,
+    }
+    /// The status of the pair data removal from the destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RemovePairDataStatus {
+        /// The total count of audience members sent in the removal request. Includes
+        /// all audience members in the request, regardless of whether they were
+        /// successfully removed or not.
+        #[prost(int64, tag = "1")]
+        pub record_count: i64,
+        /// The total count of pair ids sent in the removal request. Includes all
+        /// pair ids in the request, regardless of whether they were successfully
+        /// removed or not.
+        #[prost(int64, tag = "2")]
+        pub pair_id_count: i64,
+    }
+    /// The request status.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RequestStatus {
+        /// The request status is unknown.
+        Unknown = 0,
+        /// The request succeeded.
+        Success = 1,
+        /// The request is processing.
+        Processing = 2,
+        /// The request failed.
+        Failed = 3,
+        /// The request partially succeeded.
+        PartialSuccess = 4,
+    }
+    impl RequestStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "REQUEST_STATUS_UNKNOWN",
+                Self::Success => "SUCCESS",
+                Self::Processing => "PROCESSING",
+                Self::Failed => "FAILED",
+                Self::PartialSuccess => "PARTIAL_SUCCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REQUEST_STATUS_UNKNOWN" => Some(Self::Unknown),
+                "SUCCESS" => Some(Self::Success),
+                "PROCESSING" => Some(Self::Processing),
+                "FAILED" => Some(Self::Failed),
+                "PARTIAL_SUCCESS" => Some(Self::PartialSuccess),
+                _ => None,
+            }
+        }
+    }
+    /// The status of the destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Status {
+        /// The status of the ingest audience members request.
+        #[prost(message, tag = "4")]
+        AudienceMembersIngestionStatus(IngestAudienceMembersStatus),
+        /// The status of the ingest events request.
+        #[prost(message, tag = "5")]
+        EventsIngestionStatus(IngestEventsStatus),
+        /// The status of the remove audience members request.
+        #[prost(message, tag = "6")]
+        AudienceMembersRemovalStatus(RemoveAudienceMembersStatus),
+    }
+}
 /// The terms of service that the user has accepted/rejected.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TermsOfService {
     /// Optional. The Customer Match terms of service:
     /// <https://support.google.com/adspolicy/answer/6299717.> This must be
-    /// accepted for all uploads to Customer Match userlists.
+    /// accepted when ingesting
+    /// \[UserData\]\[google.ads.datamanager.v1.UserData\]
+    /// or \[MobileData\]\[google.ads.datamanager.v1.MobileData\].
+    /// This field is not required for Partner Match User list.
     #[prost(enumeration = "TermsOfServiceStatus", tag = "1")]
     pub customer_match_terms_of_service_status: i32,
 }
@@ -774,6 +1645,26 @@ pub struct IngestEventsResponse {
     /// The auto-generated ID of the request.
     #[prost(string, tag = "1")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// Request to get the status of request made to the DM API for a given request
+/// ID. Returns a
+/// \[RetrieveRequestStatusResponse\]\[google.ads.datamanager.v1.RetrieveRequestStatusResponse\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetrieveRequestStatusRequest {
+    /// Required. Required. The request ID of the Data Manager API request.
+    #[prost(string, tag = "1")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response from the
+/// \[RetrieveRequestStatusRequest\]\[google.ads.datamanager.v1.RetrieveRequestStatusRequest\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveRequestStatusResponse {
+    /// A list of request statuses per destination. The order of the statuses
+    /// matches the order of the destinations in the original request.
+    #[prost(message, repeated, tag = "1")]
+    pub request_status_per_destination: ::prost::alloc::vec::Vec<
+        RequestStatusPerDestination,
+    >,
 }
 /// The encoding type of the hashed identifying information.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -992,6 +1883,36 @@ pub mod ingestion_service_client {
                     GrpcMethod::new(
                         "google.ads.datamanager.v1.IngestionService",
                         "IngestEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the status of a request given request id.
+        pub async fn retrieve_request_status(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveRequestStatusRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RetrieveRequestStatusResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.datamanager.v1.IngestionService/RetrieveRequestStatus",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.datamanager.v1.IngestionService",
+                        "RetrieveRequestStatus",
                     ),
                 );
             self.inner.unary(req, path, codec).await

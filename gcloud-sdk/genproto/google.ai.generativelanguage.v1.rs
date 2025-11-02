@@ -349,6 +349,7 @@ pub enum HarmCategory {
     /// **Gemini** - Dangerous content.
     DangerousContent = 10,
     /// **Gemini** - Content that may be used to harm civic integrity.
+    /// DEPRECATED: use enable_enhanced_civic_answers instead.
     CivicIntegrity = 11,
 }
 impl HarmCategory {
@@ -392,6 +393,7 @@ impl HarmCategory {
     }
 }
 /// Request to generate a completion from the model.
+/// NEXT ID: 18
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentRequest {
     /// Required. The name of the `Model` to use for generating the completion.
@@ -432,6 +434,7 @@ pub struct GenerateContentRequest {
 }
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
+/// Next ID: 29
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
     /// Optional. Number of generated responses to return. If unset, this will
@@ -491,6 +494,10 @@ pub struct GenerationConfig {
     /// generated seed.
     #[prost(int32, optional, tag = "8")]
     pub seed: ::core::option::Option<i32>,
+    /// Optional. An internal detail. Use `responseJsonSchema` rather than this
+    /// field.
+    #[prost(message, optional, tag = "28")]
+    pub response_json_schema_ordered: ::core::option::Option<::prost_types::Value>,
     /// Optional. Presence penalty applied to the next token's logprobs if the
     /// token has already been seen in the response.
     ///
@@ -531,6 +538,7 @@ pub struct GenerationConfig {
     /// \[response_logprobs=True\]\[google.ai.generativelanguage.v1.GenerationConfig.response_logprobs\].
     /// This sets the number of top logprobs to return at each decoding step in the
     /// \[Candidate.logprobs_result\]\[google.ai.generativelanguage.v1.Candidate.logprobs_result\].
+    /// The number must be in the range of \[0, 20\].
     #[prost(int32, optional, tag = "18")]
     pub logprobs: ::core::option::Option<i32>,
     /// Optional. Enables enhanced civic answers. It may not be available for all
@@ -699,6 +707,10 @@ pub struct Candidate {
     /// If empty, the model has not stopped generating tokens.
     #[prost(enumeration = "candidate::FinishReason", tag = "2")]
     pub finish_reason: i32,
+    /// Optional. Output only. Details the reason why the model stopped generating
+    /// tokens. This is populated only when `finish_reason` is set.
+    #[prost(string, optional, tag = "4")]
+    pub finish_message: ::core::option::Option<::prost::alloc::string::String>,
     /// List of ratings for the safety of a response candidate.
     ///
     /// There is at most one rating per category.
@@ -772,8 +784,18 @@ pub mod candidate {
         /// Token generation stopped because generated images contain safety
         /// violations.
         ImageSafety = 11,
+        /// Image generation stopped because generated images has other prohibited
+        /// content.
+        ImageProhibitedContent = 14,
+        /// Image generation stopped because of other miscellaneous issue.
+        ImageOther = 15,
+        /// The model was expected to generate an image, but none was generated.
+        NoImage = 16,
         /// Model generated a tool call but no tools were enabled in the request.
         UnexpectedToolCall = 12,
+        /// Model called too many tools consecutively, thus the system exited
+        /// execution.
+        TooManyToolCalls = 13,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -794,7 +816,11 @@ pub mod candidate {
                 Self::Spii => "SPII",
                 Self::MalformedFunctionCall => "MALFORMED_FUNCTION_CALL",
                 Self::ImageSafety => "IMAGE_SAFETY",
+                Self::ImageProhibitedContent => "IMAGE_PROHIBITED_CONTENT",
+                Self::ImageOther => "IMAGE_OTHER",
+                Self::NoImage => "NO_IMAGE",
                 Self::UnexpectedToolCall => "UNEXPECTED_TOOL_CALL",
+                Self::TooManyToolCalls => "TOO_MANY_TOOL_CALLS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -812,7 +838,11 @@ pub mod candidate {
                 "SPII" => Some(Self::Spii),
                 "MALFORMED_FUNCTION_CALL" => Some(Self::MalformedFunctionCall),
                 "IMAGE_SAFETY" => Some(Self::ImageSafety),
+                "IMAGE_PROHIBITED_CONTENT" => Some(Self::ImageProhibitedContent),
+                "IMAGE_OTHER" => Some(Self::ImageOther),
+                "NO_IMAGE" => Some(Self::NoImage),
                 "UNEXPECTED_TOOL_CALL" => Some(Self::UnexpectedToolCall),
+                "TOO_MANY_TOOL_CALLS" => Some(Self::TooManyToolCalls),
                 _ => None,
             }
         }
@@ -857,6 +887,10 @@ pub mod url_metadata {
         Success = 1,
         /// Url retrieval is failed due to error.
         Error = 2,
+        /// Url retrieval is failed because the content is behind paywall.
+        Paywall = 3,
+        /// Url retrieval is failed because the content is unsafe.
+        Unsafe = 4,
     }
     impl UrlRetrievalStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -868,6 +902,8 @@ pub mod url_metadata {
                 Self::Unspecified => "URL_RETRIEVAL_STATUS_UNSPECIFIED",
                 Self::Success => "URL_RETRIEVAL_STATUS_SUCCESS",
                 Self::Error => "URL_RETRIEVAL_STATUS_ERROR",
+                Self::Paywall => "URL_RETRIEVAL_STATUS_PAYWALL",
+                Self::Unsafe => "URL_RETRIEVAL_STATUS_UNSAFE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -876,6 +912,8 @@ pub mod url_metadata {
                 "URL_RETRIEVAL_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
                 "URL_RETRIEVAL_STATUS_SUCCESS" => Some(Self::Success),
                 "URL_RETRIEVAL_STATUS_ERROR" => Some(Self::Error),
+                "URL_RETRIEVAL_STATUS_PAYWALL" => Some(Self::Paywall),
+                "URL_RETRIEVAL_STATUS_UNSAFE" => Some(Self::Unsafe),
                 _ => None,
             }
         }
@@ -884,6 +922,9 @@ pub mod url_metadata {
 /// Logprobs Result
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogprobsResult {
+    /// Sum of log probabilities for all tokens.
+    #[prost(float, optional, tag = "3")]
+    pub log_probability_sum: ::core::option::Option<f32>,
     /// Length = total number of decoding steps.
     #[prost(message, repeated, tag = "1")]
     pub top_candidates: ::prost::alloc::vec::Vec<logprobs_result::TopCandidates>,

@@ -73,6 +73,18 @@ pub struct ListOperationsRequest {
     /// The standard list page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// When set to `true`, operations that are reachable are returned as normal,
+    /// and those that are unreachable are returned in the
+    /// \[ListOperationsResponse.unreachable\] field.
+    ///
+    /// This can only be `true` when reading across collections e.g. when `parent`
+    /// is set to `"projects/example/locations/-"`.
+    ///
+    /// This field is not by default supported and will result in an
+    /// `UNIMPLEMENTED` error if set unless explicitly documented otherwise in
+    /// service or product specific documentation.
+    #[prost(bool, tag = "5")]
+    pub return_partial_success: bool,
 }
 /// The response message for
 /// \[Operations.ListOperations\]\[google.longrunning.Operations.ListOperations\].
@@ -84,6 +96,12 @@ pub struct ListOperationsResponse {
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Unreachable resources. Populated when the request sets
+    /// `ListOperationsRequest.return_partial_success` and reads across
+    /// collections e.g. when attempting to list all resources across all supported
+    /// locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for
 /// \[Operations.CancelOperation\]\[google.longrunning.Operations.CancelOperation\].

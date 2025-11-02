@@ -30,9 +30,13 @@ pub struct ReplicationCycle {
     /// State of the ReplicationCycle.
     #[prost(enumeration = "replication_cycle::State", tag = "11")]
     pub state: i32,
-    /// Provides details on the state of the cycle in case of an error.
+    /// Output only. Provides details on the state of the cycle in case of an
+    /// error.
     #[prost(message, optional, tag = "12")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Warnings that occurred during the cycle.
+    #[prost(message, repeated, tag = "14")]
+    pub warnings: ::prost::alloc::vec::Vec<MigrationWarning>,
 }
 /// Nested message and enum types in `ReplicationCycle`.
 pub mod replication_cycle {
@@ -186,10 +190,14 @@ pub struct MigratingVm {
     /// Output only. The last time the migrating VM state was updated.
     #[prost(message, optional, tag = "22")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The percentage progress of the current running replication
-    /// cycle.
+    /// Output only. Details of the current running replication cycle.
     #[prost(message, optional, tag = "13")]
     pub current_sync_info: ::core::option::Option<ReplicationCycle>,
+    /// Output only. Details of the last replication cycle. This will be updated
+    /// whenever a replication cycle is finished and is not to be confused with
+    /// last_sync which is only updated on successful replication cycles.
+    #[prost(message, optional, tag = "32")]
+    pub last_replication_cycle: ::core::option::Option<ReplicationCycle>,
     /// Output only. The group this migrating vm is included in, if any. The group
     /// is represented by the full path of the appropriate
     /// \[Group\]\[google.cloud.vmmigration.v1.Group\] resource.
@@ -219,16 +227,37 @@ pub struct MigratingVm {
     /// the "view" parameter of the Get/List request.
     #[prost(message, repeated, tag = "20")]
     pub recent_cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
+    /// Output only. Provides details of future CutoverJobs of a MigratingVm.
+    /// Set to empty when cutover forecast is unavailable.
+    #[prost(message, optional, tag = "33")]
+    pub cutover_forecast: ::core::option::Option<CutoverForecast>,
+    /// Output only. Provides details about the expiration state of the migrating
+    /// VM.
+    #[prost(message, optional, tag = "37")]
+    pub expiration: ::core::option::Option<migrating_vm::Expiration>,
     /// The default configuration of the target VM that will be created in Google
     /// Cloud as a result of the migration.
-    #[prost(oneof = "migrating_vm::TargetVmDefaults", tags = "26")]
+    #[prost(oneof = "migrating_vm::TargetVmDefaults", tags = "26, 34")]
     pub target_vm_defaults: ::core::option::Option<migrating_vm::TargetVmDefaults>,
     /// Details about the source VM.
-    #[prost(oneof = "migrating_vm::SourceVmDetails", tags = "29")]
+    #[prost(oneof = "migrating_vm::SourceVmDetails", tags = "28, 29, 30")]
     pub source_vm_details: ::core::option::Option<migrating_vm::SourceVmDetails>,
 }
 /// Nested message and enum types in `MigratingVm`.
 pub mod migrating_vm {
+    /// Expiration holds information about the expiration of a MigratingVm.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Expiration {
+        /// Output only. Timestamp of when this resource is considered expired.
+        #[prost(message, optional, tag = "1")]
+        pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The number of times expiration was extended.
+        #[prost(int32, tag = "2")]
+        pub extension_count: i32,
+        /// Output only. Describes whether the expiration can be extended.
+        #[prost(bool, tag = "3")]
+        pub extendable: bool,
+    }
     /// The possible values of the state/health of source VM.
     #[derive(
         Clone,
@@ -273,6 +302,13 @@ pub mod migrating_vm {
         /// The replication process encountered an unrecoverable error and was
         /// aborted.
         Error = 13,
+        /// The migrating VM has passed its expiration date. It might be possible to
+        /// bring it back to "Active" state by updating the TTL field. For more
+        /// information, see the documentation.
+        Expired = 14,
+        /// The migrating VM's has been finalized and migration resources have been
+        /// removed.
+        FinalizedExpired = 17,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -293,6 +329,8 @@ pub mod migrating_vm {
                 Self::Finalizing => "FINALIZING",
                 Self::Finalized => "FINALIZED",
                 Self::Error => "ERROR",
+                Self::Expired => "EXPIRED",
+                Self::FinalizedExpired => "FINALIZED_EXPIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -310,6 +348,8 @@ pub mod migrating_vm {
                 "FINALIZING" => Some(Self::Finalizing),
                 "FINALIZED" => Some(Self::Finalized),
                 "ERROR" => Some(Self::Error),
+                "EXPIRED" => Some(Self::Expired),
+                "FINALIZED_EXPIRED" => Some(Self::FinalizedExpired),
                 _ => None,
             }
         }
@@ -321,14 +361,30 @@ pub mod migrating_vm {
         /// Details of the target VM in Compute Engine.
         #[prost(message, tag = "26")]
         ComputeEngineTargetDefaults(super::ComputeEngineTargetDefaults),
+        /// Details of the target Persistent Disks in Compute Engine.
+        #[prost(message, tag = "34")]
+        ComputeEngineDisksTargetDefaults(super::ComputeEngineDisksTargetDefaults),
     }
     /// Details about the source VM.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceVmDetails {
+        /// Output only. Details of the VM from a Vmware source.
+        #[prost(message, tag = "28")]
+        VmwareSourceVmDetails(super::VmwareSourceVmDetails),
         /// Output only. Details of the VM from an AWS source.
         #[prost(message, tag = "29")]
         AwsSourceVmDetails(super::AwsSourceVmDetails),
+        /// Output only. Details of the VM from an Azure source.
+        #[prost(message, tag = "30")]
+        AzureSourceVmDetails(super::AzureSourceVmDetails),
     }
+}
+/// CutoverForecast holds information about future CutoverJobs of a MigratingVm.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CutoverForecast {
+    /// Output only. Estimation of the CutoverJob duration.
+    #[prost(message, optional, tag = "1")]
+    pub estimated_cutover_job_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// CloneJob describes the process of creating a clone of a
 /// \[MigratingVM\]\[google.cloud.vmmigration.v1.MigratingVm\] to the
@@ -366,7 +422,7 @@ pub struct CloneJob {
     #[prost(message, repeated, tag = "23")]
     pub steps: ::prost::alloc::vec::Vec<CloneStep>,
     /// Details of the VM to create as the target of this clone job.
-    #[prost(oneof = "clone_job::TargetVmDetails", tags = "20")]
+    #[prost(oneof = "clone_job::TargetVmDetails", tags = "20, 25")]
     pub target_vm_details: ::core::option::Option<clone_job::TargetVmDetails>,
 }
 /// Nested message and enum types in `CloneJob`.
@@ -441,6 +497,9 @@ pub mod clone_job {
         /// Output only. Details of the target VM in Compute Engine.
         #[prost(message, tag = "20")]
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
+        /// Output only. Details of the target Persistent Disks in Compute Engine.
+        #[prost(message, tag = "25")]
+        ComputeEngineDisksTargetDetails(super::ComputeEngineDisksTargetDetails),
     }
 }
 /// CloneStep holds information about the clone step progress.
@@ -481,7 +540,7 @@ pub struct PreparingVmDisksStep {}
 pub struct InstantiatingMigratedVmStep {}
 /// CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
 /// the operation of shutting down the VM, creating a snapshot and
-/// clonning the VM using the replicated snapshot.
+/// cloning the VM using the replicated snapshot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CutoverJob {
     /// Output only. The time the cutover job was created (as an API call, not when
@@ -515,7 +574,7 @@ pub struct CutoverJob {
     #[prost(message, repeated, tag = "17")]
     pub steps: ::prost::alloc::vec::Vec<CutoverStep>,
     /// Details of the VM to create as the target of this cutover job.
-    #[prost(oneof = "cutover_job::TargetVmDetails", tags = "14")]
+    #[prost(oneof = "cutover_job::TargetVmDetails", tags = "14, 20")]
     pub target_vm_details: ::core::option::Option<cutover_job::TargetVmDetails>,
 }
 /// Nested message and enum types in `CutoverJob`.
@@ -590,6 +649,9 @@ pub mod cutover_job {
         /// Output only. Details of the target VM in Compute Engine.
         #[prost(message, tag = "14")]
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
+        /// Output only. Details of the target Persistent Disks in Compute Engine.
+        #[prost(message, tag = "20")]
+        ComputeEngineDisksTargetDetails(super::ComputeEngineDisksTargetDetails),
     }
 }
 /// CutoverStep holds information about the cutover step progress.
@@ -645,8 +707,8 @@ pub struct CreateCloneJobRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -735,7 +797,11 @@ pub struct Source {
     /// User-provided description of the source.
     #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
-    #[prost(oneof = "source::SourceDetails", tags = "10, 12")]
+    /// Optional. Immutable. The encryption details of the source data stored by
+    /// the service.
+    #[prost(message, optional, tag = "14")]
+    pub encryption: ::core::option::Option<Encryption>,
+    #[prost(oneof = "source::SourceDetails", tags = "10, 12, 13")]
     pub source_details: ::core::option::Option<source::SourceDetails>,
 }
 /// Nested message and enum types in `Source`.
@@ -748,7 +814,18 @@ pub mod source {
         /// AWS type source details.
         #[prost(message, tag = "12")]
         Aws(super::AwsSourceDetails),
+        /// Azure type source details.
+        #[prost(message, tag = "13")]
+        Azure(super::AzureSourceDetails),
     }
+}
+/// Encryption message describes the details of the applied encryption.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Encryption {
+    /// Required. The name of the encryption key that is stored in Google Cloud
+    /// KMS.
+    #[prost(string, tag = "1")]
+    pub kms_key: ::prost::alloc::string::String,
 }
 /// VmwareSourceDetails message describes a specific source details for the
 /// vmware source type.
@@ -767,6 +844,9 @@ pub struct VmwareSourceDetails {
     /// The thumbprint representing the certificate for the vcenter.
     #[prost(string, tag = "4")]
     pub thumbprint: ::prost::alloc::string::String,
+    /// The hostname of the vcenter.
+    #[prost(string, tag = "5")]
+    pub resolved_vcenter_host: ::prost::alloc::string::String,
 }
 /// AwsSourceDetails message describes a specific source details for the
 /// AWS source type.
@@ -818,14 +898,19 @@ pub mod aws_source_details {
         /// Input only. AWS secret access key.
         #[prost(string, tag = "2")]
         pub secret_access_key: ::prost::alloc::string::String,
+        /// Input only. AWS session token.
+        /// Used only when AWS security token service (STS) is responsible for
+        /// creating the temporary credentials.
+        #[prost(string, tag = "3")]
+        pub session_token: ::prost::alloc::string::String,
     }
     /// Tag is an AWS tag representation.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Tag {
-        /// Key of tag.
+        /// Required. Key of tag.
         #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
-        /// Value of tag.
+        /// Required. Value of tag.
         #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
     }
@@ -884,6 +969,112 @@ pub mod aws_source_details {
         /// AWS Credentials using access key id and secret.
         #[prost(message, tag = "11")]
         AccessKeyCreds(AccessKeyCredentials),
+    }
+}
+/// AzureSourceDetails message describes a specific source details for the
+/// Azure source type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureSourceDetails {
+    /// Immutable. Azure subscription ID.
+    #[prost(string, tag = "1")]
+    pub subscription_id: ::prost::alloc::string::String,
+    /// Immutable. The Azure location (region) that the source VMs will be migrated
+    /// from.
+    #[prost(string, tag = "5")]
+    pub azure_location: ::prost::alloc::string::String,
+    /// Output only. State of the source as determined by the health check.
+    #[prost(enumeration = "azure_source_details::State", tag = "6")]
+    pub state: i32,
+    /// Output only. Provides details on the state of the Source in case of an
+    /// error.
+    #[prost(message, optional, tag = "7")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// User specified tags to add to every M2VM generated resource in Azure.
+    /// These tags will be set in addition to the default tags that are set as part
+    /// of the migration process. The tags must not begin with the reserved prefix
+    /// `m4ce` or `m2vm`.
+    #[prost(map = "string, string", tag = "8")]
+    pub migration_resources_user_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The ID of the Azure resource group that contains all resources
+    /// related to the migration process of this source.
+    #[prost(string, tag = "10")]
+    pub resource_group_id: ::prost::alloc::string::String,
+    #[prost(oneof = "azure_source_details::CredentialsType", tags = "9")]
+    pub credentials_type: ::core::option::Option<azure_source_details::CredentialsType>,
+}
+/// Nested message and enum types in `AzureSourceDetails`.
+pub mod azure_source_details {
+    /// Message describing Azure Credentials using tenant ID, client ID and secret.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ClientSecretCredentials {
+        /// Azure tenant ID.
+        #[prost(string, tag = "1")]
+        pub tenant_id: ::prost::alloc::string::String,
+        /// Azure client ID.
+        #[prost(string, tag = "2")]
+        pub client_id: ::prost::alloc::string::String,
+        /// Input only. Azure client secret.
+        #[prost(string, tag = "3")]
+        pub client_secret: ::prost::alloc::string::String,
+    }
+    /// The possible values of the state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unknown. This is used for API compatibility only and is not
+        /// used by the system.
+        Unspecified = 0,
+        /// The state was not sampled by the health checks yet.
+        Pending = 1,
+        /// The source is available but might not be usable yet due to invalid
+        /// credentials or another reason.
+        /// The error message will contain further details.
+        Failed = 2,
+        /// The source exists and its credentials were verified.
+        Active = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Failed => "FAILED",
+                Self::Active => "ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "FAILED" => Some(Self::Failed),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
+    }
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum CredentialsType {
+        /// Azure Credentials using tenant ID, client ID and secret.
+        #[prost(message, tag = "9")]
+        ClientSecretCreds(ClientSecretCredentials),
     }
 }
 /// DatacenterConnector message describes a connector between the Source and
@@ -1013,7 +1204,8 @@ pub struct UpgradeStatus {
     /// The state of the upgradeAppliance operation.
     #[prost(enumeration = "upgrade_status::State", tag = "2")]
     pub state: i32,
-    /// Provides details on the state of the upgrade operation in case of an error.
+    /// Output only. Provides details on the state of the upgrade operation in case
+    /// of an error.
     #[prost(message, optional, tag = "3")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The time the operation was started.
@@ -1073,7 +1265,7 @@ pub mod upgrade_status {
         }
     }
 }
-/// Holds informatiom about the available versions for upgrade.
+/// Holds information about the available versions for upgrade.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvailableUpdates {
     /// The newest deployable version of the appliance.
@@ -1167,8 +1359,8 @@ pub struct CreateSourceRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1196,8 +1388,8 @@ pub struct UpdateSourceRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1218,8 +1410,8 @@ pub struct DeleteSourceRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1283,6 +1475,9 @@ pub struct VmwareVmDetails {
     /// Output only. The VM Boot Option.
     #[prost(enumeration = "vmware_vm_details::BootOption", tag = "13")]
     pub boot_option: i32,
+    /// Output only. The CPU architecture.
+    #[prost(enumeration = "vmware_vm_details::VmArchitecture", tag = "14")]
+    pub architecture: i32,
 }
 /// Nested message and enum types in `VmwareVmDetails`.
 pub mod vmware_vm_details {
@@ -1376,6 +1571,49 @@ pub mod vmware_vm_details {
             }
         }
     }
+    /// Possible values for the VM architecture.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VmArchitecture {
+        /// The architecture is unknown.
+        Unspecified = 0,
+        /// The architecture is one of the x86 architectures.
+        X86Family = 1,
+        /// The architecture is ARM64.
+        Arm64 = 2,
+    }
+    impl VmArchitecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VM_ARCHITECTURE_UNSPECIFIED",
+                Self::X86Family => "VM_ARCHITECTURE_X86_FAMILY",
+                Self::Arm64 => "VM_ARCHITECTURE_ARM64",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VM_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VM_ARCHITECTURE_X86_FAMILY" => Some(Self::X86Family),
+                "VM_ARCHITECTURE_ARM64" => Some(Self::Arm64),
+                _ => None,
+            }
+        }
+    }
 }
 /// AwsVmDetails describes a VM in AWS.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1395,7 +1633,7 @@ pub struct AwsVmDetails {
     /// Output only. The power state of the VM at the moment list was taken.
     #[prost(enumeration = "aws_vm_details::PowerState", tag = "5")]
     pub power_state: i32,
-    /// The number of cpus the VM has.
+    /// The number of CPU cores the VM has.
     #[prost(int32, tag = "6")]
     pub cpu_count: i32,
     /// The memory size of the VM in MB.
@@ -1437,6 +1675,10 @@ pub struct AwsVmDetails {
     /// The CPU architecture.
     #[prost(enumeration = "aws_vm_details::VmArchitecture", tag = "18")]
     pub architecture: i32,
+    /// The number of vCPUs the VM has. It is calculated as the
+    /// number of CPU cores * threads per CPU the VM has.
+    #[prost(int32, tag = "19")]
+    pub vcpu_count: i32,
 }
 /// Nested message and enum types in `AwsVmDetails`.
 pub mod aws_vm_details {
@@ -1640,6 +1882,250 @@ pub struct AwsSecurityGroup {
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
+/// AzureVmDetails describes a VM in Azure.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureVmDetails {
+    /// The VM full path in Azure.
+    #[prost(string, tag = "1")]
+    pub vm_id: ::prost::alloc::string::String,
+    /// The power state of the VM at the moment list was taken.
+    #[prost(enumeration = "azure_vm_details::PowerState", tag = "2")]
+    pub power_state: i32,
+    /// VM size as configured in Azure. Determines the VM's hardware spec.
+    #[prost(string, tag = "3")]
+    pub vm_size: ::prost::alloc::string::String,
+    /// The number of cpus the VM has.
+    #[prost(int32, tag = "4")]
+    pub cpu_count: i32,
+    /// The memory size of the VM in MB.
+    #[prost(int32, tag = "5")]
+    pub memory_mb: i32,
+    /// The number of disks the VM has, including OS disk.
+    #[prost(int32, tag = "6")]
+    pub disk_count: i32,
+    /// The total size of the storage allocated to the VM in MB.
+    #[prost(int64, tag = "7")]
+    pub committed_storage_mb: i64,
+    /// Description of the OS disk.
+    #[prost(message, optional, tag = "8")]
+    pub os_disk: ::core::option::Option<azure_vm_details::OsDisk>,
+    /// Description of the data disks.
+    #[prost(message, repeated, tag = "9")]
+    pub disks: ::prost::alloc::vec::Vec<azure_vm_details::Disk>,
+    /// Description of the OS.
+    #[prost(message, optional, tag = "10")]
+    pub os_description: ::core::option::Option<azure_vm_details::OsDescription>,
+    /// The VM Boot Option.
+    #[prost(enumeration = "azure_vm_details::BootOption", tag = "11")]
+    pub boot_option: i32,
+    /// The tags of the VM.
+    #[prost(map = "string, string", tag = "12")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The VM's ComputerName.
+    #[prost(string, tag = "13")]
+    pub computer_name: ::prost::alloc::string::String,
+    /// The CPU architecture.
+    #[prost(enumeration = "azure_vm_details::VmArchitecture", tag = "14")]
+    pub architecture: i32,
+}
+/// Nested message and enum types in `AzureVmDetails`.
+pub mod azure_vm_details {
+    /// A message describing the OS disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OsDisk {
+        /// The disk's type.
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
+        /// The disk's full name.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+        /// The disk's size in GB.
+        #[prost(int32, tag = "3")]
+        pub size_gb: i32,
+    }
+    /// A message describing a data disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Disk {
+        /// The disk name.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The disk size in GB.
+        #[prost(int32, tag = "2")]
+        pub size_gb: i32,
+        /// The disk's Logical Unit Number (LUN).
+        #[prost(int32, tag = "3")]
+        pub lun: i32,
+    }
+    /// A message describing the VM's OS. Including OS, Publisher, Offer and Plan
+    /// if applicable.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OsDescription {
+        /// OS type.
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
+        /// OS publisher.
+        #[prost(string, tag = "2")]
+        pub publisher: ::prost::alloc::string::String,
+        /// OS offer.
+        #[prost(string, tag = "3")]
+        pub offer: ::prost::alloc::string::String,
+        /// OS plan.
+        #[prost(string, tag = "4")]
+        pub plan: ::prost::alloc::string::String,
+    }
+    /// Possible values for the power state of the VM.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PowerState {
+        /// Power state is not specified.
+        Unspecified = 0,
+        /// The VM is starting.
+        Starting = 1,
+        /// The VM is running.
+        Running = 2,
+        /// The VM is stopping.
+        Stopping = 3,
+        /// The VM is stopped.
+        Stopped = 4,
+        /// The VM is deallocating.
+        Deallocating = 5,
+        /// The VM is deallocated.
+        Deallocated = 6,
+        /// The VM's power state is unknown.
+        Unknown = 7,
+    }
+    impl PowerState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POWER_STATE_UNSPECIFIED",
+                Self::Starting => "STARTING",
+                Self::Running => "RUNNING",
+                Self::Stopping => "STOPPING",
+                Self::Stopped => "STOPPED",
+                Self::Deallocating => "DEALLOCATING",
+                Self::Deallocated => "DEALLOCATED",
+                Self::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POWER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTING" => Some(Self::Starting),
+                "RUNNING" => Some(Self::Running),
+                "STOPPING" => Some(Self::Stopping),
+                "STOPPED" => Some(Self::Stopped),
+                "DEALLOCATING" => Some(Self::Deallocating),
+                "DEALLOCATED" => Some(Self::Deallocated),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
+    }
+    /// The possible values for the vm boot option.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BootOption {
+        /// The boot option is unknown.
+        Unspecified = 0,
+        /// The boot option is UEFI.
+        Efi = 1,
+        /// The boot option is BIOS.
+        Bios = 2,
+    }
+    impl BootOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BOOT_OPTION_UNSPECIFIED",
+                Self::Efi => "EFI",
+                Self::Bios => "BIOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFI" => Some(Self::Efi),
+                "BIOS" => Some(Self::Bios),
+                _ => None,
+            }
+        }
+    }
+    /// Possible values for the VM architecture.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VmArchitecture {
+        /// The architecture is unknown.
+        Unspecified = 0,
+        /// The architecture is one of the x86 architectures.
+        X86Family = 1,
+        /// The architecture is ARM64.
+        Arm64 = 2,
+    }
+    impl VmArchitecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VM_ARCHITECTURE_UNSPECIFIED",
+                Self::X86Family => "VM_ARCHITECTURE_X86_FAMILY",
+                Self::Arm64 => "VM_ARCHITECTURE_ARM64",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VM_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VM_ARCHITECTURE_X86_FAMILY" => Some(Self::X86Family),
+                "VM_ARCHITECTURE_ARM64" => Some(Self::Arm64),
+                _ => None,
+            }
+        }
+    }
+}
 /// VmwareVmsDetails describes VMs in vCenter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareVmsDetails {
@@ -1654,6 +2140,13 @@ pub struct AwsVmsDetails {
     #[prost(message, repeated, tag = "1")]
     pub details: ::prost::alloc::vec::Vec<AwsVmDetails>,
 }
+/// AzureVmsDetails describes VMs in Azure.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureVmsDetails {
+    /// The details of the Azure VMs.
+    #[prost(message, repeated, tag = "1")]
+    pub details: ::prost::alloc::vec::Vec<AzureVmDetails>,
+}
 /// Response message for
 /// \[fetchInventory\]\[google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1662,7 +2155,7 @@ pub struct FetchInventoryResponse {
     /// is from the cache).
     #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "fetch_inventory_response::SourceVms", tags = "1, 3")]
+    #[prost(oneof = "fetch_inventory_response::SourceVms", tags = "1, 3, 5")]
     pub source_vms: ::core::option::Option<fetch_inventory_response::SourceVms>,
 }
 /// Nested message and enum types in `FetchInventoryResponse`.
@@ -1675,6 +2168,115 @@ pub mod fetch_inventory_response {
         /// The description of the VMs in a Source of type AWS.
         #[prost(message, tag = "3")]
         AwsVms(super::AwsVmsDetails),
+        /// The description of the VMs in a Source of type Azure.
+        #[prost(message, tag = "5")]
+        AzureVms(super::AzureVmsDetails),
+    }
+}
+/// Request message for
+/// \[fetchStorageInventory\]\[google.cloud.vmmigration.v1.VmMigration.FetchStorageInventory\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchStorageInventoryRequest {
+    /// Required. The name of the Source.
+    #[prost(string, tag = "1")]
+    pub source: ::prost::alloc::string::String,
+    /// Required. The type of the storage inventory to fetch.
+    #[prost(enumeration = "fetch_storage_inventory_request::StorageType", tag = "2")]
+    pub r#type: i32,
+    /// Optional. If this flag is set to true, the source will be queried instead
+    /// of using cached results. Using this flag will make the call slower.
+    #[prost(bool, tag = "3")]
+    pub force_refresh: bool,
+    /// Optional. The maximum number of VMs to return. The service may return
+    /// fewer than this value.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `FetchStorageInventory`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `FetchStorageInventory` must match the call
+    /// that provided the page token.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `FetchStorageInventoryRequest`.
+pub mod fetch_storage_inventory_request {
+    /// The type of the storage inventory to fetch.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageType {
+        /// The type is unspecified.
+        Unspecified = 0,
+        /// The type is disks.
+        Disks = 1,
+        /// The type is snapshots.
+        Snapshots = 2,
+    }
+    impl StorageType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::Disks => "DISKS",
+                Self::Snapshots => "SNAPSHOTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISKS" => Some(Self::Disks),
+                "SNAPSHOTS" => Some(Self::Snapshots),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message for
+/// \[fetchStorageInventory\]\[google.cloud.vmmigration.v1.VmMigration.FetchStorageInventory\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchStorageInventoryResponse {
+    /// The list of storage resources in the source.
+    #[prost(message, repeated, tag = "1")]
+    pub resources: ::prost::alloc::vec::Vec<SourceStorageResource>,
+    /// Output only. The timestamp when the source was last queried (if the result
+    /// is from the cache).
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// SourceStorageResource describes a storage resource in the source.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceStorageResource {
+    /// Source storage resource details.
+    #[prost(oneof = "source_storage_resource::StorageResource", tags = "1")]
+    pub storage_resource: ::core::option::Option<
+        source_storage_resource::StorageResource,
+    >,
+}
+/// Nested message and enum types in `SourceStorageResource`.
+pub mod source_storage_resource {
+    /// Source storage resource details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StorageResource {
+        /// Source AWS volume details.
+        #[prost(message, tag = "1")]
+        AwsDiskDetails(super::AwsSourceDiskDetails),
     }
 }
 /// Utilization report details the utilization (CPU, memory, etc.) of selected
@@ -1945,8 +2547,8 @@ pub struct CreateUtilizationReportRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1967,8 +2569,8 @@ pub struct DeleteUtilizationReportRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2019,8 +2621,8 @@ pub struct CreateDatacenterConnectorRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2041,8 +2643,8 @@ pub struct DeleteDatacenterConnectorRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2063,8 +2665,8 @@ pub struct UpgradeApplianceRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2124,13 +2726,13 @@ pub struct ComputeEngineTargetDefaults {
     /// The machine type to create the VM with.
     #[prost(string, tag = "5")]
     pub machine_type: ::prost::alloc::string::String,
-    /// A map of network tags to associate with the VM.
+    /// A list of network tags to associate with the VM.
     #[prost(string, repeated, tag = "6")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of NICs connected to this VM.
     #[prost(message, repeated, tag = "7")]
     pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
-    /// The service account to associate the VM with.
+    /// Optional. The service account to associate the VM with.
     #[prost(string, tag = "8")]
     pub service_account: ::prost::alloc::string::String,
     /// The disk type to use in the VM.
@@ -2152,10 +2754,19 @@ pub struct ComputeEngineTargetDefaults {
     #[prost(message, optional, tag = "13")]
     pub compute_scheduling: ::core::option::Option<ComputeScheduling>,
     /// Defines whether the instance has Secure Boot enabled.
-    /// This can be set to true only if the vm boot option is EFI.
+    /// This can be set to true only if the VM boot option is EFI.
     #[prost(bool, tag = "14")]
     pub secure_boot: bool,
-    /// Output only. The VM Boot Option, as set in the source vm.
+    /// Optional. Defines whether the instance has vTPM enabled.
+    /// This can be set to true only if the VM boot option is EFI.
+    #[prost(bool, tag = "21")]
+    pub enable_vtpm: bool,
+    /// Optional. Defines whether the instance has integrity monitoring enabled.
+    /// This can be set to true only if the VM boot option is EFI, and vTPM is
+    /// enabled.
+    #[prost(bool, tag = "22")]
+    pub enable_integrity_monitoring: bool,
+    /// Output only. The VM Boot Option, as set in the source VM.
     #[prost(enumeration = "ComputeEngineBootOption", tag = "15")]
     pub boot_option: i32,
     /// The metadata key/value pairs to assign to the VM.
@@ -2170,6 +2781,25 @@ pub struct ComputeEngineTargetDefaults {
     /// The hostname to assign to the VM.
     #[prost(string, tag = "18")]
     pub hostname: ::prost::alloc::string::String,
+    /// Optional. Immutable. The encryption to apply to the VM disks.
+    #[prost(message, optional, tag = "19")]
+    pub encryption: ::core::option::Option<Encryption>,
+    /// Optional. By default the virtual machine will keep its existing boot
+    /// option. Setting this property will trigger an internal process which will
+    /// convert the virtual machine from using the existing boot option to another.
+    #[prost(enumeration = "BootConversion", tag = "20")]
+    pub boot_conversion: i32,
+    /// Optional. Additional replica zones of the target regional disks.
+    /// If this list is not empty a regional disk will be created. The first
+    /// supported zone would be the one stated in the
+    /// \[zone\]\[google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.zone\] field.
+    /// The rest are taken from this list. Please refer to the [regional disk
+    /// creation
+    /// API](<https://cloud.google.com/compute/docs/regions-zones/global-regional-zonal-resources>)
+    /// for further details about regional vs zonal disks. If not specified, a
+    /// zonal disk will be created in the same zone the VM is created.
+    #[prost(string, repeated, tag = "24")]
+    pub disk_replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// ComputeEngineTargetDetails is a collection of details for creating a VM in a
 /// target Compute Engine project.
@@ -2190,7 +2820,7 @@ pub struct ComputeEngineTargetDetails {
     /// The machine type to create the VM with.
     #[prost(string, tag = "5")]
     pub machine_type: ::prost::alloc::string::String,
-    /// A map of network tags to associate with the VM.
+    /// A list of network tags to associate with the VM.
     #[prost(string, repeated, tag = "6")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of NICs connected to this VM.
@@ -2218,10 +2848,16 @@ pub struct ComputeEngineTargetDetails {
     #[prost(message, optional, tag = "13")]
     pub compute_scheduling: ::core::option::Option<ComputeScheduling>,
     /// Defines whether the instance has Secure Boot enabled.
-    /// This can be set to true only if the vm boot option is EFI.
+    /// This can be set to true only if the VM boot option is EFI.
     #[prost(bool, tag = "14")]
     pub secure_boot: bool,
-    /// The VM Boot Option, as set in the source vm.
+    /// Optional. Defines whether the instance has vTPM enabled.
+    #[prost(bool, tag = "21")]
+    pub enable_vtpm: bool,
+    /// Optional. Defines whether the instance has integrity monitoring enabled.
+    #[prost(bool, tag = "22")]
+    pub enable_integrity_monitoring: bool,
+    /// The VM Boot Option, as set in the source VM.
     #[prost(enumeration = "ComputeEngineBootOption", tag = "15")]
     pub boot_option: i32,
     /// The metadata key/value pairs to assign to the VM.
@@ -2236,24 +2872,48 @@ pub struct ComputeEngineTargetDetails {
     /// The hostname to assign to the VM.
     #[prost(string, tag = "18")]
     pub hostname: ::prost::alloc::string::String,
+    /// Optional. The encryption to apply to the VM disks.
+    #[prost(message, optional, tag = "19")]
+    pub encryption: ::core::option::Option<Encryption>,
+    /// Optional. By default the virtual machine will keep its existing boot
+    /// option. Setting this property will trigger an internal process which will
+    /// convert the virtual machine from using the existing boot option to another.
+    #[prost(enumeration = "BootConversion", tag = "20")]
+    pub boot_conversion: i32,
+    /// Optional. Additional replica zones of the target regional disks.
+    /// If this list is not empty a regional disk will be created. The first
+    /// supported zone would be the one stated in the
+    /// \[zone\]\[google.cloud.vmmigration.v1.ComputeEngineTargetDetails.zone\] field.
+    /// The rest are taken from this list. Please refer to the [regional disk
+    /// creation
+    /// API](<https://cloud.google.com/compute/docs/regions-zones/global-regional-zonal-resources>)
+    /// for further details about regional vs zonal disks. If not specified, a
+    /// zonal disk will be created in the same zone the VM is created.
+    #[prost(string, repeated, tag = "24")]
+    pub disk_replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// NetworkInterface represents a NIC of a VM.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkInterface {
-    /// The network to connect the NIC to.
+    /// Optional. The network to connect the NIC to.
     #[prost(string, tag = "1")]
     pub network: ::prost::alloc::string::String,
-    /// The subnetwork to connect the NIC to.
+    /// Optional. The subnetwork to connect the NIC to.
     #[prost(string, tag = "2")]
     pub subnetwork: ::prost::alloc::string::String,
-    /// The internal IP to define in the NIC.
+    /// Optional. The internal IP to define in the NIC.
     /// The formats accepted are: `ephemeral` \ ipv4 address \ a named address
     /// resource full path.
     #[prost(string, tag = "3")]
     pub internal_ip: ::prost::alloc::string::String,
-    /// The external IP to define in the NIC.
+    /// Optional. The external IP to define in the NIC.
     #[prost(string, tag = "4")]
     pub external_ip: ::prost::alloc::string::String,
+    /// Optional. The networking tier used for optimizing connectivity between
+    /// instances and systems on the internet. Applies only for external ephemeral
+    /// IP addresses. If left empty, will default to PREMIUM.
+    #[prost(enumeration = "ComputeEngineNetworkTier", tag = "5")]
+    pub network_tier: i32,
 }
 /// AppliedLicense holds the license data returned by adaptation module report.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2380,6 +3040,8 @@ pub mod scheduling_node_affinity {
 }
 /// Scheduling information for VM on maintenance/restart behaviour and
 /// node allocation in sole tenant nodes.
+/// Options for instance behavior when the host machine undergoes
+/// maintenance that may temporarily impact instance performance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeScheduling {
     /// How the instance should behave when the host machine undergoes
@@ -2495,6 +3157,229 @@ pub mod compute_scheduling {
         }
     }
 }
+/// ComputeEngineDisksTargetDefaults is a collection of details for creating
+/// Persistent Disks in a target Compute Engine project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeEngineDisksTargetDefaults {
+    /// The full path of the resource of type TargetProject which represents the
+    /// Compute Engine project in which to create the Persistent Disks.
+    #[prost(string, tag = "1")]
+    pub target_project: ::prost::alloc::string::String,
+    /// The details of each Persistent Disk to create.
+    #[prost(message, repeated, tag = "4")]
+    pub disks: ::prost::alloc::vec::Vec<PersistentDiskDefaults>,
+    #[prost(oneof = "compute_engine_disks_target_defaults::Location", tags = "2")]
+    pub location: ::core::option::Option<compute_engine_disks_target_defaults::Location>,
+    /// Details of the VM to attach the disks to as the target of this migration.
+    #[prost(oneof = "compute_engine_disks_target_defaults::VmTarget", tags = "5, 6")]
+    pub vm_target: ::core::option::Option<
+        compute_engine_disks_target_defaults::VmTarget,
+    >,
+}
+/// Nested message and enum types in `ComputeEngineDisksTargetDefaults`.
+pub mod compute_engine_disks_target_defaults {
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Location {
+        /// The zone in which to create the Persistent Disks.
+        #[prost(string, tag = "2")]
+        Zone(::prost::alloc::string::String),
+    }
+    /// Details of the VM to attach the disks to as the target of this migration.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum VmTarget {
+        /// Details of the disk only migration target.
+        #[prost(message, tag = "5")]
+        DisksTargetDefaults(super::DisksMigrationDisksTargetDefaults),
+        /// Details of the VM migration target.
+        #[prost(message, tag = "6")]
+        VmTargetDefaults(super::DisksMigrationVmTargetDefaults),
+    }
+}
+/// Details for creation of a Persistent Disk.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersistentDiskDefaults {
+    /// Required. The ordinal number of the source VM disk.
+    #[prost(int32, tag = "1")]
+    pub source_disk_number: i32,
+    /// Optional. The name of the Persistent Disk to create.
+    #[prost(string, tag = "2")]
+    pub disk_name: ::prost::alloc::string::String,
+    /// The disk type to use.
+    #[prost(enumeration = "ComputeEngineDiskType", tag = "3")]
+    pub disk_type: i32,
+    /// A map of labels to associate with the Persistent Disk.
+    #[prost(map = "string, string", tag = "4")]
+    pub additional_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The encryption to apply to the disk.
+    #[prost(message, optional, tag = "5")]
+    pub encryption: ::core::option::Option<Encryption>,
+    /// Optional. Details for attachment of the disk to a VM.
+    /// Used when the disk is set to be attached to a target VM.
+    #[prost(message, optional, tag = "6")]
+    pub vm_attachment_details: ::core::option::Option<VmAttachmentDetails>,
+}
+/// Details for attachment of the disk to a VM.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VmAttachmentDetails {
+    /// Optional. Specifies a unique device name of your choice that is reflected
+    /// into the /dev/disk/by-id/google-\* tree of a Linux operating system running
+    /// within the instance. If not specified, the server chooses a default device
+    /// name to apply to this disk, in the form persistent-disk-x, where x is a
+    /// number assigned by Google Compute Engine. This field is only applicable for
+    /// persistent disks.
+    #[prost(string, tag = "1")]
+    pub device_name: ::prost::alloc::string::String,
+}
+/// Details for a disk only migration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisksMigrationDisksTargetDefaults {}
+/// Details for creation of a VM that migrated data disks will be attached to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisksMigrationVmTargetDefaults {
+    /// Required. The name of the VM to create.
+    #[prost(string, tag = "1")]
+    pub vm_name: ::prost::alloc::string::String,
+    /// Optional. The machine type series to create the VM with.
+    /// For presentation only.
+    #[prost(string, tag = "2")]
+    pub machine_type_series: ::prost::alloc::string::String,
+    /// Required. The machine type to create the VM with.
+    #[prost(string, tag = "3")]
+    pub machine_type: ::prost::alloc::string::String,
+    /// Optional. A list of network tags to associate with the VM.
+    #[prost(string, repeated, tag = "4")]
+    pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. NICs to attach to the VM.
+    #[prost(message, repeated, tag = "5")]
+    pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
+    /// Optional. The service account to associate the VM with.
+    #[prost(string, tag = "6")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Optional. Compute instance scheduling information (if empty default is
+    /// used).
+    #[prost(message, optional, tag = "7")]
+    pub compute_scheduling: ::core::option::Option<ComputeScheduling>,
+    /// Optional. Defines whether the instance has Secure Boot enabled.
+    /// This can be set to true only if the VM boot option is EFI.
+    #[prost(bool, tag = "8")]
+    pub secure_boot: bool,
+    /// Optional. Defines whether the instance has vTPM enabled.
+    #[prost(bool, tag = "16")]
+    pub enable_vtpm: bool,
+    /// Optional. Defines whether the instance has integrity monitoring enabled.
+    #[prost(bool, tag = "17")]
+    pub enable_integrity_monitoring: bool,
+    /// Optional. The metadata key/value pairs to assign to the VM.
+    #[prost(map = "string, string", tag = "10")]
+    pub metadata: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Additional licenses to assign to the VM.
+    #[prost(string, repeated, tag = "11")]
+    pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The hostname to assign to the VM.
+    #[prost(string, tag = "12")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. A map of labels to associate with the VM.
+    #[prost(map = "string, string", tag = "13")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Details of the boot disk of the VM.
+    #[prost(message, optional, tag = "14")]
+    pub boot_disk_defaults: ::core::option::Option<BootDiskDefaults>,
+    /// Optional. The encryption to apply to the VM.
+    #[prost(message, optional, tag = "15")]
+    pub encryption: ::core::option::Option<Encryption>,
+}
+/// BootDiskDefaults hold information about the boot disk of a VM.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BootDiskDefaults {
+    /// Optional. The name of the disk.
+    #[prost(string, tag = "1")]
+    pub disk_name: ::prost::alloc::string::String,
+    /// Optional. The type of disk provisioning to use for the VM.
+    #[prost(enumeration = "ComputeEngineDiskType", tag = "2")]
+    pub disk_type: i32,
+    /// Optional. Specifies a unique device name of your choice that is reflected
+    /// into the /dev/disk/by-id/google-\* tree of a Linux operating system running
+    /// within the instance. If not specified, the server chooses a default device
+    /// name to apply to this disk, in the form persistent-disk-x, where x is a
+    /// number assigned by Google Compute Engine. This field is only applicable for
+    /// persistent disks.
+    #[prost(string, tag = "4")]
+    pub device_name: ::prost::alloc::string::String,
+    /// Optional. The encryption to apply to the boot disk.
+    #[prost(message, optional, tag = "5")]
+    pub encryption: ::core::option::Option<Encryption>,
+    #[prost(oneof = "boot_disk_defaults::Source", tags = "3")]
+    pub source: ::core::option::Option<boot_disk_defaults::Source>,
+}
+/// Nested message and enum types in `BootDiskDefaults`.
+pub mod boot_disk_defaults {
+    /// Contains details about the image source used to create the disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DiskImageDefaults {
+        /// Required. The Image resource used when creating the disk.
+        #[prost(string, tag = "1")]
+        pub source_image: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// The image to use when creating the disk.
+        #[prost(message, tag = "3")]
+        Image(DiskImageDefaults),
+    }
+}
+/// ComputeEngineDisksTargetDetails is a collection of created Persistent Disks
+/// details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeEngineDisksTargetDetails {
+    /// The details of each created Persistent Disk.
+    #[prost(message, repeated, tag = "1")]
+    pub disks: ::prost::alloc::vec::Vec<PersistentDisk>,
+    /// Details of the VM the disks are attached to.
+    #[prost(oneof = "compute_engine_disks_target_details::VmTarget", tags = "5, 6")]
+    pub vm_target: ::core::option::Option<compute_engine_disks_target_details::VmTarget>,
+}
+/// Nested message and enum types in `ComputeEngineDisksTargetDetails`.
+pub mod compute_engine_disks_target_details {
+    /// Details of the VM the disks are attached to.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum VmTarget {
+        /// Details of the disks-only migration target.
+        #[prost(message, tag = "5")]
+        DisksTargetDetails(super::DisksMigrationDisksTargetDetails),
+        /// Details for the VM the migrated data disks are attached to.
+        #[prost(message, tag = "6")]
+        VmTargetDetails(super::DisksMigrationVmTargetDetails),
+    }
+}
+/// Details of a created Persistent Disk.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PersistentDisk {
+    /// The ordinal number of the source VM disk.
+    #[prost(int32, tag = "1")]
+    pub source_disk_number: i32,
+    /// The URI of the Persistent Disk.
+    #[prost(string, tag = "2")]
+    pub disk_uri: ::prost::alloc::string::String,
+}
+/// Details for a disks-only migration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisksMigrationDisksTargetDetails {}
+/// Details for the VM created VM as part of disks migration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisksMigrationVmTargetDetails {
+    /// Output only. The URI of the Compute Engine VM.
+    #[prost(string, tag = "1")]
+    pub vm_uri: ::prost::alloc::string::String,
+}
 /// A policy for scheduling replications.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchedulePolicy {
@@ -2524,8 +3409,8 @@ pub struct CreateMigratingVmRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2606,8 +3491,8 @@ pub struct UpdateMigratingVmRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2661,6 +3546,16 @@ pub struct FinalizeMigrationRequest {
     #[prost(string, tag = "1")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
+/// Request message for 'ExtendMigrationRequest' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExtendMigrationRequest {
+    /// Required. The name of the MigratingVm.
+    #[prost(string, tag = "1")]
+    pub migrating_vm: ::prost::alloc::string::String,
+}
+/// Response message for 'ExtendMigration' request.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExtendMigrationResponse {}
 /// Response message for 'FinalizeMigration' request.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FinalizeMigrationResponse {}
@@ -2671,7 +3566,7 @@ pub struct TargetProject {
     /// Output only. The name of the target project.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The target project ID (number) or project name.
+    /// Required. The target project ID (number) or project name.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
     /// The target project's description.
@@ -2749,8 +3644,8 @@ pub struct CreateTargetProjectRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2778,8 +3673,8 @@ pub struct UpdateTargetProjectRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2800,8 +3695,8 @@ pub struct DeleteTargetProjectRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2830,6 +3725,55 @@ pub struct Group {
     /// Display name is a user defined name for this group which can be updated.
     #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
+    /// Immutable. The target type of this group.
+    #[prost(enumeration = "group::MigrationTargetType", tag = "6")]
+    pub migration_target_type: i32,
+}
+/// Nested message and enum types in `Group`.
+pub mod group {
+    /// The possible types of the group.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MigrationTargetType {
+        /// Group type is not specified. This defaults to Compute Engine targets.
+        Unspecified = 0,
+        /// All MigratingVMs in the group must have Compute Engine targets.
+        Gce = 1,
+        /// All MigratingVMs in the group must have Compute Engine Disks targets.
+        Disks = 2,
+    }
+    impl MigrationTargetType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MIGRATION_TARGET_TYPE_UNSPECIFIED",
+                Self::Gce => "MIGRATION_TARGET_TYPE_GCE",
+                Self::Disks => "MIGRATION_TARGET_TYPE_DISKS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MIGRATION_TARGET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIGRATION_TARGET_TYPE_GCE" => Some(Self::Gce),
+                "MIGRATION_TARGET_TYPE_DISKS" => Some(Self::Disks),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request message for 'ListGroups' request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2895,8 +3839,8 @@ pub struct CreateGroupRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2924,8 +3868,8 @@ pub struct UpdateGroupRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2946,8 +3890,8 @@ pub struct DeleteGroupRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -3000,8 +3944,8 @@ pub struct CreateCutoverJobRequest {
     /// the request if it has already been completed. The server will guarantee
     /// that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -3139,26 +4083,35 @@ pub mod migration_error {
     pub enum ErrorCode {
         /// Default value. This value is not used.
         Unspecified = 0,
-        /// Migrate for Compute encountered an unknown error.
+        /// Migrate to Virtual Machines encountered an unknown error.
         UnknownError = 1,
-        /// Migrate for Compute encountered an error while validating replication
-        /// source health.
+        /// Migrate to Virtual Machines encountered an error while validating
+        /// replication source health.
         SourceValidationError = 2,
-        /// Migrate for Compute encountered an error during source data operation.
+        /// Migrate to Virtual Machines encountered an error during source data
+        /// operation.
         SourceReplicationError = 3,
-        /// Migrate for Compute encountered an error during target data operation.
+        /// Migrate to Virtual Machines encountered an error during target data
+        /// operation.
         TargetReplicationError = 4,
-        /// Migrate for Compute encountered an error during OS adaptation.
+        /// Migrate to Virtual Machines encountered an error during OS adaptation.
         OsAdaptationError = 5,
-        /// Migrate for Compute encountered an error in clone operation.
+        /// Migrate to Virtual Machines encountered an error in clone operation.
         CloneError = 6,
-        /// Migrate for Compute encountered an error in cutover operation.
+        /// Migrate to Virtual Machines encountered an error in cutover operation.
         CutoverError = 7,
-        /// Migrate for Compute encountered an error during utilization report
-        /// creation.
+        /// Migrate to Virtual Machines encountered an error during utilization
+        /// report creation.
         UtilizationReportError = 8,
-        /// Migrate for Compute encountered an error during appliance upgrade.
+        /// Migrate to Virtual Machines encountered an error during appliance
+        /// upgrade.
         ApplianceUpgradeError = 9,
+        /// Migrate to Virtual Machines encountered an error in image import
+        /// operation.
+        ImageImportError = 10,
+        /// Migrate to Virtual Machines encountered an error in disk migration
+        /// operation.
+        DiskMigrationError = 11,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3177,6 +4130,8 @@ pub mod migration_error {
                 Self::CutoverError => "CUTOVER_ERROR",
                 Self::UtilizationReportError => "UTILIZATION_REPORT_ERROR",
                 Self::ApplianceUpgradeError => "APPLIANCE_UPGRADE_ERROR",
+                Self::ImageImportError => "IMAGE_IMPORT_ERROR",
+                Self::DiskMigrationError => "DISK_MIGRATION_ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3192,24 +4147,273 @@ pub mod migration_error {
                 "CUTOVER_ERROR" => Some(Self::CutoverError),
                 "UTILIZATION_REPORT_ERROR" => Some(Self::UtilizationReportError),
                 "APPLIANCE_UPGRADE_ERROR" => Some(Self::ApplianceUpgradeError),
+                "IMAGE_IMPORT_ERROR" => Some(Self::ImageImportError),
+                "DISK_MIGRATION_ERROR" => Some(Self::DiskMigrationError),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents migration resource warning information that can be used with
+/// google.rpc.Status message. MigrationWarning is used to present the user with
+/// warning information in migration operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationWarning {
+    /// The warning code.
+    #[prost(enumeration = "migration_warning::WarningCode", tag = "1")]
+    pub code: i32,
+    /// Output only. The localized warning message.
+    #[prost(message, optional, tag = "2")]
+    pub warning_message: ::core::option::Option<
+        super::super::super::rpc::LocalizedMessage,
+    >,
+    /// Output only. Suggested action for solving the warning.
+    #[prost(message, optional, tag = "3")]
+    pub action_item: ::core::option::Option<super::super::super::rpc::LocalizedMessage>,
+    /// Output only. URL(s) pointing to additional information on handling the
+    /// current warning.
+    #[prost(message, repeated, tag = "4")]
+    pub help_links: ::prost::alloc::vec::Vec<super::super::super::rpc::help::Link>,
+    /// The time the warning occurred.
+    #[prost(message, optional, tag = "5")]
+    pub warning_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `MigrationWarning`.
+pub mod migration_warning {
+    /// Represents possible warning codes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum WarningCode {
+        /// Default value. This value is not used.
+        Unspecified = 0,
+        /// A warning originated from OS Adaptation.
+        AdaptationWarning = 1,
+    }
+    impl WarningCode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "WARNING_CODE_UNSPECIFIED",
+                Self::AdaptationWarning => "ADAPTATION_WARNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WARNING_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADAPTATION_WARNING" => Some(Self::AdaptationWarning),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represent the source Vmware VM details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VmwareSourceVmDetails {
+    /// Output only. The firmware type of the source VM.
+    #[prost(enumeration = "vmware_source_vm_details::Firmware", tag = "1")]
+    pub firmware: i32,
+    /// Output only. The total size of the disks being migrated in bytes.
+    #[prost(int64, tag = "2")]
+    pub committed_storage_bytes: i64,
+    /// Output only. The disks attached to the source VM.
+    #[prost(message, repeated, tag = "3")]
+    pub disks: ::prost::alloc::vec::Vec<vmware_source_vm_details::VmwareDiskDetails>,
+    /// Output only. Information about VM capabilities needed for some Compute
+    /// Engine features.
+    #[prost(message, optional, tag = "5")]
+    pub vm_capabilities_info: ::core::option::Option<VmCapabilities>,
+    /// Output only. The VM architecture.
+    #[prost(enumeration = "VmArchitecture", tag = "6")]
+    pub architecture: i32,
+}
+/// Nested message and enum types in `VmwareSourceVmDetails`.
+pub mod vmware_source_vm_details {
+    /// The details of a Vmware VM disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct VmwareDiskDetails {
+        /// Output only. The ordinal number of the disk.
+        #[prost(int32, tag = "1")]
+        pub disk_number: i32,
+        /// Output only. Size in GB.
+        #[prost(int64, tag = "2")]
+        pub size_gb: i64,
+        /// Output only. The disk label.
+        #[prost(string, tag = "3")]
+        pub label: ::prost::alloc::string::String,
+    }
+    /// Possible values for Vmware VM firmware.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Firmware {
+        /// The firmware is unknown.
+        Unspecified = 0,
+        /// The firmware is EFI.
+        Efi = 1,
+        /// The firmware is BIOS.
+        Bios = 2,
+    }
+    impl Firmware {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FIRMWARE_UNSPECIFIED",
+                Self::Efi => "EFI",
+                Self::Bios => "BIOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIRMWARE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFI" => Some(Self::Efi),
+                "BIOS" => Some(Self::Bios),
                 _ => None,
             }
         }
     }
 }
 /// Represent the source AWS VM details.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsSourceVmDetails {
-    /// The firmware type of the source VM.
+    /// Output only. The firmware type of the source VM.
     #[prost(enumeration = "aws_source_vm_details::Firmware", tag = "1")]
     pub firmware: i32,
-    /// The total size of the disks being migrated in bytes.
+    /// Output only. The total size of the disks being migrated in bytes.
     #[prost(int64, tag = "2")]
     pub committed_storage_bytes: i64,
+    /// Output only. The disks attached to the source VM.
+    #[prost(message, repeated, tag = "3")]
+    pub disks: ::prost::alloc::vec::Vec<aws_source_vm_details::AwsDiskDetails>,
+    /// Output only. Information about VM capabilities needed for some Compute
+    /// Engine features.
+    #[prost(message, optional, tag = "5")]
+    pub vm_capabilities_info: ::core::option::Option<VmCapabilities>,
+    /// Output only. The VM architecture.
+    #[prost(enumeration = "VmArchitecture", tag = "6")]
+    pub architecture: i32,
 }
 /// Nested message and enum types in `AwsSourceVmDetails`.
 pub mod aws_source_vm_details {
+    /// The details of an AWS instance disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AwsDiskDetails {
+        /// Output only. The ordinal number of the disk.
+        #[prost(int32, tag = "1")]
+        pub disk_number: i32,
+        /// Output only. AWS volume ID.
+        #[prost(string, tag = "2")]
+        pub volume_id: ::prost::alloc::string::String,
+        /// Output only. Size in GB.
+        #[prost(int64, tag = "3")]
+        pub size_gb: i64,
+    }
     /// Possible values for AWS VM firmware.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Firmware {
+        /// The firmware is unknown.
+        Unspecified = 0,
+        /// The firmware is EFI.
+        Efi = 1,
+        /// The firmware is BIOS.
+        Bios = 2,
+    }
+    impl Firmware {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FIRMWARE_UNSPECIFIED",
+                Self::Efi => "EFI",
+                Self::Bios => "BIOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIRMWARE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFI" => Some(Self::Efi),
+                "BIOS" => Some(Self::Bios),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represent the source Azure VM details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureSourceVmDetails {
+    /// Output only. The firmware type of the source VM.
+    #[prost(enumeration = "azure_source_vm_details::Firmware", tag = "1")]
+    pub firmware: i32,
+    /// Output only. The total size of the disks being migrated in bytes.
+    #[prost(int64, tag = "2")]
+    pub committed_storage_bytes: i64,
+    /// Output only. The disks attached to the source VM.
+    #[prost(message, repeated, tag = "3")]
+    pub disks: ::prost::alloc::vec::Vec<azure_source_vm_details::AzureDiskDetails>,
+    /// Output only. Information about VM capabilities needed for some Compute
+    /// Engine features.
+    #[prost(message, optional, tag = "5")]
+    pub vm_capabilities_info: ::core::option::Option<VmCapabilities>,
+    /// Output only. The VM architecture.
+    #[prost(enumeration = "VmArchitecture", tag = "6")]
+    pub architecture: i32,
+}
+/// Nested message and enum types in `AzureSourceVmDetails`.
+pub mod azure_source_vm_details {
+    /// The details of an Azure VM disk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AzureDiskDetails {
+        /// Output only. The ordinal number of the disk.
+        #[prost(int32, tag = "1")]
+        pub disk_number: i32,
+        /// Output only. Azure disk ID.
+        #[prost(string, tag = "2")]
+        pub disk_id: ::prost::alloc::string::String,
+        /// Output only. Size in GB.
+        #[prost(int64, tag = "3")]
+        pub size_gb: i64,
+    }
+    /// Possible values for Azure VM firmware.
     #[derive(
         Clone,
         Copy,
@@ -3300,6 +4504,1231 @@ pub struct GetReplicationCycleRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Migrating VM source information about the VM capabilities needed for some
+/// Compute Engine features.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VmCapabilities {
+    /// Output only. Unordered list. List of certain VM OS capabilities needed for
+    /// some Compute Engine features.
+    #[prost(enumeration = "OsCapability", repeated, packed = "false", tag = "1")]
+    pub os_capabilities: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The last time OS capabilities list was updated.
+    #[prost(message, optional, tag = "2")]
+    pub last_os_capabilities_update_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
+}
+/// ImageImport describes the configuration of the image import to run.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageImport {
+    /// Output only. The resource path of the ImageImport.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time the image import was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The result of the most recent runs for this ImageImport. All
+    /// jobs for this ImageImport can be listed via ListImageImportJobs.
+    #[prost(message, repeated, tag = "5")]
+    pub recent_image_import_jobs: ::prost::alloc::vec::Vec<ImageImportJob>,
+    /// Immutable. The encryption details used by the image import process during
+    /// the image adaptation for Compute Engine.
+    #[prost(message, optional, tag = "6")]
+    pub encryption: ::core::option::Option<Encryption>,
+    #[prost(oneof = "image_import::Source", tags = "2")]
+    pub source: ::core::option::Option<image_import::Source>,
+    /// The configuration of the resources that will be created in GCP as a result
+    /// of the ImageImport.
+    #[prost(oneof = "image_import::TargetDefaults", tags = "4, 7")]
+    pub target_defaults: ::core::option::Option<image_import::TargetDefaults>,
+}
+/// Nested message and enum types in `ImageImport`.
+pub mod image_import {
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Immutable. The path to the Cloud Storage file from which the image should
+        /// be imported.
+        #[prost(string, tag = "2")]
+        CloudStorageUri(::prost::alloc::string::String),
+    }
+    /// The configuration of the resources that will be created in GCP as a result
+    /// of the ImageImport.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TargetDefaults {
+        /// Immutable. Target details for importing a disk image, will be used by
+        /// ImageImportJob.
+        #[prost(message, tag = "4")]
+        DiskImageTargetDefaults(super::DiskImageTargetDetails),
+        /// Immutable. Target details for importing a machine image, will be used by
+        /// ImageImportJob.
+        #[prost(message, tag = "7")]
+        MachineImageTargetDefaults(super::MachineImageTargetDetails),
+    }
+}
+/// ImageImportJob describes the progress and result of an image import.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageImportJob {
+    /// Output only. The resource path of the ImageImportJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The resource paths of the resources created by the image
+    /// import job.
+    #[prost(string, repeated, tag = "2")]
+    pub created_resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The state of the image import.
+    #[prost(enumeration = "image_import_job::State", tag = "4")]
+    pub state: i32,
+    /// Output only. The time the image import was created (as an API call, not
+    /// when it was actually created in the target).
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the image import was ended.
+    #[prost(message, optional, tag = "6")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Provides details on the error that led to the image import
+    /// state in case of an error.
+    #[prost(message, repeated, tag = "7")]
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Output only. Warnings that occurred during the image import.
+    #[prost(message, repeated, tag = "8")]
+    pub warnings: ::prost::alloc::vec::Vec<MigrationWarning>,
+    /// Output only. The image import steps list representing its progress.
+    #[prost(message, repeated, tag = "9")]
+    pub steps: ::prost::alloc::vec::Vec<ImageImportStep>,
+    #[prost(oneof = "image_import_job::Source", tags = "10")]
+    pub source: ::core::option::Option<image_import_job::Source>,
+    /// The configuration of the resources that were created in GCP as a result of
+    /// the image import.
+    #[prost(oneof = "image_import_job::TargetDetails", tags = "3, 11")]
+    pub target_details: ::core::option::Option<image_import_job::TargetDetails>,
+}
+/// Nested message and enum types in `ImageImportJob`.
+pub mod image_import_job {
+    /// Possible states of the image import.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unknown.
+        Unspecified = 0,
+        /// The image import has not yet started.
+        Pending = 1,
+        /// The image import is active and running.
+        Running = 2,
+        /// The image import has finished successfully.
+        Succeeded = 3,
+        /// The image import has finished with errors.
+        Failed = 4,
+        /// The image import is being cancelled.
+        Cancelling = 5,
+        /// The image import was cancelled.
+        Cancelled = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
+    }
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Output only. The path to the Cloud Storage file from which the image
+        /// should be imported.
+        #[prost(string, tag = "10")]
+        CloudStorageUri(::prost::alloc::string::String),
+    }
+    /// The configuration of the resources that were created in GCP as a result of
+    /// the image import.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TargetDetails {
+        /// Output only. Target details used to import a disk image.
+        #[prost(message, tag = "3")]
+        DiskImageTargetDetails(super::DiskImageTargetDetails),
+        /// Output only. Target details used to import a machine image.
+        #[prost(message, tag = "11")]
+        MachineImageTargetDetails(super::MachineImageTargetDetails),
+    }
+}
+/// ImageImportStep holds information about the image import step progress.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageImportStep {
+    /// Output only. The time the step has started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the step has ended.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(oneof = "image_import_step::Step", tags = "3, 4, 5, 6")]
+    pub step: ::core::option::Option<image_import_step::Step>,
+}
+/// Nested message and enum types in `ImageImportStep`.
+pub mod image_import_step {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Step {
+        /// Initializing step.
+        #[prost(message, tag = "3")]
+        Initializing(super::InitializingImageImportStep),
+        /// Loading source files step.
+        #[prost(message, tag = "4")]
+        LoadingSourceFiles(super::LoadingImageSourceFilesStep),
+        /// Adapting OS step.
+        #[prost(message, tag = "5")]
+        AdaptingOs(super::AdaptingOsStep),
+        /// Creating image step.
+        #[prost(message, tag = "6")]
+        CreatingImage(super::CreatingImageStep),
+    }
+}
+/// InitializingImageImportStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InitializingImageImportStep {}
+/// LoadingImageSourceFilesStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LoadingImageSourceFilesStep {}
+/// CreatingImageStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreatingImageStep {}
+/// The target details of the image resource that will be created by the import
+/// job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiskImageTargetDetails {
+    /// Required. The name of the image to be created.
+    #[prost(string, tag = "1")]
+    pub image_name: ::prost::alloc::string::String,
+    /// Required. Reference to the TargetProject resource that represents the
+    /// target project in which the imported image will be created.
+    #[prost(string, tag = "2")]
+    pub target_project: ::prost::alloc::string::String,
+    /// Optional. An optional description of the image.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The name of the image family to which the new image belongs.
+    #[prost(string, tag = "6")]
+    pub family_name: ::prost::alloc::string::String,
+    /// Optional. A map of labels to associate with the image.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Additional licenses to assign to the image.
+    /// Format:
+    /// <https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME>
+    /// Or
+    /// <https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME>
+    #[prost(string, repeated, tag = "8")]
+    pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Set to true to set the image storageLocations to the single
+    /// region of the import job. When false, the closest multi-region is selected.
+    #[prost(bool, tag = "9")]
+    pub single_region_storage: bool,
+    /// Immutable. The encryption to apply to the image.
+    #[prost(message, optional, tag = "10")]
+    pub encryption: ::core::option::Option<Encryption>,
+    #[prost(oneof = "disk_image_target_details::OsAdaptationConfig", tags = "11, 12")]
+    pub os_adaptation_config: ::core::option::Option<
+        disk_image_target_details::OsAdaptationConfig,
+    >,
+}
+/// Nested message and enum types in `DiskImageTargetDetails`.
+pub mod disk_image_target_details {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum OsAdaptationConfig {
+        /// Optional. Use to set the parameters relevant for the OS adaptation
+        /// process.
+        #[prost(message, tag = "11")]
+        OsAdaptationParameters(super::ImageImportOsAdaptationParameters),
+        /// Optional. Use to skip OS adaptation process.
+        #[prost(message, tag = "12")]
+        DataDiskImageImport(super::DataDiskImageImport),
+    }
+}
+/// The target details of the machine image resource that will be created by the
+/// image import job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MachineImageTargetDetails {
+    /// Required. The name of the machine image to be created.
+    #[prost(string, tag = "1")]
+    pub machine_image_name: ::prost::alloc::string::String,
+    /// Required. Reference to the TargetProject resource that represents the
+    /// target project in which the imported machine image will be created.
+    #[prost(string, tag = "2")]
+    pub target_project: ::prost::alloc::string::String,
+    /// Optional. An optional description of the machine image.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set to true to set the machine image storageLocations to the
+    /// single region of the import job. When false, the closest multi-region is
+    /// selected.
+    #[prost(bool, tag = "5")]
+    pub single_region_storage: bool,
+    /// Immutable. The encryption to apply to the machine image.
+    /// If the Image Import resource has an encryption, this field must be set to
+    /// the same encryption key.
+    #[prost(message, optional, tag = "6")]
+    pub encryption: ::core::option::Option<Encryption>,
+    /// Optional. Parameters overriding decisions based on the source machine image
+    /// configurations.
+    #[prost(message, optional, tag = "7")]
+    pub machine_image_parameters_overrides: ::core::option::Option<
+        MachineImageParametersOverrides,
+    >,
+    /// Optional. The service account to assign to the instance created by the
+    /// machine image.
+    #[prost(message, optional, tag = "8")]
+    pub service_account: ::core::option::Option<ServiceAccount>,
+    /// Optional. Additional licenses to assign to the instance created by the
+    /// machine image. Format:
+    /// <https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME>
+    /// Or
+    /// <https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME>
+    #[prost(string, repeated, tag = "9")]
+    pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The labels to apply to the instance created by the machine image.
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The tags to apply to the instance created by the machine image.
+    #[prost(string, repeated, tag = "11")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Shielded instance configuration.
+    #[prost(message, optional, tag = "12")]
+    pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
+    /// Optional. The network interfaces to create with the instance created by the
+    /// machine image. Internal and external IP addresses, and network tiers are
+    /// ignored for machine image import.
+    #[prost(message, repeated, tag = "13")]
+    pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
+    #[prost(oneof = "machine_image_target_details::OsAdaptationConfig", tags = "3, 16")]
+    pub os_adaptation_config: ::core::option::Option<
+        machine_image_target_details::OsAdaptationConfig,
+    >,
+}
+/// Nested message and enum types in `MachineImageTargetDetails`.
+pub mod machine_image_target_details {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum OsAdaptationConfig {
+        /// Optional. Use to set the parameters relevant for the OS adaptation
+        /// process.
+        #[prost(message, tag = "3")]
+        OsAdaptationParameters(super::ImageImportOsAdaptationParameters),
+        /// Optional. Use to skip OS adaptation process.
+        #[prost(message, tag = "16")]
+        SkipOsAdaptation(super::SkipOsAdaptation),
+    }
+}
+/// Service account to assign to the instance created by the machine image.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ServiceAccount {
+    /// Required. The email address of the service account.
+    #[prost(string, tag = "1")]
+    pub email: ::prost::alloc::string::String,
+    /// Optional. The list of scopes to be made available for this service account.
+    #[prost(string, repeated, tag = "2")]
+    pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Shielded instance configuration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ShieldedInstanceConfig {
+    /// Optional. Defines whether the instance created by the machine image has
+    /// Secure Boot enabled. This can be set to true only if the image boot option
+    /// is EFI.
+    #[prost(enumeration = "shielded_instance_config::SecureBoot", tag = "1")]
+    pub secure_boot: i32,
+    /// Optional. Defines whether the instance created by the machine image has
+    /// vTPM enabled. This can be set to true only if the image boot option is EFI.
+    #[prost(bool, tag = "2")]
+    pub enable_vtpm: bool,
+    /// Optional. Defines whether the instance created by the machine image has
+    /// integrity monitoring enabled. This can be set to true only if the image
+    /// boot option is EFI, and vTPM is enabled.
+    #[prost(bool, tag = "3")]
+    pub enable_integrity_monitoring: bool,
+}
+/// Nested message and enum types in `ShieldedInstanceConfig`.
+pub mod shielded_instance_config {
+    /// Possible values for secure boot.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SecureBoot {
+        /// No explicit value is selected. Will use the configuration of the source
+        /// (if exists, otherwise the default will be false).
+        Unspecified = 0,
+        /// Use secure boot. This can be set to true only if the image boot option is
+        /// EFI.
+        True = 1,
+        /// Do not use secure boot.
+        False = 2,
+    }
+    impl SecureBoot {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SECURE_BOOT_UNSPECIFIED",
+                Self::True => "TRUE",
+                Self::False => "FALSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SECURE_BOOT_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRUE" => Some(Self::True),
+                "FALSE" => Some(Self::False),
+                _ => None,
+            }
+        }
+    }
+}
+/// Parameters overriding decisions based on the source machine image
+/// configurations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MachineImageParametersOverrides {
+    /// Optional. The machine type to create the MachineImage with.
+    /// If empty, the service will choose a relevant machine type based on the
+    /// information from the source image.
+    /// For more information about machine types, please refer to
+    /// <https://cloud.google.com/compute/docs/machine-resource.>
+    #[prost(string, tag = "1")]
+    pub machine_type: ::prost::alloc::string::String,
+}
+/// Parameters affecting the OS adaptation process.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageImportOsAdaptationParameters {
+    /// Optional. Set to true in order to generalize the imported image.
+    /// The generalization process enables co-existence of multiple VMs created
+    /// from the same image.
+    /// For Windows, generalizing the image removes computer-specific information
+    /// such as installed drivers and the computer security identifier (SID).
+    #[prost(bool, tag = "1")]
+    pub generalize: bool,
+    /// Optional. Choose which type of license to apply to the imported image.
+    #[prost(enumeration = "ComputeEngineLicenseType", tag = "2")]
+    pub license_type: i32,
+    /// Optional. By default the image will keep its existing boot option. Setting
+    /// this property will trigger an internal process which will convert the
+    /// image from using the existing boot option to another.
+    /// The size of the boot disk might be increased to allow the conversion
+    #[prost(enumeration = "BootConversion", tag = "3")]
+    pub boot_conversion: i32,
+}
+/// Mentions that the image import is not using OS adaptation process.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataDiskImageImport {}
+/// Mentions that the machine image import is not using OS adaptation process.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SkipOsAdaptation {}
+/// Request message for 'GetImageImport' call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetImageImportRequest {
+    /// Required. The ImageImport name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for 'ListImageImports' call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListImageImportsRequest {
+    /// Required. The parent, which owns this collection of targets.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of targets to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 targets will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListImageImports` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListImageImports` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter request (according to <a
+    /// href="<https://google.aip.dev/160"> target="_blank">AIP-160</a>).
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The order by fields for the result (according to <a
+    /// href="<https://google.aip.dev/132#ordering"> target="_blank">AIP-132</a>).
+    /// Currently ordering is only possible by "name" field.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for 'ListImageImports' call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListImageImportsResponse {
+    /// Output only. The list of target response.
+    #[prost(message, repeated, tag = "1")]
+    pub image_imports: ::prost::alloc::vec::Vec<ImageImport>,
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for 'CreateImageImport' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateImageImportRequest {
+    /// Required. The ImageImport's parent.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The image import identifier.
+    /// This value maximum length is 63 characters, and valid characters are
+    /// /\[a-z\]\[0-9\]-/. It must start with an english letter and must not end with a
+    /// hyphen.
+    #[prost(string, tag = "2")]
+    pub image_import_id: ::prost::alloc::string::String,
+    /// Required. The create request body.
+    #[prost(message, optional, tag = "3")]
+    pub image_import: ::core::option::Option<ImageImport>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'DeleteImageImport' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteImageImportRequest {
+    /// Required. The ImageImport name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'GetImageImportJob' call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetImageImportJobRequest {
+    /// Required. The ImageImportJob name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for 'ListImageImportJobs' call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListImageImportJobsRequest {
+    /// Required. The parent, which owns this collection of targets.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of targets to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 targets will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListImageImportJobs`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListImageImportJobs`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter request (according to <a
+    /// href="<https://google.aip.dev/160"> target="_blank">AIP-160</a>).
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The order by fields for the result (according to <a
+    /// href="<https://google.aip.dev/132#ordering"> target="_blank">AIP-132</a>).
+    /// Currently ordering is only possible by "name" field.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for 'ListImageImportJobs' call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListImageImportJobsResponse {
+    /// Output only. The list of target response.
+    #[prost(message, repeated, tag = "1")]
+    pub image_import_jobs: ::prost::alloc::vec::Vec<ImageImportJob>,
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for 'CancelImageImportJob' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelImageImportJobRequest {
+    /// Required. The image import job id.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for 'CancelImageImportJob' request.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelImageImportJobResponse {}
+/// Describes the disk which will be migrated from the source environment.
+/// The source disk has to be unattached.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiskMigrationJob {
+    /// Output only. Identifier. The identifier of the DiskMigrationJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Details of the target Disk in Compute Engine.
+    #[prost(message, optional, tag = "3")]
+    pub target_details: ::core::option::Option<DiskMigrationJobTargetDetails>,
+    /// Output only. The time the DiskMigrationJob resource was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last time the DiskMigrationJob resource was updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. State of the DiskMigrationJob.
+    #[prost(enumeration = "disk_migration_job::State", tag = "6")]
+    pub state: i32,
+    /// Output only. Provides details on the errors that led to the disk migration
+    /// job's state in case of an error.
+    #[prost(message, repeated, tag = "7")]
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Output only. The disk migration steps list representing its progress.
+    #[prost(message, repeated, tag = "8")]
+    pub steps: ::prost::alloc::vec::Vec<DiskMigrationStep>,
+    /// Unattached source disk details.
+    #[prost(oneof = "disk_migration_job::SourceDiskDetails", tags = "2")]
+    pub source_disk_details: ::core::option::Option<
+        disk_migration_job::SourceDiskDetails,
+    >,
+}
+/// Nested message and enum types in `DiskMigrationJob`.
+pub mod disk_migration_job {
+    /// The possible values of the state/health of DiskMigrationJob.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified. This is not in use.
+        Unspecified = 0,
+        /// The initial state of the disk migration.
+        /// In this state the customers can update the target details.
+        Ready = 1,
+        /// The migration is active, and it's running or scheduled to run.
+        Running = 3,
+        /// The migration completed successfully.
+        Succeeded = 4,
+        /// Migration cancellation was initiated.
+        Cancelling = 5,
+        /// The migration was cancelled.
+        Cancelled = 6,
+        /// The migration process encountered an unrecoverable error and was aborted.
+        Failed = 7,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Ready => "READY",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READY" => Some(Self::Ready),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// Unattached source disk details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceDiskDetails {
+        /// Details of the unattached AWS source disk.
+        #[prost(message, tag = "2")]
+        AwsSourceDiskDetails(super::AwsSourceDiskDetails),
+    }
+}
+/// Details of the target disk in Compute Engine.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiskMigrationJobTargetDetails {
+    /// Required. The name of the resource of type TargetProject which represents
+    /// the Compute Engine project in which to create the disk. Should be of the
+    /// form: projects/{project}/locations/global/targetProjects/{target-project}
+    #[prost(string, tag = "2")]
+    pub target_project: ::prost::alloc::string::String,
+    /// Optional. A map of labels to associate with the disk.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The encryption to apply to the disk.
+    /// If the DiskMigrationJob parent Source resource has an encryption, this
+    /// field must be set to the same encryption key.
+    #[prost(message, optional, tag = "7")]
+    pub encryption: ::core::option::Option<Encryption>,
+    /// The target storage.
+    #[prost(oneof = "disk_migration_job_target_details::TargetStorage", tags = "8")]
+    pub target_storage: ::core::option::Option<
+        disk_migration_job_target_details::TargetStorage,
+    >,
+}
+/// Nested message and enum types in `DiskMigrationJobTargetDetails`.
+pub mod disk_migration_job_target_details {
+    /// The target storage.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TargetStorage {
+        /// Required. The target disk.
+        #[prost(message, tag = "8")]
+        TargetDisk(super::ComputeEngineDisk),
+    }
+}
+/// DiskMigrationStep holds information about the disk migration step progress.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DiskMigrationStep {
+    /// Output only. The time the step has started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the step has ended.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The step details.
+    #[prost(oneof = "disk_migration_step::Step", tags = "3, 4, 5")]
+    pub step: ::core::option::Option<disk_migration_step::Step>,
+}
+/// Nested message and enum types in `DiskMigrationStep`.
+pub mod disk_migration_step {
+    /// The step details.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Step {
+        /// Creating source disk snapshot step.
+        #[prost(message, tag = "3")]
+        CreatingSourceDiskSnapshot(super::CreatingSourceDiskSnapshotStep),
+        /// Copying source disk snapshot step.
+        #[prost(message, tag = "4")]
+        CopyingSourceDiskSnapshot(super::CopyingSourceDiskSnapshotStep),
+        /// Creating target disk step.
+        #[prost(message, tag = "5")]
+        ProvisioningTargetDisk(super::ProvisioningTargetDiskStep),
+    }
+}
+/// CreatingSourceDiskSnapshotStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreatingSourceDiskSnapshotStep {}
+/// CopyingSourceDiskSnapshotStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CopyingSourceDiskSnapshotStep {}
+/// ProvisioningTargetDiskStep contains specific step details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ProvisioningTargetDiskStep {}
+/// Compute Engine disk target details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ComputeEngineDisk {
+    /// Optional. Target Compute Engine Disk ID.
+    /// This is the resource ID segment of the Compute Engine Disk to create.
+    /// In the resource name compute/v1/projects/{project}/zones/{zone}/disks/disk1
+    /// "disk1" is the resource ID for the disk.
+    #[prost(string, tag = "1")]
+    pub disk_id: ::prost::alloc::string::String,
+    /// Required. The Compute Engine zone in which to create the disk. Should be of
+    /// the form: projects/{target-project}/locations/{zone}
+    #[prost(string, tag = "2")]
+    pub zone: ::prost::alloc::string::String,
+    /// Optional. Replication zones of the regional disk. Should be of the form:
+    /// projects/{target-project}/locations/{replica-zone}
+    /// Currently only one replica zone is supported.
+    #[prost(string, repeated, tag = "3")]
+    pub replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. The disk type to use.
+    #[prost(enumeration = "ComputeEngineDiskType", tag = "4")]
+    pub disk_type: i32,
+}
+/// Represents the source AWS Disk details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsSourceDiskDetails {
+    /// Required. AWS volume ID.
+    #[prost(string, tag = "1")]
+    pub volume_id: ::prost::alloc::string::String,
+    /// Output only. Size in GiB.
+    #[prost(int64, tag = "2")]
+    pub size_gib: i64,
+    /// Optional. Output only. Disk type.
+    #[prost(enumeration = "aws_source_disk_details::Type", tag = "3")]
+    pub disk_type: i32,
+    /// Optional. Output only. A map of AWS volume tags.
+    #[prost(map = "string, string", tag = "4")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `AwsSourceDiskDetails`.
+pub mod aws_source_disk_details {
+    /// Possible values for disk types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified AWS disk type. Should not be used.
+        Unspecified = 0,
+        /// GP2 disk type.
+        Gp2 = 1,
+        /// GP3 disk type.
+        Gp3 = 2,
+        /// IO1 disk type.
+        Io1 = 3,
+        /// IO2 disk type.
+        Io2 = 4,
+        /// ST1 disk type.
+        St1 = 5,
+        /// SC1 disk type.
+        Sc1 = 6,
+        /// Standard disk type.
+        Standard = 7,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Gp2 => "GP2",
+                Self::Gp3 => "GP3",
+                Self::Io1 => "IO1",
+                Self::Io2 => "IO2",
+                Self::St1 => "ST1",
+                Self::Sc1 => "SC1",
+                Self::Standard => "STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GP2" => Some(Self::Gp2),
+                "GP3" => Some(Self::Gp3),
+                "IO1" => Some(Self::Io1),
+                "IO2" => Some(Self::Io2),
+                "ST1" => Some(Self::St1),
+                "SC1" => Some(Self::Sc1),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for 'CreateDiskMigrationJob' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDiskMigrationJobRequest {
+    /// Required. The DiskMigrationJob's parent.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The DiskMigrationJob identifier.
+    /// The maximum length of this value is 63 characters.
+    /// Valid characters are lower case Latin letters, digits and hyphen.
+    /// It must start with a Latin letter and must not end with a hyphen.
+    #[prost(string, tag = "2")]
+    pub disk_migration_job_id: ::prost::alloc::string::String,
+    /// Required. The create request body.
+    #[prost(message, optional, tag = "3")]
+    pub disk_migration_job: ::core::option::Option<DiskMigrationJob>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request timed out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'ListDiskMigrationJobsRequest' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDiskMigrationJobsRequest {
+    /// Required. The parent, which owns this collection of DiskMigrationJobs.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of disk migration jobs to return. The service
+    /// may return fewer than this value. If unspecified, at most 500
+    /// disk migration jobs will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListDiskMigrationJobs`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all parameters provided to `ListDiskMigrationJobs`
+    /// except `page_size` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter request (according to <a
+    /// href="<https://google.aip.dev/160"> target="_blank">AIP-160</a>).
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Ordering of the result list.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for 'ListDiskMigrationJobs' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDiskMigrationJobsResponse {
+    /// Output only. The list of the disk migration jobs.
+    #[prost(message, repeated, tag = "1")]
+    pub disk_migration_jobs: ::prost::alloc::vec::Vec<DiskMigrationJob>,
+    /// Optional. Output only. A token, which can be sent as `page_token` to
+    /// retrieve the next page. If this field is omitted, there are no subsequent
+    /// pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for 'GetDiskMigrationJob' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDiskMigrationJobRequest {
+    /// Required. The name of the DiskMigrationJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for 'UpdateDiskMigrationJob' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDiskMigrationJobRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// DiskMigrationJob resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask, then a mask equivalent to all fields that are
+    /// populated (have a non-empty value), will be implied.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The update request body.
+    #[prost(message, optional, tag = "2")]
+    pub disk_migration_job: ::core::option::Option<DiskMigrationJob>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request timed out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'DeleteDiskMigrationJob' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDiskMigrationJobRequest {
+    /// Required. The name of the DiskMigrationJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for 'RunDiskMigrationJobRequest' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RunDiskMigrationJobRequest {
+    /// Required. The name of the DiskMigrationJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for 'RunDiskMigrationJob' request.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RunDiskMigrationJobResponse {}
+/// Request message for 'CancelDiskMigrationJob' request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelDiskMigrationJobRequest {
+    /// Required. The name of the DiskMigrationJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for 'CancelDiskMigrationJob' request.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelDiskMigrationJobResponse {}
+/// Types of disks supported for Compute Engine VM.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ComputeEngineDiskType {
+    /// An unspecified disk type. Will be used as STANDARD.
+    Unspecified = 0,
+    /// A Standard disk type.
+    Standard = 1,
+    /// SSD hard disk type.
+    Ssd = 2,
+    /// An alternative to SSD persistent disks that balance performance and
+    /// cost.
+    Balanced = 3,
+    /// Hyperdisk balanced disk type.
+    HyperdiskBalanced = 4,
+}
+impl ComputeEngineDiskType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED",
+            Self::Standard => "COMPUTE_ENGINE_DISK_TYPE_STANDARD",
+            Self::Ssd => "COMPUTE_ENGINE_DISK_TYPE_SSD",
+            Self::Balanced => "COMPUTE_ENGINE_DISK_TYPE_BALANCED",
+            Self::HyperdiskBalanced => "COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPUTE_ENGINE_DISK_TYPE_STANDARD" => Some(Self::Standard),
+            "COMPUTE_ENGINE_DISK_TYPE_SSD" => Some(Self::Ssd),
+            "COMPUTE_ENGINE_DISK_TYPE_BALANCED" => Some(Self::Balanced),
+            "COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED" => {
+                Some(Self::HyperdiskBalanced)
+            }
+            _ => None,
+        }
+    }
+}
+/// Types of licenses used in OS adaptation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ComputeEngineLicenseType {
+    /// The license type is the default for the OS.
+    Default = 0,
+    /// The license type is Pay As You Go license type.
+    Payg = 1,
+    /// The license type is Bring Your Own License type.
+    Byol = 2,
+}
+impl ComputeEngineLicenseType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Default => "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT",
+            Self::Payg => "COMPUTE_ENGINE_LICENSE_TYPE_PAYG",
+            Self::Byol => "COMPUTE_ENGINE_LICENSE_TYPE_BYOL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT" => Some(Self::Default),
+            "COMPUTE_ENGINE_LICENSE_TYPE_PAYG" => Some(Self::Payg),
+            "COMPUTE_ENGINE_LICENSE_TYPE_BYOL" => Some(Self::Byol),
+            _ => None,
+        }
+    }
+}
+/// Possible values for vm boot option.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ComputeEngineBootOption {
+    /// The boot option is unknown.
+    Unspecified = 0,
+    /// The boot option is EFI.
+    Efi = 1,
+    /// The boot option is BIOS.
+    Bios = 2,
+}
+impl ComputeEngineBootOption {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED",
+            Self::Efi => "COMPUTE_ENGINE_BOOT_OPTION_EFI",
+            Self::Bios => "COMPUTE_ENGINE_BOOT_OPTION_BIOS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPUTE_ENGINE_BOOT_OPTION_EFI" => Some(Self::Efi),
+            "COMPUTE_ENGINE_BOOT_OPTION_BIOS" => Some(Self::Bios),
+            _ => None,
+        }
+    }
+}
+/// VM operating system (OS) capabilities needed for determining compatibility
+/// with Compute Engine features supported by the migration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum OsCapability {
+    /// This is for API compatibility only and is not in use.
+    Unspecified = 0,
+    /// NVMe driver installed and the VM can use NVMe PD or local SSD.
+    NvmeStorageAccess = 1,
+    /// gVNIC virtual NIC driver supported.
+    GvnicNetworkInterface = 2,
+    /// IDPF virtual NIC driver supported.
+    IdpfNetworkInterface = 3,
+}
+impl OsCapability {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "OS_CAPABILITY_UNSPECIFIED",
+            Self::NvmeStorageAccess => "OS_CAPABILITY_NVME_STORAGE_ACCESS",
+            Self::GvnicNetworkInterface => "OS_CAPABILITY_GVNIC_NETWORK_INTERFACE",
+            Self::IdpfNetworkInterface => "OS_CAPABILITY_IDPF_NETWORK_INTERFACE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OS_CAPABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "OS_CAPABILITY_NVME_STORAGE_ACCESS" => Some(Self::NvmeStorageAccess),
+            "OS_CAPABILITY_GVNIC_NETWORK_INTERFACE" => Some(Self::GvnicNetworkInterface),
+            "OS_CAPABILITY_IDPF_NETWORK_INTERFACE" => Some(Self::IdpfNetworkInterface),
+            _ => None,
+        }
+    }
+}
+/// Possible boot options conversions.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum BootConversion {
+    /// Unspecified conversion type.
+    Unspecified = 0,
+    /// No conversion.
+    None = 1,
+    /// Convert from BIOS to EFI.
+    BiosToEfi = 2,
+}
+impl BootConversion {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "BOOT_CONVERSION_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::BiosToEfi => "BIOS_TO_EFI",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BOOT_CONVERSION_UNSPECIFIED" => Some(Self::Unspecified),
+            "NONE" => Some(Self::None),
+            "BIOS_TO_EFI" => Some(Self::BiosToEfi),
+            _ => None,
+        }
+    }
+}
 /// Controls the level of details of a Utilization Report.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -3371,106 +5800,69 @@ impl MigratingVmView {
         }
     }
 }
-/// Types of disks supported for Compute Engine VM.
+/// Possible values for the VM architecture.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
-pub enum ComputeEngineDiskType {
-    /// An unspecified disk type. Will be used as STANDARD.
+pub enum VmArchitecture {
+    /// The architecture is unknown.
     Unspecified = 0,
-    /// A Standard disk type.
-    Standard = 1,
-    /// SSD hard disk type.
-    Ssd = 2,
-    /// An alternative to SSD persistent disks that balance performance and
-    /// cost.
-    Balanced = 3,
+    /// The architecture is one of the x86 architectures.
+    X86Family = 1,
+    /// The architecture is ARM64.
+    Arm64 = 2,
 }
-impl ComputeEngineDiskType {
+impl VmArchitecture {
     /// String value of the enum field names used in the ProtoBuf definition.
     ///
     /// The values are not transformed in any way and thus are considered stable
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Self::Unspecified => "COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED",
-            Self::Standard => "COMPUTE_ENGINE_DISK_TYPE_STANDARD",
-            Self::Ssd => "COMPUTE_ENGINE_DISK_TYPE_SSD",
-            Self::Balanced => "COMPUTE_ENGINE_DISK_TYPE_BALANCED",
+            Self::Unspecified => "VM_ARCHITECTURE_UNSPECIFIED",
+            Self::X86Family => "VM_ARCHITECTURE_X86_FAMILY",
+            Self::Arm64 => "VM_ARCHITECTURE_ARM64",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
-            "COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "COMPUTE_ENGINE_DISK_TYPE_STANDARD" => Some(Self::Standard),
-            "COMPUTE_ENGINE_DISK_TYPE_SSD" => Some(Self::Ssd),
-            "COMPUTE_ENGINE_DISK_TYPE_BALANCED" => Some(Self::Balanced),
+            "VM_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "VM_ARCHITECTURE_X86_FAMILY" => Some(Self::X86Family),
+            "VM_ARCHITECTURE_ARM64" => Some(Self::Arm64),
             _ => None,
         }
     }
 }
-/// Types of licenses used in OS adaptation.
+/// Describes the networking tier used for configuring network access
+/// configuration.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
-pub enum ComputeEngineLicenseType {
-    /// The license type is the default for the OS.
-    Default = 0,
-    /// The license type is Pay As You Go license type.
-    Payg = 1,
-    /// The license type is Bring Your Own License type.
-    Byol = 2,
-}
-impl ComputeEngineLicenseType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Default => "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT",
-            Self::Payg => "COMPUTE_ENGINE_LICENSE_TYPE_PAYG",
-            Self::Byol => "COMPUTE_ENGINE_LICENSE_TYPE_BYOL",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT" => Some(Self::Default),
-            "COMPUTE_ENGINE_LICENSE_TYPE_PAYG" => Some(Self::Payg),
-            "COMPUTE_ENGINE_LICENSE_TYPE_BYOL" => Some(Self::Byol),
-            _ => None,
-        }
-    }
-}
-/// Possible values for vm boot option.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ComputeEngineBootOption {
-    /// The boot option is unknown.
+pub enum ComputeEngineNetworkTier {
+    /// An unspecified network tier. Will be used as PREMIUM.
     Unspecified = 0,
-    /// The boot option is EFI.
-    Efi = 1,
-    /// The boot option is BIOS.
-    Bios = 2,
+    /// A standard network tier.
+    NetworkTierStandard = 1,
+    /// A premium network tier.
+    NetworkTierPremium = 2,
 }
-impl ComputeEngineBootOption {
+impl ComputeEngineNetworkTier {
     /// String value of the enum field names used in the ProtoBuf definition.
     ///
     /// The values are not transformed in any way and thus are considered stable
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Self::Unspecified => "COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED",
-            Self::Efi => "COMPUTE_ENGINE_BOOT_OPTION_EFI",
-            Self::Bios => "COMPUTE_ENGINE_BOOT_OPTION_BIOS",
+            Self::Unspecified => "COMPUTE_ENGINE_NETWORK_TIER_UNSPECIFIED",
+            Self::NetworkTierStandard => "NETWORK_TIER_STANDARD",
+            Self::NetworkTierPremium => "NETWORK_TIER_PREMIUM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
-            "COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
-            "COMPUTE_ENGINE_BOOT_OPTION_EFI" => Some(Self::Efi),
-            "COMPUTE_ENGINE_BOOT_OPTION_BIOS" => Some(Self::Bios),
+            "COMPUTE_ENGINE_NETWORK_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+            "NETWORK_TIER_STANDARD" => Some(Self::NetworkTierStandard),
+            "NETWORK_TIER_PREMIUM" => Some(Self::NetworkTierPremium),
             _ => None,
         }
     }
@@ -3744,6 +6136,41 @@ pub mod vm_migration_client {
                     GrpcMethod::new(
                         "google.cloud.vmmigration.v1.VmMigration",
                         "FetchInventory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List remote source's inventory of storage resources.
+        /// The remote source is another cloud vendor (e.g. AWS, Azure).
+        /// The inventory describes the list of existing storage resources in that
+        /// source. Note that this operation lists the resources on the remote source,
+        /// as opposed to listing the MigratingVms resources in the vmmigration
+        /// service.
+        pub async fn fetch_storage_inventory(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchStorageInventoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchStorageInventoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/FetchStorageInventory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "FetchStorageInventory",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4293,6 +6720,36 @@ pub mod vm_migration_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Extend the migrating VM time to live.
+        pub async fn extend_migration(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExtendMigrationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/ExtendMigration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ExtendMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Initiates a Clone of a specific migrating VM.
         pub async fn create_clone_job(
             &mut self,
@@ -4353,7 +6810,8 @@ pub mod vm_migration_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists CloneJobs of a given migrating VM.
+        /// Lists the CloneJobs of a migrating VM. Only 25 most recent CloneJobs are
+        /// listed.
         pub async fn list_clone_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCloneJobsRequest>,
@@ -4472,7 +6930,8 @@ pub mod vm_migration_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists CutoverJobs of a given migrating VM.
+        /// Lists the CutoverJobs of a migrating VM. Only 25 most recent CutoverJobs
+        /// are listed.
         pub async fn list_cutover_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCutoverJobsRequest>,
@@ -4954,6 +7413,420 @@ pub mod vm_migration_client {
                     GrpcMethod::new(
                         "google.cloud.vmmigration.v1.VmMigration",
                         "GetReplicationCycle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ImageImports in a given project.
+        pub async fn list_image_imports(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListImageImportsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListImageImportsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/ListImageImports",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListImageImports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ImageImport.
+        pub async fn get_image_import(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetImageImportRequest>,
+        ) -> std::result::Result<tonic::Response<super::ImageImport>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/GetImageImport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetImageImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ImageImport in a given project.
+        pub async fn create_image_import(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateImageImportRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateImageImport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateImageImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ImageImport.
+        pub async fn delete_image_import(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteImageImportRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteImageImport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteImageImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ImageImportJobs in a given project.
+        pub async fn list_image_import_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListImageImportJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListImageImportJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/ListImageImportJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListImageImportJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ImageImportJob.
+        pub async fn get_image_import_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetImageImportJobRequest>,
+        ) -> std::result::Result<tonic::Response<super::ImageImportJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/GetImageImportJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetImageImportJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates the cancellation of a running clone job.
+        pub async fn cancel_image_import_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelImageImportJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelImageImportJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CancelImageImportJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new disk migration job in a given Source.
+        pub async fn create_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateDiskMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists DiskMigrationJobs in a given Source.
+        pub async fn list_disk_migration_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDiskMigrationJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDiskMigrationJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/ListDiskMigrationJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListDiskMigrationJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single DiskMigrationJob.
+        pub async fn get_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DiskMigrationJob>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/GetDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetDiskMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single DiskMigrationJob.
+        pub async fn update_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpdateDiskMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single DiskMigrationJob.
+        pub async fn delete_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteDiskMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Runs the disk migration job.
+        pub async fn run_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/RunDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "RunDiskMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels the disk migration job.
+        pub async fn cancel_disk_migration_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelDiskMigrationJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelDiskMigrationJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CancelDiskMigrationJob",
                     ),
                 );
             self.inner.unary(req, path, codec).await

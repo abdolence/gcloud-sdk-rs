@@ -6749,6 +6749,709 @@ pub mod control_service_client {
         }
     }
 }
+/// Safety settings.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SafetySetting {
+    /// Harm category.
+    #[prost(enumeration = "HarmCategory", tag = "1")]
+    pub category: i32,
+    /// The harm block threshold.
+    #[prost(enumeration = "safety_setting::HarmBlockThreshold", tag = "2")]
+    pub threshold: i32,
+    /// Optional. Specify if the threshold is used for probability or severity
+    /// score. If not specified, the threshold is used for probability score.
+    #[prost(enumeration = "safety_setting::HarmBlockMethod", tag = "3")]
+    pub method: i32,
+}
+/// Nested message and enum types in `SafetySetting`.
+pub mod safety_setting {
+    /// Probability based thresholds levels for blocking.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockThreshold {
+        /// Unspecified harm block threshold.
+        Unspecified = 0,
+        /// Block low threshold and above (i.e. block more).
+        BlockLowAndAbove = 1,
+        /// Block medium threshold and above.
+        BlockMediumAndAbove = 2,
+        /// Block only high threshold (i.e. block less).
+        BlockOnlyHigh = 3,
+        /// Block none.
+        BlockNone = 4,
+        /// Turn off the safety filter.
+        Off = 5,
+    }
+    impl HarmBlockThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                Self::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
+                Self::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
+                Self::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
+                Self::BlockNone => "BLOCK_NONE",
+                Self::Off => "OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
+                "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
+                "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
+                "BLOCK_NONE" => Some(Self::BlockNone),
+                "OFF" => Some(Self::Off),
+                _ => None,
+            }
+        }
+    }
+    /// Probability vs severity.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockMethod {
+        /// The harm block method is unspecified.
+        Unspecified = 0,
+        /// The harm block method uses both probability and severity scores.
+        Severity = 1,
+        /// The harm block method uses the probability score.
+        Probability = 2,
+    }
+    impl HarmBlockMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_BLOCK_METHOD_UNSPECIFIED",
+                Self::Severity => "SEVERITY",
+                Self::Probability => "PROBABILITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEVERITY" => Some(Self::Severity),
+                "PROBABILITY" => Some(Self::Probability),
+                _ => None,
+            }
+        }
+    }
+}
+/// Harm categories that will block the content.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HarmCategory {
+    /// The harm category is unspecified.
+    Unspecified = 0,
+    /// The harm category is hate speech.
+    HateSpeech = 1,
+    /// The harm category is dangerous content.
+    DangerousContent = 2,
+    /// The harm category is harassment.
+    Harassment = 3,
+    /// The harm category is sexually explicit content.
+    SexuallyExplicit = 4,
+    /// The harm category is civic integrity.
+    CivicIntegrity = 5,
+}
+impl HarmCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "HARM_CATEGORY_UNSPECIFIED",
+            Self::HateSpeech => "HARM_CATEGORY_HATE_SPEECH",
+            Self::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
+            Self::Harassment => "HARM_CATEGORY_HARASSMENT",
+            Self::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            Self::CivicIntegrity => "HARM_CATEGORY_CIVIC_INTEGRITY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HARM_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "HARM_CATEGORY_HATE_SPEECH" => Some(Self::HateSpeech),
+            "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
+            "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
+            "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
+            "HARM_CATEGORY_CIVIC_INTEGRITY" => Some(Self::CivicIntegrity),
+            _ => None,
+        }
+    }
+}
+/// Request message for
+/// \[ConversationalSearchService.ConversationalSearch\]\[google.cloud.retail.v2beta.ConversationalSearchService.ConversationalSearch\]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationalSearchRequest {
+    /// Required. The resource name of the search engine placement, such as
+    /// `projects/*/locations/global/catalogs/default_catalog/placements/default_search`
+    /// or
+    /// `projects/*/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config`
+    /// This field is used to identify the serving config name and the set
+    /// of models that will be used to make the search.
+    #[prost(string, tag = "1")]
+    pub placement: ::prost::alloc::string::String,
+    /// Required. The branch resource name, such as
+    /// `projects/*/locations/global/catalogs/default_catalog/branches/0`.
+    ///
+    /// Use "default_branch" as the branch ID or leave this field empty, to search
+    /// products under the default branch.
+    #[prost(string, tag = "2")]
+    pub branch: ::prost::alloc::string::String,
+    /// Optional. Raw search query to be searched for.
+    ///
+    /// If this field is empty, the request is considered a category browsing
+    /// request.
+    #[prost(string, tag = "3")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. The categories associated with a category page. Must be set for
+    /// category navigation queries to achieve good search quality. The format
+    /// should be the same as
+    /// \[UserEvent.page_categories\]\[google.cloud.retail.v2beta.UserEvent.page_categories\];
+    ///
+    /// To represent full path of category, use '>' sign to separate different
+    /// hierarchies. If '>' is part of the category name, replace it with
+    /// other character(s).
+    ///
+    /// Category pages include special pages such as sales or promotions. For
+    /// instance, a special sale page may have the category hierarchy:
+    /// "pageCategories" : \["Sales > 2017 Black Friday Deals"\].
+    #[prost(string, repeated, tag = "4")]
+    pub page_categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. This field specifies the conversation id, which maintains the
+    /// state of the conversation between client side and server side. Use the
+    /// value from the previous
+    /// \[ConversationalSearchResponse.conversation_id\]\[google.cloud.retail.v2beta.ConversationalSearchResponse.conversation_id\].
+    /// For the initial request, this should be empty.
+    #[prost(string, tag = "5")]
+    pub conversation_id: ::prost::alloc::string::String,
+    /// Optional. Search parameters.
+    #[prost(message, optional, tag = "6")]
+    pub search_params: ::core::option::Option<
+        conversational_search_request::SearchParams,
+    >,
+    /// Required. A unique identifier for tracking visitors. For example, this
+    /// could be implemented with an HTTP cookie, which should be able to uniquely
+    /// identify a visitor on a single device. This unique identifier should not
+    /// change if the visitor logs in or out of the website.
+    ///
+    /// This should be the same identifier as
+    /// \[UserEvent.visitor_id\]\[google.cloud.retail.v2beta.UserEvent.visitor_id\].
+    ///
+    /// The field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "9")]
+    pub visitor_id: ::prost::alloc::string::String,
+    /// Optional. User information.
+    #[prost(message, optional, tag = "7")]
+    pub user_info: ::core::option::Option<UserInfo>,
+    /// Optional. This field specifies all conversational filtering related
+    /// parameters.
+    #[prost(message, optional, tag = "8")]
+    pub conversational_filtering_spec: ::core::option::Option<
+        conversational_search_request::ConversationalFilteringSpec,
+    >,
+    /// Optional. The user labels applied to a resource must meet the following
+    /// requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///   characters and cannot be empty. Values can be empty and have a maximum
+    ///   length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///   underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///   international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///   key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "12")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The safety settings to be applied to the generated content.
+    #[prost(message, repeated, tag = "14")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+}
+/// Nested message and enum types in `ConversationalSearchRequest`.
+pub mod conversational_search_request {
+    /// Search parameters.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchParams {
+        /// Optional. The filter string to restrict search results.
+        ///
+        /// The syntax of the filter string is the same as
+        /// \[SearchRequest.filter\]\[google.cloud.retail.v2beta.SearchRequest.filter\].
+        #[prost(string, tag = "1")]
+        pub filter: ::prost::alloc::string::String,
+        /// Optional. The canonical filter string to restrict search results.
+        ///
+        /// The syntax of the canonical filter string is the same as
+        /// \[SearchRequest.canonical_filter\]\[google.cloud.retail.v2beta.SearchRequest.canonical_filter\].
+        #[prost(string, tag = "2")]
+        pub canonical_filter: ::prost::alloc::string::String,
+        /// Optional. The sort string to specify the sorting of search results.
+        ///
+        /// The syntax of the sort string is the same as
+        /// \[SearchRequest.sort\]\[\].
+        #[prost(string, tag = "3")]
+        pub sort_by: ::prost::alloc::string::String,
+        /// Optional. The boost spec to specify the boosting of search results.
+        ///
+        /// The syntax of the boost spec is the same as
+        /// \[SearchRequest.boost_spec\]\[google.cloud.retail.v2beta.SearchRequest.boost_spec\].
+        #[prost(message, optional, tag = "4")]
+        pub boost_spec: ::core::option::Option<super::search_request::BoostSpec>,
+    }
+    /// This field specifies the current user answer during the conversational
+    /// filtering search. This can be either user selected from suggested answers
+    /// or user input plain text.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UserAnswer {
+        /// This field specifies the type of user answer.
+        #[prost(oneof = "user_answer::Type", tags = "1, 2")]
+        pub r#type: ::core::option::Option<user_answer::Type>,
+    }
+    /// Nested message and enum types in `UserAnswer`.
+    pub mod user_answer {
+        /// This field specifies the selected answers during the conversational
+        /// search.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SelectedAnswer {
+            /// Optional. This field specifies the selected answer which is a attribute
+            /// key-value.
+            #[prost(message, optional, tag = "1")]
+            pub product_attribute_value: ::core::option::Option<
+                super::super::ProductAttributeValue,
+            >,
+        }
+        /// This field specifies the type of user answer.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Type {
+            /// This field specifies the incremental input text from the user during
+            /// the conversational search.
+            #[prost(string, tag = "1")]
+            TextAnswer(::prost::alloc::string::String),
+            /// Optional. This field specifies the selected answer during the
+            /// conversational search. This should be a subset of
+            /// \[ConversationalSearchResponse.followup_question.suggested_answers\]\[\].
+            #[prost(message, tag = "2")]
+            SelectedAnswer(SelectedAnswer),
+        }
+    }
+    /// This field specifies all conversational filtering related parameters
+    /// addition to conversational retail search.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ConversationalFilteringSpec {
+        /// Optional. This field is deprecated. Please use
+        /// \[ConversationalFilteringSpec.conversational_filtering_mode\]\[google.cloud.retail.v2beta.ConversationalSearchRequest.ConversationalFilteringSpec.conversational_filtering_mode\]
+        /// instead.
+        #[deprecated]
+        #[prost(bool, tag = "1")]
+        pub enable_conversational_filtering: bool,
+        /// Optional. This field specifies the current user answer during the
+        /// conversational filtering search. It can be either user selected from
+        /// suggested answers or user input plain text.
+        #[prost(message, optional, tag = "2")]
+        pub user_answer: ::core::option::Option<UserAnswer>,
+        /// Optional. Mode to control Conversational Filtering.
+        /// Defaults to
+        /// \[Mode.DISABLED\]\[google.cloud.retail.v2beta.ConversationalSearchRequest.ConversationalFilteringSpec.Mode.DISABLED\]
+        /// if it's unset.
+        #[prost(enumeration = "conversational_filtering_spec::Mode", tag = "4")]
+        pub conversational_filtering_mode: i32,
+    }
+    /// Nested message and enum types in `ConversationalFilteringSpec`.
+    pub mod conversational_filtering_spec {
+        /// Enum to control Conversational Filtering mode.
+        /// A single conversation session including multiple turns supports modes for
+        /// Conversational Search OR Conversational Filtering without
+        /// Conversational Search, but not both.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Mode {
+            /// Default value.
+            Unspecified = 0,
+            /// Disables Conversational Filtering when using Conversational Search.
+            Disabled = 1,
+            /// Enables Conversational Filtering when using Conversational Search.
+            Enabled = 2,
+            /// Enables Conversational Filtering without Conversational Search.
+            ConversationalFilterOnly = 3,
+        }
+        impl Mode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "MODE_UNSPECIFIED",
+                    Self::Disabled => "DISABLED",
+                    Self::Enabled => "ENABLED",
+                    Self::ConversationalFilterOnly => "CONVERSATIONAL_FILTER_ONLY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
+                    "CONVERSATIONAL_FILTER_ONLY" => Some(Self::ConversationalFilterOnly),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Response message for
+/// \[ConversationalSearchService.ConversationalSearch\]\[google.cloud.retail.v2beta.ConversationalSearchService.ConversationalSearch\]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationalSearchResponse {
+    /// The types Retail classifies the search query as.
+    ///
+    /// Supported values are:
+    ///
+    /// * "ORDER_SUPPORT"
+    /// * "SIMPLE_PRODUCT_SEARCH"
+    /// * "INTENT_REFINEMENT"
+    /// * "PRODUCT_DETAILS"
+    /// * "PRODUCT_COMPARISON"
+    /// * "DEALS_AND_COUPONS"
+    /// * "STORE_RELEVANT"
+    /// * "BLOCKLISTED"
+    /// * "BEST_PRODUCT"
+    /// * "RETAIL_SUPPORT"
+    /// * "DISABLED"
+    #[prost(string, repeated, tag = "10")]
+    pub user_query_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The conversational answer-based text response generated by the Server.
+    #[prost(string, tag = "2")]
+    pub conversational_text_response: ::prost::alloc::string::String,
+    /// The conversational followup question generated for Intent refinement.
+    #[prost(message, optional, tag = "3")]
+    pub followup_question: ::core::option::Option<
+        conversational_search_response::FollowupQuestion,
+    >,
+    /// Conversation UUID. This field will be stored in client side storage to
+    /// maintain the conversation session with server and will be used for next
+    /// search request's
+    /// \[ConversationalSearchRequest.conversation_id\]\[google.cloud.retail.v2beta.ConversationalSearchRequest.conversation_id\]
+    /// to restore conversation state in server.
+    #[prost(string, tag = "4")]
+    pub conversation_id: ::prost::alloc::string::String,
+    /// The proposed refined search queries. They can be used to fetch the relevant
+    /// search results. When using CONVERSATIONAL_FILTER_ONLY mode, the
+    /// refined_query from search response will be populated here.
+    #[prost(message, repeated, tag = "6")]
+    pub refined_search: ::prost::alloc::vec::Vec<
+        conversational_search_response::RefinedSearch,
+    >,
+    /// This field specifies all related information that is needed on client
+    /// side for UI rendering of conversational filtering search.
+    #[prost(message, optional, tag = "7")]
+    pub conversational_filtering_result: ::core::option::Option<
+        conversational_search_response::ConversationalFilteringResult,
+    >,
+    /// Output only. The state of the response generation.
+    #[prost(enumeration = "conversational_search_response::State", tag = "9")]
+    pub state: i32,
+}
+/// Nested message and enum types in `ConversationalSearchResponse`.
+pub mod conversational_search_response {
+    /// The conversational followup question generated for Intent refinement.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FollowupQuestion {
+        /// The conversational followup question generated for Intent refinement.
+        #[prost(string, tag = "1")]
+        pub followup_question: ::prost::alloc::string::String,
+        /// The answer options provided to client for the follow-up question.
+        #[prost(message, repeated, tag = "2")]
+        pub suggested_answers: ::prost::alloc::vec::Vec<
+            followup_question::SuggestedAnswer,
+        >,
+    }
+    /// Nested message and enum types in `FollowupQuestion`.
+    pub mod followup_question {
+        /// Suggested answers to the follow-up question.
+        /// If it's numerical attribute, only ProductAttributeInterval will be set.
+        /// If it's textual attribute, only productAttributeValue will be set.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SuggestedAnswer {
+            /// Product attribute value, including an attribute key and an
+            /// attribute value. Other types can be added here in the future.
+            #[prost(message, optional, tag = "1")]
+            pub product_attribute_value: ::core::option::Option<
+                super::super::ProductAttributeValue,
+            >,
+        }
+    }
+    /// The proposed refined search for intent-refinement/bundled shopping
+    /// conversation. When using CONVERSATIONAL_FILTER_ONLY mode, the
+    /// refined_query from search response will be populated here.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RefinedSearch {
+        /// The query to be used for search.
+        #[prost(string, tag = "1")]
+        pub query: ::prost::alloc::string::String,
+    }
+    /// This field specifies all related information that is needed on client
+    /// side for UI rendering of conversational filtering search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationalFilteringResult {
+        /// The conversational filtering question.
+        #[prost(message, optional, tag = "1")]
+        pub followup_question: ::core::option::Option<FollowupQuestion>,
+        /// This is the incremental additional filters implied from the current
+        /// user answer. User should add the suggested addition filters to the
+        /// previous \[ConversationalSearchRequest.search_params.filter\]\[\] and
+        /// \[SearchRequest.filter\]\[google.cloud.retail.v2beta.SearchRequest.filter\],
+        /// and use the merged filter in the follow up requests.
+        #[prost(message, optional, tag = "2")]
+        pub additional_filter: ::core::option::Option<
+            conversational_filtering_result::AdditionalFilter,
+        >,
+    }
+    /// Nested message and enum types in `ConversationalFilteringResult`.
+    pub mod conversational_filtering_result {
+        /// Additional filter that client side need to apply.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct AdditionalFilter {
+            /// Product attribute value, including an attribute key and an
+            /// attribute value. Other types can be added here in the future.
+            #[prost(message, optional, tag = "1")]
+            pub product_attribute_value: ::core::option::Option<
+                super::super::ProductAttributeValue,
+            >,
+        }
+    }
+    /// The state of the response generation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unknown.
+        Unspecified = 0,
+        /// Response generation is being streamed.
+        Streaming = 1,
+        /// Response generation has succeeded.
+        Succeeded = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Streaming => "STREAMING",
+                Self::Succeeded => "SUCCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STREAMING" => Some(Self::Streaming),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
+            }
+        }
+    }
+}
+/// Generated client implementations.
+pub mod conversational_search_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for retail conversational search.
+    ///
+    /// This feature is only available for users who have Retail Conversational
+    /// Search enabled. Enable Retail Conversational Search on Cloud Console
+    /// before using this feature.
+    #[derive(Debug, Clone)]
+    pub struct ConversationalSearchServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ConversationalSearchServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ConversationalSearchServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ConversationalSearchServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ConversationalSearchServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Performs a conversational search.
+        ///
+        /// This feature is only available for users who have Conversational Search
+        /// enabled.
+        pub async fn conversational_search(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ConversationalSearchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::ConversationalSearchResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ConversationalSearchService/ConversationalSearch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ConversationalSearchService",
+                        "ConversationalSearch",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
+    }
+}
 /// Configuration for overall generative question feature state.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerativeQuestionsFeatureConfig {

@@ -266,6 +266,12 @@ pub enum ReportCauseCode {
     RouteInvalidNextHopVpnTunnelDeleted = 5,
     RouteInvalidNextHopIlbBackendIpForwardingDisabled = 6,
     RouteInvalidNextHopIlbVipNotAssigned = 7,
+    RouteInvalidNextHopVmWrongNetwork = 8,
+    RouteInvalidNextHopVmNonPrimaryIp = 9,
+    RouteInvalidNextHopVpnTunnelNotEstablished = 10,
+    RouteInvalidNextHopIpNotAssigned = 11,
+    RouteInvalidNextHopForwardingRuleIpMismatch = 12,
+    RouteInvalidNextHopForwardingRuleTypeInvalid = 13,
     IpUtilizationIpAllocationRatioHigh = 20,
     /// Summary of ip utilization of all subnet ranges in the project.
     IpUtilizationIpAllocationSummary = 21,
@@ -291,6 +297,10 @@ pub enum ReportCauseCode {
     DynamicRouteShadowedFullyShadowedByPeeringSubnetRoute = 802,
     DynamicRouteShadowedFullyShadowedByStaticRoute = 803,
     DynamicRouteShadowedFullyShadowedByPeeringStaticRoute = 804,
+    DynamicRouteShadowedFullyShadowedByNccSubnetRoute = 821,
+    NccDynamicRouteShadowedFullyShadowedBySubnetRoute = 822,
+    NccDynamicRouteShadowedFullyShadowedByPeeringSubnetRoute = 823,
+    NccDynamicRouteShadowedFullyShadowedByStaticRoute = 824,
     DynamicRouteShadowedPartiallyShadowedBySubnetRoute = 805,
     DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute = 806,
     DynamicRouteShadowedPartiallyShadowedByStaticRoute = 807,
@@ -327,6 +337,24 @@ impl ReportCauseCode {
             }
             Self::RouteInvalidNextHopIlbVipNotAssigned => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED"
+            }
+            Self::RouteInvalidNextHopVmWrongNetwork => {
+                "ROUTE_INVALID_NEXT_HOP_VM_WRONG_NETWORK"
+            }
+            Self::RouteInvalidNextHopVmNonPrimaryIp => {
+                "ROUTE_INVALID_NEXT_HOP_VM_NON_PRIMARY_IP"
+            }
+            Self::RouteInvalidNextHopVpnTunnelNotEstablished => {
+                "ROUTE_INVALID_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED"
+            }
+            Self::RouteInvalidNextHopIpNotAssigned => {
+                "ROUTE_INVALID_NEXT_HOP_IP_NOT_ASSIGNED"
+            }
+            Self::RouteInvalidNextHopForwardingRuleIpMismatch => {
+                "ROUTE_INVALID_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH"
+            }
+            Self::RouteInvalidNextHopForwardingRuleTypeInvalid => {
+                "ROUTE_INVALID_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID"
             }
             Self::IpUtilizationIpAllocationRatioHigh => {
                 "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH"
@@ -391,6 +419,18 @@ impl ReportCauseCode {
             Self::DynamicRouteShadowedFullyShadowedByPeeringStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_STATIC_ROUTE"
             }
+            Self::DynamicRouteShadowedFullyShadowedByNccSubnetRoute => {
+                "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_NCC_SUBNET_ROUTE"
+            }
+            Self::NccDynamicRouteShadowedFullyShadowedBySubnetRoute => {
+                "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_SUBNET_ROUTE"
+            }
+            Self::NccDynamicRouteShadowedFullyShadowedByPeeringSubnetRoute => {
+                "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_SUBNET_ROUTE"
+            }
+            Self::NccDynamicRouteShadowedFullyShadowedByStaticRoute => {
+                "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_STATIC_ROUTE"
+            }
             Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE"
             }
@@ -447,6 +487,24 @@ impl ReportCauseCode {
             }
             "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED" => {
                 Some(Self::RouteInvalidNextHopIlbVipNotAssigned)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VM_WRONG_NETWORK" => {
+                Some(Self::RouteInvalidNextHopVmWrongNetwork)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VM_NON_PRIMARY_IP" => {
+                Some(Self::RouteInvalidNextHopVmNonPrimaryIp)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED" => {
+                Some(Self::RouteInvalidNextHopVpnTunnelNotEstablished)
+            }
+            "ROUTE_INVALID_NEXT_HOP_IP_NOT_ASSIGNED" => {
+                Some(Self::RouteInvalidNextHopIpNotAssigned)
+            }
+            "ROUTE_INVALID_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH" => {
+                Some(Self::RouteInvalidNextHopForwardingRuleIpMismatch)
+            }
+            "ROUTE_INVALID_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID" => {
+                Some(Self::RouteInvalidNextHopForwardingRuleTypeInvalid)
             }
             "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH" => {
                 Some(Self::IpUtilizationIpAllocationRatioHigh)
@@ -510,6 +568,18 @@ impl ReportCauseCode {
             }
             "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_STATIC_ROUTE" => {
                 Some(Self::DynamicRouteShadowedFullyShadowedByPeeringStaticRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_NCC_SUBNET_ROUTE" => {
+                Some(Self::DynamicRouteShadowedFullyShadowedByNccSubnetRoute)
+            }
+            "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_SUBNET_ROUTE" => {
+                Some(Self::NccDynamicRouteShadowedFullyShadowedBySubnetRoute)
+            }
+            "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_SUBNET_ROUTE" => {
+                Some(Self::NccDynamicRouteShadowedFullyShadowedByPeeringSubnetRoute)
+            }
+            "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_STATIC_ROUTE" => {
+                Some(Self::NccDynamicRouteShadowedFullyShadowedByStaticRoute)
             }
             "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE" => {
                 Some(Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute)

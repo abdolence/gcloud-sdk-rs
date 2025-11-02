@@ -241,6 +241,99 @@ pub mod authorization_error_enum {
         }
     }
 }
+/// Container for enum describing possible conversion custom variable errors.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConversionCustomVariableErrorEnum {}
+/// Nested message and enum types in `ConversionCustomVariableErrorEnum`.
+pub mod conversion_custom_variable_error_enum {
+    /// Enum describing possible conversion custom variable errors.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCustomVariableError {
+        /// Enum unspecified.
+        Unspecified = 0,
+        /// The received error code is not known in this version.
+        Unknown = 1,
+        /// A conversion custom variable with the specified name already exists.
+        DuplicateName = 2,
+        /// A conversion custom variable with the specified tag already exists.
+        DuplicateTag = 3,
+        /// A conversion custom variable with the specified tag is reserved for other
+        /// uses.
+        ReservedTag = 4,
+        /// The conversion custom variable is not found.
+        NotFound = 5,
+        /// The conversion custom variable is not available for use.
+        NotAvailable = 6,
+        /// The conversion custom variable requested is incompatible with the current
+        /// request.
+        IncompatibleType = 7,
+        /// The conversion custom variable requested is not of type METRIC.
+        InvalidMetric = 8,
+        /// The conversion custom variable's cardinality exceeds the segmentation
+        /// limit.
+        ExceedsCardinalityLimit = 9,
+        /// The conversion custom variable requested is not of type DIMENSION.
+        InvalidDimension = 10,
+        /// The conversion custom variable requested is incompatible with the
+        /// selected resource.
+        IncompatibleWithSelectedResource = 11,
+    }
+    impl ConversionCustomVariableError {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::DuplicateTag => "DUPLICATE_TAG",
+                Self::ReservedTag => "RESERVED_TAG",
+                Self::NotFound => "NOT_FOUND",
+                Self::NotAvailable => "NOT_AVAILABLE",
+                Self::IncompatibleType => "INCOMPATIBLE_TYPE",
+                Self::InvalidMetric => "INVALID_METRIC",
+                Self::ExceedsCardinalityLimit => "EXCEEDS_CARDINALITY_LIMIT",
+                Self::InvalidDimension => "INVALID_DIMENSION",
+                Self::IncompatibleWithSelectedResource => {
+                    "INCOMPATIBLE_WITH_SELECTED_RESOURCE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DUPLICATE_NAME" => Some(Self::DuplicateName),
+                "DUPLICATE_TAG" => Some(Self::DuplicateTag),
+                "RESERVED_TAG" => Some(Self::ReservedTag),
+                "NOT_FOUND" => Some(Self::NotFound),
+                "NOT_AVAILABLE" => Some(Self::NotAvailable),
+                "INCOMPATIBLE_TYPE" => Some(Self::IncompatibleType),
+                "INVALID_METRIC" => Some(Self::InvalidMetric),
+                "EXCEEDS_CARDINALITY_LIMIT" => Some(Self::ExceedsCardinalityLimit),
+                "INVALID_DIMENSION" => Some(Self::InvalidDimension),
+                "INCOMPATIBLE_WITH_SELECTED_RESOURCE" => {
+                    Some(Self::IncompatibleWithSelectedResource)
+                }
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible custom column errors.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomColumnErrorEnum {}
@@ -1379,7 +1472,7 @@ pub struct ErrorCode {
     /// The list of error enums
     #[prost(
         oneof = "error_code::ErrorCode",
-        tags = "1, 5, 9, 10, 11, 17, 33, 34, 35, 66, 118, 144, 175"
+        tags = "1, 5, 9, 10, 11, 17, 33, 34, 35, 143, 66, 118, 144, 175"
     )]
     pub error_code: ::core::option::Option<error_code::ErrorCode>,
 }
@@ -1424,6 +1517,12 @@ pub mod error_code {
         /// The reasons for the distinct error
         #[prost(enumeration = "super::distinct_error_enum::DistinctError", tag = "35")]
         DistinctError(i32),
+        /// The reasons for the conversion custom variable error
+        #[prost(
+            enumeration = "super::conversion_custom_variable_error_enum::ConversionCustomVariableError",
+            tag = "143"
+        )]
+        ConversionCustomVariableError(i32),
         /// The reasons for the header error.
         #[prost(enumeration = "super::header_error_enum::HeaderError", tag = "66")]
         HeaderError(i32),

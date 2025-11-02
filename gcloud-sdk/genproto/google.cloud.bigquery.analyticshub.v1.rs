@@ -564,6 +564,248 @@ pub struct DataExchange {
     #[prost(bool, optional, tag = "10")]
     pub log_linked_dataset_query_user_email: ::core::option::Option<bool>,
 }
+/// A query template is a container for sharing table-valued functions defined by
+/// contributors in a data clean room.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryTemplate {
+    /// Output only. The resource name of the QueryTemplate.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123/queryTemplates/456`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Human-readable display name of the QueryTemplate. The display
+    /// name must contain only Unicode letters, numbers (0-9), underscores (\_),
+    /// dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces.
+    /// Default value is an empty string. Max length: 63 bytes.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Short description of the QueryTemplate. The description must not
+    /// contain Unicode non-characters and C0 and C1 control codes except tabs
+    /// (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
+    /// value is an empty string. Max length: 2000 bytes.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Will be deprecated.
+    /// Email or URL of the primary point of contact of the QueryTemplate.
+    /// Max Length: 1000 bytes.
+    #[prost(string, tag = "4")]
+    pub proposer: ::prost::alloc::string::String,
+    /// Optional. Email or URL of the primary point of contact of the
+    /// QueryTemplate. Max Length: 1000 bytes.
+    #[prost(string, tag = "10")]
+    pub primary_contact: ::prost::alloc::string::String,
+    /// Optional. Documentation describing the QueryTemplate.
+    #[prost(string, tag = "5")]
+    pub documentation: ::prost::alloc::string::String,
+    /// Output only. The QueryTemplate lifecycle state.
+    #[prost(enumeration = "query_template::State", tag = "6")]
+    pub state: i32,
+    /// Optional. The routine associated with the QueryTemplate.
+    #[prost(message, optional, tag = "7")]
+    pub routine: ::core::option::Option<Routine>,
+    /// Output only. Timestamp when the QueryTemplate was created.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the QueryTemplate was last modified.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `QueryTemplate`.
+pub mod query_template {
+    /// The QueryTemplate lifecycle state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The QueryTemplate is in draft state.
+        Drafted = 1,
+        /// The QueryTemplate is in pending state.
+        Pending = 2,
+        /// The QueryTemplate is in deleted state.
+        Deleted = 3,
+        /// The QueryTemplate is in approved state.
+        Approved = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Drafted => "DRAFTED",
+                Self::Pending => "PENDING",
+                Self::Deleted => "DELETED",
+                Self::Approved => "APPROVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRAFTED" => Some(Self::Drafted),
+                "PENDING" => Some(Self::Pending),
+                "DELETED" => Some(Self::Deleted),
+                "APPROVED" => Some(Self::Approved),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents a bigquery routine.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Routine {
+    /// Required. The type of routine.
+    #[prost(enumeration = "routine::RoutineType", tag = "1")]
+    pub routine_type: i32,
+    /// Optional. The definition body of the routine.
+    #[prost(string, tag = "2")]
+    pub definition_body: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Routine`.
+pub mod routine {
+    /// Represents the type of a given routine.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RoutineType {
+        /// Default value.
+        Unspecified = 0,
+        /// Non-built-in persistent TVF.
+        TableValuedFunction = 1,
+    }
+    impl RoutineType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROUTINE_TYPE_UNSPECIFIED",
+                Self::TableValuedFunction => "TABLE_VALUED_FUNCTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROUTINE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE_VALUED_FUNCTION" => Some(Self::TableValuedFunction),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for creating a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateQueryTemplateRequest {
+    /// Required. The parent resource path of the QueryTemplate.
+    /// e.g.
+    /// `projects/myproject/locations/us/dataExchanges/123/queryTemplates/myQueryTemplate`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the QueryTemplate to create.
+    /// Must contain only Unicode letters, numbers (0-9), underscores (\_).
+    /// Max length: 100 bytes.
+    #[prost(string, tag = "2")]
+    pub query_template_id: ::prost::alloc::string::String,
+    /// Required. The QueryTemplate to create.
+    #[prost(message, optional, tag = "3")]
+    pub query_template: ::core::option::Option<QueryTemplate>,
+}
+/// Message for creating a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetQueryTemplateRequest {
+    /// Required. The parent resource path of the QueryTemplate.
+    /// e.g.
+    /// `projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for requesting the list of QueryTemplates.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListQueryTemplatesRequest {
+    /// Required. The parent resource path of the QueryTemplates.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results to return in a single response
+    /// page. Leverage the page tokens to iterate through the entire collection.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token, returned by a previous call, to request the next page
+    /// of results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to the list of QueryTemplates.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQueryTemplatesResponse {
+    /// The list of QueryTemplates.
+    #[prost(message, repeated, tag = "1")]
+    pub query_templates: ::prost::alloc::vec::Vec<QueryTemplate>,
+    /// A token to request the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for updating a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateQueryTemplateRequest {
+    /// Optional. Field mask specifies the fields to update in the query template
+    /// resource. The fields specified in the `updateMask` are relative to the
+    /// resource and are not a full request.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The QueryTemplate to update.
+    #[prost(message, optional, tag = "2")]
+    pub query_template: ::core::option::Option<QueryTemplate>,
+}
+/// Message for deleting a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteQueryTemplateRequest {
+    /// Required. The resource path of the QueryTemplate.
+    /// e.g.
+    /// `projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for submitting a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SubmitQueryTemplateRequest {
+    /// Required. The resource path of the QueryTemplate.
+    /// e.g.
+    /// `projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for approving a QueryTemplate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ApproveQueryTemplateRequest {
+    /// Required. The resource path of the QueryTemplate.
+    /// e.g.
+    /// `projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Sharing environment is a behavior model for sharing data within a
 /// data exchange. This option is configurable for a data exchange.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -665,6 +907,11 @@ pub struct DestinationDataset {
     /// locations.
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
+    /// Optional. The geographic locations where the dataset should be replicated.
+    /// See [BigQuery locations](<https://cloud.google.com/bigquery/docs/locations>)
+    /// for supported locations.
+    #[prost(string, repeated, tag = "6")]
+    pub replica_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Defines the destination Pub/Sub subscription.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -715,7 +962,7 @@ pub struct Listing {
     /// Optional. Details of the data provider who owns the source data.
     #[prost(message, optional, tag = "9")]
     pub data_provider: ::core::option::Option<DataProvider>,
-    /// Optional. Categories of the listing. Up to two categories are allowed.
+    /// Optional. Categories of the listing. Up to five categories are allowed.
     #[prost(enumeration = "listing::Category", repeated, packed = "false", tag = "10")]
     pub categories: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Details of the publisher who owns the listing and who can share
@@ -782,6 +1029,18 @@ pub mod listing {
         pub restricted_export_policy: ::core::option::Option<
             big_query_dataset_source::RestrictedExportPolicy,
         >,
+        /// Optional. A list of regions where the publisher has created shared
+        /// dataset replicas.
+        #[prost(string, repeated, tag = "5")]
+        pub replica_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Output only. Server-owned effective state of replicas.
+        /// Contains both primary and secondary replicas.
+        /// Each replica includes a system-computed (output-only) state and primary
+        /// designation.
+        #[prost(message, repeated, tag = "6")]
+        pub effective_replicas: ::prost::alloc::vec::Vec<
+            big_query_dataset_source::Replica,
+        >,
     }
     /// Nested message and enum types in `BigQueryDatasetSource`.
     pub mod big_query_dataset_source {
@@ -824,6 +1083,111 @@ pub mod listing {
             /// restricted linked dataset table.
             #[prost(message, optional, tag = "3")]
             pub restrict_query_result: ::core::option::Option<bool>,
+        }
+        /// Represents the state of a replica of a shared dataset.
+        /// It includes the geographic location of the replica and
+        /// system-computed, output-only fields indicating its replication state and
+        /// whether it is the primary replica.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Replica {
+            /// Output only. The geographic location where the replica resides. See
+            /// [BigQuery locations](<https://cloud.google.com/bigquery/docs/locations>)
+            /// for supported locations. Eg. "us-central1".
+            #[prost(string, tag = "1")]
+            pub location: ::prost::alloc::string::String,
+            /// Output only. Assigned by Analytics Hub based on real BigQuery
+            /// replication state.
+            #[prost(enumeration = "replica::ReplicaState", tag = "2")]
+            pub replica_state: i32,
+            /// Output only. Indicates that this replica is the primary replica.
+            #[prost(enumeration = "replica::PrimaryState", optional, tag = "3")]
+            pub primary_state: ::core::option::Option<i32>,
+        }
+        /// Nested message and enum types in `Replica`.
+        pub mod replica {
+            /// Replica state of the shared dataset.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ReplicaState {
+                /// Default value. This value is unused.
+                Unspecified = 0,
+                /// The replica is backfilled and ready to use.
+                ReadyToUse = 1,
+                /// The replica is unavailable, does not exist, or has not been
+                /// backfilled yet.
+                Unavailable = 2,
+            }
+            impl ReplicaState {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "REPLICA_STATE_UNSPECIFIED",
+                        Self::ReadyToUse => "READY_TO_USE",
+                        Self::Unavailable => "UNAVAILABLE",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "REPLICA_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "READY_TO_USE" => Some(Self::ReadyToUse),
+                        "UNAVAILABLE" => Some(Self::Unavailable),
+                        _ => None,
+                    }
+                }
+            }
+            /// Primary state of the replica. Set only for the primary replica.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum PrimaryState {
+                /// Default value. This value is unused.
+                Unspecified = 0,
+                /// The replica is the primary replica.
+                PrimaryReplica = 1,
+            }
+            impl PrimaryState {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "PRIMARY_STATE_UNSPECIFIED",
+                        Self::PrimaryReplica => "PRIMARY_REPLICA",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "PRIMARY_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PRIMARY_REPLICA" => Some(Self::PrimaryReplica),
+                        _ => None,
+                    }
+                }
+            }
         }
     }
     /// Pub/Sub topic source.
@@ -1007,6 +1371,7 @@ pub mod listing {
         ScienceAndResearch = 17,
         TransportationAndLogistics = 18,
         TravelAndTourism = 19,
+        GoogleEarthEngine = 20,
     }
     impl Category {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1037,6 +1402,7 @@ pub mod listing {
                     "CATEGORY_TRANSPORTATION_AND_LOGISTICS"
                 }
                 Self::TravelAndTourism => "CATEGORY_TRAVEL_AND_TOURISM",
+                Self::GoogleEarthEngine => "CATEGORY_GOOGLE_EARTH_ENGINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1068,6 +1434,7 @@ pub mod listing {
                     Some(Self::TransportationAndLogistics)
                 }
                 "CATEGORY_TRAVEL_AND_TOURISM" => Some(Self::TravelAndTourism),
+                "CATEGORY_GOOGLE_EARTH_ENGINE" => Some(Self::GoogleEarthEngine),
                 _ => None,
             }
         }
@@ -2449,6 +2816,198 @@ pub mod analytics_hub_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new QueryTemplate
+        pub async fn create_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueryTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "CreateQueryTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a QueryTemplate
+        pub async fn get_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueryTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "GetQueryTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all QueryTemplates in a given project and location.
+        pub async fn list_query_templates(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQueryTemplatesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQueryTemplatesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListQueryTemplates",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "ListQueryTemplates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an existing QueryTemplate
+        pub async fn update_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueryTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "UpdateQueryTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a query template.
+        pub async fn delete_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "DeleteQueryTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Submits a query template for approval.
+        pub async fn submit_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubmitQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueryTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubmitQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "SubmitQueryTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Approves a query template.
+        pub async fn approve_query_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ApproveQueryTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueryTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ApproveQueryTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "ApproveQueryTemplate",
                     ),
                 );
             self.inner.unary(req, path, codec).await

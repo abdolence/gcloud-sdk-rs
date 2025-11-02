@@ -796,11 +796,8 @@ pub mod cluster {
         Unspecified = 0,
         /// The cluster is active and running.
         Ready = 1,
-        /// The cluster is stopped. All instances in the cluster are stopped.
-        /// Customers can start a stopped cluster at any point and all their
-        /// instances will come back to life with same names and IP resources. In
-        /// this state, customer pays for storage.
-        /// Associated backups could also be present in a stopped cluster.
+        /// This is unused. Even when all instances in the cluster are stopped, the
+        /// cluster remains in READY state.
         Stopped = 2,
         /// The cluster is empty and has no associated resources.
         /// All instances, associated storage and backups have been deleted.
@@ -1078,6 +1075,9 @@ pub struct Instance {
     /// etc.). Please refer to the API documentation for more details.
     #[prost(enumeration = "instance::ActivationPolicy", tag = "35")]
     pub activation_policy: i32,
+    /// Optional. The configuration for Managed Connection Pool (MCP).
+    #[prost(message, optional, tag = "37")]
+    pub connection_pool_config: ::core::option::Option<instance::ConnectionPoolConfig>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -1323,6 +1323,22 @@ pub mod instance {
             #[prost(string, tag = "1")]
             pub cidr_range: ::prost::alloc::string::String,
         }
+    }
+    /// Configuration for Managed Connection Pool (MCP).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConnectionPoolConfig {
+        /// Optional. Whether to enable Managed Connection Pool (MCP).
+        #[prost(bool, tag = "12")]
+        pub enabled: bool,
+        /// Optional. Connection Pool flags, as a list of "key": "value" pairs.
+        #[prost(map = "string, string", tag = "13")]
+        pub flags: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Output only. The number of running poolers per instance.
+        #[prost(int32, tag = "14")]
+        pub pooler_count: i32,
     }
     /// Instance State
     #[derive(
@@ -2070,16 +2086,28 @@ pub struct Database {
     /// `projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Charset for the database.
+    /// Optional. Immutable. Charset for the database.
     /// This field can contain any PostgreSQL supported charset name.
     /// Example values include "UTF8", "SQL_ASCII", etc.
     #[prost(string, tag = "2")]
     pub charset: ::prost::alloc::string::String,
-    /// Optional. Collation for the database.
-    /// Name of the custom or native collation for postgres.
-    /// Example values include "C", "POSIX", etc
+    /// Optional. Immutable. lc_collate for the database.
+    /// String sort order.
+    /// Example values include "C", "POSIX", etc.
     #[prost(string, tag = "3")]
     pub collation: ::prost::alloc::string::String,
+    /// Optional. Immutable. lc_ctype for the database.
+    /// Character classification (What is a letter? The upper-case equivalent?).
+    /// Example values include "C", "POSIX", etc.
+    #[prost(string, tag = "4")]
+    pub character_type: ::prost::alloc::string::String,
+    /// Input only. Immutable. Template of the database to be used for creating a
+    /// new database.
+    #[prost(string, tag = "6")]
+    pub database_template: ::prost::alloc::string::String,
+    /// Optional. Whether the database is a template database.
+    #[prost(bool, optional, tag = "7")]
+    pub is_template_database: ::core::option::Option<bool>,
 }
 /// View on Instance. Pass this enum to rpcs that returns an Instance message to
 /// control which subsets of fields to get.
@@ -2170,6 +2198,8 @@ pub enum DatabaseVersion {
     Postgres15 = 3,
     /// The database version is Postgres 16.
     Postgres16 = 4,
+    /// The database version is Postgres 17.
+    Postgres17 = 5,
 }
 impl DatabaseVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2183,6 +2213,7 @@ impl DatabaseVersion {
             Self::Postgres14 => "POSTGRES_14",
             Self::Postgres15 => "POSTGRES_15",
             Self::Postgres16 => "POSTGRES_16",
+            Self::Postgres17 => "POSTGRES_17",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2193,6 +2224,7 @@ impl DatabaseVersion {
             "POSTGRES_14" => Some(Self::Postgres14),
             "POSTGRES_15" => Some(Self::Postgres15),
             "POSTGRES_16" => Some(Self::Postgres16),
+            "POSTGRES_17" => Some(Self::Postgres17),
             _ => None,
         }
     }
@@ -3506,6 +3538,10 @@ pub struct ExecuteSqlRequest {
     /// permitted, including DDL, DML, DQL statements.
     #[prost(string, tag = "4")]
     pub sql_statement: ::prost::alloc::string::String,
+    /// Optional. If set, validates the sql statement by performing
+    /// syntax and semantic validation and doesn't execute the query.
+    #[prost(bool, tag = "6")]
+    pub validate_only: bool,
     /// Oneof field to support other credential mechanisms in future like
     /// SecretManager etc.
     #[prost(oneof = "execute_sql_request::UserCredential", tags = "5")]
@@ -3939,6 +3975,9 @@ pub mod upgrade_cluster_status {
         /// State of this stage.
         #[prost(enumeration = "super::upgrade_cluster_response::Status", tag = "2")]
         pub state: i32,
+        /// Output only. Timing information for the stage execution.
+        #[prost(message, optional, tag = "3")]
+        pub schedule: ::core::option::Option<stage_status::StageSchedule>,
         /// Stage specific status information, if any.
         #[prost(oneof = "stage_status::StageSpecificStatus", tags = "11")]
         pub stage_specific_status: ::core::option::Option<
@@ -3947,6 +3986,24 @@ pub mod upgrade_cluster_status {
     }
     /// Nested message and enum types in `StageStatus`.
     pub mod stage_status {
+        /// Timing information for the stage execution.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct StageSchedule {
+            /// When the stage is expected to start. Set only if the stage has not
+            /// started yet.
+            #[prost(message, optional, tag = "1")]
+            pub estimated_start_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// Actual start time of the stage. Set only if the stage has started.
+            #[prost(message, optional, tag = "2")]
+            pub actual_start_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// When the stage is expected to end. Set only if the stage has not
+            /// completed yet.
+            #[prost(message, optional, tag = "3")]
+            pub estimated_end_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// Actual end time of the stage. Set only if the stage has completed.
+            #[prost(message, optional, tag = "4")]
+            pub actual_end_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
         /// Stage specific status information, if any.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum StageSpecificStatus {
@@ -4120,7 +4177,7 @@ pub struct DeleteUserRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Message for requesting list of Databases.
+/// Message for ListDatabases request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatabasesRequest {
     /// Required. Parent value for ListDatabasesRequest.
@@ -4142,10 +4199,10 @@ pub struct ListDatabasesRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Message for response to listing Databases.
+/// Message for ListDatabases response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
-    /// The list of databases
+    /// The list of databases.
     #[prost(message, repeated, tag = "1")]
     pub databases: ::prost::alloc::vec::Vec<Database>,
     /// A token identifying the next page of results the server should return.

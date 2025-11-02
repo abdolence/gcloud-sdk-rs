@@ -33,6 +33,12 @@ pub struct Part {
     /// subsequent requests.
     #[prost(bytes = "vec", tag = "13")]
     pub thought_signature: ::prost::alloc::vec::Vec<u8>,
+    /// Custom metadata associated with the Part.
+    /// Agents using genai.Part as content representation may need to keep track
+    /// of the additional information. For example it can be name of a file/source
+    /// from which the Part originates or a way to multiplex multiple Part streams.
+    #[prost(message, optional, tag = "8")]
+    pub part_metadata: ::core::option::Option<::prost_types::Struct>,
     #[prost(oneof = "part::Data", tags = "2, 3, 4, 5, 6, 9, 10")]
     pub data: ::core::option::Option<part::Data>,
     /// Controls extra preprocessing of data.
@@ -79,11 +85,56 @@ pub mod part {
         VideoMetadata(super::VideoMetadata),
     }
 }
+/// A datatype containing media that is part of a `FunctionResponse` message.
+///
+/// A `FunctionResponsePart` consists of data which has an associated datatype. A
+/// `FunctionResponsePart` can only contain one of the accepted types in
+/// `FunctionResponsePart.data`.
+///
+/// A `FunctionResponsePart` must have a fixed IANA MIME type identifying the
+/// type and subtype of the media if the `inline_data` field is filled with raw
+/// bytes.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FunctionResponsePart {
+    /// The data of the function response part.
+    #[prost(oneof = "function_response_part::Data", tags = "1")]
+    pub data: ::core::option::Option<function_response_part::Data>,
+}
+/// Nested message and enum types in `FunctionResponsePart`.
+pub mod function_response_part {
+    /// The data of the function response part.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Data {
+        /// Inline media bytes.
+        #[prost(message, tag = "1")]
+        InlineData(super::FunctionResponseBlob),
+    }
+}
 /// Raw media bytes.
 ///
 /// Text should not be sent as raw bytes, use the 'text' field.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Blob {
+    /// The IANA standard MIME type of the source data.
+    /// Examples:
+    ///
+    /// * image/png
+    /// * image/jpeg
+    ///   If an unsupported MIME type is provided, an error will be returned. For a
+    ///   complete list of supported types, see [Supported file
+    ///   formats](<https://ai.google.dev/gemini-api/docs/prompting_with_media#supported_file_formats>).
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Raw bytes for media formats.
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+}
+/// Raw media bytes for function response.
+///
+/// Text should not be sent as raw bytes, use the 'FunctionResponse.response'
+/// field.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FunctionResponseBlob {
     /// The IANA standard MIME type of the source data.
     /// Examples:
     ///
@@ -250,6 +301,8 @@ pub mod code_execution_result {
 /// A `Tool` is a piece of code that enables the system to interact with
 /// external systems to perform an action, or set of actions, outside of
 /// knowledge and scope of the model.
+///
+/// Next ID: 12
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
     /// Optional. A list of `FunctionDeclarations` available to the model that can
@@ -277,6 +330,11 @@ pub struct Tool {
     /// Tool to support Google Search in Model. Powered by Google.
     #[prost(message, optional, tag = "4")]
     pub google_search: ::core::option::Option<tool::GoogleSearch>,
+    /// Optional. Tool to support the model interacting directly with the computer.
+    /// If enabled, it automatically populates computer-use specific Function
+    /// Declarations.
+    #[prost(message, optional, tag = "6")]
+    pub computer_use: ::core::option::Option<tool::ComputerUse>,
     /// Optional. Tool to support URL context retrieval.
     #[prost(message, optional, tag = "8")]
     pub url_context: ::core::option::Option<UrlContext>,
@@ -294,6 +352,65 @@ pub mod tool {
         pub time_range_filter: ::core::option::Option<
             super::super::super::super::r#type::Interval,
         >,
+    }
+    /// Computer Use tool type.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ComputerUse {
+        /// Required. The environment being operated.
+        #[prost(enumeration = "computer_use::Environment", tag = "3")]
+        pub environment: i32,
+        /// Optional. By default, predefined functions are included in the final
+        /// model call. Some of them can be explicitly excluded from being
+        /// automatically included. This can serve two purposes:
+        ///
+        /// 1. Using a more restricted / different action space.
+        /// 1. Improving the definitions / instructions of predefined functions.
+        #[prost(string, repeated, tag = "5")]
+        pub excluded_predefined_functions: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Nested message and enum types in `ComputerUse`.
+    pub mod computer_use {
+        /// Represents the environment being operated, such as a web browser.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Environment {
+            /// Defaults to browser.
+            Unspecified = 0,
+            /// Operates in a web browser.
+            Browser = 1,
+        }
+        impl Environment {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ENVIRONMENT_UNSPECIFIED",
+                    Self::Browser => "ENVIRONMENT_BROWSER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENVIRONMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ENVIRONMENT_BROWSER" => Some(Self::Browser),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Tool to support URL context retrieval.
@@ -384,9 +501,9 @@ pub struct FunctionCallingConfig {
     /// Optional. A set of function names that, when provided, limits the functions
     /// the model will call.
     ///
-    /// This should only be set when the Mode is ANY. Function names
-    /// should match \[FunctionDeclaration.name\]. With mode set to ANY, model will
-    /// predict a function call from the set of function names provided.
+    /// This should only be set when the Mode is ANY or VALIDATED. Function names
+    /// should match \[FunctionDeclaration.name\]. When set, model will
+    /// predict a function call from only allowed function names.
     #[prost(string, repeated, tag = "2")]
     pub allowed_function_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -423,6 +540,9 @@ pub mod function_calling_config {
         /// Model decides to predict either a function call
         /// or a natural language response, but will validate function calls with
         /// constrained decoding.
+        /// If "allowed_function_names" are set, the predicted function call will be
+        /// limited to any one of "allowed_function_names", else the predicted
+        /// function call will be any one of the provided "function_declarations".
         Validated = 4,
     }
     impl Mode {
@@ -460,8 +580,8 @@ pub mod function_calling_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionDeclaration {
     /// Required. The name of the function.
-    /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
-    /// length of 63.
+    /// Must be a-z, A-Z, 0-9, or contain underscores, colons, dots, and dashes,
+    /// with a maximum length of 64.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. A brief description of the function.
@@ -570,7 +690,7 @@ pub struct FunctionCall {
     pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
-    /// length of 63.
+    /// length of 64.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The function parameters and values in JSON object format.
@@ -590,12 +710,20 @@ pub struct FunctionResponse {
     pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
-    /// length of 63.
+    /// length of 64.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The function response in JSON object format.
+    /// Callers can use any keys of their choice that fit the function's syntax
+    /// to return the function output, e.g. "output", "result", etc.
+    /// In particular, if the function call failed to execute, the response can
+    /// have an "error" key to return error details to the model.
     #[prost(message, optional, tag = "2")]
     pub response: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Ordered `Parts` that constitute a function response. Parts may
+    /// have different IANA MIME types.
+    #[prost(message, repeated, tag = "8")]
+    pub parts: ::prost::alloc::vec::Vec<FunctionResponsePart>,
     /// Optional. Signals that function call continues, and more responses will be
     /// returned, turning the function call into a generator.
     /// Is only applicable to NON_BLOCKING function calls, is ignored otherwise.
@@ -674,11 +802,8 @@ pub struct Schema {
     /// Required. Data type.
     #[prost(enumeration = "Type", tag = "1")]
     pub r#type: i32,
-    /// Optional. The format of the data. This is used only for primitive
-    /// datatypes. Supported formats:
-    /// for NUMBER type: float, double
-    /// for INTEGER type: int32, int64
-    /// for STRING type: enum, date-time
+    /// Optional. The format of the data. Any value is allowed, but most do not
+    /// trigger any special functionality.
     #[prost(string, tag = "2")]
     pub format: ::prost::alloc::string::String,
     /// Optional. The title of the schema.
@@ -1530,6 +1655,7 @@ pub enum HarmCategory {
     /// **Gemini** - Dangerous content.
     DangerousContent = 10,
     /// **Gemini** - Content that may be used to harm civic integrity.
+    /// DEPRECATED: use enable_enhanced_civic_answers instead.
     CivicIntegrity = 11,
 }
 impl HarmCategory {
@@ -2035,6 +2161,8 @@ pub mod file {
         Uploaded = 1,
         /// Indicates the file is generated by Google.
         Generated = 2,
+        /// Indicates the file is a registered, i.e. a Google Cloud Storage file.
+        Registered = 3,
     }
     impl Source {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2046,6 +2174,7 @@ pub mod file {
                 Self::Unspecified => "SOURCE_UNSPECIFIED",
                 Self::Uploaded => "UPLOADED",
                 Self::Generated => "GENERATED",
+                Self::Registered => "REGISTERED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2054,6 +2183,7 @@ pub mod file {
                 "SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
                 "UPLOADED" => Some(Self::Uploaded),
                 "GENERATED" => Some(Self::Generated),
+                "REGISTERED" => Some(Self::Registered),
                 _ => None,
             }
         }
@@ -2675,6 +2805,7 @@ pub mod chunk_data {
     }
 }
 /// Request to generate a completion from the model.
+/// NEXT ID: 18
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentRequest {
     /// Required. The name of the `Model` to use for generating the completion.
@@ -2814,8 +2945,20 @@ pub struct ThinkingConfig {
     #[prost(int32, optional, tag = "2")]
     pub thinking_budget: ::core::option::Option<i32>,
 }
+/// Config for image generation features.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageConfig {
+    /// Optional. The aspect ratio of the image to generate. Supported aspect
+    /// ratios: 1:1, 2:3, 3:2, 3:4, 4:3, 9:16, 16:9, 21:9.
+    ///
+    /// If not specified, the model will choose a default aspect ratio based on any
+    /// reference images provided.
+    #[prost(string, optional, tag = "1")]
+    pub aspect_ratio: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
+/// Next ID: 29
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
     /// Optional. Number of generated responses to return. If unset, this will
@@ -2934,6 +3077,10 @@ pub struct GenerationConfig {
     /// for than those starting as a `$`, may be set.
     #[prost(message, optional, tag = "24")]
     pub response_json_schema: ::core::option::Option<::prost_types::Value>,
+    /// Optional. An internal detail. Use `responseJsonSchema` rather than this
+    /// field.
+    #[prost(message, optional, tag = "28")]
+    pub response_json_schema_ordered: ::core::option::Option<::prost_types::Value>,
     /// Optional. Presence penalty applied to the next token's logprobs if the
     /// token has already been seen in the response.
     ///
@@ -2974,6 +3121,7 @@ pub struct GenerationConfig {
     /// \[response_logprobs=True\]\[google.ai.generativelanguage.v1beta.GenerationConfig.response_logprobs\].
     /// This sets the number of top logprobs to return at each decoding step in the
     /// \[Candidate.logprobs_result\]\[google.ai.generativelanguage.v1beta.Candidate.logprobs_result\].
+    /// The number must be in the range of \[0, 20\].
     #[prost(int32, optional, tag = "18")]
     pub logprobs: ::core::option::Option<i32>,
     /// Optional. Enables enhanced civic answers. It may not be available for all
@@ -3004,6 +3152,11 @@ pub struct GenerationConfig {
     /// support thinking.
     #[prost(message, optional, tag = "22")]
     pub thinking_config: ::core::option::Option<ThinkingConfig>,
+    /// Optional. Config for image generation.
+    /// An error will be returned if this field is set for models that don't
+    /// support these config options.
+    #[prost(message, optional, tag = "27")]
+    pub image_config: ::core::option::Option<ImageConfig>,
     /// Optional. If specified, the media resolution specified will be used.
     #[prost(enumeration = "generation_config::MediaResolution", optional, tag = "23")]
     pub media_resolution: ::core::option::Option<i32>,
@@ -3292,6 +3445,10 @@ pub struct Candidate {
     /// If empty, the model has not stopped generating tokens.
     #[prost(enumeration = "candidate::FinishReason", tag = "2")]
     pub finish_reason: i32,
+    /// Optional. Output only. Details the reason why the model stopped generating
+    /// tokens. This is populated only when `finish_reason` is set.
+    #[prost(string, optional, tag = "4")]
+    pub finish_message: ::core::option::Option<::prost::alloc::string::String>,
     /// List of ratings for the safety of a response candidate.
     ///
     /// There is at most one rating per category.
@@ -3371,8 +3528,20 @@ pub mod candidate {
         /// Token generation stopped because generated images contain safety
         /// violations.
         ImageSafety = 11,
+        /// Image generation stopped because generated images has other prohibited
+        /// content.
+        ImageProhibitedContent = 14,
+        /// Image generation stopped because of other miscellaneous issue.
+        ImageOther = 15,
+        /// The model was expected to generate an image, but none was generated.
+        NoImage = 16,
+        /// Image generation stopped due to recitation.
+        ImageRecitation = 17,
         /// Model generated a tool call but no tools were enabled in the request.
         UnexpectedToolCall = 12,
+        /// Model called too many tools consecutively, thus the system exited
+        /// execution.
+        TooManyToolCalls = 13,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3393,7 +3562,12 @@ pub mod candidate {
                 Self::Spii => "SPII",
                 Self::MalformedFunctionCall => "MALFORMED_FUNCTION_CALL",
                 Self::ImageSafety => "IMAGE_SAFETY",
+                Self::ImageProhibitedContent => "IMAGE_PROHIBITED_CONTENT",
+                Self::ImageOther => "IMAGE_OTHER",
+                Self::NoImage => "NO_IMAGE",
+                Self::ImageRecitation => "IMAGE_RECITATION",
                 Self::UnexpectedToolCall => "UNEXPECTED_TOOL_CALL",
+                Self::TooManyToolCalls => "TOO_MANY_TOOL_CALLS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3411,7 +3585,12 @@ pub mod candidate {
                 "SPII" => Some(Self::Spii),
                 "MALFORMED_FUNCTION_CALL" => Some(Self::MalformedFunctionCall),
                 "IMAGE_SAFETY" => Some(Self::ImageSafety),
+                "IMAGE_PROHIBITED_CONTENT" => Some(Self::ImageProhibitedContent),
+                "IMAGE_OTHER" => Some(Self::ImageOther),
+                "NO_IMAGE" => Some(Self::NoImage),
+                "IMAGE_RECITATION" => Some(Self::ImageRecitation),
                 "UNEXPECTED_TOOL_CALL" => Some(Self::UnexpectedToolCall),
+                "TOO_MANY_TOOL_CALLS" => Some(Self::TooManyToolCalls),
                 _ => None,
             }
         }
@@ -3456,6 +3635,10 @@ pub mod url_metadata {
         Success = 1,
         /// Url retrieval is failed due to error.
         Error = 2,
+        /// Url retrieval is failed because the content is behind paywall.
+        Paywall = 3,
+        /// Url retrieval is failed because the content is unsafe.
+        Unsafe = 4,
     }
     impl UrlRetrievalStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3467,6 +3650,8 @@ pub mod url_metadata {
                 Self::Unspecified => "URL_RETRIEVAL_STATUS_UNSPECIFIED",
                 Self::Success => "URL_RETRIEVAL_STATUS_SUCCESS",
                 Self::Error => "URL_RETRIEVAL_STATUS_ERROR",
+                Self::Paywall => "URL_RETRIEVAL_STATUS_PAYWALL",
+                Self::Unsafe => "URL_RETRIEVAL_STATUS_UNSAFE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3475,6 +3660,8 @@ pub mod url_metadata {
                 "URL_RETRIEVAL_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
                 "URL_RETRIEVAL_STATUS_SUCCESS" => Some(Self::Success),
                 "URL_RETRIEVAL_STATUS_ERROR" => Some(Self::Error),
+                "URL_RETRIEVAL_STATUS_PAYWALL" => Some(Self::Paywall),
+                "URL_RETRIEVAL_STATUS_UNSAFE" => Some(Self::Unsafe),
                 _ => None,
             }
         }
@@ -3483,6 +3670,9 @@ pub mod url_metadata {
 /// Logprobs Result
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogprobsResult {
+    /// Sum of log probabilities for all tokens.
+    #[prost(float, optional, tag = "3")]
+    pub log_probability_sum: ::core::option::Option<f32>,
     /// Length = total number of decoding steps.
     #[prost(message, repeated, tag = "1")]
     pub top_candidates: ::prost::alloc::vec::Vec<logprobs_result::TopCandidates>,
@@ -4505,8 +4695,7 @@ pub mod bidi_generate_content_client_message {
     /// The type of the message.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MessageType {
-        /// Optional. Session configuration sent in the first and only first client
-        /// message.
+        /// Optional. Session configuration sent only in the first client message.
         #[prost(message, tag = "1")]
         Setup(super::BidiGenerateContentSetup),
         /// Optional. Incremental update of the current conversation delivered from
@@ -4573,6 +4762,11 @@ pub struct BidiGenerateContentServerContent {
     pub output_transcription: ::core::option::Option<BidiGenerateContentTranscription>,
     #[prost(message, optional, tag = "9")]
     pub url_context_metadata: ::core::option::Option<UrlContextMetadata>,
+    /// Output only. If true, indicates that the model is not generating content
+    /// because it is waiting for more input from the user, e.g. because it expects
+    /// the user to continue talking.
+    #[prost(bool, tag = "10")]
+    pub waiting_for_input: bool,
 }
 /// Request for the client to execute the `function_calls` and return the
 /// responses with the matching `id`s.
@@ -6451,7 +6645,7 @@ pub mod predict_long_running_response {
     pub enum Response {
         /// The response of the video generation prediction.
         #[prost(message, tag = "1")]
-        GenerateVideoResponse(super::GenerateVideoResponse),
+        GenerateVideoResponse(super::PredictLongRunningGeneratedVideoResponse),
     }
 }
 /// Metadata for PredictLongRunning long running operations.
@@ -6496,7 +6690,7 @@ pub mod video {
 }
 /// Veo response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenerateVideoResponse {
+pub struct PredictLongRunningGeneratedVideoResponse {
     /// The generated samples.
     #[prost(message, repeated, tag = "1")]
     pub generated_samples: ::prost::alloc::vec::Vec<Media>,
