@@ -72,6 +72,76 @@ impl LinkVerificationState {
         }
     }
 }
+/// Various levels of service for Google Analytics.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AnalyticsServiceLevel {
+    /// Service level unspecified.
+    Unspecified = 0,
+    /// The standard version of Google Analytics.
+    Standard = 1,
+    /// The premium version of Google Analytics.
+    AnalyticsServiceLevel360 = 2,
+}
+impl AnalyticsServiceLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED",
+            Self::Standard => "ANALYTICS_SERVICE_LEVEL_STANDARD",
+            Self::AnalyticsServiceLevel360 => "ANALYTICS_SERVICE_LEVEL_360",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "ANALYTICS_SERVICE_LEVEL_STANDARD" => Some(Self::Standard),
+            "ANALYTICS_SERVICE_LEVEL_360" => Some(Self::AnalyticsServiceLevel360),
+            _ => None,
+        }
+    }
+}
+/// Types of the Google Analytics Property.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AnalyticsPropertyType {
+    /// Unknown or unspecified property type
+    Unspecified = 0,
+    /// Ordinary Google Analytics property
+    Ordinary = 1,
+    /// Google Analytics subproperty
+    Subproperty = 2,
+    /// Google Analytics rollup property
+    Rollup = 3,
+}
+impl AnalyticsPropertyType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ANALYTICS_PROPERTY_TYPE_UNSPECIFIED",
+            Self::Ordinary => "ANALYTICS_PROPERTY_TYPE_ORDINARY",
+            Self::Subproperty => "ANALYTICS_PROPERTY_TYPE_SUBPROPERTY",
+            Self::Rollup => "ANALYTICS_PROPERTY_TYPE_ROLLUP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANALYTICS_PROPERTY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ANALYTICS_PROPERTY_TYPE_ORDINARY" => Some(Self::Ordinary),
+            "ANALYTICS_PROPERTY_TYPE_SUBPROPERTY" => Some(Self::Subproperty),
+            "ANALYTICS_PROPERTY_TYPE_ROLLUP" => Some(Self::Rollup),
+            _ => None,
+        }
+    }
+}
 /// Request message for GetOrganization RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationRequest {
@@ -79,6 +149,73 @@ pub struct GetOrganizationRequest {
     /// Format: organizations/{org_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListOrganizations RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListOrganizationsRequest {
+    /// Optional. The maximum number of organizations to return in one call. The
+    /// service may return fewer than this value.
+    ///
+    /// If unspecified, at most 50 organizations will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListOrganizations call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListOrganizations` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListOrganizations RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOrganizationsResponse {
+    /// The Organization resource that the user has access to, which includes the
+    /// org id and display name.
+    #[prost(message, repeated, tag = "1")]
+    pub organizations: ::prost::alloc::vec::Vec<Organization>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for FindSalesPartnerManagedClients RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FindSalesPartnerManagedClientsRequest {
+    /// Required. The name of the sales partner organization.
+    /// Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub organization: ::prost::alloc::string::String,
+    /// Optional. If set, only active and just ended clients will be returned.
+    #[prost(bool, tag = "2")]
+    pub is_active: bool,
+}
+/// Response message for FindSalesPartnerManagedClients RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindSalesPartnerManagedClientsResponse {
+    /// The clients managed by the sales org.
+    #[prost(message, repeated, tag = "1")]
+    pub client_data: ::prost::alloc::vec::Vec<
+        find_sales_partner_managed_clients_response::ClientData,
+    >,
+}
+/// Nested message and enum types in `FindSalesPartnerManagedClientsResponse`.
+pub mod find_sales_partner_managed_clients_response {
+    /// Contains the client data.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ClientData {
+        /// The end client that has/had contract with the requested sales org.
+        #[prost(message, optional, tag = "1")]
+        pub organization: ::core::option::Option<super::Organization>,
+        /// The start date of the contract between the sales org and the end client.
+        #[prost(message, optional, tag = "2")]
+        pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+        /// The end date of the contract between the sales org and the end client.
+        #[prost(message, optional, tag = "3")]
+        pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+    }
 }
 /// Request message for ListAnalyticsAccountLinks RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -155,37 +292,84 @@ pub struct SetPropertyServiceLevelRequest {
 /// Response message for SetPropertyServiceLevel RPC.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetPropertyServiceLevelResponse {}
-/// Various levels of service for Google Analytics.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum AnalyticsServiceLevel {
-    /// Service level unspecified.
-    Unspecified = 0,
-    /// The standard version of Google Analytics.
-    Standard = 1,
-    /// The premium version of Google Analytics.
-    AnalyticsServiceLevel360 = 2,
-}
-impl AnalyticsServiceLevel {
-    /// String value of the enum field names used in the ProtoBuf definition.
+/// Request message for ReportPropertyUsage RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReportPropertyUsageRequest {
+    /// Required. Specifies the organization whose property usage will be listed.
     ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED",
-            Self::Standard => "ANALYTICS_SERVICE_LEVEL_STANDARD",
-            Self::AnalyticsServiceLevel360 => "ANALYTICS_SERVICE_LEVEL_360",
-        }
+    /// Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub organization: ::prost::alloc::string::String,
+    /// Required. The target month to list property usages.
+    ///
+    /// Format: YYYY-MM. For example, "2025-05"
+    #[prost(string, tag = "2")]
+    pub month: ::prost::alloc::string::String,
+}
+/// Response message for ReportPropertyUsage RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportPropertyUsageResponse {
+    /// Usage data for all properties in the specified organization and month.
+    #[prost(message, repeated, tag = "1")]
+    pub property_usages: ::prost::alloc::vec::Vec<
+        report_property_usage_response::PropertyUsage,
+    >,
+    /// Bill amount in the specified organization and month.
+    ///
+    /// Will be empty if user only has access to usage data.
+    #[prost(message, optional, tag = "2")]
+    pub bill_info: ::core::option::Option<report_property_usage_response::BillInfo>,
+}
+/// Nested message and enum types in `ReportPropertyUsageResponse`.
+pub mod report_property_usage_response {
+    /// Contains the count of events received by the property, along with metadata
+    /// that influences the volume of `billable` events.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PropertyUsage {
+        /// The name of the Google Analytics Admin API property resource.
+        ///
+        /// Format: analyticsadmin.googleapis.com/properties/{property_id}
+        #[prost(string, tag = "1")]
+        pub property: ::prost::alloc::string::String,
+        /// The display name of the property.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// The ID of the property's parent account.
+        #[prost(int64, tag = "3")]
+        pub account_id: i64,
+        /// The service level of the property.
+        #[prost(enumeration = "super::AnalyticsServiceLevel", tag = "4")]
+        pub service_level: i32,
+        /// The subtype of the analytics property. This affects the billable event
+        /// count.
+        #[prost(enumeration = "super::AnalyticsPropertyType", tag = "5")]
+        pub property_type: i32,
+        /// Total event count that the property received during the requested month.
+        #[prost(int64, tag = "6")]
+        pub total_event_count: i64,
+        /// The number of events for which the property is billed in the requested
+        /// month.
+        #[prost(int64, tag = "7")]
+        pub billable_event_count: i64,
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
-            "ANALYTICS_SERVICE_LEVEL_STANDARD" => Some(Self::Standard),
-            "ANALYTICS_SERVICE_LEVEL_360" => Some(Self::AnalyticsServiceLevel360),
-            _ => None,
-        }
+    /// Contains the bill amount.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BillInfo {
+        /// The amount of the monthly base fee.
+        #[prost(message, optional, tag = "1")]
+        pub base_fee: ::core::option::Option<super::super::super::super::r#type::Money>,
+        /// The amount of the event fee.
+        #[prost(message, optional, tag = "2")]
+        pub event_fee: ::core::option::Option<super::super::super::super::r#type::Money>,
+        /// The amount of the price protection credit, this is only available for
+        /// eligible customers.
+        #[prost(message, optional, tag = "3")]
+        pub price_protection_credit: ::core::option::Option<
+            super::super::super::super::r#type::Money,
+        >,
+        /// The total amount of the bill.
+        #[prost(message, optional, tag = "4")]
+        pub total: ::core::option::Option<super::super::super::super::r#type::Money>,
     }
 }
 /// Generated client implementations.
@@ -305,6 +489,71 @@ pub mod marketingplatform_admin_service_client {
                     GrpcMethod::new(
                         "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
                         "GetOrganization",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of organizations that the user has access to.
+        pub async fn list_organizations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListOrganizationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListOrganizationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListOrganizations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "ListOrganizations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of clients managed by the sales partner organization.
+        ///
+        /// User needs to be an OrgAdmin/BillingAdmin on the sales partner organization
+        /// in order to view the end clients.
+        pub async fn find_sales_partner_managed_clients(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::FindSalesPartnerManagedClientsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::FindSalesPartnerManagedClientsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/FindSalesPartnerManagedClients",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "FindSalesPartnerManagedClients",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -432,6 +681,45 @@ pub mod marketingplatform_admin_service_client {
                     GrpcMethod::new(
                         "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
                         "SetPropertyServiceLevel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get the usage and billing data for properties within the organization for
+        /// the specified month.
+        ///
+        /// Per direct client org, user needs to be OrgAdmin/BillingAdmin on the
+        /// organization in order to view the billing and usage data.
+        ///
+        /// Per sales partner client org, user needs to be OrgAdmin/BillingAdmin on
+        /// the sales partner org in order to view the billing and usage data, or
+        /// OrgAdmin/BillingAdmin on the sales partner client org in order to view the
+        /// usage data only.
+        pub async fn report_property_usage(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReportPropertyUsageRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportPropertyUsageResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ReportPropertyUsage",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "ReportPropertyUsage",
                     ),
                 );
             self.inner.unary(req, path, codec).await

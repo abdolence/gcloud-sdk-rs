@@ -1256,7 +1256,7 @@ pub mod environment {
         /// Software Runtime Configuration to run Analyze.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct OsImageRuntime {
-            /// Required. Dataplex Image version.
+            /// Required. Dataplex Universal Catalog Image version.
             #[prost(string, tag = "1")]
             pub image_version: ::prost::alloc::string::String,
             /// Optional. List of Java jars to be included in the runtime environment.
@@ -1989,7 +1989,7 @@ pub mod job {
         Succeeded = 4,
         /// The job is no longer running due to an error.
         Failed = 5,
-        /// The job was cancelled outside of Dataplex.
+        /// The job was cancelled outside of Dataplex Universal Catalog.
         Aborted = 6,
     }
     impl State {
@@ -2038,8 +2038,8 @@ pub mod job {
     pub enum Trigger {
         /// The trigger is unspecified.
         Unspecified = 0,
-        /// The job was triggered by Dataplex based on trigger spec from task
-        /// definition.
+        /// The job was triggered by Dataplex Universal Catalog based on trigger spec
+        /// from task definition.
         TaskConfig = 1,
         /// The job was triggered by the explicit call of Task API.
         RunRequest = 2,
@@ -2072,7 +2072,7 @@ pub mod job {
 pub struct CreateLakeRequest {
     /// Required. The resource name of the lake location, of the form:
     /// projects/{project_number}/locations/{location_id}
-    /// where `location_id` refers to a GCP region.
+    /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Lake identifier.
@@ -2122,7 +2122,7 @@ pub struct DeleteLakeRequest {
 pub struct ListLakesRequest {
     /// Required. The resource name of the lake location, of the form:
     /// `projects/{project_number}/locations/{location_id}`
-    /// where `location_id` refers to a GCP region.
+    /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of Lakes to return. The service may return fewer
@@ -3818,6 +3818,991 @@ pub mod dataplex_service_client {
         }
     }
 }
+/// A Glossary represents a collection of GlossaryCategories and GlossaryTerms
+/// defined by the user. Glossary is a top level resource and is the Google Cloud
+/// parent resource of all the GlossaryCategories and GlossaryTerms within it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Glossary {
+    /// Output only. Identifier. The resource name of the Glossary.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated unique id for the Glossary. This ID will be
+    /// different if the Glossary is deleted and re-created with the
+    /// same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. User friendly display name of the Glossary. This is user-mutable.
+    /// This will be same as the GlossaryId, if not specified.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The user-mutable description of the Glossary.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The time at which the Glossary was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the Glossary was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels for the Glossary.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The number of GlossaryTerms in the Glossary.
+    #[prost(int32, tag = "8")]
+    pub term_count: i32,
+    /// Output only. The number of GlossaryCategories in the Glossary.
+    #[prost(int32, tag = "9")]
+    pub category_count: i32,
+    /// Optional. Needed for resource freshness validation.
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "10")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// A GlossaryCategory represents a collection of GlossaryCategories and
+/// GlossaryTerms within a Glossary that are related to each other.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlossaryCategory {
+    /// Output only. Identifier. The resource name of the GlossaryCategory.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated unique id for the GlossaryCategory. This ID
+    /// will be different if the GlossaryCategory is deleted and re-created with
+    /// the same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. User friendly display name of the GlossaryCategory. This is
+    /// user-mutable. This will be same as the GlossaryCategoryId, if not
+    /// specified.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The user-mutable description of the GlossaryCategory.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The time at which the GlossaryCategory was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the GlossaryCategory was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels for the GlossaryCategory.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. The immediate parent of the GlossaryCategory in the
+    /// resource-hierarchy. It can either be a Glossary or a GlossaryCategory.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// OR
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(string, tag = "8")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// GlossaryTerms are the core of Glossary.
+/// A GlossaryTerm holds a rich text description that can be attached to Entries
+/// or specific columns to enrich them.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlossaryTerm {
+    /// Output only. Identifier. The resource name of the GlossaryTerm.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated unique id for the GlossaryTerm. This ID will
+    /// be different if the GlossaryTerm is deleted and re-created with the same
+    /// name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. User friendly display name of the GlossaryTerm. This is
+    /// user-mutable. This will be same as the GlossaryTermId, if not specified.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The user-mutable description of the GlossaryTerm.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The time at which the GlossaryTerm was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the GlossaryTerm was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels for the GlossaryTerm.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. The immediate parent of the GlossaryTerm in the
+    /// resource-hierarchy. It can either be a Glossary or a GlossaryCategory.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// OR
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(string, tag = "8")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Create Glossary Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGlossaryRequest {
+    /// Required. The parent resource where this Glossary will be created.
+    /// Format: projects/{project_id_or_number}/locations/{location_id}
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Glossary ID: Glossary identifier.
+    #[prost(string, tag = "2")]
+    pub glossary_id: ::prost::alloc::string::String,
+    /// Required. The Glossary to create.
+    #[prost(message, optional, tag = "3")]
+    pub glossary: ::core::option::Option<Glossary>,
+    /// Optional. Validates the request without actually creating the Glossary.
+    /// Default: false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update Glossary Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGlossaryRequest {
+    /// Required. The Glossary to update.
+    /// The Glossary's `name` field is used to identify the Glossary to update.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    #[prost(message, optional, tag = "1")]
+    pub glossary: ::core::option::Option<Glossary>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Validates the request without actually updating the Glossary.
+    /// Default: false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete Glossary Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGlossaryRequest {
+    /// Required. The name of the Glossary to delete.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag of the Glossary.
+    /// If this is provided, it must match the server's etag.
+    /// If the etag is provided and does not match the server-computed etag,
+    /// the request must fail with a ABORTED error code.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Get Glossary Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGlossaryRequest {
+    /// Required. The name of the Glossary to retrieve.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List Glossaries Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGlossariesRequest {
+    /// Required. The parent, which has this collection of Glossaries.
+    /// Format: projects/{project_id_or_number}/locations/{location_id}
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of Glossaries to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 Glossaries will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListGlossaries` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListGlossaries` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression that filters Glossaries listed in the response.
+    /// Filters on proto fields of Glossary are supported.
+    /// Examples of using a filter are:
+    ///
+    /// * `display_name="my-glossary"`
+    /// * `categoryCount=1`
+    /// * `termCount=0`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by expression that orders Glossaries listed in the
+    /// response. Order by fields are: `name` or `create_time` for the result. If
+    /// not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List Glossaries Response
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGlossariesResponse {
+    /// Lists the Glossaries in the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub glossaries: ::prost::alloc::vec::Vec<Glossary>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that the service couldn't reach.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Creates a new GlossaryCategory under the specified Glossary.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGlossaryCategoryRequest {
+    /// Required. The parent resource where this GlossaryCategory will be created.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// where `locationId` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. GlossaryCategory identifier.
+    #[prost(string, tag = "2")]
+    pub category_id: ::prost::alloc::string::String,
+    /// Required. The GlossaryCategory to create.
+    #[prost(message, optional, tag = "3")]
+    pub category: ::core::option::Option<GlossaryCategory>,
+}
+/// Update GlossaryCategory Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGlossaryCategoryRequest {
+    /// Required. The GlossaryCategory to update.
+    /// The GlossaryCategory's `name` field is used to identify the
+    /// GlossaryCategory to update. Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(message, optional, tag = "1")]
+    pub category: ::core::option::Option<GlossaryCategory>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Delete GlossaryCategory Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGlossaryCategoryRequest {
+    /// Required. The name of the GlossaryCategory to delete.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Get GlossaryCategory Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGlossaryCategoryRequest {
+    /// Required. The name of the GlossaryCategory to retrieve.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List GlossaryCategories Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGlossaryCategoriesRequest {
+    /// Required. The parent, which has this collection of GlossaryCategories.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// Location is the Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of GlossaryCategories to return. The service
+    /// may return fewer than this value. If unspecified, at most 50
+    /// GlossaryCategories will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListGlossaryCategories`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `ListGlossaryCategories` must match the call
+    /// that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression that filters GlossaryCategories listed in the
+    /// response. Filters are supported on the following fields:
+    ///
+    /// * immediate_parent
+    ///
+    /// ## Examples of using a filter are:
+    ///
+    /// ## `immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"`
+    ///
+    /// `immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"`
+    ///
+    /// This will only return the GlossaryCategories that are directly nested
+    /// under the specified parent.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by expression that orders GlossaryCategories listed in the
+    /// response. Order by fields are: `name` or `create_time` for the result. If
+    /// not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List GlossaryCategories Response
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGlossaryCategoriesResponse {
+    /// Lists the GlossaryCategories in the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub categories: ::prost::alloc::vec::Vec<GlossaryCategory>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that the service couldn't reach.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Creates a new GlossaryTerm under the specified Glossary.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGlossaryTermRequest {
+    /// Required. The parent resource where the GlossaryTerm will be created.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. GlossaryTerm identifier.
+    #[prost(string, tag = "2")]
+    pub term_id: ::prost::alloc::string::String,
+    /// Required. The GlossaryTerm to create.
+    #[prost(message, optional, tag = "3")]
+    pub term: ::core::option::Option<GlossaryTerm>,
+}
+/// Update GlossaryTerm Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGlossaryTermRequest {
+    /// Required. The GlossaryTerm to update.
+    /// The GlossaryTerm's `name` field is used to identify the GlossaryTerm to
+    /// update. Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+    #[prost(message, optional, tag = "1")]
+    pub term: ::core::option::Option<GlossaryTerm>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Delete GlossaryTerm Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGlossaryTermRequest {
+    /// Required. The name of the GlossaryTerm to delete.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Get GlossaryTerm Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGlossaryTermRequest {
+    /// Required. The name of the GlossaryTerm to retrieve.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List GlossaryTerms Request
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGlossaryTermsRequest {
+    /// Required. The parent, which has this collection of GlossaryTerms.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of GlossaryTerms to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 GlossaryTerms will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListGlossaryTerms` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListGlossaryTerms` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression that filters GlossaryTerms listed in the
+    /// response. Filters are supported on the following fields:
+    ///
+    /// * immediate_parent
+    ///
+    /// ## Examples of using a filter are:
+    ///
+    /// ## `immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"`
+    ///
+    /// `immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"`
+    ///
+    /// This will only return the GlossaryTerms that are directly nested under the
+    /// specified parent.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by expression that orders GlossaryTerms listed in the
+    /// response. Order by fields are: `name` or `create_time` for the result. If
+    /// not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List GlossaryTerms Response
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGlossaryTermsResponse {
+    /// Lists the GlossaryTerms in the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub terms: ::prost::alloc::vec::Vec<GlossaryTerm>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that the service couldn't reach.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Generated client implementations.
+pub mod business_glossary_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// BusinessGlossaryService provides APIs for managing business glossary
+    /// resources for enterprise customers.
+    /// The resources currently supported in Business Glossary are:
+    ///
+    /// 1. Glossary
+    /// 1. GlossaryCategory
+    /// 1. GlossaryTerm
+    #[derive(Debug, Clone)]
+    pub struct BusinessGlossaryServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl BusinessGlossaryServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> BusinessGlossaryServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BusinessGlossaryServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            BusinessGlossaryServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new Glossary resource.
+        pub async fn create_glossary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGlossaryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "CreateGlossary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Glossary resource.
+        pub async fn update_glossary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGlossaryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "UpdateGlossary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Glossary resource. All the categories and terms within the
+        /// Glossary must be deleted before the Glossary can be deleted.
+        pub async fn delete_glossary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGlossaryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "DeleteGlossary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Glossary resource.
+        pub async fn get_glossary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGlossaryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Glossary>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "GetGlossary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Glossary resources in a project and location.
+        pub async fn list_glossaries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGlossariesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGlossariesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaries",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "ListGlossaries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new GlossaryCategory resource.
+        pub async fn create_glossary_category(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGlossaryCategoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GlossaryCategory>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryCategory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "CreateGlossaryCategory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a GlossaryCategory resource.
+        pub async fn update_glossary_category(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGlossaryCategoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GlossaryCategory>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryCategory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "UpdateGlossaryCategory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a GlossaryCategory resource. All the GlossaryCategories and
+        /// GlossaryTerms nested directly under the specified GlossaryCategory will be
+        /// moved one level up to the parent in the hierarchy.
+        pub async fn delete_glossary_category(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGlossaryCategoryRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryCategory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "DeleteGlossaryCategory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a GlossaryCategory resource.
+        pub async fn get_glossary_category(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGlossaryCategoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GlossaryCategory>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryCategory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "GetGlossaryCategory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GlossaryCategory resources in a Glossary.
+        pub async fn list_glossary_categories(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGlossaryCategoriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGlossaryCategoriesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryCategories",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "ListGlossaryCategories",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new GlossaryTerm resource.
+        pub async fn create_glossary_term(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGlossaryTermRequest>,
+        ) -> std::result::Result<tonic::Response<super::GlossaryTerm>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryTerm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "CreateGlossaryTerm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a GlossaryTerm resource.
+        pub async fn update_glossary_term(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGlossaryTermRequest>,
+        ) -> std::result::Result<tonic::Response<super::GlossaryTerm>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryTerm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "UpdateGlossaryTerm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a GlossaryTerm resource.
+        pub async fn delete_glossary_term(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGlossaryTermRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryTerm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "DeleteGlossaryTerm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a GlossaryTerm resource.
+        pub async fn get_glossary_term(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGlossaryTermRequest>,
+        ) -> std::result::Result<tonic::Response<super::GlossaryTerm>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryTerm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "GetGlossaryTerm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GlossaryTerm resources in a Glossary.
+        pub async fn list_glossary_terms(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGlossaryTermsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGlossaryTermsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryTerms",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "ListGlossaryTerms",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// AspectType is a template for creating Aspects, and represents the
 /// JSON-schema for a given Entry, for example, BigQuery Table Schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3853,6 +4838,9 @@ pub struct AspectType {
     /// delete requests to ensure it has an up-to-date value before proceeding.
     #[prost(string, tag = "8")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. Immutable. Stores data classification of the aspect.
+    #[prost(enumeration = "aspect_type::DataClassification", tag = "9")]
+    pub data_classification: i32,
     /// Immutable. Defines the Authorization for this type.
     #[prost(message, optional, tag = "52")]
     pub authorization: ::core::option::Option<aspect_type::Authorization>,
@@ -3866,12 +4854,12 @@ pub struct AspectType {
 }
 /// Nested message and enum types in `AspectType`.
 pub mod aspect_type {
-    /// Autorization for an AspectType.
+    /// Authorization for an AspectType.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authorization {
         /// Immutable. The IAM permission grantable on the EntryGroup to allow access
-        /// to instantiate Aspects of Dataplex owned AspectTypes, only settable for
-        /// Dataplex owned Types.
+        /// to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes,
+        /// only settable for Dataplex Universal Catalog owned Types.
         #[prost(string, tag = "1")]
         pub alternate_use_permission: ::prost::alloc::string::String,
     }
@@ -3894,8 +4882,8 @@ pub mod aspect_type {
         /// Primitive types:
         ///
         /// * string
-        /// * integer
-        /// * boolean
+        /// * int
+        /// * bool
         /// * double
         /// * datetime. Must be of the format RFC3339 UTC "Zulu" (Examples:
         ///   "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").
@@ -4007,6 +4995,45 @@ pub mod aspect_type {
             pub string_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
     }
+    /// Classifies the data stored by the aspect.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataClassification {
+        /// Denotes that the aspect contains only metadata.
+        Unspecified = 0,
+        /// Metadata and data classification.
+        MetadataAndData = 1,
+    }
+    impl DataClassification {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_CLASSIFICATION_UNSPECIFIED",
+                Self::MetadataAndData => "METADATA_AND_DATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_CLASSIFICATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "METADATA_AND_DATA" => Some(Self::MetadataAndData),
+                _ => None,
+            }
+        }
+    }
 }
 /// An Entry Group represents a logical grouping of one or more Entries.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4113,8 +5140,8 @@ pub mod entry_type {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authorization {
         /// Immutable. The IAM permission grantable on the Entry Group to allow
-        /// access to instantiate Entries of Dataplex owned Entry Types, only
-        /// settable for Dataplex owned Types.
+        /// access to instantiate Entries of Dataplex Universal Catalog owned Entry
+        /// Types, only settable for Dataplex Universal Catalog owned Types.
         #[prost(string, tag = "1")]
         pub alternate_use_permission: ::prost::alloc::string::String,
     }
@@ -4170,10 +5197,12 @@ pub struct Entry {
     /// `projects/{project_id_or_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
     #[prost(string, tag = "4")]
     pub entry_type: ::prost::alloc::string::String,
-    /// Output only. The time when the entry was created in Dataplex.
+    /// Output only. The time when the entry was created in Dataplex Universal
+    /// Catalog.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the entry was last updated in Dataplex.
+    /// Output only. The time when the entry was last updated in Dataplex Universal
+    /// Catalog.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The aspects that are attached to the entry. Depending on how the
@@ -4271,7 +5300,7 @@ pub mod entry_source {
 pub struct CreateEntryGroupRequest {
     /// Required. The resource name of the entryGroup, of the form:
     /// projects/{project_number}/locations/{location_id}
-    /// where `location_id` refers to a GCP region.
+    /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. EntryGroup identifier.
@@ -4394,7 +5423,7 @@ pub struct UpdateEntryTypeRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Delele EntryType Request.
+/// Delete EntryType Request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntryTypeRequest {
     /// Required. The resource name of the EntryType:
@@ -4496,7 +5525,7 @@ pub struct UpdateAspectTypeRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Delele AspectType Request.
+/// Delete AspectType Request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAspectTypeRequest {
     /// Required. The resource name of the AspectType:
@@ -4749,11 +5778,11 @@ pub struct LookupEntryRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchEntriesRequest {
     /// Required. The project to which the request should be attributed in the
-    /// following form: `projects/{project}/locations/{location}`.
+    /// following form: `projects/{project}/locations/global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The query against which entries in scope should be matched.
-    /// The query syntax is defined in [Search syntax for Dataplex
+    /// The query syntax is defined in [Search syntax for Dataplex Universal
     /// Catalog](<https://cloud.google.com/dataplex/docs/search-syntax>).
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
@@ -4769,7 +5798,7 @@ pub struct SearchEntriesRequest {
     /// Optional. Specifies the ordering of results.
     /// Supported values are:
     ///
-    /// * `relevance` (default)
+    /// * `relevance`
     /// * `last_modified_timestamp`
     /// * `last_modified_timestamp asc`
     #[prost(string, tag = "5")]
@@ -4842,25 +5871,30 @@ pub struct ImportItem {
     /// Information about an entry and its attached aspects.
     #[prost(message, optional, tag = "1")]
     pub entry: ::core::option::Option<Entry>,
+    /// Information about the entry link. User should provide either one of the
+    /// entry or entry_link. While providing entry_link, user should not
+    /// provide update_mask and aspect_keys.
+    #[prost(message, optional, tag = "4")]
+    pub entry_link: ::core::option::Option<EntryLink>,
     /// The fields to update, in paths that are relative to the `Entry` resource.
     /// Separate each field with a comma.
     ///
-    /// In `FULL` entry sync mode, Dataplex includes the paths of all of the fields
-    /// for an entry that can be modified, including aspects. This means that
-    /// Dataplex replaces the existing entry with the entry in the metadata import
-    /// file. All modifiable fields are updated, regardless of the fields that are
-    /// listed in the update mask, and regardless of whether a field is present
-    /// in the `entry` object.
+    /// In `FULL` entry sync mode, Dataplex Universal Catalog includes the paths of
+    /// all of the fields for an entry that can be modified, including aspects.
+    /// This means that Dataplex Universal Catalog replaces the existing entry with
+    /// the entry in the metadata import file. All modifiable fields are updated,
+    /// regardless of the fields that are listed in the update mask, and regardless
+    /// of whether a field is present in the `entry` object.
     ///
     /// The `update_mask` field is ignored when an entry is created or re-created.
     ///
     /// In an aspect-only metadata job (when entry sync mode is `NONE`), set this
     /// value to `aspects`.
     ///
-    /// Dataplex also determines which entries and aspects to modify by comparing
-    /// the values and timestamps that you provide in the metadata import file with
-    /// the values and timestamps that exist in your project. For more information,
-    /// see [Comparison
+    /// Dataplex Universal Catalog also determines which entries and aspects to
+    /// modify by comparing the values and timestamps that you provide in the
+    /// metadata import file with the values and timestamps that exist in your
+    /// project. For more information, see [Comparison
     /// logic](<https://cloud.google.com/dataplex/docs/import-metadata#data-modification-logic>).
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -4880,8 +5914,8 @@ pub struct ImportItem {
     ///
     /// In `FULL` entry sync mode, if you leave this field empty, it is treated as
     /// specifying exactly those aspects that are present within the specified
-    /// entry. Dataplex implicitly adds the keys for all of the required aspects of
-    /// an entry.
+    /// entry. Dataplex Universal Catalog implicitly adds the keys for all of the
+    /// required aspects of an entry.
     #[prost(string, repeated, tag = "3")]
     pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -5027,6 +6061,17 @@ pub mod metadata_job {
         /// Output only. The time when the status was updated.
         #[prost(message, optional, tag = "5")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The total number of entry links that were successfully
+        /// deleted.
+        #[prost(int64, tag = "7")]
+        pub deleted_entry_links: i64,
+        /// Output only. The total number of entry links that were successfully
+        /// created.
+        #[prost(int64, tag = "8")]
+        pub created_entry_links: i64,
+        /// Output only. The total number of entry links that were left unchanged.
+        #[prost(int64, tag = "9")]
+        pub unchanged_entry_links: i64,
     }
     /// Summary results from a metadata export job. The results are a snapshot of
     /// the metadata at the time when the job was created. The exported entries are
@@ -5103,14 +6148,13 @@ pub mod metadata_job {
         /// A boundary on the scope of impact that the metadata import job can have.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ImportJobScope {
-            /// Required. The entry group that is in scope for the import job,
-            /// specified as a relative resource name in the format
+            /// Required. The entry groups that are in scope for the import job,
+            /// specified as relative resource names in the format
             /// `projects/{project_number_or_id}/locations/{location_id}/entryGroups/{entry_group_id}`.
-            /// Only entries and aspects that belong to the specified entry group are
+            /// Only entries and aspects that belong to the specified entry groups are
             /// affected by the job.
             ///
-            /// Must contain exactly one element. The entry group and the job
-            /// must be in the same location.
+            /// The entry groups and the job must be in the same location.
             #[prost(string, repeated, tag = "1")]
             pub entry_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Required. The entry types that are in scope for the import job,
@@ -5142,6 +6186,46 @@ pub mod metadata_job {
             /// job, or the aspect type must be global.
             #[prost(string, repeated, tag = "3")]
             pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. The glossaries that are in scope for the import job,
+            /// specified as relative resource names in the format
+            /// `projects/{project_number_or_id}/locations/{location_id}/glossaries/{glossary_id}`.
+            ///
+            /// While importing Business Glossary entries, the user must
+            /// provide glossaries. While importing entries, the user does not have to
+            /// provide glossaries. If the metadata import file attempts to modify
+            /// Business Glossary entries whose glossary isn't included in this list,
+            /// the import job will skip those entries.
+            ///
+            /// The location of a glossary must either match the location of the
+            /// job, or the glossary must be global.
+            #[prost(string, repeated, tag = "4")]
+            pub glossaries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. The entry link types that are in scope for the import job,
+            /// specified as relative resource names in the format
+            /// `projects/{project_number_or_id}/locations/{location_id}/entryLinkTypes/{entry_link_type_id}`.
+            /// The job modifies only the entryLinks that belong to these entry link
+            /// types.
+            ///
+            /// If the metadata import file attempts to create or delete an entry link
+            /// whose entry link type isn't included in this list, the import job will
+            /// skip those entry links.
+            #[prost(string, repeated, tag = "5")]
+            pub entry_link_types: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Defines the scope of entries that can be referenced in the
+            /// entry links.
+            ///
+            /// Currently, projects are supported as valid scopes.
+            /// Format: `projects/{project_number_or_id}`
+            ///
+            /// If the metadata import file attempts to create an entry link
+            /// which references an entry that is not in the scope, the import job will
+            /// skip that entry link.
+            #[prost(string, repeated, tag = "6")]
+            pub referenced_entry_scopes: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
         }
         /// Specifies how the entries and aspects in a metadata import job are
         /// updated. For more information, see [Sync
@@ -5162,9 +6246,9 @@ pub mod metadata_job {
             /// Sync mode unspecified.
             Unspecified = 0,
             /// All resources in the job's scope are modified. If a resource exists in
-            /// Dataplex but isn't included in the metadata import file, the resource
-            /// is deleted when you run the metadata job. Use this mode to perform a
-            /// full sync of the set of entries in the job scope.
+            /// Dataplex Universal Catalog but isn't included in the metadata import
+            /// file, the resource is deleted when you run the metadata job. Use this
+            /// mode to perform a full sync of the set of entries in the job scope.
             ///
             /// This sync mode is supported for entries.
             Full = 1,
@@ -5270,9 +6354,9 @@ pub mod metadata_job {
         /// metadata to, in the format `gs://{bucket}/`. You can optionally specify a
         /// custom prefix after the bucket name, in the format
         /// `gs://{bucket}/{prefix}/`. The maximum length of the custom prefix is 128
-        /// characters. Dataplex constructs the object path for the exported files by
-        /// using the bucket name and prefix that you provide, followed by a
-        /// system-generated path.
+        /// characters. Dataplex Universal Catalog constructs the object path for the
+        /// exported files by using the bucket name and prefix that you provide,
+        /// followed by a system-generated path.
         ///
         /// The bucket must be in the same VPC Service Controls perimeter as the job.
         #[prost(string, tag = "3")]
@@ -5480,6 +6564,139 @@ pub mod metadata_job {
         ExportResult(ExportJobResult),
     }
 }
+/// EntryLink represents a link between two Entries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntryLink {
+    /// Output only. Immutable. Identifier. The relative resource name of the Entry
+    /// Link, of the form:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. Relative resource name of the Entry Link Type used to
+    /// create this Entry Link. For example:
+    ///
+    /// * Entry link between synonym terms in a glossary:
+    ///   `projects/dataplex-types/locations/global/entryLinkTypes/synonym`
+    /// * Entry link between related terms in a glossary:
+    ///   `projects/dataplex-types/locations/global/entryLinkTypes/related`
+    /// * Entry link between glossary terms and data assets:
+    ///   `projects/dataplex-types/locations/global/entryLinkTypes/definition`
+    #[prost(string, tag = "2")]
+    pub entry_link_type: ::prost::alloc::string::String,
+    /// Output only. The time when the Entry Link was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the Entry Link was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Specifies the Entries referenced in the Entry Link. There should
+    /// be exactly two entry references.
+    #[prost(message, repeated, tag = "10")]
+    pub entry_references: ::prost::alloc::vec::Vec<entry_link::EntryReference>,
+}
+/// Nested message and enum types in `EntryLink`.
+pub mod entry_link {
+    /// Reference to the Entry that is linked through the Entry Link.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EntryReference {
+        /// Required. Immutable. The relative resource name of the referenced Entry,
+        /// of the form:
+        /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Immutable. The path in the Entry that is referenced in the Entry Link.
+        /// Empty path denotes that the Entry itself is referenced in the Entry
+        /// Link.
+        #[prost(string, tag = "2")]
+        pub path: ::prost::alloc::string::String,
+        /// Required. Immutable. The reference type of the Entry.
+        #[prost(enumeration = "entry_reference::Type", tag = "3")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `EntryReference`.
+    pub mod entry_reference {
+        /// Reference type of the Entry.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unspecified reference type. Implies that the Entry is referenced
+            /// in a non-directional Entry Link.
+            Unspecified = 0,
+            /// The Entry is referenced as the source of the directional Entry Link.
+            Source = 2,
+            /// The Entry is referenced as the target of the directional Entry Link.
+            Target = 3,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "UNSPECIFIED",
+                    Self::Source => "SOURCE",
+                    Self::Target => "TARGET",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNSPECIFIED" => Some(Self::Unspecified),
+                    "SOURCE" => Some(Self::Source),
+                    "TARGET" => Some(Self::Target),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Request message for CreateEntryLink.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEntryLinkRequest {
+    /// Required. The resource name of the parent Entry Group:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Entry Link identifier
+    ///
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must end with a number or a letter.
+    /// * Must be unique within the EntryGroup.
+    #[prost(string, tag = "2")]
+    pub entry_link_id: ::prost::alloc::string::String,
+    /// Required. Entry Link resource.
+    #[prost(message, optional, tag = "3")]
+    pub entry_link: ::core::option::Option<EntryLink>,
+}
+/// Request message for DeleteEntryLink.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteEntryLinkRequest {
+    /// Required. The resource name of the Entry Link:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetEntryLink.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetEntryLinkRequest {
+    /// Required. The resource name of the Entry Link:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// View for controlling which parts of an entry are to be returned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -5494,8 +6711,6 @@ pub enum EntryView {
     /// Returns aspects matching custom fields in GetEntryRequest. If the number of
     /// aspects exceeds 100, the first 100 will be returned.
     Custom = 3,
-    /// Returns all aspects. If the number of aspects exceeds 100, the first
-    /// 100 will be returned.
     All = 4,
 }
 impl EntryView {
@@ -5574,10 +6789,10 @@ pub mod catalog_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The primary resources offered by this service are EntryGroups, EntryTypes,
-    /// AspectTypes, and Entries. They collectively let data administrators organize,
-    /// manage, secure, and catalog data located across cloud projects in their
-    /// organization in a variety of storage systems, including Cloud Storage and
-    /// BigQuery.
+    /// AspectTypes, Entries and EntryLinks. They collectively let data
+    /// administrators organize, manage, secure, and catalog data located across
+    /// cloud projects in their organization in a variety of storage systems,
+    /// including Cloud Storage and BigQuery.
     #[derive(Debug, Clone)]
     pub struct CatalogServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -6181,6 +7396,11 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists Entries within an EntryGroup.
+        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
+        /// Metastore metadata that is stored in Dataplex Universal Catalog is
+        /// changing. For more information, see [Changes to metadata stored in
+        /// Dataplex Universal
+        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn list_entries(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntriesRequest>,
@@ -6211,6 +7431,11 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets an Entry.
+        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
+        /// Metastore metadata that is stored in Dataplex Universal Catalog is
+        /// changing. For more information, see [Changes to metadata stored in
+        /// Dataplex Universal
+        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn get_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntryRequest>,
@@ -6238,6 +7463,11 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Looks up an entry by name using the permission on the source system.
+        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
+        /// Metastore metadata that is stored in Dataplex Universal Catalog is
+        /// changing. For more information, see [Changes to metadata stored in
+        /// Dataplex Universal
+        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn lookup_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEntryRequest>,
@@ -6294,8 +7524,8 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a metadata job. For example, use a metadata job to import Dataplex
-        /// Catalog entries and aspects from a third-party system into Dataplex.
+        /// Creates a metadata job. For example, use a metadata job to import metadata
+        /// from a third-party system into Dataplex Universal Catalog.
         pub async fn create_metadata_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMetadataJobRequest>,
@@ -6414,6 +7644,87 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates an Entry Link.
+        pub async fn create_entry_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEntryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateEntryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateEntryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an Entry Link.
+        pub async fn delete_entry_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEntryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteEntryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets an Entry Link.
+        pub async fn get_entry_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEntryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetEntryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetEntryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// A Resource designed to manage encryption configurations for customers to
@@ -6446,6 +7757,9 @@ pub struct EncryptionConfig {
     /// Output only. Details of the failure if anything related to Cmek db fails.
     #[prost(message, optional, tag = "7")]
     pub failure_details: ::core::option::Option<encryption_config::FailureDetails>,
+    /// Optional. Represent the state of CMEK opt-in for metastore.
+    #[prost(bool, tag = "8")]
+    pub enable_metastore_encryption: bool,
 }
 /// Nested message and enum types in `EncryptionConfig`.
 pub mod encryption_config {
@@ -6668,7 +7982,7 @@ pub mod cmek_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Dataplex Cmek Service
+    /// Dataplex Universal Catalog Customer Managed Encryption Keys (CMEK) Service
     #[derive(Debug, Clone)]
     pub struct CmekServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -7050,7 +8364,8 @@ pub mod content_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// ContentService manages Notebook and SQL Scripts for Dataplex.
+    /// ContentService manages Notebook and SQL Scripts for Dataplex Universal
+    /// Catalog.
     #[derive(Debug, Clone)]
     pub struct ContentServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -7437,6 +8752,12 @@ pub mod data_discovery_spec {
         /// <https://cloud.google.com/bigquery/docs/locations#supported_locations.>
         #[prost(string, tag = "4")]
         pub location: ::prost::alloc::string::String,
+        /// Optional. The project of the BigQuery dataset to publish BigLake external
+        /// or non-BigLake external tables to. If not specified, the project of the
+        /// Cloud Storage bucket will be used. The format is
+        /// "projects/{project_id_or_number}".
+        #[prost(string, tag = "5")]
+        pub project: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `BigQueryPublishingConfig`.
     pub mod big_query_publishing_config {
@@ -7616,6 +8937,75 @@ pub mod data_discovery_result {
         pub filesets_updated: i32,
     }
 }
+/// DataDocumentation scan related spec.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataDocumentationSpec {}
+/// The output of a DataDocumentation scan.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataDocumentationResult {
+    /// The result of the data documentation scan.
+    #[prost(oneof = "data_documentation_result::Result", tags = "8")]
+    pub result: ::core::option::Option<data_documentation_result::Result>,
+}
+/// Nested message and enum types in `DataDocumentationResult`.
+pub mod data_documentation_result {
+    /// Generated metadata about the table.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TableResult {
+        /// Output only. The service-qualified full resource name of the cloud
+        /// resource. Ex:
+        /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Output only. Generated description of the table.
+        #[prost(string, tag = "2")]
+        pub overview: ::prost::alloc::string::String,
+        /// Output only. Schema of the table with generated metadata of the columns
+        /// in the schema.
+        #[prost(message, optional, tag = "3")]
+        pub schema: ::core::option::Option<Schema>,
+        /// Output only. Sample SQL queries for the table.
+        #[prost(message, repeated, tag = "4")]
+        pub queries: ::prost::alloc::vec::Vec<Query>,
+    }
+    /// A sample SQL query in data documentation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Query {
+        /// Output only. The SQL query string which can be executed.
+        #[prost(string, tag = "1")]
+        pub sql: ::prost::alloc::string::String,
+        /// Output only. The description for the query.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+    }
+    /// Schema of the table with generated metadata of columns.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Schema {
+        /// Output only. The list of columns.
+        #[prost(message, repeated, tag = "1")]
+        pub fields: ::prost::alloc::vec::Vec<Field>,
+    }
+    /// Column of a table with generated metadata and nested fields.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Field {
+        /// Output only. The name of the column.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Output only. Generated description for columns and fields.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+        /// Output only. Nested fields.
+        #[prost(message, repeated, tag = "3")]
+        pub fields: ::prost::alloc::vec::Vec<Field>,
+    }
+    /// The result of the data documentation scan.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Output only. Table result for insights.
+        #[prost(message, tag = "8")]
+        TableResult(TableResult),
+    }
+}
 /// DataScan scheduling and trigger settings.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Trigger {
@@ -7675,14 +9065,18 @@ pub mod data_source {
     /// to others.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
-        /// Immutable. The Dataplex entity that represents the data source (e.g.
-        /// BigQuery table) for DataScan, of the form:
+        /// Immutable. The Dataplex Universal Catalog entity that represents the data
+        /// source (e.g. BigQuery table) for DataScan, of the form:
         /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
         #[prost(string, tag = "100")]
         Entity(::prost::alloc::string::String),
         /// Immutable. The service-qualified full resource name of the cloud resource
-        /// for a DataScan job to scan against. The field could be: BigQuery table of
-        /// type "TABLE" for DataProfileScan/DataQualityScan Format:
+        /// for a DataScan job to scan against. The field could either be: Cloud
+        /// Storage bucket for DataDiscoveryScan Format:
+        /// //storage.googleapis.com/projects/PROJECT_ID/buckets/BUCKET_ID
+        /// or
+        /// BigQuery table of type "TABLE" for
+        /// DataProfileScan/DataQualityScan/DataDocumentationScan Format:
         /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
         #[prost(string, tag = "101")]
         Resource(::prost::alloc::string::String),
@@ -7700,14 +9094,14 @@ pub mod scanned_data {
     /// A data range denoted by a pair of start/end values of a field.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IncrementalField {
-        /// The field that contains values which monotonically increases over time
-        /// (e.g. a timestamp column).
+        /// Output only. The field that contains values which monotonically increases
+        /// over time (e.g. a timestamp column).
         #[prost(string, tag = "1")]
         pub field: ::prost::alloc::string::String,
-        /// Value that marks the start of the range.
+        /// Output only. Value that marks the start of the range.
         #[prost(string, tag = "2")]
         pub start: ::prost::alloc::string::String,
-        /// Value that marks the end of the range.
+        /// Output only. Value that marks the end of the range.
         #[prost(string, tag = "3")]
         pub end: ::prost::alloc::string::String,
     }
@@ -7733,10 +9127,8 @@ pub struct DataProfileSpec {
     #[prost(float, tag = "2")]
     pub sampling_percent: f32,
     /// Optional. A filter applied to all rows in a single DataScan job.
-    /// The filter needs to be a valid SQL expression for a [WHERE clause in
-    /// GoogleSQL
-    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>).
-    ///
+    /// The filter needs to be a valid SQL expression for a WHERE clause in
+    /// BigQuery standard SQL syntax.
     /// Example: col1 >= 0 AND col2 \< 10
     #[prost(string, tag = "3")]
     pub row_filter: ::prost::alloc::string::String,
@@ -7774,8 +9166,6 @@ pub mod data_profile_spec {
             /// Optional. The BigQuery table to export DataProfileScan results to.
             /// Format:
             /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-            /// or
-            /// projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             #[prost(string, tag = "1")]
             pub results_table: ::prost::alloc::string::String,
         }
@@ -7798,13 +9188,13 @@ pub mod data_profile_spec {
 /// table will have field type specific profile result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileResult {
-    /// The count of rows scanned.
+    /// Output only. The count of rows scanned.
     #[prost(int64, tag = "3")]
     pub row_count: i64,
-    /// The profile information per field.
+    /// Output only. The profile information per field.
     #[prost(message, optional, tag = "4")]
     pub profile: ::core::option::Option<data_profile_result::Profile>,
-    /// The data scanned for this result.
+    /// Output only. The data scanned for this result.
     #[prost(message, optional, tag = "5")]
     pub scanned_data: ::core::option::Option<ScannedData>,
     /// Output only. The result of post scan actions.
@@ -7818,7 +9208,8 @@ pub mod data_profile_result {
     /// Contains name, type, mode and field type specific profile information.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Profile {
-        /// List of fields with structural and profile information for each field.
+        /// Output only. List of fields with structural and profile information for
+        /// each field.
         #[prost(message, repeated, tag = "2")]
         pub fields: ::prost::alloc::vec::Vec<profile::Field>,
     }
@@ -7827,24 +9218,25 @@ pub mod data_profile_result {
         /// A field within a table.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Field {
-            /// The name of the field.
+            /// Output only. The name of the field.
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
-            /// The data type retrieved from the schema of the data source. For
-            /// instance, for a BigQuery native table, it is the [BigQuery Table
+            /// Output only. The data type retrieved from the schema of the data
+            /// source. For instance, for a BigQuery native table, it is the [BigQuery
+            /// Table
             /// Schema](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>).
-            /// For a Dataplex Entity, it is the [Entity
+            /// For a Dataplex Universal Catalog Entity, it is the [Entity
             /// Schema](<https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>).
             #[prost(string, tag = "2")]
             pub r#type: ::prost::alloc::string::String,
-            /// The mode of the field. Possible values include:
+            /// Output only. The mode of the field. Possible values include:
             ///
             /// * REQUIRED, if it is a required field.
             /// * NULLABLE, if it is an optional field.
             /// * REPEATED, if it is a repeated field.
             #[prost(string, tag = "3")]
             pub mode: ::prost::alloc::string::String,
-            /// Profile information for the corresponding field.
+            /// Output only. Profile information for the corresponding field.
             #[prost(message, optional, tag = "4")]
             pub profile: ::core::option::Option<field::ProfileInfo>,
         }
@@ -7853,19 +9245,21 @@ pub mod data_profile_result {
             /// The profile information for each field type.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ProfileInfo {
-                /// Ratio of rows with null value against total scanned rows.
+                /// Output only. Ratio of rows with null value against total scanned
+                /// rows.
                 #[prost(double, tag = "2")]
                 pub null_ratio: f64,
-                /// Ratio of rows with distinct values against total scanned rows.
-                /// Not available for complex non-groupable field type, including RECORD,
-                /// ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode.
+                /// Output only. Ratio of rows with distinct values against total scanned
+                /// rows. Not available for complex non-groupable field type, including
+                /// RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE
+                /// mode.
                 #[prost(double, tag = "3")]
                 pub distinct_ratio: f64,
-                /// The list of top N non-null values, frequency and ratio with which
-                /// they occur in the scanned data. N is 10 or equal to the number of
-                /// distinct values in the field, whichever is smaller. Not available for
-                /// complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY,
-                /// and JSON, as well as fields with REPEATABLE mode.
+                /// Output only. The list of top N non-null values, frequency and ratio
+                /// with which they occur in the scanned data. N is 10 or equal to the
+                /// number of distinct values in the field, whichever is smaller. Not
+                /// available for complex non-groupable field type, including RECORD,
+                /// ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode.
                 #[prost(message, repeated, tag = "4")]
                 pub top_n_values: ::prost::alloc::vec::Vec<profile_info::TopNValue>,
                 /// Structural and profile information for specific field type. Not
@@ -7878,94 +9272,95 @@ pub mod data_profile_result {
                 /// The profile information for a string type field.
                 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
                 pub struct StringFieldInfo {
-                    /// Minimum length of non-null values in the scanned data.
+                    /// Output only. Minimum length of non-null values in the scanned data.
                     #[prost(int64, tag = "1")]
                     pub min_length: i64,
-                    /// Maximum length of non-null values in the scanned data.
+                    /// Output only. Maximum length of non-null values in the scanned data.
                     #[prost(int64, tag = "2")]
                     pub max_length: i64,
-                    /// Average length of non-null values in the scanned data.
+                    /// Output only. Average length of non-null values in the scanned data.
                     #[prost(double, tag = "3")]
                     pub average_length: f64,
                 }
                 /// The profile information for an integer type field.
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct IntegerFieldInfo {
-                    /// Average of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Average of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(double, tag = "1")]
                     pub average: f64,
-                    /// Standard deviation of non-null values in the scanned data. NaN, if
-                    /// the field has a NaN.
+                    /// Output only. Standard deviation of non-null values in the scanned
+                    /// data. NaN, if the field has a NaN.
                     #[prost(double, tag = "3")]
                     pub standard_deviation: f64,
-                    /// Minimum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Minimum of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(int64, tag = "4")]
                     pub min: i64,
-                    /// A quartile divides the number of data points into four parts, or
-                    /// quarters, of more-or-less equal size. Three main quartiles used
-                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
-                    /// the highest 75%. It is also known as the lower or 25th empirical
-                    /// quartile, as 25% of the data is below this point. The second
-                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
-                    /// below this point. The third quartile (Q3) splits off the highest
-                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point.
-                    /// Here, the quartiles is provided as an ordered list of approximate
-                    /// quartile values for the scanned data, occurring in order Q1,
-                    /// median, Q3.
-                    #[prost(int64, repeated, tag = "6")]
+                    /// Output only. A quartile divides the number of data points into four
+                    /// parts, or quarters, of more-or-less equal size. Three main
+                    /// quartiles used are: The first quartile (Q1) splits off the lowest
+                    /// 25% of data from the highest 75%. It is also known as the lower or
+                    /// 25th empirical quartile, as 25% of the data is below this point.
+                    /// The second quartile (Q2) is the median of a data set. So, 50% of
+                    /// the data lies below this point. The third quartile (Q3) splits off
+                    /// the highest 25% of data from the lowest 75%. It is known as the
+                    /// upper or 75th empirical quartile, as 75% of the data lies below
+                    /// this point. Here, the quartiles is provided as an ordered list of
+                    /// approximate quartile values for the scanned data, occurring in
+                    /// order Q1, median, Q3.
+                    #[prost(int64, repeated, packed = "false", tag = "6")]
                     pub quartiles: ::prost::alloc::vec::Vec<i64>,
-                    /// Maximum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Maximum of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(int64, tag = "5")]
                     pub max: i64,
                 }
                 /// The profile information for a double type field.
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct DoubleFieldInfo {
-                    /// Average of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Average of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(double, tag = "1")]
                     pub average: f64,
-                    /// Standard deviation of non-null values in the scanned data. NaN, if
-                    /// the field has a NaN.
+                    /// Output only. Standard deviation of non-null values in the scanned
+                    /// data. NaN, if the field has a NaN.
                     #[prost(double, tag = "3")]
                     pub standard_deviation: f64,
-                    /// Minimum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Minimum of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(double, tag = "4")]
                     pub min: f64,
-                    /// A quartile divides the number of data points into four parts, or
-                    /// quarters, of more-or-less equal size. Three main quartiles used
-                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
-                    /// the highest 75%. It is also known as the lower or 25th empirical
-                    /// quartile, as 25% of the data is below this point. The second
-                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
-                    /// below this point. The third quartile (Q3) splits off the highest
-                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point.
-                    /// Here, the quartiles is provided as an ordered list of quartile
-                    /// values for the scanned data, occurring in order Q1, median, Q3.
-                    #[prost(double, repeated, tag = "6")]
+                    /// Output only. A quartile divides the number of data points into four
+                    /// parts, or quarters, of more-or-less equal size. Three main
+                    /// quartiles used are: The first quartile (Q1) splits off the lowest
+                    /// 25% of data from the highest 75%. It is also known as the lower or
+                    /// 25th empirical quartile, as 25% of the data is below this point.
+                    /// The second quartile (Q2) is the median of a data set. So, 50% of
+                    /// the data lies below this point. The third quartile (Q3) splits off
+                    /// the highest 25% of data from the lowest 75%. It is known as the
+                    /// upper or 75th empirical quartile, as 75% of the data lies below
+                    /// this point. Here, the quartiles is provided as an ordered list of
+                    /// quartile values for the scanned data, occurring in order Q1,
+                    /// median, Q3.
+                    #[prost(double, repeated, packed = "false", tag = "6")]
                     pub quartiles: ::prost::alloc::vec::Vec<f64>,
-                    /// Maximum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
+                    /// Output only. Maximum of non-null values in the scanned data. NaN,
+                    /// if the field has a NaN.
                     #[prost(double, tag = "5")]
                     pub max: f64,
                 }
                 /// Top N non-null values in the scanned data.
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct TopNValue {
-                    /// String value of a top N non-null value.
+                    /// Output only. String value of a top N non-null value.
                     #[prost(string, tag = "1")]
                     pub value: ::prost::alloc::string::String,
-                    /// Count of the corresponding value in the scanned data.
+                    /// Output only. Count of the corresponding value in the scanned data.
                     #[prost(int64, tag = "2")]
                     pub count: i64,
-                    /// Ratio of the corresponding value in the field against the total
-                    /// number of rows in the scanned data.
+                    /// Output only. Ratio of the corresponding value in the field against
+                    /// the total number of rows in the scanned data.
                     #[prost(double, tag = "3")]
                     pub ratio: f64,
                 }
@@ -8060,6 +9455,60 @@ pub mod data_profile_result {
         }
     }
 }
+/// The status of publishing the data scan result as Dataplex Universal Catalog
+/// metadata.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataScanCatalogPublishingStatus {
+    /// Output only. Execution state for catalog publishing.
+    #[prost(enumeration = "data_scan_catalog_publishing_status::State", tag = "1")]
+    pub state: i32,
+}
+/// Nested message and enum types in `DataScanCatalogPublishingStatus`.
+pub mod data_scan_catalog_publishing_status {
+    /// Execution state for the publishing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The publishing state is unspecified.
+        Unspecified = 0,
+        /// Publish to catalog completed successfully.
+        Succeeded = 1,
+        /// Publish to catalog failed.
+        Failed = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
 /// DataQualityScan related setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualitySpec {
@@ -8088,6 +9537,10 @@ pub struct DataQualitySpec {
     /// Optional. Actions to take upon job completion.
     #[prost(message, optional, tag = "6")]
     pub post_scan_actions: ::core::option::Option<data_quality_spec::PostScanActions>,
+    /// Optional. If set, the latest DataScan job result will be published as
+    /// Dataplex Universal Catalog metadata.
+    #[prost(bool, tag = "8")]
+    pub catalog_publishing_enabled: bool,
 }
 /// Nested message and enum types in `DataQualitySpec`.
 pub mod data_quality_spec {
@@ -8198,6 +9651,17 @@ pub struct DataQualityResult {
     pub post_scan_actions_result: ::core::option::Option<
         data_quality_result::PostScanActionsResult,
     >,
+    /// Output only. The status of publishing the data scan as Dataplex Universal
+    /// Catalog metadata.
+    #[prost(message, optional, tag = "11")]
+    pub catalog_publishing_status: ::core::option::Option<
+        DataScanCatalogPublishingStatus,
+    >,
+    /// Output only. The generated assets for anomaly detection.
+    #[prost(message, optional, tag = "12")]
+    pub anomaly_detection_generated_assets: ::core::option::Option<
+        data_quality_result::AnomalyDetectionGeneratedAssets,
+    >,
 }
 /// Nested message and enum types in `DataQualityResult`.
 pub mod data_quality_result {
@@ -8274,6 +9738,33 @@ pub mod data_quality_result {
             }
         }
     }
+    /// The assets generated by Anomaly Detection Data Scan.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AnomalyDetectionGeneratedAssets {
+        /// Output only. The result table for anomaly detection.
+        /// Format:
+        /// PROJECT_ID.DATASET_ID.TABLE_ID
+        /// If the result table is set at AnomalyDetectionAssets, the result table
+        /// here would be the same as the one set in the
+        /// AnomalyDetectionAssets.result_table.
+        #[prost(string, tag = "1")]
+        pub result_table: ::prost::alloc::string::String,
+        /// Output only. The intermediate table for data anomaly detection.
+        /// Format:
+        /// PROJECT_ID.DATASET_ID.TABLE_ID
+        #[prost(string, tag = "2")]
+        pub data_intermediate_table: ::prost::alloc::string::String,
+        /// Output only. The intermediate table for freshness anomaly detection.
+        /// Format:
+        /// PROJECT_ID.DATASET_ID.TABLE_ID
+        #[prost(string, tag = "3")]
+        pub freshness_intermediate_table: ::prost::alloc::string::String,
+        /// Output only. The intermediate table for volume anomaly detection.
+        /// Format:
+        /// PROJECT_ID.DATASET_ID.TABLE_ID
+        #[prost(string, tag = "4")]
+        pub volume_intermediate_table: ::prost::alloc::string::String,
+    }
 }
 /// DataQualityRuleResult provides a more detailed, per-rule view of the results.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8347,7 +9838,7 @@ pub struct DataQualityDimensionResult {
 /// specified.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataQualityDimension {
-    /// Optional. The dimension name a rule belongs to. Custom dimension name is
+    /// Output only. The dimension name a rule belongs to. Custom dimension name is
     /// supported with all uppercase letters and maximum length of 30 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -8371,9 +9862,8 @@ pub struct DataQualityRule {
     #[prost(bool, tag = "501")]
     pub ignore_null: bool,
     /// Required. The dimension a rule belongs to. Results are also aggregated at
-    /// the dimension level. Supported dimensions are **\["COMPLETENESS",
-    /// "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "FRESHNESS",
-    /// "VOLUME"\]**
+    /// the dimension level. Custom dimension name is supported with all uppercase
+    /// letters and maximum length of 30 characters.
     #[prost(string, tag = "502")]
     pub dimension: ::prost::alloc::string::String,
     /// Optional. The minimum ratio of **passing_rows / total_rows** required to
@@ -8638,6 +10128,12 @@ pub struct DataQualityColumnResult {
     /// points).
     #[prost(float, optional, tag = "2")]
     pub score: ::core::option::Option<f32>,
+    /// Output only. Whether the column passed or failed.
+    #[prost(bool, tag = "3")]
+    pub passed: bool,
+    /// Output only. The dimension-level results for this column.
+    #[prost(message, repeated, tag = "4")]
+    pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
 }
 /// ResourceAccessSpec holds the access control configuration to be enforced
 /// on the resources, for example, Cloud Storage bucket, BigQuery dataset,
@@ -8909,7 +10405,7 @@ pub struct GetDataTaxonomyRequest {
 pub struct ListDataTaxonomiesRequest {
     /// Required. The resource name of the DataTaxonomy location, of the form:
     /// projects/{project_number}/locations/{location_id}
-    /// where `location_id` refers to a GCP region.
+    /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of DataTaxonomies to return. The service may
@@ -9722,7 +11218,7 @@ pub struct CreateDataScanRequest {
     /// Required. The resource name of the parent location:
     /// `projects/{project}/locations/{location_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. DataScan resource.
@@ -9764,7 +11260,7 @@ pub struct DeleteDataScanRequest {
     /// Required. The resource name of the dataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. If set to true, any child resources of this data scan will also
@@ -9779,7 +11275,7 @@ pub struct GetDataScanRequest {
     /// Required. The resource name of the dataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Select the DataScan view to return. Defaults to `BASIC`.
@@ -9838,7 +11334,7 @@ pub struct ListDataScansRequest {
     /// Required. The resource name of the parent location:
     /// `projects/{project}/locations/{location_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of dataScans to return. The service may return
@@ -9880,7 +11376,7 @@ pub struct RunDataScanRequest {
     /// Required. The resource name of the DataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`.
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     ///
     /// Only **OnDemand** data scans are allowed.
     #[prost(string, tag = "1")]
@@ -9899,7 +11395,7 @@ pub struct GetDataScanJobRequest {
     /// Required. The resource name of the DataScanJob:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Select the DataScanJob view to return. Defaults to `BASIC`.
@@ -9958,7 +11454,7 @@ pub struct ListDataScanJobsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of DataScanJobs to return. The service may return
@@ -10019,8 +11515,8 @@ pub struct GenerateDataQualityRulesRequest {
 /// Response details for data quality rule recommendations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateDataQualityRulesResponse {
-    /// The data quality rules that Dataplex generates based on the results
-    /// of a data profiling scan.
+    /// The data quality rules that Dataplex Universal Catalog generates based on
+    /// the results of a data profiling scan.
     #[prost(message, repeated, tag = "1")]
     pub rule: ::prost::alloc::vec::Vec<DataQualityRule>,
 }
@@ -10040,12 +11536,16 @@ pub struct GenerateDataQualityRulesResponse {
 /// * Data discovery: scans data in Cloud Storage buckets to extract and then
 ///   catalog metadata. For more information, see [Discover and catalog Cloud
 ///   Storage data](<https://cloud.google.com/bigquery/docs/automatic-discovery>).
+/// * Data documentation: analyzes the table details and generates insights
+///   including descriptions and sample SQL queries for the table. For more
+///   information, see [Generate data insights in
+///   BigQuery](<https://cloud.google.com/bigquery/docs/data-insights>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScan {
     /// Output only. Identifier. The relative resource name of the scan, of the
     /// form: `projects/{project}/locations/{location_id}/dataScans/{datascan_id}`,
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. System generated globally unique ID for the scan. This ID will
@@ -10095,10 +11595,10 @@ pub struct DataScan {
     /// The settings are required and immutable. After you configure the settings
     /// for one type of data scan, you can't change the data scan to a different
     /// type of data scan.
-    #[prost(oneof = "data_scan::Spec", tags = "100, 101, 102")]
+    #[prost(oneof = "data_scan::Spec", tags = "100, 101, 102, 103")]
     pub spec: ::core::option::Option<data_scan::Spec>,
     /// The result of the data scan.
-    #[prost(oneof = "data_scan::Result", tags = "200, 201, 202")]
+    #[prost(oneof = "data_scan::Result", tags = "200, 201, 202, 203")]
     pub result: ::core::option::Option<data_scan::Result>,
 }
 /// Nested message and enum types in `DataScan`.
@@ -10165,6 +11665,9 @@ pub mod data_scan {
         /// Settings for a data discovery scan.
         #[prost(message, tag = "102")]
         DataDiscoverySpec(super::DataDiscoverySpec),
+        /// Settings for a data documentation scan.
+        #[prost(message, tag = "103")]
+        DataDocumentationSpec(super::DataDocumentationSpec),
     }
     /// The result of the data scan.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10178,6 +11681,9 @@ pub mod data_scan {
         /// Output only. The result of a data discovery scan.
         #[prost(message, tag = "202")]
         DataDiscoveryResult(super::DataDiscoveryResult),
+        /// Output only. The result of a data documentation scan.
+        #[prost(message, tag = "203")]
+        DataDocumentationResult(super::DataDocumentationResult),
     }
 }
 /// A DataScanJob represents an instance of DataScan execution.
@@ -10187,7 +11693,7 @@ pub struct DataScanJob {
     /// the form:
     /// `projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}`,
     /// where `project` refers to a *project_id* or *project_number* and
-    /// `location_id` refers to a GCP region.
+    /// `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. System generated globally unique ID for the DataScanJob.
@@ -10212,10 +11718,10 @@ pub struct DataScanJob {
     #[prost(enumeration = "DataScanType", tag = "7")]
     pub r#type: i32,
     /// Data scan related setting.
-    #[prost(oneof = "data_scan_job::Spec", tags = "100, 101, 102")]
+    #[prost(oneof = "data_scan_job::Spec", tags = "100, 101, 102, 103")]
     pub spec: ::core::option::Option<data_scan_job::Spec>,
     /// The result of the data scan.
-    #[prost(oneof = "data_scan_job::Result", tags = "200, 201, 202")]
+    #[prost(oneof = "data_scan_job::Result", tags = "200, 201, 202, 203")]
     pub result: ::core::option::Option<data_scan_job::Result>,
 }
 /// Nested message and enum types in `DataScanJob`.
@@ -10291,6 +11797,9 @@ pub mod data_scan_job {
         /// Output only. Settings for a data discovery scan.
         #[prost(message, tag = "102")]
         DataDiscoverySpec(super::DataDiscoverySpec),
+        /// Output only. Settings for a data documentation scan.
+        #[prost(message, tag = "103")]
+        DataDocumentationSpec(super::DataDocumentationSpec),
     }
     /// The result of the data scan.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10304,6 +11813,9 @@ pub mod data_scan_job {
         /// Output only. The result of a data discovery scan.
         #[prost(message, tag = "202")]
         DataDiscoveryResult(super::DataDiscoveryResult),
+        /// Output only. The result of a data documentation scan.
+        #[prost(message, tag = "203")]
+        DataDocumentationResult(super::DataDocumentationResult),
     }
 }
 /// The type of data scan.
@@ -10318,6 +11830,8 @@ pub enum DataScanType {
     DataProfile = 2,
     /// Data discovery scan.
     DataDiscovery = 3,
+    /// Data documentation scan.
+    DataDocumentation = 4,
 }
 impl DataScanType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -10330,6 +11844,7 @@ impl DataScanType {
             Self::DataQuality => "DATA_QUALITY",
             Self::DataProfile => "DATA_PROFILE",
             Self::DataDiscovery => "DATA_DISCOVERY",
+            Self::DataDocumentation => "DATA_DOCUMENTATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10339,6 +11854,7 @@ impl DataScanType {
             "DATA_QUALITY" => Some(Self::DataQuality),
             "DATA_PROFILE" => Some(Self::DataProfile),
             "DATA_DISCOVERY" => Some(Self::DataDiscovery),
+            "DATA_DOCUMENTATION" => Some(Self::DataDocumentation),
             _ => None,
         }
     }
@@ -11177,8 +12693,8 @@ pub mod job_event {
     pub enum ExecutionTrigger {
         /// The job execution trigger is unspecified.
         Unspecified = 0,
-        /// The job was triggered by Dataplex based on trigger spec from task
-        /// definition.
+        /// The job was triggered by Dataplex Universal Catalog based on trigger spec
+        /// from task definition.
         TaskConfig = 1,
         /// The job was triggered by the explicit call of Task API.
         RunRequest = 2,
@@ -11595,6 +13111,12 @@ pub struct DataScanEvent {
     pub post_scan_actions_result: ::core::option::Option<
         data_scan_event::PostScanActionsResult,
     >,
+    /// The status of publishing the data scan as Dataplex Universal Catalog
+    /// metadata.
+    #[prost(message, optional, tag = "13")]
+    pub catalog_publishing_status: ::core::option::Option<
+        DataScanCatalogPublishingStatus,
+    >,
     /// The result of the data scan job.
     #[prost(oneof = "data_scan_event::Result", tags = "101, 102")]
     pub result: ::core::option::Option<data_scan_event::Result>,
@@ -11832,7 +13354,7 @@ pub mod data_scan_event {
         Failed = 3,
         /// Data scan job was cancelled.
         Cancelled = 4,
-        /// Data scan job was createed.
+        /// Data scan job was created.
         Created = 5,
     }
     impl State {
@@ -12794,18 +14316,20 @@ pub struct Partition {
 /// Schema information describing the structure and layout of the data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
-    /// Required. Set to `true` if user-managed or `false` if managed by Dataplex.
-    /// The default is `false` (managed by Dataplex).
+    /// Required. Set to `true` if user-managed or `false` if managed by Dataplex
+    /// Universal Catalog. The default is `false` (managed by Dataplex Universal
+    /// Catalog).
     ///
-    /// * Set to `false`to enable Dataplex discovery to update the schema.
+    /// * Set to `false`to enable Dataplex Universal Catalog discovery to update
+    ///   the schema.
     ///   including new data discovery, schema inference, and schema evolution.
-    ///   Users retain the ability to input and edit the schema. Dataplex
-    ///   treats schema input by the user as though produced
-    ///   by a previous Dataplex discovery operation, and it will
-    ///   evolve the schema and take action based on that treatment.
+    ///   Users retain the ability to input and edit the schema. Dataplex Universal
+    ///   Catalog treats schema input by the user as though produced by a previous
+    ///   Dataplex Universal Catalog discovery operation, and it will evolve the
+    ///   schema and take action based on that treatment.
     ///
     /// * Set to `true` to fully manage the entity
-    ///   schema. This setting guarantees that Dataplex will not
+    ///   schema. This setting guarantees that Dataplex Universal Catalog will not
     ///   change schema fields.
     #[prost(bool, tag = "1")]
     pub user_managed: bool,

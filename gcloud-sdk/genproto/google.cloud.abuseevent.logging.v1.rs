@@ -15,7 +15,7 @@ pub struct AbuseEvent {
     #[prost(string, tag = "7")]
     pub remediation_link: ::prost::alloc::string::String,
     /// REQUIRED Contains addiional metadata about the detected abuse event.
-    #[prost(oneof = "abuse_event::EventType", tags = "4, 5, 6, 8, 9")]
+    #[prost(oneof = "abuse_event::EventType", tags = "4, 5, 6, 8, 9, 10")]
     pub event_type: ::core::option::Option<abuse_event::EventType>,
 }
 /// Nested message and enum types in `AbuseEvent`.
@@ -49,6 +49,9 @@ pub mod abuse_event {
         /// No abuse is detected on the monitored resource, but its abuse state may
         /// have been updated.
         NoAbuse = 5,
+        /// The monitored resource is believed to be attempting to intrude upon
+        /// third-party resources.
+        IntrusionAttempt = 6,
     }
     impl DetectionType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -63,6 +66,7 @@ pub mod abuse_event {
                 Self::Phishing => "PHISHING",
                 Self::Malware => "MALWARE",
                 Self::NoAbuse => "NO_ABUSE",
+                Self::IntrusionAttempt => "INTRUSION_ATTEMPT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -74,6 +78,7 @@ pub mod abuse_event {
                 "PHISHING" => Some(Self::Phishing),
                 "MALWARE" => Some(Self::Malware),
                 "NO_ABUSE" => Some(Self::NoAbuse),
+                "INTRUSION_ATTEMPT" => Some(Self::IntrusionAttempt),
                 _ => None,
             }
         }
@@ -158,6 +163,9 @@ pub mod abuse_event {
         /// resource.
         #[prost(message, tag = "9")]
         DecisionEscalationEvent(super::DecisionEscalationEvent),
+        /// Information about an intrusion attempt event.
+        #[prost(message, tag = "10")]
+        IntrusionAttemptEvent(super::IntrusionAttemptEvent),
     }
 }
 /// Information about a cryptocurrency mining event observed on the monitored
@@ -202,6 +210,24 @@ pub mod leaked_credential_event {
         #[prost(message, tag = "2")]
         ApiKeyCredential(super::ApiKeyCredential),
     }
+}
+/// Information about an intrusion attempt event observed on the monitored
+/// resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IntrusionAttemptEvent {
+    /// VM and zone in which the intrusion attempt occurred.
+    #[prost(string, repeated, tag = "1")]
+    pub vm_resource: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Detected start time of the intrusion attempt.
+    #[prost(message, optional, tag = "2")]
+    pub detected_intrusion_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Detected end time of the intrusion attempt.
+    #[prost(message, optional, tag = "3")]
+    pub detected_intrusion_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The IP address(es) of the VM associated with the intrusion attempt.
+    /// This field may be empty if this information is not available.
+    #[prost(string, repeated, tag = "4")]
+    pub vm_ip: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information about leaked service accounts.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

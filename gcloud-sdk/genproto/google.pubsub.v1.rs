@@ -1542,7 +1542,7 @@ pub mod ingestion_failure_event {
         #[prost(string, tag = "3")]
         pub sequence_number: ::prost::alloc::string::String,
         /// Reason why ingestion failed for the specified message.
-        #[prost(oneof = "aws_kinesis_failure_reason::Reason", tags = "4, 5")]
+        #[prost(oneof = "aws_kinesis_failure_reason::Reason", tags = "4, 5, 6")]
         pub reason: ::core::option::Option<aws_kinesis_failure_reason::Reason>,
     }
     /// Nested message and enum types in `AwsKinesisFailureReason`.
@@ -1559,6 +1559,11 @@ pub mod ingestion_failure_event {
             MessageTransformationFailureReason(
                 super::MessageTransformationFailureReason,
             ),
+            /// Optional. The message failed to be published due to an API violation.
+            /// This is only set when the size of the data field of the Kinesis record
+            /// is zero.
+            #[prost(message, tag = "6")]
+            ApiViolationReason(super::ApiViolationReason),
         }
     }
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -1707,6 +1712,15 @@ pub struct Topic {
     /// Transforms are applied in the order specified.
     #[prost(message, repeated, tag = "13")]
     pub message_transforms: ::prost::alloc::vec::Vec<MessageTransform>,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    /// "123/environment": "production",
+    /// "123/costCenter": "marketing"
+    #[prost(map = "string, string", tag = "14")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Topic`.
 pub mod topic {
@@ -2106,6 +2120,15 @@ pub struct Subscription {
     /// subscribers. Transforms are applied in the order specified.
     #[prost(message, repeated, tag = "25")]
     pub message_transforms: ::prost::alloc::vec::Vec<MessageTransform>,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    /// "123/environment": "production",
+    /// "123/costCenter": "marketing"
+    #[prost(map = "string, string", tag = "26")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Subscription`.
 pub mod subscription {
@@ -2855,12 +2878,17 @@ pub struct StreamingPullRequest {
     /// `INVALID_ARGUMENT`.
     #[prost(int64, tag = "8")]
     pub max_outstanding_bytes: i64,
+    /// Optional. The protocol version used by the client. This property can only
+    /// be set on the initial StreamingPullRequest. If it is set on a subsequent
+    /// request, the stream will be aborted with status `INVALID_ARGUMENT`.
+    #[prost(int64, tag = "10")]
+    pub protocol_version: i64,
 }
 /// Response for the `StreamingPull` method. This response is used to stream
 /// messages from the server to the client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingPullResponse {
-    /// Optional. Received Pub/Sub messages. This will not be empty.
+    /// Optional. Received Pub/Sub messages.
     #[prost(message, repeated, tag = "1")]
     pub received_messages: ::prost::alloc::vec::Vec<ReceivedMessage>,
     /// Optional. This field will only be set if `enable_exactly_once_delivery` is
@@ -2960,6 +2988,15 @@ pub struct CreateSnapshotRequest {
     /// labels](<https://cloud.google.com/pubsub/docs/labels>).
     #[prost(map = "string, string", tag = "3")]
     pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    /// "123/environment": "production",
+    /// "123/costCenter": "marketing"
+    #[prost(map = "string, string", tag = "4")]
+    pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,

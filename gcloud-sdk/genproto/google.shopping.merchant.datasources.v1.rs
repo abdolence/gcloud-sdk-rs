@@ -46,11 +46,6 @@ pub struct PrimaryProductDataSource {
     /// data sources will be replaced.
     #[prost(message, optional, tag = "7")]
     pub default_rule: ::core::option::Option<primary_product_data_source::DefaultRule>,
-    /// Output only. The existing data source setup contains at least one custom
-    /// (non-default) rule and therefore its management through the
-    /// `default_rule_data_sources` field should be treated with caution.
-    #[prost(bool, tag = "9")]
-    pub contains_custom_rules: bool,
     /// Optional. A list of destinations describing where products of the data
     /// source can be shown.
     ///
@@ -360,20 +355,11 @@ pub mod file_input {
     /// Nested message and enum types in `FetchSettings`.
     pub mod fetch_settings {
         /// The required fields vary based on the frequency of fetching. For a
-        /// monthly
-        /// fetch schedule,
-        /// `day of  month`
-        /// and
-        /// \[hour of
-        /// day\]\[<https://developers.google.com/merchant/api/reference/rest/datasources_v1beta/accounts.dataSources#timeofday\]>
-        /// are required. For a weekly fetch schedule,
-        /// \[day of
-        /// week\]\[<https://developers.google.com/merchant/api/reference/rest/datasources_v1beta/accounts.dataSources#dayofweek\]>
-        /// and \[hour of
-        /// day\]\[<https://developers.google.com/merchant/api/reference/rest/datasources_v1beta/accounts.dataSources#timeofday\]>
-        /// are required. For a daily fetch schedule, only an \[hour of
-        /// day\]\[<https://developers.google.com/merchant/api/reference/rest/datasources_v1beta/accounts.dataSources#timeofday\]>
-        /// is required.
+        /// monthly fetch schedule, `day of month` and [hour of
+        /// day](../Shared.Types/TimeOfDay) are required. For a weekly fetch
+        /// schedule, [day of week](../Shared.Types/DayOfWeek) and [hour of
+        /// day](../Shared.Types/TimeOfDay) are required. For a daily fetch schedule,
+        /// only an [hour of day](../Shared.Types/TimeOfDay) is required.
         #[derive(
             Clone,
             Copy,

@@ -171,6 +171,20 @@ pub struct Ad {
     /// ad.
     #[prost(string, repeated, tag = "41")]
     pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A list of final app URLs that will be used on mobile if the user has the
+    /// specific app installed.
+    #[prost(message, repeated, tag = "35")]
+    pub final_app_urls: ::prost::alloc::vec::Vec<super::common::FinalAppUrl>,
+    /// The list of possible final mobile URLs after all cross-domain redirects
+    /// for the ad.
+    #[prost(string, repeated, tag = "42")]
+    pub final_mobile_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The URL template for constructing a tracking URL.
+    #[prost(string, optional, tag = "43")]
+    pub tracking_url_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// The suffix to use when constructing a final URL.
+    #[prost(string, optional, tag = "44")]
+    pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
     /// The URL that appears in the ad description for some ad formats.
     #[prost(string, optional, tag = "45")]
     pub display_url: ::core::option::Option<::prost::alloc::string::String>,
@@ -178,9 +192,7 @@ pub struct Ad {
     #[prost(enumeration = "super::enums::ad_type_enum::AdType", tag = "5")]
     pub r#type: i32,
     /// Immutable. The name of the ad. This is only used to be able to identify the
-    /// ad. It does not need to be unique and does not affect the served ad. The
-    /// name field is currently only supported for DisplayUploadAd, ImageAd,
-    /// ShoppingComparisonListingAd and VideoAd.
+    /// ad. It does not need to be unique and does not affect the served ad.
     #[prost(string, optional, tag = "47")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     /// Details pertinent to the ad type. Exactly one value must be set.
@@ -249,6 +261,9 @@ pub struct AdGroup {
         tag = "22"
     )]
     pub ad_rotation_mode: i32,
+    /// The URL template for constructing a tracking URL.
+    #[prost(string, optional, tag = "37")]
+    pub tracking_url_template: ::core::option::Option<::prost::alloc::string::String>,
     /// The maximum CPC (cost-per-click) bid.
     #[prost(int64, optional, tag = "39")]
     pub cpc_bid_micros: ::core::option::Option<i64>,
@@ -263,6 +278,9 @@ pub struct AdGroup {
         tag = "61"
     )]
     pub engine_status: ::core::option::Option<i32>,
+    /// URL template for appending params to Final URL.
+    #[prost(string, optional, tag = "46")]
+    pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
     /// Setting for targeting related features.
     #[prost(message, optional, tag = "25")]
     pub targeting_setting: ::core::option::Option<super::common::TargetingSetting>,
@@ -365,7 +383,7 @@ pub struct AdGroupAd {
 pub struct AdGroupAdEffectiveLabel {
     /// Immutable. The resource name of the ad group ad effective label.
     /// Ad group ad effective label resource names have the form:
-    /// `customers/{customer_id}/adGroupAdEffectiveLabels/{ad_group_id}~{ad_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupAdEffectiveLabels/{ad_group_id}~{ad_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group ad to which the effective label is attached.
@@ -383,7 +401,7 @@ pub struct AdGroupAdEffectiveLabel {
 pub struct AdGroupAdLabel {
     /// Immutable. The resource name of the ad group ad label.
     /// Ad group ad label resource names have the form:
-    /// `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group ad to which the label is attached.
@@ -566,6 +584,9 @@ pub struct AdGroupCriterion {
     /// ad.
     #[prost(string, repeated, tag = "70")]
     pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of possible final mobile URLs after all cross-domain redirects.
+    #[prost(string, repeated, tag = "71")]
+    pub final_mobile_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The Engine Status for ad group criterion.
     #[prost(
         enumeration = "super::enums::ad_group_criterion_engine_status_enum::AdGroupCriterionEngineStatus",
@@ -579,6 +600,10 @@ pub struct AdGroupCriterion {
     /// The URL template for constructing a tracking URL.
     #[prost(string, optional, tag = "73")]
     pub tracking_url_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// The list of mappings used to substitute custom parameter tags in a
+    /// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
+    #[prost(message, repeated, tag = "14")]
+    pub url_custom_parameters: ::prost::alloc::vec::Vec<super::common::CustomParameter>,
     /// Output only. ID of the ad group criterion in the external engine account.
     /// This field is for non-Google Ads account only, for example, Yahoo Japan,
     /// Microsoft, Baidu etc. For Google Ads entity, use
@@ -654,7 +679,7 @@ pub mod ad_group_criterion {
 pub struct AdGroupCriterionEffectiveLabel {
     /// Immutable. The resource name of the ad group criterion effective label.
     /// Ad group criterion effective label resource names have the form:
-    /// `customers/{customer_id}/adGroupCriterionEffectiveLabels/{ad_group_id}~{criterion_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupCriterionEffectiveLabels/{ad_group_id}~{criterion_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group criterion to which the effective label is attached.
@@ -672,7 +697,7 @@ pub struct AdGroupCriterionEffectiveLabel {
 pub struct AdGroupCriterionLabel {
     /// Immutable. The resource name of the ad group criterion label.
     /// Ad group criterion label resource names have the form:
-    /// `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group criterion to which the label is attached.
@@ -692,7 +717,7 @@ pub struct AdGroupCriterionLabel {
 pub struct AdGroupEffectiveLabel {
     /// Immutable. The resource name of the ad group effective label.
     /// Ad group effective label resource names have the form:
-    /// `customers/{customer_id}/adGroupEffectiveLabels/{ad_group_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupEffectiveLabels/{ad_group_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group to which the effective label is attached.
@@ -710,7 +735,7 @@ pub struct AdGroupEffectiveLabel {
 pub struct AdGroupLabel {
     /// Immutable. The resource name of the ad group label.
     /// Ad group label resource names have the form:
-    /// `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
+    /// `customers/{owner_customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The ad group to which the label is attached.
@@ -757,9 +782,20 @@ pub struct Asset {
     /// A list of possible final URLs after all cross domain redirects.
     #[prost(string, repeated, tag = "14")]
     pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A list of possible final mobile URLs after all cross domain redirects.
+    #[prost(string, repeated, tag = "16")]
+    pub final_mobile_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URL template for constructing a tracking URL.
     #[prost(string, optional, tag = "17")]
     pub tracking_url_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of mappings to be used for substituting URL custom parameter tags in
+    /// the tracking_url_template, final_urls, and/or final_mobile_urls.
+    #[prost(message, repeated, tag = "18")]
+    pub url_custom_parameters: ::prost::alloc::vec::Vec<super::common::CustomParameter>,
+    /// URL template for appending params to landing page URLs served with parallel
+    /// tracking.
+    #[prost(string, optional, tag = "19")]
+    pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The status of the asset.
     #[prost(enumeration = "super::enums::asset_status_enum::AssetStatus", tag = "42")]
     pub status: i32,
@@ -1500,6 +1536,14 @@ pub struct Campaign {
     /// false.
     #[prost(bool, optional, tag = "72")]
     pub url_expansion_opt_out: ::core::option::Option<bool>,
+    /// Output only. Types of feeds that are attached directly to this campaign.
+    #[prost(
+        enumeration = "super::enums::asset_set_type_enum::AssetSetType",
+        repeated,
+        packed = "false",
+        tag = "103"
+    )]
+    pub feed_types: ::prost::alloc::vec::Vec<i32>,
     /// The bidding strategy for the campaign.
     ///
     /// Must be either portfolio (created through BiddingStrategy service) or
@@ -1869,7 +1913,7 @@ pub mod campaign_criterion {
 pub struct CampaignEffectiveLabel {
     /// Immutable. Name of the resource.
     /// CampaignEffectivelabel resource names have the form:
-    /// `customers/{customer_id}/campaignEffectiveLabels/{campaign_id}~{label_id}`
+    /// `customers/{owner_customer_id}/campaignEffectiveLabels/{campaign_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The campaign to which the effective label is attached.
@@ -1887,7 +1931,7 @@ pub struct CampaignEffectiveLabel {
 pub struct CampaignLabel {
     /// Immutable. Name of the resource.
     /// Campaign label resource names have the form:
-    /// `customers/{customer_id}/campaignLabels/{campaign_id}~{label_id}`
+    /// `customers/{owner_customer_id}/campaignLabels/{campaign_id}~{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Immutable. The campaign to which the label is attached.
@@ -2676,7 +2720,7 @@ pub struct KeywordView {
 pub struct Label {
     /// Immutable. Name of the resource.
     /// Label resource names have the form:
-    /// `customers/{customer_id}/labels/{label_id}`
+    /// `customers/{owner_customer_id}/labels/{label_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// Output only. ID of the label. Read only.

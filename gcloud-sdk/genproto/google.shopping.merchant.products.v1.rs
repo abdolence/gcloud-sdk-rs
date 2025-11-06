@@ -166,6 +166,9 @@ pub struct ProductAttributes {
     /// Shipping rules.
     #[prost(message, repeated, tag = "39")]
     pub shipping: ::prost::alloc::vec::Vec<Shipping>,
+    /// Rules for carrier-based shipping.
+    #[prost(message, repeated, tag = "142")]
+    pub carrier_shipping: ::prost::alloc::vec::Vec<product_attributes::CarrierShipping>,
     /// Conditions to be met for a product to have free shipping.
     #[prost(message, repeated, tag = "135")]
     pub free_shipping_threshold: ::prost::alloc::vec::Vec<FreeShippingThreshold>,
@@ -412,6 +415,410 @@ pub struct ProductAttributes {
     pub sustainability_incentives: ::prost::alloc::vec::Vec<
         ProductSustainabilityIncentive,
     >,
+}
+/// Nested message and enum types in `ProductAttributes`.
+pub mod product_attributes {
+    /// Carrier-based shipping configuration. Allows for setting shipping speed or
+    /// shipping cost based on a carrier's provided info.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CarrierShipping {
+        /// The [CLDR territory
+        /// code](<http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>)
+        /// of the country to which an item will ship.
+        #[prost(string, optional, tag = "1")]
+        pub country: ::core::option::Option<::prost::alloc::string::String>,
+        /// The geographic region to which a shipping rate applies.
+        /// See [region](<https://support.google.com/merchants/answer/6324484>) for
+        /// more information.
+        #[prost(string, optional, tag = "2")]
+        pub region: ::core::option::Option<::prost::alloc::string::String>,
+        /// The postal code range that the shipping rate applies to, represented by
+        /// a postal code (eg. `94043`), a postal code prefix followed by a *
+        /// wildcard (eg. `94*`), a range between two postal codes (eg.
+        /// `94043-98033`) or two postal code prefixes of equal length (eg.
+        /// `94*-98*`).
+        #[prost(string, optional, tag = "3")]
+        pub postal_code: ::core::option::Option<::prost::alloc::string::String>,
+        /// The source location postal code from which this offer ships. Represented
+        /// only by a full-length postal code.
+        #[prost(string, optional, tag = "4")]
+        pub origin_postal_code: ::core::option::Option<::prost::alloc::string::String>,
+        /// Fixed shipping price, represented as a number with currency. Cannot be
+        /// set together with
+        /// \[carrierPrice\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price\]
+        /// or its adjustments
+        /// (\[carrierPriceFlatAdjustment\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_flat_adjustment\],
+        /// \[carrierPricePercentageAdjustment\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_percentage_adjustment\]).
+        #[prost(message, optional, tag = "5")]
+        pub flat_price: ::core::option::Option<
+            super::super::super::super::r#type::Price,
+        >,
+        /// Selected carrier to calculate the shipping price from. Select a carrier
+        /// from the [available carriers
+        /// list](<https://support.google.com/merchants/answer/15449142#Supported>),
+        /// for example `AUSTRALIA_POST_REGULAR`. Price will be calculated by this
+        /// selected carrier, the location expressed in
+        /// \[originPostalCode\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.origin_postal_code\],
+        /// along with the user location to determine the accurate shipping price.
+        /// Carrier is represented by a carrier service name or a carrier service ID.
+        /// Cannot be set together with
+        /// \[flatPrice\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price\].
+        #[prost(enumeration = "CarrierPriceOption", optional, tag = "6")]
+        pub carrier_price: ::core::option::Option<i32>,
+        /// A flat adjustment on the carrier price. Can be either positive or
+        /// negative. Cannot be zero. Requires `carrier_price` to be present. Cannot
+        /// be set together with
+        /// \[flatPrice\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price\]
+        /// and
+        /// \[carrierPricePercentageAdjustment\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_percentage_adjustment\].
+        #[prost(message, optional, tag = "7")]
+        pub carrier_price_flat_adjustment: ::core::option::Option<
+            super::super::super::super::r#type::Price,
+        >,
+        /// A percentual adjustment on the carrier price. Can be either positive or
+        /// negative. Cannot be zero. Requires `carrier_price` to be present. Cannot
+        /// be set together with
+        /// \[flatPrice\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price\]
+        /// and
+        /// \[carrierPriceFlatAdjustment\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_flat_adjustment\].
+        #[prost(double, optional, tag = "8")]
+        pub carrier_price_percentage_adjustment: ::core::option::Option<f64>,
+        /// Minimum handling time (inclusive) between when the order is received and
+        /// shipped in business days. 0 means that the order is shipped on the same
+        /// day as it is received if it happens before the cut-off time.
+        /// \[minHandlingTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.min_handling_time\]
+        /// can only be set if
+        /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time\]
+        /// is also set.
+        #[prost(int64, optional, tag = "9")]
+        pub min_handling_time: ::core::option::Option<i64>,
+        /// Maximum handling time (inclusive) between when the order is received and
+        /// shipped in business days. 0 means that the order is shipped on the same
+        /// day as it is received if it happens before the cut-off time. Both
+        /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time\]
+        /// and
+        /// \[fixedMaxTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time\]
+        /// or
+        /// \[carrierTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time\]
+        /// are required if providing shipping speeds.
+        #[prost(int64, optional, tag = "10")]
+        pub max_handling_time: ::core::option::Option<i64>,
+        /// Minimum transit time (inclusive) between when the order has shipped and
+        /// when it is delivered in business days. 0 means that the order is
+        /// delivered on the same day as it ships.
+        /// \[fixedMinTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_min_transit_time\]
+        /// can only be set if
+        /// \[fixedMaxTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time\]
+        /// is set. Cannot be set if
+        /// \[carrierTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time\]
+        /// is present.
+        #[prost(int64, optional, tag = "11")]
+        pub fixed_min_transit_time: ::core::option::Option<i64>,
+        /// Maximum transit time (inclusive) between when the order has shipped and
+        /// when it is delivered in business days. 0 means that the order is
+        /// delivered on the same day as it ships. Needs to be provided together with
+        /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time\].
+        /// Cannot be set if
+        /// \[carrierTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time\]
+        /// is present.
+        #[prost(int64, optional, tag = "12")]
+        pub fixed_max_transit_time: ::core::option::Option<i64>,
+        /// Selected carrier to calculate the shipping speed from. Select a carrier
+        /// from the [available carriers
+        /// list](<https://support.google.com/merchants/answer/15449142#Supported>),
+        /// for example `AUSTRALIA_POST_REGULAR`. Speed will be calculated by this
+        /// selected carrier, the location expressed in
+        /// \[originPostalCode\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.origin_postal_code\],
+        /// along with the user location to determine the accurate delivery speed.
+        /// Carrier is represented by a carrier service name or a carrier service ID.
+        /// Cannot be set together with
+        /// \[fixedMaxTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time\]
+        /// or
+        /// \[fixedMinTransitTime\]\[google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_min_transit_time\].
+        #[prost(enumeration = "super::CarrierTransitTimeOption", optional, tag = "13")]
+        pub carrier_transit_time: ::core::option::Option<i32>,
+    }
+    /// Possible carrier where price is coming from.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CarrierPriceOption {
+        /// Carrier price option is unspecified.
+        Unspecified = 0,
+        /// Australia Post Regular shipping service.
+        AustraliaPostRegular = 1,
+        /// Australia Post Express shipping service.
+        AustraliaPostExpress = 2,
+        /// Australia Post Regular Small shipping service.
+        AustraliaPostRegularS = 3,
+        /// Australia Post Regular Medium shipping service.
+        AustraliaPostRegularM = 4,
+        /// Australia Post Regular Large shipping service.
+        AustraliaPostRegularL = 5,
+        /// Australia Post Regular XL shipping service.
+        AustraliaPostRegularXl = 6,
+        /// Australia Post Express Small shipping service.
+        AustraliaPostExpressS = 7,
+        /// Australia Post Express Medium shipping service.
+        AustraliaPostExpressM = 8,
+        /// Australia Post Express Large shipping service.
+        AustraliaPostExpressL = 9,
+        /// Australia Post Express XL shipping service.
+        AustraliaPostExpressXl = 10,
+        /// TNT Road Express shipping service.
+        TntRoadExpress = 11,
+        /// TNT Overnight Express shipping service.
+        TntOvernightExpress = 12,
+        /// Toll Road Delivery shipping service.
+        TollRoadDelivery = 13,
+        /// Toll Overnight Priority shipping service.
+        TollOvernightPriority = 14,
+        /// DHL Paket shipping service.
+        DhlPaket = 15,
+        /// DHL Packchen shipping service.
+        DhlPackchen = 16,
+        /// DPD Express 12 shipping service.
+        DpdExpress12 = 17,
+        /// DPD Express shipping service.
+        DpdExpress = 18,
+        /// DPD Classic Parcel shipping service.
+        DpdClassicParcel = 19,
+        /// Hermes Packchen shipping service.
+        HermesPackchen = 20,
+        /// Hermes Paketklasse S shipping service.
+        HermesPaketklasseS = 21,
+        /// Hermes Paketklasse M shipping service.
+        HermesPaketklasseM = 22,
+        /// Hermes Paketklasse L shipping service.
+        HermesPaketklasseL = 23,
+        /// UPS Express shipping service.
+        UpsExpress = 24,
+        /// UPS Express Saver shipping service.
+        UpsExpressSaver = 25,
+        /// UPS Express Standard shipping service.
+        UpsExpressStandard = 26,
+        /// DHL Express shipping service.
+        DhlExpress = 27,
+        /// DHL Express 12 shipping service.
+        DhlExpress12 = 28,
+        /// DPD Next Day shipping service.
+        DpdNextDay = 29,
+        /// DPD Standard Next Day shipping service.
+        DpdStandardNextDay = 30,
+        /// DPD Standard Two Day shipping service.
+        DpdStandardTwoDay = 31,
+        /// RMG 1st Class Small shipping service.
+        Rmg1stClassSmall = 32,
+        /// RMG 1st Class Medium shipping service.
+        Rmg1stClassMedium = 33,
+        /// RMG 2nd Class Small shipping service.
+        Rmg2ndClassSmall = 34,
+        /// RMG 2nd Class Medium shipping service.
+        Rmg2ndClassMedium = 35,
+        /// TNT Express shipping service.
+        TntExpress = 36,
+        /// TNT Express 10 shipping service.
+        TntExpress10 = 37,
+        /// TNT Express 12 shipping service.
+        TntExpress12 = 38,
+        /// Yodel B2C 48HR shipping service.
+        YodelB2c48hr = 39,
+        /// Yodel B2C 72HR shipping service.
+        YodelB2c72hr = 40,
+        /// Yodel B2C Packet shipping service.
+        YodelB2cPacket = 41,
+        /// FedEx Ground shipping service.
+        FedexGround = 42,
+        /// FedEx Home Delivery shipping service.
+        FedexHomeDelivery = 43,
+        /// FedEx Express Saver shipping service.
+        FedexExpressSaver = 44,
+        /// FedEx First Overnight shipping service.
+        FedexFirstOvernight = 45,
+        /// FedEx Priority Overnight shipping service.
+        FedexPriorityOvernight = 46,
+        /// FedEx Standard Overnight shipping service.
+        FedexStandardOvernight = 47,
+        /// FedEx 2Day shipping service.
+        Fedex2day = 48,
+        /// UPS Standard shipping service.
+        UpsStandard = 49,
+        /// UPS 2nd Day Air shipping service.
+        Ups2ndDayAir = 50,
+        /// UPS 2nd Day AM shipping service.
+        Ups2ndDayAm = 51,
+        /// UPS 3 Day Select shipping service.
+        Ups3DaySelect = 52,
+        /// UPS Ground shipping service.
+        UpsGround = 53,
+        /// UPS Next Day Air shipping service.
+        UpsNextDayAir = 54,
+        /// UPS Next Day Air Early AM shipping service.
+        UpsNextDayAirEarlyAm = 55,
+        /// UPS Next Day Air Saver shipping service.
+        UpsNextDayAirSaver = 56,
+        /// USPS Priority Mail Express shipping service.
+        UspsPriorityMailExpress = 57,
+        /// USPS Media Mail shipping service.
+        UspsMediaMail = 58,
+        /// USPS Ground Advantage Retail shipping service.
+        UspsGroundAdvantageRetail = 59,
+        /// USPS Priority Mail shipping service.
+        UspsPriorityMail = 60,
+        /// USPS Ground Advantage Commercial shipping service.
+        UspsGroundAdvantageCommercial = 61,
+    }
+    impl CarrierPriceOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CARRIER_PRICE_OPTION_UNSPECIFIED",
+                Self::AustraliaPostRegular => "AUSTRALIA_POST_REGULAR",
+                Self::AustraliaPostExpress => "AUSTRALIA_POST_EXPRESS",
+                Self::AustraliaPostRegularS => "AUSTRALIA_POST_REGULAR_S",
+                Self::AustraliaPostRegularM => "AUSTRALIA_POST_REGULAR_M",
+                Self::AustraliaPostRegularL => "AUSTRALIA_POST_REGULAR_L",
+                Self::AustraliaPostRegularXl => "AUSTRALIA_POST_REGULAR_XL",
+                Self::AustraliaPostExpressS => "AUSTRALIA_POST_EXPRESS_S",
+                Self::AustraliaPostExpressM => "AUSTRALIA_POST_EXPRESS_M",
+                Self::AustraliaPostExpressL => "AUSTRALIA_POST_EXPRESS_L",
+                Self::AustraliaPostExpressXl => "AUSTRALIA_POST_EXPRESS_XL",
+                Self::TntRoadExpress => "TNT_ROAD_EXPRESS",
+                Self::TntOvernightExpress => "TNT_OVERNIGHT_EXPRESS",
+                Self::TollRoadDelivery => "TOLL_ROAD_DELIVERY",
+                Self::TollOvernightPriority => "TOLL_OVERNIGHT_PRIORITY",
+                Self::DhlPaket => "DHL_PAKET",
+                Self::DhlPackchen => "DHL_PACKCHEN",
+                Self::DpdExpress12 => "DPD_EXPRESS_12",
+                Self::DpdExpress => "DPD_EXPRESS",
+                Self::DpdClassicParcel => "DPD_CLASSIC_PARCEL",
+                Self::HermesPackchen => "HERMES_PACKCHEN",
+                Self::HermesPaketklasseS => "HERMES_PAKETKLASSE_S",
+                Self::HermesPaketklasseM => "HERMES_PAKETKLASSE_M",
+                Self::HermesPaketklasseL => "HERMES_PAKETKLASSE_L",
+                Self::UpsExpress => "UPS_EXPRESS",
+                Self::UpsExpressSaver => "UPS_EXPRESS_SAVER",
+                Self::UpsExpressStandard => "UPS_EXPRESS_STANDARD",
+                Self::DhlExpress => "DHL_EXPRESS",
+                Self::DhlExpress12 => "DHL_EXPRESS_12",
+                Self::DpdNextDay => "DPD_NEXT_DAY",
+                Self::DpdStandardNextDay => "DPD_STANDARD_NEXT_DAY",
+                Self::DpdStandardTwoDay => "DPD_STANDARD_TWO_DAY",
+                Self::Rmg1stClassSmall => "RMG_1ST_CLASS_SMALL",
+                Self::Rmg1stClassMedium => "RMG_1ST_CLASS_MEDIUM",
+                Self::Rmg2ndClassSmall => "RMG_2ND_CLASS_SMALL",
+                Self::Rmg2ndClassMedium => "RMG_2ND_CLASS_MEDIUM",
+                Self::TntExpress => "TNT_EXPRESS",
+                Self::TntExpress10 => "TNT_EXPRESS_10",
+                Self::TntExpress12 => "TNT_EXPRESS_12",
+                Self::YodelB2c48hr => "YODEL_B2C_48HR",
+                Self::YodelB2c72hr => "YODEL_B2C_72HR",
+                Self::YodelB2cPacket => "YODEL_B2C_PACKET",
+                Self::FedexGround => "FEDEX_GROUND",
+                Self::FedexHomeDelivery => "FEDEX_HOME_DELIVERY",
+                Self::FedexExpressSaver => "FEDEX_EXPRESS_SAVER",
+                Self::FedexFirstOvernight => "FEDEX_FIRST_OVERNIGHT",
+                Self::FedexPriorityOvernight => "FEDEX_PRIORITY_OVERNIGHT",
+                Self::FedexStandardOvernight => "FEDEX_STANDARD_OVERNIGHT",
+                Self::Fedex2day => "FEDEX_2DAY",
+                Self::UpsStandard => "UPS_STANDARD",
+                Self::Ups2ndDayAir => "UPS_2ND_DAY_AIR",
+                Self::Ups2ndDayAm => "UPS_2ND_DAY_AM",
+                Self::Ups3DaySelect => "UPS_3_DAY_SELECT",
+                Self::UpsGround => "UPS_GROUND",
+                Self::UpsNextDayAir => "UPS_NEXT_DAY_AIR",
+                Self::UpsNextDayAirEarlyAm => "UPS_NEXT_DAY_AIR_EARLY_AM",
+                Self::UpsNextDayAirSaver => "UPS_NEXT_DAY_AIR_SAVER",
+                Self::UspsPriorityMailExpress => "USPS_PRIORITY_MAIL_EXPRESS",
+                Self::UspsMediaMail => "USPS_MEDIA_MAIL",
+                Self::UspsGroundAdvantageRetail => "USPS_GROUND_ADVANTAGE_RETAIL",
+                Self::UspsPriorityMail => "USPS_PRIORITY_MAIL",
+                Self::UspsGroundAdvantageCommercial => "USPS_GROUND_ADVANTAGE_COMMERCIAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CARRIER_PRICE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUSTRALIA_POST_REGULAR" => Some(Self::AustraliaPostRegular),
+                "AUSTRALIA_POST_EXPRESS" => Some(Self::AustraliaPostExpress),
+                "AUSTRALIA_POST_REGULAR_S" => Some(Self::AustraliaPostRegularS),
+                "AUSTRALIA_POST_REGULAR_M" => Some(Self::AustraliaPostRegularM),
+                "AUSTRALIA_POST_REGULAR_L" => Some(Self::AustraliaPostRegularL),
+                "AUSTRALIA_POST_REGULAR_XL" => Some(Self::AustraliaPostRegularXl),
+                "AUSTRALIA_POST_EXPRESS_S" => Some(Self::AustraliaPostExpressS),
+                "AUSTRALIA_POST_EXPRESS_M" => Some(Self::AustraliaPostExpressM),
+                "AUSTRALIA_POST_EXPRESS_L" => Some(Self::AustraliaPostExpressL),
+                "AUSTRALIA_POST_EXPRESS_XL" => Some(Self::AustraliaPostExpressXl),
+                "TNT_ROAD_EXPRESS" => Some(Self::TntRoadExpress),
+                "TNT_OVERNIGHT_EXPRESS" => Some(Self::TntOvernightExpress),
+                "TOLL_ROAD_DELIVERY" => Some(Self::TollRoadDelivery),
+                "TOLL_OVERNIGHT_PRIORITY" => Some(Self::TollOvernightPriority),
+                "DHL_PAKET" => Some(Self::DhlPaket),
+                "DHL_PACKCHEN" => Some(Self::DhlPackchen),
+                "DPD_EXPRESS_12" => Some(Self::DpdExpress12),
+                "DPD_EXPRESS" => Some(Self::DpdExpress),
+                "DPD_CLASSIC_PARCEL" => Some(Self::DpdClassicParcel),
+                "HERMES_PACKCHEN" => Some(Self::HermesPackchen),
+                "HERMES_PAKETKLASSE_S" => Some(Self::HermesPaketklasseS),
+                "HERMES_PAKETKLASSE_M" => Some(Self::HermesPaketklasseM),
+                "HERMES_PAKETKLASSE_L" => Some(Self::HermesPaketklasseL),
+                "UPS_EXPRESS" => Some(Self::UpsExpress),
+                "UPS_EXPRESS_SAVER" => Some(Self::UpsExpressSaver),
+                "UPS_EXPRESS_STANDARD" => Some(Self::UpsExpressStandard),
+                "DHL_EXPRESS" => Some(Self::DhlExpress),
+                "DHL_EXPRESS_12" => Some(Self::DhlExpress12),
+                "DPD_NEXT_DAY" => Some(Self::DpdNextDay),
+                "DPD_STANDARD_NEXT_DAY" => Some(Self::DpdStandardNextDay),
+                "DPD_STANDARD_TWO_DAY" => Some(Self::DpdStandardTwoDay),
+                "RMG_1ST_CLASS_SMALL" => Some(Self::Rmg1stClassSmall),
+                "RMG_1ST_CLASS_MEDIUM" => Some(Self::Rmg1stClassMedium),
+                "RMG_2ND_CLASS_SMALL" => Some(Self::Rmg2ndClassSmall),
+                "RMG_2ND_CLASS_MEDIUM" => Some(Self::Rmg2ndClassMedium),
+                "TNT_EXPRESS" => Some(Self::TntExpress),
+                "TNT_EXPRESS_10" => Some(Self::TntExpress10),
+                "TNT_EXPRESS_12" => Some(Self::TntExpress12),
+                "YODEL_B2C_48HR" => Some(Self::YodelB2c48hr),
+                "YODEL_B2C_72HR" => Some(Self::YodelB2c72hr),
+                "YODEL_B2C_PACKET" => Some(Self::YodelB2cPacket),
+                "FEDEX_GROUND" => Some(Self::FedexGround),
+                "FEDEX_HOME_DELIVERY" => Some(Self::FedexHomeDelivery),
+                "FEDEX_EXPRESS_SAVER" => Some(Self::FedexExpressSaver),
+                "FEDEX_FIRST_OVERNIGHT" => Some(Self::FedexFirstOvernight),
+                "FEDEX_PRIORITY_OVERNIGHT" => Some(Self::FedexPriorityOvernight),
+                "FEDEX_STANDARD_OVERNIGHT" => Some(Self::FedexStandardOvernight),
+                "FEDEX_2DAY" => Some(Self::Fedex2day),
+                "UPS_STANDARD" => Some(Self::UpsStandard),
+                "UPS_2ND_DAY_AIR" => Some(Self::Ups2ndDayAir),
+                "UPS_2ND_DAY_AM" => Some(Self::Ups2ndDayAm),
+                "UPS_3_DAY_SELECT" => Some(Self::Ups3DaySelect),
+                "UPS_GROUND" => Some(Self::UpsGround),
+                "UPS_NEXT_DAY_AIR" => Some(Self::UpsNextDayAir),
+                "UPS_NEXT_DAY_AIR_EARLY_AM" => Some(Self::UpsNextDayAirEarlyAm),
+                "UPS_NEXT_DAY_AIR_SAVER" => Some(Self::UpsNextDayAirSaver),
+                "USPS_PRIORITY_MAIL_EXPRESS" => Some(Self::UspsPriorityMailExpress),
+                "USPS_MEDIA_MAIL" => Some(Self::UspsMediaMail),
+                "USPS_GROUND_ADVANTAGE_RETAIL" => Some(Self::UspsGroundAdvantageRetail),
+                "USPS_PRIORITY_MAIL" => Some(Self::UspsPriorityMail),
+                "USPS_GROUND_ADVANTAGE_COMMERCIAL" => {
+                    Some(Self::UspsGroundAdvantageCommercial)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// The ShippingWeight of the product.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1702,6 +2109,189 @@ impl DigitalSourceType {
             "DIGITAL_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "TRAINED_ALGORITHMIC_MEDIA" => Some(Self::TrainedAlgorithmicMedia),
             "DEFAULT" => Some(Self::Default),
+            _ => None,
+        }
+    }
+}
+/// Possible carrier where transit time is coming from.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CarrierTransitTimeOption {
+    /// Carrier transit time option is unspecified.
+    Unspecified = 0,
+    /// DHL Paket shipping service.
+    DhlPaket = 1,
+    /// DHL Packchen shipping service.
+    DhlPackchen = 2,
+    /// DHL Express Easy shipping service.
+    DhlExpresseasy = 3,
+    /// DPD Express shipping service.
+    DpdExpress = 4,
+    /// DPD Classic Parcel shipping service.
+    DpdClassicParcel = 5,
+    /// Hermes Haustur shipping service.
+    HermesHaustur = 6,
+    /// Hermes Paketshop shipping service.
+    HermesPaketshop = 7,
+    /// GLS Business shipping service.
+    GlsBusiness = 8,
+    /// GLS Express shipping service.
+    GlsExpress = 9,
+    /// GLS Private shipping service.
+    GlsPrivate = 10,
+    /// Colissimo Domicile shipping service.
+    ColissimoDomicile = 11,
+    /// DHL Express 12 AM shipping service.
+    DhlExpress12am = 12,
+    /// DHL Express 9 AM shipping service.
+    DhlExpress9am = 13,
+    /// GEODIS Express shipping service.
+    GeodisExpress = 14,
+    /// GEODIS Pack 30 shipping service.
+    GeodisPack30 = 15,
+    /// GEODIS Same Day shipping service.
+    GeodisSameDay = 16,
+    /// GEODIS Top 24 shipping service.
+    GeodisTop24 = 17,
+    /// TNT Essentiel 24H shipping service.
+    TntEssentiel24h = 18,
+    /// TNT Essentiel Flexibilite shipping service.
+    TntEssentielFlexibilite = 19,
+    /// FedEx Ground shipping service.
+    FedexGround = 20,
+    /// FedEx Home Delivery shipping service.
+    FedexHomeDelivery = 21,
+    /// FedEx Express Saver shipping service.
+    FedexExpressSaver = 22,
+    /// FedEx First Overnight shipping service.
+    FedexFirstOvernight = 23,
+    /// FedEx Priority Overnight shipping service.
+    FedexPriorityOvernight = 24,
+    /// FedEx Standard Overnight shipping service.
+    FedexStandardOvernight = 25,
+    /// FedEx 2Day shipping service.
+    Fedex2day = 26,
+    /// UPS 2nd Day Air shipping service.
+    Ups2ndDayAir = 27,
+    /// UPS 2nd Day AM shipping service.
+    Ups2ndDayAm = 28,
+    /// UPS 3 Day Select shipping service.
+    Ups3DaySelect = 29,
+    /// UPS Ground shipping service.
+    UpsGround = 30,
+    /// UPS Next Day Air shipping service.
+    UpsNextDayAir = 31,
+    /// UPS Next Day Air Early AM shipping service.
+    UpsNextDayAirEarlyAm = 32,
+    /// UPS Next Day Air Saver shipping service.
+    UpsNextDayAirSaver = 33,
+    /// USPS Priority Mail Express shipping service.
+    UspsPriorityMailExpress = 34,
+    /// USPS Media Mail shipping service.
+    UspsMediaMail = 35,
+    /// USPS Ground Advantage Retail shipping service.
+    UspsGroundAdvantageRetail = 36,
+    /// USPS Priority Mail shipping service.
+    UspsPriorityMail = 37,
+    /// USPS Ground Advantage Commercial shipping service.
+    UspsGroundAdvantageCommercial = 38,
+    /// USPS First Class Mail shipping service.
+    UspsFirstClassMail = 39,
+}
+impl CarrierTransitTimeOption {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CARRIER_TRANSIT_TIME_OPTION_UNSPECIFIED",
+            Self::DhlPaket => "DHL_PAKET",
+            Self::DhlPackchen => "DHL_PACKCHEN",
+            Self::DhlExpresseasy => "DHL_EXPRESSEASY",
+            Self::DpdExpress => "DPD_EXPRESS",
+            Self::DpdClassicParcel => "DPD_CLASSIC_PARCEL",
+            Self::HermesHaustur => "HERMES_HAUSTUR",
+            Self::HermesPaketshop => "HERMES_PAKETSHOP",
+            Self::GlsBusiness => "GLS_BUSINESS",
+            Self::GlsExpress => "GLS_EXPRESS",
+            Self::GlsPrivate => "GLS_PRIVATE",
+            Self::ColissimoDomicile => "COLISSIMO_DOMICILE",
+            Self::DhlExpress12am => "DHL_EXPRESS_12AM",
+            Self::DhlExpress9am => "DHL_EXPRESS_9AM",
+            Self::GeodisExpress => "GEODIS_EXPRESS",
+            Self::GeodisPack30 => "GEODIS_PACK_30",
+            Self::GeodisSameDay => "GEODIS_SAME_DAY",
+            Self::GeodisTop24 => "GEODIS_TOP_24",
+            Self::TntEssentiel24h => "TNT_ESSENTIEL_24H",
+            Self::TntEssentielFlexibilite => "TNT_ESSENTIEL_FLEXIBILITE",
+            Self::FedexGround => "FEDEX_GROUND",
+            Self::FedexHomeDelivery => "FEDEX_HOME_DELIVERY",
+            Self::FedexExpressSaver => "FEDEX_EXPRESS_SAVER",
+            Self::FedexFirstOvernight => "FEDEX_FIRST_OVERNIGHT",
+            Self::FedexPriorityOvernight => "FEDEX_PRIORITY_OVERNIGHT",
+            Self::FedexStandardOvernight => "FEDEX_STANDARD_OVERNIGHT",
+            Self::Fedex2day => "FEDEX_2DAY",
+            Self::Ups2ndDayAir => "UPS_2ND_DAY_AIR",
+            Self::Ups2ndDayAm => "UPS_2ND_DAY_AM",
+            Self::Ups3DaySelect => "UPS_3_DAY_SELECT",
+            Self::UpsGround => "UPS_GROUND",
+            Self::UpsNextDayAir => "UPS_NEXT_DAY_AIR",
+            Self::UpsNextDayAirEarlyAm => "UPS_NEXT_DAY_AIR_EARLY_AM",
+            Self::UpsNextDayAirSaver => "UPS_NEXT_DAY_AIR_SAVER",
+            Self::UspsPriorityMailExpress => "USPS_PRIORITY_MAIL_EXPRESS",
+            Self::UspsMediaMail => "USPS_MEDIA_MAIL",
+            Self::UspsGroundAdvantageRetail => "USPS_GROUND_ADVANTAGE_RETAIL",
+            Self::UspsPriorityMail => "USPS_PRIORITY_MAIL",
+            Self::UspsGroundAdvantageCommercial => "USPS_GROUND_ADVANTAGE_COMMERCIAL",
+            Self::UspsFirstClassMail => "USPS_FIRST_CLASS_MAIL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CARRIER_TRANSIT_TIME_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "DHL_PAKET" => Some(Self::DhlPaket),
+            "DHL_PACKCHEN" => Some(Self::DhlPackchen),
+            "DHL_EXPRESSEASY" => Some(Self::DhlExpresseasy),
+            "DPD_EXPRESS" => Some(Self::DpdExpress),
+            "DPD_CLASSIC_PARCEL" => Some(Self::DpdClassicParcel),
+            "HERMES_HAUSTUR" => Some(Self::HermesHaustur),
+            "HERMES_PAKETSHOP" => Some(Self::HermesPaketshop),
+            "GLS_BUSINESS" => Some(Self::GlsBusiness),
+            "GLS_EXPRESS" => Some(Self::GlsExpress),
+            "GLS_PRIVATE" => Some(Self::GlsPrivate),
+            "COLISSIMO_DOMICILE" => Some(Self::ColissimoDomicile),
+            "DHL_EXPRESS_12AM" => Some(Self::DhlExpress12am),
+            "DHL_EXPRESS_9AM" => Some(Self::DhlExpress9am),
+            "GEODIS_EXPRESS" => Some(Self::GeodisExpress),
+            "GEODIS_PACK_30" => Some(Self::GeodisPack30),
+            "GEODIS_SAME_DAY" => Some(Self::GeodisSameDay),
+            "GEODIS_TOP_24" => Some(Self::GeodisTop24),
+            "TNT_ESSENTIEL_24H" => Some(Self::TntEssentiel24h),
+            "TNT_ESSENTIEL_FLEXIBILITE" => Some(Self::TntEssentielFlexibilite),
+            "FEDEX_GROUND" => Some(Self::FedexGround),
+            "FEDEX_HOME_DELIVERY" => Some(Self::FedexHomeDelivery),
+            "FEDEX_EXPRESS_SAVER" => Some(Self::FedexExpressSaver),
+            "FEDEX_FIRST_OVERNIGHT" => Some(Self::FedexFirstOvernight),
+            "FEDEX_PRIORITY_OVERNIGHT" => Some(Self::FedexPriorityOvernight),
+            "FEDEX_STANDARD_OVERNIGHT" => Some(Self::FedexStandardOvernight),
+            "FEDEX_2DAY" => Some(Self::Fedex2day),
+            "UPS_2ND_DAY_AIR" => Some(Self::Ups2ndDayAir),
+            "UPS_2ND_DAY_AM" => Some(Self::Ups2ndDayAm),
+            "UPS_3_DAY_SELECT" => Some(Self::Ups3DaySelect),
+            "UPS_GROUND" => Some(Self::UpsGround),
+            "UPS_NEXT_DAY_AIR" => Some(Self::UpsNextDayAir),
+            "UPS_NEXT_DAY_AIR_EARLY_AM" => Some(Self::UpsNextDayAirEarlyAm),
+            "UPS_NEXT_DAY_AIR_SAVER" => Some(Self::UpsNextDayAirSaver),
+            "USPS_PRIORITY_MAIL_EXPRESS" => Some(Self::UspsPriorityMailExpress),
+            "USPS_MEDIA_MAIL" => Some(Self::UspsMediaMail),
+            "USPS_GROUND_ADVANTAGE_RETAIL" => Some(Self::UspsGroundAdvantageRetail),
+            "USPS_PRIORITY_MAIL" => Some(Self::UspsPriorityMail),
+            "USPS_GROUND_ADVANTAGE_COMMERCIAL" => {
+                Some(Self::UspsGroundAdvantageCommercial)
+            }
+            "USPS_FIRST_CLASS_MAIL" => Some(Self::UspsFirstClassMail),
             _ => None,
         }
     }

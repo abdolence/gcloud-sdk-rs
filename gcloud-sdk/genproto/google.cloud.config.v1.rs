@@ -110,6 +110,9 @@ pub struct Deployment {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This field specifies the provider configurations.
+    #[prost(message, optional, tag = "25")]
+    pub provider_config: ::core::option::Option<ProviderConfig>,
     /// Blueprint to deploy.
     #[prost(oneof = "deployment::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<deployment::Blueprint>,
@@ -789,6 +792,9 @@ pub struct Revision {
     /// applies.
     #[prost(enumeration = "QuotaValidation", tag = "20")]
     pub quota_validation: i32,
+    /// Output only. This field specifies the provider configurations.
+    #[prost(message, optional, tag = "21")]
+    pub provider_config: ::core::option::Option<ProviderConfig>,
     /// Blueprint that was deployed.
     #[prost(oneof = "revision::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<revision::Blueprint>,
@@ -1518,6 +1524,9 @@ pub struct Preview {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This field specifies the provider configurations.
+    #[prost(message, optional, tag = "21")]
+    pub provider_config: ::core::option::Option<ProviderConfig>,
     /// Blueprint to preview.
     #[prost(oneof = "preview::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<preview::Blueprint>,
@@ -2377,6 +2386,55 @@ pub struct GetResourceDriftRequest {
     /// 'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// ProviderConfig contains the provider configurations.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ProviderConfig {
+    /// Optional. ProviderSource specifies the source type of the provider.
+    #[prost(enumeration = "provider_config::ProviderSource", optional, tag = "1")]
+    pub source_type: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ProviderConfig`.
+pub mod provider_config {
+    /// ProviderSource represents the source type of the provider.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProviderSource {
+        /// Unspecified source type, default to public sources.
+        Unspecified = 0,
+        /// Service maintained provider source type.
+        ServiceMaintained = 1,
+    }
+    impl ProviderSource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVIDER_SOURCE_UNSPECIFIED",
+                Self::ServiceMaintained => "SERVICE_MAINTAINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVICE_MAINTAINED" => Some(Self::ServiceMaintained),
+                _ => None,
+            }
+        }
+    }
 }
 /// Enum values to control quota checks for resources in terraform
 /// configuration files.

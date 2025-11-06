@@ -720,6 +720,25 @@ pub struct CustomParameter {
     #[prost(string, optional, tag = "4")]
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A URL for deep linking into an app for the given operating system.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FinalAppUrl {
+    /// The operating system targeted by this URL. Required.
+    #[prost(
+        enumeration = "super::enums::app_url_operating_system_type_enum::AppUrlOperatingSystemType",
+        tag = "1"
+    )]
+    pub os_type: i32,
+    /// The app deep link URL. Deep links specify a location in an app that
+    /// corresponds to the content you'd like to show, and should be of the form
+    /// {scheme}://{host_path}
+    /// The scheme identifies which app to open. For your app, you can use a custom
+    /// scheme that starts with the app's name. The host and path specify the
+    /// unique location in the app where your content exists.
+    /// Example: "exampleapp://productid_1234". Required.
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A rule specifying the maximum number of times an ad (or some set of ads) can
 /// be shown to a user over a particular time period.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]

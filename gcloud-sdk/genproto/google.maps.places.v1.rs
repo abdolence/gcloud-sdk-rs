@@ -248,6 +248,10 @@ pub struct Review {
     /// A link to show the review on Google Maps.
     #[prost(string, tag = "16")]
     pub google_maps_uri: ::prost::alloc::string::String,
+    /// The date when the author visited the place. This is truncated to the year
+    /// and month of the visit.
+    #[prost(message, optional, tag = "17")]
+    pub visit_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Experimental: See
 /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
@@ -1017,6 +1021,23 @@ pub struct Place {
     /// A summary of points of interest near the place.
     #[prost(message, optional, tag = "91")]
     pub neighborhood_summary: ::core::option::Option<place::NeighborhoodSummary>,
+    /// The consumer alert message for the place when we detect suspicious review
+    /// activity on a business or a business violates our policies.
+    #[prost(message, optional, tag = "92")]
+    pub consumer_alert: ::core::option::Option<place::ConsumerAlert>,
+    /// If this Place is permanently closed and has moved to a new Place, this
+    /// field contains the new Place's resource name, in `places/{place_id}`
+    /// format. If this Place moved multiple times, this field will represent the
+    /// first moved place. This field will not be populated if this Place has not
+    /// moved.
+    #[prost(string, tag = "93")]
+    pub moved_place: ::prost::alloc::string::String,
+    /// If this Place is permanently closed and has moved to a new Place, this
+    /// field contains the new Place's place ID. If this Place moved multiple
+    /// times, this field will represent the first moved Place. This field will not
+    /// be populated if this Place has not moved.
+    #[prost(string, tag = "94")]
+    pub moved_place_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Place`.
 pub mod place {
@@ -1389,6 +1410,9 @@ pub mod place {
         pub disclosure_text: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
         >,
+        /// A link to show reviews of this place on Google Maps.
+        #[prost(string, tag = "4")]
+        pub reviews_uri: ::prost::alloc::string::String,
     }
     /// The summary of amenities near the EV charging station. This only applies to
     /// places with type `electric_vehicle_charging_station`. The `overview` field
@@ -1405,7 +1429,7 @@ pub mod place {
         /// A summary of the nearby restaurants.
         #[prost(message, optional, tag = "3")]
         pub restaurant: ::core::option::Option<super::ContentBlock>,
-        /// A summary of the nearby gas stations.
+        /// A summary of the nearby stores.
         #[prost(message, optional, tag = "4")]
         pub store: ::core::option::Option<super::ContentBlock>,
         /// A link where users can flag a problem with the summary.
@@ -1438,6 +1462,52 @@ pub mod place {
         pub disclosure_text: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
         >,
+    }
+    /// The consumer alert message for the place when we detect suspicious review
+    /// activity on a business or a business violates our policies.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ConsumerAlert {
+        /// The overview of the consumer alert message.
+        #[prost(string, tag = "1")]
+        pub overview: ::prost::alloc::string::String,
+        /// The details of the consumer alert message.
+        #[prost(message, optional, tag = "2")]
+        pub details: ::core::option::Option<consumer_alert::Details>,
+        /// The language code of the consumer alert message. This is a BCP 47
+        /// language code.
+        #[prost(string, tag = "3")]
+        pub language_code: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `ConsumerAlert`.
+    pub mod consumer_alert {
+        /// The details of the consumer alert message.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Details {
+            /// The title to show together with the description.
+            #[prost(string, tag = "1")]
+            pub title: ::prost::alloc::string::String,
+            /// The description of the consumer alert message.
+            #[prost(string, tag = "2")]
+            pub description: ::prost::alloc::string::String,
+            /// The link to show together with the description to provide more
+            /// information.
+            #[prost(message, optional, tag = "3")]
+            pub about_link: ::core::option::Option<details::Link>,
+        }
+        /// Nested message and enum types in `Details`.
+        pub mod details {
+            /// The link to show together with the description to provide more
+            /// information.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct Link {
+                /// The title to show for the link.
+                #[prost(string, tag = "1")]
+                pub title: ::prost::alloc::string::String,
+                /// The uri of the link.
+                #[prost(string, tag = "2")]
+                pub uri: ::prost::alloc::string::String,
+            }
+        }
     }
     /// Business status for the place.
     #[derive(

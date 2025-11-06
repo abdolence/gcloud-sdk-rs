@@ -1411,7 +1411,7 @@ pub struct UpdateInstanceConfigMetadata {
 }
 /// An isolated set of Cloud Spanner resources that databases can define
 /// placements on.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancePartition {
     /// Required. A unique identifier for the instance partition. Values are of the
     /// form
@@ -1431,6 +1431,12 @@ pub struct InstancePartition {
     /// UIs. Must be unique per project and between 4 and 30 characters in length.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
+    /// Optional. The autoscaling configuration. Autoscaling is enabled if this
+    /// field is set. When autoscaling is enabled, fields in compute_capacity are
+    /// treated as OUTPUT_ONLY fields and reflect the current compute capacity
+    /// allocated to the instance partition.
+    #[prost(message, optional, tag = "13")]
+    pub autoscaling_config: ::core::option::Option<AutoscalingConfig>,
     /// Output only. The current instance partition state.
     #[prost(enumeration = "instance_partition::State", tag = "7")]
     pub state: i32,
@@ -1554,7 +1560,7 @@ pub mod instance_partition {
 }
 /// Metadata type for the operation returned by
 /// \[CreateInstancePartition\]\[google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancePartitionMetadata {
     /// The instance partition being created.
     #[prost(message, optional, tag = "1")]
@@ -1575,7 +1581,7 @@ pub struct CreateInstancePartitionMetadata {
 }
 /// The request for
 /// \[CreateInstancePartition\]\[google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancePartitionRequest {
     /// Required. The name of the instance in which to create the instance
     /// partition. Values are of the form
@@ -1621,7 +1627,7 @@ pub struct GetInstancePartitionRequest {
 }
 /// The request for
 /// \[UpdateInstancePartition\]\[google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstancePartitionRequest {
     /// Required. The instance partition to update, which must always include the
     /// instance partition name. Otherwise, only fields mentioned in
@@ -1640,7 +1646,7 @@ pub struct UpdateInstancePartitionRequest {
 }
 /// Metadata type for the operation returned by
 /// \[UpdateInstancePartition\]\[google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstancePartitionMetadata {
     /// The desired end state of the update.
     #[prost(message, optional, tag = "1")]

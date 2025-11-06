@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -141,17 +141,18 @@ pub mod step {
         /// Forwarding state: arriving at a Compute Engine instance.
         ArriveAtInstance = 9,
         /// Forwarding state: arriving at a Compute Engine internal load balancer.
-        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
-        /// used in new tests.
         ArriveAtInternalLoadBalancer = 10,
         /// Forwarding state: arriving at a Compute Engine external load balancer.
-        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
-        /// used in new tests.
         ArriveAtExternalLoadBalancer = 11,
+        /// Forwarding state: arriving at a hybrid subnet. Appropriate routing
+        /// configuration will be determined here.
+        ArriveAtHybridSubnet = 38,
         /// Forwarding state: arriving at a Cloud VPN gateway.
         ArriveAtVpnGateway = 12,
         /// Forwarding state: arriving at a Cloud VPN tunnel.
         ArriveAtVpnTunnel = 13,
+        /// Forwarding state: arriving at an interconnect attachment.
+        ArriveAtInterconnectAttachment = 37,
         /// Forwarding state: arriving at a VPC connector.
         ArriveAtVpcConnector = 24,
         /// Forwarding state: for packets originating from a serverless endpoint
@@ -160,7 +161,8 @@ pub mod step {
         /// Forwarding state: for packets originating from a serverless endpoint
         /// forwarded through public (external) connectivity.
         ServerlessExternalConnection = 36,
-        /// Transition state: packet header translated.
+        /// Transition state: packet header translated. The `nat` field is populated
+        /// with the translation information.
         Nat = 14,
         /// Transition state: original connection is terminated and a new proxied
         /// connection is initiated.
@@ -209,8 +211,12 @@ pub mod step {
                 Self::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
                 Self::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
                 Self::ArriveAtExternalLoadBalancer => "ARRIVE_AT_EXTERNAL_LOAD_BALANCER",
+                Self::ArriveAtHybridSubnet => "ARRIVE_AT_HYBRID_SUBNET",
                 Self::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
                 Self::ArriveAtVpnTunnel => "ARRIVE_AT_VPN_TUNNEL",
+                Self::ArriveAtInterconnectAttachment => {
+                    "ARRIVE_AT_INTERCONNECT_ATTACHMENT"
+                }
                 Self::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
                 Self::DirectVpcEgressConnection => "DIRECT_VPC_EGRESS_CONNECTION",
                 Self::ServerlessExternalConnection => "SERVERLESS_EXTERNAL_CONNECTION",
@@ -256,8 +262,12 @@ pub mod step {
                 "ARRIVE_AT_EXTERNAL_LOAD_BALANCER" => {
                     Some(Self::ArriveAtExternalLoadBalancer)
                 }
+                "ARRIVE_AT_HYBRID_SUBNET" => Some(Self::ArriveAtHybridSubnet),
                 "ARRIVE_AT_VPN_GATEWAY" => Some(Self::ArriveAtVpnGateway),
                 "ARRIVE_AT_VPN_TUNNEL" => Some(Self::ArriveAtVpnTunnel),
+                "ARRIVE_AT_INTERCONNECT_ATTACHMENT" => {
+                    Some(Self::ArriveAtInterconnectAttachment)
+                }
                 "ARRIVE_AT_VPC_CONNECTOR" => Some(Self::ArriveAtVpcConnector),
                 "DIRECT_VPC_EGRESS_CONNECTION" => Some(Self::DirectVpcEgressConnection),
                 "SERVERLESS_EXTERNAL_CONNECTION" => {
@@ -302,12 +312,18 @@ pub mod step {
         /// Display information of a Compute Engine forwarding rule.
         #[prost(message, tag = "9")]
         ForwardingRule(super::ForwardingRuleInfo),
+        /// Display information of a hybrid subnet.
+        #[prost(message, tag = "36")]
+        HybridSubnet(super::HybridSubnetInfo),
         /// Display information of a Compute Engine VPN gateway.
         #[prost(message, tag = "10")]
         VpnGateway(super::VpnGatewayInfo),
         /// Display information of a Compute Engine VPN tunnel.
         #[prost(message, tag = "11")]
         VpnTunnel(super::VpnTunnelInfo),
+        /// Display information of an interconnect attachment.
+        #[prost(message, tag = "35")]
+        InterconnectAttachment(super::InterconnectAttachmentInfo),
         /// Display information of a VPC connector.
         #[prost(message, tag = "21")]
         VpcConnector(super::VpcConnectorInfo),
@@ -406,9 +422,63 @@ pub struct InstanceInfo {
     /// URI of the PSC network attachment the NIC is attached to (if relevant).
     #[prost(string, tag = "9")]
     pub psc_network_attachment_uri: ::prost::alloc::string::String,
+    /// Indicates whether the Compute Engine instance is running.
+    /// Deprecated: use the `status` field instead.
+    #[deprecated]
+    #[prost(bool, tag = "10")]
+    pub running: bool,
+    /// The status of the instance.
+    #[prost(enumeration = "instance_info::Status", tag = "11")]
+    pub status: i32,
+}
+/// Nested message and enum types in `InstanceInfo`.
+pub mod instance_info {
+    /// The status of the instance. We treat all states other than "RUNNING" as
+    /// not running.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// The instance is running.
+        Running = 1,
+        /// The instance has any status other than "RUNNING".
+        NotRunning = 2,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::NotRunning => "NOT_RUNNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "NOT_RUNNING" => Some(Self::NotRunning),
+                _ => None,
+            }
+        }
+    }
 }
 /// For display only. Metadata associated with a Compute Engine network.
-/// Next ID: 7
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkInfo {
     /// Name of a Compute Engine network.
@@ -474,6 +544,14 @@ pub struct FirewallInfo {
     /// The firewall rule's type.
     #[prost(enumeration = "firewall_info::FirewallRuleType", tag = "10")]
     pub firewall_rule_type: i32,
+    /// The priority of the firewall policy that this rule is associated with.
+    /// This field is not applicable to VPC firewall rules and implied VPC firewall
+    /// rules.
+    #[prost(int32, tag = "12")]
+    pub policy_priority: i32,
+    /// Target type of the firewall rule.
+    #[prost(enumeration = "firewall_info::TargetType", tag = "13")]
+    pub target_type: i32,
 }
 /// Nested message and enum types in `FirewallInfo`.
 pub mod firewall_info {
@@ -578,6 +656,50 @@ pub mod firewall_info {
                 }
                 "TRACKING_STATE" => Some(Self::TrackingState),
                 "ANALYSIS_SKIPPED" => Some(Self::AnalysisSkipped),
+                _ => None,
+            }
+        }
+    }
+    /// Target type of the firewall rule.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TargetType {
+        /// Target type is not specified. In this case we treat the rule as applying
+        /// to INSTANCES target type.
+        Unspecified = 0,
+        /// Firewall rule applies to instances.
+        Instances = 1,
+        /// Firewall rule applies to internal managed load balancers.
+        InternalManagedLb = 2,
+    }
+    impl TargetType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TARGET_TYPE_UNSPECIFIED",
+                Self::Instances => "INSTANCES",
+                Self::InternalManagedLb => "INTERNAL_MANAGED_LB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTANCES" => Some(Self::Instances),
+                "INTERNAL_MANAGED_LB" => Some(Self::InternalManagedLb),
                 _ => None,
             }
         }
@@ -802,6 +924,8 @@ pub mod route_info {
         /// Next hop is an NCC hub. This scenario only happens when the user doesn't
         /// have permissions to the project where the next hop resource is located.
         NextHopNccHub = 12,
+        /// Next hop is Secure Web Proxy Gateway.
+        SecureWebProxyGateway = 13,
     }
     impl NextHopType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -823,6 +947,7 @@ pub mod route_info {
                 Self::NextHopIlb => "NEXT_HOP_ILB",
                 Self::NextHopRouterAppliance => "NEXT_HOP_ROUTER_APPLIANCE",
                 Self::NextHopNccHub => "NEXT_HOP_NCC_HUB",
+                Self::SecureWebProxyGateway => "SECURE_WEB_PROXY_GATEWAY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -841,6 +966,7 @@ pub mod route_info {
                 "NEXT_HOP_ILB" => Some(Self::NextHopIlb),
                 "NEXT_HOP_ROUTER_APPLIANCE" => Some(Self::NextHopRouterAppliance),
                 "NEXT_HOP_NCC_HUB" => Some(Self::NextHopNccHub),
+                "SECURE_WEB_PROXY_GATEWAY" => Some(Self::SecureWebProxyGateway),
                 _ => None,
             }
         }
@@ -1222,6 +1348,19 @@ pub mod load_balancer_backend {
         }
     }
 }
+/// For display only. Metadata associated with a hybrid subnet.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HybridSubnetInfo {
+    /// Name of a hybrid subnet.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a hybrid subnet.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Name of a Google Cloud region where the hybrid subnet is configured.
+    #[prost(string, tag = "3")]
+    pub region: ::prost::alloc::string::String,
+}
 /// For display only. Metadata associated with a Compute Engine VPN gateway.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayInfo {
@@ -1328,6 +1467,87 @@ pub mod vpn_tunnel_info {
         }
     }
 }
+/// For display only. Metadata associated with an Interconnect attachment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InterconnectAttachmentInfo {
+    /// Name of an Interconnect attachment.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of an Interconnect attachment.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// URI of the Interconnect where the Interconnect attachment is
+    /// configured.
+    #[prost(string, tag = "3")]
+    pub interconnect_uri: ::prost::alloc::string::String,
+    /// Name of a Google Cloud region where the Interconnect attachment is
+    /// configured.
+    #[prost(string, tag = "4")]
+    pub region: ::prost::alloc::string::String,
+    /// URI of the Cloud Router to be used for dynamic routing.
+    #[prost(string, tag = "5")]
+    pub cloud_router_uri: ::prost::alloc::string::String,
+    /// The type of interconnect attachment this is.
+    #[prost(enumeration = "interconnect_attachment_info::Type", tag = "6")]
+    pub r#type: i32,
+    /// Appliance IP address that was matched for L2_DEDICATED attachments.
+    #[prost(string, tag = "7")]
+    pub l2_attachment_matched_ip_address: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `InterconnectAttachmentInfo`.
+pub mod interconnect_attachment_info {
+    /// What type of interconnect attachment this is.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified type.
+        Unspecified = 0,
+        /// Attachment to a dedicated interconnect.
+        Dedicated = 1,
+        /// Attachment to a partner interconnect, created by the customer.
+        Partner = 2,
+        /// Attachment to a partner interconnect, created by the partner.
+        PartnerProvider = 3,
+        /// Attachment to a L2 interconnect, created by the customer.
+        L2Dedicated = 4,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Dedicated => "DEDICATED",
+                Self::Partner => "PARTNER",
+                Self::PartnerProvider => "PARTNER_PROVIDER",
+                Self::L2Dedicated => "L2_DEDICATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEDICATED" => Some(Self::Dedicated),
+                "PARTNER" => Some(Self::Partner),
+                "PARTNER_PROVIDER" => Some(Self::PartnerProvider),
+                "L2_DEDICATED" => Some(Self::L2Dedicated),
+                _ => None,
+            }
+        }
+    }
+}
 /// For display only. The specification of the endpoints for the test.
 /// EndpointInfo is derived from source and destination Endpoint and validated
 /// by the backend data plane model.
@@ -1377,6 +1597,10 @@ pub struct DeliverInfo {
     /// PSC Google API target the packet is delivered to (if applicable).
     #[prost(string, tag = "5")]
     pub psc_google_api_target: ::prost::alloc::string::String,
+    /// Recognized type of a Google Service the packet is delivered to (if
+    /// applicable).
+    #[prost(enumeration = "deliver_info::GoogleServiceType", tag = "6")]
+    pub google_service_type: i32,
 }
 /// Nested message and enum types in `DeliverInfo`.
 pub mod deliver_info {
@@ -1486,6 +1710,74 @@ pub mod deliver_info {
             }
         }
     }
+    /// Recognized type of a Google Service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoogleServiceType {
+        /// Unspecified Google Service.
+        Unspecified = 0,
+        /// Identity aware proxy.
+        /// <https://cloud.google.com/iap/docs/using-tcp-forwarding>
+        Iap = 1,
+        /// One of two services sharing IP ranges:
+        ///
+        /// * Load Balancer proxy
+        /// * Centralized Health Check prober
+        ///   <https://cloud.google.com/load-balancing/docs/firewall-rules>
+        GfeProxyOrHealthCheckProber = 2,
+        /// Connectivity from Cloud DNS to forwarding targets or alternate name
+        /// servers that use private routing.
+        /// <https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules>
+        /// <https://cloud.google.com/dns/docs/policies#firewall-rules>
+        CloudDns = 3,
+        /// private.googleapis.com and restricted.googleapis.com
+        PrivateGoogleAccess = 4,
+        /// Google API via Private Service Connect.
+        /// <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>
+        /// Google API via Serverless VPC Access.
+        /// <https://cloud.google.com/vpc/docs/serverless-vpc-access>
+        ServerlessVpcAccess = 5,
+    }
+    impl GoogleServiceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOOGLE_SERVICE_TYPE_UNSPECIFIED",
+                Self::Iap => "IAP",
+                Self::GfeProxyOrHealthCheckProber => "GFE_PROXY_OR_HEALTH_CHECK_PROBER",
+                Self::CloudDns => "CLOUD_DNS",
+                Self::PrivateGoogleAccess => "PRIVATE_GOOGLE_ACCESS",
+                Self::ServerlessVpcAccess => "SERVERLESS_VPC_ACCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOOGLE_SERVICE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IAP" => Some(Self::Iap),
+                "GFE_PROXY_OR_HEALTH_CHECK_PROBER" => {
+                    Some(Self::GfeProxyOrHealthCheckProber)
+                }
+                "CLOUD_DNS" => Some(Self::CloudDns),
+                "PRIVATE_GOOGLE_ACCESS" => Some(Self::PrivateGoogleAccess),
+                "SERVERLESS_VPC_ACCESS" => Some(Self::ServerlessVpcAccess),
+                _ => None,
+            }
+        }
+    }
 }
 /// Details of the final state "forward" and associated resource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1536,6 +1828,8 @@ pub mod forward_info {
         NccHub = 8,
         /// Forwarded to a router appliance.
         RouterAppliance = 9,
+        /// Forwarded to a Secure Web Proxy Gateway.
+        SecureWebProxyGateway = 10,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1554,6 +1848,7 @@ pub mod forward_info {
                 Self::AnotherProject => "ANOTHER_PROJECT",
                 Self::NccHub => "NCC_HUB",
                 Self::RouterAppliance => "ROUTER_APPLIANCE",
+                Self::SecureWebProxyGateway => "SECURE_WEB_PROXY_GATEWAY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1571,6 +1866,7 @@ pub mod forward_info {
                 "ANOTHER_PROJECT" => Some(Self::AnotherProject),
                 "NCC_HUB" => Some(Self::NccHub),
                 "ROUTER_APPLIANCE" => Some(Self::RouterAppliance),
+                "SECURE_WEB_PROXY_GATEWAY" => Some(Self::SecureWebProxyGateway),
                 _ => None,
             }
         }
@@ -1694,9 +1990,12 @@ pub mod abort_info {
         FirewallConfigNotFound = 26,
         /// Aborted because expected route configuration was missing.
         RouteConfigNotFound = 27,
-        /// Aborted because a PSC endpoint selection for the Google-managed service
+        /// Aborted because PSC endpoint selection for the Google-managed service
         /// is ambiguous (several PSC endpoints satisfy test input).
         GoogleManagedServiceAmbiguousPscEndpoint = 19,
+        /// Aborted because endpoint selection for the Google-managed service is
+        /// ambiguous (several endpoints satisfy test input).
+        GoogleManagedServiceAmbiguousEndpoint = 39,
         /// Aborted because tests with a PSC-based Cloud SQL instance as a source are
         /// not supported.
         SourcePscCloudSqlUnsupported = 20,
@@ -1719,6 +2018,9 @@ pub mod abort_info {
         /// Aborted because the source endpoint is a Cloud Run revision with direct
         /// VPC access enabled, but there are no reserved serverless IP ranges.
         NoServerlessIpRanges = 37,
+        /// Aborted because the used protocol is not supported for the used IP
+        /// version.
+        IpVersionProtocolMismatch = 40,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1770,6 +2072,9 @@ pub mod abort_info {
                 Self::GoogleManagedServiceAmbiguousPscEndpoint => {
                     "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT"
                 }
+                Self::GoogleManagedServiceAmbiguousEndpoint => {
+                    "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT"
+                }
                 Self::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
                 Self::SourceRedisClusterUnsupported => "SOURCE_REDIS_CLUSTER_UNSUPPORTED",
                 Self::SourceRedisInstanceUnsupported => {
@@ -1786,6 +2091,7 @@ pub mod abort_info {
                     "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG"
                 }
                 Self::NoServerlessIpRanges => "NO_SERVERLESS_IP_RANGES",
+                Self::IpVersionProtocolMismatch => "IP_VERSION_PROTOCOL_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1838,6 +2144,9 @@ pub mod abort_info {
                 "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT" => {
                     Some(Self::GoogleManagedServiceAmbiguousPscEndpoint)
                 }
+                "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT" => {
+                    Some(Self::GoogleManagedServiceAmbiguousEndpoint)
+                }
                 "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED" => {
                     Some(Self::SourcePscCloudSqlUnsupported)
                 }
@@ -1858,6 +2167,7 @@ pub mod abort_info {
                     Some(Self::UnsupportedGoogleManagedProjectConfig)
                 }
                 "NO_SERVERLESS_IP_RANGES" => Some(Self::NoServerlessIpRanges),
+                "IP_VERSION_PROTOCOL_MISMATCH" => Some(Self::IpVersionProtocolMismatch),
                 _ => None,
             }
         }
@@ -1881,6 +2191,12 @@ pub struct DropInfo {
     /// Region of the dropped packet (if relevant).
     #[prost(string, tag = "5")]
     pub region: ::prost::alloc::string::String,
+    /// Geolocation (region code) of the source IP address (if relevant).
+    #[prost(string, tag = "6")]
+    pub source_geolocation_code: ::prost::alloc::string::String,
+    /// Geolocation (region code) of the destination IP address (if relevant).
+    #[prost(string, tag = "7")]
+    pub destination_geolocation_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DropInfo`.
 pub mod drop_info {
@@ -1934,24 +2250,28 @@ pub mod drop_info {
         /// Route's next hop forwarding rule type is invalid (it's not a forwarding
         /// rule of the internal passthrough load balancer).
         RouteNextHopForwardingRuleTypeInvalid = 53,
-        /// Packet is sent from the Internet to the private IPv6 address.
+        /// Packet is sent from the Internet or Google service to the private IPv6
+        /// address.
         NoRouteFromInternetToPrivateIpv6Address = 44,
+        /// Packet is sent from the external IPv6 source address of an instance to
+        /// the private IPv6 address of an instance.
+        NoRouteFromExternalIpv6SourceToPrivateIpv6Address = 98,
         /// The packet does not match a policy-based VPN tunnel local selector.
         VpnTunnelLocalSelectorMismatch = 45,
         /// The packet does not match a policy-based VPN tunnel remote selector.
         VpnTunnelRemoteSelectorMismatch = 46,
         /// Packet with internal destination address sent to the internet gateway.
         PrivateTrafficToInternet = 7,
-        /// Instance with only an internal IP address tries to access Google API and
-        /// services, but private Google access is not enabled in the subnet.
+        /// Endpoint with only an internal IP address tries to access Google API and
+        /// services, but Private Google Access is not enabled in the subnet or is
+        /// not applicable.
         PrivateGoogleAccessDisallowed = 8,
         /// Source endpoint tries to access Google API and services through the VPN
         /// tunnel to another network, but Private Google Access needs to be enabled
         /// in the source endpoint network.
         PrivateGoogleAccessViaVpnTunnelUnsupported = 47,
-        /// Instance with only an internal IP address tries to access external hosts,
-        /// but Cloud NAT is not enabled in the subnet, unless special configurations
-        /// on a VM allow this connection.
+        /// Endpoint with only an internal IP address tries to access external hosts,
+        /// but there is no matching Cloud NAT gateway in the subnet.
         NoExternalAddress = 9,
         /// Destination internal address cannot be resolved to a known target. If
         /// this is a shared VPC scenario, verify if the service project ID is
@@ -2159,6 +2479,37 @@ pub mod drop_info {
         /// Packet with destination IP address within the reserved NAT64 range is
         /// dropped due to matching a route of an unsupported type.
         UnsupportedRouteMatchedForNat64Destination = 88,
+        /// Packet could be dropped because hybrid endpoint like a VPN gateway or
+        /// Interconnect is not allowed to send traffic to the Internet.
+        TrafficFromHybridEndpointToInternetDisallowed = 89,
+        /// Packet with destination IP address within the reserved NAT64 range is
+        /// dropped due to no matching NAT gateway in the subnet.
+        NoMatchingNat64Gateway = 90,
+        /// Packet is dropped due to being sent to a backend of a passthrough load
+        /// balancer that doesn't use the same IP version as the frontend.
+        LoadBalancerBackendIpVersionMismatch = 96,
+        /// Packet from the unknown NCC network is dropped due to no known route
+        /// from the source network to the destination IP address.
+        NoKnownRouteFromNccNetworkToDestination = 97,
+        /// Packet is dropped by Cloud NAT due to using an unsupported protocol.
+        CloudNatProtocolUnsupported = 99,
+        /// Packet is dropped due to using an unsupported protocol (any other than
+        /// UDP) for L2 Interconnect.
+        L2InterconnectUnsupportedProtocol = 100,
+        /// Packet is dropped due to using an unsupported port (any other than
+        /// 6081) for L2 Interconnect.
+        L2InterconnectUnsupportedPort = 101,
+        /// Packet is dropped due to destination IP not matching the appliance
+        /// mapping IPs configured on the L2 Interconnect attachment.
+        L2InterconnectDestinationIpMismatch = 102,
+        /// Packet could be dropped because it matches a route associated with an NCC
+        /// spoke in the hybrid subnet context, but such a configuration is not
+        /// supported.
+        NccRouteWithinHybridSubnetUnsupported = 104,
+        /// Packet is dropped because the region of the hybrid subnet is different
+        /// from the region of the next hop of the route matched within this hybrid
+        /// subnet.
+        HybridSubnetRegionMismatch = 105,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2195,6 +2546,9 @@ pub mod drop_info {
                 }
                 Self::NoRouteFromInternetToPrivateIpv6Address => {
                     "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS"
+                }
+                Self::NoRouteFromExternalIpv6SourceToPrivateIpv6Address => {
+                    "NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS"
                 }
                 Self::VpnTunnelLocalSelectorMismatch => {
                     "VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH"
@@ -2343,6 +2697,28 @@ pub mod drop_info {
                 Self::UnsupportedRouteMatchedForNat64Destination => {
                     "UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION"
                 }
+                Self::TrafficFromHybridEndpointToInternetDisallowed => {
+                    "TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED"
+                }
+                Self::NoMatchingNat64Gateway => "NO_MATCHING_NAT64_GATEWAY",
+                Self::LoadBalancerBackendIpVersionMismatch => {
+                    "LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH"
+                }
+                Self::NoKnownRouteFromNccNetworkToDestination => {
+                    "NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION"
+                }
+                Self::CloudNatProtocolUnsupported => "CLOUD_NAT_PROTOCOL_UNSUPPORTED",
+                Self::L2InterconnectUnsupportedProtocol => {
+                    "L2_INTERCONNECT_UNSUPPORTED_PROTOCOL"
+                }
+                Self::L2InterconnectUnsupportedPort => "L2_INTERCONNECT_UNSUPPORTED_PORT",
+                Self::L2InterconnectDestinationIpMismatch => {
+                    "L2_INTERCONNECT_DESTINATION_IP_MISMATCH"
+                }
+                Self::NccRouteWithinHybridSubnetUnsupported => {
+                    "NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED"
+                }
+                Self::HybridSubnetRegionMismatch => "HYBRID_SUBNET_REGION_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2378,6 +2754,9 @@ pub mod drop_info {
                 }
                 "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS" => {
                     Some(Self::NoRouteFromInternetToPrivateIpv6Address)
+                }
+                "NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS" => {
+                    Some(Self::NoRouteFromExternalIpv6SourceToPrivateIpv6Address)
                 }
                 "VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH" => {
                     Some(Self::VpnTunnelLocalSelectorMismatch)
@@ -2548,6 +2927,32 @@ pub mod drop_info {
                 "UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION" => {
                     Some(Self::UnsupportedRouteMatchedForNat64Destination)
                 }
+                "TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED" => {
+                    Some(Self::TrafficFromHybridEndpointToInternetDisallowed)
+                }
+                "NO_MATCHING_NAT64_GATEWAY" => Some(Self::NoMatchingNat64Gateway),
+                "LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH" => {
+                    Some(Self::LoadBalancerBackendIpVersionMismatch)
+                }
+                "NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION" => {
+                    Some(Self::NoKnownRouteFromNccNetworkToDestination)
+                }
+                "CLOUD_NAT_PROTOCOL_UNSUPPORTED" => {
+                    Some(Self::CloudNatProtocolUnsupported)
+                }
+                "L2_INTERCONNECT_UNSUPPORTED_PROTOCOL" => {
+                    Some(Self::L2InterconnectUnsupportedProtocol)
+                }
+                "L2_INTERCONNECT_UNSUPPORTED_PORT" => {
+                    Some(Self::L2InterconnectUnsupportedPort)
+                }
+                "L2_INTERCONNECT_DESTINATION_IP_MISMATCH" => {
+                    Some(Self::L2InterconnectDestinationIpMismatch)
+                }
+                "NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED" => {
+                    Some(Self::NccRouteWithinHybridSubnetUnsupported)
+                }
+                "HYBRID_SUBNET_REGION_MISMATCH" => Some(Self::HybridSubnetRegionMismatch),
                 _ => None,
             }
         }
@@ -2802,6 +3207,8 @@ pub mod nat_info {
         CloudNat = 3,
         /// Private service connect NAT.
         PrivateServiceConnect = 4,
+        /// GKE Pod IP address masquerading.
+        GkePodIpMasquerading = 5,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2815,6 +3222,7 @@ pub mod nat_info {
                 Self::ExternalToInternal => "EXTERNAL_TO_INTERNAL",
                 Self::CloudNat => "CLOUD_NAT",
                 Self::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+                Self::GkePodIpMasquerading => "GKE_POD_IP_MASQUERADING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2825,6 +3233,7 @@ pub mod nat_info {
                 "EXTERNAL_TO_INTERNAL" => Some(Self::ExternalToInternal),
                 "CLOUD_NAT" => Some(Self::CloudNat),
                 "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "GKE_POD_IP_MASQUERADING" => Some(Self::GkePodIpMasquerading),
                 _ => None,
             }
         }
@@ -3257,12 +3666,12 @@ pub mod endpoint {
         /// A [Cloud Run](<https://cloud.google.com/run>)
         /// [revision](<https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>)
         /// URI. The format is:
-        /// `projects/{project}/locations/{location}/revisions/{revision}`
+        /// projects/{project}/locations/{location}/revisions/{revision}
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
         /// Output only. The URI of the Cloud Run service that the revision belongs
         /// to. The format is:
-        /// `projects/{project}/locations/{location}/services/{service}`
+        /// projects/{project}/locations/{location}/services/{service}
         #[prost(string, tag = "2")]
         pub service_uri: ::prost::alloc::string::String,
     }
@@ -3505,16 +3914,22 @@ pub struct ProbingDetails {
     /// from the source to the destination endpoint.
     #[prost(message, optional, tag = "8")]
     pub probing_latency: ::core::option::Option<LatencyDistribution>,
-    /// The EdgeLocation from which a packet destined for/originating from the
-    /// internet will egress/ingress the Google network.
+    /// The EdgeLocation from which a packet, destined to the internet, will egress
+    /// the Google network.
     /// This will only be populated for a connectivity test which has an internet
-    /// destination/source address.
+    /// destination address.
     /// The absence of this field *must not* be used as an indication that the
-    /// destination/source is part of the Google network.
+    /// destination is part of the Google network.
     #[prost(message, optional, tag = "9")]
     pub destination_egress_location: ::core::option::Option<
         probing_details::EdgeLocation,
     >,
+    /// Probing results for all edge devices.
+    #[prost(message, repeated, tag = "10")]
+    pub edge_responses: ::prost::alloc::vec::Vec<probing_details::SingleEdgeResponse>,
+    /// Whether all relevant edge devices were probed.
+    #[prost(bool, tag = "11")]
+    pub probed_all_devices: bool,
 }
 /// Nested message and enum types in `ProbingDetails`.
 pub mod probing_details {
@@ -3525,6 +3940,35 @@ pub mod probing_details {
         /// Name of the metropolitan area.
         #[prost(string, tag = "1")]
         pub metropolitan_area: ::prost::alloc::string::String,
+    }
+    /// Probing results for a single edge device.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SingleEdgeResponse {
+        /// The overall result of active probing for this egress device.
+        #[prost(enumeration = "ProbingResult", tag = "1")]
+        pub result: i32,
+        /// Number of probes sent.
+        #[prost(int32, tag = "2")]
+        pub sent_probe_count: i32,
+        /// Number of probes that reached the destination.
+        #[prost(int32, tag = "3")]
+        pub successful_probe_count: i32,
+        /// Latency as measured by active probing in one direction: from the source
+        /// to the destination endpoint.
+        #[prost(message, optional, tag = "4")]
+        pub probing_latency: ::core::option::Option<super::LatencyDistribution>,
+        /// The EdgeLocation from which a packet, destined to the internet, will
+        /// egress the Google network.
+        /// This will only be populated for a connectivity test which has an internet
+        /// destination address.
+        /// The absence of this field *must not* be used as an indication that the
+        /// destination is part of the Google network.
+        #[prost(message, optional, tag = "5")]
+        pub destination_egress_location: ::core::option::Option<EdgeLocation>,
+        /// Router name in the format '{router}.{metroshard}'. For example:
+        /// pf01.aaa01, pr02.aaa01.
+        #[prost(string, tag = "6")]
+        pub destination_router: ::prost::alloc::string::String,
     }
     /// Overall probing result of the test.
     #[derive(
@@ -4081,8 +4525,14 @@ pub mod reachability_service_client {
 /// A configuration to generate VPC Flow Logs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcFlowLogsConfig {
-    /// Identifier. Unique name of the configuration using the form:
-    /// `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    /// Identifier. Unique name of the configuration. The name can have one of the
+    /// following forms:
+    ///
+    /// * For project-level configurations:
+    ///   `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For organization-level configurations:
+    ///   `organizations/{organization_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The user-supplied description of the VPC Flow Logs configuration.
@@ -4090,7 +4540,8 @@ pub struct VpcFlowLogsConfig {
     #[prost(string, optional, tag = "2")]
     pub description: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The state of the VPC Flow Log configuration. Default value is
-    /// ENABLED. When creating a new configuration, it must be enabled.
+    /// ENABLED. When creating a new configuration, it must be enabled. Setting
+    /// state=DISABLED will pause the log generation for this config.
     #[prost(enumeration = "vpc_flow_logs_config::State", optional, tag = "3")]
     pub state: ::core::option::Option<i32>,
     /// Optional. The aggregation interval for the logs. Default value is
@@ -4120,8 +4571,17 @@ pub struct VpcFlowLogsConfig {
     /// logged.
     #[prost(string, optional, tag = "8")]
     pub filter_expr: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. A diagnostic bit - describes the state of the configured
-    /// target resource for diagnostic purposes.
+    /// Optional. Determines whether to include cross project annotations in the
+    /// logs. This field is available only for organization configurations. If not
+    /// specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED.
+    #[prost(
+        enumeration = "vpc_flow_logs_config::CrossProjectMetadata",
+        optional,
+        tag = "13"
+    )]
+    pub cross_project_metadata: ::core::option::Option<i32>,
+    /// Output only. Describes the state of the configured target resource for
+    /// diagnostic purposes.
     #[prost(
         enumeration = "vpc_flow_logs_config::TargetResourceState",
         optional,
@@ -4143,13 +4603,13 @@ pub struct VpcFlowLogsConfig {
     /// Reference to the resource of the config scope. That is, the scope from
     /// which traffic is logged. The target resource must belong to the same
     /// project as the configuration.
-    #[prost(oneof = "vpc_flow_logs_config::TargetResource", tags = "102, 103")]
+    /// This field is not supported for organization level configurations.
+    #[prost(oneof = "vpc_flow_logs_config::TargetResource", tags = "100, 101, 102, 103")]
     pub target_resource: ::core::option::Option<vpc_flow_logs_config::TargetResource>,
 }
 /// Nested message and enum types in `VpcFlowLogsConfig`.
 pub mod vpc_flow_logs_config {
     /// Determines whether this configuration will be generating logs.
-    /// Setting state=DISABLED will pause the log generation for this config.
     #[derive(
         Clone,
         Copy,
@@ -4298,8 +4758,54 @@ pub mod vpc_flow_logs_config {
             }
         }
     }
-    /// Optional states of the target resource that are used as part of the
-    /// diagnostic bit.
+    /// Determines whether to include cross project annotations in the logs.
+    /// Project configurations will always have CROSS_PROJECT_METADATA_DISABLED.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CrossProjectMetadata {
+        /// If not specified, the default is CROSS_PROJECT_METADATA_ENABLED.
+        Unspecified = 0,
+        /// When CROSS_PROJECT_METADATA_ENABLED, metadata from other projects will be
+        /// included in the logs.
+        Enabled = 1,
+        /// When CROSS_PROJECT_METADATA_DISABLED, metadata from other projects will
+        /// not be included in the logs.
+        Disabled = 2,
+    }
+    impl CrossProjectMetadata {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CROSS_PROJECT_METADATA_UNSPECIFIED",
+                Self::Enabled => "CROSS_PROJECT_METADATA_ENABLED",
+                Self::Disabled => "CROSS_PROJECT_METADATA_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CROSS_PROJECT_METADATA_UNSPECIFIED" => Some(Self::Unspecified),
+                "CROSS_PROJECT_METADATA_ENABLED" => Some(Self::Enabled),
+                "CROSS_PROJECT_METADATA_DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+    /// Output only. Indicates whether the target resource exists, for diagnostic
+    /// purposes.
     #[derive(
         Clone,
         Copy,
@@ -4347,8 +4853,178 @@ pub mod vpc_flow_logs_config {
     /// Reference to the resource of the config scope. That is, the scope from
     /// which traffic is logged. The target resource must belong to the same
     /// project as the configuration.
+    /// This field is not supported for organization level configurations.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TargetResource {
+        /// Traffic will be logged from VMs, VPN tunnels and Interconnect Attachments
+        /// within the network.
+        /// Format: projects/{project_id}/global/networks/{name}
+        #[prost(string, tag = "100")]
+        Network(::prost::alloc::string::String),
+        /// Traffic will be logged from VMs within the subnetwork.
+        /// Format: projects/{project_id}/regions/{region}/subnetworks/{name}
+        #[prost(string, tag = "101")]
+        Subnet(::prost::alloc::string::String),
+        /// Traffic will be logged from the Interconnect Attachment.
+        /// Format:
+        /// projects/{project_id}/regions/{region}/interconnectAttachments/{name}
+        #[prost(string, tag = "102")]
+        InterconnectAttachment(::prost::alloc::string::String),
+        /// Traffic will be logged from the VPN Tunnel.
+        /// Format: projects/{project_id}/regions/{region}/vpnTunnels/{name}
+        #[prost(string, tag = "103")]
+        VpnTunnel(::prost::alloc::string::String),
+    }
+}
+/// A configuration to generate a response for GetEffectiveVpcFlowLogsConfig
+/// request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EffectiveVpcFlowLogsConfig {
+    /// Unique name of the configuration. The name can have one of the following
+    /// forms:
+    ///
+    /// * For project-level configurations:
+    ///   `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For organization-level configurations:
+    ///   `organizations/{organization_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For a Compute config, the name will be the path of the subnet:
+    ///   `projects/{project_id}/regions/{region}/subnetworks/{subnet_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The state of the VPC Flow Log configuration. Default value is ENABLED.
+    /// When creating a new configuration, it must be enabled.
+    /// Setting state=DISABLED will pause the log generation for this config.
+    #[prost(enumeration = "vpc_flow_logs_config::State", optional, tag = "3")]
+    pub state: ::core::option::Option<i32>,
+    /// The aggregation interval for the logs. Default value is INTERVAL_5_SEC.
+    #[prost(
+        enumeration = "vpc_flow_logs_config::AggregationInterval",
+        optional,
+        tag = "4"
+    )]
+    pub aggregation_interval: ::core::option::Option<i32>,
+    /// The value of the field must be in (0, 1\]. The sampling rate of VPC Flow
+    /// Logs where 1.0 means all collected logs are reported.
+    /// Setting the sampling rate to 0.0 is not allowed. If you want to disable VPC
+    /// Flow Logs, use the state field instead.
+    /// Default value is 1.0.
+    #[prost(float, optional, tag = "5")]
+    pub flow_sampling: ::core::option::Option<f32>,
+    /// Configures whether all, none or a subset of metadata fields should be
+    /// added to the reported VPC flow logs.
+    /// Default value is INCLUDE_ALL_METADATA.
+    #[prost(enumeration = "vpc_flow_logs_config::Metadata", optional, tag = "6")]
+    pub metadata: ::core::option::Option<i32>,
+    /// Custom metadata fields to include in the reported VPC flow logs.
+    /// Can only be specified if "metadata" was set to CUSTOM_METADATA.
+    #[prost(string, repeated, tag = "7")]
+    pub metadata_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Export filter used to define which VPC Flow Logs should be logged.
+    #[prost(string, optional, tag = "8")]
+    pub filter_expr: ::core::option::Option<::prost::alloc::string::String>,
+    /// Determines whether to include cross project annotations in the logs.
+    /// This field is available only for organization configurations. If not
+    /// specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED.
+    #[prost(
+        enumeration = "vpc_flow_logs_config::CrossProjectMetadata",
+        optional,
+        tag = "13"
+    )]
+    pub cross_project_metadata: ::core::option::Option<i32>,
+    /// Specifies the scope of the config (e.g., SUBNET, NETWORK, ORGANIZATION..).
+    #[prost(enumeration = "effective_vpc_flow_logs_config::Scope", optional, tag = "12")]
+    pub scope: ::core::option::Option<i32>,
+    /// Reference to the resource of the config scope. That is, the scope from
+    /// which traffic is logged. The target resource must belong to the same
+    /// project as the configuration.
+    /// This field is not supported for organization level configurations.
+    #[prost(
+        oneof = "effective_vpc_flow_logs_config::TargetResource",
+        tags = "100, 101, 102, 103"
+    )]
+    pub target_resource: ::core::option::Option<
+        effective_vpc_flow_logs_config::TargetResource,
+    >,
+}
+/// Nested message and enum types in `EffectiveVpcFlowLogsConfig`.
+pub mod effective_vpc_flow_logs_config {
+    /// The scope for this flow log configuration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// Scope is unspecified.
+        Unspecified = 0,
+        /// Target resource is a subnet (Network Management API).
+        Subnet = 1,
+        /// Target resource is a subnet, and the config originates from the Compute
+        /// API.
+        ComputeApiSubnet = 2,
+        /// Target resource is a network.
+        Network = 3,
+        /// Target resource is a VPN tunnel.
+        VpnTunnel = 4,
+        /// Target resource is an interconnect attachment.
+        InterconnectAttachment = 5,
+        /// Configuration applies to an entire organization.
+        Organization = 6,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::Subnet => "SUBNET",
+                Self::ComputeApiSubnet => "COMPUTE_API_SUBNET",
+                Self::Network => "NETWORK",
+                Self::VpnTunnel => "VPN_TUNNEL",
+                Self::InterconnectAttachment => "INTERCONNECT_ATTACHMENT",
+                Self::Organization => "ORGANIZATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUBNET" => Some(Self::Subnet),
+                "COMPUTE_API_SUBNET" => Some(Self::ComputeApiSubnet),
+                "NETWORK" => Some(Self::Network),
+                "VPN_TUNNEL" => Some(Self::VpnTunnel),
+                "INTERCONNECT_ATTACHMENT" => Some(Self::InterconnectAttachment),
+                "ORGANIZATION" => Some(Self::Organization),
+                _ => None,
+            }
+        }
+    }
+    /// Reference to the resource of the config scope. That is, the scope from
+    /// which traffic is logged. The target resource must belong to the same
+    /// project as the configuration.
+    /// This field is not supported for organization level configurations.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TargetResource {
+        /// Traffic will be logged from VMs, VPN tunnels and Interconnect Attachments
+        /// within the network.
+        /// Format: projects/{project_id}/global/networks/{name}
+        #[prost(string, tag = "100")]
+        Network(::prost::alloc::string::String),
+        /// Traffic will be logged from VMs within the subnetwork.
+        /// Format: projects/{project_id}/regions/{region}/subnetworks/{name}
+        #[prost(string, tag = "101")]
+        Subnet(::prost::alloc::string::String),
         /// Traffic will be logged from the Interconnect Attachment.
         /// Format:
         /// projects/{project_id}/regions/{region}/interconnectAttachments/{name}
@@ -4363,8 +5039,13 @@ pub mod vpc_flow_logs_config {
 /// Request for the `ListVpcFlowLogsConfigs` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpcFlowLogsConfigsRequest {
-    /// Required. The parent resource of the VpcFlowLogsConfig:
-    /// `projects/{project_id}/locations/global`
+    /// Required. The parent resource of the VpcFlowLogsConfig,
+    /// in one of the following formats:
+    ///
+    /// * For project-level resourcs: `projects/{project_id}/locations/global`
+    ///
+    /// * For organization-level resources:
+    ///   `organizations/{organization_id}/locations/global`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Number of `VpcFlowLogsConfigs` to return.
@@ -4399,16 +5080,27 @@ pub struct ListVpcFlowLogsConfigsResponse {
 /// Request for the `GetVpcFlowLogsConfig` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpcFlowLogsConfigRequest {
-    /// Required. `VpcFlowLogsConfig` resource name using the form:
-    /// `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config}`
+    /// Required. The resource name of the VpcFlowLogsConfig,
+    /// in one of the following formats:
+    ///
+    /// * For project-level resources:
+    ///   `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For organization-level resources:
+    ///   `organizations/{organization_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateVpcFlowLogsConfig` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVpcFlowLogsConfigRequest {
-    /// Required. The parent resource of the VPC Flow Logs configuration to create:
-    /// `projects/{project_id}/locations/global`
+    /// Required. The parent resource of the VpcFlowLogsConfig to create,
+    /// in one of the following formats:
+    ///
+    /// * For project-level resources: `projects/{project_id}/locations/global`
+    ///
+    /// * For organization-level resources:
+    ///   `organizations/{organization_id}/locations/global`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. ID of the `VpcFlowLogsConfig`.
@@ -4423,6 +5115,9 @@ pub struct CreateVpcFlowLogsConfigRequest {
 pub struct UpdateVpcFlowLogsConfigRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field.
+    /// For example, to change the state of the configuration to ENABLED, specify
+    /// `update_mask` = `"state"`, and the `vpc_flow_logs_config` would be:
+    /// `vpc_flow_logs_config = {      name =      "projects/my-project/locations/global/vpcFlowLogsConfigs/my-config"      state = "ENABLED" }`
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. Only fields specified in update_mask are updated.
@@ -4432,10 +5127,91 @@ pub struct UpdateVpcFlowLogsConfigRequest {
 /// Request for the `DeleteVpcFlowLogsConfig` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVpcFlowLogsConfigRequest {
-    /// Required. `VpcFlowLogsConfig` resource name using the form:
-    /// `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config}`
+    /// Required. The resource name of the VpcFlowLogsConfig,
+    /// in one of the following formats:
+    ///
+    /// * For a project-level resource:
+    ///   `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For an organization-level resource:
+    ///   `organizations/{organization_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request for the `QueryOrgVpcFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryOrgVpcFlowLogsConfigsRequest {
+    /// Required. The parent resource of the VpcFlowLogsConfig, specified in
+    /// the following format: `projects/{project_id}/locations/global`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Number of `VpcFlowLogsConfigs` to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token from an earlier query, as returned in
+    /// `next_page_token`.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the `VpcFlowLogsConfigs` that match the filter expression.
+    /// A filter expression must use the supported \[CEL logic operators\]
+    /// (<https://cloud.google.com/vpc/docs/about-flow-logs-records#supported_cel_logic_operators>).
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response for the `QueryVpcFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryOrgVpcFlowLogsConfigsResponse {
+    /// List of VPC Flow Log configurations.
+    #[prost(message, repeated, tag = "1")]
+    pub vpc_flow_logs_configs: ::prost::alloc::vec::Vec<VpcFlowLogsConfig>,
+    /// Page token to fetch the next set of configurations.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached (when querying all locations with `-`).
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for the `ShowEffectiveFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ShowEffectiveFlowLogsConfigsRequest {
+    /// Required. The parent resource of the VpcFlowLogsConfig, specified in
+    /// the following format: `projects/{project_id}/locations/global`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource to get the effective VPC Flow Logs configuration
+    /// for. The resource must belong to the same project as the parent. The
+    /// resource must be a network, subnetwork, interconnect attachment, VPN
+    /// tunnel, or a project.
+    #[prost(string, tag = "2")]
+    pub resource: ::prost::alloc::string::String,
+    /// Optional. Number of `EffectiveVpcFlowLogsConfigs` to return. Default is 30.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. Page token from an earlier query, as returned in
+    /// `next_page_token`.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the `EffectiveVpcFlowLogsConfigs` that match the filter
+    /// expression. A filter expression must use the supported \[CEL logic
+    /// operators\]
+    /// (<https://cloud.google.com/vpc/docs/about-flow-logs-records#supported_cel_logic_operators>).
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response for the `ShowEffectiveFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowEffectiveFlowLogsConfigsResponse {
+    /// List of Effective Vpc Flow Logs configurations.
+    #[prost(message, repeated, tag = "1")]
+    pub effective_flow_logs_configs: ::prost::alloc::vec::Vec<
+        EffectiveVpcFlowLogsConfig,
+    >,
+    /// Page token to fetch the next set of configurations.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached (when querying all locations with `-`).
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod vpc_flow_logs_service_client {
@@ -4596,8 +5372,8 @@ pub mod vpc_flow_logs_service_client {
         /// ID is different), the creation fails.
         /// Notes:
         ///
-        /// 1. Creating a configuration with state=DISABLED will fail
-        /// 1. The following fields are not considered as `settings` for the purpose
+        /// 1. Creating a configuration with `state=DISABLED` will fail
+        /// 1. The following fields are not considered as settings for the purpose
         ///   of the check mentioned above, therefore - creating another configuration
         ///   with the same fields but different values for the following fields will
         ///   fail as well:
@@ -4640,8 +5416,8 @@ pub mod vpc_flow_logs_service_client {
         /// ID is different), the creation fails.
         /// Notes:
         ///
-        /// 1. Updating a configuration with state=DISABLED will fail.
-        /// 1. The following fields are not considered as `settings` for the purpose
+        /// 1. Updating a configuration with `state=DISABLED` will fail.
+        /// 1. The following fields are not considered as settings for the purpose
         ///   of the check mentioned above, therefore - updating another configuration
         ///   with the same fields but different values for the following fields will
         ///   fail as well:
@@ -4704,6 +5480,345 @@ pub mod vpc_flow_logs_service_client {
                 .insert(
                     GrpcMethod::new(
                         "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "DeleteVpcFlowLogsConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// QueryOrgVpcFlowLogsConfigs returns a list of all organization-level VPC
+        /// Flow Logs configurations applicable to the specified project.
+        pub async fn query_org_vpc_flow_logs_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryOrgVpcFlowLogsConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryOrgVpcFlowLogsConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/QueryOrgVpcFlowLogsConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "QueryOrgVpcFlowLogsConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// ShowEffectiveFlowLogsConfigs returns a list of all VPC Flow Logs
+        /// configurations applicable to a specified resource.
+        pub async fn show_effective_flow_logs_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ShowEffectiveFlowLogsConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ShowEffectiveFlowLogsConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ShowEffectiveFlowLogsConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "ShowEffectiveFlowLogsConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
+pub mod organization_vpc_flow_logs_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The VPC Flow Logs organization service in the Google Cloud Network Management
+    /// API provides organization level configurations that generate Flow Logs. The
+    /// service and the configuration resources created using this service are
+    /// global.
+    #[derive(Debug, Clone)]
+    pub struct OrganizationVpcFlowLogsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl OrganizationVpcFlowLogsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> OrganizationVpcFlowLogsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> OrganizationVpcFlowLogsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            OrganizationVpcFlowLogsServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists all `VpcFlowLogsConfigs` in a given organization.
+        pub async fn list_vpc_flow_logs_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListVpcFlowLogsConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListVpcFlowLogsConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService/ListVpcFlowLogsConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService",
+                        "ListVpcFlowLogsConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a specific `VpcFlowLogsConfig`.
+        pub async fn get_vpc_flow_logs_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetVpcFlowLogsConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VpcFlowLogsConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService/GetVpcFlowLogsConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService",
+                        "GetVpcFlowLogsConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `VpcFlowLogsConfig`.
+        /// If a configuration with the exact same settings already exists (even if the
+        /// ID is different), the creation fails.
+        /// Notes:
+        ///
+        /// 1. Creating a configuration with `state=DISABLED` will fail
+        /// 1. The following fields are not considered as settings for the purpose
+        ///   of the check mentioned above, therefore - creating another configuration
+        ///   with the same fields but different values for the following fields will
+        ///   fail as well:
+        ///   * name
+        ///   * create_time
+        ///   * update_time
+        ///   * labels
+        ///   * description
+        pub async fn create_vpc_flow_logs_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateVpcFlowLogsConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService/CreateVpcFlowLogsConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService",
+                        "CreateVpcFlowLogsConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an existing `VpcFlowLogsConfig`.
+        /// If a configuration with the exact same settings already exists (even if the
+        /// ID is different), the creation fails.
+        /// Notes:
+        ///
+        /// 1. Updating a configuration with `state=DISABLED` will fail
+        /// 1. The following fields are not considered as settings for the purpose
+        ///   of the check mentioned above, therefore - updating another configuration
+        ///   with the same fields but different values for the following fields will
+        ///   fail as well:
+        ///   * name
+        ///   * create_time
+        ///   * update_time
+        ///   * labels
+        ///   * description
+        pub async fn update_vpc_flow_logs_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateVpcFlowLogsConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService/UpdateVpcFlowLogsConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService",
+                        "UpdateVpcFlowLogsConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a specific `VpcFlowLogsConfig`.
+        pub async fn delete_vpc_flow_logs_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteVpcFlowLogsConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService/DeleteVpcFlowLogsConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1.OrganizationVpcFlowLogsService",
                         "DeleteVpcFlowLogsConfig",
                     ),
                 );

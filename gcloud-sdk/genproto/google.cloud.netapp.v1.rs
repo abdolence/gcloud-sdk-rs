@@ -737,22 +737,22 @@ pub mod backup_vault {
         #[prost(int32, tag = "1")]
         pub backup_minimum_enforced_retention_days: i32,
         /// Optional. Indicates if the daily backups are immutable.
-        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// At least one of daily_backup_immutable, weekly_backup_immutable,
         /// monthly_backup_immutable and manual_backup_immutable must be true.
         #[prost(bool, tag = "2")]
         pub daily_backup_immutable: bool,
         /// Optional. Indicates if the weekly backups are immutable.
-        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// At least one of daily_backup_immutable, weekly_backup_immutable,
         /// monthly_backup_immutable and manual_backup_immutable must be true.
         #[prost(bool, tag = "3")]
         pub weekly_backup_immutable: bool,
         /// Optional. Indicates if the monthly backups are immutable.
-        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// At least one of daily_backup_immutable, weekly_backup_immutable,
         /// monthly_backup_immutable and manual_backup_immutable must be true.
         #[prost(bool, tag = "4")]
         pub monthly_backup_immutable: bool,
         /// Optional. Indicates if the manual backups are immutable.
-        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// At least one of daily_backup_immutable, weekly_backup_immutable,
         /// monthly_backup_immutable and manual_backup_immutable must be true.
         #[prost(bool, tag = "5")]
         pub manual_backup_immutable: bool,
@@ -1402,6 +1402,16 @@ pub struct LocationMetadata {
     /// Output only. Supported flex performance in a location.
     #[prost(enumeration = "FlexPerformance", repeated, packed = "false", tag = "2")]
     pub supported_flex_performance: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Indicates if the location has VCP support.
+    #[prost(bool, tag = "3")]
+    pub has_vcp: bool,
+}
+/// UserCommands contains the commands to be executed by the customer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserCommands {
+    /// Output only. List of commands to be executed by the customer.
+    #[prost(string, repeated, tag = "1")]
+    pub commands: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The service level of a storage pool and its volumes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1535,6 +1545,78 @@ impl DirectoryServiceType {
         match value {
             "DIRECTORY_SERVICE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "ACTIVE_DIRECTORY" => Some(Self::ActiveDirectory),
+            _ => None,
+        }
+    }
+}
+/// Schedule for Hybrid Replication.
+/// New enum values may be added in future to support different frequency of
+/// replication.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HybridReplicationSchedule {
+    /// Unspecified HybridReplicationSchedule
+    Unspecified = 0,
+    /// Replication happens once every 10 minutes.
+    Every10Minutes = 1,
+    /// Replication happens once every hour.
+    Hourly = 2,
+    /// Replication happens once every day.
+    Daily = 3,
+}
+impl HybridReplicationSchedule {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "HYBRID_REPLICATION_SCHEDULE_UNSPECIFIED",
+            Self::Every10Minutes => "EVERY_10_MINUTES",
+            Self::Hourly => "HOURLY",
+            Self::Daily => "DAILY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HYBRID_REPLICATION_SCHEDULE_UNSPECIFIED" => Some(Self::Unspecified),
+            "EVERY_10_MINUTES" => Some(Self::Every10Minutes),
+            "HOURLY" => Some(Self::Hourly),
+            "DAILY" => Some(Self::Daily),
+            _ => None,
+        }
+    }
+}
+/// QoS (Quality of Service) Types of the storage pool
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum QosType {
+    /// Unspecified QoS Type
+    Unspecified = 0,
+    /// QoS Type is Auto
+    Auto = 1,
+    /// QoS Type is Manual
+    Manual = 2,
+}
+impl QosType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "QOS_TYPE_UNSPECIFIED",
+            Self::Auto => "AUTO",
+            Self::Manual => "MANUAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "QOS_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUTO" => Some(Self::Auto),
+            "MANUAL" => Some(Self::Manual),
             _ => None,
         }
     }
@@ -1760,7 +1842,8 @@ pub struct Volume {
     /// Output only. Specifies the active zone for regional volume.
     #[prost(string, tag = "37")]
     pub zone: ::prost::alloc::string::String,
-    /// Output only. Size of the volume cold tier data in GiB.
+    /// Output only. Size of the volume cold tier data rounded down to the nearest
+    /// GiB.
     #[prost(int64, tag = "39")]
     pub cold_tier_size_gib: i64,
     /// Optional. The Hybrid Replication parameters for the volume.
@@ -1768,6 +1851,13 @@ pub struct Volume {
     pub hybrid_replication_parameters: ::core::option::Option<
         HybridReplicationParameters,
     >,
+    /// Optional. Throughput of the volume (in MiB/s)
+    #[prost(double, tag = "41")]
+    pub throughput_mibps: f64,
+    /// Output only. Total hot tier data rounded down to the nearest GiB used by
+    /// the Volume. This field is only used for flex Service Level
+    #[prost(int64, tag = "44")]
+    pub hot_tier_size_used_gib: i64,
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
@@ -2061,6 +2151,10 @@ pub struct TieringPolicy {
     /// eligible for tiering, can be range from 2-183. Default is 31.
     #[prost(int32, optional, tag = "2")]
     pub cooling_threshold_days: ::core::option::Option<i32>,
+    /// Optional. Flag indicating that the hot tier bypass mode is enabled. Default
+    /// is false. This is only applicable to Flex service level.
+    #[prost(bool, optional, tag = "3")]
+    pub hot_tier_bypass_mode_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `TieringPolicy`.
 pub mod tiering_policy {
@@ -2143,6 +2237,74 @@ pub struct HybridReplicationParameters {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Replication Schedule for the replication created.
+    #[prost(enumeration = "HybridReplicationSchedule", tag = "9")]
+    pub replication_schedule: i32,
+    /// Optional. Type of the hybrid replication.
+    #[prost(
+        enumeration = "hybrid_replication_parameters::VolumeHybridReplicationType",
+        tag = "10"
+    )]
+    pub hybrid_replication_type: i32,
+    /// Optional. Constituent volume count for large volume.
+    #[prost(int32, tag = "11")]
+    pub large_volume_constituent_count: i32,
+}
+/// Nested message and enum types in `HybridReplicationParameters`.
+pub mod hybrid_replication_parameters {
+    /// Type of the volume's hybrid replication.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VolumeHybridReplicationType {
+        /// Unspecified hybrid replication type.
+        Unspecified = 0,
+        /// Hybrid replication type for migration.
+        Migration = 1,
+        /// Hybrid replication type for continuous replication.
+        ContinuousReplication = 2,
+        /// New field for reversible OnPrem replication, to be used for data
+        /// protection.
+        OnpremReplication = 3,
+        /// New field for reversible OnPrem replication, to be used for data
+        /// protection.
+        ReverseOnpremReplication = 4,
+    }
+    impl VolumeHybridReplicationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED",
+                Self::Migration => "MIGRATION",
+                Self::ContinuousReplication => "CONTINUOUS_REPLICATION",
+                Self::OnpremReplication => "ONPREM_REPLICATION",
+                Self::ReverseOnpremReplication => "REVERSE_ONPREM_REPLICATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIGRATION" => Some(Self::Migration),
+                "CONTINUOUS_REPLICATION" => Some(Self::ContinuousReplication),
+                "ONPREM_REPLICATION" => Some(Self::OnpremReplication),
+                "REVERSE_ONPREM_REPLICATION" => Some(Self::ReverseOnpremReplication),
+                _ => None,
+            }
+        }
+    }
 }
 /// Protocols is an enum of all the supported network protocols for a volume.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2442,6 +2604,10 @@ pub struct Replication {
     /// Output only. Type of the hybrid replication.
     #[prost(enumeration = "replication::HybridReplicationType", tag = "19")]
     pub hybrid_replication_type: i32,
+    /// Output only. Copy pastable snapmirror commands to be executed on onprem
+    /// cluster by the customer.
+    #[prost(message, optional, tag = "20")]
+    pub hybrid_replication_user_commands: ::core::option::Option<UserCommands>,
 }
 /// Nested message and enum types in `Replication`.
 pub mod replication {
@@ -2476,6 +2642,11 @@ pub mod replication {
         PendingClusterPeering = 8,
         /// Replication is waiting for SVM peering to be established.
         PendingSvmPeering = 9,
+        /// Replication is waiting for Commands to be executed on Onprem ONTAP.
+        PendingRemoteResync = 10,
+        /// Onprem ONTAP is destination and Replication can only be managed from
+        /// Onprem.
+        ExternallyManagedReplication = 11,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2492,6 +2663,8 @@ pub mod replication {
                 Self::Error => "ERROR",
                 Self::PendingClusterPeering => "PENDING_CLUSTER_PEERING",
                 Self::PendingSvmPeering => "PENDING_SVM_PEERING",
+                Self::PendingRemoteResync => "PENDING_REMOTE_RESYNC",
+                Self::ExternallyManagedReplication => "EXTERNALLY_MANAGED_REPLICATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2505,6 +2678,10 @@ pub mod replication {
                 "ERROR" => Some(Self::Error),
                 "PENDING_CLUSTER_PEERING" => Some(Self::PendingClusterPeering),
                 "PENDING_SVM_PEERING" => Some(Self::PendingSvmPeering),
+                "PENDING_REMOTE_RESYNC" => Some(Self::PendingRemoteResync),
+                "EXTERNALLY_MANAGED_REPLICATION" => {
+                    Some(Self::ExternallyManagedReplication)
+                }
                 _ => None,
             }
         }
@@ -2632,6 +2809,10 @@ pub mod replication {
         BaselineTransferring = 5,
         /// Replication is aborted.
         Aborted = 6,
+        /// Replication is being managed from Onprem ONTAP.
+        ExternallyManaged = 7,
+        /// Peering is yet to be established.
+        PendingPeering = 8,
     }
     impl MirrorState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2647,6 +2828,8 @@ pub mod replication {
                 Self::Transferring => "TRANSFERRING",
                 Self::BaselineTransferring => "BASELINE_TRANSFERRING",
                 Self::Aborted => "ABORTED",
+                Self::ExternallyManaged => "EXTERNALLY_MANAGED",
+                Self::PendingPeering => "PENDING_PEERING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2659,6 +2842,8 @@ pub mod replication {
                 "TRANSFERRING" => Some(Self::Transferring),
                 "BASELINE_TRANSFERRING" => Some(Self::BaselineTransferring),
                 "ABORTED" => Some(Self::Aborted),
+                "EXTERNALLY_MANAGED" => Some(Self::ExternallyManaged),
+                "PENDING_PEERING" => Some(Self::PendingPeering),
                 _ => None,
             }
         }
@@ -2683,6 +2868,12 @@ pub mod replication {
         Migration = 1,
         /// Hybrid replication type for continuous replication.
         ContinuousReplication = 2,
+        /// New field for reversible OnPrem replication, to be used for data
+        /// protection.
+        OnpremReplication = 3,
+        /// Hybrid replication type for incremental Transfer in the reverse direction
+        /// (GCNV is source and Onprem is destination)
+        ReverseOnpremReplication = 4,
     }
     impl HybridReplicationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2694,6 +2885,8 @@ pub mod replication {
                 Self::Unspecified => "HYBRID_REPLICATION_TYPE_UNSPECIFIED",
                 Self::Migration => "MIGRATION",
                 Self::ContinuousReplication => "CONTINUOUS_REPLICATION",
+                Self::OnpremReplication => "ONPREM_REPLICATION",
+                Self::ReverseOnpremReplication => "REVERSE_ONPREM_REPLICATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2702,6 +2895,8 @@ pub mod replication {
                 "HYBRID_REPLICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "MIGRATION" => Some(Self::Migration),
                 "CONTINUOUS_REPLICATION" => Some(Self::ContinuousReplication),
+                "ONPREM_REPLICATION" => Some(Self::OnpremReplication),
+                "REVERSE_ONPREM_REPLICATION" => Some(Self::ReverseOnpremReplication),
                 _ => None,
             }
         }
@@ -2710,30 +2905,31 @@ pub mod replication {
 /// HybridPeeringDetails contains details about the hybrid peering.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HybridPeeringDetails {
-    /// Optional. IP address of the subnet.
+    /// Output only. IP address of the subnet.
     #[prost(string, tag = "1")]
     pub subnet_ip: ::prost::alloc::string::String,
-    /// Optional. Copy-paste-able commands to be used on user's ONTAP to accept
+    /// Output only. Copy-paste-able commands to be used on user's ONTAP to accept
     /// peering requests.
     #[prost(string, tag = "2")]
     pub command: ::prost::alloc::string::String,
-    /// Optional. Expiration time for the peering command to be executed on user's
-    /// ONTAP.
+    /// Output only. Expiration time for the peering command to be executed on
+    /// user's ONTAP.
     #[prost(message, optional, tag = "3")]
     pub command_expiry_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Temporary passphrase generated to accept cluster peering command.
+    /// Output only. Temporary passphrase generated to accept cluster peering
+    /// command.
     #[prost(string, tag = "4")]
     pub passphrase: ::prost::alloc::string::String,
-    /// Optional. Name of the user's local source volume to be peered with the
+    /// Output only. Name of the user's local source volume to be peered with the
     /// destination volume.
     #[prost(string, tag = "5")]
     pub peer_volume_name: ::prost::alloc::string::String,
-    /// Optional. Name of the user's local source cluster to be peered with the
+    /// Output only. Name of the user's local source cluster to be peered with the
     /// destination cluster.
     #[prost(string, tag = "6")]
     pub peer_cluster_name: ::prost::alloc::string::String,
-    /// Optional. Name of the user's local source vserver svm to be peered with the
-    /// destination vserver svm.
+    /// Output only. Name of the user's local source vserver svm to be peered with
+    /// the destination vserver svm.
     #[prost(string, tag = "7")]
     pub peer_svm_name: ::prost::alloc::string::String,
 }
@@ -3250,13 +3446,39 @@ pub struct StoragePool {
     /// (Hyperdisk) By default set to false
     #[prost(bool, tag = "25")]
     pub custom_performance_enabled: bool,
-    /// Optional. Custom Performance Total Throughput of the pool (in MiB/s)
+    /// Optional. Custom Performance Total Throughput of the pool (in MiBps)
     #[prost(int64, tag = "26")]
     pub total_throughput_mibps: i64,
     /// Optional. Custom Performance Total IOPS of the pool
-    /// If not provided, it will be calculated based on the total_throughput_mibps
+    /// if not provided, it will be calculated based on the total_throughput_mibps
     #[prost(int64, tag = "27")]
     pub total_iops: i64,
+    /// Optional. Total hot tier capacity for the Storage Pool. It is applicable
+    /// only to Flex service level. It should be less than the minimum storage pool
+    /// size and cannot be more than the current storage pool size. It cannot be
+    /// decreased once set.
+    #[prost(int64, tag = "28")]
+    pub hot_tier_size_gib: i64,
+    /// Optional. Flag indicating that the hot-tier threshold will be
+    /// auto-increased by 10% of the hot-tier when it hits 100%. Default is true.
+    /// The increment will kick in only if the new size after increment is
+    /// still less than or equal to storage pool size.
+    #[prost(bool, optional, tag = "29")]
+    pub enable_hot_tier_auto_resize: ::core::option::Option<bool>,
+    /// Optional. QoS (Quality of Service) Type of the storage pool
+    #[prost(enumeration = "QosType", tag = "30")]
+    pub qos_type: i32,
+    /// Output only. Available throughput of the storage pool (in MiB/s).
+    #[prost(double, tag = "31")]
+    pub available_throughput_mibps: f64,
+    /// Output only. Total cold tier data rounded down to the nearest GiB used by
+    /// the storage pool.
+    #[prost(int64, tag = "33")]
+    pub cold_tier_size_used_gib: i64,
+    /// Output only. Total hot tier data rounded down to the nearest GiB used by
+    /// the storage pool.
+    #[prost(int64, tag = "34")]
+    pub hot_tier_size_used_gib: i64,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {

@@ -162,6 +162,163 @@ pub mod manifest {
         }
     }
 }
+/// Multiplexing settings for output streams used in
+/// \[Distribution\]\[google.cloud.video.livestream.v1.Distribution\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DistributionStream {
+    /// Required. A unique key for this distribution stream. The key must be 1-63
+    /// characters in length. The key must begin and end with a letter (regardless
+    /// of case) or a number, but can contain dashes or underscores in between.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Required. The container format.
+    ///
+    /// Supported container formats:
+    ///
+    /// * `ts`, must contain exactly one audio stream and up to one video stream.
+    /// * `flv`, must contain at most one audio stream and at most one video
+    ///   stream.
+    #[prost(string, tag = "2")]
+    pub container: ::prost::alloc::string::String,
+    /// Required. List of `ElementaryStream`
+    /// \[key\]\[google.cloud.video.livestream.v1.ElementaryStream.key\]s multiplexed
+    /// in this stream. Must contain at least one audio stream and up to one video
+    /// stream.
+    #[prost(string, repeated, tag = "3")]
+    pub elementary_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Distribution configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Distribution {
+    /// Required. A unique key for this distribution. The key must be 1-63
+    /// characters in length. The key must begin and end with a letter (regardless
+    /// of case) or a number, but can contain dashes or underscores in between.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Required. `DistributionStream`
+    /// \[key\]\[google.cloud.video.livestream.v1.DistributionStream.key\]s that should
+    /// appear in this distribution output.
+    ///
+    /// * For SRT protocol, only `ts` distribution streams can be specified.
+    /// * For RTMP protocol, only `flv` distribution streams can be specified.
+    #[prost(string, tag = "2")]
+    pub distribution_stream: ::prost::alloc::string::String,
+    /// Output only. State of the distribution.
+    #[prost(enumeration = "distribution::State", tag = "3")]
+    pub state: i32,
+    /// Output only. Only present when the `state` is `ERROR`. The reason for the
+    /// error state of the distribution.
+    #[prost(message, optional, tag = "4")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    /// Configurations for the output endpoint by streaming protocols.
+    #[prost(oneof = "distribution::Endpoint", tags = "5, 6")]
+    pub endpoint: ::core::option::Option<distribution::Endpoint>,
+}
+/// Nested message and enum types in `Distribution`.
+pub mod distribution {
+    /// State of this distribution.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State is not specified.
+        Unspecified = 0,
+        /// Distribution has trouble to produce or deliver the output.
+        Error = 5,
+        /// Distribution is not ready to be started.
+        NotReady = 6,
+        /// Distribution is ready to be started.
+        Ready = 7,
+        /// Distribution is already started and is waiting for input.
+        AwaitingInput = 8,
+        /// Distribution is already started and is generating output.
+        Distributing = 9,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Error => "ERROR",
+                Self::NotReady => "NOT_READY",
+                Self::Ready => "READY",
+                Self::AwaitingInput => "AWAITING_INPUT",
+                Self::Distributing => "DISTRIBUTING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ERROR" => Some(Self::Error),
+                "NOT_READY" => Some(Self::NotReady),
+                "READY" => Some(Self::Ready),
+                "AWAITING_INPUT" => Some(Self::AwaitingInput),
+                "DISTRIBUTING" => Some(Self::Distributing),
+                _ => None,
+            }
+        }
+    }
+    /// Configurations for the output endpoint by streaming protocols.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Endpoint {
+        /// Output endpoint using SRT_PUSH.
+        #[prost(message, tag = "5")]
+        SrtPush(super::SrtPushOutputEndpoint),
+        /// Output endpoint using RTMP_PUSH.
+        #[prost(message, tag = "6")]
+        RtmpPush(super::RtmpPushOutputEndpoint),
+    }
+}
+/// Configurations for an output endpoint using SRT_PUSH as the streaming
+/// protocol.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SrtPushOutputEndpoint {
+    /// Required. The full URI of the remote SRT server.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Defines where SRT encryption passphrase are stored.
+    #[prost(oneof = "srt_push_output_endpoint::PassphraseSource", tags = "2")]
+    pub passphrase_source: ::core::option::Option<
+        srt_push_output_endpoint::PassphraseSource,
+    >,
+}
+/// Nested message and enum types in `SrtPushOutputEndpoint`.
+pub mod srt_push_output_endpoint {
+    /// Defines where SRT encryption passphrase are stored.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum PassphraseSource {
+        /// The name of the Secret Version containing the SRT encryption passphrase,
+        /// which is stored in Google Secret Manager. It should be in the format of
+        /// `projects/{project}/secrets/{secret_id}/versions/{version_number}`.
+        #[prost(string, tag = "2")]
+        PassphraseSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// Configurations for an output endpoint using RTMP_PUSH as the streaming
+/// protocol.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RtmpPushOutputEndpoint {
+    /// Required. The full URI of the remote RTMP server. For example:
+    /// `rtmp://192.168.123.321/live/my-stream` or `rtmp://somedomain.com/someapp`.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Required. Stream key for RTMP protocol.
+    #[prost(string, tag = "2")]
+    pub stream_key: ::prost::alloc::string::String,
+}
 /// Sprite sheet configuration.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpriteSheet {
@@ -276,7 +433,7 @@ pub mod preprocessing_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
     /// Codec settings.
-    #[prost(oneof = "video_stream::CodecSettings", tags = "20")]
+    #[prost(oneof = "video_stream::CodecSettings", tags = "20, 21")]
     pub codec_settings: ::core::option::Option<video_stream::CodecSettings>,
 }
 /// Nested message and enum types in `VideoStream`.
@@ -285,11 +442,11 @@ pub mod video_stream {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H264CodecSettings {
         /// Required. The width of the video in pixels. Must be an even integer.
-        /// Valid range is \[320, 1920\].
+        /// Valid range is \[320, 4096\].
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// Required. The height of the video in pixels. Must be an even integer.
-        /// Valid range is \[180, 1080\].
+        /// Valid range is \[180, 2160\].
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be
@@ -305,6 +462,7 @@ pub mod video_stream {
         ///
         /// * For SD resolution (\< 720p), must be \<= 3,000,000 (3 Mbps).
         /// * For HD resolution (\<= 1080p), must be \<= 15,000,000 (15 Mbps).
+        /// * For UHD resolution (\<= 2160p), must be \<= 25,000,000 (25 Mbps).
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
         /// Specifies whether an open Group of Pictures (GOP) structure should be
@@ -396,12 +554,100 @@ pub mod video_stream {
             GopDuration(::prost_types::Duration),
         }
     }
+    /// H265 codec settings.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H265CodecSettings {
+        /// Optional. The width of the video in pixels. Must be an even integer.
+        /// When not specified, the width is adjusted to match the specified height
+        /// and input aspect ratio. If both are omitted, the input width is used.
+        /// Valid range is \[320, 4096\].
+        #[prost(int32, tag = "1")]
+        pub width_pixels: i32,
+        /// Optional. The height of the video in pixels. Must be an even integer.
+        /// When not specified, the height is adjusted to match the specified width
+        /// and input aspect ratio. If both are omitted, the input height is used.
+        /// Valid range is \[180, 2160\].
+        #[prost(int32, tag = "2")]
+        pub height_pixels: i32,
+        /// Required. The target video frame rate in frames per second (FPS). Must be
+        /// less than or equal to 120. Will default to the input frame rate if larger
+        /// than the input frame rate. The API will generate an output FPS that is
+        /// divisible by the input FPS, and smaller or equal to the target FPS. See
+        /// [Calculating frame
+        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
+        /// more information.
+        #[prost(double, tag = "3")]
+        pub frame_rate: f64,
+        /// Required. The video bitrate in bits per second. Minimum value is 10,000.
+        ///
+        /// * For SD resolution (\< 720p), must be \<= 3,000,000 (3 Mbps).
+        /// * For HD resolution (\<= 1080p), must be \<= 15,000,000 (15 Mbps).
+        /// * For UHD resolution (\<= 2160p), must be \<= 25,000,000 (25 Mbps).
+        #[prost(int32, tag = "4")]
+        pub bitrate_bps: i32,
+        /// Optional. Size of the Video Buffering Verifier (VBV) buffer in bits. Must
+        /// be greater than zero. The default is equal to
+        /// \[bitrate_bps\]\[google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.bitrate_bps\].
+        #[prost(int32, tag = "9")]
+        pub vbv_size_bits: i32,
+        /// Optional. Initial fullness of the Video Buffering Verifier (VBV) buffer
+        /// in bits. Must be greater than zero. The default is equal to 90% of
+        /// \[vbv_size_bits\]\[google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.vbv_size_bits\].
+        #[prost(int32, tag = "10")]
+        pub vbv_fullness_bits: i32,
+        /// Optional. Allow B-pyramid for reference frame selection. This may not be
+        /// supported on all decoders. The default is `false`.
+        #[prost(bool, tag = "11")]
+        pub b_pyramid: bool,
+        /// Optional. The number of consecutive B-frames. Must be greater than or
+        /// equal to zero. Must be less than
+        /// \[gop_frame_count\]\[google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.gop_frame_count\]
+        /// if set. The default is 0.
+        #[prost(int32, tag = "12")]
+        pub b_frame_count: i32,
+        /// Optional. Specify the intensity of the adaptive quantizer (AQ). Must be
+        /// between 0 and 1, where 0 disables the quantizer and 1 maximizes the
+        /// quantizer. A higher value equals a lower bitrate but smoother image. The
+        /// default is 0.
+        #[prost(double, tag = "13")]
+        pub aq_strength: f64,
+        /// GOP mode can be either by frame count or duration.
+        #[prost(oneof = "h265_codec_settings::GopMode", tags = "7, 8")]
+        pub gop_mode: ::core::option::Option<h265_codec_settings::GopMode>,
+    }
+    /// Nested message and enum types in `H265CodecSettings`.
+    pub mod h265_codec_settings {
+        /// GOP mode can be either by frame count or duration.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum GopMode {
+            /// Optional. Select the GOP size based on the specified frame count.
+            /// If GOP frame count is set instead of GOP duration, GOP duration will be
+            /// calculated by `gopFrameCount`/`frameRate`. The calculated GOP duration
+            /// must satisfy the limitations on `gopDuration` as well.
+            /// Valid range is \[60, 600\].
+            #[prost(int32, tag = "7")]
+            GopFrameCount(i32),
+            /// Optional. Select the GOP size based on the specified duration. The
+            /// default is `2s`. Note that `gopDuration` must be less than or equal to
+            /// \[segment_duration\]\[google.cloud.video.livestream.v1.SegmentSettings.segment_duration\],
+            /// and
+            /// \[segment_duration\]\[google.cloud.video.livestream.v1.SegmentSettings.segment_duration\]
+            /// must be divisible by `gopDuration`. Valid range is \[2s, 20s\].
+            ///
+            /// All video streams in the same channel must have the same GOP size.
+            #[prost(message, tag = "8")]
+            GopDuration(::prost_types::Duration),
+        }
+    }
     /// Codec settings.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CodecSettings {
         /// H264 codec settings.
         #[prost(message, tag = "20")]
         H264(H264CodecSettings),
+        /// H265 codec settings.
+        #[prost(message, tag = "21")]
+        H265(H265CodecSettings),
     }
 }
 /// Audio stream resource.
@@ -480,7 +726,7 @@ pub mod audio_stream {
     }
 }
 /// Encoding of a text stream. For example, closed captions or subtitles.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextStream {
     /// Required. The codec for this text stream.
     ///
@@ -488,8 +734,59 @@ pub struct TextStream {
     ///
     /// * `cea608`
     /// * `cea708`
+    /// * `webvtt`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
+    /// Optional. The BCP-47 language code, such as `en-US` or `sr-Latn`. For more
+    /// information, see
+    /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. The name for this particular text stream that will be added to
+    /// the HLS/DASH manifest.
+    #[prost(string, tag = "4")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The channel of the closed caption in the output stream.
+    /// This field should only be set when textstream is used for partner
+    /// distribution.
+    /// Must be one of `CC1`, `CC2`, `CC3`, and `CC4`, if the
+    /// \[codec\]\[google.cloud.video.livestream.v1.TextStream.codec\] is `cea608`;
+    /// Must be one between `SERVICE1` and `SERVICE63`, if the
+    /// \[codec\]\[google.cloud.video.livestream.v1.TextStream.codec\] is `cea708`.
+    #[prost(string, tag = "5")]
+    pub output_cea_channel: ::prost::alloc::string::String,
+    /// Optional. The mapping for the input streams and text tracks.
+    #[prost(message, repeated, tag = "3")]
+    pub mapping: ::prost::alloc::vec::Vec<text_stream::TextMapping>,
+}
+/// Nested message and enum types in `TextStream`.
+pub mod text_stream {
+    /// The mapping for the input streams and text tracks.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TextMapping {
+        /// Optional. The `Channel`
+        /// \[InputAttachment.key\]\[google.cloud.video.livestream.v1.InputAttachment.key\]
+        /// that identifies the input that this text mapping applies to.
+        #[prost(string, tag = "4")]
+        pub input_key: ::prost::alloc::string::String,
+        /// Optional. The zero-based index of the track in the input stream.
+        #[prost(int32, tag = "2")]
+        pub input_track: i32,
+        /// Optional. The channel of the closed caption in the input stream.
+        /// If this field is set, the output
+        /// \[codec\]\[google.cloud.video.livestream.v1.TextStream.codec\] must be
+        /// `webvtt`. Must be one of `CC1`, `CC2`, `CC3`, and `CC4`, if the codec of
+        /// the input closed caption is `cea608`; Must be one between `SERVICE1` and
+        /// `SERVICE64`, if the codec of the input closed caption is `cea708`.
+        #[prost(string, tag = "5")]
+        pub input_cea_channel: ::prost::alloc::string::String,
+        /// Optional. The BCP-47 source language code, such as `en-US` or `sr-Latn`.
+        /// If differ from the textStream's language code, enable translation. For
+        /// more information on BCP-47 language codes, see
+        /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+        #[prost(string, tag = "6")]
+        pub from_language_code: ::prost::alloc::string::String,
+    }
 }
 /// Segment settings for `fmp4` and `ts`.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -702,8 +999,14 @@ pub mod input {
         Sd = 1,
         /// Resolution \<= 1920x1080. Bitrate \<= 25 Mbps. FPS \<= 60.
         Hd = 2,
-        /// Resolution \<= 4096x2160. Not supported yet.
+        /// Resolution \<= 4096x2160. Bitrate \<= 50 Mbps. FPS \<= 60.
         Uhd = 3,
+        /// Resolution \<= 1280x720. Bitrate \<= 6 Mbps. FPS \<= 60. H265 codec.
+        SdH265 = 4,
+        /// Resolution \<= 1920x1080. Bitrate \<= 25 Mbps. FPS \<= 60. H265 codec.
+        HdH265 = 5,
+        /// Resolution \<= 4096x2160. Bitrate \<= 50 Mbps. FPS \<= 60. H265 codec.
+        UhdH265 = 6,
     }
     impl Tier {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -716,6 +1019,9 @@ pub mod input {
                 Self::Sd => "SD",
                 Self::Hd => "HD",
                 Self::Uhd => "UHD",
+                Self::SdH265 => "SD_H265",
+                Self::HdH265 => "HD_H265",
+                Self::UhdH265 => "UHD_H265",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -725,6 +1031,9 @@ pub mod input {
                 "SD" => Some(Self::Sd),
                 "HD" => Some(Self::Hd),
                 "UHD" => Some(Self::Uhd),
+                "SD_H265" => Some(Self::SdH265),
+                "HD_H265" => Some(Self::HdH265),
+                "UHD_H265" => Some(Self::UhdH265),
                 _ => None,
             }
         }
@@ -778,6 +1087,12 @@ pub struct Channel {
     /// List of output manifests.
     #[prost(message, repeated, tag = "12")]
     pub manifests: ::prost::alloc::vec::Vec<Manifest>,
+    /// Optional. List of multiplexing settings of streams for distributions.
+    #[prost(message, repeated, tag = "28")]
+    pub distribution_streams: ::prost::alloc::vec::Vec<DistributionStream>,
+    /// Optional. List of distributions.
+    #[prost(message, repeated, tag = "29")]
+    pub distributions: ::prost::alloc::vec::Vec<Distribution>,
     /// List of output sprite sheets.
     #[prost(message, repeated, tag = "13")]
     pub sprite_sheets: ::prost::alloc::vec::Vec<SpriteSheet>,
@@ -797,9 +1112,9 @@ pub struct Channel {
     /// Configuration of timecode for this channel.
     #[prost(message, optional, tag = "21")]
     pub timecode_config: ::core::option::Option<TimecodeConfig>,
-    /// Encryption configurations for this channel. Each configuration has an ID
-    /// which is referred to by each MuxStream to indicate which configuration is
-    /// used for that output.
+    /// Optional. Encryption configurations for this channel. Each configuration
+    /// has an ID which is referred to by each MuxStream to indicate which
+    /// configuration is used for that output.
     #[prost(message, repeated, tag = "24")]
     pub encryptions: ::prost::alloc::vec::Vec<Encryption>,
     /// The configuration for input sources defined in
@@ -813,6 +1128,9 @@ pub struct Channel {
     /// output content for the whole duration of the live stream.
     #[prost(message, repeated, tag = "27")]
     pub static_overlays: ::prost::alloc::vec::Vec<StaticOverlay>,
+    /// Optional. Advanced configurations for auto-generated text streams.
+    #[prost(message, optional, tag = "30")]
+    pub auto_transcription_config: ::core::option::Option<AutoTranscriptionConfig>,
 }
 /// Nested message and enum types in `Channel`.
 pub mod channel {
@@ -1190,6 +1508,117 @@ pub mod input_attachment {
         pub input_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
+/// Advanced configurations for auto-generated text streams.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AutoTranscriptionConfig {
+    /// Optional. Whether auto-generated text streams are displayed synchronously
+    /// or asynchronously with the original audio.
+    #[prost(enumeration = "auto_transcription_config::DisplayTiming", tag = "1")]
+    pub display_timing: i32,
+    /// Optional. Tunes the latency and quality of auto-generated captions.
+    #[prost(enumeration = "auto_transcription_config::QualityPreset", tag = "2")]
+    pub quality_preset: i32,
+}
+/// Nested message and enum types in `AutoTranscriptionConfig`.
+pub mod auto_transcription_config {
+    /// Whether auto-generated text streams are displayed synchronously or
+    /// asynchronously with the original audio.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DisplayTiming {
+        /// Display timing is not specified. Caption display will be asynchronous by
+        /// default.
+        Unspecified = 0,
+        /// Caption will be displayed asynchronous with audio.
+        Async = 1,
+        /// Caption will be displayed synchronous with audio. This option increases
+        /// overall media output latency, and reduces viewing latency between audio
+        /// and auto-generated captions.
+        Sync = 2,
+    }
+    impl DisplayTiming {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DISPLAY_TIMING_UNSPECIFIED",
+                Self::Async => "ASYNC",
+                Self::Sync => "SYNC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISPLAY_TIMING_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASYNC" => Some(Self::Async),
+                "SYNC" => Some(Self::Sync),
+                _ => None,
+            }
+        }
+    }
+    /// Presets to tune the latency and quality of auto-generated captions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QualityPreset {
+        /// Quality Preset is not specified. By default, BALANCED_QUALITY will be
+        /// used.
+        Unspecified = 0,
+        /// Reduce the latency of auto-generated captions. This may reduce the
+        /// quality of the captions.
+        LowLatency = 1,
+        /// Default behavior when QualityPreset is not specified.
+        BalancedQuality = 2,
+        /// Increases the quality of the auto-generated captions at the cost of
+        /// higher latency.
+        ImprovedQuality = 3,
+    }
+    impl QualityPreset {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUALITY_PRESET_UNSPECIFIED",
+                Self::LowLatency => "LOW_LATENCY",
+                Self::BalancedQuality => "BALANCED_QUALITY",
+                Self::ImprovedQuality => "IMPROVED_QUALITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUALITY_PRESET_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW_LATENCY" => Some(Self::LowLatency),
+                "BALANCED_QUALITY" => Some(Self::BalancedQuality),
+                "IMPROVED_QUALITY" => Some(Self::ImprovedQuality),
+                _ => None,
+            }
+        }
+    }
+}
 /// Event is a sub-resource of a channel, which can be scheduled by the user to
 /// execute operations on a channel resource without having to stop the channel.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1234,7 +1663,7 @@ pub struct Event {
     #[prost(message, optional, tag = "12")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Required. Operation to be executed by this event.
-    #[prost(oneof = "event::Task", tags = "5, 6, 13, 14, 15, 16")]
+    #[prost(oneof = "event::Task", tags = "5, 6, 13, 14, 15, 16, 17")]
     pub task: ::core::option::Option<event::Task>,
 }
 /// Nested message and enum types in `Event`.
@@ -1284,6 +1713,15 @@ pub mod event {
     /// Unmutes the stream. The task fails if the stream is not currently muted.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UnmuteTask {}
+    /// Update encryption settings.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateEncryptionsTask {
+        /// Required. A list of
+        /// \[EncryptionUpdate\]\[google.cloud.video.livestream.v1.EncryptionUpdate\]s
+        /// that updates the existing encryption settings.
+        #[prost(message, repeated, tag = "1")]
+        pub encryptions: ::prost::alloc::vec::Vec<super::EncryptionUpdate>,
+    }
     /// State of the event
     #[derive(
         Clone,
@@ -1344,7 +1782,7 @@ pub mod event {
         }
     }
     /// Required. Operation to be executed by this event.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Task {
         /// Switches to another input stream.
         #[prost(message, tag = "5")]
@@ -1364,6 +1802,9 @@ pub mod event {
         /// Unmutes the stream.
         #[prost(message, tag = "16")]
         Unmute(UnmuteTask),
+        /// Updates encryption settings.
+        #[prost(message, tag = "17")]
+        UpdateEncryptions(UpdateEncryptionsTask),
     }
 }
 /// Clip is a sub-resource under channel. Each clip represents a clipping
@@ -1912,16 +2353,16 @@ pub mod encryption {
     /// that DRM system will be considered to be disabled.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DrmSystems {
-        /// Widevine configuration.
+        /// Optional. Widevine configuration.
         #[prost(message, optional, tag = "1")]
         pub widevine: ::core::option::Option<Widevine>,
-        /// Fairplay configuration.
+        /// Optional. Fairplay configuration.
         #[prost(message, optional, tag = "2")]
         pub fairplay: ::core::option::Option<Fairplay>,
-        /// Playready configuration.
+        /// Optional. Playready configuration.
         #[prost(message, optional, tag = "3")]
         pub playready: ::core::option::Option<Playready>,
-        /// Clearkey configuration.
+        /// Optional. Clearkey configuration.
         #[prost(message, optional, tag = "4")]
         pub clearkey: ::core::option::Option<Clearkey>,
     }
@@ -1960,6 +2401,26 @@ pub mod encryption {
         /// Configuration for MPEG-Dash Common Encryption (MPEG-CENC).
         #[prost(message, tag = "6")]
         MpegCenc(MpegCommonEncryption),
+    }
+}
+/// Encryption setting when updating encryption.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionUpdate {
+    /// Required. Identifier for the encryption option to be updated.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Defines where new content keys are stored.
+    #[prost(oneof = "encryption_update::SecretSource", tags = "2")]
+    pub secret_source: ::core::option::Option<encryption_update::SecretSource>,
+}
+/// Nested message and enum types in `EncryptionUpdate`.
+pub mod encryption_update {
+    /// Defines where new content keys are stored.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SecretSource {
+        /// For keys stored in Google Secret Manager.
+        #[prost(message, tag = "2")]
+        SecretManagerKeySource(super::encryption::SecretManagerSource),
     }
 }
 /// Pool resource defines the configuration of Live Stream pools for a specific
@@ -2015,8 +2476,11 @@ pub struct CreateAssetRequest {
     #[prost(message, optional, tag = "2")]
     pub asset: ::core::option::Option<Asset>,
     /// Required. The ID of the asset resource to be created.
-    /// This value must be 1-63 characters, begin and end with `\[a-z0-9\]`,
-    /// could contain dashes (-) in between.
+    ///
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub asset_id: ::prost::alloc::string::String,
     /// A request ID to identify requests. Specify a unique request ID
@@ -2111,8 +2575,11 @@ pub struct CreateChannelRequest {
     #[prost(message, optional, tag = "2")]
     pub channel: ::core::option::Option<Channel>,
     /// Required. The ID of the channel resource to be created.
-    /// This value must be 1-63 characters, begin and end with `\[a-z0-9\]`,
-    /// could contain dashes (-) in between.
+    ///
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub channel_id: ::prost::alloc::string::String,
     /// A request ID to identify requests. Specify a unique request ID
@@ -2297,6 +2764,62 @@ pub struct StopChannelRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request message for "LivestreamService.StartDistribution".
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartDistributionRequest {
+    /// Required. The name of the channel resource, in the form of:
+    /// `projects/{project}/locations/{location}/channels/{channelId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A list of keys to identify the distribution configuration in the
+    /// channel resource. If left empty, all the distributions in the channel
+    /// specification will be started.
+    #[prost(string, repeated, tag = "2")]
+    pub distribution_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported `(00000000-0000-0000-0000-000000000000)`.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.StopDistribution".
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StopDistributionRequest {
+    /// Required. The name of the channel resource, in the form of:
+    /// `projects/{project}/locations/{location}/channels/{channelId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A list of key to identify the distribution configuration in the
+    /// channel resource. If left empty, all the distributions in the channel
+    /// specification will be stopped.
+    #[prost(string, repeated, tag = "2")]
+    pub distribution_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported `(00000000-0000-0000-0000-000000000000)`.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Request message for "LivestreamService.CreateInput".
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInputRequest {
@@ -2308,8 +2831,11 @@ pub struct CreateInputRequest {
     #[prost(message, optional, tag = "2")]
     pub input: ::core::option::Option<Input>,
     /// Required. The ID of the input resource to be created.
-    /// This value must be 1-63 characters, begin and end with `\[a-z0-9\]`,
-    /// could contain dashes (-) in between.
+    ///
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub input_id: ::prost::alloc::string::String,
     /// A request ID to identify requests. Specify a unique request ID
@@ -2446,8 +2972,11 @@ pub struct CreateEventRequest {
     #[prost(message, optional, tag = "2")]
     pub event: ::core::option::Option<Event>,
     /// Required. The ID of the event resource to be created.
-    /// This value must be 1-63 characters, begin and end with `\[a-z0-9\]`,
-    /// could contain dashes (-) in between.
+    ///
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub event_id: ::prost::alloc::string::String,
     /// A request ID to identify requests. Specify a unique request ID
@@ -2587,10 +3116,12 @@ pub struct CreateClipRequest {
     /// `projects/{project}/locations/{location}/channels/{channel}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Id of the requesting object in the following form:
+    /// Required. The ID of the clip resource to be created.
     ///
-    /// 1. 1 character minimum, 63 characters maximum
-    /// 1. Only contains letters, digits, underscores, and hyphens
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "2")]
     pub clip_id: ::prost::alloc::string::String,
     /// Required. The resource being created
@@ -2683,10 +3214,12 @@ pub struct CreateDvrSessionRequest {
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Id of the requesting object in the following form:
+    /// Required. The ID of the DVR session resource to be created.
     ///
-    /// 1. 1 character minimum, 63 characters maximum
-    /// 1. Only contains letters, digits, underscores, and hyphens
+    /// This value must be 1-63 characters, begin and end with a lower-case letter
+    /// or a number, and consist of only lower-case letters, numbers, and hyphens.
+    /// In other words, it must match the following regex:
+    /// `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "2")]
     pub dvr_session_id: ::prost::alloc::string::String,
     /// Required. The resource being created
@@ -2828,6 +3361,26 @@ pub struct UpdatePoolRequest {
     /// not supported `(00000000-0000-0000-0000-000000000000)`.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.PreviewInput"
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PreviewInputRequest {
+    /// Required. The name of the input resource, in the form of:
+    /// `projects/{project}/locations/{location}/inputs/{inputId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for "LivestreamService.PreviewInput"
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PreviewInputResponse {
+    /// URI to display the preview content.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// A bearer token used to authenticate connections that display the preview
+    /// content. The token expires after one hour. For HTTP connections, this token
+    /// should be included as a bearer token inside the Authorization header.
+    #[prost(string, tag = "2")]
+    pub bearer_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod livestream_service_client {
@@ -3135,6 +3688,67 @@ pub mod livestream_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Starts distribution which delivers outputs to the destination indicated by
+        /// the Distribution configuration.
+        pub async fn start_distribution(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartDistributionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/StartDistribution",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "StartDistribution",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops the specified distribution.
+        pub async fn stop_distribution(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopDistributionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/StopDistribution",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "StopDistribution",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates an input with the provided unique ID in the specified region.
         pub async fn create_input(
             &mut self,
@@ -3278,6 +3892,36 @@ pub mod livestream_service_client {
                     GrpcMethod::new(
                         "google.cloud.video.livestream.v1.LivestreamService",
                         "UpdateInput",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Preview the streaming content of the specified input.
+        pub async fn preview_input(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PreviewInputRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PreviewInputResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/PreviewInput",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "PreviewInput",
                     ),
                 );
             self.inner.unary(req, path, codec).await

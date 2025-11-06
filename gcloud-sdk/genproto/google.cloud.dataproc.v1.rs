@@ -1193,6 +1193,8 @@ pub enum Component {
     Iceberg = 19,
     /// The Jupyter Notebook.
     Jupyter = 1,
+    /// The Jupyter Kernel Gateway.
+    JupyterKernelGateway = 22,
     /// The Pig component.
     Pig = 21,
     /// The Presto query engine.
@@ -1226,6 +1228,7 @@ impl Component {
             Self::Hudi => "HUDI",
             Self::Iceberg => "ICEBERG",
             Self::Jupyter => "JUPYTER",
+            Self::JupyterKernelGateway => "JUPYTER_KERNEL_GATEWAY",
             Self::Pig => "PIG",
             Self::Presto => "PRESTO",
             Self::Trino => "TRINO",
@@ -1249,6 +1252,7 @@ impl Component {
             "HUDI" => Some(Self::Hudi),
             "ICEBERG" => Some(Self::Iceberg),
             "JUPYTER" => Some(Self::Jupyter),
+            "JUPYTER_KERNEL_GATEWAY" => Some(Self::JupyterKernelGateway),
             "PIG" => Some(Self::Pig),
             "PRESTO" => Some(Self::Presto),
             "TRINO" => Some(Self::Trino),

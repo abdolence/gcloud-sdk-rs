@@ -760,10 +760,10 @@ pub struct Cluster {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. AlloyDB per-cluster service agent email. This service account
-    /// is created per-cluster per-project, and is different from that of the
-    /// primary service agent which is created per-project. The service account
-    /// naming format is subject to change.
+    /// Output only. AlloyDB per-cluster service account. This service account is
+    /// created per-cluster per-project, and is different from the per-project
+    /// service account. The per-cluster service account naming format is subject
+    /// to change.
     #[prost(string, tag = "46")]
     pub service_account_email: ::prost::alloc::string::String,
     /// In case of an imported cluster, this field contains information about the
@@ -862,11 +862,8 @@ pub mod cluster {
         Unspecified = 0,
         /// The cluster is active and running.
         Ready = 1,
-        /// The cluster is stopped. All instances in the cluster are stopped.
-        /// Customers can start a stopped cluster at any point and all their
-        /// instances will come back to life with same names and IP resources. In
-        /// this state, customer pays for storage.
-        /// Associated backups could also be present in a stopped cluster.
+        /// This is unused. Even when all instances in the cluster are stopped, the
+        /// cluster remains in READY state.
         Stopped = 2,
         /// The cluster is empty and has no associated resources.
         /// All instances, associated storage and backups have been deleted.
@@ -1480,52 +1477,9 @@ pub mod instance {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-    }
-    /// Nested message and enum types in `ConnectionPoolConfig`.
-    pub mod connection_pool_config {
-        /// The pool mode. Defaults to `POOL_MODE_TRANSACTION`.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum PoolMode {
-            /// The pool mode is not specified. Defaults to `POOL_MODE_TRANSACTION`.
-            Unspecified = 0,
-            /// Server is released back to pool after a client disconnects.
-            Session = 1,
-            /// Server is released back to pool after a transaction finishes.
-            Transaction = 2,
-        }
-        impl PoolMode {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    Self::Unspecified => "POOL_MODE_UNSPECIFIED",
-                    Self::Session => "POOL_MODE_SESSION",
-                    Self::Transaction => "POOL_MODE_TRANSACTION",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "POOL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                    "POOL_MODE_SESSION" => Some(Self::Session),
-                    "POOL_MODE_TRANSACTION" => Some(Self::Transaction),
-                    _ => None,
-                }
-            }
-        }
+        /// Output only. The number of running poolers per instance.
+        #[prost(int32, tag = "14")]
+        pub pooler_count: i32,
     }
     /// Instance State
     #[derive(
@@ -2281,16 +2235,33 @@ pub struct Database {
     /// `projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Charset for the database.
+    /// Optional. Immutable. Charset for the database.
     /// This field can contain any PostgreSQL supported charset name.
     /// Example values include "UTF8", "SQL_ASCII", etc.
     #[prost(string, tag = "2")]
     pub charset: ::prost::alloc::string::String,
-    /// Optional. Collation for the database.
-    /// Name of the custom or native collation for postgres.
-    /// Example values include "C", "POSIX", etc
+    /// Optional. Immutable. lc_collate for the database.
+    /// String sort order.
+    /// Example values include "C", "POSIX", etc.
     #[prost(string, tag = "3")]
     pub collation: ::prost::alloc::string::String,
+    /// Optional. Immutable. lc_ctype for the database.
+    /// Character classification (What is a letter? The upper-case equivalent?).
+    /// Example values include "C", "POSIX", etc.
+    #[prost(string, tag = "4")]
+    pub character_type: ::prost::alloc::string::String,
+    /// Optional. Whether the database is a template database.
+    /// Deprecated in favor of is_template_database.
+    #[deprecated]
+    #[prost(bool, tag = "5")]
+    pub is_template: bool,
+    /// Input only. Immutable. Template of the database to be used for creating a
+    /// new database.
+    #[prost(string, tag = "6")]
+    pub database_template: ::prost::alloc::string::String,
+    /// Optional. Whether the database is a template database.
+    #[prost(bool, optional, tag = "7")]
+    pub is_template_database: ::core::option::Option<bool>,
 }
 /// View on Instance. Pass this enum to rpcs that returns an Instance message to
 /// control which subsets of fields to get.
@@ -2381,6 +2352,8 @@ pub enum DatabaseVersion {
     Postgres15 = 3,
     /// The database version is Postgres 16.
     Postgres16 = 4,
+    /// The database version is Postgres 17.
+    Postgres17 = 5,
 }
 impl DatabaseVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2394,6 +2367,7 @@ impl DatabaseVersion {
             Self::Postgres14 => "POSTGRES_14",
             Self::Postgres15 => "POSTGRES_15",
             Self::Postgres16 => "POSTGRES_16",
+            Self::Postgres17 => "POSTGRES_17",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2404,6 +2378,7 @@ impl DatabaseVersion {
             "POSTGRES_14" => Some(Self::Postgres14),
             "POSTGRES_15" => Some(Self::Postgres15),
             "POSTGRES_16" => Some(Self::Postgres16),
+            "POSTGRES_17" => Some(Self::Postgres17),
             _ => None,
         }
     }
@@ -3717,6 +3692,10 @@ pub struct ExecuteSqlRequest {
     /// permitted, including DDL, DML, DQL statements.
     #[prost(string, tag = "4")]
     pub sql_statement: ::prost::alloc::string::String,
+    /// Optional. If set, validates the sql statement by performing
+    /// syntax and semantic validation and doesn't execute the query.
+    #[prost(bool, tag = "6")]
+    pub validate_only: bool,
     /// Oneof field to support other credential mechanisms in future like
     /// SecretManager etc.
     #[prost(oneof = "execute_sql_request::UserCredential", tags = "5")]
@@ -4239,6 +4218,9 @@ pub mod upgrade_cluster_status {
         /// State of this stage.
         #[prost(enumeration = "super::upgrade_cluster_response::Status", tag = "2")]
         pub state: i32,
+        /// Output only. Timing information for the stage execution.
+        #[prost(message, optional, tag = "3")]
+        pub schedule: ::core::option::Option<stage_status::StageSchedule>,
         /// Stage specific status information, if any.
         #[prost(oneof = "stage_status::StageSpecificStatus", tags = "11")]
         pub stage_specific_status: ::core::option::Option<
@@ -4247,6 +4229,24 @@ pub mod upgrade_cluster_status {
     }
     /// Nested message and enum types in `StageStatus`.
     pub mod stage_status {
+        /// Timing information for the stage execution.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct StageSchedule {
+            /// When the stage is expected to start. Set only if the stage has not
+            /// started yet.
+            #[prost(message, optional, tag = "1")]
+            pub estimated_start_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// Actual start time of the stage. Set only if the stage has started.
+            #[prost(message, optional, tag = "2")]
+            pub actual_start_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// When the stage is expected to end. Set only if the stage has not
+            /// completed yet.
+            #[prost(message, optional, tag = "3")]
+            pub estimated_end_time: ::core::option::Option<::prost_types::Timestamp>,
+            /// Actual end time of the stage. Set only if the stage has completed.
+            #[prost(message, optional, tag = "4")]
+            pub actual_end_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
         /// Stage specific status information, if any.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum StageSpecificStatus {
@@ -4420,7 +4420,7 @@ pub struct DeleteUserRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Message for requesting list of Databases.
+/// Message for ListDatabases request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatabasesRequest {
     /// Required. Parent value for ListDatabasesRequest.
@@ -4442,16 +4442,29 @@ pub struct ListDatabasesRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Message for response to listing Databases.
+/// Message for ListDatabases response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
-    /// The list of databases
+    /// The list of databases.
     #[prost(message, repeated, tag = "1")]
     pub databases: ::prost::alloc::vec::Vec<Database>,
     /// A token identifying the next page of results the server should return.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for CreateDatabase request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateDatabaseRequest {
+    /// Required. Value for parent.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the requesting object.
+    #[prost(string, tag = "2")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub database: ::core::option::Option<Database>,
 }
 /// Generated client implementations.
 pub mod alloy_db_admin_client {
@@ -5655,6 +5668,33 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1beta.AlloyDBAdmin",
                         "ListDatabases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Database in a given project, location, and cluster.
+        pub async fn create_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDatabaseRequest>,
+        ) -> std::result::Result<tonic::Response<super::Database>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1beta.AlloyDBAdmin",
+                        "CreateDatabase",
                     ),
                 );
             self.inner.unary(req, path, codec).await

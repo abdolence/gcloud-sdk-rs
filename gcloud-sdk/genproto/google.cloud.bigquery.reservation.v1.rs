@@ -2,14 +2,14 @@
 /// A reservation is a mechanism used to guarantee slots to users.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
-    /// The resource name of the reservation, e.g.,
+    /// Identifier. The resource name of the reservation, e.g.,
     /// `projects/*/locations/*/reservations/team1-prod`.
     /// The reservation_id must only contain lower case alphanumeric characters or
     /// dashes. It must start with a letter and must not end with a dash. Its
     /// maximum length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Baseline slots available to this reservation. A slot is a unit of
+    /// Optional. Baseline slots available to this reservation. A slot is a unit of
     /// computational power in BigQuery, and serves as the unit of parallelism.
     ///
     /// Queries using this reservation might use more slots during runtime if
@@ -25,23 +25,22 @@ pub struct Reservation {
     /// baseline slots every few minutes.
     #[prost(int64, tag = "2")]
     pub slot_capacity: i64,
-    /// If false, any query or pipeline job using this reservation will use idle
-    /// slots from other reservations within the same admin project. If true, a
-    /// query or pipeline job using this reservation will execute with the slot
-    /// capacity specified in the slot_capacity field at most.
+    /// Optional. If false, any query or pipeline job using this reservation will
+    /// use idle slots from other reservations within the same admin project. If
+    /// true, a query or pipeline job using this reservation will execute with the
+    /// slot capacity specified in the slot_capacity field at most.
     #[prost(bool, tag = "4")]
     pub ignore_idle_slots: bool,
-    /// The configuration parameters for the auto scaling feature.
+    /// Optional. The configuration parameters for the auto scaling feature.
     #[prost(message, optional, tag = "7")]
     pub autoscale: ::core::option::Option<reservation::Autoscale>,
-    /// Job concurrency target which sets a soft upper bound on the number of jobs
-    /// that can run concurrently in this reservation. This is a soft target due to
-    /// asynchronous nature of the system and various optimizations for small
-    /// queries.
-    /// Default value is 0 which means that concurrency target will be
-    /// automatically computed by the system.
-    /// NOTE: this field is exposed as target job concurrency in the Information
-    /// Schema, DDL and BigQuery CLI.
+    /// Optional. Job concurrency target which sets a soft upper bound on the
+    /// number of jobs that can run concurrently in this reservation. This is a
+    /// soft target due to asynchronous nature of the system and various
+    /// optimizations for small queries. Default value is 0 which means that
+    /// concurrency target will be automatically computed by the system. NOTE: this
+    /// field is exposed as target job concurrency in the Information Schema, DDL
+    /// and BigQuery CLI.
     #[prost(int64, tag = "16")]
     pub concurrency: i64,
     /// Output only. Creation time of the reservation.
@@ -59,9 +58,10 @@ pub struct Reservation {
     ///
     /// NOTE: this is a preview feature. Project must be allow-listed in order to
     /// set this field.
+    #[deprecated]
     #[prost(bool, tag = "14")]
     pub multi_region_auxiliary: bool,
-    /// Edition of the reservation.
+    /// Optional. Edition of the reservation.
     #[prost(enumeration = "Edition", tag = "17")]
     pub edition: i32,
     /// Output only. The current location of the reservation's primary replica.
@@ -90,10 +90,13 @@ pub struct Reservation {
     /// autoscale.current_slots (which accounts for the additional added slots), it
     /// will never exceed the max_slots - baseline.
     ///
-    /// This field must be set together with the scaling_mode enum value.
+    /// This field must be set together with the scaling_mode enum value,
+    /// otherwise the request will be rejected with error code
+    /// `google.rpc.Code.INVALID_ARGUMENT`.
     ///
     /// If the max_slots and scaling_mode are set, the autoscale or
-    /// autoscale.max_slots field must be unset. However, the
+    /// autoscale.max_slots field must be unset. Otherwise the request will be
+    /// rejected with error code `google.rpc.Code.INVALID_ARGUMENT`. However, the
     /// autoscale field may still be in the output. The autopscale.max_slots will
     /// always show as 0 and the autoscaler.current_slots will represent the
     /// current slots from autoscaler excluding idle slots.
@@ -110,12 +113,14 @@ pub struct Reservation {
     ///
     /// If the max_slots and scaling_mode are set, then the ignore_idle_slots field
     /// must be aligned with the scaling_mode enum value.(See details in
-    /// ScalingMode comments).
+    /// ScalingMode comments). Otherwise the request will be rejected with
+    /// error code `google.rpc.Code.INVALID_ARGUMENT`.
     ///
     /// Please note,  the max_slots is for user to manage the part of slots greater
     /// than the baseline. Therefore, we don't allow users to set max_slots smaller
     /// or equal to the baseline as it will not be meaningful. If the field is
-    /// present and slot_capacity>=max_slots.
+    /// present and slot_capacity>=max_slots, requests will be rejected with error
+    /// code `google.rpc.Code.INVALID_ARGUMENT`.
     ///
     /// Please note that if max_slots is set to 0, we will treat it as unset.
     /// Customers can set max_slots to 0 and set scaling_mode to
@@ -123,9 +128,26 @@ pub struct Reservation {
     #[prost(int64, optional, tag = "21")]
     pub max_slots: ::core::option::Option<i64>,
     /// Optional. The scaling mode for the reservation.
-    /// If the field is present but max_slots is not present.
+    /// If the field is present but max_slots is not present, requests will be
+    /// rejected with error code `google.rpc.Code.INVALID_ARGUMENT`.
     #[prost(enumeration = "reservation::ScalingMode", tag = "22")]
     pub scaling_mode: i32,
+    /// Optional. The labels associated with this reservation. You can use these
+    /// to organize and group your reservations.
+    /// You can set this property when you create or update a reservation.
+    #[prost(map = "string, string", tag = "23")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The reservation group that this reservation belongs to.
+    /// You can set this property when you create or update a reservation.
+    /// Reservations do not need to belong to a reservation group.
+    /// Format:
+    /// projects/{project}/locations/{location}/reservationGroups/{reservation_group}
+    /// or just {reservation_group}
+    #[prost(string, tag = "25")]
+    pub reservation_group: ::prost::alloc::string::String,
     /// Output only. The Disaster Recovery(DR) replication status of the
     /// reservation. This is only available for the primary replicas of DR/failover
     /// reservations and provides information about the both the staleness of the
@@ -136,6 +158,13 @@ pub struct Reservation {
     /// succeeded.
     #[prost(message, optional, tag = "24")]
     pub replication_status: ::core::option::Option<reservation::ReplicationStatus>,
+    /// Optional. The scheduling policy to use for jobs and queries running under
+    /// this reservation. The scheduling policy controls how the reservation's
+    /// resources are distributed.
+    ///
+    /// This feature is not yet generally available.
+    #[prost(message, optional, tag = "27")]
+    pub scheduling_policy: ::core::option::Option<SchedulingPolicy>,
 }
 /// Nested message and enum types in `Reservation`.
 pub mod reservation {
@@ -149,7 +178,7 @@ pub mod reservation {
         /// max_slots for that brief period (less than one minute)
         #[prost(int64, tag = "1")]
         pub current_slots: i64,
-        /// Number of slots to be scaled when needed.
+        /// Optional. Number of slots to be scaled when needed.
         #[prost(int64, tag = "2")]
         pub max_slots: i64,
     }
@@ -172,6 +201,13 @@ pub mod reservation {
         /// that was successfully replicated to the secondary.
         #[prost(message, optional, tag = "3")]
         pub last_replication_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The time at which a soft failover for the reservation and
+        /// its associated datasets was initiated. After this field is set, all
+        /// subsequent changes to the reservation will be rejected unless a hard
+        /// failover overrides this operation. This field will be cleared once the
+        /// failover is complete.
+        #[prost(message, optional, tag = "4")]
+        pub soft_failover_start_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The scaling mode for the reservation. This enum determines how the
     /// reservation scales up and down.
@@ -198,7 +234,8 @@ pub mod reservation {
         /// slots and no idle slots will be used.
         ///
         /// Please note, in this mode, the ignore_idle_slots field must be set to
-        /// true.
+        /// true. Otherwise the request will be rejected with error code
+        /// `google.rpc.Code.INVALID_ARGUMENT`.
         AutoscaleOnly = 1,
         /// The reservation will scale up using only idle slots contributed by
         /// other reservations or from unassigned commitments. If no idle slots are
@@ -218,7 +255,8 @@ pub mod reservation {
         ///    to max_slots.
         ///
         /// Please note, in this mode, the ignore_idle_slots field must be set to
-        /// false.
+        /// false. Otherwise the request will be rejected with error code
+        /// `google.rpc.Code.INVALID_ARGUMENT`.
         IdleSlotsOnly = 2,
         /// The reservation will scale up using all slots available to it. It will
         /// use idle slots contributed by other reservations or from unassigned
@@ -236,7 +274,8 @@ pub mod reservation {
         ///    scale up to 1000 slots with 200 baseline and 800 autoscaling slots.
         ///
         /// Please note, in this mode, the ignore_idle_slots field must be set to
-        /// false.
+        /// false. Otherwise the request will be rejected with error code
+        /// `google.rpc.Code.INVALID_ARGUMENT`.
         AllSlots = 3,
     }
     impl ScalingMode {
@@ -264,6 +303,35 @@ pub mod reservation {
         }
     }
 }
+/// The scheduling policy controls how a reservation's resources are distributed.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SchedulingPolicy {
+    /// Optional. If present and > 0, the reservation will attempt to limit the
+    /// concurrency of jobs running for any particular project within it to the
+    /// given value.
+    ///
+    /// This feature is not yet generally available.
+    #[prost(int64, optional, tag = "1")]
+    pub concurrency: ::core::option::Option<i64>,
+    /// Optional. If present and > 0, the reservation will attempt to limit the
+    /// slot consumption of queries running for any particular project within it to
+    /// the given value.
+    ///
+    /// This feature is not yet generally available.
+    #[prost(int64, optional, tag = "2")]
+    pub max_slots: ::core::option::Option<i64>,
+}
+/// A reservation group is a container for reservations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReservationGroup {
+    /// Identifier. The resource name of the reservation group, e.g.,
+    /// `projects/*/locations/*/reservationGroups/team1-prod`.
+    /// The reservation_group_id must only contain lower case alphanumeric
+    /// characters or dashes. It must start with a letter and must not end with a
+    /// dash. Its maximum length is 64 characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
 /// (in the form of slots) with some committed period of usage. Annual
 /// commitments renew by default. Commitments can be removed after their
@@ -283,10 +351,10 @@ pub struct CapacityCommitment {
     /// with a dash. Its maximum length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Number of slots in this commitment.
+    /// Optional. Number of slots in this commitment.
     #[prost(int64, tag = "2")]
     pub slot_count: i64,
-    /// Capacity commitment commitment plan.
+    /// Optional. Capacity commitment commitment plan.
     #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "3")]
     pub plan: i32,
     /// Output only. State of the commitment.
@@ -300,7 +368,7 @@ pub struct CapacityCommitment {
     pub commitment_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The end of the current commitment period. It is applicable
     /// only for ACTIVE capacity commitments. Note after renewal,
-    /// commitment_end_time is the time the renewed commitment expires. So it would
+    /// commitment_end_time is the time the renewed commitment expires. So itwould
     /// be at a time after commitment_start_time + committed period, because we
     /// don't change commitment_start_time ,
     #[prost(message, optional, tag = "5")]
@@ -308,9 +376,10 @@ pub struct CapacityCommitment {
     /// Output only. For FAILED commitment plan, provides the reason of failure.
     #[prost(message, optional, tag = "7")]
     pub failure_status: ::core::option::Option<super::super::super::super::rpc::Status>,
-    /// The plan this capacity commitment is converted to after commitment_end_time
-    /// passes. Once the plan is changed, committed period is extended according to
-    /// commitment plan. Only applicable for ANNUAL and TRIAL commitments.
+    /// Optional. The plan this capacity commitment is converted to after
+    /// commitment_end_time passes. Once the plan is changed, committed period is
+    /// extended according to commitment plan. Only applicable for ANNUAL and TRIAL
+    /// commitments.
     #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "8")]
     pub renewal_plan: i32,
     /// Applicable only for commitments located within one of the BigQuery
@@ -322,9 +391,10 @@ pub struct CapacityCommitment {
     ///
     /// NOTE: this is a preview feature. Project must be allow-listed in order to
     /// set this field.
+    #[deprecated]
     #[prost(bool, tag = "10")]
     pub multi_region_auxiliary: bool,
-    /// Edition of the capacity commitment.
+    /// Optional. Edition of the capacity commitment.
     #[prost(enumeration = "Edition", tag = "12")]
     pub edition: i32,
     /// Output only. If true, the commitment is a flat-rate commitment, otherwise,
@@ -557,6 +627,73 @@ pub struct FailoverReservationRequest {
     /// `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. A parameter that determines how writes that are pending
+    /// replication are handled after a failover is initiated. If not specified,
+    /// HARD failover mode is used by default.
+    #[prost(enumeration = "FailoverMode", tag = "2")]
+    pub failover_mode: i32,
+}
+/// The request for
+/// \[ReservationService.CreateReservationGroup\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateReservationGroup\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateReservationGroupRequest {
+    /// Required. Project, location. E.g.,
+    /// `projects/myproject/locations/US`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The reservation group ID. It must only contain lower case
+    /// alphanumeric characters or dashes. It must start with a letter and must not
+    /// end with a dash. Its maximum length is 64 characters.
+    #[prost(string, tag = "2")]
+    pub reservation_group_id: ::prost::alloc::string::String,
+    /// Required. New Reservation Group to create.
+    #[prost(message, optional, tag = "3")]
+    pub reservation_group: ::core::option::Option<ReservationGroup>,
+}
+/// The request for
+/// \[ReservationService.GetReservationGroup\]\[google.cloud.bigquery.reservation.v1.ReservationService.GetReservationGroup\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetReservationGroupRequest {
+    /// Required. Resource name of the reservation group to retrieve. E.g.,
+    /// `projects/myproject/locations/US/reservationGroups/team1-prod`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// \[ReservationService.ListReservationGroups\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListReservationGroups\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListReservationGroupsRequest {
+    /// Required. The parent resource name containing project and location, e.g.:
+    /// `projects/myproject/locations/US`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of items to return per page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous List request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for
+/// \[ReservationService.ListReservationGroups\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListReservationGroups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationGroupsResponse {
+    /// List of reservations visible to the user.
+    #[prost(message, repeated, tag = "1")]
+    pub reservation_groups: ::prost::alloc::vec::Vec<ReservationGroup>,
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for
+/// \[ReservationService.DeleteReservationGroup\]\[google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservationGroup\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteReservationGroupRequest {
+    /// Required. Resource name of the reservation group to retrieve. E.g.,
+    /// `projects/myproject/locations/US/reservationGroups/team1-prod`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for
 /// \[ReservationService.CreateCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
@@ -682,6 +819,12 @@ pub struct MergeCapacityCommitmentsRequest {
     pub capacity_commitment_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Optional. The optional resulting capacity commitment ID. Capacity
+    /// commitment name will be generated automatically if this field is empty.
+    /// This field must only contain lower case alphanumeric characters or dashes.
+    /// The first and last character cannot be a dash. Max length is 64 characters.
+    #[prost(string, tag = "3")]
+    pub capacity_commitment_id: ::prost::alloc::string::String,
 }
 /// An assignment allows a project to submit jobs
 /// of a certain type using slots from the specified reservation.
@@ -693,11 +836,11 @@ pub struct Assignment {
     /// dashes and the max length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The resource which will use the reservation. E.g.
+    /// Optional. The resource which will use the reservation. E.g.
     /// `projects/myproject`, `folders/123`, or `organizations/456`.
     #[prost(string, tag = "4")]
     pub assignee: ::prost::alloc::string::String,
-    /// Which type of jobs will use the reservation.
+    /// Optional. Which type of jobs will use the reservation.
     #[prost(enumeration = "assignment::JobType", tag = "3")]
     pub job_type: i32,
     /// Output only. State of the assignment.
@@ -713,6 +856,14 @@ pub struct Assignment {
     /// features.
     #[prost(bool, tag = "10")]
     pub enable_gemini_in_bigquery: bool,
+    /// Optional. The scheduling policy to use for jobs and queries of this
+    /// assignee when running under the associated reservation. The scheduling
+    /// policy controls how the reservation's resources are distributed. This
+    /// overrides the default scheduling policy specified on the reservation.
+    ///
+    /// This feature is not yet generally available.
+    #[prost(message, optional, tag = "11")]
+    pub scheduling_policy: ::core::option::Option<SchedulingPolicy>,
 }
 /// Nested message and enum types in `Assignment`.
 pub mod assignment {
@@ -745,6 +896,20 @@ pub mod assignment {
         /// Continuous SQL jobs will use this reservation. Reservations with
         /// continuous assignments cannot be mixed with non-continuous assignments.
         Continuous = 6,
+        /// Finer granularity background jobs for capturing changes in a source
+        /// database and streaming them into BigQuery. Reservations with this job
+        /// type take priority over a default BACKGROUND reservation assignment (if
+        /// it exists).
+        BackgroundChangeDataCapture = 7,
+        /// Finer granularity background jobs for refreshing cached metadata for
+        /// BigQuery tables. Reservations with this job type take priority over a
+        /// default BACKGROUND reservation assignment (if it exists).
+        BackgroundColumnMetadataIndex = 8,
+        /// Finer granularity background jobs for refreshing search indexes upon
+        /// BigQuery table columns. Reservations with this job type
+        /// take priority over a default BACKGROUND reservation assignment (if it
+        /// exists).
+        BackgroundSearchIndexRefresh = 9,
     }
     impl JobType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -759,6 +924,9 @@ pub mod assignment {
                 Self::MlExternal => "ML_EXTERNAL",
                 Self::Background => "BACKGROUND",
                 Self::Continuous => "CONTINUOUS",
+                Self::BackgroundChangeDataCapture => "BACKGROUND_CHANGE_DATA_CAPTURE",
+                Self::BackgroundColumnMetadataIndex => "BACKGROUND_COLUMN_METADATA_INDEX",
+                Self::BackgroundSearchIndexRefresh => "BACKGROUND_SEARCH_INDEX_REFRESH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -770,6 +938,15 @@ pub mod assignment {
                 "ML_EXTERNAL" => Some(Self::MlExternal),
                 "BACKGROUND" => Some(Self::Background),
                 "CONTINUOUS" => Some(Self::Continuous),
+                "BACKGROUND_CHANGE_DATA_CAPTURE" => {
+                    Some(Self::BackgroundChangeDataCapture)
+                }
+                "BACKGROUND_COLUMN_METADATA_INDEX" => {
+                    Some(Self::BackgroundColumnMetadataIndex)
+                }
+                "BACKGROUND_SEARCH_INDEX_REFRESH" => {
+                    Some(Self::BackgroundSearchIndexRefresh)
+                }
                 _ => None,
             }
         }
@@ -1005,20 +1182,20 @@ pub struct UpdateAssignmentRequest {
 /// Internally stored as google.cloud.bi.v1.BqTableReference.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableReference {
-    /// The assigned project ID of the project.
+    /// Optional. The assigned project ID of the project.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
-    /// The ID of the dataset in the above project.
+    /// Optional. The ID of the dataset in the above project.
     #[prost(string, tag = "2")]
     pub dataset_id: ::prost::alloc::string::String,
-    /// The ID of the table in the above dataset.
+    /// Optional. The ID of the table in the above dataset.
     #[prost(string, tag = "3")]
     pub table_id: ::prost::alloc::string::String,
 }
 /// Represents a BI Reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiReservation {
-    /// The resource name of the singleton BI reservation.
+    /// Identifier. The resource name of the singleton BI reservation.
     /// Reservation names have the form
     /// `projects/{project_id}/locations/{location_id}/biReservation`.
     #[prost(string, tag = "1")]
@@ -1026,10 +1203,10 @@ pub struct BiReservation {
     /// Output only. The last update timestamp of a reservation.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Size of a reservation, in bytes.
+    /// Optional. Size of a reservation, in bytes.
     #[prost(int64, tag = "4")]
     pub size: i64,
-    /// Preferred tables to use BI capacity for.
+    /// Optional. Preferred tables to use BI capacity for.
     #[prost(message, repeated, tag = "5")]
     pub preferred_tables: ::prost::alloc::vec::Vec<TableReference>,
 }
@@ -1086,6 +1263,45 @@ impl Edition {
             "STANDARD" => Some(Self::Standard),
             "ENTERPRISE" => Some(Self::Enterprise),
             "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+            _ => None,
+        }
+    }
+}
+/// The failover mode when a user initiates a failover on a reservation
+/// determines how writes that are pending replication are handled after the
+/// failover is initiated.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FailoverMode {
+    /// Invalid value.
+    Unspecified = 0,
+    /// When customers initiate a soft failover, BigQuery will wait until all
+    /// committed writes are replicated to the secondary. This mode requires both
+    /// regions to be available for the failover to succeed and prevents data loss.
+    Soft = 1,
+    /// When customers initiate a hard failover, BigQuery will not wait until all
+    /// committed writes are replicated to the secondary. There can be data loss
+    /// for hard failover.
+    Hard = 2,
+}
+impl FailoverMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FAILOVER_MODE_UNSPECIFIED",
+            Self::Soft => "SOFT",
+            Self::Hard => "HARD",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FAILOVER_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOFT" => Some(Self::Soft),
+            "HARD" => Some(Self::Hard),
             _ => None,
         }
     }
@@ -1966,6 +2182,255 @@ pub mod reservation_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.reservation.v1.ReservationService",
                         "UpdateBiReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the access control policy for a resource.
+        /// May return:
+        ///
+        /// * A`NOT_FOUND` error if the resource doesn't exist or you don't have the
+        ///  permission to view it.
+        /// * An empty policy if the resource exists but doesn't have a set policy.
+        ///
+        /// Supported resources are:
+        ///
+        /// * Reservations
+        /// * ReservationAssignments
+        ///
+        /// To call this method, you must have the following Google IAM permissions:
+        ///
+        /// * `bigqueryreservation.reservations.getIamPolicy` to get policies on
+        ///  reservations.
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/GetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets an access control policy for a resource. Replaces any existing
+        /// policy.
+        ///
+        /// Supported resources are:
+        ///
+        /// * Reservations
+        ///
+        /// To call this method, you must have the following Google IAM permissions:
+        ///
+        /// * `bigqueryreservation.reservations.setIamPolicy` to set policies on
+        ///  reservations.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/SetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets your permissions on a resource. Returns an empty set of permissions if
+        /// the resource doesn't exist.
+        ///
+        /// Supported resources are:
+        ///
+        /// * Reservations
+        ///
+        /// No Google IAM permissions are required to call this method.
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::super::iam::v1::TestIamPermissionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/TestIamPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new reservation group.
+        pub async fn create_reservation_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateReservationGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReservationGroup>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/CreateReservationGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "CreateReservationGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns information about the reservation group.
+        pub async fn get_reservation_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReservationGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReservationGroup>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/GetReservationGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "GetReservationGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a reservation.
+        /// Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has
+        /// assignments.
+        pub async fn delete_reservation_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteReservationGroupRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteReservationGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "DeleteReservationGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the reservation groups for the project in the specified location.
+        pub async fn list_reservation_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReservationGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListReservationGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/ListReservationGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "ListReservationGroups",
                     ),
                 );
             self.inner.unary(req, path, codec).await

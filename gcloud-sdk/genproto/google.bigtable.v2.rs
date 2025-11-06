@@ -4,25 +4,23 @@
 /// familiarity and consistency across products and features.
 ///
 /// For compatibility with Bigtable's existing untyped APIs, each `Type` includes
-/// an `Encoding` which describes how to convert to/from the underlying data.
+/// an `Encoding` which describes how to convert to or from the underlying data.
 ///
-/// Each encoding also defines the following properties:
+/// Each encoding can operate in one of two modes:
 ///
-/// * Order-preserving: Does the encoded value sort consistently with the
-///   original typed value? Note that Bigtable will always sort data based on
-///   the raw encoded value, *not* the decoded type.
-///   * Example: BYTES values sort in the same order as their raw encodings.
-///   * Counterexample: Encoding INT64 as a fixed-width decimal string does
-///     *not* preserve sort order when dealing with negative numbers.
-///     `INT64(1) > INT64(-1)`, but `STRING("-00001") > STRING("00001)`.
-/// * Self-delimiting: If we concatenate two encoded values, can we always tell
-///   where the first one ends and the second one begins?
-///   * Example: If we encode INT64s to fixed-width STRINGs, the first value
-///     will always contain exactly N digits, possibly preceded by a sign.
-///   * Counterexample: If we concatenate two UTF-8 encoded STRINGs, we have
-///     no way to tell where the first one ends.
-/// * Compatibility: Which other systems have matching encoding schemes? For
-///   example, does this encoding have a GoogleSQL equivalent? HBase? Java?
+/// * Sorted: In this mode, Bigtable guarantees that `Encode(X) <= Encode(Y)`
+///   if and only if `X <= Y`. This is useful anywhere sort order is important,
+///   for example when encoding keys.
+/// * Distinct: In this mode, Bigtable guarantees that if `X != Y` then
+///   `Encode(X) != Encode(Y)`. However, the converse is not guaranteed. For
+///   example, both `{'foo': '1', 'bar': '2'}` and `{'bar': '2', 'foo': '1'}`
+///   are valid encodings of the same JSON value.
+///
+/// The API clearly documents which mode is used wherever an encoding can be
+/// configured. Each encoding also documents which values are supported in which
+/// modes. For example, when encoding INT64 as a numeric STRING, negative numbers
+/// cannot be encoded in sorted mode. This is because `INT64(1) > INT64(-1)`, but
+/// `STRING("-00001") > STRING("00001")`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
@@ -38,13 +36,13 @@ pub mod r#type {
     /// Values of type `Bytes` are stored in `Value.bytes_value`.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bytes {
-        /// The encoding to use when converting to/from lower level types.
+        /// The encoding to use when converting to or from lower level types.
         #[prost(message, optional, tag = "1")]
         pub encoding: ::core::option::Option<bytes::Encoding>,
     }
     /// Nested message and enum types in `Bytes`.
     pub mod bytes {
-        /// Rules used to convert to/from lower level types.
+        /// Rules used to convert to or from lower level types.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -53,13 +51,20 @@ pub mod r#type {
         }
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
-            /// Leaves the value "as-is"
+            /// Leaves the value as-is.
             ///
-            /// * Order-preserving? Yes
-            /// * Self-delimiting? No
-            /// * Compatibility? N/A
+            /// Sorted mode: all values are supported.
+            ///
+            /// Distinct mode: all values are supported.
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-            pub struct Raw {}
+            pub struct Raw {
+                /// If set, allows NULL values to be encoded as the empty string "".
+                ///
+                /// The actual empty string, or any value which only contains the
+                /// null byte `0x00`, has one more null byte appended.
+                #[prost(bool, tag = "1")]
+                pub escape_nulls: bool,
+            }
             /// Which encoding to use.
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
@@ -71,16 +76,16 @@ pub mod r#type {
     }
     /// String
     /// Values of type `String` are stored in `Value.string_value`.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct String {
-        /// The encoding to use when converting to/from lower level types.
+        /// The encoding to use when converting to or from lower level types.
         #[prost(message, optional, tag = "1")]
         pub encoding: ::core::option::Option<string::Encoding>,
     }
     /// Nested message and enum types in `String`.
     pub mod string {
-        /// Rules used to convert to/from lower level types.
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        /// Rules used to convert to or from lower level types.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
             #[prost(oneof = "encoding::Encoding", tags = "1, 2")]
@@ -91,18 +96,38 @@ pub mod r#type {
             /// Deprecated: prefer the equivalent `Utf8Bytes`.
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Utf8Raw {}
-            /// UTF-8 encoding
+            /// UTF-8 encoding.
             ///
-            /// * Order-preserving? Yes (code point order)
-            /// * Self-delimiting? No
-            /// * Compatibility?
-            ///   * BigQuery Federation `TEXT` encoding
-            ///   * HBase `Bytes.toBytes`
-            ///   * Java `String#getBytes(StandardCharsets.UTF_8)`
-            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-            pub struct Utf8Bytes {}
+            /// Sorted mode:
+            ///
+            /// * All values are supported.
+            /// * Code point order is preserved.
+            ///
+            /// Distinct mode: all values are supported.
+            ///
+            /// Compatible with:
+            ///
+            /// * BigQuery `TEXT` encoding
+            /// * HBase `Bytes.toBytes`
+            /// * Java `String#getBytes(StandardCharsets.UTF_8)`
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct Utf8Bytes {
+                /// Single-character escape sequence used to support NULL values.
+                ///
+                /// If set, allows NULL values to be encoded as the empty string "".
+                ///
+                /// The actual empty string, or any value where every character equals
+                /// `null_escape_char`, has one more `null_escape_char` appended.
+                ///
+                /// If `null_escape_char` is set and does not equal the ASCII null
+                /// character `0x00`, then the encoding will not support sorted mode.
+                ///
+                /// .
+                #[prost(string, tag = "1")]
+                pub null_escape_char: ::prost::alloc::string::String,
+            }
             /// Which encoding to use.
-            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Deprecated: if set, converts to an empty `utf8_bytes`.
                 #[prost(message, tag = "1")]
@@ -117,42 +142,56 @@ pub mod r#type {
     /// Values of type `Int64` are stored in `Value.int_value`.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Int64 {
-        /// The encoding to use when converting to/from lower level types.
+        /// The encoding to use when converting to or from lower level types.
         #[prost(message, optional, tag = "1")]
         pub encoding: ::core::option::Option<int64::Encoding>,
     }
     /// Nested message and enum types in `Int64`.
     pub mod int64 {
-        /// Rules used to convert to/from lower level types.
+        /// Rules used to convert to or from lower level types.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
-            #[prost(oneof = "encoding::Encoding", tags = "1")]
+            #[prost(oneof = "encoding::Encoding", tags = "1, 2")]
             pub encoding: ::core::option::Option<encoding::Encoding>,
         }
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
-            /// Encodes the value as an 8-byte big endian twos complement `Bytes`
-            /// value.
+            /// Encodes the value as an 8-byte big-endian two's complement value.
             ///
-            /// * Order-preserving? No (positive values only)
-            /// * Self-delimiting? Yes
-            /// * Compatibility?
-            ///   * BigQuery Federation `BINARY` encoding
-            ///   * HBase `Bytes.toBytes`
-            ///   * Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
+            /// Sorted mode: non-negative values are supported.
+            ///
+            /// Distinct mode: all values are supported.
+            ///
+            /// Compatible with:
+            ///
+            /// * BigQuery `BINARY` encoding
+            /// * HBase `Bytes.toBytes`
+            /// * Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct BigEndianBytes {
                 /// Deprecated: ignored if set.
+                #[deprecated]
                 #[prost(message, optional, tag = "1")]
                 pub bytes_type: ::core::option::Option<super::super::Bytes>,
             }
+            /// Encodes the value in a variable length binary format of up to 10 bytes.
+            /// Values that are closer to zero use fewer bytes.
+            ///
+            /// Sorted mode: all values are supported.
+            ///
+            /// Distinct mode: all values are supported.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct OrderedCodeBytes {}
             /// Which encoding to use.
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `BigEndianBytes` encoding.
                 #[prost(message, tag = "1")]
                 BigEndianBytes(BigEndianBytes),
+                /// Use `OrderedCodeBytes` encoding.
+                #[prost(message, tag = "2")]
+                OrderedCodeBytes(OrderedCodeBytes),
             }
         }
     }
@@ -171,7 +210,36 @@ pub mod r#type {
     /// Timestamp
     /// Values of type `Timestamp` are stored in `Value.timestamp_value`.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct Timestamp {}
+    pub struct Timestamp {
+        /// The encoding to use when converting to or from lower level types.
+        #[prost(message, optional, tag = "1")]
+        pub encoding: ::core::option::Option<timestamp::Encoding>,
+    }
+    /// Nested message and enum types in `Timestamp`.
+    pub mod timestamp {
+        /// Rules used to convert to or from lower level types.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Encoding {
+            /// Which encoding to use.
+            #[prost(oneof = "encoding::Encoding", tags = "1")]
+            pub encoding: ::core::option::Option<encoding::Encoding>,
+        }
+        /// Nested message and enum types in `Encoding`.
+        pub mod encoding {
+            /// Which encoding to use.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum Encoding {
+                /// Encodes the number of microseconds since the Unix epoch using the
+                /// given `Int64` encoding. Values must be microsecond-aligned.
+                ///
+                /// Compatible with:
+                ///
+                /// * Java `Instant.truncatedTo()` with `ChronoUnit.MICROS`
+                #[prost(message, tag = "1")]
+                UnixMicrosInt64(super::super::int64::Encoding),
+            }
+        }
+    }
     /// Date
     /// Values of type `Date` are stored in `Value.date_value`.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -185,6 +253,9 @@ pub mod r#type {
         /// The names and types of the fields in this struct.
         #[prost(message, repeated, tag = "1")]
         pub fields: ::prost::alloc::vec::Vec<r#struct::Field>,
+        /// The encoding to use when converting to or from lower level types.
+        #[prost(message, optional, tag = "2")]
+        pub encoding: ::core::option::Option<r#struct::Encoding>,
     }
     /// Nested message and enum types in `Struct`.
     pub mod r#struct {
@@ -198,6 +269,100 @@ pub mod r#type {
             /// The type of values in this field.
             #[prost(message, optional, tag = "2")]
             pub r#type: ::core::option::Option<super::super::Type>,
+        }
+        /// Rules used to convert to or from lower level types.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Encoding {
+            /// Which encoding to use.
+            #[prost(oneof = "encoding::Encoding", tags = "1, 2, 3")]
+            pub encoding: ::core::option::Option<encoding::Encoding>,
+        }
+        /// Nested message and enum types in `Encoding`.
+        pub mod encoding {
+            /// Uses the encoding of `fields\[0\].type` as-is.
+            /// Only valid if `fields.size == 1`.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct Singleton {}
+            /// Fields are encoded independently and concatenated with a configurable
+            /// `delimiter` in between.
+            ///
+            /// A struct with no fields defined is encoded as a single `delimiter`.
+            ///
+            /// Sorted mode:
+            ///
+            /// * Fields are encoded in sorted mode.
+            /// * Encoded field values must not contain any bytes \<= `delimiter\[0\]`
+            /// * Element-wise order is preserved: `A < B` if `A\[0\] < B\[0\]`, or if
+            ///   `A\[0\] == B\[0\] && A\[1\] < B\[1\]`, etc. Strict prefixes sort first.
+            ///
+            /// Distinct mode:
+            ///
+            /// * Fields are encoded in distinct mode.
+            /// * Encoded field values must not contain `delimiter\[0\]`.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct DelimitedBytes {
+                /// Byte sequence used to delimit concatenated fields. The delimiter must
+                /// contain at least 1 character and at most 50 characters.
+                #[prost(bytes = "vec", tag = "1")]
+                pub delimiter: ::prost::alloc::vec::Vec<u8>,
+            }
+            /// Fields are encoded independently and concatenated with the fixed byte
+            /// pair `{0x00, 0x01}` in between.
+            ///
+            /// Any null `(0x00)` byte in an encoded field is replaced by the fixed
+            /// byte pair `{0x00, 0xFF}`.
+            ///
+            /// Fields that encode to the empty string "" have special handling:
+            ///
+            /// * If *every* field encodes to "", or if the STRUCT has no fields
+            ///   defined, then the STRUCT is encoded as the fixed byte pair
+            ///   `{0x00, 0x00}`.
+            /// * Otherwise, the STRUCT only encodes until the last non-empty field,
+            ///   omitting any trailing empty fields. Any empty fields that aren't
+            ///   omitted are replaced with the fixed byte pair `{0x00, 0x00}`.
+            ///
+            /// Examples:
+            ///
+            /// ```text,
+            /// - STRUCT()             -> "\00\00"
+            /// - STRUCT("")           -> "\00\00"
+            /// - STRUCT("", "")       -> "\00\00"
+            /// - STRUCT("", "B")      -> "\00\00" + "\00\01" + "B"
+            /// - STRUCT("A", "")      -> "A"
+            /// - STRUCT("", "B", "")  -> "\00\00" + "\00\01" + "B"
+            /// - STRUCT("A", "", "C") -> "A" + "\00\01" + "\00\00" + "\00\01" + "C"
+            /// ```
+            ///
+            /// Since null bytes are always escaped, this encoding can cause size
+            /// blowup for encodings like `Int64.BigEndianBytes` that are likely to
+            /// produce many such bytes.
+            ///
+            /// Sorted mode:
+            ///
+            /// * Fields are encoded in sorted mode.
+            /// * All values supported by the field encodings are allowed
+            /// * Element-wise order is preserved: `A < B` if `A\[0\] < B\[0\]`, or if
+            ///   `A\[0\] == B\[0\] && A\[1\] < B\[1\]`, etc. Strict prefixes sort first.
+            ///
+            /// Distinct mode:
+            ///
+            /// * Fields are encoded in distinct mode.
+            /// * All values supported by the field encodings are allowed.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct OrderedCodeBytes {}
+            /// Which encoding to use.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum Encoding {
+                /// Use `Singleton` encoding.
+                #[prost(message, tag = "1")]
+                Singleton(Singleton),
+                /// Use `DelimitedBytes` encoding.
+                #[prost(message, tag = "2")]
+                DelimitedBytes(DelimitedBytes),
+                /// User `OrderedCodeBytes` encoding.
+                #[prost(message, tag = "3")]
+                OrderedCodeBytes(OrderedCodeBytes),
+            }
         }
     }
     /// A protobuf message type.
@@ -253,19 +418,18 @@ pub mod r#type {
     }
     /// A value that combines incremental updates into a summarized value.
     ///
-    /// Data is never directly written or read using type `Aggregate`. Writes will
-    /// provide either the `input_type` or `state_type`, and reads will always
-    /// return the `state_type` .
+    /// Data is never directly written or read using type `Aggregate`. Writes
+    /// provide either the `input_type` or `state_type`, and reads always return
+    /// the `state_type` .
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregate {
-        /// Type of the inputs that are accumulated by this `Aggregate`, which must
-        /// specify a full encoding.
+        /// Type of the inputs that are accumulated by this `Aggregate`.
         /// Use `AddInput` mutations to accumulate new inputs.
         #[prost(message, optional, boxed, tag = "1")]
         pub input_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
         /// Output only. Type that holds the internal accumulator state for the
         /// `Aggregate`. This is a function of the `input_type` and `aggregator`
-        /// chosen, and will always specify a full encoding.
+        /// chosen.
         #[prost(message, optional, boxed, tag = "2")]
         pub state_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
         /// Which aggregator function to use. The configured types must match.

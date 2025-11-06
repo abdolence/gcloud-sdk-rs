@@ -131,6 +131,24 @@ pub struct Document {
     /// Document chunked based on chunking config.
     #[prost(message, optional, tag = "18")]
     pub chunked_document: ::core::option::Option<document::ChunkedDocument>,
+    /// The entity validation output for the document. This is the validation
+    /// output for `document.entities` field.
+    #[prost(message, optional, tag = "21")]
+    pub entity_validation_output: ::core::option::Option<
+        document::EntityValidationOutput,
+    >,
+    /// A list of entity revisions. The entity revisions are appended to the
+    /// document in the processing order. This field can be used for comparing the
+    /// entity extraction results at different stages of the processing.
+    #[prost(message, repeated, tag = "22")]
+    pub entities_revisions: ::prost::alloc::vec::Vec<document::EntitiesRevision>,
+    /// The entity revision id that `document.entities` field is based on.
+    /// If this field is set and `entities_revisions` is not empty, the entities in
+    /// `document.entities` field are the entities in the entity revision with this
+    /// id and `document.entity_validation_output` field is the
+    /// `entity_validation_output` field in this entity revision.
+    #[prost(string, tag = "23")]
+    pub entities_revision_id: ::prost::alloc::string::String,
     /// Original source document from the user.
     #[prost(oneof = "document::Source", tags = "1, 2")]
     pub source: ::core::option::Option<document::Source>,
@@ -1483,6 +1501,108 @@ pub mod document {
                 pub page_span: ::core::option::Option<ChunkPageSpan>,
             }
         }
+    }
+    /// The output of the validation given the document and the validation rules.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EntityValidationOutput {
+        /// The result of each validation rule.
+        #[prost(message, repeated, tag = "1")]
+        pub validation_results: ::prost::alloc::vec::Vec<
+            entity_validation_output::ValidationResult,
+        >,
+        /// The overall result of the validation, true if all applicable rules are
+        /// valid.
+        #[prost(bool, tag = "2")]
+        pub pass_all_rules: bool,
+    }
+    /// Nested message and enum types in `EntityValidationOutput`.
+    pub mod entity_validation_output {
+        /// Validation result for a single validation rule.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ValidationResult {
+            /// The name of the validation rule.
+            #[prost(string, tag = "1")]
+            pub rule_name: ::prost::alloc::string::String,
+            /// The description of the validation rule.
+            #[prost(string, tag = "2")]
+            pub rule_description: ::prost::alloc::string::String,
+            /// The result of the validation rule.
+            #[prost(enumeration = "validation_result::ValidationResultType", tag = "3")]
+            pub validation_result_type: i32,
+            /// The detailed information of the running the validation process using
+            /// the entity from the document based on the validation rule.
+            #[prost(string, tag = "4")]
+            pub validation_details: ::prost::alloc::string::String,
+        }
+        /// Nested message and enum types in `ValidationResult`.
+        pub mod validation_result {
+            /// The result of the validation rule.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ValidationResultType {
+                /// The validation result type is unspecified.
+                Unspecified = 0,
+                /// The validation is valid.
+                Valid = 1,
+                /// The validation is invalid.
+                Invalid = 2,
+                /// The validation is skipped.
+                Skipped = 3,
+                /// The validation is not applicable.
+                NotApplicable = 4,
+            }
+            impl ValidationResultType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "VALIDATION_RESULT_TYPE_UNSPECIFIED",
+                        Self::Valid => "VALIDATION_RESULT_TYPE_VALID",
+                        Self::Invalid => "VALIDATION_RESULT_TYPE_INVALID",
+                        Self::Skipped => "VALIDATION_RESULT_TYPE_SKIPPED",
+                        Self::NotApplicable => "VALIDATION_RESULT_TYPE_NOT_APPLICABLE",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "VALIDATION_RESULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "VALIDATION_RESULT_TYPE_VALID" => Some(Self::Valid),
+                        "VALIDATION_RESULT_TYPE_INVALID" => Some(Self::Invalid),
+                        "VALIDATION_RESULT_TYPE_SKIPPED" => Some(Self::Skipped),
+                        "VALIDATION_RESULT_TYPE_NOT_APPLICABLE" => {
+                            Some(Self::NotApplicable)
+                        }
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
+    /// Entity revision.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EntitiesRevision {
+        /// The revision id.
+        #[prost(string, tag = "1")]
+        pub revision_id: ::prost::alloc::string::String,
+        /// The entities in this revision.
+        #[prost(message, repeated, tag = "2")]
+        pub entities: ::prost::alloc::vec::Vec<Entity>,
+        /// The entity validation output for this revision.
+        #[prost(message, optional, tag = "3")]
+        pub entity_validation_output: ::core::option::Option<EntityValidationOutput>,
     }
     /// Original source document from the user.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -3363,7 +3483,7 @@ pub mod train_processor_version_request {
     /// Processor.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomDocumentExtractionOptions {
-        /// Training method to use for CDE training.
+        /// Optional. Training method to use for CDE training.
         #[prost(
             enumeration = "custom_document_extraction_options::TrainingMethod",
             tag = "3"

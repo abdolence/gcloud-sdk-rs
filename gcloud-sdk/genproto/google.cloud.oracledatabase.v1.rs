@@ -8,6 +8,123 @@ pub struct CustomerContact {
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
 }
+/// The identity connector details which will allow OCI to securely access
+/// the resources in the customer project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IdentityConnector {
+    /// Output only. A google managed service account on which customers can grant
+    /// roles to access resources in the customer project. Example:
+    /// `p176944527254-55-75119d87fd8f@gcp-sa-oci.iam.gserviceaccount.com`
+    #[prost(string, tag = "1")]
+    pub service_agent_email: ::prost::alloc::string::String,
+    /// Output only. The connection state of the identity connector.
+    #[prost(enumeration = "identity_connector::ConnectionState", tag = "2")]
+    pub connection_state: i32,
+}
+/// Nested message and enum types in `IdentityConnector`.
+pub mod identity_connector {
+    /// The various connection states of the WorkloadIdentityPoolConnection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConnectionState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// The identity pool connection is connected.
+        Connected = 1,
+        /// The identity pool connection is partially connected.
+        PartiallyConnected = 2,
+        /// The identity pool connection is disconnected.
+        Disconnected = 3,
+        /// The identity pool connection is in an unknown state.
+        Unknown = 4,
+    }
+    impl ConnectionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
+                Self::Connected => "CONNECTED",
+                Self::PartiallyConnected => "PARTIALLY_CONNECTED",
+                Self::Disconnected => "DISCONNECTED",
+                Self::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONNECTED" => Some(Self::Connected),
+                "PARTIALLY_CONNECTED" => Some(Self::PartiallyConnected),
+                "DISCONNECTED" => Some(Self::Disconnected),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
+    }
+}
+/// Data collection options for diagnostics.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/datatypes/DataCollectionOptions>
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataCollectionOptionsCommon {
+    /// Optional. Indicates whether to enable data collection for diagnostics.
+    #[prost(bool, tag = "1")]
+    pub is_diagnostics_events_enabled: bool,
+    /// Optional. Indicates whether to enable health monitoring.
+    #[prost(bool, tag = "2")]
+    pub is_health_monitoring_enabled: bool,
+    /// Optional. Indicates whether to enable incident logs and trace collection.
+    #[prost(bool, tag = "3")]
+    pub is_incident_logs_enabled: bool,
+}
+/// The compute model of the Exadata Infrastructure, VM Cluster and Autonomous
+/// Database.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ComputeModel {
+    /// Unspecified compute model.
+    Unspecified = 0,
+    /// Abstract measure of compute resources. ECPUs are based on the number of
+    /// cores elastically allocated from a pool of compute and storage servers.
+    Ecpu = 1,
+    /// Physical measure of compute resources. OCPUs are based on the physical
+    /// core of a processor.
+    Ocpu = 2,
+}
+impl ComputeModel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "COMPUTE_MODEL_UNSPECIFIED",
+            Self::Ecpu => "COMPUTE_MODEL_ECPU",
+            Self::Ocpu => "COMPUTE_MODEL_OCPU",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPUTE_MODEL_ECPU" => Some(Self::Ecpu),
+            "COMPUTE_MODEL_OCPU" => Some(Self::Ocpu),
+            _ => None,
+        }
+    }
+}
 /// Details of the Autonomous Database resource.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/AutonomousDatabase/>
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -46,12 +163,53 @@ pub struct AutonomousDatabase {
     /// the following format: projects/{project}/global/networks/{network}
     #[prost(string, tag = "9")]
     pub network: ::prost::alloc::string::String,
-    /// Optional. The subnet CIDR range for the Autonmous Database.
+    /// Optional. The subnet CIDR range for the Autonomous Database.
     #[prost(string, tag = "10")]
     pub cidr: ::prost::alloc::string::String,
+    /// Optional. The name of the OdbNetwork associated with the Autonomous
+    /// Database. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network} It is
+    /// optional but if specified, this should match the parent ODBNetwork of the
+    /// OdbSubnet.
+    #[prost(string, tag = "16")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Optional. The name of the OdbSubnet associated with the Autonomous
+    /// Database. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "17")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Optional. The source Autonomous Database configuration for the standby
+    /// Autonomous Database. The source Autonomous Database is configured while
+    /// creating the Peer Autonomous Database and can't be updated after creation.
+    #[prost(message, optional, tag = "11")]
+    pub source_config: ::core::option::Option<SourceConfig>,
+    /// Output only. The peer Autonomous Database names of the given Autonomous
+    /// Database.
+    #[prost(string, repeated, tag = "12")]
+    pub peer_autonomous_databases: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Output only. The date and time that the Autonomous Database was created.
     #[prost(message, optional, tag = "13")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. List of supported GCP region to clone the Autonomous Database
+    /// for disaster recovery. Format: `project/{project}/locations/{location}`.
+    #[prost(string, repeated, tag = "15")]
+    pub disaster_recovery_supported_locations: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+}
+/// The source configuration for the standby Autonomous Database.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SourceConfig {
+    /// Optional. The name of the primary Autonomous Database that is used to
+    /// create a Peer Autonomous Database from a source.
+    #[prost(string, tag = "1")]
+    pub autonomous_database: ::prost::alloc::string::String,
+    /// Optional. This field specifies if the replication of automatic backups is
+    /// enabled when creating a Data Guard.
+    #[prost(bool, tag = "2")]
+    pub automatic_backups_replication_enabled: bool,
 }
 /// The properties of an Autonomous Database.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -271,12 +429,40 @@ pub struct AutonomousDatabaseProperties {
     /// Output only. The long term backup schedule of the Autonomous Database.
     #[prost(message, optional, tag = "60")]
     pub next_long_term_backup_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The date and time the Autonomous Data Guard role was changed
+    /// for the standby Autonomous Database.
+    #[prost(message, optional, tag = "61")]
+    pub data_guard_role_changed_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The date and time the Disaster Recovery role was changed for
+    /// the standby Autonomous Database.
+    #[prost(message, optional, tag = "62")]
+    pub disaster_recovery_role_changed_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
     /// Output only. The date and time when maintenance will begin.
     #[prost(message, optional, tag = "65")]
     pub maintenance_begin_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The date and time when maintenance will end.
     #[prost(message, optional, tag = "66")]
     pub maintenance_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The list of allowlisted IP addresses for the Autonomous Database.
+    #[prost(string, repeated, tag = "67")]
+    pub allowlisted_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The encryption key used to encrypt the Autonomous Database.
+    /// Updating this field will add a new entry in the
+    /// `encryption_key_history_entries` field with the former version.
+    #[prost(message, optional, tag = "68")]
+    pub encryption_key: ::core::option::Option<EncryptionKey>,
+    /// Output only. The history of the encryption keys used to encrypt the
+    /// Autonomous Database.
+    #[prost(message, repeated, tag = "69")]
+    pub encryption_key_history_entries: ::prost::alloc::vec::Vec<
+        EncryptionKeyHistoryEntry,
+    >,
+    /// Output only. An Oracle-managed Google Cloud service account on which
+    /// customers can grant roles to access resources in the customer project.
+    #[prost(string, tag = "70")]
+    pub service_agent_email: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AutonomousDatabaseProperties`.
 pub mod autonomous_database_properties {
@@ -792,6 +978,76 @@ pub mod autonomous_database_properties {
                 "DISABLED_STANDBY" => Some(Self::DisabledStandby),
                 "BACKUP_COPY" => Some(Self::BackupCopy),
                 "SNAPSHOT_STANDBY" => Some(Self::SnapshotStandby),
+                _ => None,
+            }
+        }
+    }
+}
+/// The history of the encryption keys used to encrypt the Autonomous Database.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionKeyHistoryEntry {
+    /// Output only. The encryption key used to encrypt the Autonomous Database.
+    #[prost(message, optional, tag = "1")]
+    pub encryption_key: ::core::option::Option<EncryptionKey>,
+    /// Output only. The date and time when the encryption key was activated on the
+    /// Autonomous Database..
+    #[prost(message, optional, tag = "2")]
+    pub activation_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The encryption key used to encrypt the Autonomous Database.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionKey {
+    /// Optional. The provider of the encryption key.
+    #[prost(enumeration = "encryption_key::Provider", tag = "1")]
+    pub provider: i32,
+    /// Optional. The KMS key used to encrypt the Autonomous Database.
+    /// This field is required if the provider is GOOGLE_MANAGED.
+    /// The name of the KMS key resource in the following format:
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    #[prost(string, tag = "2")]
+    pub kms_key: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `EncryptionKey`.
+pub mod encryption_key {
+    /// The provider of the encryption key.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Provider {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Google Managed KMS key, if selected, please provide the KMS key name.
+        GoogleManaged = 1,
+        /// Oracle Managed.
+        OracleManaged = 2,
+    }
+    impl Provider {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVIDER_UNSPECIFIED",
+                Self::GoogleManaged => "GOOGLE_MANAGED",
+                Self::OracleManaged => "ORACLE_MANAGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED" => Some(Self::GoogleManaged),
+                "ORACLE_MANAGED" => Some(Self::OracleManaged),
                 _ => None,
             }
         }
@@ -1777,6 +2033,1082 @@ pub struct AutonomousDbVersion {
     #[prost(string, tag = "5")]
     pub workload_uri: ::prost::alloc::string::String,
 }
+/// The PluggableDatabase resource.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/PluggableDatabase/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PluggableDatabase {
+    /// Identifier. The name of the PluggableDatabase resource in the following
+    /// format:
+    /// projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The properties of the PluggableDatabase.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<PluggableDatabaseProperties>,
+    /// Output only. HTTPS link to OCI resources exposed to Customer via UI
+    /// Interface.
+    #[prost(string, tag = "3")]
+    pub oci_url: ::prost::alloc::string::String,
+    /// Output only. The date and time that the PluggableDatabase was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The properties of a PluggableDatabase.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PluggableDatabaseProperties {
+    /// Required. The OCID of the compartment.
+    #[prost(string, tag = "1")]
+    pub compartment_id: ::prost::alloc::string::String,
+    /// Optional. The Connection strings used to connect to the Oracle Database.
+    #[prost(message, optional, tag = "2")]
+    pub connection_strings: ::core::option::Option<PluggableDatabaseConnectionStrings>,
+    /// Required. The OCID of the CDB.
+    #[prost(string, tag = "3")]
+    pub container_database_ocid: ::prost::alloc::string::String,
+    /// Optional. Defined tags for this resource. Each key is predefined and scoped
+    /// to a namespace.
+    #[prost(map = "string, message", tag = "4")]
+    pub defined_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        pluggable_database_properties::DefinedTagValue,
+    >,
+    /// Optional. Free-form tags for this resource. Each tag is a simple key-value
+    /// pair with no predefined name, type, or namespace.
+    #[prost(map = "string, string", tag = "5")]
+    pub freeform_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The OCID of the pluggable database.
+    #[prost(string, tag = "6")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Optional. The restricted mode of the pluggable database. If a pluggable
+    /// database is opened in restricted mode, the user needs both create a session
+    /// and have restricted session privileges to connect to it.
+    #[prost(bool, tag = "7")]
+    pub is_restricted: bool,
+    /// Output only. Additional information about the current lifecycle state.
+    #[prost(string, tag = "8")]
+    pub lifecycle_details: ::prost::alloc::string::String,
+    /// Output only. The current state of the pluggable database.
+    #[prost(
+        enumeration = "pluggable_database_properties::PluggableDatabaseLifecycleState",
+        tag = "9"
+    )]
+    pub lifecycle_state: i32,
+    /// Required. The database name.
+    #[prost(string, tag = "10")]
+    pub pdb_name: ::prost::alloc::string::String,
+    /// Optional. Pluggable Database Node Level Details
+    #[prost(message, repeated, tag = "11")]
+    pub pdb_node_level_details: ::prost::alloc::vec::Vec<
+        PluggableDatabaseNodeLevelDetails,
+    >,
+    /// Output only. The configuration of the Database Management service.
+    #[prost(message, optional, tag = "13")]
+    pub database_management_config: ::core::option::Option<DatabaseManagementConfig>,
+    /// Output only. The status of Operations Insights for this Database.
+    #[prost(
+        enumeration = "pluggable_database_properties::OperationsInsightsState",
+        tag = "14"
+    )]
+    pub operations_insights_state: i32,
+}
+/// Nested message and enum types in `PluggableDatabaseProperties`.
+pub mod pluggable_database_properties {
+    /// Wrapper message for the value of a defined tag.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefinedTagValue {
+        /// The tags within the namespace.
+        #[prost(map = "string, string", tag = "1")]
+        pub tags: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// The various lifecycle states of the PluggableDatabase.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PluggableDatabaseLifecycleState {
+        /// The lifecycle state is unspecified.
+        Unspecified = 0,
+        /// The pluggable database is provisioning.
+        Provisioning = 1,
+        /// The pluggable database is available.
+        Available = 2,
+        /// The pluggable database is terminating.
+        Terminating = 3,
+        /// The pluggable database is terminated.
+        Terminated = 4,
+        /// The pluggable database is updating.
+        Updating = 5,
+        /// The pluggable database is in a failed state.
+        Failed = 6,
+        /// The pluggable database is relocating.
+        Relocating = 7,
+        /// The pluggable database is relocated.
+        Relocated = 8,
+        /// The pluggable database is refreshing.
+        Refreshing = 9,
+        /// The pluggable database is restoring.
+        RestoreInProgress = 10,
+        /// The pluggable database restore failed.
+        RestoreFailed = 11,
+        /// The pluggable database is backing up.
+        BackupInProgress = 12,
+        /// The pluggable database is disabled.
+        Disabled = 13,
+    }
+    impl PluggableDatabaseLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PLUGGABLE_DATABASE_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::Updating => "UPDATING",
+                Self::Failed => "FAILED",
+                Self::Relocating => "RELOCATING",
+                Self::Relocated => "RELOCATED",
+                Self::Refreshing => "REFRESHING",
+                Self::RestoreInProgress => "RESTORE_IN_PROGRESS",
+                Self::RestoreFailed => "RESTORE_FAILED",
+                Self::BackupInProgress => "BACKUP_IN_PROGRESS",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLUGGABLE_DATABASE_LIFECYCLE_STATE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "UPDATING" => Some(Self::Updating),
+                "FAILED" => Some(Self::Failed),
+                "RELOCATING" => Some(Self::Relocating),
+                "RELOCATED" => Some(Self::Relocated),
+                "REFRESHING" => Some(Self::Refreshing),
+                "RESTORE_IN_PROGRESS" => Some(Self::RestoreInProgress),
+                "RESTORE_FAILED" => Some(Self::RestoreFailed),
+                "BACKUP_IN_PROGRESS" => Some(Self::BackupInProgress),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+    /// The status of Operations Insights for this Database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OperationsInsightsState {
+        /// The status is not specified.
+        Unspecified = 0,
+        /// Operations Insights is enabling.
+        Enabling = 1,
+        /// Operations Insights is enabled.
+        Enabled = 2,
+        /// Operations Insights is disabling.
+        Disabling = 3,
+        /// Operations Insights is not enabled.
+        NotEnabled = 4,
+        /// Operations Insights failed to enable.
+        FailedEnabling = 5,
+        /// Operations Insights failed to disable.
+        FailedDisabling = 6,
+    }
+    impl OperationsInsightsState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATIONS_INSIGHTS_STATE_UNSPECIFIED",
+                Self::Enabling => "ENABLING",
+                Self::Enabled => "ENABLED",
+                Self::Disabling => "DISABLING",
+                Self::NotEnabled => "NOT_ENABLED",
+                Self::FailedEnabling => "FAILED_ENABLING",
+                Self::FailedDisabling => "FAILED_DISABLING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATIONS_INSIGHTS_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLING" => Some(Self::Enabling),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLING" => Some(Self::Disabling),
+                "NOT_ENABLED" => Some(Self::NotEnabled),
+                "FAILED_ENABLING" => Some(Self::FailedEnabling),
+                "FAILED_DISABLING" => Some(Self::FailedDisabling),
+                _ => None,
+            }
+        }
+    }
+}
+/// The connection strings used to connect to the Oracle Database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PluggableDatabaseConnectionStrings {
+    /// Optional. All connection strings to use to connect to the pluggable
+    /// database.
+    #[prost(map = "string, string", tag = "1")]
+    pub all_connection_strings: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The default connection string to use to connect to the pluggable
+    /// database.
+    #[prost(string, tag = "2")]
+    pub pdb_default: ::prost::alloc::string::String,
+    /// Optional. The default connection string to use to connect to the pluggable
+    /// database using IP.
+    #[prost(string, tag = "3")]
+    pub pdb_ip_default: ::prost::alloc::string::String,
+}
+/// The Pluggable Database Node Level Details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PluggableDatabaseNodeLevelDetails {
+    /// Required. The Node name of the Database home.
+    #[prost(string, tag = "1")]
+    pub node_name: ::prost::alloc::string::String,
+    /// Required. The mode that the pluggable database is in to open it.
+    #[prost(
+        enumeration = "pluggable_database_node_level_details::PluggableDatabaseOpenMode",
+        tag = "2"
+    )]
+    pub open_mode: i32,
+    /// Required. The OCID of the Pluggable Database.
+    #[prost(string, tag = "3")]
+    pub pluggable_database_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PluggableDatabaseNodeLevelDetails`.
+pub mod pluggable_database_node_level_details {
+    /// The mode that the pluggable database is in to open it.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PluggableDatabaseOpenMode {
+        /// The open mode is unspecified.
+        Unspecified = 0,
+        /// The pluggable database is opened in read-only mode.
+        ReadOnly = 1,
+        /// The pluggable database is opened in read-write mode.
+        ReadWrite = 2,
+        /// The pluggable database is mounted.
+        Mounted = 3,
+        /// The pluggable database is migrated.
+        Migrate = 4,
+    }
+    impl PluggableDatabaseOpenMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PLUGGABLE_DATABASE_OPEN_MODE_UNSPECIFIED",
+                Self::ReadOnly => "READ_ONLY",
+                Self::ReadWrite => "READ_WRITE",
+                Self::Mounted => "MOUNTED",
+                Self::Migrate => "MIGRATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLUGGABLE_DATABASE_OPEN_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                "MOUNTED" => Some(Self::Mounted),
+                "MIGRATE" => Some(Self::Migrate),
+                _ => None,
+            }
+        }
+    }
+}
+/// The configuration of the Database Management service.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DatabaseManagementConfig {
+    /// Output only. The status of the Database Management service.
+    #[prost(enumeration = "database_management_config::ManagementState", tag = "1")]
+    pub management_state: i32,
+    /// Output only. The Database Management type.
+    #[prost(enumeration = "database_management_config::ManagementType", tag = "2")]
+    pub management_type: i32,
+}
+/// Nested message and enum types in `DatabaseManagementConfig`.
+pub mod database_management_config {
+    /// The status of the Database Management service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ManagementState {
+        /// The status is not specified.
+        Unspecified = 0,
+        /// The Database Management service is enabling.
+        Enabling = 1,
+        /// The Database Management service is enabled.
+        Enabled = 2,
+        /// The Database Management service is disabling.
+        Disabling = 3,
+        /// The Database Management service is disabled.
+        Disabled = 4,
+        /// The Database Management service is updating.
+        Updating = 5,
+        /// The Database Management service failed to enable.
+        FailedEnabling = 6,
+        /// The Database Management service failed to disable.
+        FailedDisabling = 7,
+        /// The Database Management service failed to update.
+        FailedUpdating = 8,
+    }
+    impl ManagementState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MANAGEMENT_STATE_UNSPECIFIED",
+                Self::Enabling => "ENABLING",
+                Self::Enabled => "ENABLED",
+                Self::Disabling => "DISABLING",
+                Self::Disabled => "DISABLED",
+                Self::Updating => "UPDATING",
+                Self::FailedEnabling => "FAILED_ENABLING",
+                Self::FailedDisabling => "FAILED_DISABLING",
+                Self::FailedUpdating => "FAILED_UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANAGEMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLING" => Some(Self::Enabling),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLING" => Some(Self::Disabling),
+                "DISABLED" => Some(Self::Disabled),
+                "UPDATING" => Some(Self::Updating),
+                "FAILED_ENABLING" => Some(Self::FailedEnabling),
+                "FAILED_DISABLING" => Some(Self::FailedDisabling),
+                "FAILED_UPDATING" => Some(Self::FailedUpdating),
+                _ => None,
+            }
+        }
+    }
+    /// The Database Management type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ManagementType {
+        /// The type is not specified.
+        Unspecified = 0,
+        /// Basic Database Management.
+        Basic = 1,
+        /// Advanced Database Management.
+        Advanced = 2,
+    }
+    impl ManagementType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MANAGEMENT_TYPE_UNSPECIFIED",
+                Self::Basic => "BASIC",
+                Self::Advanced => "ADVANCED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANAGEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "ADVANCED" => Some(Self::Advanced),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request for `PluggableDatabase.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetPluggableDatabaseRequest {
+    /// Required. The name of the PluggableDatabase resource in the following
+    /// format:
+    /// projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `PluggableDatabase.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListPluggableDatabasesRequest {
+    /// Required. The parent, which owns this collection of PluggableDatabases.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of PluggableDatabases to return. The service
+    /// may return fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListPluggableDatabases`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListPluggableDatabases`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. List for
+    /// pluggable databases is supported only with a valid container database (full
+    /// resource name) filter in this format:
+    /// `database="projects/{project}/locations/{location}/databases/{database}"`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for `PluggableDatabase.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPluggableDatabasesResponse {
+    /// The list of PluggableDatabases.
+    #[prost(message, repeated, tag = "1")]
+    pub pluggable_databases: ::prost::alloc::vec::Vec<PluggableDatabase>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Details of the Database resource.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/Database/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Database {
+    /// Identifier. The name of the Database resource in the following format:
+    /// projects/{project}/locations/{region}/databases/{database}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The database name. The name must begin with an alphabetic
+    /// character and can contain a maximum of eight alphanumeric characters.
+    /// Special characters are not permitted.
+    #[prost(string, tag = "2")]
+    pub db_name: ::prost::alloc::string::String,
+    /// Optional. The DB_UNIQUE_NAME of the Oracle Database being backed up.
+    #[prost(string, tag = "3")]
+    pub db_unique_name: ::prost::alloc::string::String,
+    /// Required. The password for the default ADMIN user.
+    #[prost(string, tag = "4")]
+    pub admin_password: ::prost::alloc::string::String,
+    /// Optional. The TDE wallet password for the database.
+    #[prost(string, tag = "5")]
+    pub tde_wallet_password: ::prost::alloc::string::String,
+    /// Optional. The character set for the database. The default is AL32UTF8.
+    #[prost(string, tag = "6")]
+    pub character_set: ::prost::alloc::string::String,
+    /// Optional. The national character set for the database. The default is
+    /// AL16UTF16.
+    #[prost(string, tag = "7")]
+    pub ncharacter_set: ::prost::alloc::string::String,
+    /// Output only. HTTPS link to OCI resources exposed to Customer via UI
+    /// Interface.
+    #[prost(string, tag = "8")]
+    pub oci_url: ::prost::alloc::string::String,
+    /// Output only. The date and time that the Database was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The properties of the Database.
+    #[prost(message, optional, tag = "10")]
+    pub properties: ::core::option::Option<DatabaseProperties>,
+    /// Optional. The database ID of the Database.
+    #[prost(string, tag = "11")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Optional. The name of the DbHome resource associated with the Database.
+    #[prost(string, tag = "12")]
+    pub db_home_name: ::prost::alloc::string::String,
+    /// Output only. The GCP Oracle zone where the Database is created.
+    #[prost(string, tag = "13")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Output only. The Status of Operations Insights for this Database.
+    #[prost(enumeration = "database::OperationsInsightsStatus", tag = "14")]
+    pub ops_insights_status: i32,
+}
+/// Nested message and enum types in `Database`.
+pub mod database {
+    /// The Status of Operations Insights for this Database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OperationsInsightsStatus {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the operations insights are being enabled.
+        Enabling = 1,
+        /// Indicates that the operations insights are enabled.
+        Enabled = 2,
+        /// Indicates that the operations insights are being disabled.
+        Disabling = 3,
+        /// Indicates that the operations insights are not enabled.
+        NotEnabled = 4,
+        /// Indicates that the operations insights failed to enable.
+        FailedEnabling = 5,
+        /// Indicates that the operations insights failed to disable.
+        FailedDisabling = 6,
+    }
+    impl OperationsInsightsStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATIONS_INSIGHTS_STATUS_UNSPECIFIED",
+                Self::Enabling => "ENABLING",
+                Self::Enabled => "ENABLED",
+                Self::Disabling => "DISABLING",
+                Self::NotEnabled => "NOT_ENABLED",
+                Self::FailedEnabling => "FAILED_ENABLING",
+                Self::FailedDisabling => "FAILED_DISABLING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATIONS_INSIGHTS_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLING" => Some(Self::Enabling),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLING" => Some(Self::Disabling),
+                "NOT_ENABLED" => Some(Self::NotEnabled),
+                "FAILED_ENABLING" => Some(Self::FailedEnabling),
+                "FAILED_DISABLING" => Some(Self::FailedDisabling),
+                _ => None,
+            }
+        }
+    }
+}
+/// The properties of a Database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseProperties {
+    /// Output only. State of the Database.
+    #[prost(enumeration = "database_properties::DatabaseLifecycleState", tag = "1")]
+    pub state: i32,
+    /// Required. The Oracle Database version.
+    #[prost(string, tag = "2")]
+    pub db_version: ::prost::alloc::string::String,
+    /// Optional. Backup options for the Database.
+    #[prost(message, optional, tag = "3")]
+    pub db_backup_config: ::core::option::Option<DbBackupConfig>,
+    /// Output only. The Database Management config.
+    #[prost(message, optional, tag = "4")]
+    pub database_management_config: ::core::option::Option<DatabaseManagementConfig>,
+}
+/// Nested message and enum types in `DatabaseProperties`.
+pub mod database_properties {
+    /// The various lifecycle states of the Database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseLifecycleState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Provisioning = 1,
+        /// Indicates that the resource is in available state.
+        Available = 2,
+        /// Indicates that the resource is in updating state.
+        Updating = 3,
+        /// Indicates that the resource is in backup in progress state.
+        BackupInProgress = 4,
+        /// Indicates that the resource is in upgrading state.
+        Upgrading = 5,
+        /// Indicates that the resource is in converting state.
+        Converting = 6,
+        /// Indicates that the resource is in terminating state.
+        Terminating = 7,
+        /// Indicates that the resource is in terminated state.
+        Terminated = 8,
+        /// Indicates that the resource is in restore failed state.
+        RestoreFailed = 9,
+        /// Indicates that the resource is in failed state.
+        Failed = 10,
+    }
+    impl DatabaseLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATABASE_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Updating => "UPDATING",
+                Self::BackupInProgress => "BACKUP_IN_PROGRESS",
+                Self::Upgrading => "UPGRADING",
+                Self::Converting => "CONVERTING",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::RestoreFailed => "RESTORE_FAILED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "UPDATING" => Some(Self::Updating),
+                "BACKUP_IN_PROGRESS" => Some(Self::BackupInProgress),
+                "UPGRADING" => Some(Self::Upgrading),
+                "CONVERTING" => Some(Self::Converting),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "RESTORE_FAILED" => Some(Self::RestoreFailed),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Backup Options for the Database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbBackupConfig {
+    /// Optional. If set to true, enables automatic backups on the database.
+    #[prost(bool, tag = "1")]
+    pub auto_backup_enabled: bool,
+    /// Optional. Details of the database backup destinations.
+    #[prost(message, repeated, tag = "2")]
+    pub backup_destination_details: ::prost::alloc::vec::Vec<
+        db_backup_config::BackupDestinationDetails,
+    >,
+    /// Optional. The number of days an automatic backup is retained before being
+    /// automatically deleted. This value determines the earliest point in time to
+    /// which a database can be restored. Min: 1, Max: 60.
+    #[prost(int32, tag = "3")]
+    pub retention_period_days: i32,
+    /// Optional. This defines when the backups will be deleted after Database
+    /// termination.
+    #[prost(enumeration = "db_backup_config::BackupDeletionPolicy", tag = "4")]
+    pub backup_deletion_policy: i32,
+    /// Optional. The day of the week on which the full backup should be performed
+    /// on the database. If no value is provided, it will default to Sunday.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "5")]
+    pub auto_full_backup_day: i32,
+    /// Optional. The window in which the full backup should be performed on the
+    /// database. If no value is provided, the default is anytime.
+    #[prost(enumeration = "db_backup_config::BackupWindow", tag = "6")]
+    pub auto_full_backup_window: i32,
+    /// Optional. The window in which the incremental backup should be performed on
+    /// the database. If no value is provided, the default is anytime except the
+    /// auto full backup day.
+    #[prost(enumeration = "db_backup_config::BackupWindow", tag = "7")]
+    pub auto_incremental_backup_window: i32,
+}
+/// Nested message and enum types in `DbBackupConfig`.
+pub mod db_backup_config {
+    /// The details of the database backup destination.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BackupDestinationDetails {
+        /// Optional. The type of the database backup destination.
+        #[prost(enumeration = "BackupDestinationType", tag = "1")]
+        pub r#type: i32,
+    }
+    /// The type of the database backup destination.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupDestinationType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Backup destination type is NFS.
+        Nfs = 1,
+        /// Backup destination type is Recovery Appliance.
+        RecoveryAppliance = 2,
+        /// Backup destination type is Object Store.
+        ObjectStore = 3,
+        /// Backup destination type is Local.
+        Local = 4,
+        /// Backup destination type is DBRS.
+        Dbrs = 5,
+    }
+    impl BackupDestinationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_DESTINATION_TYPE_UNSPECIFIED",
+                Self::Nfs => "NFS",
+                Self::RecoveryAppliance => "RECOVERY_APPLIANCE",
+                Self::ObjectStore => "OBJECT_STORE",
+                Self::Local => "LOCAL",
+                Self::Dbrs => "DBRS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_DESTINATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NFS" => Some(Self::Nfs),
+                "RECOVERY_APPLIANCE" => Some(Self::RecoveryAppliance),
+                "OBJECT_STORE" => Some(Self::ObjectStore),
+                "LOCAL" => Some(Self::Local),
+                "DBRS" => Some(Self::Dbrs),
+                _ => None,
+            }
+        }
+    }
+    /// The 2 hour window in which the backup should be performed on the database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupWindow {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// 12:00 AM - 2:00 AM
+        SlotOne = 1,
+        /// 2:00 AM - 4:00 AM
+        SlotTwo = 2,
+        /// 4:00 AM - 6:00 AM
+        SlotThree = 3,
+        /// 6:00 AM - 8:00 AM
+        SlotFour = 4,
+        /// 8:00 AM - 10:00 AM
+        SlotFive = 5,
+        /// 10:00 AM - 12:00 PM
+        SlotSix = 6,
+        /// 12:00 PM - 2:00 PM
+        SlotSeven = 7,
+        /// 2:00 PM - 4:00 PM
+        SlotEight = 8,
+        /// 4:00 PM - 6:00 PM
+        SlotNine = 9,
+        /// 6:00 PM - 8:00 PM
+        SlotTen = 10,
+        /// 8:00 PM - 10:00 PM
+        SlotEleven = 11,
+        /// 10:00 PM - 12:00 AM
+        SlotTwelve = 12,
+    }
+    impl BackupWindow {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_WINDOW_UNSPECIFIED",
+                Self::SlotOne => "SLOT_ONE",
+                Self::SlotTwo => "SLOT_TWO",
+                Self::SlotThree => "SLOT_THREE",
+                Self::SlotFour => "SLOT_FOUR",
+                Self::SlotFive => "SLOT_FIVE",
+                Self::SlotSix => "SLOT_SIX",
+                Self::SlotSeven => "SLOT_SEVEN",
+                Self::SlotEight => "SLOT_EIGHT",
+                Self::SlotNine => "SLOT_NINE",
+                Self::SlotTen => "SLOT_TEN",
+                Self::SlotEleven => "SLOT_ELEVEN",
+                Self::SlotTwelve => "SLOT_TWELVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_WINDOW_UNSPECIFIED" => Some(Self::Unspecified),
+                "SLOT_ONE" => Some(Self::SlotOne),
+                "SLOT_TWO" => Some(Self::SlotTwo),
+                "SLOT_THREE" => Some(Self::SlotThree),
+                "SLOT_FOUR" => Some(Self::SlotFour),
+                "SLOT_FIVE" => Some(Self::SlotFive),
+                "SLOT_SIX" => Some(Self::SlotSix),
+                "SLOT_SEVEN" => Some(Self::SlotSeven),
+                "SLOT_EIGHT" => Some(Self::SlotEight),
+                "SLOT_NINE" => Some(Self::SlotNine),
+                "SLOT_TEN" => Some(Self::SlotTen),
+                "SLOT_ELEVEN" => Some(Self::SlotEleven),
+                "SLOT_TWELVE" => Some(Self::SlotTwelve),
+                _ => None,
+            }
+        }
+    }
+    /// This defines when the backups will be deleted after Database termination.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupDeletionPolicy {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Keeps the backup for predefined time
+        /// i.e. 72 hours and then delete permanently.
+        DeleteImmediately = 1,
+        /// Keeps the backups as per the policy defined
+        /// for database backups.
+        DeleteAfterRetentionPeriod = 2,
+    }
+    impl BackupDeletionPolicy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_DELETION_POLICY_UNSPECIFIED",
+                Self::DeleteImmediately => "DELETE_IMMEDIATELY",
+                Self::DeleteAfterRetentionPeriod => "DELETE_AFTER_RETENTION_PERIOD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_DELETION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DELETE_IMMEDIATELY" => Some(Self::DeleteImmediately),
+                "DELETE_AFTER_RETENTION_PERIOD" => Some(Self::DeleteAfterRetentionPeriod),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request for `Database.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDatabaseRequest {
+    /// Required. The name of the Database resource in the following format:
+    /// projects/{project}/locations/{region}/databases/{database}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `Database.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDatabasesRequest {
+    /// Required. The parent resource name in the following format:
+    /// projects/{project}/locations/{region}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, a maximum of 50 Databases will be returned.
+    /// The maximum value is 1000; values above 1000 will be reset to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying the requested page of results to return. All
+    /// fields except the filter should remain the same as in the request that
+    /// provided this page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. list for
+    /// container databases is supported only with a valid dbSystem (full resource
+    /// name) filter in this format:
+    /// `dbSystem="projects/{project}/locations/{location}/dbSystems/{dbSystemId}"`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for `Database.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatabasesResponse {
+    /// The list of Databases.
+    #[prost(message, repeated, tag = "1")]
+    pub databases: ::prost::alloc::vec::Vec<Database>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Details of the Database character set resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DatabaseCharacterSet {
+    /// Identifier. The name of the Database Character Set resource in the
+    /// following format:
+    /// projects/{project}/locations/{region}/databaseCharacterSets/{database_character_set}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The character set type for the Database.
+    #[prost(enumeration = "database_character_set::CharacterSetType", tag = "2")]
+    pub character_set_type: i32,
+    /// Output only. The character set name for the Database which is the ID in the
+    /// resource name.
+    #[prost(string, tag = "3")]
+    pub character_set: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DatabaseCharacterSet`.
+pub mod database_character_set {
+    /// The type of character set a Database can have.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CharacterSetType {
+        /// Character set type is not specified.
+        Unspecified = 0,
+        /// Character set type is set to database.
+        Database = 1,
+        /// Character set type is set to national.
+        National = 2,
+    }
+    impl CharacterSetType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CHARACTER_SET_TYPE_UNSPECIFIED",
+                Self::Database => "DATABASE",
+                Self::National => "NATIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHARACTER_SET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATABASE" => Some(Self::Database),
+                "NATIONAL" => Some(Self::National),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request for `DatabaseCharacterSet.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDatabaseCharacterSetsRequest {
+    /// Required. The parent value for DatabaseCharacterSets in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of DatabaseCharacterSets to return. The
+    /// service may return fewer than this value. If unspecified, at most 50
+    /// DatabaseCharacterSets will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListDatabaseCharacterSets` call. Provide this to retrieve the subsequent
+    /// page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDatabaseCharacterSets` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Only the
+    /// **character_set_type** field is supported in the following format:
+    /// `character_set_type="{characterSetType}"`. Accepted values include
+    /// `DATABASE` and `NATIONAL`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for `DatabaseCharacterSet.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatabaseCharacterSetsResponse {
+    /// The list of DatabaseCharacterSets.
+    #[prost(message, repeated, tag = "1")]
+    pub database_character_sets: ::prost::alloc::vec::Vec<DatabaseCharacterSet>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Details of the database node resource.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/DbNode/>
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1816,6 +3148,9 @@ pub struct DbNodeProperties {
     /// Total CPU core count of the database node.
     #[prost(int32, tag = "10")]
     pub total_cpu_core_count: i32,
+    /// Output only. The date and time that the database node was created.
+    #[prost(message, optional, tag = "11")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `DbNodeProperties`.
 pub mod db_node_properties {
@@ -1998,6 +3333,673 @@ pub mod db_server_properties {
         }
     }
 }
+/// Details of the DbSystem (BaseDB) resource.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/DbSystem/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbSystem {
+    /// Identifier. The name of the DbSystem resource in the following format:
+    /// projects/{project}/locations/{region}/dbSystems/{db_system}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The properties of the DbSystem.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<DbSystemProperties>,
+    /// Optional. The GCP Oracle zone where Oracle DbSystem is hosted.
+    /// Example: us-east4-b-r2.
+    /// If not specified, the system will pick a zone based on availability.
+    #[prost(string, tag = "3")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Optional. The labels or tags associated with the DbSystem.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The name of the OdbNetwork associated with the DbSystem.
+    /// Format: projects/{project}/locations/{location}/odbNetworks/{odb_network}
+    /// It is optional but if specified, this should match the parent ODBNetwork of
+    /// the OdbSubnet.
+    #[prost(string, tag = "5")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Required. The name of the OdbSubnet associated with the DbSystem for IP
+    /// allocation. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "6")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// DbSystem
+    #[prost(string, tag = "7")]
+    pub entitlement_id: ::prost::alloc::string::String,
+    /// Required. The display name for the System db. The name does not have to
+    /// be unique within your project.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The date and time that the DbSystem was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. HTTPS link to OCI resources exposed to Customer via UI
+    /// Interface.
+    #[prost(string, tag = "10")]
+    pub oci_url: ::prost::alloc::string::String,
+}
+/// The properties of a DbSystem.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbSystemProperties {
+    /// Required. Shape of DB System.
+    #[prost(string, tag = "1")]
+    pub shape: ::prost::alloc::string::String,
+    /// Required. The number of CPU cores to enable for the DbSystem.
+    #[prost(int32, tag = "2")]
+    pub compute_count: i32,
+    /// Required. The initial data storage size in GB.
+    #[prost(int32, tag = "3")]
+    pub initial_data_storage_size_gb: i32,
+    /// Required. The database edition of the DbSystem.
+    #[prost(enumeration = "db_system_properties::DbSystemDatabaseEdition", tag = "4")]
+    pub database_edition: i32,
+    /// Required. The license model of the DbSystem.
+    #[prost(enumeration = "db_system_properties::LicenseModel", tag = "5")]
+    pub license_model: i32,
+    /// Required. SSH public keys to be stored with the DbSystem.
+    #[prost(string, repeated, tag = "6")]
+    pub ssh_public_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Prefix for DB System host names.
+    #[prost(string, tag = "7")]
+    pub hostname_prefix: ::prost::alloc::string::String,
+    /// Output only. The hostname of the DbSystem.
+    #[prost(string, tag = "8")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. The private IP address of the DbSystem.
+    #[prost(string, tag = "9")]
+    pub private_ip: ::prost::alloc::string::String,
+    /// Optional. Data collection options for diagnostics.
+    #[prost(message, optional, tag = "10")]
+    pub data_collection_options: ::core::option::Option<DataCollectionOptionsDbSystem>,
+    /// Optional. Time zone of the DbSystem.
+    #[prost(message, optional, tag = "11")]
+    pub time_zone: ::core::option::Option<super::super::super::r#type::TimeZone>,
+    /// Output only. State of the DbSystem.
+    #[prost(enumeration = "db_system_properties::DbSystemLifecycleState", tag = "12")]
+    pub lifecycle_state: i32,
+    /// Optional. Details for creating a Database Home.
+    #[prost(message, optional, tag = "13")]
+    pub db_home: ::core::option::Option<DbHome>,
+    /// Output only. OCID of the DbSystem.
+    #[prost(string, tag = "14")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Optional. The memory size in GB.
+    #[prost(int32, tag = "15")]
+    pub memory_size_gb: i32,
+    /// Optional. The compute model of the DbSystem.
+    #[prost(enumeration = "db_system_properties::ComputeModel", tag = "16")]
+    pub compute_model: i32,
+    /// Optional. The data storage size in GB that is currently available to
+    /// DbSystems.
+    #[prost(int32, tag = "17")]
+    pub data_storage_size_gb: i32,
+    /// Optional. The reco/redo storage size in GB.
+    #[prost(int32, tag = "18")]
+    pub reco_storage_size_gb: i32,
+    /// Optional. The host domain name of the DbSystem.
+    #[prost(string, tag = "19")]
+    pub domain: ::prost::alloc::string::String,
+    /// Optional. The number of nodes in the DbSystem.
+    #[prost(int32, tag = "20")]
+    pub node_count: i32,
+    /// Optional. The options for the DbSystem.
+    #[prost(message, optional, tag = "21")]
+    pub db_system_options: ::core::option::Option<DbSystemOptions>,
+}
+/// Nested message and enum types in `DbSystemProperties`.
+pub mod db_system_properties {
+    /// The editions available for DbSystem.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DbSystemDatabaseEdition {
+        /// The database edition is unspecified.
+        Unspecified = 0,
+        /// The database edition is Standard.
+        StandardEdition = 1,
+        /// The database edition is Enterprise.
+        EnterpriseEdition = 2,
+        /// The database edition is Enterprise Edition.
+        EnterpriseEditionHighPerformance = 3,
+    }
+    impl DbSystemDatabaseEdition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DB_SYSTEM_DATABASE_EDITION_UNSPECIFIED",
+                Self::StandardEdition => "STANDARD_EDITION",
+                Self::EnterpriseEdition => "ENTERPRISE_EDITION",
+                Self::EnterpriseEditionHighPerformance => {
+                    "ENTERPRISE_EDITION_HIGH_PERFORMANCE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DB_SYSTEM_DATABASE_EDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD_EDITION" => Some(Self::StandardEdition),
+                "ENTERPRISE_EDITION" => Some(Self::EnterpriseEdition),
+                "ENTERPRISE_EDITION_HIGH_PERFORMANCE" => {
+                    Some(Self::EnterpriseEditionHighPerformance)
+                }
+                _ => None,
+            }
+        }
+    }
+    /// The license model of the DbSystem.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LicenseModel {
+        /// The license model is unspecified.
+        Unspecified = 0,
+        /// The license model is included.
+        LicenseIncluded = 1,
+        /// The license model is bring your own license.
+        BringYourOwnLicense = 2,
+    }
+    impl LicenseModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LICENSE_MODEL_UNSPECIFIED",
+                Self::LicenseIncluded => "LICENSE_INCLUDED",
+                Self::BringYourOwnLicense => "BRING_YOUR_OWN_LICENSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LICENSE_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LICENSE_INCLUDED" => Some(Self::LicenseIncluded),
+                "BRING_YOUR_OWN_LICENSE" => Some(Self::BringYourOwnLicense),
+                _ => None,
+            }
+        }
+    }
+    /// The various lifecycle states of the DbSystem.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DbSystemLifecycleState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Provisioning = 1,
+        /// Indicates that the resource is in available state.
+        Available = 2,
+        /// Indicates that the resource is in updating state.
+        Updating = 3,
+        /// Indicates that the resource is in terminating state.
+        Terminating = 4,
+        /// Indicates that the resource is in terminated state.
+        Terminated = 5,
+        /// Indicates that the resource is in failed state.
+        Failed = 6,
+        /// Indicates that the resource has been migrated.
+        Migrated = 7,
+        /// Indicates that the resource is in maintenance in progress state.
+        MaintenanceInProgress = 8,
+        /// Indicates that the resource needs attention.
+        NeedsAttention = 9,
+        /// Indicates that the resource is upgrading.
+        Upgrading = 10,
+    }
+    impl DbSystemLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DB_SYSTEM_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Updating => "UPDATING",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::Failed => "FAILED",
+                Self::Migrated => "MIGRATED",
+                Self::MaintenanceInProgress => "MAINTENANCE_IN_PROGRESS",
+                Self::NeedsAttention => "NEEDS_ATTENTION",
+                Self::Upgrading => "UPGRADING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DB_SYSTEM_LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "UPDATING" => Some(Self::Updating),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "FAILED" => Some(Self::Failed),
+                "MIGRATED" => Some(Self::Migrated),
+                "MAINTENANCE_IN_PROGRESS" => Some(Self::MaintenanceInProgress),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "UPGRADING" => Some(Self::Upgrading),
+                _ => None,
+            }
+        }
+    }
+    /// The compute model of the DbSystem.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ComputeModel {
+        /// The compute model is unspecified.
+        Unspecified = 0,
+        /// The compute model is virtual.
+        Ecpu = 1,
+        /// The compute model is physical.
+        Ocpu = 2,
+    }
+    impl ComputeModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPUTE_MODEL_UNSPECIFIED",
+                Self::Ecpu => "ECPU",
+                Self::Ocpu => "OCPU",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPUTE_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "ECPU" => Some(Self::Ecpu),
+                "OCPU" => Some(Self::Ocpu),
+                _ => None,
+            }
+        }
+    }
+}
+/// Data collection options for DbSystem.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataCollectionOptionsDbSystem {
+    /// Optional. Indicates whether to enable data collection for diagnostics.
+    #[prost(bool, tag = "1")]
+    pub is_diagnostics_events_enabled: bool,
+    /// Optional. Indicates whether to enable incident logs and trace collection.
+    #[prost(bool, tag = "2")]
+    pub is_incident_logs_enabled: bool,
+}
+/// Details of the DbSystem Options.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DbSystemOptions {
+    /// Optional. The storage option used in DB system.
+    #[prost(enumeration = "db_system_options::StorageManagement", tag = "1")]
+    pub storage_management: i32,
+}
+/// Nested message and enum types in `DbSystemOptions`.
+pub mod db_system_options {
+    /// The storage option used in DB system.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageManagement {
+        /// The storage management is unspecified.
+        Unspecified = 0,
+        /// Automatic storage management.
+        Asm = 1,
+        /// Logical Volume management.
+        Lvm = 2,
+    }
+    impl StorageManagement {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_MANAGEMENT_UNSPECIFIED",
+                Self::Asm => "ASM",
+                Self::Lvm => "LVM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_MANAGEMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASM" => Some(Self::Asm),
+                "LVM" => Some(Self::Lvm),
+                _ => None,
+            }
+        }
+    }
+}
+/// Details of the Database Home resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbHome {
+    /// Optional. The display name for the Database Home. The name does not have to
+    /// be unique within your project.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. A valid Oracle Database version. For a list of supported
+    /// versions, use the ListDbVersions operation.
+    #[prost(string, tag = "2")]
+    pub db_version: ::prost::alloc::string::String,
+    /// Required. The Database resource.
+    #[prost(message, optional, tag = "3")]
+    pub database: ::core::option::Option<Database>,
+    /// Optional. Whether unified auditing is enabled for the Database Home.
+    #[prost(bool, tag = "4")]
+    pub is_unified_auditing_enabled: bool,
+}
+/// The request for `DbSystem.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDbSystemRequest {
+    /// Required. The value for parent of the DbSystem in the following format:
+    /// projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the DbSystem to create. This value is
+    /// restricted to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of
+    /// 63 characters in length. The value must start with a letter and end with a
+    /// letter or a number.
+    #[prost(string, tag = "2")]
+    pub db_system_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub db_system: ::core::option::Option<DbSystem>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `DbSystem.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDbSystemRequest {
+    /// Required. The name of the DbSystem in the following format:
+    /// projects/{project}/locations/{location}/dbSystems/{db_system}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `DbSystem.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDbSystemRequest {
+    /// Required. The name of the DbSystem in the following format:
+    /// projects/{project}/locations/{location}/dbSystems/{db_system}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `DbSystem.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDbSystemsRequest {
+    /// Required. The parent value for DbSystems in the following format:
+    /// projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 DbSystems will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `DbSystem.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDbSystemsResponse {
+    /// The list of DbSystems.
+    #[prost(message, repeated, tag = "1")]
+    pub db_systems: ::prost::alloc::vec::Vec<DbSystem>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Summary of the DbSystem initial storage size.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbSystemInitialStorageSize {
+    /// Output only. The name of the resource.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The properties of the DbSystem initial storage size summary.
+    #[prost(message, optional, tag = "3")]
+    pub properties: ::core::option::Option<DbSystemInitialStorageSizeProperties>,
+}
+/// The properties of a DbSystem initial storage size summary.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbSystemInitialStorageSizeProperties {
+    /// Output only. The storage option used in DB system.
+    #[prost(
+        enumeration = "db_system_initial_storage_size_properties::StorageManagement",
+        tag = "1"
+    )]
+    pub storage_management: i32,
+    /// Output only. VM shape platform type
+    #[prost(
+        enumeration = "db_system_initial_storage_size_properties::ShapeType",
+        tag = "2"
+    )]
+    pub shape_type: i32,
+    /// Output only. List of storage disk details.
+    #[prost(message, repeated, tag = "3")]
+    pub storage_size_details: ::prost::alloc::vec::Vec<StorageSizeDetails>,
+    /// Output only. List of storage disk details available for launches from
+    /// backup.
+    #[prost(message, repeated, tag = "4")]
+    pub launch_from_backup_storage_size_details: ::prost::alloc::vec::Vec<
+        StorageSizeDetails,
+    >,
+}
+/// Nested message and enum types in `DbSystemInitialStorageSizeProperties`.
+pub mod db_system_initial_storage_size_properties {
+    /// The storage option used in the DB system.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageManagement {
+        /// Unspecified storage management.
+        Unspecified = 0,
+        /// Automatic Storage Management.
+        Asm = 1,
+        /// Logical Volume Management.
+        Lvm = 2,
+    }
+    impl StorageManagement {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_MANAGEMENT_UNSPECIFIED",
+                Self::Asm => "ASM",
+                Self::Lvm => "LVM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_MANAGEMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASM" => Some(Self::Asm),
+                "LVM" => Some(Self::Lvm),
+                _ => None,
+            }
+        }
+    }
+    /// The shape type of the DB system.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ShapeType {
+        /// Unspecified shape type.
+        Unspecified = 0,
+        /// Standard X86.
+        StandardX86 = 1,
+    }
+    impl ShapeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SHAPE_TYPE_UNSPECIFIED",
+                Self::StandardX86 => "STANDARD_X86",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SHAPE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD_X86" => Some(Self::StandardX86),
+                _ => None,
+            }
+        }
+    }
+}
+/// The initial storage size, in gigabytes, that is applicable for virtual
+/// machine DBSystem.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StorageSizeDetails {
+    /// Output only. The data storage size, in gigabytes, that is applicable for
+    /// virtual machine DBSystem.
+    #[prost(int32, tag = "1")]
+    pub data_storage_size_in_gbs: i32,
+    /// Output only. The RECO/REDO storage size, in gigabytes, that is applicable
+    /// for virtual machine DBSystem.
+    #[prost(int32, tag = "2")]
+    pub reco_storage_size_in_gbs: i32,
+}
+/// The request for `DbSystemInitialStorageSizes.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDbSystemInitialStorageSizesRequest {
+    /// Required. The parent value for the DbSystemInitialStorageSize resource with
+    /// the format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, a maximum of 50 DbSystemInitialStorageSizes will be
+    /// returned. The maximum value is 1000; values above 1000 will be reset to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying the requested page of results to return. All
+    /// fields except the filter should remain the same as in the request that
+    /// provided this page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for `DbSystemInitialStorageSizes.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDbSystemInitialStorageSizesResponse {
+    /// The list of DbSystemInitialStorageSizes.
+    #[prost(message, repeated, tag = "1")]
+    pub db_system_initial_storage_sizes: ::prost::alloc::vec::Vec<
+        DbSystemInitialStorageSize,
+    >,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Details of the Database System Shapes resource.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/DbSystemShapeSummary/>
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2039,6 +4041,73 @@ pub struct DbSystemShape {
     /// Optional. Minimum node storage per database server in gigabytes.
     #[prost(int32, tag = "12")]
     pub min_db_node_storage_per_node_gb: i32,
+}
+/// A valid Oracle Database version.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DbVersion {
+    /// Output only. The name of the DbVersion resource in the following format:
+    /// projects/{project}/locations/{region}/dbVersions/{db_version}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The properties of the DbVersion.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<DbVersionProperties>,
+}
+/// The properties of a DbVersion.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DbVersionProperties {
+    /// Output only. A valid Oracle Database version.
+    #[prost(string, tag = "1")]
+    pub version: ::prost::alloc::string::String,
+    /// Output only. True if this version of the Oracle Database software is the
+    /// latest version for a release.
+    #[prost(bool, tag = "2")]
+    pub is_latest_for_major_version: bool,
+    /// Output only. True if this version of the Oracle Database software supports
+    /// pluggable databases.
+    #[prost(bool, tag = "3")]
+    pub supports_pdb: bool,
+    /// Output only. True if this version of the Oracle Database software is the
+    /// preview version.
+    #[prost(bool, tag = "4")]
+    pub is_preview_db_version: bool,
+    /// Output only. True if this version of the Oracle Database software is
+    /// supported for Upgrade.
+    #[prost(bool, tag = "5")]
+    pub is_upgrade_supported: bool,
+}
+/// The request for `DbVersions.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDbVersionsRequest {
+    /// Required. The parent value for the DbVersion resource with the
+    /// format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, a maximum of 50 DbVersions will be returned.
+    /// The maximum value is 1000; values above 1000 will be reset to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying the requested page of results to return. All
+    /// fields except the filter should remain the same as in the request that
+    /// provided this page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression that matches a subset of the DbVersions to
+    /// show. The supported filter for dbSystem creation is `db_system_shape =  {db_system_shape} AND storage_management = {storage_management}`. If no
+    /// filter is provided, all DbVersions will be returned.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for `DbVersions.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDbVersionsResponse {
+    /// The list of DbVersions.
+    #[prost(message, repeated, tag = "1")]
+    pub db_versions: ::prost::alloc::vec::Vec<DbVersion>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Details of the Entitlement resource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2149,7 +4218,9 @@ pub struct CloudExadataInfrastructure {
     /// Optional. User friendly name for this resource.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Google Cloud Platform location where Oracle Exadata is hosted.
+    /// Optional. The GCP Oracle zone where Oracle Exadata Infrastructure is
+    /// hosted. Example: us-east4-b-r2. If not specified, the system will pick a
+    /// zone based on availability.
     #[prost(string, tag = "8")]
     pub gcp_oracle_zone: ::prost::alloc::string::String,
     /// Output only. Entitlement ID of the private offer against which this
@@ -2266,6 +4337,15 @@ pub struct CloudExadataInfrastructureProperties {
     /// in the Exadata Infrastructure. Example: 20.1.15
     #[prost(string, tag = "27")]
     pub monthly_db_server_version: ::prost::alloc::string::String,
+    /// Output only. The compute model of the Exadata Infrastructure.
+    #[prost(enumeration = "ComputeModel", tag = "31")]
+    pub compute_model: i32,
+    /// Output only. The database server type of the Exadata Infrastructure.
+    #[prost(string, tag = "29")]
+    pub database_server_type: ::prost::alloc::string::String,
+    /// Output only. The storage server type of the Exadata Infrastructure.
+    #[prost(string, tag = "30")]
+    pub storage_server_type: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `CloudExadataInfrastructureProperties`.
 pub mod cloud_exadata_infrastructure_properties {
@@ -2480,6 +4560,603 @@ pub mod maintenance_window {
         }
     }
 }
+/// ExadbVmCluster represents a cluster of VMs that are used to run Exadata
+/// workloads.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExadbVmCluster/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExadbVmCluster {
+    /// Identifier. The name of the ExadbVmCluster resource in the following
+    /// format:
+    /// projects/{project}/locations/{region}/exadbVmClusters/{exadb_vm_cluster}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The properties of the ExadbVmCluster.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<ExadbVmClusterProperties>,
+    /// Output only. Immutable. The GCP Oracle zone where Oracle ExadbVmCluster is
+    /// hosted. Example: us-east4-b-r2. During creation, the system will pick the
+    /// zone assigned to the ExascaleDbStorageVault.
+    #[prost(string, tag = "3")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Optional. The labels or tags associated with the ExadbVmCluster.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Immutable. The name of the OdbNetwork associated with the
+    /// ExadbVmCluster. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network} It is
+    /// optional but if specified, this should match the parent ODBNetwork of the
+    /// OdbSubnet.
+    #[prost(string, tag = "6")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Required. Immutable. The name of the OdbSubnet associated with the
+    /// ExadbVmCluster for IP allocation. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "7")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Required. Immutable. The name of the backup OdbSubnet associated with the
+    /// ExadbVmCluster. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "8")]
+    pub backup_odb_subnet: ::prost::alloc::string::String,
+    /// Required. Immutable. The display name for the ExadbVmCluster. The name does
+    /// not have to be unique within your project. The name must be 1-255
+    /// characters long and can only contain alphanumeric characters.
+    #[prost(string, tag = "9")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The date and time that the ExadbVmCluster was created.
+    #[prost(message, optional, tag = "10")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// ExadbVmCluster.
+    #[prost(string, tag = "11")]
+    pub entitlement_id: ::prost::alloc::string::String,
+}
+/// The storage allocation for the exadbvmcluster, in gigabytes (GB).
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExadbVmClusterStorageDetails {
+    /// Required. The storage allocation for the exadbvmcluster per node, in
+    /// gigabytes (GB). This field is used to calculate the total storage
+    /// allocation for the exadbvmcluster.
+    #[prost(int32, tag = "2")]
+    pub size_in_gbs_per_node: i32,
+}
+/// The properties of an ExadbVmCluster.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExadbVmClusterProperties {
+    /// Optional. Immutable. The cluster name for Exascale vm cluster. The cluster
+    /// name must begin with an alphabetic character and may contain hyphens(-) but
+    /// can not contain underscores(\_). It should be not more than 11 characters
+    /// and is not case sensitive. OCI Cluster name.
+    #[prost(string, tag = "1")]
+    pub cluster_name: ::prost::alloc::string::String,
+    /// Required. Immutable. Grid Infrastructure Version.
+    #[prost(string, tag = "2")]
+    pub grid_image_id: ::prost::alloc::string::String,
+    /// Required. The number of nodes/VMs in the ExadbVmCluster.
+    #[prost(int32, tag = "3")]
+    pub node_count: i32,
+    /// Required. Immutable. The number of ECPUs enabled per node for an exadata vm
+    /// cluster on exascale infrastructure.
+    #[prost(int32, tag = "20")]
+    pub enabled_ecpu_count_per_node: i32,
+    /// Optional. Immutable. The number of additional ECPUs per node for an Exadata
+    /// VM cluster on exascale infrastructure.
+    #[prost(int32, tag = "21")]
+    pub additional_ecpu_count_per_node: i32,
+    /// Required. Immutable. Total storage details for the ExadbVmCluster.
+    #[prost(message, optional, tag = "6")]
+    pub vm_file_system_storage: ::core::option::Option<ExadbVmClusterStorageDetails>,
+    /// Optional. Immutable. The license type of the ExadbVmCluster.
+    #[prost(enumeration = "exadb_vm_cluster_properties::LicenseModel", tag = "7")]
+    pub license_model: i32,
+    /// Required. Immutable. The name of ExascaleDbStorageVault associated with the
+    /// ExadbVmCluster. It can refer to an existing ExascaleDbStorageVault. Or a
+    /// new one can be created during the ExadbVmCluster creation (requires
+    /// storage_vault_properties to be set).
+    /// Format:
+    /// projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
+    #[prost(string, tag = "8")]
+    pub exascale_db_storage_vault: ::prost::alloc::string::String,
+    /// Required. Immutable. Prefix for VM cluster host names.
+    #[prost(string, tag = "9")]
+    pub hostname_prefix: ::prost::alloc::string::String,
+    /// Output only. The hostname of the ExadbVmCluster.
+    #[prost(string, tag = "10")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Required. Immutable. The SSH public keys for the ExadbVmCluster.
+    #[prost(string, repeated, tag = "11")]
+    pub ssh_public_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Immutable. Indicates user preference for data collection options.
+    #[prost(message, optional, tag = "12")]
+    pub data_collection_options: ::core::option::Option<DataCollectionOptionsCommon>,
+    /// Optional. Immutable. The time zone of the ExadbVmCluster.
+    #[prost(message, optional, tag = "13")]
+    pub time_zone: ::core::option::Option<super::super::super::r#type::TimeZone>,
+    /// Output only. State of the cluster.
+    #[prost(
+        enumeration = "exadb_vm_cluster_properties::ExadbVmClusterLifecycleState",
+        tag = "14"
+    )]
+    pub lifecycle_state: i32,
+    /// Required. Immutable. The shape attribute of the VM cluster. The type of
+    /// Exascale storage used for Exadata VM cluster. The default is SMART_STORAGE
+    /// which supports Oracle Database 23ai and later
+    #[prost(enumeration = "exadb_vm_cluster_properties::ShapeAttribute", tag = "15")]
+    pub shape_attribute: i32,
+    /// Output only. Memory per VM (GB) (Read-only): Shows the amount of memory
+    /// allocated to each VM. Memory is calculated based on 2.75 GB per Total
+    /// ECPUs.
+    #[prost(int32, tag = "16")]
+    pub memory_size_gb: i32,
+    /// Optional. Immutable. SCAN listener port - TCP
+    #[prost(int32, tag = "17")]
+    pub scan_listener_port_tcp: i32,
+    /// Output only. Deep link to the OCI console to view this resource.
+    #[prost(string, tag = "18")]
+    pub oci_uri: ::prost::alloc::string::String,
+    /// Output only. The Oracle Grid Infrastructure (GI) software version.
+    #[prost(string, tag = "19")]
+    pub gi_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ExadbVmClusterProperties`.
+pub mod exadb_vm_cluster_properties {
+    /// The Oracle license model that applies to the ExaScale VM cluster
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LicenseModel {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Default is license included.
+        LicenseIncluded = 1,
+        /// Bring your own license.
+        BringYourOwnLicense = 2,
+    }
+    impl LicenseModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LICENSE_MODEL_UNSPECIFIED",
+                Self::LicenseIncluded => "LICENSE_INCLUDED",
+                Self::BringYourOwnLicense => "BRING_YOUR_OWN_LICENSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LICENSE_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LICENSE_INCLUDED" => Some(Self::LicenseIncluded),
+                "BRING_YOUR_OWN_LICENSE" => Some(Self::BringYourOwnLicense),
+                _ => None,
+            }
+        }
+    }
+    /// The various lifecycle states of the VM cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExadbVmClusterLifecycleState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Provisioning = 1,
+        /// Indicates that the resource is in available state.
+        Available = 2,
+        /// Indicates that the resource is in updating state.
+        Updating = 3,
+        /// Indicates that the resource is in terminating state.
+        Terminating = 4,
+        /// Indicates that the resource is in terminated state.
+        Terminated = 5,
+        /// Indicates that the resource is in failed state.
+        Failed = 6,
+        /// Indicates that the resource is in maintenance in progress state.
+        MaintenanceInProgress = 7,
+    }
+    impl ExadbVmClusterLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EXADB_VM_CLUSTER_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Updating => "UPDATING",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::Failed => "FAILED",
+                Self::MaintenanceInProgress => "MAINTENANCE_IN_PROGRESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXADB_VM_CLUSTER_LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "UPDATING" => Some(Self::Updating),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "FAILED" => Some(Self::Failed),
+                "MAINTENANCE_IN_PROGRESS" => Some(Self::MaintenanceInProgress),
+                _ => None,
+            }
+        }
+    }
+    /// The shape attribute of the VM cluster. The type of Exascale storage used
+    /// for Exadata VM cluster. The default is SMART_STORAGE which supports Oracle
+    /// Database 23ai and later
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ShapeAttribute {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in smart storage.
+        SmartStorage = 1,
+        /// Indicates that the resource is in block storage.
+        BlockStorage = 2,
+    }
+    impl ShapeAttribute {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SHAPE_ATTRIBUTE_UNSPECIFIED",
+                Self::SmartStorage => "SMART_STORAGE",
+                Self::BlockStorage => "BLOCK_STORAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SHAPE_ATTRIBUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SMART_STORAGE" => Some(Self::SmartStorage),
+                "BLOCK_STORAGE" => Some(Self::BlockStorage),
+                _ => None,
+            }
+        }
+    }
+}
+/// ExascaleDbStorageVault represents a storage vault exadb vm cluster resource.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExascaleDbStorageVault/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExascaleDbStorageVault {
+    /// Identifier. The resource name of the ExascaleDbStorageVault.
+    /// Format:
+    /// projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name for the ExascaleDbStorageVault. The name does
+    /// not have to be unique within your project. The name must be 1-255
+    /// characters long and can only contain alphanumeric characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The GCP Oracle zone where Oracle ExascaleDbStorageVault is
+    /// hosted. Example: us-east4-b-r2. If not specified, the system will pick a
+    /// zone based on availability.
+    #[prost(string, tag = "3")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Required. The properties of the ExascaleDbStorageVault.
+    #[prost(message, optional, tag = "4")]
+    pub properties: ::core::option::Option<ExascaleDbStorageVaultProperties>,
+    /// Output only. The date and time when the ExascaleDbStorageVault was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// ExascaleDbStorageVault.
+    #[prost(string, tag = "6")]
+    pub entitlement_id: ::prost::alloc::string::String,
+    /// Optional. The labels or tags associated with the ExascaleDbStorageVault.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// The properties of the ExascaleDbStorageVault.
+/// next ID: 12
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExascaleDbStorageVaultProperties {
+    /// Output only. The OCID for the ExascaleDbStorageVault.
+    #[prost(string, tag = "1")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Output only. The time zone of the ExascaleDbStorageVault.
+    #[prost(message, optional, tag = "2")]
+    pub time_zone: ::core::option::Option<super::super::super::r#type::TimeZone>,
+    /// Required. The storage details of the ExascaleDbStorageVault.
+    #[prost(message, optional, tag = "3")]
+    pub exascale_db_storage_details: ::core::option::Option<ExascaleDbStorageDetails>,
+    /// Output only. The state of the ExascaleDbStorageVault.
+    #[prost(enumeration = "exascale_db_storage_vault_properties::State", tag = "4")]
+    pub state: i32,
+    /// Optional. The description of the ExascaleDbStorageVault.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The list of VM cluster OCIDs associated with the
+    /// ExascaleDbStorageVault.
+    #[prost(string, repeated, tag = "6")]
+    pub vm_cluster_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The number of VM clusters associated with the
+    /// ExascaleDbStorageVault.
+    #[prost(int32, tag = "9")]
+    pub vm_cluster_count: i32,
+    /// Optional. The size of additional flash cache in percentage of high capacity
+    /// database storage.
+    #[prost(int32, tag = "7")]
+    pub additional_flash_cache_percent: i32,
+    /// Output only. Deep link to the OCI console to view this resource.
+    #[prost(string, tag = "8")]
+    pub oci_uri: ::prost::alloc::string::String,
+    /// Output only. The shape attributes of the VM clusters attached to the
+    /// ExascaleDbStorageVault.
+    #[prost(
+        enumeration = "exascale_db_storage_vault_properties::ShapeAttribute",
+        repeated,
+        packed = "false",
+        tag = "10"
+    )]
+    pub attached_shape_attributes: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The shape attributes available for the VM clusters to be
+    /// attached to the ExascaleDbStorageVault.
+    #[prost(
+        enumeration = "exascale_db_storage_vault_properties::ShapeAttribute",
+        repeated,
+        packed = "false",
+        tag = "11"
+    )]
+    pub available_shape_attributes: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `ExascaleDbStorageVaultProperties`.
+pub mod exascale_db_storage_vault_properties {
+    /// The state of the ExascaleDbStorageVault.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state of the ExascaleDbStorageVault is unspecified.
+        Unspecified = 0,
+        /// The ExascaleDbStorageVault is being provisioned.
+        Provisioning = 1,
+        /// The ExascaleDbStorageVault is available.
+        Available = 2,
+        /// The ExascaleDbStorageVault is being updated.
+        Updating = 3,
+        /// The ExascaleDbStorageVault is being deleted.
+        Terminating = 4,
+        /// The ExascaleDbStorageVault has been deleted.
+        Terminated = 5,
+        /// The ExascaleDbStorageVault has failed.
+        Failed = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Updating => "UPDATING",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "UPDATING" => Some(Self::Updating),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The shape attribute of the VM clusters attached to the
+    /// ExascaleDbStorageVault.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ShapeAttribute {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in smart storage.
+        SmartStorage = 1,
+        /// Indicates that the resource is in block storage.
+        BlockStorage = 2,
+    }
+    impl ShapeAttribute {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SHAPE_ATTRIBUTE_UNSPECIFIED",
+                Self::SmartStorage => "SMART_STORAGE",
+                Self::BlockStorage => "BLOCK_STORAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SHAPE_ATTRIBUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SMART_STORAGE" => Some(Self::SmartStorage),
+                "BLOCK_STORAGE" => Some(Self::BlockStorage),
+                _ => None,
+            }
+        }
+    }
+}
+/// The storage details of the ExascaleDbStorageVault.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExascaleDbStorageDetails {
+    /// Output only. The available storage capacity for the ExascaleDbStorageVault,
+    /// in gigabytes (GB).
+    #[prost(int32, tag = "1")]
+    pub available_size_gbs: i32,
+    /// Required. The total storage allocation for the ExascaleDbStorageVault, in
+    /// gigabytes (GB).
+    #[prost(int32, tag = "2")]
+    pub total_size_gbs: i32,
+}
+/// The request for `ExascaleDbStorageVault.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetExascaleDbStorageVaultRequest {
+    /// Required. The name of the ExascaleDbStorageVault in the following format:
+    /// projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `ExascaleDbStorageVault.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListExascaleDbStorageVaultsRequest {
+    /// Required. The parent value for ExascaleDbStorageVault in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 ExascaleDbStorageVaults will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Filter
+    /// the list as specified in <https://google.aip.dev/160.>
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request. Order
+    /// results as specified in <https://google.aip.dev/132.>
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `ExascaleDbStorageVault.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExascaleDbStorageVaultsResponse {
+    /// The ExascaleDbStorageVaults.
+    #[prost(message, repeated, tag = "1")]
+    pub exascale_db_storage_vaults: ::prost::alloc::vec::Vec<ExascaleDbStorageVault>,
+    /// A token identifying a page of results the server should return. If present,
+    /// the next page token can be provided to a subsequent
+    /// ListExascaleDbStorageVaults call to list the next page.
+    /// If empty, there are no more pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for `ExascaleDbStorageVault.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExascaleDbStorageVaultRequest {
+    /// Required. The value for parent of the ExascaleDbStorageVault in the
+    /// following format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the ExascaleDbStorageVault to create. This value is
+    /// restricted to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of
+    /// 63 characters in length. The value must start with a letter and end with a
+    /// letter or a number.
+    #[prost(string, tag = "2")]
+    pub exascale_db_storage_vault_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub exascale_db_storage_vault: ::core::option::Option<ExascaleDbStorageVault>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request message for `ExascaleDbStorageVault.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteExascaleDbStorageVaultRequest {
+    /// Required. The name of the ExascaleDbStorageVault in the following format:
+    /// projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Details of the Oracle Grid Infrastructure (GI) version resource.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/GiVersionSummary/>
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2500,6 +5177,442 @@ pub struct LocationMetadata {
     #[prost(string, repeated, tag = "2")]
     pub gcp_oracle_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// MinorVersion represents a minor version of a GI.
+/// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/GiMinorVersionSummary/>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MinorVersion {
+    /// Identifier. The name of the MinorVersion resource with the format:
+    /// projects/{project}/locations/{region}/giVersions/{gi_version}/minorVersions/{minor_version}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The ID of the Grid Image.
+    #[prost(string, tag = "2")]
+    pub grid_image_id: ::prost::alloc::string::String,
+    /// Optional. The valid Oracle grid infrastructure software version.
+    #[prost(string, tag = "3")]
+    pub version: ::prost::alloc::string::String,
+}
+/// The request for `MinorVersion.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMinorVersionsRequest {
+    /// Required. The parent value for the MinorVersion resource with the format:
+    /// projects/{project}/locations/{location}/giVersions/{gi_version}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, a maximum of 50 System Versions will be returned.
+    /// The maximum value is 1000; values above 1000 will be reset to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying the requested page of results to return. All
+    /// fields except the filter should remain the same as in the request that
+    /// provided this page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    /// Only shapeFamily and gcp_oracle_zone_id are supported in this format:
+    /// `shape_family="{shapeFamily}" AND  gcp_oracle_zone_id="{gcp_oracle_zone_id}"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for `MinorVersion.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMinorVersionsResponse {
+    /// The list of MinorVersions.
+    #[prost(message, repeated, tag = "1")]
+    pub minor_versions: ::prost::alloc::vec::Vec<MinorVersion>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Represents OdbNetwork resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OdbNetwork {
+    /// Identifier. The name of the OdbNetwork resource in the following format:
+    /// projects/{project}/locations/{region}/odbNetworks/{odb_network}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the VPC network in the following format:
+    /// projects/{project}/global/networks/{network}
+    #[prost(string, tag = "2")]
+    pub network: ::prost::alloc::string::String,
+    /// Optional. Labels or tags associated with the resource.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The date and time that the OdbNetwork was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. State of the ODB Network.
+    #[prost(enumeration = "odb_network::State", tag = "5")]
+    pub state: i32,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// OdbNetwork.
+    #[prost(string, tag = "6")]
+    pub entitlement_id: ::prost::alloc::string::String,
+    /// Optional. The GCP Oracle zone where OdbNetwork is hosted.
+    /// Example: us-east4-b-r2.
+    /// If not specified, the system will pick a zone based on availability.
+    #[prost(string, tag = "7")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `OdbNetwork`.
+pub mod odb_network {
+    /// The various lifecycle states of the ODB Network.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Provisioning = 1,
+        /// Indicates that the resource is in available state.
+        Available = 2,
+        /// Indicates that the resource is in terminating state.
+        Terminating = 3,
+        /// Indicates that the resource is in failed state.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Terminating => "TERMINATING",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "TERMINATING" => Some(Self::Terminating),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request for `OdbNetwork.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateOdbNetworkRequest {
+    /// Required. The parent value for the OdbNetwork in the following format:
+    /// projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the OdbNetwork to create. This value is restricted
+    /// to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of 63
+    /// characters in length. The value must start with a letter and end with
+    /// a letter or a number.
+    #[prost(string, tag = "2")]
+    pub odb_network_id: ::prost::alloc::string::String,
+    /// Required. Details of the OdbNetwork instance to create.
+    #[prost(message, optional, tag = "3")]
+    pub odb_network: ::core::option::Option<OdbNetwork>,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `OdbNetwork.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteOdbNetworkRequest {
+    /// Required. The name of the resource in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `OdbNetwork.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListOdbNetworksRequest {
+    /// Required. The parent value for the ODB Network in the following format:
+    /// projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 ODB Networks will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `OdbNetwork.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOdbNetworksResponse {
+    /// The list of ODB Networks.
+    #[prost(message, repeated, tag = "1")]
+    pub odb_networks: ::prost::alloc::vec::Vec<OdbNetwork>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for `OdbNetwork.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetOdbNetworkRequest {
+    /// Required. The name of the OdbNetwork in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Represents OdbSubnet resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OdbSubnet {
+    /// Identifier. The name of the OdbSubnet resource in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The CIDR range of the subnet.
+    #[prost(string, tag = "2")]
+    pub cidr_range: ::prost::alloc::string::String,
+    /// Required. Purpose of the subnet.
+    #[prost(enumeration = "odb_subnet::Purpose", tag = "3")]
+    pub purpose: i32,
+    /// Optional. Labels or tags associated with the resource.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The date and time that the OdbNetwork was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. State of the ODB Subnet.
+    #[prost(enumeration = "odb_subnet::State", tag = "6")]
+    pub state: i32,
+}
+/// Nested message and enum types in `OdbSubnet`.
+pub mod odb_subnet {
+    /// Purpose available for the subnet.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Purpose {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Subnet to be used for client connections.
+        ClientSubnet = 1,
+        /// Subnet to be used for backup.
+        BackupSubnet = 2,
+    }
+    impl Purpose {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PURPOSE_UNSPECIFIED",
+                Self::ClientSubnet => "CLIENT_SUBNET",
+                Self::BackupSubnet => "BACKUP_SUBNET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PURPOSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLIENT_SUBNET" => Some(Self::ClientSubnet),
+                "BACKUP_SUBNET" => Some(Self::BackupSubnet),
+                _ => None,
+            }
+        }
+    }
+    /// The various lifecycle states of the ODB Subnet.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Provisioning = 1,
+        /// Indicates that the resource is in available state.
+        Available = 2,
+        /// Indicates that the resource is in terminating state.
+        Terminating = 3,
+        /// Indicates that the resource is in failed state.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Available => "AVAILABLE",
+                Self::Terminating => "TERMINATING",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "AVAILABLE" => Some(Self::Available),
+                "TERMINATING" => Some(Self::Terminating),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request for `OdbSubnet.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateOdbSubnetRequest {
+    /// Required. The parent value for the OdbSubnet in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the OdbSubnet to create. This value is restricted
+    /// to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of 63
+    /// characters in length. The value must start with a letter and end with
+    /// a letter or a number.
+    #[prost(string, tag = "2")]
+    pub odb_subnet_id: ::prost::alloc::string::String,
+    /// Required. Details of the OdbSubnet instance to create.
+    #[prost(message, optional, tag = "3")]
+    pub odb_subnet: ::core::option::Option<OdbSubnet>,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `OdbSubnet.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteOdbSubnetRequest {
+    /// Required. The name of the resource in the following format:
+    /// projects/{project}/locations/{region}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `OdbSubnet.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListOdbSubnetsRequest {
+    /// Required. The parent value for the OdbSubnet in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 ODB Networks will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `OdbSubnet.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOdbSubnetsResponse {
+    /// The list of ODB Subnets.
+    #[prost(message, repeated, tag = "1")]
+    pub odb_subnets: ::prost::alloc::vec::Vec<OdbSubnet>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for `OdbSubnet.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetOdbSubnetRequest {
+    /// Required. The name of the OdbSubnet in the following format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Details of the Cloud VM Cluster resource.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/CloudVmCluster/>
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2516,10 +5629,6 @@ pub struct CloudVmCluster {
     /// Optional. User friendly name for this resource.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. Google Cloud Platform location where Oracle Exadata is hosted.
-    /// It is same as Google Cloud Platform Oracle zone of Exadata infrastructure.
-    #[prost(string, tag = "12")]
-    pub gcp_oracle_zone: ::prost::alloc::string::String,
     /// Optional. Various properties of the VM Cluster.
     #[prost(message, optional, tag = "6")]
     pub properties: ::core::option::Option<CloudVmClusterProperties>,
@@ -2532,16 +5641,42 @@ pub struct CloudVmCluster {
     /// Output only. The date and time that the VM cluster was created.
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Network settings. CIDR to use for cluster IP allocation.
+    /// Optional. Network settings. CIDR to use for cluster IP allocation.
     #[prost(string, tag = "9")]
     pub cidr: ::prost::alloc::string::String,
-    /// Required. CIDR range of the backup subnet.
+    /// Optional. CIDR range of the backup subnet.
     #[prost(string, tag = "10")]
     pub backup_subnet_cidr: ::prost::alloc::string::String,
-    /// Required. The name of the VPC network.
+    /// Optional. The name of the VPC network.
     /// Format: projects/{project}/global/networks/{network}
     #[prost(string, tag = "11")]
     pub network: ::prost::alloc::string::String,
+    /// Output only. The GCP Oracle zone where Oracle CloudVmCluster is hosted.
+    /// This will be the same as the gcp_oracle_zone of the
+    /// CloudExadataInfrastructure. Example: us-east4-b-r2.
+    #[prost(string, tag = "12")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Optional. The name of the OdbNetwork associated with the VM Cluster.
+    /// Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}
+    /// It is optional but if specified, this should match the parent ODBNetwork of
+    /// the odb_subnet and backup_odb_subnet.
+    #[prost(string, tag = "13")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Optional. The name of the OdbSubnet associated with the VM Cluster for
+    /// IP allocation. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "14")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Optional. The name of the backup OdbSubnet associated with the VM Cluster.
+    /// Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "15")]
+    pub backup_odb_subnet: ::prost::alloc::string::String,
+    /// Output only. The identity connector details which will allow OCI to
+    /// securely access the resources in the customer project.
+    #[prost(message, optional, tag = "16")]
+    pub identity_connector: ::core::option::Option<IdentityConnector>,
 }
 /// Various properties and settings associated with Exadata VM cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2648,6 +5783,9 @@ pub struct CloudVmClusterProperties {
     /// Optional. OCI Cluster name.
     #[prost(string, tag = "36")]
     pub cluster_name: ::prost::alloc::string::String,
+    /// Output only. The compute model of the VM Cluster.
+    #[prost(enumeration = "ComputeModel", tag = "37")]
+    pub compute_model: i32,
 }
 /// Nested message and enum types in `CloudVmClusterProperties`.
 pub mod cloud_vm_cluster_properties {
@@ -2831,6 +5969,12 @@ pub struct ListCloudExadataInfrastructuresRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// The response for `CloudExadataInfrastructures.list`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3048,6 +6192,7 @@ pub struct ListDbServersResponse {
 pub struct ListDbNodesRequest {
     /// Required. The parent value for database node in the following format:
     /// projects/{project}/locations/{location}/cloudVmClusters/{cloudVmCluster}.
+    /// .
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
@@ -3085,6 +6230,11 @@ pub struct ListGiVersionsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Only the
+    /// shape, gcp_oracle_zone and gi_version fields are supported in this format:
+    /// `shape="{shape}"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// The response for `GiVersion.List`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3111,6 +6261,11 @@ pub struct ListDbSystemShapesRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Only the
+    /// gcp_oracle_zone_id field is supported in this format:
+    /// `gcp_oracle_zone_id="{gcp_oracle_zone_id}"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// The response for `DbSystemShape.List`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3222,6 +6377,30 @@ pub struct CreateAutonomousDatabaseRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// The request for `AutonomousDatabase.Update`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAutonomousDatabaseRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// Exadata resource by the update. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field will be overwritten
+    /// if it is in the mask. If the user does not provide a mask then all fields
+    /// will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The resource being updated
+    #[prost(message, optional, tag = "2")]
+    pub autonomous_database: ::core::option::Option<AutonomousDatabase>,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// The request for `AutonomousDatabase.Delete`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAutonomousDatabaseRequest {
@@ -3274,6 +6453,28 @@ pub struct RestartAutonomousDatabaseRequest {
     /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// The request for `OracleDatabase.SwitchoverAutonomousDatabase`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SwitchoverAutonomousDatabaseRequest {
+    /// Required. The name of the Autonomous Database in the following format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The peer database name to switch over to.
+    #[prost(string, tag = "2")]
+    pub peer_autonomous_database: ::prost::alloc::string::String,
+}
+/// The request for `OracleDatabase.FailoverAutonomousDatabase`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FailoverAutonomousDatabaseRequest {
+    /// Required. The name of the Autonomous Database in the following format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The peer database name to fail over to.
+    #[prost(string, tag = "2")]
+    pub peer_autonomous_database: ::prost::alloc::string::String,
 }
 /// The request for `AutonomousDatabase.GenerateWallet`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3396,6 +6597,142 @@ pub struct ListAutonomousDatabaseBackupsResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExadbVmClusterRequest {
+    /// Required. The value for parent of the ExadbVmCluster in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the ExadbVmCluster to create. This value is
+    /// restricted to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of
+    /// 63 characters in length. The value must start with a letter and end with a
+    /// letter or a number.
+    #[prost(string, tag = "2")]
+    pub exadb_vm_cluster_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub exadb_vm_cluster: ::core::option::Option<ExadbVmCluster>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteExadbVmClusterRequest {
+    /// Required. The name of the ExadbVmCluster in the following format:
+    /// projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetExadbVmClusterRequest {
+    /// Required. The name of the ExadbVmCluster in the following format:
+    /// projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListExadbVmClustersRequest {
+    /// Required. The parent value for ExadbVmClusters in the following format:
+    /// projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 ExadbVmClusters will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `ExadbVmCluster.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExadbVmClustersResponse {
+    /// The list of ExadbVmClusters.
+    #[prost(message, repeated, tag = "1")]
+    pub exadb_vm_clusters: ::prost::alloc::vec::Vec<ExadbVmCluster>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.Update`. We only support adding the
+/// Virtual Machine to the ExadbVmCluster. Rest of the fields in ExadbVmCluster
+/// are immutable.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExadbVmClusterRequest {
+    /// Optional. A mask specifying which fields in th VM Cluster should be
+    /// updated. A field specified in the mask is overwritten. If a mask isn't
+    /// provided then all the fields in the VM Cluster are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "2")]
+    pub exadb_vm_cluster: ::core::option::Option<ExadbVmCluster>,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `ExadbVmCluster.RemoveVirtualMachine`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RemoveVirtualMachineExadbVmClusterRequest {
+    /// Required. The name of the ExadbVmCluster in the following format:
+    /// projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Required. The list of host names of db nodes to be removed from the
+    /// ExadbVmCluster.
+    #[prost(string, repeated, tag = "4")]
+    pub hostnames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod oracle_database_client {
@@ -3853,6 +7190,37 @@ pub mod oracle_database_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists all the valid minor versions for the given
+        /// project, location, gi version and shape family.
+        pub async fn list_minor_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMinorVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMinorVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListMinorVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListMinorVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lists the database system shapes available for the project and location.
         pub async fn list_db_system_shapes(
             &mut self,
@@ -3969,6 +7337,36 @@ pub mod oracle_database_client {
                     GrpcMethod::new(
                         "google.cloud.oracledatabase.v1.OracleDatabase",
                         "CreateAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single Autonomous Database.
+        pub async fn update_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "UpdateAutonomousDatabase",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4244,6 +7642,932 @@ pub mod oracle_database_client {
                     GrpcMethod::new(
                         "google.cloud.oracledatabase.v1.OracleDatabase",
                         "RestartAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates a switchover of specified autonomous database to the associated
+        /// peer database.
+        pub async fn switchover_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SwitchoverAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/SwitchoverAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "SwitchoverAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates a failover to target autonomous database from the associated
+        /// primary database.
+        pub async fn failover_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FailoverAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/FailoverAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "FailoverAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the ODB Networks in a given project and location.
+        pub async fn list_odb_networks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListOdbNetworksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListOdbNetworksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListOdbNetworks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListOdbNetworks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ODB Network.
+        pub async fn get_odb_network(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetOdbNetworkRequest>,
+        ) -> std::result::Result<tonic::Response<super::OdbNetwork>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetOdbNetwork",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetOdbNetwork",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ODB Network in a given project and location.
+        pub async fn create_odb_network(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateOdbNetworkRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateOdbNetwork",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateOdbNetwork",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ODB Network.
+        pub async fn delete_odb_network(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteOdbNetworkRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteOdbNetwork",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteOdbNetwork",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the ODB Subnets in a given ODB Network.
+        pub async fn list_odb_subnets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListOdbSubnetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListOdbSubnetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListOdbSubnets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListOdbSubnets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ODB Subnet.
+        pub async fn get_odb_subnet(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetOdbSubnetRequest>,
+        ) -> std::result::Result<tonic::Response<super::OdbSubnet>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetOdbSubnet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetOdbSubnet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ODB Subnet in a given ODB Network.
+        pub async fn create_odb_subnet(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateOdbSubnetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateOdbSubnet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateOdbSubnet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ODB Subnet.
+        pub async fn delete_odb_subnet(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteOdbSubnetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteOdbSubnet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteOdbSubnet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the Exadb (Exascale) VM Clusters for the given project and
+        /// location.
+        pub async fn list_exadb_vm_clusters(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListExadbVmClustersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListExadbVmClustersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListExadbVmClusters",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListExadbVmClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single Exadb (Exascale) VM Cluster.
+        pub async fn get_exadb_vm_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetExadbVmClusterRequest>,
+        ) -> std::result::Result<tonic::Response<super::ExadbVmCluster>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetExadbVmCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetExadbVmCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Exadb (Exascale) VM Cluster resource.
+        pub async fn create_exadb_vm_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateExadbVmClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExadbVmCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateExadbVmCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single Exadb (Exascale) VM Cluster.
+        pub async fn delete_exadb_vm_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteExadbVmClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExadbVmCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteExadbVmCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single Exadb (Exascale) VM Cluster. To add virtual machines to
+        /// existing exadb vm cluster, only pass the node count.
+        pub async fn update_exadb_vm_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExadbVmClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateExadbVmCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "UpdateExadbVmCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Removes virtual machines from an existing exadb vm cluster.
+        pub async fn remove_virtual_machine_exadb_vm_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::RemoveVirtualMachineExadbVmClusterRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/RemoveVirtualMachineExadbVmCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "RemoveVirtualMachineExadbVmCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the ExascaleDB Storage Vaults for the given project and
+        /// location.
+        pub async fn list_exascale_db_storage_vaults(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListExascaleDbStorageVaultsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListExascaleDbStorageVaultsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListExascaleDbStorageVaults",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListExascaleDbStorageVaults",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ExascaleDB Storage Vault.
+        pub async fn get_exascale_db_storage_vault(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetExascaleDbStorageVaultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExascaleDbStorageVault>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetExascaleDbStorageVault",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetExascaleDbStorageVault",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ExascaleDB Storage Vault resource.
+        pub async fn create_exascale_db_storage_vault(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateExascaleDbStorageVaultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExascaleDbStorageVault",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateExascaleDbStorageVault",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ExascaleDB Storage Vault.
+        pub async fn delete_exascale_db_storage_vault(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteExascaleDbStorageVaultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExascaleDbStorageVault",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteExascaleDbStorageVault",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the DbSystemInitialStorageSizes for the given project and
+        /// location.
+        pub async fn list_db_system_initial_storage_sizes(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListDbSystemInitialStorageSizesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDbSystemInitialStorageSizesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystemInitialStorageSizes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListDbSystemInitialStorageSizes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the Databases for the given project, location and DbSystem.
+        pub async fn list_databases(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDatabasesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatabasesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabases",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListDatabases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single Database.
+        pub async fn get_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDatabaseRequest>,
+        ) -> std::result::Result<tonic::Response<super::Database>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the PluggableDatabases for the given project, location and
+        /// Container Database.
+        pub async fn list_pluggable_databases(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPluggableDatabasesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPluggableDatabasesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListPluggableDatabases",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListPluggableDatabases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single PluggableDatabase.
+        pub async fn get_pluggable_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPluggableDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PluggableDatabase>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetPluggableDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetPluggableDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the DbSystems for the given project and location.
+        pub async fn list_db_systems(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDbSystemsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDbSystemsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystems",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListDbSystems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single DbSystem.
+        pub async fn get_db_system(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDbSystemRequest>,
+        ) -> std::result::Result<tonic::Response<super::DbSystem>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetDbSystem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetDbSystem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new DbSystem in a given project and location.
+        pub async fn create_db_system(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDbSystemRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateDbSystem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateDbSystem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single DbSystem.
+        pub async fn delete_db_system(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDbSystemRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteDbSystem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteDbSystem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List DbVersions for the given project and location.
+        pub async fn list_db_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDbVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDbVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListDbVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List DatabaseCharacterSets for the given project and location.
+        pub async fn list_database_character_sets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDatabaseCharacterSetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatabaseCharacterSetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabaseCharacterSets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListDatabaseCharacterSets",
                     ),
                 );
             self.inner.unary(req, path, codec).await

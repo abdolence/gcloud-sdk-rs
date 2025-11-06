@@ -184,6 +184,10 @@ pub struct Interconnect {
     /// interconnect.
     #[prost(string, repeated, tag = "9")]
     pub physical_ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The remote peering network type of the interconnect. It is
+    /// required when peering separation is enabled.
+    #[prost(enumeration = "RemotePeeringNetworkType", tag = "10")]
+    pub remote_peering_network_type: i32,
 }
 /// Nested message and enum types in `Interconnect`.
 pub mod interconnect {
@@ -269,6 +273,10 @@ pub struct InterconnectAttachment {
     /// Output only. Current stage of the resource to the device by config push.
     #[prost(enumeration = "ResourceState", tag = "10")]
     pub state: i32,
+    /// Optional. The remote peering network type of the underlying interconnect.
+    /// It is required when peering separation is enabled.
+    #[prost(enumeration = "RemotePeeringNetworkType", tag = "12")]
+    pub peering_type: i32,
 }
 /// Message describing Router object
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -728,6 +736,44 @@ impl ResourceState {
             "STATE_RUNNING" => Some(Self::StateRunning),
             "STATE_SUSPENDED" => Some(Self::StateSuspended),
             "STATE_DELETING" => Some(Self::StateDeleting),
+            _ => None,
+        }
+    }
+}
+/// Defines the remote peering destination for the interface. It is required
+/// when peering separation is enabled.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RemotePeeringNetworkType {
+    /// Unspecified.
+    Unspecified = 0,
+    /// Customer's trusted internal network.
+    CustomerInternal = 1,
+    /// Customer's untrust network that has internet access.
+    CustomerInternet = 2,
+}
+impl RemotePeeringNetworkType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "REMOTE_PEERING_NETWORK_TYPE_UNSPECIFIED",
+            Self::CustomerInternal => "REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL",
+            Self::CustomerInternet => "REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNET",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REMOTE_PEERING_NETWORK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL" => {
+                Some(Self::CustomerInternal)
+            }
+            "REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNET" => {
+                Some(Self::CustomerInternet)
+            }
             _ => None,
         }
     }

@@ -3,7 +3,7 @@
 /// A Channel is a resource on which event providers publish their events.
 /// The published events are delivered through the transport associated with the
 /// channel. Note that a channel is associated with exactly one event provider.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// Required. The resource name of the channel. Must be unique within the
     /// location on the project and must be in
@@ -34,7 +34,7 @@ pub struct Channel {
     /// by the provider to register the channel for publishing.
     #[prost(string, tag = "10")]
     pub activation_token: ::prost::alloc::string::String,
-    /// Resource name of a KMS crypto key (managed by the user) used to
+    /// Optional. Resource name of a KMS crypto key (managed by the user) used to
     /// encrypt/decrypt their event data.
     ///
     /// It must match the pattern
@@ -45,6 +45,12 @@ pub struct Channel {
     /// physical zone separation
     #[prost(bool, tag = "12")]
     pub satisfies_pzs: bool,
+    /// Optional. Resource labels.
+    #[prost(map = "string, string", tag = "13")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     #[prost(oneof = "channel::Transport", tags = "8")]
     pub transport: ::core::option::Option<channel::Transport>,
 }
@@ -123,7 +129,7 @@ pub mod channel {
 /// A ChannelConnection is a resource which event providers create during the
 /// activation process to establish a connection between the provider and the
 /// subscriber channel.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelConnection {
     /// Required. The name of the connection.
     #[prost(string, tag = "1")]
@@ -149,6 +155,12 @@ pub struct ChannelConnection {
     /// provider project. This field will not be stored in the provider resource.
     #[prost(string, tag = "8")]
     pub activation_token: ::prost::alloc::string::String,
+    /// Optional. Resource labels.
+    #[prost(map = "string, string", tag = "9")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A representation of the Provider resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -252,8 +264,8 @@ pub struct Enrollment {
     /// applies to.
     #[prost(string, tag = "9")]
     pub cel_match: ::prost::alloc::string::String,
-    /// Required. Resource name of the message bus identifying the source of the
-    /// messages. It matches the form
+    /// Required. Immutable. Resource name of the message bus identifying the
+    /// source of the messages. It matches the form
     /// projects/{project}/locations/{location}/messageBuses/{messageBus}.
     #[prost(string, tag = "10")]
     pub message_bus: ::prost::alloc::string::String,
@@ -414,10 +426,12 @@ pub struct GoogleApiSource {
 /// Once configured, first-party event data will be protected
 /// using the specified custom managed encryption key instead of Google-managed
 /// encryption keys.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleChannelConfig {
     /// Required. The resource name of the config. Must be in the format of,
     /// `projects/{project}/locations/{location}/googleChannelConfig`.
+    /// In API responses, the config name always includes the projectID, regardless
+    /// of whether the projectID or projectNumber was provided.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The last-modified time.
@@ -430,6 +444,12 @@ pub struct GoogleChannelConfig {
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "7")]
     pub crypto_key_name: ::prost::alloc::string::String,
+    /// Optional. Resource labels.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// MessageBus for the messages flowing through the system. The admin has
 /// visibility and control over the messages being published and consumed and can
@@ -563,6 +583,10 @@ pub struct Pipeline {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
+    /// Output only. Whether or not this Pipeline satisfies the requirements of
+    /// physical zone separation
+    #[prost(bool, tag = "14")]
+    pub satisfies_pzs: bool,
 }
 /// Nested message and enum types in `Pipeline`.
 pub mod pipeline {
@@ -621,9 +645,9 @@ pub mod pipeline {
         pub network_config: ::core::option::Option<destination::NetworkConfig>,
         /// Optional. An authentication config used to authenticate message requests,
         /// such that destinations can verify the source. For example, this can be
-        /// used with private GCP destinations that require GCP credentials to access
-        /// like Cloud Run. This field is optional and should be set only by users
-        /// interested in authenticated push
+        /// used with private Google Cloud destinations that require Google Cloud
+        /// credentials for access like Cloud Run. This field is optional and should
+        /// be set only by users interested in authenticated push.
         #[prost(message, optional, tag = "5")]
         pub authentication_config: ::core::option::Option<
             destination::AuthenticationConfig,
@@ -655,7 +679,7 @@ pub mod pipeline {
         /// Represents a HTTP endpoint destination.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HttpEndpoint {
-            /// Required. The URI of the HTTP enpdoint.
+            /// Required. The URI of the HTTP endpoint.
             ///
             /// The value must be a RFC2396 URI string.
             /// Examples: `<https://svc.us-central1.p.local:8080/route`.>
@@ -667,10 +691,11 @@ pub mod pipeline {
             ///
             /// If a binding expression is not specified here, the message
             /// is treated as a CloudEvent and is mapped to the HTTP request according
-            /// to the CloudEvent HTTP Protocol Binding Binary Content Mode. In this
-            /// representation, all fields except the `data` and `datacontenttype`
-            /// field on the message are mapped to HTTP request headers with a prefix
-            /// of `ce-`.
+            /// to the CloudEvent HTTP Protocol Binding Binary Content Mode
+            /// (<https://github.com/cloudevents/spec/blob/main/cloudevents/bindings/http-protocol-binding.md#31-binary-content-mode>).
+            /// In this representation, all fields except the `data` and
+            /// `datacontenttype` field on the message are mapped to HTTP request
+            /// headers with a prefix of `ce-`.
             ///
             /// To construct the HTTP request payload and the value of the content-type
             /// HTTP header, the payload format is defined as follows:
@@ -702,7 +727,7 @@ pub mod pipeline {
             /// * If a map named `headers` exists on the result of the expression,
             ///   then its key/value pairs are directly mapped to the HTTP request
             ///   headers. The headers values are constructed from the corresponding
-            ///   value type’s canonical representation. If the `headers` field doesn’t
+            ///   value type's canonical representation. If the `headers` field doesn't
             ///   exist then the resulting HTTP request will be the headers of the
             ///   CloudEvent HTTP Binding Binary Content Mode representation of the final
             ///   message. Note: If the specified binding expression, has updated the
@@ -745,6 +770,12 @@ pub mod pipeline {
             ///   "body": "new-body"
             /// }
             /// ```
+            ///
+            /// * The default binding for the message payload can be accessed using the
+            ///   `body` variable. It conatins a string representation of the message
+            ///   payload in the format specified by the `output_payload_format` field.
+            ///   If the `input_payload_format` field is not set, the `body`
+            ///   variable contains the same message payload bytes that were published.
             ///
             /// Additionally, the following CEL extension functions are provided for
             /// use in this CEL expression:
@@ -803,33 +834,28 @@ pub mod pipeline {
             /// * toMap:
             ///   \[map1, map2, ...\].toMap() -> map
             ///   * Converts a CEL list of CEL maps to a single CEL map
-            /// * toDestinationPayloadFormat():
-            ///   message.data.toDestinationPayloadFormat() -> string or bytes
-            ///   * Converts the message data to the destination payload format
-            ///     specified in Pipeline.Destination.output_payload_format
-            ///   * This function is meant to be applied to the message.data field.
-            ///   * If the destination payload format is not set, the function will
-            ///     return the message data unchanged.
             /// * toCloudEventJsonWithPayloadFormat:
             ///   message.toCloudEventJsonWithPayloadFormat() -> map
             ///   * Converts a message to the corresponding structure of JSON
-            ///     format for CloudEvents
-            ///   * This function applies toDestinationPayloadFormat() to the
-            ///     message data. It also sets the corresponding datacontenttype of
+            ///     format for CloudEvents.
+            ///   * It converts `data` to destination payload format
+            ///     specified in `output_payload_format`. If `output_payload_format` is
+            ///     not set, the data will remain unchanged.
+            ///   * It also sets the corresponding datacontenttype of
             ///     the CloudEvent, as indicated by
-            ///     Pipeline.Destination.output_payload_format. If no
-            ///     output_payload_format is set it will use the existing
-            ///     datacontenttype on the CloudEvent if present, else leave
-            ///     datacontenttype absent.
+            ///     `output_payload_format`. If no
+            ///     `output_payload_format` is set it will use the value of the
+            ///     "datacontenttype" attribute on the CloudEvent if present, else
+            ///     remove "datacontenttype" attribute.
             ///   * This function expects that the content of the message will
-            ///     adhere to the standard CloudEvent format. If it doesn’t then this
+            ///     adhere to the standard CloudEvent format. If it doesn't then this
             ///     function will fail.
             ///   * The result is a CEL map that corresponds to the JSON
             ///     representation of the CloudEvent. To convert that data to a JSON
             ///     string it can be chained with the toJsonString function.
             ///
             /// The Pipeline expects that the message it receives adheres to the
-            /// standard CloudEvent format. If it doesn’t then the outgoing message
+            /// standard CloudEvent format. If it doesn't then the outgoing message
             /// request may fail with a persistent error.
             #[prost(string, tag = "3")]
             pub message_binding_template: ::prost::alloc::string::String,
@@ -849,15 +875,15 @@ pub mod pipeline {
         /// Nested message and enum types in `AuthenticationConfig`.
         pub mod authentication_config {
             /// Represents a config used to authenticate with a Google OIDC token using
-            /// a GCP service account. Use this authentication method to invoke your
-            /// Cloud Run and Cloud Functions destinations or HTTP endpoints that
-            /// support Google OIDC.
+            /// a Google Cloud service account. Use this authentication method to
+            /// invoke your Cloud Run and Cloud Functions destinations or HTTP
+            /// endpoints that support Google OIDC.
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OidcToken {
                 /// Required. Service account email used to generate the OIDC Token.
                 /// The principal who calls this API must have
                 /// iam.serviceAccounts.actAs permission in the service account. See
-                /// <https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common>
+                /// <https://cloud.google.com/iam/docs/understanding-service-accounts>
                 /// for more information. Eventarc service agents must have
                 /// roles/roles/iam.serviceAccountTokenCreator role to allow the
                 /// Pipeline to create OpenID tokens for authenticated requests.
@@ -879,7 +905,7 @@ pub mod pipeline {
                 /// token](<https://developers.google.com/identity/protocols/OAuth2>).
                 /// The principal who calls this API must have
                 /// iam.serviceAccounts.actAs permission in the service account. See
-                /// <https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common>
+                /// <https://cloud.google.com/iam/docs/understanding-service-accounts>
                 /// for more information. Eventarc service agents must have
                 /// roles/roles/iam.serviceAccountTokenCreator role to allow Pipeline
                 /// to create OAuth2 tokens for authenticated requests.
@@ -895,7 +921,7 @@ pub mod pipeline {
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum AuthenticationMethodDescriptor {
                 /// Optional. This authenticate method will apply Google OIDC tokens
-                /// signed by a GCP service account to the requests.
+                /// signed by a Google Cloud service account to the requests.
                 #[prost(message, tag = "1")]
                 GoogleOidc(OidcToken),
                 /// Optional. If specified, an [OAuth
@@ -1022,7 +1048,7 @@ pub mod pipeline {
             ///     datacontenttype on the CloudEvent if present, else leave
             ///     datacontenttype absent.
             ///   * This function expects that the content of the message will
-            ///     adhere to the standard CloudEvent format. If it doesn’t then this
+            ///     adhere to the standard CloudEvent format. If it doesn't then this
             ///     function will fail.
             ///   * The result is a CEL map that corresponds to the JSON
             ///     representation of the CloudEvent. To convert that data to a JSON
@@ -1310,7 +1336,7 @@ pub struct Pubsub {
 /// Represents a HTTP endpoint destination.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpEndpoint {
-    /// Required. The URI of the HTTP enpdoint.
+    /// Required. The URI of the HTTP endpoint.
     ///
     /// The value must be a RFC2396 URI string.
     /// Examples: `<http://10.10.10.8:80/route`,>
@@ -1475,7 +1501,7 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannel method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelRequest {
     /// Required. The parent collection in which to add this channel.
     #[prost(string, tag = "1")]
@@ -1492,7 +1518,7 @@ pub struct CreateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateChannel method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelRequest {
     /// The channel to be updated.
     #[prost(message, optional, tag = "1")]
@@ -1608,7 +1634,7 @@ pub struct ListChannelConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannelConnection method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelConnectionRequest {
     /// Required. The parent collection in which to add this channel connection.
     #[prost(string, tag = "1")]
@@ -1628,7 +1654,7 @@ pub struct DeleteChannelConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the UpdateGoogleChannelConfig method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleChannelConfigRequest {
     /// Required. The config to be updated.
     #[prost(message, optional, tag = "1")]
@@ -1656,7 +1682,7 @@ pub struct GetMessageBusRequest {
 /// The request message for the ListMessageBuses method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusesRequest {
-    /// Required. The parent collection to list triggers on.
+    /// Required. The parent collection to list message buses on.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return on each page.
@@ -1739,7 +1765,7 @@ pub struct CreateMessageBusRequest {
     #[prost(message, optional, tag = "2")]
     pub message_bus: ::core::option::Option<MessageBus>,
     /// Required. The user-provided ID to be assigned to the MessageBus. It should
-    /// match the format (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$)
+    /// match the format `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub message_bus_id: ::prost::alloc::string::String,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -1846,7 +1872,7 @@ pub struct CreateEnrollmentRequest {
     #[prost(message, optional, tag = "2")]
     pub enrollment: ::core::option::Option<Enrollment>,
     /// Required. The user-provided ID to be assigned to the Enrollment. It should
-    /// match the format (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$).
+    /// match the format `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub enrollment_id: ::prost::alloc::string::String,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -1952,7 +1978,8 @@ pub struct CreatePipelineRequest {
     /// Required. The pipeline to create.
     #[prost(message, optional, tag = "2")]
     pub pipeline: ::core::option::Option<Pipeline>,
-    /// Required. The user-provided ID to be assigned to the Pipeline.
+    /// Required. The user-provided ID to be assigned to the Pipeline. It should
+    /// match the format `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub pipeline_id: ::prost::alloc::string::String,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -2059,7 +2086,7 @@ pub struct CreateGoogleApiSourceRequest {
     #[prost(message, optional, tag = "2")]
     pub google_api_source: ::core::option::Option<GoogleApiSource>,
     /// Required. The user-provided ID to be assigned to the GoogleApiSource. It
-    /// should match the format (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$).
+    /// should match the format `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
     #[prost(string, tag = "3")]
     pub google_api_source_id: ::prost::alloc::string::String,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -2664,7 +2691,9 @@ pub mod eventarc_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get a GoogleChannelConfig
+        /// Get a GoogleChannelConfig.
+        /// The name of the GoogleChannelConfig in the response is ALWAYS coded with
+        /// projectID.
         pub async fn get_google_channel_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGoogleChannelConfigRequest>,
