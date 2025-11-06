@@ -27,6 +27,7 @@ pub struct ExternalCredentialFile {
 }
 
 /// https://google.aip.dev/auth/4117#determining-the-subject-token-in-aws
+#[cfg(feature = "external-account-aws")]
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct Aws {
     /// This defines the regional AWS GetCallerIdentity action URL. This URL should be used
