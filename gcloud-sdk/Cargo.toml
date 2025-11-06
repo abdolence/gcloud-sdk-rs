@@ -441,7 +441,7 @@ prost-types = "0.14"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 url = { version = "2.5" }
-jsonwebtoken = { version = "9" }
+jsonwebtoken = { version = "10" }
 hyper = { version ="1", features = ["client", "http2"] }
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde", "clock"], default-features = false }
