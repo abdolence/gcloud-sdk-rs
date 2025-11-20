@@ -13,7 +13,7 @@ jobs:
       id-token: 'write'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Authenticate to Google Cloud development
         id: auth
         uses: google-github-actions/auth@v3
