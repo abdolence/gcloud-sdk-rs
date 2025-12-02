@@ -139,11 +139,11 @@ pub struct ImportAptArtifactsMetadata {}
 /// * imageSizeBytes
 /// * mediaType
 /// * buildTime
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DockerImage {
     /// Required. registry_location, project_id, repository_name and image id forms
     /// a unique image
-    /// name:`projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>`.
+    /// name:`projects/<project_id>/locations/<location>/repositories/<repository_name>/dockerImages/<docker_image>`.
     /// For example,
     /// "projects/test-project/locations/us-west4/repositories/test-repo/dockerImages/
     /// nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf",
@@ -185,6 +185,50 @@ pub struct DockerImage {
     /// Output only. The time when the docker image was last updated.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// ArtifactType of this image, e.g. "application/vnd.example+type".
+    /// If the `subject_digest` is set and no `artifact_type` is given, the
+    /// `media_type` will be considered as the `artifact_type`. This field is
+    /// returned as the `metadata.artifactType` field in the Version resource.
+    #[prost(string, tag = "9")]
+    pub artifact_type: ::prost::alloc::string::String,
+    /// Optional. For multi-arch images (manifest lists), this field contains the
+    /// list of image manifests.
+    #[prost(message, repeated, tag = "11")]
+    pub image_manifests: ::prost::alloc::vec::Vec<ImageManifest>,
+}
+/// Details of a single image manifest within a multi-arch image.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageManifest {
+    /// Optional. The CPU architecture of the image.
+    /// Values are provided by the Docker client and are not validated by Artifact
+    /// Registry. Example values include "amd64", "arm64", "ppc64le", "s390x",
+    /// "riscv64", "mips64le", etc.
+    #[prost(string, tag = "1")]
+    pub architecture: ::prost::alloc::string::String,
+    /// Optional. The operating system of the image.
+    /// Values are provided by the Docker client and are not validated by Artifact
+    /// Registry. Example values include "linux", "windows", "darwin", "aix", etc.
+    #[prost(string, tag = "2")]
+    pub os: ::prost::alloc::string::String,
+    /// Optional. The manifest digest, in the format "sha256:\<sha256_hex_digest>".
+    #[prost(string, tag = "3")]
+    pub digest: ::prost::alloc::string::String,
+    /// Optional. The media type of the manifest, e.g.,
+    /// "application/vnd.docker.distribution.manifest.v2+json"
+    #[prost(string, tag = "4")]
+    pub media_type: ::prost::alloc::string::String,
+    /// Optional. The OS version of the image, for example on Windows
+    /// `10.0.14393.1066`.
+    #[prost(string, tag = "5")]
+    pub os_version: ::prost::alloc::string::String,
+    /// Optional. The required OS features for the image, for example on Windows
+    /// `win32k`.
+    #[prost(string, repeated, tag = "6")]
+    pub os_features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The variant of the CPU in the image, for example `v7` to specify
+    /// ARMv7 when architecture is `arm`.
+    #[prost(string, tag = "7")]
+    pub variant: ::prost::alloc::string::String,
 }
 /// The request to list docker images.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1672,7 +1716,7 @@ pub struct Repository {
     /// use this to calculate storage costs.
     #[prost(int64, tag = "13")]
     pub size_bytes: i64,
-    /// Output only. If set, the repository satisfies physical zone separation.
+    /// Output only. Whether or not this repository satisfies PZS.
     #[prost(bool, tag = "16")]
     pub satisfies_pzs: bool,
     /// Optional. If true, the cleanup pipeline is prevented from deleting versions
@@ -1689,7 +1733,7 @@ pub struct Repository {
     /// error rather than defaulting to standard.
     #[prost(bool, tag = "21")]
     pub disallow_unspecified_mode: bool,
-    /// Output only. If set, the repository satisfies physical zone isolation.
+    /// Output only. Whether or not this repository satisfies PZI.
     #[prost(bool, tag = "22")]
     pub satisfies_pzi: bool,
     /// Output only. The repository endpoint, for example:
@@ -1819,7 +1863,8 @@ pub mod repository {
         )]
         #[repr(i32)]
         pub enum EnablementConfig {
-            /// Not set. This will be treated as INHERITED.
+            /// Not set. This will be treated as INHERITED for Docker repositories and
+            /// DISABLED for non-Docker repositories.
             Unspecified = 0,
             /// Scanning is Enabled, but dependent on API enablement.
             Inherited = 1,
@@ -1932,6 +1977,8 @@ pub mod repository {
         Go = 10,
         /// Generic package format.
         Generic = 11,
+        /// Ruby package format.
+        Ruby = 12,
     }
     impl Format {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1950,6 +1997,7 @@ pub mod repository {
                 Self::Kfp => "KFP",
                 Self::Go => "GO",
                 Self::Generic => "GENERIC",
+                Self::Ruby => "RUBY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1965,6 +2013,7 @@ pub mod repository {
                 "KFP" => Some(Self::Kfp),
                 "GO" => Some(Self::Go),
                 "GENERIC" => Some(Self::Generic),
+                "RUBY" => Some(Self::Ruby),
                 _ => None,
             }
         }

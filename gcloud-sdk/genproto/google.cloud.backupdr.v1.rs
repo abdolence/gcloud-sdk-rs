@@ -732,10 +732,16 @@ pub struct CloudSqlInstanceBackupProperties {
     /// projects/{project}/instances/{instance}
     #[prost(string, tag = "4")]
     pub source_instance: ::prost::alloc::string::String,
+    /// Output only. The instance creation timestamp.
+    #[prost(message, optional, tag = "5")]
+    pub instance_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The tier (or machine type) for this instance. Example:
     /// `db-custom-1-3840`
     #[prost(string, tag = "6")]
     pub instance_tier: ::prost::alloc::string::String,
+    /// Output only. The instance delete timestamp.
+    #[prost(message, optional, tag = "8")]
+    pub instance_delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// CloudSqlInstanceDataSourceReferenceProperties represents the properties of a
 /// Cloud SQL resource that are stored in the DataSourceReference.
@@ -3103,6 +3109,14 @@ pub struct BackupVault {
     pub backup_minimum_enforced_retention_duration: ::core::option::Option<
         ::prost_types::Duration,
     >,
+    /// Optional. Setting for how a backup's enforced retention end time is
+    /// inherited.
+    #[prost(
+        enumeration = "backup_vault::BackupRetentionInheritance",
+        optional,
+        tag = "27"
+    )]
+    pub backup_retention_inheritance: ::core::option::Option<i32>,
     /// Output only. Set to true when there are no backups nested under this
     /// resource.
     #[prost(bool, optional, tag = "8")]
@@ -3145,9 +3159,76 @@ pub struct BackupVault {
     /// Default value is WITHIN_ORGANIZATION if not provided during creation.
     #[prost(enumeration = "backup_vault::AccessRestriction", tag = "24")]
     pub access_restriction: i32,
+    /// Optional. The encryption config of the backup vault.
+    #[prost(message, optional, tag = "29")]
+    pub encryption_config: ::core::option::Option<backup_vault::EncryptionConfig>,
 }
 /// Nested message and enum types in `BackupVault`.
 pub mod backup_vault {
+    /// Message describing the EncryptionConfig of backup vault.
+    /// This determines how data within the vault is encrypted at rest.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EncryptionConfig {
+        /// Optional. The Cloud KMS key name to encrypt backups in this backup vault.
+        /// Must be in the same region as the vault. Some workload backups like
+        /// compute disk backups may use their inherited source key instead. Format:
+        /// projects/{project}/locations/{location}/keyRings/{ring}/cryptoKeys/{key}
+        #[prost(string, optional, tag = "1")]
+        pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// How a backup's enforced retention end time is inherited.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupRetentionInheritance {
+        /// Inheritance behavior not set. This will default to
+        /// `INHERIT_VAULT_RETENTION`.
+        Unspecified = 0,
+        /// The enforced retention end time of a backup will be inherited from the
+        /// backup vault's `backup_minimum_enforced_retention_duration` field.
+        ///
+        /// This is the default behavior.
+        InheritVaultRetention = 1,
+        /// The enforced retention end time of a backup will always match the expire
+        /// time of the backup.
+        ///
+        /// If this is set, the backup's enforced retention end time will be set to
+        /// match the expire time during creation of the backup. When updating, the
+        /// ERET and expire time must be updated together and have the same value.
+        /// Invalid update requests will be rejected by the server.
+        MatchBackupExpireTime = 2,
+    }
+    impl BackupRetentionInheritance {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_RETENTION_INHERITANCE_UNSPECIFIED",
+                Self::InheritVaultRetention => "INHERIT_VAULT_RETENTION",
+                Self::MatchBackupExpireTime => "MATCH_BACKUP_EXPIRE_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_RETENTION_INHERITANCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INHERIT_VAULT_RETENTION" => Some(Self::InheritVaultRetention),
+                "MATCH_BACKUP_EXPIRE_TIME" => Some(Self::MatchBackupExpireTime),
+                _ => None,
+            }
+        }
+    }
     /// Holds the state of the backup vault resource.
     #[derive(
         Clone,
@@ -3691,6 +3772,14 @@ pub struct Backup {
     /// Optional. The backup can not be deleted before this time.
     #[prost(message, optional, tag = "6")]
     pub enforced_retention_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Setting for how the enforced retention end time is inherited.
+    /// This value is copied from this backup's BackupVault.
+    #[prost(
+        enumeration = "backup_vault::BackupRetentionInheritance",
+        optional,
+        tag = "30"
+    )]
+    pub backup_retention_inheritance: ::core::option::Option<i32>,
     /// Optional. When this backup is automatically expired.
     #[prost(message, optional, tag = "7")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -3724,12 +3813,19 @@ pub struct Backup {
     /// Optional. Output only. Reserved for future use.
     #[prost(bool, optional, tag = "25")]
     pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Optional. Output only. The list of KMS key versions used to encrypt the
+    /// backup.
+    #[prost(string, repeated, tag = "33")]
+    pub kms_key_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Workload specific backup properties.
     #[prost(oneof = "backup::BackupProperties", tags = "19, 26, 21, 28")]
     pub backup_properties: ::core::option::Option<backup::BackupProperties>,
     /// Configuration Info has the resource format-specific configuration.
     #[prost(oneof = "backup::PlanInfo", tags = "22")]
     pub plan_info: ::core::option::Option<backup::PlanInfo>,
+    /// Resource that is being backed up.
+    #[prost(oneof = "backup::SourceResource", tags = "31")]
+    pub source_resource: ::core::option::Option<backup::SourceResource>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -3883,6 +3979,14 @@ pub mod backup {
         #[prost(message, tag = "22")]
         GcpBackupPlanInfo(GcpBackupPlanInfo),
     }
+    /// Resource that is being backed up.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SourceResource {
+        /// Output only. Unique identifier of the GCP resource that is being backed
+        /// up.
+        #[prost(message, tag = "31")]
+        GcpResource(super::BackupGcpResource),
+    }
 }
 /// Message for creating a BackupVault.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4011,6 +4115,59 @@ pub struct FetchUsableBackupVaultsResponse {
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for the FetchBackupsForResourceType method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchBackupsForResourceTypeRequest {
+    /// Required. Datasources are the parent resource for the backups.
+    /// Format:
+    /// projects/{project}/locations/{location}/backupVaults/{backupVaultId}/dataSources/{datasourceId}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The type of the GCP resource.
+    /// Ex: sqladmin.googleapis.com/Instance
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Optional. The maximum number of Backups to return. The service may
+    /// return fewer than this value. If unspecified, at most 50
+    /// Backups will be returned. The maximum value is 100; values
+    /// above 100 will be coerced to 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous call of
+    /// `FetchBackupsForResourceType`.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `FetchBackupsForResourceType` must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter expression that filters the results fetched in the
+    /// response. The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. Supported
+    /// fields:
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending.
+    #[prost(string, tag = "6")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. This parameter is used to specify the view of the backup.
+    /// If not specified, the default view is BASIC.
+    #[prost(enumeration = "BackupView", tag = "7")]
+    pub view: i32,
+}
+/// Response for the FetchBackupsForResourceType method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchBackupsForResourceTypeResponse {
+    /// The Backups from the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting a BackupVault.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4327,6 +4484,21 @@ pub struct RestoreBackupRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. A field mask used to clear server-side default values
+    /// for fields within the `instance_properties` oneof.
+    ///
+    /// When a field in this mask is cleared, the server will not apply its
+    /// default logic (like inheriting a value from the source) for that field.
+    ///
+    /// The most common current use case is clearing default encryption keys.
+    ///
+    /// Examples of field mask paths:
+    ///
+    /// * Compute Instance Disks:
+    ///   `compute_instance_restore_properties.disks.*.disk_encryption_key`
+    /// * Single Disk: `disk_restore_properties.disk_encryption_key`
+    #[prost(message, optional, tag = "8")]
+    pub clear_overrides_field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The target environment for the restore operation.
     #[prost(oneof = "restore_backup_request::TargetEnvironment", tags = "3, 5, 6")]
     pub target_environment: ::core::option::Option<
@@ -4393,6 +4565,20 @@ pub mod target_resource {
 /// Minimum details to identify a Google Cloud resource
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcpResource {
+    /// Name of the Google Cloud resource.
+    #[prost(string, tag = "1")]
+    pub gcp_resourcename: ::prost::alloc::string::String,
+    /// Location of the resource: <region>/<zone>/"global"/"unspecified".
+    #[prost(string, tag = "2")]
+    pub location: ::prost::alloc::string::String,
+    /// Type of the resource. Use the Unified Resource Type,
+    /// eg. compute.googleapis.com/Instance.
+    #[prost(string, tag = "3")]
+    pub r#type: ::prost::alloc::string::String,
+}
+/// Minimum details to identify a Google Cloud resource for a backup.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BackupGcpResource {
     /// Name of the Google Cloud resource.
     #[prost(string, tag = "1")]
     pub gcp_resourcename: ::prost::alloc::string::String,
@@ -4537,6 +4723,10 @@ pub struct DataSourceReference {
     /// Output only. The GCP resource that the DataSource is associated with.
     #[prost(message, optional, tag = "7")]
     pub data_source_gcp_resource_info: ::core::option::Option<DataSourceGcpResourceInfo>,
+    /// Output only. Total size of the storage used by all backup resources for the
+    /// referenced datasource.
+    #[prost(int64, optional, tag = "8")]
+    pub total_stored_bytes: ::core::option::Option<i64>,
 }
 /// Information of backup configuration on the DataSource.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4589,6 +4779,61 @@ pub struct GetDataSourceReferenceRequest {
     /// projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request for the ListDataSourceReferences method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDataSourceReferencesRequest {
+    /// Required. The parent resource name.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of DataSourceReferences to return. The service
+    /// may return fewer than this value. If unspecified, at most 50
+    /// DataSourceReferences will be returned. The maximum value is 100; values
+    /// above 100 will be coerced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListDataSourceReferences`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDataSourceReferences` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter expression that filters the results listed in the
+    /// response. The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering.
+    ///
+    /// The following field and operator combinations are supported:
+    ///
+    /// * data_source_gcp_resource_info.gcp_resourcename with `=`, `!=`
+    /// * data_source_gcp_resource_info.type with `=`, `!=`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending.
+    ///
+    /// Supported fields:
+    ///
+    /// * data_source
+    /// * data_source_gcp_resource_info.gcp_resourcename
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for the ListDataSourceReferences method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataSourceReferencesResponse {
+    /// The DataSourceReferences from the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub data_source_references: ::prost::alloc::vec::Vec<DataSourceReference>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the FetchDataSourceReferencesForResourceType method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5626,6 +5871,36 @@ pub mod backup_dr_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Fetch Backups for a given resource type.
+        pub async fn fetch_backups_for_resource_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchBackupsForResourceTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchBackupsForResourceTypeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.backupdr.v1.BackupDR",
+                        "FetchBackupsForResourceType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets details of a Backup.
         pub async fn get_backup(
             &mut self,
@@ -6170,6 +6445,36 @@ pub mod backup_dr_client {
                     GrpcMethod::new(
                         "google.cloud.backupdr.v1.BackupDR",
                         "GetDataSourceReference",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists DataSourceReferences for a given project and location.
+        pub async fn list_data_source_references(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataSourceReferencesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataSourceReferencesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.backupdr.v1.BackupDR",
+                        "ListDataSourceReferences",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -2233,6 +2233,11 @@ pub struct MachineSpec {
     /// consumes reservation.
     #[prost(message, optional, tag = "5")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
+    /// Optional. Immutable. The minimum GPU driver version that this machine
+    /// requires. For example, "535.104.06". If not specified, the default GPU
+    /// driver version will be used by the underlying infrastructure.
+    #[prost(string, tag = "9")]
+    pub min_gpu_driver_version: ::prost::alloc::string::String,
 }
 /// A description of resources that are dedicated to a DeployedModel or
 /// DeployedIndex, and that need a higher degree of manual configuration.
@@ -7134,11 +7139,23 @@ pub struct PrebuiltVoiceConfig {
     #[prost(string, optional, tag = "1")]
     pub voice_name: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// The configuration for the voice to use.
+/// The configuration for the replicated voice to use.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReplicatedVoiceConfig {
+    /// Optional. The mimetype of the voice sample. Currently only
+    /// mime_type=audio/pcm is supported, which is raw mono 16-bit signed
+    /// little-endian pcm data, with 24k sampling rate.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Optional. The sample of the custom voice.
+    #[prost(bytes = "vec", tag = "2")]
+    pub voice_sample_audio: ::prost::alloc::vec::Vec<u8>,
+}
+/// Configuration for a voice.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VoiceConfig {
     /// The configuration for the speaker to use.
-    #[prost(oneof = "voice_config::VoiceConfig", tags = "1")]
+    #[prost(oneof = "voice_config::VoiceConfig", tags = "1, 3")]
     pub voice_config: ::core::option::Option<voice_config::VoiceConfig>,
 }
 /// Nested message and enum types in `VoiceConfig`.
@@ -7146,17 +7163,47 @@ pub mod voice_config {
     /// The configuration for the speaker to use.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum VoiceConfig {
-        /// The configuration for the prebuilt voice to use.
+        /// The configuration for a prebuilt voice.
         #[prost(message, tag = "1")]
         PrebuiltVoiceConfig(super::PrebuiltVoiceConfig),
+        /// Optional. The configuration for a replicated voice. This enables users to
+        /// replicate a voice from an audio sample.
+        #[prost(message, tag = "3")]
+        ReplicatedVoiceConfig(super::ReplicatedVoiceConfig),
     }
 }
-/// The speech generation config.
+/// Configuration for a single speaker in a multi-speaker setup.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpeakerVoiceConfig {
+    /// Required. The name of the speaker. This should be the same as the speaker
+    /// name used in the prompt.
+    #[prost(string, tag = "1")]
+    pub speaker: ::prost::alloc::string::String,
+    /// Required. The configuration for the voice of this speaker.
+    #[prost(message, optional, tag = "2")]
+    pub voice_config: ::core::option::Option<VoiceConfig>,
+}
+/// Configuration for a multi-speaker text-to-speech request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiSpeakerVoiceConfig {
+    /// Required. A list of configurations for the voices of the speakers. Exactly
+    /// two speaker voice configurations must be provided.
+    #[prost(message, repeated, tag = "2")]
+    pub speaker_voice_configs: ::prost::alloc::vec::Vec<SpeakerVoiceConfig>,
+}
+/// Configuration for speech generation.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechConfig {
-    /// The configuration for the speaker to use.
+    /// The configuration for the voice to use.
     #[prost(message, optional, tag = "1")]
     pub voice_config: ::core::option::Option<VoiceConfig>,
+    /// Optional. The language code (ISO 639-1) for the speech synthesis.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The configuration for a multi-speaker text-to-speech request.
+    /// This field is mutually exclusive with `voice_config`.
+    #[prost(message, optional, tag = "3")]
+    pub multi_speaker_voice_config: ::core::option::Option<MultiSpeakerVoiceConfig>,
 }
 /// Config for image generation features.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -12246,6 +12293,10 @@ pub enum DeploymentStage {
     FinishingUp = 4,
     /// The deployment has terminated.
     DeploymentTerminated = 10,
+    /// The deployment has succeeded.
+    SuccessfullyDeployed = 11,
+    /// The deployment has failed.
+    FailedToDeploy = 12,
 }
 impl DeploymentStage {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -12263,6 +12314,8 @@ impl DeploymentStage {
             Self::StartingModelServer => "STARTING_MODEL_SERVER",
             Self::FinishingUp => "FINISHING_UP",
             Self::DeploymentTerminated => "DEPLOYMENT_TERMINATED",
+            Self::SuccessfullyDeployed => "SUCCESSFULLY_DEPLOYED",
+            Self::FailedToDeploy => "FAILED_TO_DEPLOY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12277,6 +12330,8 @@ impl DeploymentStage {
             "STARTING_MODEL_SERVER" => Some(Self::StartingModelServer),
             "FINISHING_UP" => Some(Self::FinishingUp),
             "DEPLOYMENT_TERMINATED" => Some(Self::DeploymentTerminated),
+            "SUCCESSFULLY_DEPLOYED" => Some(Self::SuccessfullyDeployed),
+            "FAILED_TO_DEPLOY" => Some(Self::FailedToDeploy),
             _ => None,
         }
     }
@@ -18745,6 +18800,11 @@ pub mod feature_online_store {
         /// Metadata of the Bigtable instance. Output only.
         #[prost(message, optional, tag = "4")]
         pub bigtable_metadata: ::core::option::Option<bigtable::BigtableMetadata>,
+        /// Optional. The zone where the underlying Bigtable cluster for the primary
+        /// Bigtable instance will be provisioned. Only the zone must be provided.
+        /// For example, only "us-central1-a" should be provided.
+        #[prost(string, tag = "5")]
+        pub zone: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Bigtable`.
     pub mod bigtable {
@@ -46303,8 +46363,9 @@ pub mod reasoning_engine_spec {
         /// Optional. The Cloud Storage URI of the `requirements.txt` file
         #[prost(string, tag = "3")]
         pub requirements_gcs_uri: ::prost::alloc::string::String,
-        /// Optional. The Python version. Currently support 3.8, 3.9, 3.10, 3.11.
-        /// If not specified, default value is 3.10.
+        /// Optional. The Python version. Supported values
+        /// are 3.9, 3.10, 3.11, 3.12, 3.13. If not specified, the default value
+        /// is 3.10.
         #[prost(string, tag = "4")]
         pub python_version: ::prost::alloc::string::String,
     }
@@ -46359,7 +46420,7 @@ pub mod reasoning_engine_spec {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceCodeSpec {
         /// Specifies where the source code is located.
-        #[prost(oneof = "source_code_spec::Source", tags = "1")]
+        #[prost(oneof = "source_code_spec::Source", tags = "1, 3")]
         pub source: ::core::option::Option<source_code_spec::Source>,
         /// Specifies the language-specific configuration for building and running
         /// the code.
@@ -46376,6 +46437,34 @@ pub mod reasoning_engine_spec {
             /// (.tar.gz) file.
             #[prost(bytes = "vec", tag = "1")]
             pub source_archive: ::prost::alloc::vec::Vec<u8>,
+        }
+        /// Specifies the configuration for fetching source code from a Git
+        /// repository that is managed by Developer Connect. This includes the
+        /// repository, revision, and directory to use.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectConfig {
+            /// Required. The Developer Connect Git repository link, formatted as
+            /// `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
+            #[prost(string, tag = "1")]
+            pub git_repository_link: ::prost::alloc::string::String,
+            /// Required. Directory, relative to the source root, in which to run the
+            /// build.
+            #[prost(string, tag = "2")]
+            pub dir: ::prost::alloc::string::String,
+            /// Required. The revision to fetch from the Git repository such as a
+            /// branch, a tag, a commit SHA, or any Git ref.
+            #[prost(string, tag = "3")]
+            pub revision: ::prost::alloc::string::String,
+        }
+        /// Specifies source code to be fetched from a Git repository managed through
+        /// the Developer Connect service.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectSource {
+            /// Required. The Developer Connect configuration that defines the
+            /// specific repository, revision, and directory to use as the source code
+            /// root.
+            #[prost(message, optional, tag = "1")]
+            pub config: ::core::option::Option<DeveloperConnectConfig>,
         }
         /// Specification for running a Python application from source.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -46409,6 +46498,9 @@ pub mod reasoning_engine_spec {
             /// Source code is provided directly in the request.
             #[prost(message, tag = "1")]
             InlineSource(InlineSource),
+            /// Source code is in a Git repository managed by Developer Connect.
+            #[prost(message, tag = "3")]
+            DeveloperConnectSource(DeveloperConnectSource),
         }
         /// Specifies the language-specific configuration for building and running
         /// the code.
@@ -47966,8 +48058,9 @@ pub struct ListSessionsRequest {
     /// Optional. The standard list filter.
     /// Supported fields:
     /// \* `display_name`
+    /// \* `user_id`
     ///
-    /// Example: `display_name=abc`.
+    /// Example: `display_name="abc"`, `user_id="123"`.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. A comma-separated list of fields to order by, sorted in ascending
@@ -48047,6 +48140,14 @@ pub struct ListEventsRequest {
     /// More detail in [AIP-160](<https://google.aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    /// * `timestamp`
+    ///
+    /// Example: `timestamp desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
 /// \[SessionService.ListEvents\]\[google.cloud.aiplatform.v1beta1.SessionService.ListEvents\].

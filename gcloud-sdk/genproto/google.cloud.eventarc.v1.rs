@@ -420,6 +420,53 @@ pub struct GoogleApiSource {
     /// Optional. Config to control Platform logging for the GoogleApiSource.
     #[prost(message, optional, tag = "11")]
     pub logging_config: ::core::option::Option<LoggingConfig>,
+    /// Config to enabled subscribing to events from other projects in the org.
+    ///
+    /// Users need the eventarc.googleApiSource.create permission on the entire org
+    /// in order to create a resource with these settings.
+    #[prost(oneof = "google_api_source::WideScopeSubscription", tags = "12, 13")]
+    pub wide_scope_subscription: ::core::option::Option<
+        google_api_source::WideScopeSubscription,
+    >,
+}
+/// Nested message and enum types in `GoogleApiSource`.
+pub mod google_api_source {
+    /// Config to enable subscribing to all events from a list of projects.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ProjectSubscriptions {
+        /// Required. A list of projects to receive events from.
+        ///
+        /// All the projects must be in the same org. The listed projects should have
+        /// the format project/{identifier} where identifier can be either the
+        /// project id for project number. A single list may contain both formats. At
+        /// most 100 projects can be listed.
+        #[prost(string, repeated, tag = "1")]
+        pub list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Config to enabled subscribing to events from other projects in the org.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OrganizationSubscription {
+        /// Required. Enable org level subscription.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+    }
+    /// Config to enabled subscribing to events from other projects in the org.
+    ///
+    /// Users need the eventarc.googleApiSource.create permission on the entire org
+    /// in order to create a resource with these settings.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum WideScopeSubscription {
+        /// Optional. Config to enable subscribing to events from all projects in the
+        /// GoogleApiSource's org.
+        #[prost(message, tag = "12")]
+        OrganizationSubscription(OrganizationSubscription),
+        /// Optional. Config to enable subscribing to all events from a list of
+        /// projects.
+        ///
+        /// All the projects must be in the same org as the GoogleApiSource.
+        #[prost(message, tag = "13")]
+        ProjectSubscriptions(ProjectSubscriptions),
+    }
 }
 /// A GoogleChannelConfig is a resource that stores the custom settings
 /// respected by Eventarc first-party triggers in the matching region.
@@ -1169,11 +1216,30 @@ pub struct Trigger {
     /// physical zone separation
     #[prost(bool, tag = "19")]
     pub satisfies_pzs: bool,
+    /// Optional. The retry policy to use in the Trigger.
+    ///
+    /// If unset, event delivery will be retried for up to 24 hours by default:
+    /// <https://cloud.google.com/eventarc/docs/retry-events>
+    #[prost(message, optional, tag = "20")]
+    pub retry_policy: ::core::option::Option<trigger::RetryPolicy>,
     /// Output only. This checksum is computed by the server based on the value of
     /// other fields, and might be sent only on create requests to ensure that the
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Trigger`.
+pub mod trigger {
+    /// The retry policy configuration for the Trigger.
+    ///
+    /// Can only be set with Cloud Run destinations.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RetryPolicy {
+        /// Optional. The maximum number of delivery attempts for any message. The
+        /// only valid value is 1.
+        #[prost(int32, tag = "1")]
+        pub max_attempts: i32,
+    }
 }
 /// Filters events based on exact matches on the CloudEvents attributes.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

@@ -1993,6 +1993,69 @@ pub struct SimpleExportPolicyRule {
     /// value be ignored if this is enabled.
     #[prost(bool, optional, tag = "11")]
     pub kerberos_5p_read_write: ::core::option::Option<bool>,
+    /// Optional. Defines how user identity squashing is applied for this export
+    /// rule. This field is the preferred way to configure squashing behavior and
+    /// takes precedence over `has_root_access` if both are provided.
+    #[prost(enumeration = "simple_export_policy_rule::SquashMode", optional, tag = "12")]
+    pub squash_mode: ::core::option::Option<i32>,
+    /// Optional. An integer representing the anonymous user ID. Range is 0 to
+    /// 4294967295. Required when squash_mode is ROOT_SQUASH or ALL_SQUASH.
+    #[prost(int64, optional, tag = "13")]
+    pub anon_uid: ::core::option::Option<i64>,
+}
+/// Nested message and enum types in `SimpleExportPolicyRule`.
+pub mod simple_export_policy_rule {
+    /// SquashMode defines how remote user privileges are restricted when accessing
+    /// an NFS export. It controls how user identities (like root) are mapped to
+    /// anonymous users to limit access and enforce security.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SquashMode {
+        /// Defaults to NO_ROOT_SQUASH.
+        Unspecified = 0,
+        /// The root user (UID 0) retains full access. Other users are
+        /// unaffected.
+        NoRootSquash = 1,
+        /// The root user (UID 0) is squashed to anonymous user ID. Other users are
+        /// unaffected.
+        RootSquash = 2,
+        /// All users are squashed to anonymous user ID.
+        AllSquash = 3,
+    }
+    impl SquashMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SQUASH_MODE_UNSPECIFIED",
+                Self::NoRootSquash => "NO_ROOT_SQUASH",
+                Self::RootSquash => "ROOT_SQUASH",
+                Self::AllSquash => "ALL_SQUASH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQUASH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_ROOT_SQUASH" => Some(Self::NoRootSquash),
+                "ROOT_SQUASH" => Some(Self::RootSquash),
+                "ALL_SQUASH" => Some(Self::AllSquash),
+                _ => None,
+            }
+        }
+    }
 }
 /// Snapshot Policy for a volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
