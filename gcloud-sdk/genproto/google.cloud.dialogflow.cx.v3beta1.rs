@@ -5355,6 +5355,13 @@ pub mod changelogs_client {
         }
     }
 }
+/// Represents a code block.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CodeBlock {
+    /// Optional. Source code of the block in Python.
+    #[prost(string, tag = "1")]
+    pub code: ::prost::alloc::string::String,
+}
 /// Inline destination for a Dialogflow operation that writes or exports objects
 /// (e.g. \[intents\]\[google.cloud.dialogflow.cx.v3beta1.Intent\]) outside of
 /// Dialogflow.
@@ -12326,6 +12333,11 @@ pub mod webhook {
         /// The generated token is sent in the Authorization header.
         #[prost(enumeration = "generic_web_service::ServiceAgentAuth", tag = "12")]
         pub service_agent_auth: i32,
+        /// Optional. Configuration for service account authentication.
+        #[prost(message, optional, tag = "18")]
+        pub service_account_auth_config: ::core::option::Option<
+            generic_web_service::ServiceAccountAuthConfig,
+        >,
         /// Optional. Type of the webhook.
         #[prost(enumeration = "generic_web_service::WebhookType", tag = "6")]
         pub webhook_type: i32,
@@ -12382,6 +12394,21 @@ pub mod webhook {
             /// Optional. The OAuth scopes to grant.
             #[prost(string, repeated, tag = "4")]
             pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Configuration for authentication using a service account.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ServiceAccountAuthConfig {
+            /// Required. The email address of the service account used to authenticate
+            /// the webhook call. Dialogflow uses this service account to exchange an
+            /// access token and the access token is then sent in the `Authorization`
+            /// header of the webhook request.
+            ///
+            /// The service account must have the
+            /// `roles/iam.serviceAccountTokenCreator` role granted to the
+            /// [Dialogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[prost(string, tag = "1")]
+            pub service_account: ::prost::alloc::string::String,
         }
         /// Indicate the auth token type generated from the [Diglogflow service
         /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
@@ -16257,6 +16284,16 @@ pub struct Playbook {
     /// be implied using the tool being referenced in goal and steps.
     #[prost(string, repeated, tag = "13")]
     pub referenced_tools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Output only. Names of inline actions scoped to this playbook.
+    /// These actions are in addition to those belonging to referenced tools, child
+    /// playbooks, and flows, e.g. actions that are defined in the playbook's code
+    /// block.
+    #[prost(string, repeated, tag = "22")]
+    pub inline_actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The playbook's scoped code block, which may implement handlers
+    /// and actions.
+    #[prost(message, optional, tag = "21")]
+    pub code_block: ::core::option::Option<CodeBlock>,
     /// Optional. Llm model settings for the playbook.
     #[prost(message, optional, tag = "14")]
     pub llm_model_settings: ::core::option::Option<LlmModelSettings>,
@@ -18259,7 +18296,7 @@ pub mod tool {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authentication {
         /// The auth configuration.
-        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4")]
+        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4, 5")]
         pub auth_config: ::core::option::Option<authentication::AuthConfig>,
     }
     /// Nested message and enum types in `Authentication`.
@@ -18445,6 +18482,21 @@ pub mod tool {
             #[prost(string, tag = "2")]
             pub secret_version_for_token: ::prost::alloc::string::String,
         }
+        /// Configuration for authentication using a service account.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ServiceAccountAuthConfig {
+            /// Required. The email address of the service account used to authenticate
+            /// the tool call. Dialogflow uses this service account to exchange an
+            /// access token and the access token is then sent in the `Authorization`
+            /// header of the tool request.
+            ///
+            /// The service account must have the
+            /// `roles/iam.serviceAccountTokenCreator` role granted to the
+            /// [Dialogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[prost(string, tag = "1")]
+            pub service_account: ::prost::alloc::string::String,
+        }
         /// The location of the API key in the request.
         #[derive(
             Clone,
@@ -18505,6 +18557,9 @@ pub mod tool {
             /// Config for bearer token auth.
             #[prost(message, tag = "4")]
             BearerTokenConfig(BearerTokenConfig),
+            /// Configuration for service account authentication.
+            #[prost(message, tag = "5")]
+            ServiceAccountAuthConfig(ServiceAccountAuthConfig),
         }
     }
     /// The TLS configuration.

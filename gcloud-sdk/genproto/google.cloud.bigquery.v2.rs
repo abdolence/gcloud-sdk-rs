@@ -11551,28 +11551,6 @@ pub struct UpdateRoutineRequest {
     #[prost(message, optional, tag = "4")]
     pub routine: ::core::option::Option<Routine>,
 }
-/// Describes the format for the partial update (patch) of a routine.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PatchRoutineRequest {
-    /// Required. Project ID of the routine to update
-    #[prost(string, tag = "1")]
-    pub project_id: ::prost::alloc::string::String,
-    /// Required. Dataset ID of the routine to update
-    #[prost(string, tag = "2")]
-    pub dataset_id: ::prost::alloc::string::String,
-    /// Required. Routine ID of the routine to update
-    #[prost(string, tag = "3")]
-    pub routine_id: ::prost::alloc::string::String,
-    /// Required. A routine resource which will be used to partially
-    /// update the specified routine
-    #[prost(message, optional, tag = "4")]
-    pub routine: ::core::option::Option<Routine>,
-    /// Only the Routine fields in the field mask are updated
-    /// by the given routine. Repeated routine fields will be fully replaced
-    /// if contained in the field mask.
-    #[prost(message, optional, tag = "5")]
-    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
 /// Describes the format for deleting a routine.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRoutineRequest {
@@ -11792,34 +11770,6 @@ pub mod routine_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.v2.RoutineService",
                         "UpdateRoutine",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Patches information in an existing routine. The patch method does a partial
-        /// update to an existing Routine resource.
-        pub async fn patch_routine(
-            &mut self,
-            request: impl tonic::IntoRequest<super::PatchRoutineRequest>,
-        ) -> std::result::Result<tonic::Response<super::Routine>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.bigquery.v2.RoutineService/PatchRoutine",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.bigquery.v2.RoutineService",
-                        "PatchRoutine",
                     ),
                 );
             self.inner.unary(req, path, codec).await

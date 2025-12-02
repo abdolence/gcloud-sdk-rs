@@ -2789,6 +2789,10 @@ pub struct ComputeEngineTargetDefaults {
     /// convert the virtual machine from using the existing boot option to another.
     #[prost(enumeration = "BootConversion", tag = "20")]
     pub boot_conversion: i32,
+    /// Optional. AdaptationModifiers are the set of modifiers used during OS
+    /// adaptation.
+    #[prost(message, repeated, tag = "23")]
+    pub adaptation_modifiers: ::prost::alloc::vec::Vec<AdaptationModifier>,
     /// Optional. Additional replica zones of the target regional disks.
     /// If this list is not empty a regional disk will be created. The first
     /// supported zone would be the one stated in the
@@ -2800,6 +2804,25 @@ pub struct ComputeEngineTargetDefaults {
     /// zonal disk will be created in the same zone the VM is created.
     #[prost(string, repeated, tag = "24")]
     pub disk_replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. If specified this will be the storage pool in which the disk is
+    /// created. This is the full path of the storage pool resource, for example:
+    /// "projects/my-project/zones/us-central1-a/storagePools/my-storage-pool".
+    /// The storage pool must be in the same project and zone as the target disks.
+    /// The storage pool's type must match the disk type.
+    #[prost(string, tag = "25")]
+    pub storage_pool: ::prost::alloc::string::String,
+}
+/// AdaptationModifier a modifier to be used for configuration of the OS
+/// adaptation process.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AdaptationModifier {
+    /// Optional. The modifier name.
+    #[prost(string, tag = "3")]
+    pub modifier: ::prost::alloc::string::String,
+    /// Optional. The value of the modifier.
+    /// The actual value depends on the modifier and can also be empty.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
 }
 /// ComputeEngineTargetDetails is a collection of details for creating a VM in a
 /// target Compute Engine project.
@@ -2880,6 +2903,10 @@ pub struct ComputeEngineTargetDetails {
     /// convert the virtual machine from using the existing boot option to another.
     #[prost(enumeration = "BootConversion", tag = "20")]
     pub boot_conversion: i32,
+    /// Optional. Modifiers to be used as configuration of the OS adaptation
+    /// process.
+    #[prost(message, repeated, tag = "23")]
+    pub adaptation_modifiers: ::prost::alloc::vec::Vec<AdaptationModifier>,
     /// Optional. Additional replica zones of the target regional disks.
     /// If this list is not empty a regional disk will be created. The first
     /// supported zone would be the one stated in the
@@ -2891,6 +2918,14 @@ pub struct ComputeEngineTargetDetails {
     /// zonal disk will be created in the same zone the VM is created.
     #[prost(string, repeated, tag = "24")]
     pub disk_replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The storage pool used for the VM disks.
+    /// If specified this will be the storage pool in which the disk is created.
+    /// This is the full path of the storage pool resource, for example:
+    /// "projects/my-project/zones/us-central1-a/storagePools/my-storage-pool".
+    /// The storage pool must be in the same project and zone as the target disks.
+    /// The storage pool's type must match the disk type.
+    #[prost(string, tag = "25")]
+    pub storage_pool: ::prost::alloc::string::String,
 }
 /// NetworkInterface represents a NIC of a VM.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4765,7 +4800,7 @@ pub struct DiskImageTargetDetails {
 }
 /// Nested message and enum types in `DiskImageTargetDetails`.
 pub mod disk_image_target_details {
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OsAdaptationConfig {
         /// Optional. Use to set the parameters relevant for the OS adaptation
         /// process.
@@ -4841,7 +4876,7 @@ pub struct MachineImageTargetDetails {
 }
 /// Nested message and enum types in `MachineImageTargetDetails`.
 pub mod machine_image_target_details {
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OsAdaptationConfig {
         /// Optional. Use to set the parameters relevant for the OS adaptation
         /// process.
@@ -4941,7 +4976,7 @@ pub struct MachineImageParametersOverrides {
     pub machine_type: ::prost::alloc::string::String,
 }
 /// Parameters affecting the OS adaptation process.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageImportOsAdaptationParameters {
     /// Optional. Set to true in order to generalize the imported image.
     /// The generalization process enables co-existence of multiple VMs created
@@ -4959,10 +4994,27 @@ pub struct ImageImportOsAdaptationParameters {
     /// The size of the boot disk might be increased to allow the conversion
     #[prost(enumeration = "BootConversion", tag = "3")]
     pub boot_conversion: i32,
+    /// Optional. Modifiers to be used as configuration of the OS adaptation
+    /// process.
+    #[prost(message, repeated, tag = "4")]
+    pub adaptation_modifiers: ::prost::alloc::vec::Vec<AdaptationModifier>,
 }
-/// Mentions that the image import is not using OS adaptation process.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DataDiskImageImport {}
+/// Used when the image import is not using OS adaptation process.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataDiskImageImport {
+    /// Optional. A list of guest OS features to apply to the imported image. These
+    /// features are flags that are used by Compute Engine to enable certain
+    /// capabilities for virtual machine instances that are created from the image.
+    ///
+    /// This field does not change the OS of the image; it only marks the image
+    /// with the specified features. The user must ensure that the OS is
+    /// compatible with the features.
+    ///
+    /// For a list of available features, see
+    /// <https://cloud.google.com/compute/docs/images/create-custom#guest-os-features.>
+    #[prost(string, repeated, tag = "1")]
+    pub guest_os_features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Mentions that the machine image import is not using OS adaptation process.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SkipOsAdaptation {}
@@ -7591,7 +7643,7 @@ pub mod vm_migration_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Initiates the cancellation of a running clone job.
+        /// Initiates the cancellation of a running ImageImportJob.
         pub async fn cancel_image_import_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelImageImportJobRequest>,

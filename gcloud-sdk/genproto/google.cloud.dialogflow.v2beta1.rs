@@ -7989,6 +7989,18 @@ pub struct Participant {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. For tracking the utilization of prebuilt Agent Assist integration
+    /// modules. This field is only inscope for Integration type that include UI
+    /// Modules, Backend Modules, and Agent Desktop connector, it is out of scope
+    /// for CCaaS and Direct Integration.
+    /// For each human agent, prebuilt UI Modules needs to trigger the
+    /// UpdateParticipant API to update this field. Both
+    /// \[CreateParticipantRequest\]\[google.cloud.dialogflow.v2beta1.CreateParticipantRequest.participant\]
+    /// and
+    /// \[UpdateParticipantRequest\]\[google.cloud.dialogflow.v2beta1.UpdateParticipantRequest.participant\]
+    /// will be supported.
+    #[prost(enumeration = "participant::AgentDesktopSource", tag = "10")]
+    pub agent_desktop_source: i32,
 }
 /// Nested message and enum types in `Participant`.
 pub mod participant {
@@ -8036,6 +8048,63 @@ pub mod participant {
                 "HUMAN_AGENT" => Some(Self::HumanAgent),
                 "AUTOMATED_AGENT" => Some(Self::AutomatedAgent),
                 "END_USER" => Some(Self::EndUser),
+                _ => None,
+            }
+        }
+    }
+    /// Enumeration of the Agent Desktop Source when using prebuilt Agent
+    /// Assist integration modules.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AgentDesktopSource {
+        /// Agent Desktop Source is not specified.
+        Unspecified = 0,
+        /// Agent Desktop Source is Live Person.
+        LivePerson = 1,
+        /// Agent Desktop Source is Genesys Cloud.
+        GenesysCloud = 2,
+        /// Agent Desktop Source is Twilio.
+        Twilio = 3,
+        /// Agent Desktop Source is Salesforce.
+        Salesforce = 4,
+        /// UI Modules are in use but the desktop is either not currently released or
+        /// setting this field to the applicable desktop.
+        Other = 8,
+    }
+    impl AgentDesktopSource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AGENT_DESKTOP_SOURCE_UNSPECIFIED",
+                Self::LivePerson => "LIVE_PERSON",
+                Self::GenesysCloud => "GENESYS_CLOUD",
+                Self::Twilio => "TWILIO",
+                Self::Salesforce => "SALESFORCE",
+                Self::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AGENT_DESKTOP_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LIVE_PERSON" => Some(Self::LivePerson),
+                "GENESYS_CLOUD" => Some(Self::GenesysCloud),
+                "TWILIO" => Some(Self::Twilio),
+                "SALESFORCE" => Some(Self::Salesforce),
+                "OTHER" => Some(Self::Other),
                 _ => None,
             }
         }
@@ -14023,6 +14092,8 @@ pub mod conversation_event {
         ConversationStarted = 1,
         /// An existing conversation has closed. This is fired when a telephone call
         /// is terminated, or a conversation is closed via the API.
+        /// The event is fired for every CompleteConversation call, even if the
+        /// conversation is already closed.
         ConversationFinished = 2,
         /// An existing conversation has received notification from Dialogflow that
         /// human intervention is required.
@@ -16591,7 +16662,7 @@ pub mod generator_evaluation_config {
         #[deprecated]
         #[prost(string, tag = "4")]
         pub completeness_evaluation_version: ::prost::alloc::string::String,
-        /// Output only. Version for summarization evaluation.
+        /// Optional. Version for summarization evaluation.
         #[prost(string, optional, tag = "5")]
         pub evaluator_version: ::core::option::Option<::prost::alloc::string::String>,
     }

@@ -196,7 +196,9 @@ pub mod transaction_options {
             ExactStaleness(::prost_types::Duration),
         }
     }
-    /// `IsolationLevel` is used when setting `isolation_level` for a transaction.
+    /// `IsolationLevel` is used when setting the [isolation
+    /// level](<https://cloud.google.com/spanner/docs/isolation-levels>) for a
+    /// transaction.
     #[derive(
         Clone,
         Copy,
@@ -231,7 +233,7 @@ pub mod transaction_options {
         /// `SERIALIZABLE` transactions, only write-write conflicts are detected in
         /// snapshot transactions.
         ///
-        /// This isolation level does not support Read-only and Partitioned DML
+        /// This isolation level does not support read-only and partitioned DML
         /// transactions.
         ///
         /// When `REPEATABLE_READ` is specified on a read-write transaction, the
@@ -587,245 +589,6 @@ pub struct KeySet {
     #[prost(bool, tag = "3")]
     pub all: bool,
 }
-/// A modification to one or more Cloud Spanner rows.  Mutations can be
-/// applied to a Cloud Spanner database by sending them in a
-/// \[Commit\]\[google.spanner.v1.Spanner.Commit\] call.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Mutation {
-    /// Required. The operation to perform.
-    #[prost(oneof = "mutation::Operation", tags = "1, 2, 3, 4, 5")]
-    pub operation: ::core::option::Option<mutation::Operation>,
-}
-/// Nested message and enum types in `Mutation`.
-pub mod mutation {
-    /// Arguments to \[insert\]\[google.spanner.v1.Mutation.insert\],
-    /// \[update\]\[google.spanner.v1.Mutation.update\],
-    /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], and
-    /// \[replace\]\[google.spanner.v1.Mutation.replace\] operations.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Write {
-        /// Required. The table whose rows will be written.
-        #[prost(string, tag = "1")]
-        pub table: ::prost::alloc::string::String,
-        /// The names of the columns in
-        /// \[table\]\[google.spanner.v1.Mutation.Write.table\] to be written.
-        ///
-        /// The list of columns must contain enough columns to allow
-        /// Cloud Spanner to derive values for all primary key columns in the
-        /// row(s) to be modified.
-        #[prost(string, repeated, tag = "2")]
-        pub columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The values to be written. `values` can contain more than one
-        /// list of values. If it does, then multiple rows are written, one
-        /// for each entry in `values`. Each list in `values` must have
-        /// exactly as many entries as there are entries in
-        /// \[columns\]\[google.spanner.v1.Mutation.Write.columns\] above. Sending
-        /// multiple lists is equivalent to sending multiple `Mutation`s, each
-        /// containing one `values` entry and repeating
-        /// \[table\]\[google.spanner.v1.Mutation.Write.table\] and
-        /// \[columns\]\[google.spanner.v1.Mutation.Write.columns\]. Individual values in
-        /// each list are encoded as described \[here\]\[google.spanner.v1.TypeCode\].
-        #[prost(message, repeated, tag = "3")]
-        pub values: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
-    }
-    /// Arguments to \[delete\]\[google.spanner.v1.Mutation.delete\] operations.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Delete {
-        /// Required. The table whose rows will be deleted.
-        #[prost(string, tag = "1")]
-        pub table: ::prost::alloc::string::String,
-        /// Required. The primary keys of the rows within
-        /// \[table\]\[google.spanner.v1.Mutation.Delete.table\] to delete.  The primary
-        /// keys must be specified in the order in which they appear in the `PRIMARY  KEY()` clause of the table's equivalent DDL statement (the DDL statement
-        /// used to create the table). Delete is idempotent. The transaction will
-        /// succeed even if some or all rows do not exist.
-        #[prost(message, optional, tag = "2")]
-        pub key_set: ::core::option::Option<super::KeySet>,
-    }
-    /// Required. The operation to perform.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Insert new rows in a table. If any of the rows already exist,
-        /// the write or transaction fails with error `ALREADY_EXISTS`.
-        #[prost(message, tag = "1")]
-        Insert(Write),
-        /// Update existing rows in a table. If any of the rows does not
-        /// already exist, the transaction fails with error `NOT_FOUND`.
-        #[prost(message, tag = "2")]
-        Update(Write),
-        /// Like \[insert\]\[google.spanner.v1.Mutation.insert\], except that if the row
-        /// already exists, then its column values are overwritten with the ones
-        /// provided. Any column values not explicitly written are preserved.
-        ///
-        /// When using
-        /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], just as
-        /// when using \[insert\]\[google.spanner.v1.Mutation.insert\], all `NOT NULL`
-        /// columns in the table must be given a value. This holds true even when the
-        /// row already exists and will therefore actually be updated.
-        #[prost(message, tag = "3")]
-        InsertOrUpdate(Write),
-        /// Like \[insert\]\[google.spanner.v1.Mutation.insert\], except that if the row
-        /// already exists, it is deleted, and the column values provided are
-        /// inserted instead. Unlike
-        /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], this
-        /// means any values not explicitly written become `NULL`.
-        ///
-        /// In an interleaved table, if you create the child table with the
-        /// `ON DELETE CASCADE` annotation, then replacing a parent row
-        /// also deletes the child rows. Otherwise, you must delete the
-        /// child rows before you replace the parent row.
-        #[prost(message, tag = "4")]
-        Replace(Write),
-        /// Delete rows from a table. Succeeds whether or not the named
-        /// rows were present.
-        #[prost(message, tag = "5")]
-        Delete(Delete),
-    }
-}
-/// Node information for nodes appearing in a
-/// \[QueryPlan.plan_nodes\]\[google.spanner.v1.QueryPlan.plan_nodes\].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlanNode {
-    /// The `PlanNode`'s index in \[node
-    /// list\]\[google.spanner.v1.QueryPlan.plan_nodes\].
-    #[prost(int32, tag = "1")]
-    pub index: i32,
-    /// Used to determine the type of node. May be needed for visualizing
-    /// different kinds of nodes differently. For example, If the node is a
-    /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] node, it will have a
-    /// condensed representation which can be used to directly embed a description
-    /// of the node in its parent.
-    #[prost(enumeration = "plan_node::Kind", tag = "2")]
-    pub kind: i32,
-    /// The display name for the node.
-    #[prost(string, tag = "3")]
-    pub display_name: ::prost::alloc::string::String,
-    /// List of child node `index`es and their relationship to this parent.
-    #[prost(message, repeated, tag = "4")]
-    pub child_links: ::prost::alloc::vec::Vec<plan_node::ChildLink>,
-    /// Condensed representation for
-    /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] nodes.
-    #[prost(message, optional, tag = "5")]
-    pub short_representation: ::core::option::Option<plan_node::ShortRepresentation>,
-    /// Attributes relevant to the node contained in a group of key-value pairs.
-    /// For example, a Parameter Reference node could have the following
-    /// information in its metadata:
-    ///
-    /// ```text
-    /// {
-    ///    "parameter_reference": "param1",
-    ///    "parameter_type": "array"
-    /// }
-    /// ```
-    #[prost(message, optional, tag = "6")]
-    pub metadata: ::core::option::Option<::prost_types::Struct>,
-    /// The execution statistics associated with the node, contained in a group of
-    /// key-value pairs. Only present if the plan was returned as a result of a
-    /// profile query. For example, number of executions, number of rows/time per
-    /// execution etc.
-    #[prost(message, optional, tag = "7")]
-    pub execution_stats: ::core::option::Option<::prost_types::Struct>,
-}
-/// Nested message and enum types in `PlanNode`.
-pub mod plan_node {
-    /// Metadata associated with a parent-child relationship appearing in a
-    /// \[PlanNode\]\[google.spanner.v1.PlanNode\].
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct ChildLink {
-        /// The node to which the link points.
-        #[prost(int32, tag = "1")]
-        pub child_index: i32,
-        /// The type of the link. For example, in Hash Joins this could be used to
-        /// distinguish between the build child and the probe child, or in the case
-        /// of the child being an output variable, to represent the tag associated
-        /// with the output variable.
-        #[prost(string, tag = "2")]
-        pub r#type: ::prost::alloc::string::String,
-        /// Only present if the child node is
-        /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] and corresponds to an
-        /// output variable of the parent node. The field carries the name of the
-        /// output variable. For example, a `TableScan` operator that reads rows from
-        /// a table will have child links to the `SCALAR` nodes representing the
-        /// output variables created for each column that is read by the operator.
-        /// The corresponding `variable` fields will be set to the variable names
-        /// assigned to the columns.
-        #[prost(string, tag = "3")]
-        pub variable: ::prost::alloc::string::String,
-    }
-    /// Condensed representation of a node and its subtree. Only present for
-    /// `SCALAR` \[PlanNode(s)\]\[google.spanner.v1.PlanNode\].
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ShortRepresentation {
-        /// A string representation of the expression subtree rooted at this node.
-        #[prost(string, tag = "1")]
-        pub description: ::prost::alloc::string::String,
-        /// A mapping of (subquery variable name) -> (subquery node id) for cases
-        /// where the `description` string of this node references a `SCALAR`
-        /// subquery contained in the expression subtree rooted at this node. The
-        /// referenced `SCALAR` subquery may not necessarily be a direct child of
-        /// this node.
-        #[prost(map = "string, int32", tag = "2")]
-        pub subqueries: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
-    }
-    /// The kind of \[PlanNode\]\[google.spanner.v1.PlanNode\]. Distinguishes between
-    /// the two different kinds of nodes that can appear in a query plan.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Kind {
-        /// Not specified.
-        Unspecified = 0,
-        /// Denotes a Relational operator node in the expression tree. Relational
-        /// operators represent iterative processing of rows during query execution.
-        /// For example, a `TableScan` operation that reads rows from a table.
-        Relational = 1,
-        /// Denotes a Scalar node in the expression tree. Scalar nodes represent
-        /// non-iterable entities in the query plan. For example, constants or
-        /// arithmetic operators appearing inside predicate expressions or references
-        /// to column names.
-        Scalar = 2,
-    }
-    impl Kind {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "KIND_UNSPECIFIED",
-                Self::Relational => "RELATIONAL",
-                Self::Scalar => "SCALAR",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "KIND_UNSPECIFIED" => Some(Self::Unspecified),
-                "RELATIONAL" => Some(Self::Relational),
-                "SCALAR" => Some(Self::Scalar),
-                _ => None,
-            }
-        }
-    }
-}
-/// Contains an ordered list of nodes appearing in the query plan.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryPlan {
-    /// The nodes in the query plan. Plan nodes are returned in pre-order starting
-    /// with the plan root. Each \[PlanNode\]\[google.spanner.v1.PlanNode\]'s `id`
-    /// corresponds to its index in `plan_nodes`.
-    #[prost(message, repeated, tag = "1")]
-    pub plan_nodes: ::prost::alloc::vec::Vec<PlanNode>,
-}
 /// `Type` indicates the type of a Cloud Spanner value, as might be stored in a
 /// table cell or returned from an SQL query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1075,6 +838,801 @@ impl TypeAnnotationCode {
         }
     }
 }
+/// A `Range` represents a range of keys in a database. The keys themselves
+/// are encoded in "sortable string format", also known as ssformat. Consult
+/// Spanner's open source client libraries for details on the encoding.
+///
+/// Each range represents a contiguous range of rows, possibly from multiple
+/// tables/indexes. Each range is associated with a single paxos group (known as
+/// a "group" throughout this API), a split (which names the exact range within
+/// the group), and a generation that can be used to determine whether a given
+/// `Range` represents a newer or older location for the key range.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Range {
+    /// The start key of the range, inclusive. Encoded in "sortable string format"
+    /// (ssformat).
+    #[prost(bytes = "vec", tag = "1")]
+    pub start_key: ::prost::alloc::vec::Vec<u8>,
+    /// The limit key of the range, exclusive. Encoded in "sortable string format"
+    /// (ssformat).
+    #[prost(bytes = "vec", tag = "2")]
+    pub limit_key: ::prost::alloc::vec::Vec<u8>,
+    /// The UID of the paxos group where this range is stored. UIDs are unique
+    /// within the database. References `Group.group_uid`.
+    #[prost(uint64, tag = "3")]
+    pub group_uid: u64,
+    /// A group can store multiple ranges of keys. Each key range is named by an
+    /// ID (the split ID). Within a group, split IDs are unique. The `split_id`
+    /// names the exact split in `group_uid` where this range is stored.
+    #[prost(uint64, tag = "4")]
+    pub split_id: u64,
+    /// `generation` indicates the freshness of the range information contained
+    /// in this proto. Generations can be compared lexicographically; if generation
+    /// A is greater than generation B, then the `Range` corresponding to A is
+    /// newer than the `Range` corresponding to B, and should be used
+    /// preferentially.
+    #[prost(bytes = "vec", tag = "5")]
+    pub generation: ::prost::alloc::vec::Vec<u8>,
+}
+/// A `Tablet` represents a single replica of a `Group`. A tablet is served by a
+/// single server at a time, and can move between servers due to server death or
+/// simply load balancing.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Tablet {
+    /// The UID of the tablet, unique within the database. Matches the
+    /// `tablet_uids` and `leader_tablet_uid` fields in `Group`.
+    #[prost(uint64, tag = "1")]
+    pub tablet_uid: u64,
+    /// The address of the server that is serving this tablet -- either an IP
+    /// address or DNS hostname and a port number.
+    #[prost(string, tag = "2")]
+    pub server_address: ::prost::alloc::string::String,
+    /// Where this tablet is located. This is the name of a Google Cloud region,
+    /// such as "us-central1".
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
+    /// The role of the tablet.
+    #[prost(enumeration = "tablet::Role", tag = "4")]
+    pub role: i32,
+    /// `incarnation` indicates the freshness of the tablet information contained
+    /// in this proto. Incarnations can be compared lexicographically; if
+    /// incarnation A is greater than incarnation B, then the `Tablet`
+    /// corresponding to A is newer than the `Tablet` corresponding to B, and
+    /// should be used preferentially.
+    #[prost(bytes = "vec", tag = "5")]
+    pub incarnation: ::prost::alloc::vec::Vec<u8>,
+    /// Distances help the client pick the closest tablet out of the list of
+    /// tablets for a given request. Tablets with lower distances should generally
+    /// be preferred. Tablets with the same distance are approximately equally
+    /// close; the client can choose arbitrarily.
+    ///
+    /// Distances do not correspond precisely to expected latency, geographical
+    /// distance, or anything else. Distances should be compared only between
+    /// tablets of the same group; they are not meaningful between different
+    /// groups.
+    ///
+    /// A value of zero indicates that the tablet may be in the same zone as
+    /// the client, and have minimum network latency. A value less than or equal to
+    /// five indicates that the tablet is thought to be in the same region as the
+    /// client, and may have a few milliseconds of network latency. Values greater
+    /// than five are most likely in a different region, with non-trivial network
+    /// latency.
+    ///
+    /// Clients should use the following algorithm:
+    ///
+    /// * If the request is using a directed read, eliminate any tablets that
+    ///   do not match the directed read's target zone and/or replica type.
+    /// * (Read-write transactions only) Choose leader tablet if it has an
+    ///   distance \<=5.
+    /// * Group and sort tablets by distance. Choose a random
+    ///   tablet with the lowest distance. If the request
+    ///   is not a directed read, only consider replicas with distances \<=5.
+    /// * Send the request to the fallback endpoint.
+    ///
+    /// The tablet picked by this algorithm may be skipped, either because it is
+    /// marked as `skip` by the server or because the corresponding server is
+    /// unreachable, flow controlled, etc. Skipped tablets should be added to the
+    /// `skipped_tablet_uid` field in `RoutingHint`; the algorithm above should
+    /// then be re-run without including the skipped tablet(s) to pick the next
+    /// best tablet.
+    #[prost(uint32, tag = "6")]
+    pub distance: u32,
+    /// If true, the tablet should not be chosen by the client. Typically, this
+    /// signals that the tablet is unhealthy in some way. Tablets with `skip`
+    /// set to true should be reported back to the server in
+    /// `RoutingHint.skipped_tablet_uid`; this cues the server to send updated
+    /// information for this tablet should it become usable again.
+    #[prost(bool, tag = "7")]
+    pub skip: bool,
+}
+/// Nested message and enum types in `Tablet`.
+pub mod tablet {
+    /// Indicates the role of the tablet.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Role {
+        /// Not specified.
+        Unspecified = 0,
+        /// The tablet can perform reads and (if elected leader) writes.
+        ReadWrite = 1,
+        /// The tablet can only perform reads.
+        ReadOnly = 2,
+    }
+    impl Role {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::ReadWrite => "READ_WRITE",
+                Self::ReadOnly => "READ_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                _ => None,
+            }
+        }
+    }
+}
+/// A `Group` represents a paxos group in a database. A group is a set of
+/// tablets that are replicated across multiple servers. Groups may have a leader
+/// tablet. Groups store one (or sometimes more) ranges of keys.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Group {
+    /// The UID of the paxos group, unique within the database. Matches the
+    /// `group_uid` field in `Range`.
+    #[prost(uint64, tag = "1")]
+    pub group_uid: u64,
+    /// A list of tablets that are part of the group. Note that this list may not
+    /// be exhaustive; it will only include tablets the server considers useful
+    /// to the client. The returned list is ordered ascending by distance.
+    ///
+    /// Tablet UIDs reference `Tablet.tablet_uid`.
+    #[prost(message, repeated, tag = "2")]
+    pub tablets: ::prost::alloc::vec::Vec<Tablet>,
+    /// The last known leader tablet of the group as an index into `tablets`. May
+    /// be negative if the group has no known leader.
+    #[prost(int32, tag = "3")]
+    pub leader_index: i32,
+    /// `generation` indicates the freshness of the group information (including
+    /// leader information) contained in this proto. Generations can be compared
+    /// lexicographically; if generation A is greater than generation B, then the
+    /// `Group` corresponding to A is newer than the `Group` corresponding to B,
+    /// and should be used preferentially.
+    #[prost(bytes = "vec", tag = "4")]
+    pub generation: ::prost::alloc::vec::Vec<u8>,
+}
+/// A `KeyRecipe` provides the metadata required to translate reads, mutations,
+/// and queries into a byte array in "sortable string format" (ssformat)that can
+/// be used with `Range`s to route requests. Note that the client *must* tolerate
+/// `KeyRecipe`s that appear to be invalid, since the `KeyRecipe` format may
+/// change over time. Requests with invalid `KeyRecipe`s should be routed to a
+/// default server.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeyRecipe {
+    /// Parts are in the order they should appear in the encoded key.
+    #[prost(message, repeated, tag = "4")]
+    pub part: ::prost::alloc::vec::Vec<key_recipe::Part>,
+    /// A recipe can be associated with a table, index, or query. Tables recipes
+    /// are used to encode read and write keys; index recipes are used for index
+    /// reads, and query recipes are used only for SQL queries.
+    #[prost(oneof = "key_recipe::Target", tags = "1, 2, 3")]
+    pub target: ::core::option::Option<key_recipe::Target>,
+}
+/// Nested message and enum types in `KeyRecipe`.
+pub mod key_recipe {
+    /// An ssformat key is composed of a sequence of tag numbers and key column
+    /// values. `Part` represents a single tag or key column value.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Part {
+        /// If non-zero, `tag` is the only field present in this `Part`. The part
+        /// is encoded by appending `tag` to the ssformat key.
+        #[prost(uint32, tag = "1")]
+        pub tag: u32,
+        /// Whether the key column is sorted ascending or descending. Only present
+        /// if `tag` is zero.
+        #[prost(enumeration = "part::Order", tag = "2")]
+        pub order: i32,
+        /// How NULLs are represented in the encoded key part. Only present if `tag`
+        /// is zero.
+        #[prost(enumeration = "part::NullOrder", tag = "3")]
+        pub null_order: i32,
+        /// The type of the key part. Only present if `tag` is zero.
+        #[prost(message, optional, tag = "4")]
+        pub r#type: ::core::option::Option<super::Type>,
+        /// It is a repeated field to support fetching key columns from nested
+        /// structs, such as `STRUCT` query parameters.
+        #[prost(int32, repeated, tag = "7")]
+        pub struct_identifiers: ::prost::alloc::vec::Vec<i32>,
+        /// Only present if `tag` is zero.
+        #[prost(oneof = "part::ValueType", tags = "5, 6, 8")]
+        pub value_type: ::core::option::Option<part::ValueType>,
+    }
+    /// Nested message and enum types in `Part`.
+    pub mod part {
+        /// The remaining fields encode column values.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Order {
+            /// Default value, equivalent to `ASCENDING`.
+            Unspecified = 0,
+            /// The key is ascending - corresponds to `ASC` in the schema definition.
+            Ascending = 1,
+            /// The key is descending - corresponds to `DESC` in the schema definition.
+            Descending = 2,
+        }
+        impl Order {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ORDER_UNSPECIFIED",
+                    Self::Ascending => "ASCENDING",
+                    Self::Descending => "DESCENDING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORDER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ASCENDING" => Some(Self::Ascending),
+                    "DESCENDING" => Some(Self::Descending),
+                    _ => None,
+                }
+            }
+        }
+        /// The null order of the key column. This dictates where NULL values sort
+        /// in the sorted order. Note that columns which are `NOT NULL` can have a
+        /// special encoding.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum NullOrder {
+            /// Default value. This value is unused.
+            Unspecified = 0,
+            /// NULL values sort before any non-NULL values.
+            NullsFirst = 1,
+            /// NULL values sort after any non-NULL values.
+            NullsLast = 2,
+            /// The column does not support NULL values.
+            NotNull = 3,
+        }
+        impl NullOrder {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "NULL_ORDER_UNSPECIFIED",
+                    Self::NullsFirst => "NULLS_FIRST",
+                    Self::NullsLast => "NULLS_LAST",
+                    Self::NotNull => "NOT_NULL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "NULL_ORDER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NULLS_FIRST" => Some(Self::NullsFirst),
+                    "NULLS_LAST" => Some(Self::NullsLast),
+                    "NOT_NULL" => Some(Self::NotNull),
+                    _ => None,
+                }
+            }
+        }
+        /// Only present if `tag` is zero.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ValueType {
+            /// `identifier` is the name of the column or query parameter.
+            #[prost(string, tag = "5")]
+            Identifier(::prost::alloc::string::String),
+            /// The constant value of the key part.
+            /// It is present when query uses a constant as a part of the key.
+            #[prost(message, tag = "6")]
+            Value(::prost_types::Value),
+            /// If true, the client is responsible to fill in the value randomly.
+            /// It's relevant only for the INT64 type.
+            #[prost(bool, tag = "8")]
+            Random(bool),
+        }
+    }
+    /// A recipe can be associated with a table, index, or query. Tables recipes
+    /// are used to encode read and write keys; index recipes are used for index
+    /// reads, and query recipes are used only for SQL queries.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Target {
+        /// A table name, matching the name from the database schema.
+        #[prost(string, tag = "1")]
+        TableName(::prost::alloc::string::String),
+        /// An index name, matching the name from the database schema.
+        #[prost(string, tag = "2")]
+        IndexName(::prost::alloc::string::String),
+        /// The UID of a query, matching the UID from `RoutingHint`.
+        #[prost(uint64, tag = "3")]
+        OperationUid(u64),
+    }
+}
+/// A `RecipeList` contains a list of `KeyRecipe`s, which share the same
+/// schema generation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecipeList {
+    /// The schema generation of the recipes. To be sent to the server in
+    /// `RoutingHint.schema_generation` whenever one of the recipes is used.
+    /// `schema_generation` values are comparable with each other; if generation A
+    /// compares greater than generation B, then A is a more recent schema than B.
+    /// Clients should in general aim to cache only the latest schema generation,
+    /// and discard more stale recipes.
+    #[prost(bytes = "vec", tag = "1")]
+    pub schema_generation: ::prost::alloc::vec::Vec<u8>,
+    /// A list of recipes to be cached.
+    #[prost(message, repeated, tag = "3")]
+    pub recipe: ::prost::alloc::vec::Vec<KeyRecipe>,
+}
+/// A `CacheUpdate` expresses a set of changes the client should incorporate into
+/// its location cache. These changes may or may not be newer than what the
+/// client has in its cache, and should be discarded if necessary. `CacheUpdate`s
+/// can be obtained in response to requests that included a `RoutingHint`
+/// field, but may also be obtained by explicit location-fetching RPCs which may
+/// be added in the future.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CacheUpdate {
+    /// An internal ID for the database. Database names can be reused if a database
+    /// is deleted and re-created. Each time the database is re-created, it will
+    /// get a new database ID, which will never be re-used for any other database.
+    #[prost(uint64, tag = "1")]
+    pub database_id: u64,
+    /// A list of ranges to be cached.
+    #[prost(message, repeated, tag = "2")]
+    pub range: ::prost::alloc::vec::Vec<Range>,
+    /// A list of groups to be cached.
+    #[prost(message, repeated, tag = "3")]
+    pub group: ::prost::alloc::vec::Vec<Group>,
+    /// A list of recipes to be cached.
+    #[prost(message, optional, tag = "5")]
+    pub key_recipes: ::core::option::Option<RecipeList>,
+}
+/// `RoutingHint` can be optionally added to location-aware Spanner
+/// requests. It gives the server hints that can be used to route the request to
+/// an appropriate server, potentially significantly decreasing latency and
+/// improving throughput. To achieve improved performance, most fields must be
+/// filled in with accurate values.
+///
+/// The presence of a valid `RoutingHint` tells the server that the client
+/// is location-aware.
+///
+/// `RoutingHint` does not change the semantics of the request; it is
+/// purely a performance hint; the request will perform the same actions on the
+/// database's data as if `RoutingHint` were not present. However, if
+/// the `RoutingHint` is incomplete or incorrect, the response may include
+/// a `CacheUpdate` the client can use to correct its location cache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RoutingHint {
+    /// A session-scoped unique ID for the operation, computed client-side.
+    /// Requests with the same `operation_uid` should have a shared 'shape',
+    /// meaning that some fields are expected to be the same, such as the SQL
+    /// query, the target table/columns (for reads) etc. Requests with the same
+    /// `operation_uid` are meant to differ only in fields like keys/key
+    /// ranges/query parameters, transaction IDs, etc.
+    ///
+    /// `operation_uid` must be non-zero for `RoutingHint` to be valid.
+    #[prost(uint64, tag = "1")]
+    pub operation_uid: u64,
+    /// The database ID of the database being accessed, see
+    /// `CacheUpdate.database_id`. Should match the cache entries that were used
+    /// to generate the rest of the fields in this `RoutingHint`.
+    #[prost(uint64, tag = "2")]
+    pub database_id: u64,
+    /// The schema generation of the recipe that was used to generate `key` and
+    /// `limit_key`. See also `RecipeList.schema_generation`.
+    #[prost(bytes = "vec", tag = "3")]
+    pub schema_generation: ::prost::alloc::vec::Vec<u8>,
+    /// The key / key range that this request accesses. For operations that
+    /// access a single key, `key` should be set and `limit_key` should be empty.
+    /// For operations that access a key range, `key` and `limit_key` should both
+    /// be set, to the inclusive start and exclusive end of the range respectively.
+    ///
+    /// The keys are encoded in "sortable string format" (ssformat), using a
+    /// `KeyRecipe` that is appropriate for the request. See `KeyRecipe` for more
+    /// details.
+    #[prost(bytes = "vec", tag = "4")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
+    /// If this request targets a key range, this is the exclusive end of the
+    /// range. See `key` for more details.
+    #[prost(bytes = "vec", tag = "5")]
+    pub limit_key: ::prost::alloc::vec::Vec<u8>,
+    /// The group UID of the group that the client believes serves the range
+    /// defined by `key` and `limit_key`. See `Range.group_uid` for more details.
+    #[prost(uint64, tag = "6")]
+    pub group_uid: u64,
+    /// The split ID of the split that the client believes contains the range
+    /// defined by `key` and `limit_key`. See `Range.split_id` for more details.
+    #[prost(uint64, tag = "7")]
+    pub split_id: u64,
+    /// The tablet UID of the tablet from group `group_uid` that the client
+    /// believes is best to serve this request. See `Group.local_tablet_uids` and
+    /// `Group.leader_tablet_uid`.
+    #[prost(uint64, tag = "8")]
+    pub tablet_uid: u64,
+    /// If the client had multiple options for tablet selection, and some of its
+    /// first choices were unhealthy (e.g., the server is unreachable, or
+    /// `Tablet.skip` is true), this field will contain the tablet UIDs of those
+    /// tablets, with their incarnations. The server may include a `CacheUpdate`
+    /// with new locations for those tablets.
+    #[prost(message, repeated, tag = "9")]
+    pub skipped_tablet_uid: ::prost::alloc::vec::Vec<routing_hint::SkippedTablet>,
+    /// If present, the client's current location. This should be the name of a
+    /// Google Cloud zone or region, such as "us-central1".
+    ///
+    /// If absent, the client's location will be assumed to be the same as the
+    /// location of the server the client ends up connected to.
+    ///
+    /// Locations are primarily valuable for clients that connect from regions
+    /// other than the ones that contain the Spanner database.
+    #[prost(string, tag = "10")]
+    pub client_location: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `RoutingHint`.
+pub mod routing_hint {
+    /// A tablet that was skipped by the client. See `Tablet.tablet_uid` and
+    /// `Tablet.incarnation`.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SkippedTablet {
+        /// The tablet UID of the tablet that was skipped. See `Tablet.tablet_uid`.
+        #[prost(uint64, tag = "1")]
+        pub tablet_uid: u64,
+        /// The incarnation of the tablet that was skipped. See `Tablet.incarnation`.
+        #[prost(bytes = "vec", tag = "2")]
+        pub incarnation: ::prost::alloc::vec::Vec<u8>,
+    }
+}
+/// A modification to one or more Cloud Spanner rows.  Mutations can be
+/// applied to a Cloud Spanner database by sending them in a
+/// \[Commit\]\[google.spanner.v1.Spanner.Commit\] call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Mutation {
+    /// Required. The operation to perform.
+    #[prost(oneof = "mutation::Operation", tags = "1, 2, 3, 4, 5, 6, 7")]
+    pub operation: ::core::option::Option<mutation::Operation>,
+}
+/// Nested message and enum types in `Mutation`.
+pub mod mutation {
+    /// Arguments to \[insert\]\[google.spanner.v1.Mutation.insert\],
+    /// \[update\]\[google.spanner.v1.Mutation.update\],
+    /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], and
+    /// \[replace\]\[google.spanner.v1.Mutation.replace\] operations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Write {
+        /// Required. The table whose rows will be written.
+        #[prost(string, tag = "1")]
+        pub table: ::prost::alloc::string::String,
+        /// The names of the columns in
+        /// \[table\]\[google.spanner.v1.Mutation.Write.table\] to be written.
+        ///
+        /// The list of columns must contain enough columns to allow
+        /// Cloud Spanner to derive values for all primary key columns in the
+        /// row(s) to be modified.
+        #[prost(string, repeated, tag = "2")]
+        pub columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The values to be written. `values` can contain more than one
+        /// list of values. If it does, then multiple rows are written, one
+        /// for each entry in `values`. Each list in `values` must have
+        /// exactly as many entries as there are entries in
+        /// \[columns\]\[google.spanner.v1.Mutation.Write.columns\] above. Sending
+        /// multiple lists is equivalent to sending multiple `Mutation`s, each
+        /// containing one `values` entry and repeating
+        /// \[table\]\[google.spanner.v1.Mutation.Write.table\] and
+        /// \[columns\]\[google.spanner.v1.Mutation.Write.columns\]. Individual values in
+        /// each list are encoded as described \[here\]\[google.spanner.v1.TypeCode\].
+        #[prost(message, repeated, tag = "3")]
+        pub values: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
+    }
+    /// Arguments to \[delete\]\[google.spanner.v1.Mutation.delete\] operations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Delete {
+        /// Required. The table whose rows will be deleted.
+        #[prost(string, tag = "1")]
+        pub table: ::prost::alloc::string::String,
+        /// Required. The primary keys of the rows within
+        /// \[table\]\[google.spanner.v1.Mutation.Delete.table\] to delete.  The primary
+        /// keys must be specified in the order in which they appear in the `PRIMARY  KEY()` clause of the table's equivalent DDL statement (the DDL statement
+        /// used to create the table). Delete is idempotent. The transaction will
+        /// succeed even if some or all rows do not exist.
+        #[prost(message, optional, tag = "2")]
+        pub key_set: ::core::option::Option<super::KeySet>,
+    }
+    /// Arguments to \[send\]\[google.spanner.v1.Mutation.send\] operations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Send {
+        /// Required. The queue to which the message will be sent.
+        #[prost(string, tag = "1")]
+        pub queue: ::prost::alloc::string::String,
+        /// Required. The primary key of the message to be sent.
+        #[prost(message, optional, tag = "2")]
+        pub key: ::core::option::Option<::prost_types::ListValue>,
+        /// The time at which Spanner will begin attempting to deliver the message.
+        /// If `deliver_time` is not set, Spanner will deliver the message
+        /// immediately. If `deliver_time` is in the past, Spanner will replace it
+        /// with a value closer to the current time.
+        #[prost(message, optional, tag = "3")]
+        pub deliver_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The payload of the message.
+        #[prost(message, optional, tag = "4")]
+        pub payload: ::core::option::Option<::prost_types::Value>,
+    }
+    /// Arguments to \[ack\]\[google.spanner.v1.Mutation.ack\] operations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Ack {
+        /// Required. The queue where the message to be acked is stored.
+        #[prost(string, tag = "1")]
+        pub queue: ::prost::alloc::string::String,
+        /// Required. The primary key of the message to be acked.
+        #[prost(message, optional, tag = "2")]
+        pub key: ::core::option::Option<::prost_types::ListValue>,
+        /// By default, an attempt to ack a message that does not exist will fail
+        /// with a `NOT_FOUND` error. With `ignore_not_found` set to true, the ack
+        /// will succeed even if the message does not exist. This is useful for
+        /// unconditionally acking a message, even if it is missing or has already
+        /// been acked.
+        #[prost(bool, tag = "3")]
+        pub ignore_not_found: bool,
+    }
+    /// Required. The operation to perform.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Insert new rows in a table. If any of the rows already exist,
+        /// the write or transaction fails with error `ALREADY_EXISTS`.
+        #[prost(message, tag = "1")]
+        Insert(Write),
+        /// Update existing rows in a table. If any of the rows does not
+        /// already exist, the transaction fails with error `NOT_FOUND`.
+        #[prost(message, tag = "2")]
+        Update(Write),
+        /// Like \[insert\]\[google.spanner.v1.Mutation.insert\], except that if the row
+        /// already exists, then its column values are overwritten with the ones
+        /// provided. Any column values not explicitly written are preserved.
+        ///
+        /// When using
+        /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], just as
+        /// when using \[insert\]\[google.spanner.v1.Mutation.insert\], all `NOT NULL`
+        /// columns in the table must be given a value. This holds true even when the
+        /// row already exists and will therefore actually be updated.
+        #[prost(message, tag = "3")]
+        InsertOrUpdate(Write),
+        /// Like \[insert\]\[google.spanner.v1.Mutation.insert\], except that if the row
+        /// already exists, it is deleted, and the column values provided are
+        /// inserted instead. Unlike
+        /// \[insert_or_update\]\[google.spanner.v1.Mutation.insert_or_update\], this
+        /// means any values not explicitly written become `NULL`.
+        ///
+        /// In an interleaved table, if you create the child table with the
+        /// `ON DELETE CASCADE` annotation, then replacing a parent row
+        /// also deletes the child rows. Otherwise, you must delete the
+        /// child rows before you replace the parent row.
+        #[prost(message, tag = "4")]
+        Replace(Write),
+        /// Delete rows from a table. Succeeds whether or not the named
+        /// rows were present.
+        #[prost(message, tag = "5")]
+        Delete(Delete),
+        /// Send a message to a queue.
+        #[prost(message, tag = "6")]
+        Send(Send),
+        /// Ack a message from a queue.
+        #[prost(message, tag = "7")]
+        Ack(Ack),
+    }
+}
+/// Node information for nodes appearing in a
+/// \[QueryPlan.plan_nodes\]\[google.spanner.v1.QueryPlan.plan_nodes\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PlanNode {
+    /// The `PlanNode`'s index in \[node
+    /// list\]\[google.spanner.v1.QueryPlan.plan_nodes\].
+    #[prost(int32, tag = "1")]
+    pub index: i32,
+    /// Used to determine the type of node. May be needed for visualizing
+    /// different kinds of nodes differently. For example, If the node is a
+    /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] node, it will have a
+    /// condensed representation which can be used to directly embed a description
+    /// of the node in its parent.
+    #[prost(enumeration = "plan_node::Kind", tag = "2")]
+    pub kind: i32,
+    /// The display name for the node.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// List of child node `index`es and their relationship to this parent.
+    #[prost(message, repeated, tag = "4")]
+    pub child_links: ::prost::alloc::vec::Vec<plan_node::ChildLink>,
+    /// Condensed representation for
+    /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] nodes.
+    #[prost(message, optional, tag = "5")]
+    pub short_representation: ::core::option::Option<plan_node::ShortRepresentation>,
+    /// Attributes relevant to the node contained in a group of key-value pairs.
+    /// For example, a Parameter Reference node could have the following
+    /// information in its metadata:
+    ///
+    /// ```text
+    /// {
+    ///    "parameter_reference": "param1",
+    ///    "parameter_type": "array"
+    /// }
+    /// ```
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// The execution statistics associated with the node, contained in a group of
+    /// key-value pairs. Only present if the plan was returned as a result of a
+    /// profile query. For example, number of executions, number of rows/time per
+    /// execution etc.
+    #[prost(message, optional, tag = "7")]
+    pub execution_stats: ::core::option::Option<::prost_types::Struct>,
+}
+/// Nested message and enum types in `PlanNode`.
+pub mod plan_node {
+    /// Metadata associated with a parent-child relationship appearing in a
+    /// \[PlanNode\]\[google.spanner.v1.PlanNode\].
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ChildLink {
+        /// The node to which the link points.
+        #[prost(int32, tag = "1")]
+        pub child_index: i32,
+        /// The type of the link. For example, in Hash Joins this could be used to
+        /// distinguish between the build child and the probe child, or in the case
+        /// of the child being an output variable, to represent the tag associated
+        /// with the output variable.
+        #[prost(string, tag = "2")]
+        pub r#type: ::prost::alloc::string::String,
+        /// Only present if the child node is
+        /// \[SCALAR\]\[google.spanner.v1.PlanNode.Kind.SCALAR\] and corresponds to an
+        /// output variable of the parent node. The field carries the name of the
+        /// output variable. For example, a `TableScan` operator that reads rows from
+        /// a table will have child links to the `SCALAR` nodes representing the
+        /// output variables created for each column that is read by the operator.
+        /// The corresponding `variable` fields will be set to the variable names
+        /// assigned to the columns.
+        #[prost(string, tag = "3")]
+        pub variable: ::prost::alloc::string::String,
+    }
+    /// Condensed representation of a node and its subtree. Only present for
+    /// `SCALAR` \[PlanNode(s)\]\[google.spanner.v1.PlanNode\].
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShortRepresentation {
+        /// A string representation of the expression subtree rooted at this node.
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+        /// A mapping of (subquery variable name) -> (subquery node id) for cases
+        /// where the `description` string of this node references a `SCALAR`
+        /// subquery contained in the expression subtree rooted at this node. The
+        /// referenced `SCALAR` subquery may not necessarily be a direct child of
+        /// this node.
+        #[prost(map = "string, int32", tag = "2")]
+        pub subqueries: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    }
+    /// The kind of \[PlanNode\]\[google.spanner.v1.PlanNode\]. Distinguishes between
+    /// the two different kinds of nodes that can appear in a query plan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Kind {
+        /// Not specified.
+        Unspecified = 0,
+        /// Denotes a Relational operator node in the expression tree. Relational
+        /// operators represent iterative processing of rows during query execution.
+        /// For example, a `TableScan` operation that reads rows from a table.
+        Relational = 1,
+        /// Denotes a Scalar node in the expression tree. Scalar nodes represent
+        /// non-iterable entities in the query plan. For example, constants or
+        /// arithmetic operators appearing inside predicate expressions or references
+        /// to column names.
+        Scalar = 2,
+    }
+    impl Kind {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KIND_UNSPECIFIED",
+                Self::Relational => "RELATIONAL",
+                Self::Scalar => "SCALAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                "RELATIONAL" => Some(Self::Relational),
+                "SCALAR" => Some(Self::Scalar),
+                _ => None,
+            }
+        }
+    }
+}
+/// Output of query advisor analysis.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAdvisorResult {
+    /// Optional. Index Recommendation for a query. This is an optional field and
+    /// the recommendation will only be available when the recommendation
+    /// guarantees significant improvement in query performance.
+    #[prost(message, repeated, tag = "1")]
+    pub index_advice: ::prost::alloc::vec::Vec<query_advisor_result::IndexAdvice>,
+}
+/// Nested message and enum types in `QueryAdvisorResult`.
+pub mod query_advisor_result {
+    /// Recommendation to add new indexes to run queries more efficiently.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IndexAdvice {
+        /// Optional. DDL statements to add new indexes that will improve the query.
+        #[prost(string, repeated, tag = "1")]
+        pub ddl: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Estimated latency improvement factor. For example if the query
+        /// currently takes 500 ms to run and the estimated latency with new indexes
+        /// is 100 ms this field will be 5.
+        #[prost(double, tag = "2")]
+        pub improvement_factor: f64,
+    }
+}
+/// Contains an ordered list of nodes appearing in the query plan.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryPlan {
+    /// The nodes in the query plan. Plan nodes are returned in pre-order starting
+    /// with the plan root. Each \[PlanNode\]\[google.spanner.v1.PlanNode\]'s `id`
+    /// corresponds to its index in `plan_nodes`.
+    #[prost(message, repeated, tag = "1")]
+    pub plan_nodes: ::prost::alloc::vec::Vec<PlanNode>,
+    /// Optional. The advise/recommendations for a query. Currently this field will
+    /// be serving index recommendations for a query.
+    #[prost(message, optional, tag = "2")]
+    pub query_advice: ::core::option::Option<QueryAdvisorResult>,
+}
 /// Results from \[Read\]\[google.spanner.v1.Spanner.Read\] or
 /// \[ExecuteSql\]\[google.spanner.v1.Spanner.ExecuteSql\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1231,6 +1789,14 @@ pub struct PartialResultSet {
     /// on this field being set in all cases.
     #[prost(bool, tag = "9")]
     pub last: bool,
+    /// Optional. A cache update expresses a set of changes the client should
+    /// incorporate into its location cache. The client should discard the changes
+    /// if they are older than the data it already has. This data can be obtained
+    /// in response to requests that included a `RoutingHint` field, but may also
+    /// be obtained by explicit location-fetching RPCs which may be added in the
+    /// future.
+    #[prost(message, optional, tag = "10")]
+    pub cache_update: ::core::option::Option<CacheUpdate>,
 }
 /// Metadata about a \[ResultSet\]\[google.spanner.v1.ResultSet\] or
 /// \[PartialResultSet\]\[google.spanner.v1.PartialResultSet\].
@@ -1324,10 +1890,10 @@ pub struct BatchCreateSessionsRequest {
     /// Parameters to apply to each created session.
     #[prost(message, optional, tag = "2")]
     pub session_template: ::core::option::Option<Session>,
-    /// Required. The number of sessions to be created in this batch call.
-    /// The API can return fewer than the requested number of sessions. If a
-    /// specific number of sessions are desired, the client can make additional
-    /// calls to `BatchCreateSessions` (adjusting
+    /// Required. The number of sessions to be created in this batch call. At least
+    /// one session is created. The API can return fewer than the requested number
+    /// of sessions. If a specific number of sessions are desired, the client can
+    /// make additional calls to `BatchCreateSessions` (adjusting
     /// \[session_count\]\[google.spanner.v1.BatchCreateSessionsRequest.session_count\]
     /// as necessary).
     #[prost(int32, tag = "3")]
@@ -1372,8 +1938,8 @@ pub struct Session {
     #[prost(string, tag = "5")]
     pub creator_role: ::prost::alloc::string::String,
     /// Optional. If `true`, specifies a multiplexed session. Use a multiplexed
-    /// session for multiple, concurrent read-only operations. Don't use them for
-    /// read-write transactions, partitioned reads, or partitioned queries. Use
+    /// session for multiple, concurrent operations including any combination of
+    /// read-only and read-write transactions. Use
     /// \[`sessions.create`\]\[google.spanner.v1.Spanner.CreateSession\] to create
     /// multiplexed sessions. Don't use
     /// \[BatchCreateSessions\]\[google.spanner.v1.Spanner.BatchCreateSessions\] to
@@ -1769,6 +2335,14 @@ pub struct ExecuteSqlRequest {
     /// be assumed until a subsequent `Commit` call completes successfully.
     #[prost(bool, tag = "17")]
     pub last_statement: bool,
+    /// Optional. If present, it makes the Spanner requests location-aware.
+    ///
+    /// It gives the server hints that can be used to route the request
+    /// to an appropriate server, potentially significantly decreasing latency and
+    /// improving throughput. To achieve improved performance, most fields must be
+    /// filled in with accurate values.
+    #[prost(message, optional, tag = "18")]
+    pub routing_hint: ::core::option::Option<RoutingHint>,
 }
 /// Nested message and enum types in `ExecuteSqlRequest`.
 pub mod execute_sql_request {
@@ -2252,6 +2826,14 @@ pub struct ReadRequest {
     /// transactions.
     #[prost(enumeration = "read_request::LockHint", tag = "17")]
     pub lock_hint: i32,
+    /// Optional. If present, it makes the Spanner requests location-aware.
+    ///
+    /// It gives the server hints that can be used to route the request
+    /// to an appropriate server, potentially significantly decreasing latency and
+    /// improving throughput. To achieve improved performance, most fields must be
+    /// filled in with accurate values.
+    #[prost(message, optional, tag = "18")]
+    pub routing_hint: ::core::option::Option<RoutingHint>,
 }
 /// Nested message and enum types in `ReadRequest`.
 pub mod read_request {
