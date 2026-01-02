@@ -1656,7 +1656,7 @@ pub mod message_transform {
 /// A topic resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {
-    /// Required. The name of the topic. It must have the format
+    /// Required. Identifier. The name of the topic. It must have the format
     /// `"projects/{project}/topics/{topic}"`. `{topic}` must start with a letter,
     /// and contain only letters (`\[A-Za-z\]`), numbers (`\[0-9\]`), dashes (`-`),
     /// underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent
@@ -1716,6 +1716,8 @@ pub struct Topic {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
+    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
+    /// using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "14")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1817,7 +1819,7 @@ pub struct PubsubMessage {
 /// Request for the GetTopic method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTopicRequest {
-    /// Required. The name of the topic to get.
+    /// Required. Identifier. The name of the topic to get.
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
@@ -1839,8 +1841,8 @@ pub struct UpdateTopicRequest {
 /// Request for the Publish method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishRequest {
-    /// Required. The messages in the request will be published on this topic.
-    /// Format is `projects/{project}/topics/{topic}`.
+    /// Required. Identifier. The messages in the request will be published on this
+    /// topic. Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
     /// Required. The messages to publish.
@@ -1859,7 +1861,7 @@ pub struct PublishResponse {
 /// Request for the `ListTopics` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTopicsRequest {
-    /// Required. The name of the project in which to list topics.
+    /// Required. Identifier. The name of the project in which to list topics.
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -1943,7 +1945,7 @@ pub struct ListTopicSnapshotsResponse {
 /// Request for the `DeleteTopic` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTopicRequest {
-    /// Required. Name of the topic to delete.
+    /// Required. Identifier. Name of the topic to delete.
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
@@ -1965,7 +1967,7 @@ pub struct DetachSubscriptionResponse {}
 /// using API methods. At most one of these fields may be set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
-    /// Required. The name of the subscription. It must have the format
+    /// Required. Identifier. The name of the subscription. It must have the format
     /// `"projects/{project}/subscriptions/{subscription}"`. `{subscription}` must
     /// start with a letter, and contain only letters (`\[A-Za-z\]`), numbers
     /// (`\[0-9\]`), dashes (`-`), underscores (`_`), periods (`.`), tildes (`~`),
@@ -2124,6 +2126,8 @@ pub struct Subscription {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
+    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
+    /// using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "26")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2665,7 +2669,7 @@ pub struct ReceivedMessage {
 /// Request for the GetSubscription method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubscriptionRequest {
-    /// Required. The name of the subscription to get.
+    /// Required. Identifier. The name of the subscription to get.
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "1")]
     pub subscription: ::prost::alloc::string::String,
@@ -2684,8 +2688,8 @@ pub struct UpdateSubscriptionRequest {
 /// Request for the `ListSubscriptions` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
-    /// Required. The name of the project in which to list subscriptions.
-    /// Format is `projects/{project-id}`.
+    /// Required. Identifier. The name of the project in which to list
+    /// subscriptions. Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// Optional. Maximum number of subscriptions to return.
@@ -2712,7 +2716,7 @@ pub struct ListSubscriptionsResponse {
 /// Request for the DeleteSubscription method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
-    /// Required. The subscription to delete.
+    /// Required. Identifier. The subscription to delete.
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "1")]
     pub subscription: ::prost::alloc::string::String,
@@ -2965,10 +2969,10 @@ pub mod streaming_pull_response {
 /// Request for the `CreateSnapshot` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotRequest {
-    /// Required. User-provided name for this snapshot. If the name is not provided
-    /// in the request, the server will assign a random name for this snapshot on
-    /// the same project as the subscription. Note that for REST API requests, you
-    /// must specify a name.  See the [resource name
+    /// Required. Identifier. User-provided name for this snapshot. If the name is
+    /// not provided in the request, the server will assign a random name for this
+    /// snapshot on the same project as the subscription. Note that for REST API
+    /// requests, you must specify a name.  See the [resource name
     /// rules](<https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names>).
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
@@ -2995,6 +2999,8 @@ pub struct CreateSnapshotRequest {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
+    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
+    /// using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "4")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3049,7 +3055,7 @@ pub struct Snapshot {
 /// Request for the GetSnapshot method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSnapshotRequest {
-    /// Required. The name of the snapshot to get.
+    /// Required. Identifier. The name of the snapshot to get.
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
     pub snapshot: ::prost::alloc::string::String,
@@ -3057,7 +3063,7 @@ pub struct GetSnapshotRequest {
 /// Request for the `ListSnapshots` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSnapshotsRequest {
-    /// Required. The name of the project in which to list snapshots.
+    /// Required. Identifier. The name of the project in which to list snapshots.
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -3085,7 +3091,7 @@ pub struct ListSnapshotsResponse {
 /// Request for the `DeleteSnapshot` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
-    /// Required. The name of the snapshot to delete.
+    /// Required. Identifier. The name of the snapshot to delete.
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
     pub snapshot: ::prost::alloc::string::String,

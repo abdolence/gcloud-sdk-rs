@@ -132,6 +132,15 @@ pub struct PubSubSubscription {
     /// subscribers. Transforms are applied in the order specified.
     #[prost(message, repeated, tag = "25")]
     pub message_transforms: ::prost::alloc::vec::Vec<MessageTransform>,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    /// "123/environment": "production",
+    /// "123/costCenter": "marketing"
+    #[prost(map = "string, string", tag = "26")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A policy that specifies how Pub/Sub retries message delivery.
 ///
@@ -980,6 +989,10 @@ pub struct Listing {
     pub restricted_export_config: ::core::option::Option<
         listing::RestrictedExportConfig,
     >,
+    /// Optional. If set, stored procedure configuration will be propagated and
+    /// enforced on the linked dataset.
+    #[prost(message, optional, tag = "20")]
+    pub stored_procedure_config: ::core::option::Option<StoredProcedureConfig>,
     /// Optional. Type of discovery of the listing on the discovery page.
     #[prost(enumeration = "DiscoveryType", optional, tag = "14")]
     pub discovery_type: ::core::option::Option<i32>,
@@ -1448,6 +1461,64 @@ pub mod listing {
         /// Pub/Sub topic source.
         #[prost(message, tag = "16")]
         PubsubTopic(PubSubTopicSource),
+    }
+}
+/// Stored procedure configuration, used to configure stored procedure sharing
+/// on linked dataset.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StoredProcedureConfig {
+    /// Optional. If true, enable sharing of stored procedure.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Output only. Types of stored procedure supported to share.
+    #[prost(
+        enumeration = "stored_procedure_config::StoredProcedureType",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub allowed_stored_procedure_types: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `StoredProcedureConfig`.
+pub mod stored_procedure_config {
+    /// Enum to specify the type of stored procedure to share.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StoredProcedureType {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// SQL stored procedure.
+        SqlProcedure = 1,
+    }
+    impl StoredProcedureType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORED_PROCEDURE_TYPE_UNSPECIFIED",
+                Self::SqlProcedure => "SQL_PROCEDURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORED_PROCEDURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SQL_PROCEDURE" => Some(Self::SqlProcedure),
+                _ => None,
+            }
+        }
     }
 }
 /// A subscription represents a subscribers' access to a particular set of

@@ -562,12 +562,24 @@ pub mod autoscaling_config {
     /// The autoscaling targets for an instance.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AutoscalingTargets {
-        /// Required. The target high priority cpu utilization percentage that the
+        /// Optional. The target high priority cpu utilization percentage that the
         /// autoscaler should be trying to achieve for the instance. This number is
         /// on a scale from 0 (no utilization) to 100 (full utilization). The valid
-        /// range is \[10, 90\] inclusive.
+        /// range is \[10, 90\] inclusive. If not specified or set to 0, the autoscaler
+        /// skips scaling based on high priority CPU utilization.
         #[prost(int32, tag = "1")]
         pub high_priority_cpu_utilization_percent: i32,
+        /// Optional. The target total CPU utilization percentage that the autoscaler
+        /// should be trying to achieve for the instance. This number is on a scale
+        /// from 0 (no utilization) to 100 (full utilization). The valid range is
+        /// \[10, 90\] inclusive. If not specified or set to 0, the autoscaler skips
+        /// scaling based on total CPU utilization. If both
+        /// `high_priority_cpu_utilization_percent` and
+        /// `total_cpu_utilization_percent` are specified, the autoscaler provisions
+        /// the larger of the two required compute capacities to satisfy both
+        /// targets.
+        #[prost(int32, tag = "4")]
+        pub total_cpu_utilization_percent: i32,
         /// Required. The target storage utilization percentage that the autoscaler
         /// should be trying to achieve for the instance. This number is on a scale
         /// from 0 (no utilization) to 100 (full utilization). The valid range is
@@ -607,6 +619,57 @@ pub mod autoscaling_config {
             /// configuration for the selected replicas.
             #[prost(int32, tag = "2")]
             pub autoscaling_target_high_priority_cpu_utilization_percent: i32,
+            /// Optional. If specified, overrides the
+            /// autoscaling target `total_cpu_utilization_percent`
+            /// in the top-level autoscaling configuration for the selected replicas.
+            #[prost(int32, tag = "4")]
+            pub autoscaling_target_total_cpu_utilization_percent: i32,
+            /// Optional. If true, disables high priority CPU autoscaling for the
+            /// selected replicas and ignores
+            /// \[high_priority_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.high_priority_cpu_utilization_percent\]
+            /// in the top-level autoscaling configuration.
+            ///
+            /// When setting this field to true, setting
+            /// \[autoscaling_target_high_priority_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_high_priority_cpu_utilization_percent\]
+            /// field to a non-zero value for the same replica is not supported.
+            ///
+            /// If false, the
+            /// \[autoscaling_target_high_priority_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_high_priority_cpu_utilization_percent\]
+            /// field in the replica will be used if set to a non-zero value.
+            /// Otherwise, the
+            /// \[high_priority_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.high_priority_cpu_utilization_percent\]
+            /// field in the top-level autoscaling configuration will be used.
+            ///
+            /// Setting both
+            /// \[disable_high_priority_cpu_autoscaling\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_high_priority_cpu_autoscaling\]
+            /// and
+            /// \[disable_total_cpu_autoscaling\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_total_cpu_autoscaling\]
+            /// to true for the same replica is not supported.
+            #[prost(bool, tag = "5")]
+            pub disable_high_priority_cpu_autoscaling: bool,
+            /// Optional. If true, disables total CPU autoscaling for the selected
+            /// replicas and ignores
+            /// \[total_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.total_cpu_utilization_percent\]
+            /// in the top-level autoscaling configuration.
+            ///
+            /// When setting this field to true, setting
+            /// \[autoscaling_target_total_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_total_cpu_utilization_percent\]
+            /// field to a non-zero value for the same replica is not supported.
+            ///
+            /// If false, the
+            /// \[autoscaling_target_total_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_total_cpu_utilization_percent\]
+            /// field in the replica will be used if set to a non-zero value.
+            /// Otherwise, the
+            /// \[total_cpu_utilization_percent\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.total_cpu_utilization_percent\]
+            /// field in the top-level autoscaling configuration will be used.
+            ///
+            /// Setting both
+            /// \[disable_high_priority_cpu_autoscaling\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_high_priority_cpu_autoscaling\]
+            /// and
+            /// \[disable_total_cpu_autoscaling\]\[google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_total_cpu_autoscaling\]
+            /// to true for the same replica is not supported.
+            #[prost(bool, tag = "6")]
+            pub disable_total_cpu_autoscaling: bool,
         }
     }
 }

@@ -628,7 +628,7 @@ pub struct Cluster {
     /// system actions like failover or maintenance.
     #[prost(bool, tag = "13")]
     pub reconciling: bool,
-    /// Input only. Initial user to setup during cluster creation. Required.
+    /// Input only. Initial user to setup during cluster creation.
     /// If used in `RestoreCluster` this is ignored.
     #[prost(message, optional, tag = "14")]
     pub initial_user: ::core::option::Option<UserPassword>,

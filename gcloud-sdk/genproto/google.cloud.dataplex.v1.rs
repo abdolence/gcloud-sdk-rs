@@ -5701,14 +5701,17 @@ pub struct ListEntriesRequest {
     ///
     /// * entry_type
     /// * entry_source.display_name
+    /// * parent_entry
     ///
     /// The comparison operators are =, !=, \<, >, \<=, >=. The service compares
     /// strings according to lexical order.
     ///
     /// You can use the logical operators AND, OR, NOT in the filter.
     ///
-    /// You can use Wildcard "\*", but for entry_type you need to provide the
-    /// full project id or number.
+    /// You can use Wildcard "\*", but for entry_type and parent_entry you need to
+    /// provide the full project id or number.
+    ///
+    /// You cannot use parent_entry in conjunction with other fields.
     ///
     /// Example filter expressions:
     ///
@@ -5717,6 +5720,7 @@ pub struct ListEntriesRequest {
     /// * "entry_type=projects/example-project/locations/us/entryTypes/a\* OR
     ///   entry_type=projects/another-project/locations/\*"
     /// * "NOT entry_source.display_name=AnotherExampleDisplayName"
+    /// * "parent_entry=projects/example-project/locations/us/entryGroups/example-entry-group/entries/example-entry"
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -9006,6 +9010,60 @@ pub mod data_documentation_result {
         TableResult(TableResult),
     }
 }
+/// The status of publishing the data scan result as Dataplex Universal Catalog
+/// metadata.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataScanCatalogPublishingStatus {
+    /// Output only. Execution state for catalog publishing.
+    #[prost(enumeration = "data_scan_catalog_publishing_status::State", tag = "1")]
+    pub state: i32,
+}
+/// Nested message and enum types in `DataScanCatalogPublishingStatus`.
+pub mod data_scan_catalog_publishing_status {
+    /// Execution state for the publishing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The publishing state is unspecified.
+        Unspecified = 0,
+        /// Publish to catalog completed successfully.
+        Succeeded = 1,
+        /// Publish to catalog failed.
+        Failed = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
 /// DataScan scheduling and trigger settings.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Trigger {
@@ -9147,6 +9205,10 @@ pub struct DataProfileSpec {
     /// `include_fields` value.
     #[prost(message, optional, tag = "6")]
     pub exclude_fields: ::core::option::Option<data_profile_spec::SelectedFields>,
+    /// Optional. If set, the latest DataScan job result will be published as
+    /// Dataplex Universal Catalog metadata.
+    #[prost(bool, tag = "8")]
+    pub catalog_publishing_enabled: bool,
 }
 /// Nested message and enum types in `DataProfileSpec`.
 pub mod data_profile_spec {
@@ -9201,6 +9263,12 @@ pub struct DataProfileResult {
     #[prost(message, optional, tag = "6")]
     pub post_scan_actions_result: ::core::option::Option<
         data_profile_result::PostScanActionsResult,
+    >,
+    /// Output only. The status of publishing the data scan as Dataplex Universal
+    /// Catalog metadata.
+    #[prost(message, optional, tag = "7")]
+    pub catalog_publishing_status: ::core::option::Option<
+        DataScanCatalogPublishingStatus,
     >,
 }
 /// Nested message and enum types in `DataProfileResult`.
@@ -9451,60 +9519,6 @@ pub mod data_profile_result {
                         _ => None,
                     }
                 }
-            }
-        }
-    }
-}
-/// The status of publishing the data scan result as Dataplex Universal Catalog
-/// metadata.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DataScanCatalogPublishingStatus {
-    /// Output only. Execution state for catalog publishing.
-    #[prost(enumeration = "data_scan_catalog_publishing_status::State", tag = "1")]
-    pub state: i32,
-}
-/// Nested message and enum types in `DataScanCatalogPublishingStatus`.
-pub mod data_scan_catalog_publishing_status {
-    /// Execution state for the publishing.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// The publishing state is unspecified.
-        Unspecified = 0,
-        /// Publish to catalog completed successfully.
-        Succeeded = 1,
-        /// Publish to catalog failed.
-        Failed = 2,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "STATE_UNSPECIFIED",
-                Self::Succeeded => "SUCCEEDED",
-                Self::Failed => "FAILED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "SUCCEEDED" => Some(Self::Succeeded),
-                "FAILED" => Some(Self::Failed),
-                _ => None,
             }
         }
     }

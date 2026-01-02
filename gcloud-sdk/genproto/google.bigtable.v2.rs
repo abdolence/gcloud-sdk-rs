@@ -3011,6 +3011,101 @@ pub struct FeatureFlags {
     /// Notify the server that the client explicitly opted in for Direct Access.
     #[prost(bool, tag = "10")]
     pub direct_access_requested: bool,
+    /// If the client can support using BigtablePeerInfo.
+    #[prost(bool, tag = "11")]
+    pub peer_info: bool,
+}
+/// PeerInfo contains information about the peer that the client is
+/// connecting to.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PeerInfo {
+    /// An opaque identifier for the Google Frontend which serviced this request.
+    /// Only set when not using DirectAccess.
+    #[prost(int64, tag = "1")]
+    pub google_frontend_id: i64,
+    /// An opaque identifier for the application frontend which serviced this
+    /// request.
+    #[prost(int64, tag = "2")]
+    pub application_frontend_id: i64,
+    /// The Cloud zone of the application frontend that served this request.
+    #[prost(string, tag = "3")]
+    pub application_frontend_zone: ::prost::alloc::string::String,
+    /// The subzone of the application frontend that served this request, e.g. an
+    /// identifier for where within the zone the application frontend is.
+    #[prost(string, tag = "4")]
+    pub application_frontend_subzone: ::prost::alloc::string::String,
+    #[prost(enumeration = "peer_info::TransportType", tag = "5")]
+    pub transport_type: i32,
+}
+/// Nested message and enum types in `PeerInfo`.
+pub mod peer_info {
+    /// The transport type that the client used to connect to this peer.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TransportType {
+        /// The transport type is unknown.
+        Unknown = 0,
+        /// The client connected to this peer via an external network
+        /// (e.g. outside Google Coud).
+        External = 1,
+        /// The client connected to this peer via CloudPath.
+        CloudPath = 2,
+        /// The client connected to this peer via DirectAccess.
+        DirectAccess = 3,
+        /// The client connected to this peer via Bigtable Sessions using an unknown
+        /// transport type.
+        SessionUnknown = 4,
+        /// The client connected to this peer via Bigtable Sessions on an external
+        /// network (e.g. outside Google Cloud).
+        SessionExternal = 5,
+        /// The client connected to this peer via Bigtable Sessions using CloudPath.
+        SessionCloudPath = 6,
+        /// The client connected to this peer via Bigtable Sessions using
+        /// DirectAccess.
+        SessionDirectAccess = 7,
+    }
+    impl TransportType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "TRANSPORT_TYPE_UNKNOWN",
+                Self::External => "TRANSPORT_TYPE_EXTERNAL",
+                Self::CloudPath => "TRANSPORT_TYPE_CLOUD_PATH",
+                Self::DirectAccess => "TRANSPORT_TYPE_DIRECT_ACCESS",
+                Self::SessionUnknown => "TRANSPORT_TYPE_SESSION_UNKNOWN",
+                Self::SessionExternal => "TRANSPORT_TYPE_SESSION_EXTERNAL",
+                Self::SessionCloudPath => "TRANSPORT_TYPE_SESSION_CLOUD_PATH",
+                Self::SessionDirectAccess => "TRANSPORT_TYPE_SESSION_DIRECT_ACCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSPORT_TYPE_UNKNOWN" => Some(Self::Unknown),
+                "TRANSPORT_TYPE_EXTERNAL" => Some(Self::External),
+                "TRANSPORT_TYPE_CLOUD_PATH" => Some(Self::CloudPath),
+                "TRANSPORT_TYPE_DIRECT_ACCESS" => Some(Self::DirectAccess),
+                "TRANSPORT_TYPE_SESSION_UNKNOWN" => Some(Self::SessionUnknown),
+                "TRANSPORT_TYPE_SESSION_EXTERNAL" => Some(Self::SessionExternal),
+                "TRANSPORT_TYPE_SESSION_CLOUD_PATH" => Some(Self::SessionCloudPath),
+                "TRANSPORT_TYPE_SESSION_DIRECT_ACCESS" => Some(Self::SessionDirectAccess),
+                _ => None,
+            }
+        }
+    }
 }
 /// Response metadata proto
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3022,4 +3117,7 @@ pub struct ResponseParams {
     /// bigtable resources.
     #[prost(string, optional, tag = "2")]
     pub cluster_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The AFE ID for the AFE that is served this request.
+    #[prost(int64, optional, tag = "3")]
+    pub afe_id: ::core::option::Option<i64>,
 }

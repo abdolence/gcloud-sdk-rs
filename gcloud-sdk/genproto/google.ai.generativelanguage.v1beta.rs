@@ -338,6 +338,14 @@ pub struct Tool {
     /// Optional. Tool to support URL context retrieval.
     #[prost(message, optional, tag = "8")]
     pub url_context: ::core::option::Option<UrlContext>,
+    /// Optional. FileSearch tool type.
+    /// Tool to retrieve knowledge from Semantic Retrieval corpora.
+    #[prost(message, optional, tag = "9")]
+    pub file_search: ::core::option::Option<FileSearch>,
+    /// Optional. Tool that allows grounding the model's response with geospatial
+    /// context related to the user's query.
+    #[prost(message, optional, tag = "11")]
+    pub google_maps: ::core::option::Option<GoogleMaps>,
 }
 /// Nested message and enum types in `Tool`.
 pub mod tool {
@@ -413,9 +421,54 @@ pub mod tool {
         }
     }
 }
+/// The GoogleMaps Tool that provides geospatial context for the user's query.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleMaps {
+    /// Optional. Whether to return a widget context token in the GroundingMetadata
+    /// of the response. Developers can use the widget context token to render a
+    /// Google Maps widget with geospatial context related to the places that the
+    /// model references in the response.
+    #[prost(bool, tag = "1")]
+    pub enable_widget: bool,
+}
 /// Tool to support URL context retrieval.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UrlContext {}
+/// The FileSearch tool that retrieves knowledge from Semantic Retrieval corpora.
+/// Files are imported to Semantic Retrieval corpora using the ImportFile API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileSearch {
+    /// Required. Semantic retrieval resources to retrieve from.
+    /// Currently only supports one corpus. In the future we may open up multiple
+    /// corpora support.
+    #[prost(message, repeated, tag = "1")]
+    pub retrieval_resources: ::prost::alloc::vec::Vec<file_search::RetrievalResource>,
+    /// Optional. The configuration for the retrieval.
+    #[prost(message, optional, tag = "2")]
+    pub retrieval_config: ::core::option::Option<file_search::RetrievalConfig>,
+}
+/// Nested message and enum types in `FileSearch`.
+pub mod file_search {
+    /// The semantic retrieval resource to retrieve from.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RetrievalResource {
+        /// Required. The name of the semantic retrieval resource to retrieve from.
+        /// Example: `ragStores/my-rag-store-123`
+        #[prost(string, tag = "1")]
+        pub rag_store_name: ::prost::alloc::string::String,
+    }
+    /// Semantic retrieval configuration.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RetrievalConfig {
+        /// Optional. The number of semantic retrieval chunks to retrieve.
+        #[prost(int32, optional, tag = "1")]
+        pub top_k: ::core::option::Option<i32>,
+        /// Optional. Metadata filter to apply to the semantic retrieval documents
+        /// and chunks.
+        #[prost(string, tag = "3")]
+        pub metadata_filter: ::prost::alloc::string::String,
+    }
+}
 /// Tool to retrieve public web data for grounding, powered by Google.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoogleSearchRetrieval {
@@ -485,11 +538,26 @@ pub mod dynamic_retrieval_config {
 pub struct CodeExecution {}
 /// The Tool configuration containing parameters for specifying `Tool` use
 /// in the request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolConfig {
     /// Optional. Function calling config.
     #[prost(message, optional, tag = "1")]
     pub function_calling_config: ::core::option::Option<FunctionCallingConfig>,
+    /// Optional. Retrieval config.
+    #[prost(message, optional, tag = "2")]
+    pub retrieval_config: ::core::option::Option<RetrievalConfig>,
+}
+/// Retrieval config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrievalConfig {
+    /// Optional. The location of the user.
+    #[prost(message, optional, tag = "1")]
+    pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// Optional. The language code of the user.
+    /// Language code for content. Use language tags defined by
+    /// [BCP47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Configuration for specifying function calling behavior.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2805,7 +2873,6 @@ pub mod chunk_data {
     }
 }
 /// Request to generate a completion from the model.
-/// NEXT ID: 18
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentRequest {
     /// Required. The name of the `Model` to use for generating the completion.
@@ -2958,7 +3025,6 @@ pub struct ImageConfig {
 }
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
-/// Next ID: 29
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
     /// Optional. Number of generated responses to return. If unset, this will
@@ -3787,6 +3853,14 @@ pub struct GroundingMetadata {
     /// Web search queries for the following-up web search.
     #[prost(string, repeated, tag = "5")]
     pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Resource name of the Google Maps widget context token that can be
+    /// used with the PlacesContextElement widget in order to render contextual
+    /// data. Only populated in the case that grounding with Google Maps is
+    /// enabled.
+    #[prost(string, optional, tag = "7")]
+    pub google_maps_widget_context_token: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Google search entry point.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3801,10 +3875,10 @@ pub struct SearchEntryPoint {
     pub sdk_blob: ::prost::alloc::vec::Vec<u8>,
 }
 /// Grounding chunk.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundingChunk {
     /// Chunk type.
-    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1")]
+    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1, 2, 3")]
     pub chunk_type: ::core::option::Option<grounding_chunk::ChunkType>,
 }
 /// Nested message and enum types in `GroundingChunk`.
@@ -3819,12 +3893,90 @@ pub mod grounding_chunk {
         #[prost(string, optional, tag = "2")]
         pub title: ::core::option::Option<::prost::alloc::string::String>,
     }
+    /// Chunk from context retrieved by the file search tool.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RetrievedContext {
+        /// Optional. URI reference of the semantic retrieval document.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. Title of the document.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. Text of the chunk.
+        #[prost(string, optional, tag = "3")]
+        pub text: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// A grounding chunk from Google Maps. A Maps chunk corresponds to a single
+    /// place.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Maps {
+        /// URI reference of the place.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Title of the place.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Text description of the place answer.
+        #[prost(string, optional, tag = "3")]
+        pub text: ::core::option::Option<::prost::alloc::string::String>,
+        /// This ID of the place, in `places/{place_id}` format. A user can use this
+        /// ID to look up that place.
+        #[prost(string, optional, tag = "4")]
+        pub place_id: ::core::option::Option<::prost::alloc::string::String>,
+        /// Sources that provide answers about the features of a given place in
+        /// Google Maps.
+        #[prost(message, optional, tag = "5")]
+        pub place_answer_sources: ::core::option::Option<maps::PlaceAnswerSources>,
+    }
+    /// Nested message and enum types in `Maps`.
+    pub mod maps {
+        /// Collection of sources that provide answers about the features of a given
+        /// place in Google Maps. Each PlaceAnswerSources message corresponds to a
+        /// specific place in Google Maps. The Google Maps tool used these sources in
+        /// order to answer questions about features of the place (e.g: "does Bar Foo
+        /// have Wifi" or "is Foo Bar wheelchair accessible?"). Currently we only
+        /// support review snippets as sources.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct PlaceAnswerSources {
+            /// Snippets of reviews that are used to generate answers about the
+            /// features of a given place in Google Maps.
+            #[prost(message, repeated, tag = "1")]
+            pub review_snippets: ::prost::alloc::vec::Vec<
+                place_answer_sources::ReviewSnippet,
+            >,
+        }
+        /// Nested message and enum types in `PlaceAnswerSources`.
+        pub mod place_answer_sources {
+            /// Encapsulates a snippet of a user review that answers a question about
+            /// the features of a specific place in Google Maps.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct ReviewSnippet {
+                /// The ID of the review snippet.
+                #[prost(string, optional, tag = "1")]
+                pub review_id: ::core::option::Option<::prost::alloc::string::String>,
+                /// A link that corresponds to the user review on Google Maps.
+                #[prost(string, optional, tag = "2")]
+                pub google_maps_uri: ::core::option::Option<
+                    ::prost::alloc::string::String,
+                >,
+                /// Title of the review.
+                #[prost(string, optional, tag = "3")]
+                pub title: ::core::option::Option<::prost::alloc::string::String>,
+            }
+        }
+    }
     /// Chunk type.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ChunkType {
         /// Grounding chunk from the web.
         #[prost(message, tag = "1")]
         Web(Web),
+        /// Optional. Grounding chunk from context retrieved by the file search tool.
+        #[prost(message, tag = "2")]
+        RetrievedContext(RetrievedContext),
+        /// Optional. Grounding chunk from Google Maps.
+        #[prost(message, tag = "3")]
+        Maps(Maps),
     }
 }
 /// Segment of the content.

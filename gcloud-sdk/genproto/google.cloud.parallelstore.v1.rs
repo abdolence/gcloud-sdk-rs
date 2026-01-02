@@ -32,8 +32,8 @@ pub struct Instance {
     /// 12000, 16000, 20000, ...
     #[prost(int64, tag = "8")]
     pub capacity_gib: i64,
-    /// Output only. Deprecated 'daos_version' field.
-    /// Output only. The version of DAOS software running in the instance.
+    /// Output only. Deprecated: The version of DAOS software running in the
+    /// instance.
     #[deprecated]
     #[prost(string, tag = "9")]
     pub daos_version: ::prost::alloc::string::String,
@@ -146,6 +146,151 @@ pub mod instance {
         }
     }
 }
+/// Transfer metadata options for the instance.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TransferMetadataOptions {
+    /// Optional. The UID preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Uid", tag = "1")]
+    pub uid: i32,
+    /// Optional. The GID preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Gid", tag = "2")]
+    pub gid: i32,
+    /// Optional. The mode preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Mode", tag = "3")]
+    pub mode: i32,
+}
+/// Nested message and enum types in `TransferMetadataOptions`.
+pub mod transfer_metadata_options {
+    /// The UID preservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Uid {
+        /// default is UID_NUMBER_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve UID during a transfer job.
+        Skip = 1,
+        /// Preserve UID that is in number format during a transfer job.
+        NumberPreserve = 2,
+    }
+    impl Uid {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UID_UNSPECIFIED",
+                Self::Skip => "UID_SKIP",
+                Self::NumberPreserve => "UID_NUMBER_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UID_UNSPECIFIED" => Some(Self::Unspecified),
+                "UID_SKIP" => Some(Self::Skip),
+                "UID_NUMBER_PRESERVE" => Some(Self::NumberPreserve),
+                _ => None,
+            }
+        }
+    }
+    /// The GID preservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Gid {
+        /// default is GID_NUMBER_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve GID during a transfer job.
+        Skip = 1,
+        /// Preserve GID that is in number format during a transfer job.
+        NumberPreserve = 2,
+    }
+    impl Gid {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GID_UNSPECIFIED",
+                Self::Skip => "GID_SKIP",
+                Self::NumberPreserve => "GID_NUMBER_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GID_UNSPECIFIED" => Some(Self::Unspecified),
+                "GID_SKIP" => Some(Self::Skip),
+                "GID_NUMBER_PRESERVE" => Some(Self::NumberPreserve),
+                _ => None,
+            }
+        }
+    }
+    /// The mode preservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// default is MODE_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve mode during a transfer job.
+        Skip = 1,
+        /// Preserve mode during a transfer job.
+        Preserve = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Skip => "MODE_SKIP",
+                Self::Preserve => "MODE_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_SKIP" => Some(Self::Skip),
+                "MODE_PRESERVE" => Some(Self::Preserve),
+                _ => None,
+            }
+        }
+    }
+}
 /// List instances request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
@@ -217,8 +362,8 @@ pub struct CreateInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -245,8 +390,8 @@ pub struct UpdateInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -267,8 +412,8 @@ pub struct DeleteInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -352,8 +497,8 @@ pub struct ImportDataRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -375,6 +520,9 @@ pub struct ImportDataRequest {
     /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. The transfer metadata options for the import data.
+    #[prost(message, optional, tag = "6")]
+    pub metadata_options: ::core::option::Option<TransferMetadataOptions>,
     /// The source of the data being imported into the Parallelstore instance.
     #[prost(oneof = "import_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_data_request::Source>,
@@ -410,8 +558,8 @@ pub struct ExportDataRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -432,6 +580,9 @@ pub struct ExportDataRequest {
     /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. The metadata options for the export data.
+    #[prost(message, optional, tag = "6")]
+    pub metadata_options: ::core::option::Option<TransferMetadataOptions>,
     /// The Parallelstore instance to export from.
     #[prost(oneof = "export_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<export_data_request::Source>,
@@ -621,10 +772,10 @@ pub struct TransferCounters {
     /// Bytes that are copied to the data destination.
     #[prost(int64, tag = "6")]
     pub bytes_copied: i64,
-    /// Objects that are failed to write to the data destination.
+    /// Objects that failed to be written to the data destination.
     #[prost(int64, tag = "7")]
     pub objects_failed: i64,
-    /// Bytes that are failed to write to the data destination.
+    /// Bytes that failed to be written to the data destination.
     #[prost(int64, tag = "8")]
     pub bytes_failed: i64,
 }

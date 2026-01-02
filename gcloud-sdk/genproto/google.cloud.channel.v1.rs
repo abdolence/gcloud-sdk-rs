@@ -430,14 +430,14 @@ pub struct Customer {
     /// Populated only if a CRM ID exists for this customer.
     #[prost(string, tag = "14")]
     pub correlation_id: ::prost::alloc::string::String,
-    /// Optional. Indicate whether a customer is attesting about the correctness of
+    /// Optional. Indicate if a customer is attesting about the correctness of
     /// provided information. Only required if creating a GCP Entitlement.
     #[prost(enumeration = "customer::CustomerAttestationState", tag = "16")]
     pub customer_attestation_state: i32,
 }
 /// Nested message and enum types in `Customer`.
 pub mod customer {
-    /// The enum represents whether a customer belongs to public sector
+    /// The enum represents if a customer belongs to public sector
     #[derive(
         Clone,
         Copy,
@@ -786,9 +786,18 @@ pub struct Price {
     /// Effective Price after applying the discounts.
     #[prost(message, optional, tag = "3")]
     pub effective_price: ::core::option::Option<super::super::super::r#type::Money>,
+    /// The time period with respect to which base and effective prices are
+    /// defined.
+    /// Example: 1 month, 6 months, 1 year, etc.
+    #[prost(message, optional, tag = "6")]
+    pub price_period: ::core::option::Option<Period>,
     /// Link to external price list, such as link to Google Voice rate card.
     #[prost(string, tag = "4")]
     pub external_price_uri: ::prost::alloc::string::String,
+    /// Breakdown of the discount into its components.
+    /// This will be empty if there is no discount present.
+    #[prost(message, repeated, tag = "5")]
+    pub discount_components: ::prost::alloc::vec::Vec<DiscountComponent>,
 }
 /// Specifies the price by the duration of months.
 /// For example, a 20% discount for the first six months, then a 10% discount
@@ -840,6 +849,32 @@ pub struct Period {
     /// Period Type.
     #[prost(enumeration = "PeriodType", tag = "2")]
     pub period_type: i32,
+}
+/// Represents a single component of the total discount applicable on a Price.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscountComponent {
+    /// Type of the discount.
+    #[prost(enumeration = "DiscountType", tag = "2")]
+    pub discount_type: i32,
+    /// Specifies the contribution of this discount component to the total
+    /// discount.
+    #[prost(oneof = "discount_component::DiscountValue", tags = "3, 4")]
+    pub discount_value: ::core::option::Option<discount_component::DiscountValue>,
+}
+/// Nested message and enum types in `DiscountComponent`.
+pub mod discount_component {
+    /// Specifies the contribution of this discount component to the total
+    /// discount.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DiscountValue {
+        /// Discount percentage, represented as decimal.
+        /// For example, a 20% discount will be represented as 0.2.
+        #[prost(double, tag = "3")]
+        DiscountPercentage(f64),
+        /// Fixed value discount.
+        #[prost(message, tag = "4")]
+        DiscountAbsolute(super::super::super::super::r#type::Money),
+    }
 }
 /// Constraints type for Promotional offers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1051,6 +1086,51 @@ impl PeriodType {
         }
     }
 }
+/// Discount Type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DiscountType {
+    /// Not used.
+    Unspecified = 0,
+    /// Regional discount.
+    RegionalDiscount = 1,
+    /// Promotional discount.
+    PromotionalDiscount = 2,
+    /// Sales-provided discount.
+    SalesDiscount = 3,
+    /// Reseller margin.
+    ResellerMargin = 4,
+    /// Deal code discount.
+    DealCode = 5,
+}
+impl DiscountType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DISCOUNT_TYPE_UNSPECIFIED",
+            Self::RegionalDiscount => "REGIONAL_DISCOUNT",
+            Self::PromotionalDiscount => "PROMOTIONAL_DISCOUNT",
+            Self::SalesDiscount => "SALES_DISCOUNT",
+            Self::ResellerMargin => "RESELLER_MARGIN",
+            Self::DealCode => "DEAL_CODE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DISCOUNT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REGIONAL_DISCOUNT" => Some(Self::RegionalDiscount),
+            "PROMOTIONAL_DISCOUNT" => Some(Self::PromotionalDiscount),
+            "SALES_DISCOUNT" => Some(Self::SalesDiscount),
+            "RESELLER_MARGIN" => Some(Self::ResellerMargin),
+            "DEAL_CODE" => Some(Self::DealCode),
+            _ => None,
+        }
+    }
+}
 /// An entitlement is a representation of a customer's ability to use a service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entitlement {
@@ -1126,6 +1206,11 @@ pub struct Entitlement {
     /// entitlement.
     #[prost(string, tag = "28")]
     pub billing_account: ::prost::alloc::string::String,
+    /// Optional. Price reference ID for the offer. Only for offers that require
+    /// additional price information. Used to guarantee that the pricing is
+    /// consistent between quoting the offer and placing the order.
+    #[prost(string, tag = "29")]
+    pub price_reference_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Entitlement`.
 pub mod entitlement {
@@ -2554,7 +2639,7 @@ pub mod repricing_config {
     /// Required. Defines the granularity for repricing.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Granularity {
-        /// Applies the repricing configuration at the entitlement level.
+        /// Required. Applies the repricing configuration at the entitlement level.
         ///
         /// Note: If a
         /// \[ChannelPartnerRepricingConfig\]\[google.cloud.channel.v1.ChannelPartnerRepricingConfig\]
@@ -2715,7 +2800,8 @@ pub struct CloudIdentityCustomerAccount {
     #[prost(bool, tag = "1")]
     pub existing: bool,
     /// Returns true if the Cloud Identity account is associated with a customer
-    /// of the Channel Services partner.
+    /// of the Channel Services partner (with active subscriptions or purchase
+    /// consents).
     #[prost(bool, tag = "2")]
     pub owned: bool,
     /// If owned = true, the name of the customer that owns the Cloud Identity
@@ -3101,6 +3187,11 @@ pub struct TransferableOffer {
     /// Offer with parameter constraints updated to allow the Transfer.
     #[prost(message, optional, tag = "1")]
     pub offer: ::core::option::Option<Offer>,
+    /// Optional. Price reference ID for the offer. Only for offers that require
+    /// additional price information. Used to guarantee that the pricing is
+    /// consistent between quoting the offer and placing the order.
+    #[prost(string, tag = "2")]
+    pub price_reference_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[CloudChannelService.GetEntitlement\]\[google.cloud.channel.v1.CloudChannelService.GetEntitlement\].
@@ -3395,7 +3486,8 @@ pub struct ListSkuGroupsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results beyond the first page.
     /// Obtained through
-    /// \[ListSkuGroups.next_page_token\]\[\] of the previous
+    /// \[ListSkuGroupsResponse.next_page_token\]\[google.cloud.channel.v1.ListSkuGroupsResponse.next_page_token\]
+    /// of the previous
     /// \[CloudChannelService.ListSkuGroups\]\[google.cloud.channel.v1.CloudChannelService.ListSkuGroups\]
     /// call.
     #[prost(string, tag = "3")]
@@ -3415,7 +3507,8 @@ pub struct ListSkuGroupBillableSkusRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results beyond the first page.
     /// Obtained through
-    /// \[ListSkuGroupBillableSkus.next_page_token\]\[\] of the previous
+    /// \[ListSkuGroupBillableSkusResponse.next_page_token\]\[google.cloud.channel.v1.ListSkuGroupBillableSkusResponse.next_page_token\]
+    /// of the previous
     /// \[CloudChannelService.ListSkuGroupBillableSkus\]\[google.cloud.channel.v1.CloudChannelService.ListSkuGroupBillableSkus\]
     /// call.
     #[prost(string, tag = "3")]
@@ -3428,8 +3521,9 @@ pub struct ListSkuGroupsResponse {
     #[prost(message, repeated, tag = "1")]
     pub sku_groups: ::prost::alloc::vec::Vec<SkuGroup>,
     /// A token to retrieve the next page of results.
-    /// Pass to \[ListSkuGroups.page_token\]\[\] to obtain that
-    /// page.
+    /// Pass to
+    /// \[ListSkuGroupsRequest.page_token\]\[google.cloud.channel.v1.ListSkuGroupsRequest.page_token\]
+    /// to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -3440,8 +3534,9 @@ pub struct ListSkuGroupBillableSkusResponse {
     #[prost(message, repeated, tag = "1")]
     pub billable_skus: ::prost::alloc::vec::Vec<BillableSku>,
     /// A token to retrieve the next page of results.
-    /// Pass to \[ListSkuGroupBillableSkus.page_token\]\[\] to obtain that
-    /// page.
+    /// Pass to
+    /// \[ListSkuGroupBillableSkusRequest.page_token\]\[google.cloud.channel.v1.ListSkuGroupBillableSkusRequest.page_token\]
+    /// to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -3576,7 +3671,8 @@ pub struct TransferEntitlementsToGoogleRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[CloudChannelService.ChangeParametersRequest\]\[\].
+/// Request message for
+/// \[CloudChannelService.ChangeParameters\]\[google.cloud.channel.v1.CloudChannelService.ChangeParameters\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeParametersRequest {
     /// Required. The name of the entitlement to update.
@@ -3680,6 +3776,11 @@ pub struct ChangeOfferRequest {
     /// left empty for single currency accounts.
     #[prost(string, tag = "7")]
     pub billing_account: ::prost::alloc::string::String,
+    /// Optional. Price reference ID for the offer. Only for offers that require
+    /// additional price information. Used to guarantee that the pricing is
+    /// consistent between quoting the offer and placing the order.
+    #[prost(string, tag = "8")]
+    pub price_reference_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[CloudChannelService.StartPaidService\]\[google.cloud.channel.v1.CloudChannelService.StartPaidService\].
@@ -3892,6 +3993,9 @@ pub struct ListOffersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOffersResponse {
     /// The list of Offers requested.
+    ///
+    /// The pricing information for each Offer only includes the base price.
+    /// Effective prices and discounts aren't populated.
     #[prost(message, repeated, tag = "1")]
     pub offers: ::prost::alloc::vec::Vec<Offer>,
     /// A token to retrieve the next page of results.
@@ -4115,6 +4219,11 @@ pub struct PurchasableOffer {
     /// Offer.
     #[prost(message, optional, tag = "1")]
     pub offer: ::core::option::Option<Offer>,
+    /// Optional. Price reference ID for the offer. Only for offers that require
+    /// additional price information. Used to guarantee that the pricing is
+    /// consistent between quoting the offer and placing the order.
+    #[prost(string, tag = "2")]
+    pub price_reference_id: ::prost::alloc::string::String,
 }
 /// Request message for QueryEligibleBillingAccounts.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4162,13 +4271,18 @@ pub struct BillingAccountPurchaseInfo {
 /// Request Message for RegisterSubscriber.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegisterSubscriberRequest {
-    /// Required. Resource name of the account.
+    /// Optional. Resource name of the account. Required if integrator is not
+    /// provided. Otherwise, leave this field empty/unset.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Required. Service account that provides subscriber access to the registered
     /// topic.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. Resource name of the integrator. Required if account is not
+    /// provided. Otherwise, leave this field empty/unset.
+    #[prost(string, optional, tag = "3")]
+    pub integrator: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response Message for RegisterSubscriber.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4180,13 +4294,18 @@ pub struct RegisterSubscriberResponse {
 /// Request Message for UnregisterSubscriber.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnregisterSubscriberRequest {
-    /// Required. Resource name of the account.
+    /// Optional. Resource name of the account. Required if integrator is not
+    /// provided. Otherwise, leave this field empty/unset.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Required. Service account to unregister from subscriber access to the
     /// topic.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. Resource name of the integrator. Required if account is not
+    /// provided. Otherwise, leave this field empty/unset.
+    #[prost(string, optional, tag = "3")]
+    pub integrator: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response Message for UnregisterSubscriber.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4198,7 +4317,8 @@ pub struct UnregisterSubscriberResponse {
 /// Request Message for ListSubscribers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscribersRequest {
-    /// Required. Resource name of the account.
+    /// Optional. Resource name of the account. Required if integrator is not
+    /// provided. Otherwise, leave this field empty/unset.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. The maximum number of service accounts to return. The service may
@@ -4214,6 +4334,10 @@ pub struct ListSubscribersRequest {
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Resource name of the integrator. Required if account is not
+    /// provided. Otherwise, leave this field empty/unset.
+    #[prost(string, optional, tag = "4")]
+    pub integrator: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response Message for ListSubscribers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6562,8 +6686,8 @@ pub mod cloud_channel_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Registers a service account with subscriber privileges on the Cloud Pub/Sub
-        /// topic for this Channel Services account. After you create a
+        /// Registers a service account with subscriber privileges on the Pub/Sub
+        /// topic for this Channel Services account or integrator. After you create a
         /// subscriber, you get the events through
         /// \[SubscriberEvent\]\[google.cloud.channel.v1.SubscriberEvent\]
         ///
@@ -6609,10 +6733,10 @@ pub mod cloud_channel_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Unregisters a service account with subscriber privileges on the Cloud
-        /// Pub/Sub topic created for this Channel Services account. If there are no
-        /// service accounts left with subscriber privileges, this deletes the topic.
-        /// You can call ListSubscribers to check for these accounts.
+        /// Unregisters a service account with subscriber privileges on the Pub/Sub
+        /// topic created for this Channel Services account or integrator. If there are
+        /// no service accounts left with subscriber privileges, this deletes the
+        /// topic. You can call ListSubscribers to check for these accounts.
         ///
         /// Possible error codes:
         ///
@@ -6659,8 +6783,8 @@ pub mod cloud_channel_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists service accounts with subscriber privileges on the Cloud Pub/Sub
-        /// topic created for this Channel Services account.
+        /// Lists service accounts with subscriber privileges on the Pub/Sub topic
+        /// created for this Channel Services account or integrator.
         ///
         /// Possible error codes:
         ///
@@ -6759,7 +6883,7 @@ pub struct CustomerEvent {
     /// Format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub customer: ::prost::alloc::string::String,
-    /// Type of event which happened on the customer.
+    /// Type of event which happened for the customer.
     #[prost(enumeration = "customer_event::Type", tag = "2")]
     pub event_type: i32,
 }
@@ -6816,7 +6940,7 @@ pub struct EntitlementEvent {
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub entitlement: ::prost::alloc::string::String,
-    /// Type of event which happened on the entitlement.
+    /// Type of event which happened for the entitlement.
     #[prost(enumeration = "entitlement_event::Type", tag = "2")]
     pub event_type: i32,
 }

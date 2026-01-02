@@ -139,11 +139,11 @@ pub struct ImportAptArtifactsMetadata {}
 /// * imageSizeBytes
 /// * mediaType
 /// * buildTime
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DockerImage {
     /// Required. registry_location, project_id, repository_name and image id forms
     /// a unique image
-    /// name:`projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>`.
+    /// name:`projects/<project_id>/locations/<location>/repositories/<repository_name>/dockerImages/<docker_image>`.
     /// For example,
     /// "projects/test-project/locations/us-west4/repositories/test-repo/dockerImages/
     /// nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf",
@@ -185,6 +185,50 @@ pub struct DockerImage {
     /// Output only. The time when the docker image was last updated.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// ArtifactType of this image, e.g. "application/vnd.example+type".
+    /// If the `subject_digest` is set and no `artifact_type` is given, the
+    /// `media_type` will be considered as the `artifact_type`. This field is
+    /// returned as the `metadata.artifactType` field in the Version resource.
+    #[prost(string, tag = "9")]
+    pub artifact_type: ::prost::alloc::string::String,
+    /// Optional. For multi-arch images (manifest lists), this field contains the
+    /// list of image manifests.
+    #[prost(message, repeated, tag = "11")]
+    pub image_manifests: ::prost::alloc::vec::Vec<ImageManifest>,
+}
+/// Details of a single image manifest within a multi-arch image.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageManifest {
+    /// Optional. The CPU architecture of the image.
+    /// Values are provided by the Docker client and are not validated by Artifact
+    /// Registry. Example values include "amd64", "arm64", "ppc64le", "s390x",
+    /// "riscv64", "mips64le", etc.
+    #[prost(string, tag = "1")]
+    pub architecture: ::prost::alloc::string::String,
+    /// Optional. The operating system of the image.
+    /// Values are provided by the Docker client and are not validated by Artifact
+    /// Registry. Example values include "linux", "windows", "darwin", "aix", etc.
+    #[prost(string, tag = "2")]
+    pub os: ::prost::alloc::string::String,
+    /// Optional. The manifest digest, in the format "sha256:\<sha256_hex_digest>".
+    #[prost(string, tag = "3")]
+    pub digest: ::prost::alloc::string::String,
+    /// Optional. The media type of the manifest, e.g.,
+    /// "application/vnd.docker.distribution.manifest.v2+json"
+    #[prost(string, tag = "4")]
+    pub media_type: ::prost::alloc::string::String,
+    /// Optional. The OS version of the image, for example on Windows
+    /// `10.0.14393.1066`.
+    #[prost(string, tag = "5")]
+    pub os_version: ::prost::alloc::string::String,
+    /// Optional. The required OS features for the image, for example on Windows
+    /// `win32k`.
+    #[prost(string, repeated, tag = "6")]
+    pub os_features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The variant of the CPU in the image, for example `v7` to specify
+    /// ARMv7 when architecture is `arm`.
+    #[prost(string, tag = "7")]
+    pub variant: ::prost::alloc::string::String,
 }
 /// The request to list docker images.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -716,6 +760,411 @@ pub struct UpdateFileRequest {
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Tags point to a version and represent an alternative name that can be used
+/// to access the version.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Tag {
+    /// The name of the tag, for example:
+    /// "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/tags/tag1".
+    /// If the package part contains slashes, the slashes are escaped.
+    /// The tag part can only have characters in \[a-zA-Z0-9-.\_~:@\], anything else
+    /// must be URL encoded.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The name of the version the tag refers to, for example:
+    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/sha256:5243811`
+    /// If the package or version ID parts contain slashes, the slashes are
+    /// escaped.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
+/// The request to list tags.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListTagsRequest {
+    /// The name of the parent package whose tags will be listed.
+    /// For example:
+    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// An expression for filtering the results of the request. Filter rules are
+    /// case insensitive. The fields eligible for filtering are:
+    ///
+    /// * `name`
+    /// * `version`
+    ///
+    /// Examples of using a filter:
+    ///
+    /// To filter the results of your request to tags with the name `my-tag` in
+    /// package `my-package` in repository `my-repo` in project "`y-project` in
+    /// the us-central region, append the following filter expression to your
+    /// request:
+    ///
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/my-tag"`
+    ///
+    /// You can also use wildcards to match any number of characters before or
+    /// after the value:
+    ///
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/my*"`
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/*tag"`
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/*tag*"`
+    ///
+    /// To filter the results of your request to tags applied to the version
+    /// `1.0` in package `my-package`, append the following filter expression to
+    /// your request:
+    ///
+    /// * `version="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/1.0"`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of tags to return. Maximum page size is 1,000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous list request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response from listing tags.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTagsResponse {
+    /// The tags returned.
+    #[prost(message, repeated, tag = "1")]
+    pub tags: ::prost::alloc::vec::Vec<Tag>,
+    /// The token to retrieve the next page of tags, or empty if there are no
+    /// more tags to return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to retrieve a tag.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetTagRequest {
+    /// The name of the tag to retrieve.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to create a new tag.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateTagRequest {
+    /// The name of the parent resource where the tag will be created.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The tag id to use for this repository.
+    #[prost(string, tag = "2")]
+    pub tag_id: ::prost::alloc::string::String,
+    /// The tag to be created.
+    #[prost(message, optional, tag = "3")]
+    pub tag: ::core::option::Option<Tag>,
+}
+/// The request to create or update a tag.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateTagRequest {
+    /// The tag that replaces the resource on the server.
+    #[prost(message, optional, tag = "1")]
+    pub tag: ::core::option::Option<Tag>,
+    /// The update mask applies to the resource. For the `FieldMask` definition,
+    /// see
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete a tag.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteTagRequest {
+    /// The name of the tag to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The body of a version resource. A version resource represents a
+/// collection of components, such as files and other data. This may correspond
+/// to a version in many package management schemes.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Version {
+    /// The name of the version, for example:
+    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1`.
+    /// If the package or version ID parts contain slashes, the slashes are
+    /// escaped.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Description of the version, as specified in its metadata.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// The time when the version was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the version was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A list of related tags. Will contain up to 100 tags that
+    /// reference this version.
+    #[prost(message, repeated, tag = "7")]
+    pub related_tags: ::prost::alloc::vec::Vec<Tag>,
+    /// Output only. Repository-specific Metadata stored against this version.
+    /// The fields returned are defined by the underlying repository-specific
+    /// resource. Currently, the resources could be:
+    /// \[DockerImage\]\[google.devtools.artifactregistry.v1.DockerImage\]
+    /// \[MavenArtifact\]\[google.devtools.artifactregistry.v1.MavenArtifact\]
+    #[prost(message, optional, tag = "8")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Client specified annotations.
+    #[prost(map = "string, string", tag = "9")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Immutable reference for the version, calculated based on the
+    /// version's content. Currently we only support dirsum_sha256 hash algorithm.
+    /// Additional hash algorithms may be added in the future.
+    #[prost(message, repeated, tag = "10")]
+    pub fingerprints: ::prost::alloc::vec::Vec<Hash>,
+}
+/// The request to list versions.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListVersionsRequest {
+    /// The name of the parent resource whose versions will be listed.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of versions to return. Maximum page size is 1,000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous list request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// The view that should be returned in the response.
+    #[prost(enumeration = "VersionView", tag = "4")]
+    pub view: i32,
+    /// Optional. The field to order the results by.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Filter
+    /// rules are case insensitive. The fields eligible for filtering are:
+    ///
+    /// * `name`
+    /// * `annotations`
+    ///
+    /// Examples of using a filter:
+    ///
+    /// To filter the results of your request to versions with the name
+    /// `my-version` in project `my-project` in the `us-central` region, in
+    /// repository `my-repo`, append the following filter expression to your
+    /// request:
+    ///
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my-version"`
+    ///
+    /// You can also use wildcards to match any number of characters before or
+    /// after the value:
+    ///
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version"`
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my*"`
+    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version*"`
+    ///
+    /// To filter the results of your request to versions with the annotation
+    /// key-value pair \[`external_link`: `external_link_value`\], append the
+    /// following filter expression to your request:
+    ///
+    /// * `"annotations.external_link:external_link_value"`
+    ///
+    /// To filter just for a specific annotation key `external_link`, append the
+    /// following filter expression to your request:
+    ///
+    /// * `"annotations.external_link"`
+    ///
+    /// If the annotation key or value contains special characters, you can escape
+    /// them by surrounding the value with backticks. For example, to filter the
+    /// results of your request to versions with the annotation key-value pair
+    /// \[`external.link`:`<https://example.com/my-version`\],> append the following
+    /// filter expression to your request:
+    ///
+    /// * ``"annotations.`external.link`:`<https://example.com/my-version`"``>
+    ///
+    /// You can also filter with annotations with a wildcard to
+    /// match any number of characters before or after the value:
+    ///
+    /// * ``"annotations.*_link:`*example.com*`"``
+    #[prost(string, tag = "6")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response from listing versions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListVersionsResponse {
+    /// The versions returned.
+    #[prost(message, repeated, tag = "1")]
+    pub versions: ::prost::alloc::vec::Vec<Version>,
+    /// The token to retrieve the next page of versions, or empty if there are no
+    /// more versions to return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to retrieve a version.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetVersionRequest {
+    /// The name of the version to retrieve.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The view that should be returned in the response.
+    #[prost(enumeration = "VersionView", tag = "2")]
+    pub view: i32,
+}
+/// The request to delete a version.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteVersionRequest {
+    /// The name of the version to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// By default, a version that is tagged may not be deleted. If force=true, the
+    /// version and any tags pointing to the version are deleted.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// The request to delete multiple versions across a repository.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchDeleteVersionsRequest {
+    /// The name of the repository holding all requested versions.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the versions to delete.
+    /// The maximum number of versions deleted per batch is determined by the
+    /// service and is dependent on the available resources in the region.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// If true, the request is performed without deleting data, following AIP-163.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// The metadata of an LRO from deleting multiple versions.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchDeleteVersionsMetadata {
+    /// The versions the operation failed to delete.
+    #[prost(string, repeated, tag = "2")]
+    pub failed_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request to update a version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateVersionRequest {
+    /// Required. The Version that replaces the resource on the server.
+    #[prost(message, optional, tag = "1")]
+    pub version: ::core::option::Option<Version>,
+    /// The update mask applies to the resource. For the `FieldMask` definition,
+    /// see
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The view, which determines what version information is returned in a
+/// response.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum VersionView {
+    /// The default / unset value.
+    /// The API will default to the BASIC view.
+    Unspecified = 0,
+    /// Includes basic information about the version, but not any related tags.
+    Basic = 1,
+    /// Include everything.
+    Full = 2,
+}
+impl VersionView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "VERSION_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VERSION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
+}
+/// The request for exporting an artifact to a destination.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportArtifactRequest {
+    /// Required. The repository of the artifact to export.
+    /// Format: projects/{project}/locations/{location}/repositories/{repository}
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// The artifact to be exported.
+    #[prost(oneof = "export_artifact_request::SourceArtifact", tags = "2, 4")]
+    pub source_artifact: ::core::option::Option<export_artifact_request::SourceArtifact>,
+    /// The destination to export the artifact to.
+    #[prost(oneof = "export_artifact_request::Destination", tags = "3")]
+    pub destination: ::core::option::Option<export_artifact_request::Destination>,
+}
+/// Nested message and enum types in `ExportArtifactRequest`.
+pub mod export_artifact_request {
+    /// The artifact to be exported.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SourceArtifact {
+        /// The artifact version to export.
+        /// Format:
+        /// projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/versions/{version}
+        #[prost(string, tag = "2")]
+        SourceVersion(::prost::alloc::string::String),
+        /// The artifact tag to export.
+        /// Format:projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}
+        #[prost(string, tag = "4")]
+        SourceTag(::prost::alloc::string::String),
+    }
+    /// The destination to export the artifact to.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Destination {
+        /// The Cloud Storage path to export the artifact to. Should start with the
+        /// bucket name, and optionally have a directory path. Examples:
+        /// `dst_bucket`, `dst_bucket/sub_dir`.
+        /// Existing objects with the same path will be overwritten.
+        #[prost(string, tag = "3")]
+        GcsPath(::prost::alloc::string::String),
+    }
+}
+/// The response for exporting an artifact to a destination.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportArtifactResponse {
+    /// The exported version. Should be the same as the request version with
+    /// fingerprint resource name.
+    #[prost(message, optional, tag = "1")]
+    pub exported_version: ::core::option::Option<Version>,
+}
+/// The LRO metadata for exporting an artifact.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportArtifactMetadata {
+    /// The exported artifact files.
+    #[prost(message, repeated, tag = "1")]
+    pub exported_files: ::prost::alloc::vec::Vec<export_artifact_metadata::ExportedFile>,
+}
+/// Nested message and enum types in `ExportArtifactMetadata`.
+pub mod export_artifact_metadata {
+    /// The exported artifact file.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExportedFile {
+        /// Name of the exported artifact file.
+        /// Format: `projects/p1/locations/us/repositories/repo1/files/file1`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The hashes of the file content.
+        #[prost(message, repeated, tag = "3")]
+        pub hashes: ::prost::alloc::vec::Vec<super::Hash>,
+        /// The destination the file was exported to.
+        #[prost(oneof = "exported_file::Destination", tags = "2")]
+        pub destination: ::core::option::Option<exported_file::Destination>,
+    }
+    /// Nested message and enum types in `ExportedFile`.
+    pub mod exported_file {
+        /// The destination the file was exported to.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Destination {
+            /// Cloud Storage Object path of the exported file. Examples:
+            /// `dst_bucket/file1`, `dst_bucket/sub_dir/file1`
+            #[prost(string, tag = "2")]
+            GcsObjectPath(::prost::alloc::string::String),
+        }
+    }
 }
 /// GenericArtifact represents a generic artifact
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1672,7 +2121,7 @@ pub struct Repository {
     /// use this to calculate storage costs.
     #[prost(int64, tag = "13")]
     pub size_bytes: i64,
-    /// Output only. If set, the repository satisfies physical zone separation.
+    /// Output only. Whether or not this repository satisfies PZS.
     #[prost(bool, tag = "16")]
     pub satisfies_pzs: bool,
     /// Optional. If true, the cleanup pipeline is prevented from deleting versions
@@ -1689,7 +2138,7 @@ pub struct Repository {
     /// error rather than defaulting to standard.
     #[prost(bool, tag = "21")]
     pub disallow_unspecified_mode: bool,
-    /// Output only. If set, the repository satisfies physical zone isolation.
+    /// Output only. Whether or not this repository satisfies PZI.
     #[prost(bool, tag = "22")]
     pub satisfies_pzi: bool,
     /// Output only. The repository endpoint, for example:
@@ -1819,7 +2268,8 @@ pub mod repository {
         )]
         #[repr(i32)]
         pub enum EnablementConfig {
-            /// Not set. This will be treated as INHERITED.
+            /// Not set. This will be treated as INHERITED for Docker repositories and
+            /// DISABLED for non-Docker repositories.
             Unspecified = 0,
             /// Scanning is Enabled, but dependent on API enablement.
             Inherited = 1,
@@ -1932,6 +2382,8 @@ pub mod repository {
         Go = 10,
         /// Generic package format.
         Generic = 11,
+        /// Ruby package format.
+        Ruby = 12,
     }
     impl Format {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1950,6 +2402,7 @@ pub mod repository {
                 Self::Kfp => "KFP",
                 Self::Go => "GO",
                 Self::Generic => "GENERIC",
+                Self::Ruby => "RUBY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1965,6 +2418,7 @@ pub mod repository {
                 "KFP" => Some(Self::Kfp),
                 "GO" => Some(Self::Go),
                 "GENERIC" => Some(Self::Generic),
+                "RUBY" => Some(Self::Ruby),
                 _ => None,
             }
         }
@@ -2413,323 +2867,6 @@ pub struct UpdateProjectSettingsRequest {
     /// Field mask to support partial updates.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Tags point to a version and represent an alternative name that can be used
-/// to access the version.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct Tag {
-    /// The name of the tag, for example:
-    /// "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/tags/tag1".
-    /// If the package part contains slashes, the slashes are escaped.
-    /// The tag part can only have characters in \[a-zA-Z0-9-.\_~:@\], anything else
-    /// must be URL encoded.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The name of the version the tag refers to, for example:
-    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/sha256:5243811`
-    /// If the package or version ID parts contain slashes, the slashes are
-    /// escaped.
-    #[prost(string, tag = "2")]
-    pub version: ::prost::alloc::string::String,
-}
-/// The request to list tags.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListTagsRequest {
-    /// The name of the parent package whose tags will be listed.
-    /// For example:
-    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// An expression for filtering the results of the request. Filter rules are
-    /// case insensitive. The fields eligible for filtering are:
-    ///
-    /// * `name`
-    /// * `version`
-    ///
-    /// Examples of using a filter:
-    ///
-    /// To filter the results of your request to tags with the name `my-tag` in
-    /// package `my-package` in repository `my-repo` in project "`y-project` in
-    /// the us-central region, append the following filter expression to your
-    /// request:
-    ///
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/my-tag"`
-    ///
-    /// You can also use wildcards to match any number of characters before or
-    /// after the value:
-    ///
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/my*"`
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/*tag"`
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/tags/*tag*"`
-    ///
-    /// To filter the results of your request to tags applied to the version
-    /// `1.0` in package `my-package`, append the following filter expression to
-    /// your request:
-    ///
-    /// * `version="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/1.0"`
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// The maximum number of tags to return. Maximum page size is 1,000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The response from listing tags.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListTagsResponse {
-    /// The tags returned.
-    #[prost(message, repeated, tag = "1")]
-    pub tags: ::prost::alloc::vec::Vec<Tag>,
-    /// The token to retrieve the next page of tags, or empty if there are no
-    /// more tags to return.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request to retrieve a tag.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetTagRequest {
-    /// The name of the tag to retrieve.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// The request to create a new tag.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct CreateTagRequest {
-    /// The name of the parent resource where the tag will be created.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The tag id to use for this repository.
-    #[prost(string, tag = "2")]
-    pub tag_id: ::prost::alloc::string::String,
-    /// The tag to be created.
-    #[prost(message, optional, tag = "3")]
-    pub tag: ::core::option::Option<Tag>,
-}
-/// The request to create or update a tag.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct UpdateTagRequest {
-    /// The tag that replaces the resource on the server.
-    #[prost(message, optional, tag = "1")]
-    pub tag: ::core::option::Option<Tag>,
-    /// The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
-    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// The request to delete a tag.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteTagRequest {
-    /// The name of the tag to delete.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// The body of a version resource. A version resource represents a
-/// collection of components, such as files and other data. This may correspond
-/// to a version in many package management schemes.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Version {
-    /// The name of the version, for example:
-    /// `projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1`.
-    /// If the package or version ID parts contain slashes, the slashes are
-    /// escaped.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. Description of the version, as specified in its metadata.
-    #[prost(string, tag = "3")]
-    pub description: ::prost::alloc::string::String,
-    /// The time when the version was created.
-    #[prost(message, optional, tag = "5")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time when the version was last updated.
-    #[prost(message, optional, tag = "6")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. A list of related tags. Will contain up to 100 tags that
-    /// reference this version.
-    #[prost(message, repeated, tag = "7")]
-    pub related_tags: ::prost::alloc::vec::Vec<Tag>,
-    /// Output only. Repository-specific Metadata stored against this version.
-    /// The fields returned are defined by the underlying repository-specific
-    /// resource. Currently, the resources could be:
-    /// \[DockerImage\]\[google.devtools.artifactregistry.v1.DockerImage\]
-    /// \[MavenArtifact\]\[google.devtools.artifactregistry.v1.MavenArtifact\]
-    #[prost(message, optional, tag = "8")]
-    pub metadata: ::core::option::Option<::prost_types::Struct>,
-    /// Optional. Client specified annotations.
-    #[prost(map = "string, string", tag = "9")]
-    pub annotations: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-}
-/// The request to list versions.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListVersionsRequest {
-    /// The name of the parent resource whose versions will be listed.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of versions to return. Maximum page size is 1,000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// The view that should be returned in the response.
-    #[prost(enumeration = "VersionView", tag = "4")]
-    pub view: i32,
-    /// Optional. The field to order the results by.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-    /// Optional. An expression for filtering the results of the request. Filter
-    /// rules are case insensitive. The fields eligible for filtering are:
-    ///
-    /// * `name`
-    /// * `annotations`
-    ///
-    /// Examples of using a filter:
-    ///
-    /// To filter the results of your request to versions with the name
-    /// `my-version` in project `my-project` in the `us-central` region, in
-    /// repository `my-repo`, append the following filter expression to your
-    /// request:
-    ///
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my-version"`
-    ///
-    /// You can also use wildcards to match any number of characters before or
-    /// after the value:
-    ///
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version"`
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my*"`
-    /// * `name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version*"`
-    ///
-    /// To filter the results of your request to versions with the annotation
-    /// key-value pair \[`external_link`: `external_link_value`\], append the
-    /// following filter expression to your request:
-    ///
-    /// * `"annotations.external_link:external_link_value"`
-    ///
-    /// To filter just for a specific annotation key `external_link`, append the
-    /// following filter expression to your request:
-    ///
-    /// * `"annotations.external_link"`
-    ///
-    /// If the annotation key or value contains special characters, you can escape
-    /// them by surrounding the value with backticks. For example, to filter the
-    /// results of your request to versions with the annotation key-value pair
-    /// \[`external.link`:`<https://example.com/my-version`\],> append the following
-    /// filter expression to your request:
-    ///
-    /// * ``"annotations.`external.link`:`<https://example.com/my-version`"``>
-    ///
-    /// You can also filter with annotations with a wildcard to
-    /// match any number of characters before or after the value:
-    ///
-    /// * ``"annotations.*_link:`*example.com*`"``
-    #[prost(string, tag = "6")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// The response from listing versions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListVersionsResponse {
-    /// The versions returned.
-    #[prost(message, repeated, tag = "1")]
-    pub versions: ::prost::alloc::vec::Vec<Version>,
-    /// The token to retrieve the next page of versions, or empty if there are no
-    /// more versions to return.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request to retrieve a version.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetVersionRequest {
-    /// The name of the version to retrieve.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The view that should be returned in the response.
-    #[prost(enumeration = "VersionView", tag = "2")]
-    pub view: i32,
-}
-/// The request to delete a version.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteVersionRequest {
-    /// The name of the version to delete.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// By default, a version that is tagged may not be deleted. If force=true, the
-    /// version and any tags pointing to the version are deleted.
-    #[prost(bool, tag = "2")]
-    pub force: bool,
-}
-/// The request to delete multiple versions across a repository.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct BatchDeleteVersionsRequest {
-    /// The name of the repository holding all requested versions.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The names of the versions to delete.
-    /// The maximum number of versions deleted per batch is determined by the
-    /// service and is dependent on the available resources in the region.
-    #[prost(string, repeated, tag = "2")]
-    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// If true, the request is performed without deleting data, following AIP-163.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// The metadata of an LRO from deleting multiple versions.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct BatchDeleteVersionsMetadata {
-    /// The versions the operation failed to delete.
-    #[prost(string, repeated, tag = "2")]
-    pub failed_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// The request to update a version.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateVersionRequest {
-    /// Required. The Version that replaces the resource on the server.
-    #[prost(message, optional, tag = "1")]
-    pub version: ::core::option::Option<Version>,
-    /// The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
-    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// The view, which determines what version information is returned in a
-/// response.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum VersionView {
-    /// The default / unset value.
-    /// The API will default to the BASIC view.
-    Unspecified = 0,
-    /// Includes basic information about the version, but not any related tags.
-    Basic = 1,
-    /// Include everything.
-    Full = 2,
-}
-impl VersionView {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "VERSION_VIEW_UNSPECIFIED",
-            Self::Basic => "BASIC",
-            Self::Full => "FULL",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "VERSION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
-            "BASIC" => Some(Self::Basic),
-            "FULL" => Some(Self::Full),
-            _ => None,
-        }
-    }
 }
 /// The Artifact Registry VPC SC config that apply to a Project.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4469,6 +4606,36 @@ pub mod artifact_registry_client {
                     GrpcMethod::new(
                         "google.devtools.artifactregistry.v1.ArtifactRegistry",
                         "DeleteAttachment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports an artifact to a Cloud Storage bucket.
+        pub async fn export_artifact(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportArtifactRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ExportArtifact",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
+                        "ExportArtifact",
                     ),
                 );
             self.inner.unary(req, path, codec).await

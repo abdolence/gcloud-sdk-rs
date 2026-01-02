@@ -5439,7 +5439,9 @@ pub mod action {
         /// Publish summary to Cloud Security Command Center (Alpha).
         #[prost(message, tag = "3")]
         PublishSummaryToCscc(PublishSummaryToCscc),
-        /// Publish findings to Cloud Datahub.
+        /// Deprecated because Data Catalog is being turned down. Use
+        /// publish_findings_to_dataplex_catalog to publish findings to Dataplex
+        /// Universal Catalog.
         #[prost(message, tag = "5")]
         PublishFindingsToCloudDataCatalog(PublishFindingsToCloudDataCatalog),
         /// Publish findings as an aspect to Dataplex Universal Catalog.
@@ -8070,11 +8072,15 @@ pub struct VertexDatasetRegex {
     #[prost(string, tag = "1")]
     pub project_id_regex: ::prost::alloc::string::String,
 }
-/// Identifies a single Vertex AI dataset.
+/// Identifies a single Vertex AI resource. Only datasets are
+/// supported.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VertexDatasetResourceReference {
-    /// Required. The name of the dataset resource. If set within a project-level
+    /// Required. The name of the Vertex AI resource. If set within a project-level
     /// configuration, the specified resource must be within the project.
+    /// Examples:
+    ///
+    /// * `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
     pub dataset_resource_name: ::prost::alloc::string::String,
 }
@@ -10506,7 +10512,7 @@ pub struct DeleteTableDataProfileRequest {
 /// Message used to identify the type of resource being profiled.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSourceType {
-    /// Output only. An identifying string to the type of resource being profiled.
+    /// A string that identifies the type of resource being profiled.
     /// Current values:
     ///
     /// * google/bigquery/table
@@ -11240,7 +11246,7 @@ impl RelationalOperator {
 }
 /// Type of the match which can be applied to different ways of matching, like
 /// Dictionary, regular expression and intersecting with findings of another
-/// info type.
+/// infoType.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MatchingType {
@@ -11248,21 +11254,21 @@ pub enum MatchingType {
     Unspecified = 0,
     /// Full match.
     ///
-    /// * Dictionary: join of Dictionary results matched complete finding quote
-    /// * Regex: all regex matches fill a finding quote start to end
-    /// * Exclude info type: completely inside affecting info types findings
+    /// * Dictionary: join of Dictionary results matched the complete finding quote
+    /// * Regex: all regex matches fill a finding quote from start to end
+    /// * Exclude infoType: completely inside affecting infoTypes findings
     FullMatch = 1,
     /// Partial match.
     ///
     /// * Dictionary: at least one of the tokens in the finding matches
     /// * Regex: substring of the finding matches
-    /// * Exclude info type: intersects with affecting info types findings
+    /// * Exclude infoType: intersects with affecting infoTypes findings
     PartialMatch = 2,
     /// Inverse match.
     ///
     /// * Dictionary: no tokens in the finding match the dictionary
     /// * Regex: finding doesn't match the regex
-    /// * Exclude info type: no intersection with affecting info types findings
+    /// * Exclude infoType: no intersection with affecting infoTypes findings
     InverseMatch = 3,
 }
 impl MatchingType {
