@@ -118,14 +118,6 @@ pub mod google {
                 feature = "google-actions-sdk-v2-interactionmodel",
                 feature = "google-actions-sdk-v2-interactionmodel-prompt",
                 feature = "google-actions-sdk-v2-interactionmodel-type",
-                feature = "google-ads-admanager-v1",
-                feature = "google-ads-admob-v1",
-                feature = "google-ads-googleads-v19-common",
-                feature = "google-ads-googleads-v19-resources",
-                feature = "google-ads-googleads-v19-services",
-                feature = "google-ads-searchads360-v0-common",
-                feature = "google-ads-searchads360-v0-resources",
-                feature = "google-ads-searchads360-v0-services",
                 feature = "google-ai-generativelanguage-v1",
                 feature = "google-ai-generativelanguage-v1alpha",
                 feature = "google-ai-generativelanguage-v1beta",
@@ -3266,8 +3258,6 @@ pub mod google {
     pub mod longrunning {
         #[cfg(
             any(
-                feature = "google-ads-admanager-v1",
-                feature = "google-ads-googleads-v19-services",
                 feature = "google-ai-generativelanguage-v1alpha",
                 feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-ai-generativelanguage-v1beta3",
