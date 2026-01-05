@@ -16,7 +16,7 @@ impl GoogleRestApi {
         content_type: T,
         bytes_stream: BoxStreamWithSync<
             'static,
-            std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
+            std::result::Result<bytes::Bytes, Box<dyn std::error::Error + Send + Sync + 'static>>,
         >,
     ) -> crate::error::Result<crate::google_rest_apis::storage_v1::object::Object> {
         let upload_url = format!(

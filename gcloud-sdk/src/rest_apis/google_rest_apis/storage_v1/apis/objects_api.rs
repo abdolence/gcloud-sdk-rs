@@ -2861,7 +2861,7 @@ pub async fn storage_objects_insert_ext_bytes(
 
     let bytes_stream: BoxStreamWithSend<
         'static,
-        std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
+        std::result::Result<bytes::Bytes, Box<dyn std::error::Error + Send + Sync + 'static>>,
     > = Box::pin(
         futures::stream::iter(bytes)
             .chunks(64 * 1024)
