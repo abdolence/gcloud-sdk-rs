@@ -34,6 +34,7 @@ pub struct TransactionEvent {
 /// Nested message and enum types in `TransactionEvent`.
 pub mod transaction_event {
     /// Enum that represents an event in the payment transaction lifecycle.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -179,6 +180,18 @@ pub mod transaction_event {
         }
     }
 }
+/// Details on a phone authentication event
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PhoneAuthenticationEvent {
+    /// Required. Phone number in E.164 format for which a multi-factor
+    /// authentication challenge was initiated, succeeded, or failed.
+    #[prost(string, tag = "1")]
+    pub phone_number: ::prost::alloc::string::String,
+    /// Optional. The time at which the multi-factor authentication event
+    /// (challenge or verification) occurred.
+    #[prost(message, optional, tag = "2")]
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// The request message to annotate an Assessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentRequest {
@@ -214,6 +227,10 @@ pub struct AnnotateAssessmentRequest {
     /// details on payment lifecycle events that occur in the transaction.
     #[prost(message, optional, tag = "5")]
     pub transaction_event: ::core::option::Option<TransactionEvent>,
+    /// Optional. If using an external multi-factor authentication provider,
+    /// provide phone authentication details for fraud detection purposes.
+    #[prost(message, optional, tag = "6")]
+    pub phone_authentication_event: ::core::option::Option<PhoneAuthenticationEvent>,
 }
 /// Nested message and enum types in `AnnotateAssessmentRequest`.
 pub mod annotate_assessment_request {
@@ -434,6 +451,7 @@ pub struct AccountVerificationInfo {
 pub mod account_verification_info {
     /// Result of the account verification as contained in the verdict token issued
     /// at the end of the verification flow.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -639,7 +657,7 @@ pub struct Event {
     /// Optional. The URI resource the user requested that triggered an assessment.
     #[prost(string, tag = "8")]
     pub requested_uri: ::prost::alloc::string::String,
-    /// Optional. Flag for running WAF token assessment.
+    /// Optional. Flag for running Web Application Firewall (WAF) token assessment.
     /// If enabled, the token must be specified, and have been created by a
     /// WAF-enabled key.
     #[prost(bool, tag = "9")]
@@ -678,6 +696,7 @@ pub struct Event {
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// Setting that controls Fraud Prevention assessments.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -939,14 +958,19 @@ pub struct RiskAnalysis {
     pub extended_verdict_reasons: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-    /// Output only. Challenge information for SCORE_AND_CHALLENGE and INVISIBLE
-    /// keys
+    /// Output only. Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE
+    /// keys.
     #[prost(enumeration = "risk_analysis::Challenge", tag = "4")]
     pub challenge: i32,
+    /// Output only. Bots with identities that have been verified by reCAPTCHA and
+    /// detected in the event.
+    #[prost(message, repeated, tag = "5")]
+    pub verified_bots: ::prost::alloc::vec::Vec<Bot>,
 }
 /// Nested message and enum types in `RiskAnalysis`.
 pub mod risk_analysis {
     /// Reasons contributing to the risk analysis verdict.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1011,7 +1035,8 @@ pub mod risk_analysis {
             }
         }
     }
-    /// Challenge information for SCORE_AND_CHALLENGE and INVISIBLE keys
+    /// Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE keys.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1060,6 +1085,70 @@ pub mod risk_analysis {
         }
     }
 }
+/// Bot information and metadata.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Bot {
+    /// Optional. Enumerated string value that indicates the identity of the bot,
+    /// formatted in kebab-case.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Enumerated field representing the type of bot.
+    #[prost(enumeration = "bot::BotType", tag = "2")]
+    pub bot_type: i32,
+}
+/// Nested message and enum types in `Bot`.
+pub mod bot {
+    /// Types of bots.
+    /// Ensure that applications can handle values not explicitly listed.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BotType {
+        /// Default unspecified type.
+        Unspecified = 0,
+        /// Software program that interacts with a site and performs tasks
+        /// autonomously.
+        AiAgent = 1,
+        /// Software that extracts specific data from sites for use.
+        ContentScraper = 2,
+        /// Software that crawls sites and stores content for the purpose of
+        /// efficient retrieval, likely as part of a search engine.
+        SearchIndexer = 3,
+    }
+    impl BotType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BOT_TYPE_UNSPECIFIED",
+                Self::AiAgent => "AI_AGENT",
+                Self::ContentScraper => "CONTENT_SCRAPER",
+                Self::SearchIndexer => "SEARCH_INDEXER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BOT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AI_AGENT" => Some(Self::AiAgent),
+                "CONTENT_SCRAPER" => Some(Self::ContentScraper),
+                "SEARCH_INDEXER" => Some(Self::SearchIndexer),
+                _ => None,
+            }
+        }
+    }
+}
 /// Properties of the provided event token.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TokenProperties {
@@ -1095,6 +1184,7 @@ pub struct TokenProperties {
 /// Nested message and enum types in `TokenProperties`.
 pub mod token_properties {
     /// Enum that represents the types of invalid token reasons.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1123,6 +1213,15 @@ pub mod token_properties {
         /// A retriable error (such as network failure) occurred on the browser.
         /// Could easily be simulated by an attacker.
         BrowserError = 6,
+        /// The action provided at token generation was different than
+        /// the `expected_action` in the assessment request. The comparison is
+        /// case-insensitive. This reason can only be returned if all of the
+        /// following are true:
+        ///
+        /// * your `site_key` has the POLICY_BASED_CHALLENGE integration type
+        /// * you set an action score threshold higher than 0.0
+        /// * you provided a non-empty `expected_action`
+        UnexpectedAction = 7,
     }
     impl InvalidReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1138,6 +1237,7 @@ pub mod token_properties {
                 Self::Dupe => "DUPE",
                 Self::Missing => "MISSING",
                 Self::BrowserError => "BROWSER_ERROR",
+                Self::UnexpectedAction => "UNEXPECTED_ACTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1150,19 +1250,24 @@ pub mod token_properties {
                 "DUPE" => Some(Self::Dupe),
                 "MISSING" => Some(Self::Missing),
                 "BROWSER_ERROR" => Some(Self::BrowserError),
+                "UNEXPECTED_ACTION" => Some(Self::UnexpectedAction),
                 _ => None,
             }
         }
     }
 }
 /// Assessment for Fraud Prevention.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FraudPreventionAssessment {
     /// Output only. Probability of this transaction being fraudulent. Summarizes
     /// the combined risk of attack vectors below. Values are from 0.0 (lowest)
     /// to 1.0 (highest).
     #[prost(float, tag = "1")]
     pub transaction_risk: f32,
+    /// Output only. Reasons why the transaction is probably fraudulent and
+    /// received a high transaction risk score.
+    #[prost(message, repeated, tag = "6")]
+    pub risk_reasons: ::prost::alloc::vec::Vec<fraud_prevention_assessment::RiskReason>,
     /// Output only. Assessment of this transaction for risk of a stolen
     /// instrument.
     #[prost(message, optional, tag = "2")]
@@ -1183,6 +1288,81 @@ pub struct FraudPreventionAssessment {
 }
 /// Nested message and enum types in `FraudPreventionAssessment`.
 pub mod fraud_prevention_assessment {
+    /// Risk reasons applicable to the Fraud Prevention assessment.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RiskReason {
+        /// Output only. Risk reasons applicable to the Fraud Prevention assessment.
+        #[prost(enumeration = "risk_reason::Reason", tag = "1")]
+        pub reason: i32,
+    }
+    /// Nested message and enum types in `RiskReason`.
+    pub mod risk_reason {
+        /// Risk reasons applicable to the Fraud Prevention assessment. New risk
+        /// reasons will be added over time.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Reason {
+            /// Default unspecified type.
+            Unspecified = 0,
+            /// A suspiciously high number of recent transactions have used identifiers
+            /// present in this transaction.
+            HighTransactionVelocity = 1,
+            /// User is cycling through a suspiciously large number of identifiers,
+            /// suggesting enumeration or validation attacks within a potential fraud
+            /// network.
+            ExcessiveEnumerationPattern = 2,
+            /// User has a short history or no history in the reCAPTCHA network,
+            /// suggesting the possibility of synthetic identity generation.
+            ShortIdentityHistory = 3,
+            /// Identifiers used in this transaction originate from an unusual or
+            /// conflicting set of geolocations.
+            GeolocationDiscrepancy = 4,
+            /// This transaction is linked to a cluster of known fraudulent activity.
+            AssociatedWithFraudCluster = 5,
+        }
+        impl Reason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::HighTransactionVelocity => "HIGH_TRANSACTION_VELOCITY",
+                    Self::ExcessiveEnumerationPattern => "EXCESSIVE_ENUMERATION_PATTERN",
+                    Self::ShortIdentityHistory => "SHORT_IDENTITY_HISTORY",
+                    Self::GeolocationDiscrepancy => "GEOLOCATION_DISCREPANCY",
+                    Self::AssociatedWithFraudCluster => "ASSOCIATED_WITH_FRAUD_CLUSTER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "HIGH_TRANSACTION_VELOCITY" => Some(Self::HighTransactionVelocity),
+                    "EXCESSIVE_ENUMERATION_PATTERN" => {
+                        Some(Self::ExcessiveEnumerationPattern)
+                    }
+                    "SHORT_IDENTITY_HISTORY" => Some(Self::ShortIdentityHistory),
+                    "GEOLOCATION_DISCREPANCY" => Some(Self::GeolocationDiscrepancy),
+                    "ASSOCIATED_WITH_FRAUD_CLUSTER" => {
+                        Some(Self::AssociatedWithFraudCluster)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
     /// Information about stolen instrument fraud, where the user is not the
     /// legitimate owner of the instrument being used for the purchase.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1253,6 +1433,7 @@ pub mod fraud_signals {
     pub mod card_signals {
         /// Risk labels describing the card being assessed, such as its funding
         /// mechanism.
+        /// Ensure that applications can handle values not explicitly listed.
         #[derive(
             Clone,
             Copy,
@@ -1322,6 +1503,7 @@ pub struct SmsTollFraudVerdict {
 /// Nested message and enum types in `SmsTollFraudVerdict`.
 pub mod sms_toll_fraud_verdict {
     /// Reasons contributing to the SMS toll fraud verdict.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1383,6 +1565,7 @@ pub struct AccountDefenderAssessment {
 /// Nested message and enum types in `AccountDefenderAssessment`.
 pub mod account_defender_assessment {
     /// Labels returned by account defender for this request.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1601,7 +1784,7 @@ pub struct MigrateKeyRequest {
     /// Optional. If true, skips the billing check.
     /// A reCAPTCHA Enterprise key or migrated key behaves differently than a
     /// reCAPTCHA (non-Enterprise version) key when you reach a quota limit (see
-    /// <https://cloud.google.com/recaptcha/quotas#quota_limit>). To avoid
+    /// <https://docs.cloud.google.com/recaptcha/quotas#quota_limit>). To avoid
     /// any disruption of your usage, we check that a billing account is present.
     /// If your usage of reCAPTCHA is under the free quota, you can safely skip the
     /// billing check and proceed with the migration. See
@@ -1673,7 +1856,7 @@ pub struct Key {
     /// Optional. Options for user acceptance testing.
     #[prost(message, optional, tag = "9")]
     pub testing_options: ::core::option::Option<TestingOptions>,
-    /// Optional. Settings for WAF
+    /// Optional. Settings for Web Application Firewall (WAF).
     #[prost(message, optional, tag = "10")]
     pub waf_settings: ::core::option::Option<WafSettings>,
     /// Platform-specific settings for this key. The key can only be used on a
@@ -1685,7 +1868,7 @@ pub struct Key {
 pub mod key {
     /// Platform-specific settings for this key. The key can only be used on a
     /// platform for which the settings are enabled.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PlatformSettings {
         /// Settings for keys that can be used by websites.
         #[prost(message, tag = "3")]
@@ -1716,8 +1899,9 @@ pub struct TestingOptions {
 }
 /// Nested message and enum types in `TestingOptions`.
 pub mod testing_options {
-    /// Enum that represents the challenge option for challenge-based (CHECKBOX,
-    /// INVISIBLE) testing keys.
+    /// Enum that represents the challenge option for challenge-based (for example,
+    /// CHECKBOX and INVISIBLE) testing keys.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1765,7 +1949,7 @@ pub mod testing_options {
     }
 }
 /// Settings specific to keys that can be used by websites.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebKeySettings {
     /// Optional. If set to true, it means allowed_domains are not enforced.
     #[prost(bool, tag = "3")]
@@ -1774,6 +1958,10 @@ pub struct WebKeySettings {
     /// subdomains of an allowed domain are automatically allowed. A valid domain
     /// requires a host and must not include any path, port, query or fragment.
     /// Examples: 'example.com' or 'subdomain.example.com'
+    /// Each key supports a maximum of 250 domains. To use a key on more domains,
+    /// set `allow_all_domains` to true. When this is set, you are responsible for
+    /// validating the hostname by checking the `token_properties.hostname` field
+    /// in each assessment response against your list of allowed domains.
     #[prost(string, repeated, tag = "1")]
     pub allowed_domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If set to true, the key can be used on AMP (Accelerated Mobile
@@ -1785,13 +1973,46 @@ pub struct WebKeySettings {
     pub integration_type: i32,
     /// Optional. Settings for the frequency and difficulty at which this key
     /// triggers captcha challenges. This should only be specified for
-    /// IntegrationTypes CHECKBOX and INVISIBLE and SCORE_AND_CHALLENGE.
+    /// `IntegrationType` CHECKBOX, INVISIBLE or POLICY_BASED_CHALLENGE.
     #[prost(enumeration = "web_key_settings::ChallengeSecurityPreference", tag = "5")]
     pub challenge_security_preference: i32,
+    /// Optional. Challenge settings.
+    #[prost(message, optional, tag = "6")]
+    pub challenge_settings: ::core::option::Option<web_key_settings::ChallengeSettings>,
 }
 /// Nested message and enum types in `WebKeySettings`.
 pub mod web_key_settings {
+    /// Per-action challenge settings.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ActionSettings {
+        /// Required. A challenge is triggered if the end-user score is below that
+        /// threshold. Value must be between 0 and 1 (inclusive).
+        #[prost(float, tag = "1")]
+        pub score_threshold: f32,
+    }
+    /// Settings for POLICY_BASED_CHALLENGE keys to control when a challenge is
+    /// triggered.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ChallengeSettings {
+        /// Required. Defines when a challenge is triggered (unless the default
+        /// threshold is overridden for the given action, see `action_settings`).
+        #[prost(message, optional, tag = "1")]
+        pub default_settings: ::core::option::Option<ActionSettings>,
+        /// Optional. The action to score threshold map.
+        /// The action name should be the same as the action name passed in the
+        /// `data-action` attribute
+        /// (see <https://cloud.google.com/recaptcha/docs/actions-website>).
+        /// Action names are case-insensitive.
+        /// There is a maximum of 100 action settings.
+        /// An action name has a maximum length of 100.
+        #[prost(map = "string, message", tag = "2")]
+        pub action_settings: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ActionSettings,
+        >,
+    }
     /// Enum that represents the integration types for web keys.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1818,6 +2039,9 @@ pub mod web_key_settings {
         /// Doesn't display the "I'm not a robot" checkbox, but may show captcha
         /// challenges after risk analysis.
         Invisible = 3,
+        /// Displays a visual challenge or not depending on the user risk analysis
+        /// score.
+        PolicyBasedChallenge = 5,
     }
     impl IntegrationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1830,6 +2054,7 @@ pub mod web_key_settings {
                 Self::Score => "SCORE",
                 Self::Checkbox => "CHECKBOX",
                 Self::Invisible => "INVISIBLE",
+                Self::PolicyBasedChallenge => "POLICY_BASED_CHALLENGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1839,12 +2064,14 @@ pub mod web_key_settings {
                 "SCORE" => Some(Self::Score),
                 "CHECKBOX" => Some(Self::Checkbox),
                 "INVISIBLE" => Some(Self::Invisible),
+                "POLICY_BASED_CHALLENGE" => Some(Self::PolicyBasedChallenge),
                 _ => None,
             }
         }
     }
     /// Enum that represents the possible challenge frequency and difficulty
     /// configurations for a web key.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -1900,6 +2127,11 @@ pub struct AndroidKeySettings {
     pub allow_all_package_names: bool,
     /// Optional. Android package names of apps allowed to use the key.
     /// Example: 'com.companyname.appname'
+    /// Each key supports a maximum of 250 package names. To use a key on more
+    /// apps, set `allow_all_package_names` to true. When this is set, you
+    /// are responsible for validating the package name by checking the
+    /// `token_properties.android_package_name` field in each assessment response
+    /// against your list of allowed package names.
     #[prost(string, repeated, tag = "1")]
     pub allowed_package_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Set to true for keys that are used in an Android application that
@@ -1914,8 +2146,13 @@ pub struct IosKeySettings {
     /// Optional. If set to true, allowed_bundle_ids are not enforced.
     #[prost(bool, tag = "2")]
     pub allow_all_bundle_ids: bool,
-    /// Optional. iOS bundle ids of apps allowed to use the key.
+    /// Optional. iOS bundle IDs of apps allowed to use the key.
     /// Example: 'com.companyname.productname.appname'
+    /// Each key supports a maximum of 250 bundle IDs. To use a key on more
+    /// apps, set `allow_all_bundle_ids` to true. When this is set, you
+    /// are responsible for validating the bundle id by checking the
+    /// `token_properties.ios_bundle_id` field in each assessment response
+    /// against your list of allowed bundle IDs.
     #[prost(string, repeated, tag = "1")]
     pub allowed_bundle_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Apple Developer account details for the app that is protected by
@@ -2324,10 +2561,11 @@ pub struct RelatedAccountGroup {
 /// Firewall).
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WafSettings {
-    /// Required. The WAF service that uses this key.
+    /// Required. The Web Application Firewall (WAF) service that uses this key.
     #[prost(enumeration = "waf_settings::WafService", tag = "1")]
     pub waf_service: i32,
-    /// Required. The WAF feature for which this key is enabled.
+    /// Required. The Web Application Firewall (WAF) feature for which this key is
+    /// enabled.
     #[prost(enumeration = "waf_settings::WafFeature", tag = "2")]
     pub waf_feature: i32,
 }
@@ -2335,6 +2573,7 @@ pub struct WafSettings {
 pub mod waf_settings {
     /// Supported WAF features. For more information, see
     /// <https://cloud.google.com/recaptcha/docs/usecase#comparison_of_features.>
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -2357,8 +2596,7 @@ pub mod waf_settings {
         SessionToken = 2,
         /// Use reCAPTCHA action-tokens to protect user actions.
         ActionToken = 3,
-        /// Use reCAPTCHA WAF express protection to protect any content other than
-        /// web pages, like APIs and IoT devices.
+        /// Deprecated: Use `express_settings` instead.
         Express = 5,
     }
     impl WafFeature {
@@ -2387,7 +2625,8 @@ pub mod waf_settings {
             }
         }
     }
-    /// Web Application Firewalls supported by reCAPTCHA.
+    /// Web Application Firewalls that reCAPTCHA supports.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -2447,9 +2686,10 @@ pub struct AssessmentEnvironment {
     /// request. This can be the link to the client module's project. Examples
     /// include:
     ///
-    /// * "github.com/GoogleCloudPlatform/recaptcha-enterprise-google-tag-manager"
-    /// * "cloud.google.com/recaptcha/docs/implement-waf-akamai"
-    /// * "cloud.google.com/recaptcha/docs/implement-waf-cloudflare"
+    /// *
+    ///
+    /// "github.com/GoogleCloudPlatform/recaptcha-enterprise-google-tag-manager"
+    ///
     /// * "wordpress.org/plugins/recaptcha-something"
     #[prost(string, tag = "1")]
     pub client: ::prost::alloc::string::String,
@@ -2476,6 +2716,7 @@ pub struct IpOverrideData {
 /// Nested message and enum types in `IpOverrideData`.
 pub mod ip_override_data {
     /// Enum that represents the type of IP override.
+    /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
         Copy,
@@ -2872,7 +3113,7 @@ pub mod recaptcha_enterprise_service_client {
         }
         /// Adds an IP override to a key. The following restrictions hold:
         ///
-        /// * The maximum number of IP overrides per key is 100.
+        /// * The maximum number of IP overrides per key is 1000.
         /// * For any conflict (such as IP already exists or IP part of an existing
         ///  IP range), an error is returned.
         pub async fn add_ip_override(

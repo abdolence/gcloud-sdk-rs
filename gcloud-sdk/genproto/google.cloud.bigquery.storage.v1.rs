@@ -30,6 +30,13 @@ pub struct ArrowSerializationOptions {
     /// batches.
     #[prost(enumeration = "arrow_serialization_options::CompressionCodec", tag = "2")]
     pub buffer_compression: i32,
+    /// Optional. Set timestamp precision option. If not set, the default precision
+    /// is microseconds.
+    #[prost(
+        enumeration = "arrow_serialization_options::PicosTimestampPrecision",
+        tag = "3"
+    )]
+    pub picos_timestamp_precision: i32,
 }
 /// Nested message and enum types in `ArrowSerializationOptions`.
 pub mod arrow_serialization_options {
@@ -76,6 +83,59 @@ pub mod arrow_serialization_options {
             }
         }
     }
+    /// The precision of the timestamp value in the Avro message. This precision
+    /// will **only** be applied to the column(s) with the `TIMESTAMP_PICOS` type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PicosTimestampPrecision {
+        /// Unspecified timestamp precision. The default precision is microseconds.
+        Unspecified = 0,
+        /// Timestamp values returned by Read API will be truncated to microsecond
+        /// level precision. The value will be encoded as Arrow TIMESTAMP type in a
+        /// 64 bit integer.
+        TimestampPrecisionMicros = 1,
+        /// Timestamp values returned by Read API will be truncated to nanosecond
+        /// level precision. The value will be encoded as Arrow TIMESTAMP type in a
+        /// 64 bit integer.
+        TimestampPrecisionNanos = 2,
+        /// Read API will return full precision picosecond value. The value will be
+        /// encoded as a string which conforms to ISO 8601 format.
+        TimestampPrecisionPicos = 3,
+    }
+    impl PicosTimestampPrecision {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PICOS_TIMESTAMP_PRECISION_UNSPECIFIED",
+                Self::TimestampPrecisionMicros => "TIMESTAMP_PRECISION_MICROS",
+                Self::TimestampPrecisionNanos => "TIMESTAMP_PRECISION_NANOS",
+                Self::TimestampPrecisionPicos => "TIMESTAMP_PRECISION_PICOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PICOS_TIMESTAMP_PRECISION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TIMESTAMP_PRECISION_MICROS" => Some(Self::TimestampPrecisionMicros),
+                "TIMESTAMP_PRECISION_NANOS" => Some(Self::TimestampPrecisionNanos),
+                "TIMESTAMP_PRECISION_PICOS" => Some(Self::TimestampPrecisionPicos),
+                _ => None,
+            }
+        }
+    }
 }
 /// Avro schema.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -112,6 +172,69 @@ pub struct AvroSerializationOptions {
     /// original column name.
     #[prost(bool, tag = "1")]
     pub enable_display_name_attribute: bool,
+    /// Optional. Set timestamp precision option. If not set, the default precision
+    /// is microseconds.
+    #[prost(
+        enumeration = "avro_serialization_options::PicosTimestampPrecision",
+        tag = "2"
+    )]
+    pub picos_timestamp_precision: i32,
+}
+/// Nested message and enum types in `AvroSerializationOptions`.
+pub mod avro_serialization_options {
+    /// The precision of the timestamp value in the Avro message. This precision
+    /// will **only** be applied to the column(s) with the `TIMESTAMP_PICOS` type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PicosTimestampPrecision {
+        /// Unspecified timestamp precision. The default precision is microseconds.
+        Unspecified = 0,
+        /// Timestamp values returned by Read API will be truncated to microsecond
+        /// level precision. The value will be encoded as Avro TIMESTAMP type in a
+        /// 64 bit integer.
+        TimestampPrecisionMicros = 1,
+        /// Timestamp values returned by Read API will be truncated to nanosecond
+        /// level precision. The value will be encoded as Avro TIMESTAMP type in a
+        /// 64 bit integer.
+        TimestampPrecisionNanos = 2,
+        /// Read API will return full precision picosecond value. The value will be
+        /// encoded as a string which conforms to ISO 8601 format.
+        TimestampPrecisionPicos = 3,
+    }
+    impl PicosTimestampPrecision {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PICOS_TIMESTAMP_PRECISION_UNSPECIFIED",
+                Self::TimestampPrecisionMicros => "TIMESTAMP_PRECISION_MICROS",
+                Self::TimestampPrecisionNanos => "TIMESTAMP_PRECISION_NANOS",
+                Self::TimestampPrecisionPicos => "TIMESTAMP_PRECISION_PICOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PICOS_TIMESTAMP_PRECISION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TIMESTAMP_PRECISION_MICROS" => Some(Self::TimestampPrecisionMicros),
+                "TIMESTAMP_PRECISION_NANOS" => Some(Self::TimestampPrecisionNanos),
+                "TIMESTAMP_PRECISION_PICOS" => Some(Self::TimestampPrecisionPicos),
+                _ => None,
+            }
+        }
+    }
 }
 /// ProtoSchema describes the schema of the serialized protocol buffer data rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -222,6 +345,15 @@ pub struct TableFieldSchema {
     /// (<https://cloud.google.com/bigquery/docs/default-values>) for this field.
     #[prost(string, tag = "10")]
     pub default_value_expression: ::prost::alloc::string::String,
+    /// Optional. Precision (maximum number of total digits in base 10) for seconds
+    /// of TIMESTAMP type.
+    ///
+    /// Possible values include:
+    ///
+    /// * 6 (Default, for TIMESTAMP type with microsecond precision)
+    /// * 12 (For TIMESTAMP type with picosecond precision)
+    #[prost(message, optional, tag = "27")]
+    pub timestamp_precision: ::core::option::Option<i64>,
     /// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
     /// the type is RANGE, this field is required. Possible values for the field
     /// element type of a RANGE include:
@@ -656,8 +788,8 @@ pub struct WriteStream {
     /// Immutable. Mode of the stream.
     #[prost(enumeration = "write_stream::WriteMode", tag = "7")]
     pub write_mode: i32,
-    /// Immutable. The geographic location where the stream's dataset resides. See
-    /// <https://cloud.google.com/bigquery/docs/locations> for supported
+    /// Output only. The geographic location where the stream's dataset resides.
+    /// See <https://cloud.google.com/bigquery/docs/locations> for supported
     /// locations.
     #[prost(string, tag = "8")]
     pub location: ::prost::alloc::string::String,
@@ -1100,8 +1232,8 @@ pub struct AppendRowsRequest {
     >,
     /// Optional. Default missing value interpretation for all columns in the
     /// table. When a value is specified on an `AppendRowsRequest`, it is applied
-    /// to all requests on the connection from that point forward, until a
-    /// subsequent `AppendRowsRequest` sets it to a different value.
+    /// to all requests from that point forward, until a subsequent
+    /// `AppendRowsRequest` sets it to a different value.
     /// `missing_value_interpretation` can override
     /// `default_missing_value_interpretation`. For example, if you want to write
     /// `NULL` instead of using default values for some columns, you can set
@@ -1119,8 +1251,6 @@ pub struct AppendRowsRequest {
 /// Nested message and enum types in `AppendRowsRequest`.
 pub mod append_rows_request {
     /// Arrow schema and data.
-    /// Arrow format is an experimental feature only selected for allowlisted
-    /// customers.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ArrowData {
         /// Optional. Arrow Schema used to serialize the data.
@@ -1134,8 +1264,8 @@ pub mod append_rows_request {
     /// requests.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoData {
-        /// The protocol buffer schema used to serialize the data. Provide this value
-        /// whenever:
+        /// Optional. The protocol buffer schema used to serialize the data. Provide
+        /// this value whenever:
         ///
         /// * You send the first request of an RPC connection.
         ///
@@ -1144,7 +1274,7 @@ pub mod append_rows_request {
         /// * You specify a new destination table.
         #[prost(message, optional, tag = "1")]
         pub writer_schema: ::core::option::Option<super::ProtoSchema>,
-        /// Serialized row data in protobuf message format.
+        /// Required. Serialized row data in protobuf message format.
         /// Currently, the backend expects the serialized rows to adhere to
         /// proto2 semantics when appending rows, particularly with respect to
         /// how default values are encoded.
@@ -1207,8 +1337,7 @@ pub mod append_rows_request {
         /// Rows in proto format.
         #[prost(message, tag = "4")]
         ProtoRows(ProtoData),
-        /// Rows in arrow format. This is an experimental feature only selected for
-        /// allowlisted customers.
+        /// Rows in arrow format.
         #[prost(message, tag = "5")]
         ArrowRows(ArrowData),
     }
@@ -1655,9 +1784,9 @@ pub mod big_query_read_client {
             self.inner.unary(req, path, codec).await
         }
         /// Reads rows from the stream in the format prescribed by the ReadSession.
-        /// Each response contains one or more table rows, up to a maximum of 100 MiB
+        /// Each response contains one or more table rows, up to a maximum of 128 MB
         /// per response; read requests which attempt to read individual rows larger
-        /// than 100 MiB will fail.
+        /// than 128 MB will fail.
         ///
         /// Each request also returns a set of stream statistics reflecting the current
         /// state of the stream.

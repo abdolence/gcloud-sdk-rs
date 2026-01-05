@@ -2881,6 +2881,11 @@ pub struct Settings {
     /// Dataplex on Cloud SQL instances is activated.
     #[prost(message, optional, tag = "41")]
     pub enable_dataplex_integration: ::core::option::Option<bool>,
+    /// Optional. Cloud SQL for MySQL auto-upgrade configuration. When this
+    /// parameter is set to true, auto-upgrade is enabled for MySQL 8.0 minor
+    /// versions. The MySQL version must be 8.0.35 or higher.
+    #[prost(bool, optional, tag = "50")]
+    pub auto_upgrade_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `Settings`.
 pub mod settings {

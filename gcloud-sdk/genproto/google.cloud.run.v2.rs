@@ -26,6 +26,17 @@ pub struct SubmitBuildRequest {
     /// Optional. Additional tags to annotate the build.
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The machine type from default pool to use for the build. If left
+    /// blank, cloudbuild will use a sensible default. Currently only E2_HIGHCPU_8
+    /// is supported. If worker_pool is set, this field will be ignored.
+    #[prost(string, tag = "9")]
+    pub machine_type: ::prost::alloc::string::String,
+    /// Optional. The release track of the client that initiated the build request.
+    #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "10")]
+    pub release_track: i32,
+    /// Optional. The client that initiated the build request.
+    #[prost(string, tag = "11")]
+    pub client: ::prost::alloc::string::String,
     /// Location of source.
     #[prost(oneof = "submit_build_request::Source", tags = "2")]
     pub source: ::core::option::Option<submit_build_request::Source>,
@@ -597,6 +608,8 @@ pub mod condition {
         Cancelling = 4,
         /// The execution was deleted.
         Deleted = 5,
+        /// A delayed execution is waiting for a start time.
+        DelayedStartPending = 6,
     }
     impl ExecutionReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -611,6 +624,7 @@ pub mod condition {
                 Self::Cancelled => "CANCELLED",
                 Self::Cancelling => "CANCELLING",
                 Self::Deleted => "DELETED",
+                Self::DelayedStartPending => "DELAYED_START_PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -624,6 +638,7 @@ pub mod condition {
                 "CANCELLED" => Some(Self::Cancelled),
                 "CANCELLING" => Some(Self::Cancelling),
                 "DELETED" => Some(Self::Deleted),
+                "DELAYED_START_PENDING" => Some(Self::DelayedStartPending),
                 _ => None,
             }
         }
@@ -659,6 +674,9 @@ pub struct Container {
     /// Dockerhub is assumed.
     #[prost(string, tag = "2")]
     pub image: ::prost::alloc::string::String,
+    /// Optional. Location of the source.
+    #[prost(message, optional, tag = "17")]
+    pub source_code: ::core::option::Option<SourceCode>,
     /// Entrypoint array. Not executed within a shell.
     /// The docker image's ENTRYPOINT is used if this is not provided.
     #[prost(string, repeated, tag = "3")]
@@ -713,7 +731,7 @@ pub struct Container {
 /// ResourceRequirements describes the compute resource requirements.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRequirements {
-    /// Only `memory` and `cpu` keys in the map are supported.
+    /// Only `memory`, `cpu` and `nvidia.com/gpu` keys in the map are supported.
     ///
     /// <p>Notes:
     ///   * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
@@ -721,6 +739,7 @@ pub struct ResourceRequirements {
     /// <https://cloud.google.com/run/docs/configuring/cpu.>
     ///    * For supported 'memory' values and syntax, go to
     ///   <https://cloud.google.com/run/docs/configuring/memory-limits>
+    ///   * The only supported 'nvidia.com/gpu' value is '1'.
     #[prost(map = "string, string", tag = "1")]
     pub limits: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -808,6 +827,10 @@ pub struct VolumeMount {
     /// volumes, visit <https://cloud.google.com/sql/docs/mysql/connect-run>
     #[prost(string, tag = "3")]
     pub mount_path: ::prost::alloc::string::String,
+    /// Optional. Path within the volume from which the container's volume should
+    /// be mounted. Defaults to "" (volume's root).
+    #[prost(string, tag = "4")]
+    pub sub_path: ::prost::alloc::string::String,
 }
 /// Volume represents a named volume in a container.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -853,7 +876,7 @@ pub struct SecretVolumeSource {
     #[prost(string, tag = "1")]
     pub secret: ::prost::alloc::string::String,
     /// If unspecified, the volume will expose a file whose name is the
-    /// secret, relative to VolumeMount.mount_path.
+    /// secret, relative to VolumeMount.mount_path + VolumeMount.sub_path.
     /// If specified, the key will be used as the version to fetch from Cloud
     /// Secret Manager and the path will be the name of the file exposed in the
     /// volume. When items are defined, they must specify a path and a version.
@@ -1121,6 +1144,36 @@ pub struct BuildInfo {
     #[prost(string, tag = "2")]
     pub source_location: ::prost::alloc::string::String,
 }
+/// Source type for the container.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SourceCode {
+    /// The source type.
+    #[prost(oneof = "source_code::SourceType", tags = "1")]
+    pub source_type: ::core::option::Option<source_code::SourceType>,
+}
+/// Nested message and enum types in `SourceCode`.
+pub mod source_code {
+    /// Cloud Storage source.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CloudStorageSource {
+        /// Required. The Cloud Storage bucket name.
+        #[prost(string, tag = "1")]
+        pub bucket: ::prost::alloc::string::String,
+        /// Required. The Cloud Storage object name.
+        #[prost(string, tag = "2")]
+        pub object: ::prost::alloc::string::String,
+        /// Optional. The Cloud Storage object generation.
+        #[prost(int64, tag = "3")]
+        pub generation: i64,
+    }
+    /// The source type.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SourceType {
+        /// The source is a Cloud Storage bucket.
+        #[prost(message, tag = "1")]
+        CloudStorageSource(CloudStorageSource),
+    }
+}
 /// VPC Access settings. For more information on sending traffic to a VPC
 /// network, visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1270,6 +1323,11 @@ pub struct ServiceScaling {
     /// Optional. The scaling mode for the service.
     #[prost(enumeration = "service_scaling::ScalingMode", tag = "3")]
     pub scaling_mode: i32,
+    /// Optional. total max instances for the service. This number of instances is
+    /// divided among all revisions with specified traffic based on the percent
+    /// of traffic they are receiving.
+    #[prost(int32, tag = "4")]
+    pub max_instance_count: i32,
     /// Optional. total instance count for the service in manual scaling mode. This
     /// number of instances is divided among all revisions with specified traffic
     /// based on the percent of traffic they are receiving.
@@ -2373,7 +2431,7 @@ pub struct Job {
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "25")]
     pub satisfies_pzs: bool,
-    /// Output only. A system-generated fingerprint for this version of the
+    /// Optional. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
@@ -3439,6 +3497,10 @@ pub struct ListServicesResponse {
     /// ListServices request to continue.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. For global requests, returns the list of regions that could
+    /// not be reached within the deadline.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for obtaining a Service by its full name.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3473,9 +3535,9 @@ pub struct DeleteServiceRequest {
 /// decisions such as rollout policy and team resource ownership.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
-    /// The fully qualified name of this Service. In CreateServiceRequest, this
-    /// field is ignored, and instead composed from CreateServiceRequest.parent and
-    /// CreateServiceRequest.service_id.
+    /// Identifier. The fully qualified name of this Service. In
+    /// CreateServiceRequest, this field is ignored, and instead composed from
+    /// CreateServiceRequest.parent and CreateServiceRequest.service_id.
     ///
     /// Format:
     /// projects/{project}/locations/{location}/services/{service_id}
@@ -3586,8 +3648,7 @@ pub struct Service {
     #[prost(message, optional, tag = "20")]
     pub scaling: ::core::option::Option<ServiceScaling>,
     /// Optional. Disables IAM permission check for run.routes.invoke for callers
-    /// of this service. This feature is available by invitation only. For more
-    /// information, visit
+    /// of this service. For more information, visit
     /// <https://cloud.google.com/run/docs/securing/managing-access#invoker_check.>
     #[prost(bool, tag = "21")]
     pub invoker_iam_disabled: bool,
@@ -3597,6 +3658,12 @@ pub struct Service {
     /// Output only. All URLs serving traffic for this Service.
     #[prost(string, repeated, tag = "24")]
     pub urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. IAP settings on the Service.
+    #[prost(bool, tag = "25")]
+    pub iap_enabled: bool,
+    /// Optional. Settings for multi-region deployment.
+    #[prost(message, optional, tag = "26")]
+    pub multi_region_settings: ::core::option::Option<service::MultiRegionSettings>,
     /// One or more custom audiences that you want this service to support. Specify
     /// each custom audience as the full URL in a string. The custom audiences are
     /// encoded in the token and used to authenticate requests. For more
@@ -3644,6 +3711,10 @@ pub struct Service {
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "38")]
     pub satisfies_pzs: bool,
+    /// Output only. True if Cloud Run Threat Detection monitoring is enabled for
+    /// the parent project of this Service.
+    #[prost(bool, tag = "40")]
+    pub threat_detection_enabled: bool,
     /// Optional. Configuration for building a Cloud Run function.
     #[prost(message, optional, tag = "41")]
     pub build_config: ::core::option::Option<BuildConfig>,
@@ -3671,10 +3742,23 @@ pub struct Service {
     /// can be found in `terminal_condition` and `conditions`.
     #[prost(bool, tag = "98")]
     pub reconciling: bool,
-    /// Output only. A system-generated fingerprint for this version of the
+    /// Optional. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Service`.
+pub mod service {
+    /// Settings for multi-region deployment.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MultiRegionSettings {
+        /// Required. List of regions to deploy to, including primary region.
+        #[prost(string, repeated, tag = "1")]
+        pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. System-generated unique id for the multi-region Service.
+        #[prost(string, tag = "2")]
+        pub multi_region_id: ::prost::alloc::string::String,
+    }
 }
 /// Generated client implementations.
 pub mod services_client {
@@ -4418,6 +4502,9 @@ pub struct WorkerPoolRevisionTemplate {
     /// Optional. The node selector for the revision template.
     #[prost(message, optional, tag = "13")]
     pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. True if GPU zonal redundancy is disabled on this worker pool.
+    #[prost(bool, optional, tag = "16")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
 }
 /// Request message for creating a WorkerPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4645,7 +4732,7 @@ pub struct WorkerPool {
     /// Optional. Specifies worker-pool-level scaling settings
     #[prost(message, optional, tag = "20")]
     pub scaling: ::core::option::Option<WorkerPoolScaling>,
-    /// Output only. The generation of this WorkerPool currently serving traffic.
+    /// Output only. The generation of this WorkerPool currently serving workloads.
     /// See comments in `reconciling` for additional information on reconciliation
     /// process in Cloud Run. Please note that unlike v1, this is an int64 value.
     /// As with most Google APIs, its JSON representation will be a `string`
@@ -4664,7 +4751,7 @@ pub struct WorkerPool {
     /// information on reconciliation process in Cloud Run.
     #[prost(message, repeated, tag = "32")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
-    /// Output only. Name of the latest revision that is serving traffic. See
+    /// Output only. Name of the latest revision that is serving workloads. See
     /// comments in `reconciling` for additional information on reconciliation
     /// process in Cloud Run.
     #[prost(string, tag = "33")]
@@ -4679,11 +4766,11 @@ pub struct WorkerPool {
     /// process in Cloud Run.
     #[prost(message, repeated, tag = "27")]
     pub instance_split_statuses: ::prost::alloc::vec::Vec<InstanceSplitStatus>,
-    /// One or more custom audiences that you want this worker pool to support.
-    /// Specify each custom audience as the full URL in a string. The custom
-    /// audiences are encoded in the token and used to authenticate requests. For
-    /// more information, see
-    /// <https://cloud.google.com/run/docs/configuring/custom-audiences.>
+    /// Output only. Indicates whether Cloud Run Threat Detection monitoring is
+    /// enabled for the parent project of this worker pool.
+    #[prost(bool, tag = "28")]
+    pub threat_detection_enabled: bool,
+    /// Not supported, and ignored by Cloud Run.
     #[prost(string, repeated, tag = "37")]
     pub custom_audiences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Reserved for future use.
@@ -4696,24 +4783,24 @@ pub struct WorkerPool {
     /// will asynchronously perform all necessary steps to bring the WorkerPool to
     /// the desired serving state. This process is called reconciliation. While
     /// reconciliation is in process, `observed_generation`,
-    /// `latest_ready_revison`, `traffic_statuses`, and `uri` will have transient
-    /// values that might mismatch the intended state: Once reconciliation is over
-    /// (and this field is false), there are two possible outcomes: reconciliation
-    /// succeeded and the serving state matches the WorkerPool, or there was an
-    /// error, and reconciliation failed. This state can be found in
-    /// `terminal_condition.state`.
+    /// `latest_ready_revison`, `instance_split_statuses`, and `uri` will have
+    /// transient values that might mismatch the intended state: Once
+    /// reconciliation is over (and this field is false), there are two possible
+    /// outcomes: reconciliation succeeded and the serving state matches the
+    /// WorkerPool, or there was an error, and reconciliation failed. This state
+    /// can be found in `terminal_condition.state`.
     ///
-    /// If reconciliation succeeded, the following fields will match: `traffic` and
-    /// `traffic_statuses`, `observed_generation` and `generation`,
-    /// `latest_ready_revision` and `latest_created_revision`.
+    /// If reconciliation succeeded, the following fields will match:
+    /// `instance_splits` and `instance_split_statuses`, `observed_generation` and
+    /// `generation`, `latest_ready_revision` and `latest_created_revision`.
     ///
-    /// If reconciliation failed, `traffic_statuses`, `observed_generation`, and
-    /// `latest_ready_revision` will have the state of the last serving revision,
-    /// or empty for newly created WorkerPools. Additional information on the
-    /// failure can be found in `terminal_condition` and `conditions`.
+    /// If reconciliation failed, `instance_split_statuses`, `observed_generation`,
+    /// and `latest_ready_revision` will have the state of the last serving
+    /// revision, or empty for newly created WorkerPools. Additional information on
+    /// the failure can be found in `terminal_condition` and `conditions`.
     #[prost(bool, tag = "98")]
     pub reconciling: bool,
-    /// Output only. A system-generated fingerprint for this version of the
+    /// Optional. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,

@@ -52,7 +52,10 @@ pub struct Document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Must have a value set.
-    #[prost(oneof = "value::ValueType", tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6")]
+    #[prost(
+        oneof = "value::ValueType",
+        tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6, 19, 20, 21"
+    )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.
@@ -107,6 +110,32 @@ pub mod value {
         /// A map value.
         #[prost(message, tag = "6")]
         MapValue(super::MapValue),
+        /// Value which references a field.
+        ///
+        /// This is considered relative (vs absolute) since it only refers to a field
+        /// and not a field within a particular document.
+        ///
+        /// **Requires:**
+        ///
+        /// * Must follow \[field reference\]\[FieldReference.field_path\] limitations.
+        ///
+        /// * Not allowed to be used when writing documents.
+        #[prost(string, tag = "19")]
+        FieldReferenceValue(::prost::alloc::string::String),
+        /// A value that represents an unevaluated expression.
+        ///
+        /// **Requires:**
+        ///
+        /// * Not allowed to be used when writing documents.
+        #[prost(message, tag = "20")]
+        FunctionValue(super::Function),
+        /// A value that represents an unevaluated pipeline.
+        ///
+        /// **Requires:**
+        ///
+        /// * Not allowed to be used when writing documents.
+        #[prost(message, tag = "21")]
+        PipelineValue(super::Pipeline),
     }
 }
 /// An array value.
@@ -127,6 +156,79 @@ pub struct MapValue {
     /// not exceed 1,500 bytes and cannot be empty.
     #[prost(map = "string, message", tag = "1")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
+}
+/// Represents an unevaluated scalar expression.
+///
+/// For example, the expression `like(user_name, "%alice%")` is represented as:
+///
+/// ```text,
+/// name: "like"
+/// args { field_reference: "user_name" }
+/// args { string_value: "%alice%" }
+/// ```
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Function {
+    /// Required. The name of the function to evaluate.
+    ///
+    /// **Requires:**
+    ///
+    /// * must be in snake case (lower case with underscore separator).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Ordered list of arguments the given function expects.
+    #[prost(message, repeated, tag = "2")]
+    pub args: ::prost::alloc::vec::Vec<Value>,
+    /// Optional. Optional named arguments that certain functions may support.
+    #[prost(map = "string, message", tag = "3")]
+    pub options: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
+}
+/// A Firestore query represented as an ordered list of operations / stages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Pipeline {
+    /// Required. Ordered list of stages to evaluate.
+    #[prost(message, repeated, tag = "1")]
+    pub stages: ::prost::alloc::vec::Vec<pipeline::Stage>,
+}
+/// Nested message and enum types in `Pipeline`.
+pub mod pipeline {
+    /// A single operation within a pipeline.
+    ///
+    /// A stage is made up of a unique name, and a list of arguments. The exact
+    /// number of arguments & types is dependent on the stage type.
+    ///
+    /// To give an example, the stage `filter(state = "MD")` would be encoded as:
+    ///
+    /// ```text,
+    /// name: "filter"
+    /// args {
+    ///   function_value {
+    ///     name: "eq"
+    ///     args { field_reference_value: "state" }
+    ///     args { string_value: "MD" }
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// See public documentation for the full list.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Stage {
+        /// Required. The name of the stage to evaluate.
+        ///
+        /// **Requires:**
+        ///
+        /// * must be in snake case (lower case with underscore separator).
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. Ordered list of arguments the given stage expects.
+        #[prost(message, repeated, tag = "2")]
+        pub args: ::prost::alloc::vec::Vec<super::Value>,
+        /// Optional. Optional named arguments that certain functions may support.
+        #[prost(map = "string, message", tag = "3")]
+        pub options: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            super::Value,
+        >,
+    }
 }
 /// A Firestore query.
 ///
@@ -624,8 +726,8 @@ pub mod structured_query {
         /// Since DOT_PRODUCT distances increase when the vectors are more similar,
         /// the comparison is inverted.
         ///
-        /// * For EUCLIDEAN, COSINE: WHERE distance \<= distance_threshold
-        /// * For DOT_PRODUCT:       WHERE distance >= distance_threshold
+        /// * For EUCLIDEAN, COSINE: `WHERE distance <= distance_threshold`
+        /// * For DOT_PRODUCT:       `WHERE distance >= distance_threshold`
         #[prost(message, optional, tag = "6")]
         pub distance_threshold: ::core::option::Option<f64>,
     }
@@ -1069,6 +1171,33 @@ pub mod transaction_options {
         #[prost(message, tag = "3")]
         ReadWrite(ReadWrite),
     }
+}
+/// Pipeline explain stats.
+///
+/// Depending on the explain options in the original request, this can contain
+/// the optimized plan and / or execution stats.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExplainStats {
+    /// The format depends on the `output_format` options in the request.
+    ///
+    /// Currently there are two supported options: `TEXT` and `JSON`.
+    /// Both supply a `google.protobuf.StringValue`.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::core::option::Option<::prost_types::Any>,
+}
+/// A Firestore query represented as an ordered list of operations / stages.
+///
+/// This is considered the top-level function which plans and executes a query.
+/// It is logically equivalent to `query(stages, options)`, but prevents the
+/// client from having to build a function wrapper.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StructuredPipeline {
+    /// Required. The pipeline query to execute.
+    #[prost(message, optional, tag = "1")]
+    pub pipeline: ::core::option::Option<Pipeline>,
+    /// Optional. Optional query-level arguments.
+    #[prost(map = "string, message", tag = "2")]
+    pub options: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
 /// Explain options for the query.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1913,6 +2042,99 @@ pub mod run_query_response {
     }
 }
 /// The request for
+/// \[Firestore.ExecutePipeline\]\[google.firestore.v1.Firestore.ExecutePipeline\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecutePipelineRequest {
+    /// Required. Database identifier, in the form
+    /// `projects/{project}/databases/{database}`.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    #[prost(oneof = "execute_pipeline_request::PipelineType", tags = "2")]
+    pub pipeline_type: ::core::option::Option<execute_pipeline_request::PipelineType>,
+    /// Optional consistency arguments, defaults to strong consistency.
+    #[prost(oneof = "execute_pipeline_request::ConsistencySelector", tags = "5, 6, 7")]
+    pub consistency_selector: ::core::option::Option<
+        execute_pipeline_request::ConsistencySelector,
+    >,
+}
+/// Nested message and enum types in `ExecutePipelineRequest`.
+pub mod execute_pipeline_request {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PipelineType {
+        /// A pipelined operation.
+        #[prost(message, tag = "2")]
+        StructuredPipeline(super::StructuredPipeline),
+    }
+    /// Optional consistency arguments, defaults to strong consistency.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConsistencySelector {
+        /// Run the query within an already active transaction.
+        ///
+        /// The value here is the opaque transaction ID to execute the query in.
+        #[prost(bytes, tag = "5")]
+        Transaction(::prost::alloc::vec::Vec<u8>),
+        /// Execute the pipeline in a new transaction.
+        ///
+        /// The identifier of the newly created transaction will be returned in the
+        /// first response on the stream. This defaults to a read-only transaction.
+        #[prost(message, tag = "6")]
+        NewTransaction(super::TransactionOptions),
+        /// Execute the pipeline in a snapshot transaction at the given time.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
+        #[prost(message, tag = "7")]
+        ReadTime(::prost_types::Timestamp),
+    }
+}
+/// The response for \[Firestore.Execute\]\[\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecutePipelineResponse {
+    /// Newly created transaction identifier.
+    ///
+    /// This field is only specified as part of the first response from the server,
+    /// alongside the `results` field when the original request specified
+    /// \[ExecuteRequest.new_transaction\]\[\].
+    #[prost(bytes = "vec", tag = "1")]
+    pub transaction: ::prost::alloc::vec::Vec<u8>,
+    /// An ordered batch of results returned executing a pipeline.
+    ///
+    /// The batch size is variable, and can even be zero for when only a partial
+    /// progress message is returned.
+    ///
+    /// The fields present in the returned documents are only those that were
+    /// explicitly requested in the pipeline, this includes those like
+    /// \[`__name__`\]\[google.firestore.v1.Document.name\] and
+    /// \[`__update_time__`\]\[google.firestore.v1.Document.update_time\]. This is
+    /// explicitly a divergence from `Firestore.RunQuery` / `Firestore.GetDocument`
+    /// RPCs which always return such fields even when they are not specified in
+    /// the \[`mask`\]\[google.firestore.v1.DocumentMask\].
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::prost::alloc::vec::Vec<Document>,
+    /// The time at which the results are valid.
+    ///
+    /// This is a (not strictly) monotonically increasing value across multiple
+    /// responses in the same stream. The API guarantees that all previously
+    /// returned results are still valid at the latest `execution_time`. This
+    /// allows the API consumer to treat the query if it ran at the latest
+    /// `execution_time` returned.
+    ///
+    /// If the query returns no results, a response with `execution_time` and no
+    /// `results` will be sent, and this represents the time at which the operation
+    /// was run.
+    #[prost(message, optional, tag = "3")]
+    pub execution_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Query explain stats.
+    ///
+    /// This is present on the **last** response if the request configured explain
+    /// to run in 'analyze' or 'explain' mode in the pipeline options. If the query
+    /// does not return any results, a response with `explain_stats` and no
+    /// `results` will still be sent.
+    #[prost(message, optional, tag = "4")]
+    pub explain_stats: ::core::option::Option<ExplainStats>,
+}
+/// The request for
 /// \[Firestore.RunAggregationQuery\]\[google.firestore.v1.Firestore.RunAggregationQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAggregationQueryRequest {
@@ -2266,7 +2488,7 @@ pub struct Target {
     /// will immediately send a response with a `TargetChange::Remove` event.
     ///
     /// Note that if the client sends multiple `AddTarget` requests
-    /// without an ID, the order of IDs returned in `TargetChage.target_ids` are
+    /// without an ID, the order of IDs returned in `TargetChange.target_ids` are
     /// undefined. Therefore, clients should provide a target ID instead of relying
     /// on the server to assign one.
     ///
@@ -2872,6 +3094,33 @@ pub mod firestore_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.firestore.v1.Firestore", "RunQuery"));
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// Executes a pipeline query.
+        pub async fn execute_pipeline(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecutePipelineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::ExecutePipelineResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.v1.Firestore/ExecutePipeline",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "ExecutePipeline"),
+                );
             self.inner.server_streaming(req, path, codec).await
         }
         /// Runs an aggregation query.

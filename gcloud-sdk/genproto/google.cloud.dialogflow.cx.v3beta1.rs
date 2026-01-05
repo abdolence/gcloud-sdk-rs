@@ -3727,6 +3727,14 @@ pub struct SafetySettings {
     /// Banned phrases for generated text.
     #[prost(message, repeated, tag = "1")]
     pub banned_phrases: ::prost::alloc::vec::Vec<safety_settings::Phrase>,
+    /// Optional. Settings for Responsible AI checks.
+    #[prost(message, optional, tag = "2")]
+    pub rai_settings: ::core::option::Option<safety_settings::RaiSettings>,
+    /// Optional. Immutable. Default RAI settings to be annotated on the agent, so
+    /// that users will be able to restore their RAI configurations to the default
+    /// settings. Read-only field for the API proto only.
+    #[prost(message, optional, tag = "3")]
+    pub default_rai_settings: ::core::option::Option<safety_settings::RaiSettings>,
     /// Optional. Settings for prompt security checks.
     #[prost(message, optional, tag = "8")]
     pub prompt_security_settings: ::core::option::Option<
@@ -3744,6 +3752,128 @@ pub mod safety_settings {
         /// Required. Language code of the phrase.
         #[prost(string, tag = "2")]
         pub language_code: ::prost::alloc::string::String,
+    }
+    /// Settings for Responsible AI.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RaiSettings {
+        /// Optional. RAI blocking configurations.
+        #[prost(message, repeated, tag = "3")]
+        pub category_filters: ::prost::alloc::vec::Vec<rai_settings::CategoryFilter>,
+    }
+    /// Nested message and enum types in `RaiSettings`.
+    pub mod rai_settings {
+        /// Configuration of the sensitivity level for blocking an RAI category.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct CategoryFilter {
+            /// RAI category to configure.
+            #[prost(enumeration = "SafetyCategory", tag = "1")]
+            pub category: i32,
+            /// Blocking sensitivity level to configure for the RAI category.
+            #[prost(enumeration = "SafetyFilterLevel", tag = "2")]
+            pub filter_level: i32,
+        }
+        /// Sensitivity level for RAI categories.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SafetyFilterLevel {
+            /// Unspecified -- uses default sensitivity levels.
+            Unspecified = 0,
+            /// Block no text -- effectively disables the category.
+            BlockNone = 1,
+            /// Block a few suspicious texts.
+            BlockFew = 2,
+            /// Block some suspicious texts.
+            BlockSome = 3,
+            /// Block most suspicious texts.
+            BlockMost = 4,
+        }
+        impl SafetyFilterLevel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SAFETY_FILTER_LEVEL_UNSPECIFIED",
+                    Self::BlockNone => "BLOCK_NONE",
+                    Self::BlockFew => "BLOCK_FEW",
+                    Self::BlockSome => "BLOCK_SOME",
+                    Self::BlockMost => "BLOCK_MOST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SAFETY_FILTER_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "BLOCK_NONE" => Some(Self::BlockNone),
+                    "BLOCK_FEW" => Some(Self::BlockFew),
+                    "BLOCK_SOME" => Some(Self::BlockSome),
+                    "BLOCK_MOST" => Some(Self::BlockMost),
+                    _ => None,
+                }
+            }
+        }
+        /// RAI categories to configure.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SafetyCategory {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Dangerous content.
+            DangerousContent = 1,
+            /// Hate speech.
+            HateSpeech = 2,
+            /// Harassment.
+            Harassment = 3,
+            /// Sexually explicit content.
+            SexuallyExplicitContent = 4,
+        }
+        impl SafetyCategory {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SAFETY_CATEGORY_UNSPECIFIED",
+                    Self::DangerousContent => "DANGEROUS_CONTENT",
+                    Self::HateSpeech => "HATE_SPEECH",
+                    Self::Harassment => "HARASSMENT",
+                    Self::SexuallyExplicitContent => "SEXUALLY_EXPLICIT_CONTENT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SAFETY_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DANGEROUS_CONTENT" => Some(Self::DangerousContent),
+                    "HATE_SPEECH" => Some(Self::HateSpeech),
+                    "HARASSMENT" => Some(Self::Harassment),
+                    "SEXUALLY_EXPLICIT_CONTENT" => Some(Self::SexuallyExplicitContent),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Settings for prompt security checks.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5354,6 +5484,13 @@ pub mod changelogs_client {
             self.inner.unary(req, path, codec).await
         }
     }
+}
+/// Represents a code block.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CodeBlock {
+    /// Optional. Source code of the block in Python.
+    #[prost(string, tag = "1")]
+    pub code: ::prost::alloc::string::String,
 }
 /// Inline destination for a Dialogflow operation that writes or exports objects
 /// (e.g. \[intents\]\[google.cloud.dialogflow.cx.v3beta1.Intent\]) outside of
@@ -8694,6 +8831,11 @@ pub struct DetectIntentRequest {
     /// Instructs the speech synthesizer how to generate the output audio.
     #[prost(message, optional, tag = "4")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Optional. Specifies which fields in the
+    /// \[QueryResult\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult\] to return. If
+    /// not set, the default is DETECT_INTENT_RESPONSE_VIEW_FULL.
+    #[prost(enumeration = "DetectIntentResponseView", tag = "9")]
+    pub response_view: i32,
 }
 /// The message returned from the DetectIntent method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8851,6 +8993,11 @@ pub struct StreamingDetectIntentRequest {
     /// If true, `StreamingDetectIntentResponse.debugging_info` will get populated.
     #[prost(bool, tag = "8")]
     pub enable_debugging_info: bool,
+    /// Optional. Specifies which fields in the
+    /// \[QueryResult\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult\] to return. If
+    /// not set, the default is DETECT_INTENT_RESPONSE_VIEW_FULL.
+    #[prost(enumeration = "DetectIntentResponseView", tag = "16")]
+    pub response_view: i32,
 }
 /// Cloud conversation info for easier debugging.
 /// It will get populated in `StreamingDetectIntentResponse` or
@@ -10065,6 +10212,44 @@ pub struct SentimentAnalysisResult {
     /// magnitude of sentiment, regardless of score (positive or negative).
     #[prost(float, tag = "2")]
     pub magnitude: f32,
+}
+/// The response view specifies which fields in the
+/// \[QueryResult\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult\] to return.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DetectIntentResponseView {
+    /// Not specified. `FULL` will be used.
+    Unspecified = 0,
+    /// Full response view includes all fields.
+    Full = 1,
+    /// ## Basic response view omits the following fields:
+    ///
+    /// ## \[QueryResult.diagnostic_info\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.diagnostic_info\]
+    ///
+    /// \[QueryResult.generative_info\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info\]
+    Basic = 2,
+}
+impl DetectIntentResponseView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED",
+            Self::Full => "DETECT_INTENT_RESPONSE_VIEW_FULL",
+            Self::Basic => "DETECT_INTENT_RESPONSE_VIEW_BASIC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "DETECT_INTENT_RESPONSE_VIEW_FULL" => Some(Self::Full),
+            "DETECT_INTENT_RESPONSE_VIEW_BASIC" => Some(Self::Basic),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod sessions_client {
@@ -12326,6 +12511,11 @@ pub mod webhook {
         /// The generated token is sent in the Authorization header.
         #[prost(enumeration = "generic_web_service::ServiceAgentAuth", tag = "12")]
         pub service_agent_auth: i32,
+        /// Optional. Configuration for service account authentication.
+        #[prost(message, optional, tag = "18")]
+        pub service_account_auth_config: ::core::option::Option<
+            generic_web_service::ServiceAccountAuthConfig,
+        >,
         /// Optional. Type of the webhook.
         #[prost(enumeration = "generic_web_service::WebhookType", tag = "6")]
         pub webhook_type: i32,
@@ -12382,6 +12572,21 @@ pub mod webhook {
             /// Optional. The OAuth scopes to grant.
             #[prost(string, repeated, tag = "4")]
             pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Configuration for authentication using a service account.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ServiceAccountAuthConfig {
+            /// Required. The email address of the service account used to authenticate
+            /// the webhook call. Dialogflow uses this service account to exchange an
+            /// access token and the access token is then sent in the `Authorization`
+            /// header of the webhook request.
+            ///
+            /// The service account must have the
+            /// `roles/iam.serviceAccountTokenCreator` role granted to the
+            /// [Dialogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[prost(string, tag = "1")]
+            pub service_account: ::prost::alloc::string::String,
         }
         /// Indicate the auth token type generated from the [Diglogflow service
         /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
@@ -16257,6 +16462,16 @@ pub struct Playbook {
     /// be implied using the tool being referenced in goal and steps.
     #[prost(string, repeated, tag = "13")]
     pub referenced_tools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Output only. Names of inline actions scoped to this playbook.
+    /// These actions are in addition to those belonging to referenced tools, child
+    /// playbooks, and flows, e.g. actions that are defined in the playbook's code
+    /// block.
+    #[prost(string, repeated, tag = "22")]
+    pub inline_actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The playbook's scoped code block, which may implement handlers
+    /// and actions.
+    #[prost(message, optional, tag = "21")]
+    pub code_block: ::core::option::Option<CodeBlock>,
     /// Optional. Llm model settings for the playbook.
     #[prost(message, optional, tag = "14")]
     pub llm_model_settings: ::core::option::Option<LlmModelSettings>,
@@ -18259,7 +18474,7 @@ pub mod tool {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authentication {
         /// The auth configuration.
-        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4")]
+        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4, 5")]
         pub auth_config: ::core::option::Option<authentication::AuthConfig>,
     }
     /// Nested message and enum types in `Authentication`.
@@ -18445,6 +18660,21 @@ pub mod tool {
             #[prost(string, tag = "2")]
             pub secret_version_for_token: ::prost::alloc::string::String,
         }
+        /// Configuration for authentication using a service account.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ServiceAccountAuthConfig {
+            /// Required. The email address of the service account used to authenticate
+            /// the tool call. Dialogflow uses this service account to exchange an
+            /// access token and the access token is then sent in the `Authorization`
+            /// header of the tool request.
+            ///
+            /// The service account must have the
+            /// `roles/iam.serviceAccountTokenCreator` role granted to the
+            /// [Dialogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[prost(string, tag = "1")]
+            pub service_account: ::prost::alloc::string::String,
+        }
         /// The location of the API key in the request.
         #[derive(
             Clone,
@@ -18505,6 +18735,9 @@ pub mod tool {
             /// Config for bearer token auth.
             #[prost(message, tag = "4")]
             BearerTokenConfig(BearerTokenConfig),
+            /// Configuration for service account authentication.
+            #[prost(message, tag = "5")]
+            ServiceAccountAuthConfig(ServiceAccountAuthConfig),
         }
     }
     /// The TLS configuration.

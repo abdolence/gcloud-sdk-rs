@@ -748,6 +748,178 @@ pub struct DeleteLbRouteExtensionRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// `LbEdgeExtension` is a resource that lets the extension service influence
+/// the selection of backend services and Cloud CDN cache keys by modifying
+/// request headers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LbEdgeExtension {
+    /// Required. Identifier. Name of the `LbEdgeExtension` resource in the
+    /// following format:
+    /// `projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A human-readable description of the resource.
+    #[prost(string, tag = "9")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set of labels associated with the `LbEdgeExtension` resource.
+    ///
+    /// The format must comply with [the requirements for
+    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>)
+    /// for Google Cloud resources.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. A list of references to the forwarding rules to which this
+    /// service extension is attached. At least one forwarding rule is required.
+    /// Only one `LbEdgeExtension` resource can be associated with a forwarding
+    /// rule.
+    #[prost(string, repeated, tag = "5")]
+    pub forwarding_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. A set of ordered extension chains that contain the match
+    /// conditions and extensions to execute. Match conditions for each extension
+    /// chain are evaluated in sequence for a given request. The first extension
+    /// chain that has a condition that matches the request is executed.
+    /// Any subsequent extension chains do not execute.
+    /// Limited to 5 extension chains per resource.
+    #[prost(message, repeated, tag = "6")]
+    pub extension_chains: ::prost::alloc::vec::Vec<ExtensionChain>,
+    /// Required. All forwarding rules referenced by this extension must
+    /// share the same load balancing scheme.
+    /// Supported values: `EXTERNAL_MANAGED`.
+    #[prost(enumeration = "LoadBalancingScheme", tag = "7")]
+    pub load_balancing_scheme: i32,
+}
+/// Message for requesting list of `LbEdgeExtension` resources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListLbEdgeExtensionsRequest {
+    /// Required. The project and location from which the `LbEdgeExtension`
+    /// resources are listed. These values are specified in the following format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. The server might return fewer items than
+    /// requested. If unspecified, the server picks an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results that the server returns.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint about how to order the results.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Message for response to listing `LbEdgeExtension` resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLbEdgeExtensionsResponse {
+    /// The list of `LbEdgeExtension` resources.
+    #[prost(message, repeated, tag = "1")]
+    pub lb_edge_extensions: ::prost::alloc::vec::Vec<LbEdgeExtension>,
+    /// A token identifying a page of results that the server returns.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Message for getting a `LbEdgeExtension` resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetLbEdgeExtensionRequest {
+    /// Required. A name of the `LbEdgeExtension` resource to get. Must be in the
+    /// format
+    /// `projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for creating a `LbEdgeExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLbEdgeExtensionRequest {
+    /// Required. The parent resource of the `LbEdgeExtension` resource. Must be in
+    /// the format `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. User-provided ID of the `LbEdgeExtension` resource to be created.
+    #[prost(string, tag = "2")]
+    pub lb_edge_extension_id: ::prost::alloc::string::String,
+    /// Required. `LbEdgeExtension` resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub lb_edge_extension: ::core::option::Option<LbEdgeExtension>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Message for updating a `LbEdgeExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLbEdgeExtensionRequest {
+    /// Optional. Used to specify the fields to be overwritten in the
+    /// `LbEdgeExtension` resource by the update.
+    /// The fields specified in the `update_mask` are relative to the resource, not
+    /// the full request. A field is overwritten if it is in the mask. If the
+    /// user does not specify a mask, then all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. `LbEdgeExtension` resource being updated.
+    #[prost(message, optional, tag = "2")]
+    pub lb_edge_extension: ::core::option::Option<LbEdgeExtension>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Message for deleting a `LbEdgeExtension` resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteLbEdgeExtensionRequest {
+    /// Required. The name of the `LbEdgeExtension` resource to delete. Must be in
+    /// the format
+    /// `projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// `AuthzExtension` is a resource that allows traffic forwarding
 /// to a callout backend service to make an authorization decision.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1479,6 +1651,156 @@ pub mod dep_service_client {
                     GrpcMethod::new(
                         "google.cloud.networkservices.v1.DepService",
                         "DeleteLbRouteExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists `LbEdgeExtension` resources in a given project and location.
+        pub async fn list_lb_edge_extensions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLbEdgeExtensionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLbEdgeExtensionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/ListLbEdgeExtensions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "ListLbEdgeExtensions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specified `LbEdgeExtension` resource.
+        pub async fn get_lb_edge_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetLbEdgeExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LbEdgeExtension>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/GetLbEdgeExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "GetLbEdgeExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `LbEdgeExtension` resource in a given project and location.
+        pub async fn create_lb_edge_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateLbEdgeExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/CreateLbEdgeExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "CreateLbEdgeExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of the specified `LbEdgeExtension` resource.
+        pub async fn update_lb_edge_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateLbEdgeExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/UpdateLbEdgeExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "UpdateLbEdgeExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified `LbEdgeExtension` resource.
+        pub async fn delete_lb_edge_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteLbEdgeExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/DeleteLbEdgeExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "DeleteLbEdgeExtension",
                     ),
                 );
             self.inner.unary(req, path, codec).await

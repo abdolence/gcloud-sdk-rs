@@ -2233,6 +2233,11 @@ pub struct MachineSpec {
     /// consumes reservation.
     #[prost(message, optional, tag = "5")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
+    /// Optional. Immutable. The minimum GPU driver version that this machine
+    /// requires. For example, "535.104.06". If not specified, the default GPU
+    /// driver version will be used by the underlying infrastructure.
+    #[prost(string, tag = "9")]
+    pub min_gpu_driver_version: ::prost::alloc::string::String,
 }
 /// A description of resources that are dedicated to a DeployedModel or
 /// DeployedIndex, and that need a higher degree of manual configuration.
@@ -2393,6 +2398,78 @@ pub struct BatchDedicatedResources {
     #[prost(bool, tag = "5")]
     pub spot: bool,
 }
+/// Resources for an fft model.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FullFineTunedResources {
+    /// Required. The kind of deployment.
+    #[prost(enumeration = "full_fine_tuned_resources::DeploymentType", tag = "1")]
+    pub deployment_type: i32,
+    /// Optional. The number of model inference units to use for this deployment.
+    /// This can only be specified for DEPLOYMENT_TYPE_PROD.
+    /// The following table lists the number of model inference units for different
+    /// model types:
+    ///
+    /// * Gemini 2.5 Flash
+    ///   * Foundation FMIU: 25
+    ///   * Expansion FMIU: 4
+    /// * Gemini 2.5 Pro
+    ///   * Foundation FMIU: 32
+    ///   * Expansion FMIU: 16
+    /// * Veo 3.0 (undistilled)
+    ///   * Foundation FMIU: 63
+    ///   * Expansion FMIU: 7
+    /// * Veo 3.0 (distilled)
+    ///   * Foundation FMIU: 30
+    ///   * Expansion FMIU: 10
+    #[prost(int32, tag = "2")]
+    pub model_inference_unit_count: i32,
+}
+/// Nested message and enum types in `FullFineTunedResources`.
+pub mod full_fine_tuned_resources {
+    /// The type of deployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentType {
+        /// Unspecified deployment type.
+        Unspecified = 0,
+        /// Eval deployment type.
+        Eval = 1,
+        /// Prod deployment type.
+        Prod = 2,
+    }
+    impl DeploymentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_TYPE_UNSPECIFIED",
+                Self::Eval => "DEPLOYMENT_TYPE_EVAL",
+                Self::Prod => "DEPLOYMENT_TYPE_PROD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEPLOYMENT_TYPE_EVAL" => Some(Self::Eval),
+                "DEPLOYMENT_TYPE_PROD" => Some(Self::Prod),
+                _ => None,
+            }
+        }
+    }
+}
 /// Statistics information about resource consumption.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResourcesConsumed {
@@ -2444,6 +2521,23 @@ pub struct NfsMount {
     /// Required. Destination mount path. The NFS will be mounted for the user
     /// under /mnt/nfs/\<mount_point>
     #[prost(string, tag = "3")]
+    pub mount_point: ::prost::alloc::string::String,
+}
+/// Represents a mount configuration for Lustre file system.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LustreMount {
+    /// Required. IP address of the Lustre instance.
+    #[prost(string, tag = "1")]
+    pub instance_ip: ::prost::alloc::string::String,
+    /// Required. The unique identifier of the Lustre volume.
+    #[prost(string, tag = "2")]
+    pub volume_handle: ::prost::alloc::string::String,
+    /// Required. The name of the Lustre filesystem.
+    #[prost(string, tag = "3")]
+    pub filesystem: ::prost::alloc::string::String,
+    /// Required. Destination mount path. The Lustre file system will be mounted
+    /// for the user under /mnt/lustre/\<mount_point>
+    #[prost(string, tag = "4")]
     pub mount_point: ::prost::alloc::string::String,
 }
 /// The metric specification that defines the target resource utilization
@@ -5123,7 +5217,7 @@ pub struct Tool {
     #[prost(message, optional, tag = "4")]
     pub code_execution: ::core::option::Option<tool::CodeExecution>,
     /// Optional. Tool to support URL context retrieval.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "10")]
     pub url_context: ::core::option::Option<UrlContext>,
     /// Optional. Tool to support the model interacting directly with the computer.
     /// If enabled, it automatically populates computer-use specific Function
@@ -6121,7 +6215,7 @@ pub struct RagVectorDbConfig {
     #[prost(message, optional, tag = "7")]
     pub rag_embedding_model_config: ::core::option::Option<RagEmbeddingModelConfig>,
     /// The config for the Vector DB.
-    #[prost(oneof = "rag_vector_db_config::VectorDb", tags = "1, 2, 3, 4, 6")]
+    #[prost(oneof = "rag_vector_db_config::VectorDb", tags = "1, 2, 3, 4, 6, 8")]
     pub vector_db: ::core::option::Option<rag_vector_db_config::VectorDb>,
 }
 /// Nested message and enum types in `RagVectorDbConfig`.
@@ -6224,6 +6318,16 @@ pub mod rag_vector_db_config {
         #[prost(string, tag = "2")]
         pub index: ::prost::alloc::string::String,
     }
+    /// The config for the RAG-managed Vertex Vector Search 2.0.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RagManagedVertexVectorSearch {
+        /// Output only. The resource name of the Vector Search 2.0 Collection that
+        /// RAG Created for the corpus. Only populated after the corpus is
+        /// successfully created. Format:
+        /// `projects/{project}/locations/{location}/collections/{collection_id}`
+        #[prost(string, tag = "1")]
+        pub collection_name: ::prost::alloc::string::String,
+    }
     /// The config for the Vector DB.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum VectorDb {
@@ -6242,6 +6346,9 @@ pub mod rag_vector_db_config {
         /// The config for the Vertex Vector Search.
         #[prost(message, tag = "6")]
         VertexVectorSearch(VertexVectorSearch),
+        /// The config for the RAG-managed Vertex Vector Search 2.0.
+        #[prost(message, tag = "8")]
+        RagManagedVertexVectorSearch(RagManagedVertexVectorSearch),
     }
 }
 /// RagFile status.
@@ -6405,6 +6512,9 @@ pub struct RagCorpus {
     #[prost(message, optional, tag = "8")]
     pub corpus_status: ::core::option::Option<CorpusStatus>,
     /// Output only. Number of RagFiles in the RagCorpus.
+    ///
+    /// NOTE: This field is not populated in the response of
+    /// \[VertexRagDataService.ListRagCorpora\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagCorpora\].
     #[prost(int32, tag = "11")]
     pub rag_files_count: i32,
     /// Optional. Immutable. The CMEK key name used to encrypt at-rest data related
@@ -6416,6 +6526,12 @@ pub struct RagCorpus {
     /// Optional. The corpus type config of the RagCorpus.
     #[prost(message, optional, tag = "13")]
     pub corpus_type_config: ::core::option::Option<rag_corpus::CorpusTypeConfig>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
     /// The backend config of the RagCorpus.
     /// It can be data store and/or retrieval engine.
     #[prost(oneof = "rag_corpus::BackendConfig", tags = "9, 10")]
@@ -6500,7 +6616,7 @@ pub struct RagFile {
     /// Output only. State of the RagFile.
     #[prost(message, optional, tag = "13")]
     pub file_status: ::core::option::Option<FileStatus>,
-    /// Output only. The metadata for metadata search. The contents will be
+    /// Output only. The metadata for metadata search. The user_metadata Needs to
     /// be in JSON format.
     #[prost(string, tag = "15")]
     pub user_metadata: ::prost::alloc::string::String,
@@ -6766,13 +6882,13 @@ pub mod rag_file_metadata_config {
         ///
         /// * `gs://bucket_name/my_directory/object_name/metadata_schema.json`
         /// * `gs://bucket_name/my_directory`
-        ///   If providing a directory, the metadata schema will be read from
+        ///   If the user provides a directory, the metadata schema will be read from
         ///   the files that ends with "metadata_schema.json" in the directory.
         #[prost(message, tag = "1")]
         GcsMetadataSchemaSource(super::GcsSource),
         /// Google Drive location. Supports importing individual files as
         /// well as Google Drive folders.
-        /// If providing a folder, the metadata schema will be read from
+        /// If the user provides a folder, the metadata schema will be read from
         /// the files that ends with "metadata_schema.json" in the directory.
         #[prost(message, tag = "2")]
         GoogleDriveMetadataSchemaSource(super::GoogleDriveSource),
@@ -6788,13 +6904,13 @@ pub mod rag_file_metadata_config {
         ///
         /// * `gs://bucket_name/my_directory/object_name/metadata.json`
         /// * `gs://bucket_name/my_directory`
-        ///   If providing a directory, the metadata will be read from
+        ///   If the user provides a directory, the metadata will be read from
         ///   the files that ends with "metadata.json" in the directory.
         #[prost(message, tag = "4")]
         GcsMetadataSource(super::GcsSource),
         /// Google Drive location. Supports importing individual files as
         /// well as Google Drive folders.
-        /// If providing a directory, the metadata will be read from
+        /// If the user provides a directory, the metadata will be read from
         /// the files that ends with "metadata.json" in the directory.
         #[prost(message, tag = "5")]
         GoogleDriveMetadataSource(super::GoogleDriveSource),
@@ -6955,7 +7071,6 @@ pub struct RagManagedDbConfig {
 }
 /// Nested message and enum types in `RagManagedDbConfig`.
 pub mod rag_managed_db_config {
-    /// Deprecated: Please use `Scaled` tier instead.
     /// Enterprise tier offers production grade performance along with
     /// autoscaling functionality. It is suitable for customers with large
     /// amounts of data or performance sensitive workloads.
@@ -6988,12 +7103,11 @@ pub mod rag_managed_db_config {
     /// The tier of the RagManagedDb.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Tier {
-        /// Deprecated: Please use `Scaled` tier instead.
-        /// Sets the RagManagedDb to the Enterprise tier. This is the default tier
-        /// if not explicitly chosen.
+        /// Sets the RagManagedDb to the Enterprise tier.
         #[prost(message, tag = "1")]
         Enterprise(Enterprise),
-        /// Sets the RagManagedDb to the Scaled tier.
+        /// Sets the RagManagedDb to the Scaled tier. This is the default tier
+        /// if not explicitly chosen.
         #[prost(message, tag = "4")]
         Scaled(Scaled),
         /// Sets the RagManagedDb to the Basic tier.
@@ -7134,11 +7248,24 @@ pub struct PrebuiltVoiceConfig {
     #[prost(string, optional, tag = "1")]
     pub voice_name: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// The configuration for the voice to use.
+/// The configuration for the replicated voice to use.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReplicatedVoiceConfig {
+    /// Optional. The mimetype of the voice sample. The only currently supported
+    /// value is `audio/wav`. This represents 16-bit signed little-endian wav data,
+    /// with a 24kHz sampling rate. `mime_type` will default to `audio/wav` if not
+    /// set.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Optional. The sample of the custom voice.
+    #[prost(bytes = "vec", tag = "2")]
+    pub voice_sample_audio: ::prost::alloc::vec::Vec<u8>,
+}
+/// Configuration for a voice.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VoiceConfig {
     /// The configuration for the speaker to use.
-    #[prost(oneof = "voice_config::VoiceConfig", tags = "1")]
+    #[prost(oneof = "voice_config::VoiceConfig", tags = "1, 3")]
     pub voice_config: ::core::option::Option<voice_config::VoiceConfig>,
 }
 /// Nested message and enum types in `VoiceConfig`.
@@ -7146,17 +7273,47 @@ pub mod voice_config {
     /// The configuration for the speaker to use.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum VoiceConfig {
-        /// The configuration for the prebuilt voice to use.
+        /// The configuration for a prebuilt voice.
         #[prost(message, tag = "1")]
         PrebuiltVoiceConfig(super::PrebuiltVoiceConfig),
+        /// Optional. The configuration for a replicated voice. This enables users to
+        /// replicate a voice from an audio sample.
+        #[prost(message, tag = "3")]
+        ReplicatedVoiceConfig(super::ReplicatedVoiceConfig),
     }
 }
-/// The speech generation config.
+/// Configuration for a single speaker in a multi-speaker setup.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpeakerVoiceConfig {
+    /// Required. The name of the speaker. This should be the same as the speaker
+    /// name used in the prompt.
+    #[prost(string, tag = "1")]
+    pub speaker: ::prost::alloc::string::String,
+    /// Required. The configuration for the voice of this speaker.
+    #[prost(message, optional, tag = "2")]
+    pub voice_config: ::core::option::Option<VoiceConfig>,
+}
+/// Configuration for a multi-speaker text-to-speech request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiSpeakerVoiceConfig {
+    /// Required. A list of configurations for the voices of the speakers. Exactly
+    /// two speaker voice configurations must be provided.
+    #[prost(message, repeated, tag = "2")]
+    pub speaker_voice_configs: ::prost::alloc::vec::Vec<SpeakerVoiceConfig>,
+}
+/// Configuration for speech generation.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechConfig {
-    /// The configuration for the speaker to use.
+    /// The configuration for the voice to use.
     #[prost(message, optional, tag = "1")]
     pub voice_config: ::core::option::Option<VoiceConfig>,
+    /// Optional. The language code (ISO 639-1) for the speech synthesis.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The configuration for a multi-speaker text-to-speech request.
+    /// This field is mutually exclusive with `voice_config`.
+    #[prost(message, optional, tag = "3")]
+    pub multi_speaker_voice_config: ::core::option::Option<MultiSpeakerVoiceConfig>,
 }
 /// Config for image generation features.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -8906,6 +9063,9 @@ pub struct WorkerPoolSpec {
     /// Optional. List of NFS mount spec.
     #[prost(message, repeated, tag = "4")]
     pub nfs_mounts: ::prost::alloc::vec::Vec<NfsMount>,
+    /// Optional. List of Lustre mounts.
+    #[prost(message, repeated, tag = "9")]
+    pub lustre_mounts: ::prost::alloc::vec::Vec<LustreMount>,
     /// Disk spec.
     #[prost(message, optional, tag = "5")]
     pub disk_spec: ::core::option::Option<DiskSpec>,
@@ -8975,10 +9135,10 @@ pub struct PythonPackageSpec {
 /// All parameters related to queuing and scheduling of custom jobs.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Scheduling {
-    /// The maximum job running time. The default is 7 days.
+    /// Optional. The maximum job running time. The default is 7 days.
     #[prost(message, optional, tag = "1")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
-    /// Restarts the entire CustomJob if a worker gets restarted.
+    /// Optional. Restarts the entire CustomJob if a worker gets restarted.
     /// This feature can be used by distributed training jobs that are not
     /// resilient to workers leaving and joining a job.
     #[prost(bool, tag = "3")]
@@ -11584,7 +11744,7 @@ pub struct DeployedModel {
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types\]\[google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types\].
     /// Required except for Large Model Deploy use cases.
-    #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8, 17")]
+    #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8, 17, 36")]
     pub prediction_resources: ::core::option::Option<
         deployed_model::PredictionResources,
     >,
@@ -11625,6 +11785,9 @@ pub mod deployed_model {
         /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
         #[prost(string, tag = "17")]
         SharedResources(::prost::alloc::string::String),
+        /// Optional. Resources for a full fine tuned model.
+        #[prost(message, tag = "36")]
+        FullFineTunedResources(super::FullFineTunedResources),
     }
 }
 /// PrivateEndpoints proto is used to provide paths for users to send
@@ -12246,6 +12409,10 @@ pub enum DeploymentStage {
     FinishingUp = 4,
     /// The deployment has terminated.
     DeploymentTerminated = 10,
+    /// The deployment has succeeded.
+    SuccessfullyDeployed = 11,
+    /// The deployment has failed.
+    FailedToDeploy = 12,
 }
 impl DeploymentStage {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -12263,6 +12430,8 @@ impl DeploymentStage {
             Self::StartingModelServer => "STARTING_MODEL_SERVER",
             Self::FinishingUp => "FINISHING_UP",
             Self::DeploymentTerminated => "DEPLOYMENT_TERMINATED",
+            Self::SuccessfullyDeployed => "SUCCESSFULLY_DEPLOYED",
+            Self::FailedToDeploy => "FAILED_TO_DEPLOY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12277,6 +12446,8 @@ impl DeploymentStage {
             "STARTING_MODEL_SERVER" => Some(Self::StartingModelServer),
             "FINISHING_UP" => Some(Self::FinishingUp),
             "DEPLOYMENT_TERMINATED" => Some(Self::DeploymentTerminated),
+            "SUCCESSFULLY_DEPLOYED" => Some(Self::SuccessfullyDeployed),
+            "FAILED_TO_DEPLOY" => Some(Self::FailedToDeploy),
             _ => None,
         }
     }
@@ -18745,6 +18916,11 @@ pub mod feature_online_store {
         /// Metadata of the Bigtable instance. Output only.
         #[prost(message, optional, tag = "4")]
         pub bigtable_metadata: ::core::option::Option<bigtable::BigtableMetadata>,
+        /// Optional. The zone where the underlying Bigtable cluster for the primary
+        /// Bigtable instance will be provisioned. Only the zone must be provided.
+        /// For example, only "us-central1-a" should be provided.
+        #[prost(string, tag = "5")]
+        pub zone: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Bigtable`.
     pub mod bigtable {
@@ -46303,8 +46479,9 @@ pub mod reasoning_engine_spec {
         /// Optional. The Cloud Storage URI of the `requirements.txt` file
         #[prost(string, tag = "3")]
         pub requirements_gcs_uri: ::prost::alloc::string::String,
-        /// Optional. The Python version. Currently support 3.8, 3.9, 3.10, 3.11.
-        /// If not specified, default value is 3.10.
+        /// Optional. The Python version. Supported values
+        /// are 3.9, 3.10, 3.11, 3.12, 3.13. If not specified, the default value
+        /// is 3.10.
         #[prost(string, tag = "4")]
         pub python_version: ::prost::alloc::string::String,
     }
@@ -46359,7 +46536,7 @@ pub mod reasoning_engine_spec {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceCodeSpec {
         /// Specifies where the source code is located.
-        #[prost(oneof = "source_code_spec::Source", tags = "1")]
+        #[prost(oneof = "source_code_spec::Source", tags = "1, 3")]
         pub source: ::core::option::Option<source_code_spec::Source>,
         /// Specifies the language-specific configuration for building and running
         /// the code.
@@ -46376,6 +46553,34 @@ pub mod reasoning_engine_spec {
             /// (.tar.gz) file.
             #[prost(bytes = "vec", tag = "1")]
             pub source_archive: ::prost::alloc::vec::Vec<u8>,
+        }
+        /// Specifies the configuration for fetching source code from a Git
+        /// repository that is managed by Developer Connect. This includes the
+        /// repository, revision, and directory to use.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectConfig {
+            /// Required. The Developer Connect Git repository link, formatted as
+            /// `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
+            #[prost(string, tag = "1")]
+            pub git_repository_link: ::prost::alloc::string::String,
+            /// Required. Directory, relative to the source root, in which to run the
+            /// build.
+            #[prost(string, tag = "2")]
+            pub dir: ::prost::alloc::string::String,
+            /// Required. The revision to fetch from the Git repository such as a
+            /// branch, a tag, a commit SHA, or any Git ref.
+            #[prost(string, tag = "3")]
+            pub revision: ::prost::alloc::string::String,
+        }
+        /// Specifies source code to be fetched from a Git repository managed through
+        /// the Developer Connect service.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectSource {
+            /// Required. The Developer Connect configuration that defines the
+            /// specific repository, revision, and directory to use as the source code
+            /// root.
+            #[prost(message, optional, tag = "1")]
+            pub config: ::core::option::Option<DeveloperConnectConfig>,
         }
         /// Specification for running a Python application from source.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -46409,6 +46614,9 @@ pub mod reasoning_engine_spec {
             /// Source code is provided directly in the request.
             #[prost(message, tag = "1")]
             InlineSource(InlineSource),
+            /// Source code is in a Git repository managed by Developer Connect.
+            #[prost(message, tag = "3")]
+            DeveloperConnectSource(DeveloperConnectSource),
         }
         /// Specifies the language-specific configuration for building and running
         /// the code.
@@ -47966,8 +48174,9 @@ pub struct ListSessionsRequest {
     /// Optional. The standard list filter.
     /// Supported fields:
     /// \* `display_name`
+    /// \* `user_id`
     ///
-    /// Example: `display_name=abc`.
+    /// Example: `display_name="abc"`, `user_id="123"`.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. A comma-separated list of fields to order by, sorted in ascending
@@ -48047,6 +48256,14 @@ pub struct ListEventsRequest {
     /// More detail in [AIP-160](<https://google.aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    /// * `timestamp`
+    ///
+    /// Example: `timestamp desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
 /// \[SessionService.ListEvents\]\[google.cloud.aiplatform.v1beta1.SessionService.ListEvents\].

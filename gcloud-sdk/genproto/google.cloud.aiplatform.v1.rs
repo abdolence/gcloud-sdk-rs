@@ -2197,6 +2197,22 @@ pub struct MachineSpec {
     /// The number of accelerators to attach to the machine.
     #[prost(int32, tag = "3")]
     pub accelerator_count: i32,
+    /// Optional. Immutable. The Nvidia GPU partition size.
+    ///
+    /// When specified, the requested accelerators will be partitioned into
+    /// smaller GPU partitions. For example, if the request is for 8 units of
+    /// NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+    /// create 8 * 7 = 56 partitioned MIG instances.
+    ///
+    /// The partition size must be a value supported by the requested accelerator.
+    /// Refer to
+    /// [Nvidia GPU
+    /// Partitioning](<https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions>)
+    /// for the available partition sizes.
+    ///
+    /// If set, the accelerator_count should be set to 1.
+    #[prost(string, tag = "7")]
+    pub gpu_partition_size: ::prost::alloc::string::String,
     /// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
     /// available from GKE. (Example: tpu_topology: "2x2x1").
     #[prost(string, tag = "4")]
@@ -2206,30 +2222,26 @@ pub struct MachineSpec {
     #[prost(message, optional, tag = "5")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
 }
-/// A description of resources that are dedicated to a DeployedModel, and
-/// that need a higher degree of manual configuration.
+/// A description of resources that are dedicated to a DeployedModel or
+/// DeployedIndex, and that need a higher degree of manual configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DedicatedResources {
-    /// Required. Immutable. The specification of a single machine used by the
-    /// prediction.
+    /// Required. Immutable. The specification of a single machine being used.
     #[prost(message, optional, tag = "1")]
     pub machine_spec: ::core::option::Option<MachineSpec>,
-    /// Required. Immutable. The minimum number of machine replicas this
-    /// DeployedModel will be always deployed on. This value must be greater than
-    /// or equal to 1.
+    /// Required. Immutable. The minimum number of machine replicas that will be
+    /// always deployed on. This value must be greater than or equal to 1.
     ///
-    /// If traffic against the DeployedModel increases, it may dynamically be
-    /// deployed onto more replicas, and as traffic decreases, some of these extra
-    /// replicas may be freed.
+    /// If traffic increases, it may dynamically be deployed onto more replicas,
+    /// and as traffic decreases, some of these extra replicas may be freed.
     #[prost(int32, tag = "2")]
     pub min_replica_count: i32,
-    /// Immutable. The maximum number of replicas this DeployedModel may be
-    /// deployed on when the traffic against it increases. If the requested value
-    /// is too large, the deployment will error, but if deployment succeeds then
-    /// the ability to scale the model to that many replicas is guaranteed (barring
-    /// service outages). If traffic against the DeployedModel increases beyond
-    /// what its replicas at maximum may handle, a portion of the traffic will be
-    /// dropped. If this value is not provided, will use
+    /// Immutable. The maximum number of replicas that may be deployed on when the
+    /// traffic against it increases. If the requested value is too large, the
+    /// deployment will error, but if deployment succeeds then the ability to scale
+    /// to that many replicas is guaranteed (barring service outages). If traffic
+    /// increases beyond what its replicas at maximum may handle, a portion of the
+    /// traffic will be dropped. If this value is not provided, will use
     /// \[min_replica_count\]\[google.cloud.aiplatform.v1.DedicatedResources.min_replica_count\]
     /// as the default value.
     ///
@@ -2240,8 +2252,8 @@ pub struct DedicatedResources {
     #[prost(int32, tag = "3")]
     pub max_replica_count: i32,
     /// Optional. Number of required available replicas for the deployment to
-    /// succeed. This field is only needed when partial model deployment/mutation
-    /// is desired. If set, the model deploy/mutate operation will succeed once
+    /// succeed. This field is only needed when partial deployment/mutation is
+    /// desired. If set, the deploy/mutate operation will succeed once
     /// available_replica_count reaches required_replica_count, and the rest of
     /// the replicas will be retried. If not set, the default
     /// required_replica_count will be min_replica_count.
@@ -2282,23 +2294,22 @@ pub struct DedicatedResources {
 /// Each Model supporting these resources documents its specific guidelines.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticResources {
-    /// Immutable. The minimum number of replicas this DeployedModel will be always
-    /// deployed on. If traffic against it increases, it may dynamically be
-    /// deployed onto more replicas up to
+    /// Immutable. The minimum number of replicas that will be always deployed on.
+    /// If traffic against it increases, it may dynamically be deployed onto more
+    /// replicas up to
     /// \[max_replica_count\]\[google.cloud.aiplatform.v1.AutomaticResources.max_replica_count\],
     /// and as traffic decreases, some of these extra replicas may be freed. If the
     /// requested value is too large, the deployment will error.
     #[prost(int32, tag = "1")]
     pub min_replica_count: i32,
-    /// Immutable. The maximum number of replicas this DeployedModel may be
-    /// deployed on when the traffic against it increases. If the requested value
-    /// is too large, the deployment will error, but if deployment succeeds then
-    /// the ability to scale the model to that many replicas is guaranteed (barring
-    /// service outages). If traffic against the DeployedModel increases beyond
-    /// what its replicas at maximum may handle, a portion of the traffic will be
-    /// dropped. If this value is not provided, a no upper bound for scaling under
-    /// heavy traffic will be assume, though Vertex AI may be unable to scale
-    /// beyond certain replica number.
+    /// Immutable. The maximum number of replicas that may be deployed on when the
+    /// traffic against it increases. If the requested value is too large, the
+    /// deployment will error, but if deployment succeeds then the ability to scale
+    /// to that many replicas is guaranteed (barring service outages). If traffic
+    /// increases beyond what its replicas at maximum may handle, a portion of the
+    /// traffic will be dropped. If this value is not provided, a no upper bound
+    /// for scaling under heavy traffic will be assume, though Vertex AI may be
+    /// unable to scale beyond certain replica number.
     #[prost(int32, tag = "2")]
     pub max_replica_count: i32,
 }
@@ -2331,9 +2342,10 @@ pub struct ResourcesConsumed {
 /// Represents the spec of disk options.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskSpec {
-    /// Type of the boot disk (default is "pd-ssd").
-    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
-    /// "pd-standard" (Persistent Disk Hard Disk Drive).
+    /// Type of the boot disk. For non-A3U machines, the default value is
+    /// "pd-ssd", for A3U machines, the default value is "hyperdisk-balanced".
+    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive),
+    /// "pd-standard" (Persistent Disk Hard Disk Drive) or "hyperdisk-balanced".
     #[prost(string, tag = "1")]
     pub boot_disk_type: ::prost::alloc::string::String,
     /// Size in GB of the boot disk (default is 100GB).
@@ -2371,6 +2383,23 @@ pub struct NfsMount {
     #[prost(string, tag = "3")]
     pub mount_point: ::prost::alloc::string::String,
 }
+/// Represents a mount configuration for Lustre file system.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LustreMount {
+    /// Required. IP address of the Lustre instance.
+    #[prost(string, tag = "1")]
+    pub instance_ip: ::prost::alloc::string::String,
+    /// Required. The unique identifier of the Lustre volume.
+    #[prost(string, tag = "2")]
+    pub volume_handle: ::prost::alloc::string::String,
+    /// Required. The name of the Lustre filesystem.
+    #[prost(string, tag = "3")]
+    pub filesystem: ::prost::alloc::string::String,
+    /// Required. Destination mount path. The Lustre file system will be mounted
+    /// for the user under /mnt/lustre/\<mount_point>
+    #[prost(string, tag = "4")]
+    pub mount_point: ::prost::alloc::string::String,
+}
 /// The metric specification that defines the target resource utilization
 /// (CPU utilization, accelerator's duty cycle, and so on) for calculating the
 /// desired replica count.
@@ -2382,6 +2411,7 @@ pub struct AutoscalingMetricSpec {
     /// * For Online Prediction:
     /// * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
     /// * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
+    /// * `aiplatform.googleapis.com/prediction/online/request_count`
     #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
     /// The target resource utilization in percentage (1% - 100%) for the given
@@ -4228,7 +4258,7 @@ pub struct Tool {
     #[prost(message, optional, tag = "4")]
     pub code_execution: ::core::option::Option<tool::CodeExecution>,
     /// Optional. Tool to support URL context retrieval.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "10")]
     pub url_context: ::core::option::Option<UrlContext>,
     /// Optional. Tool to support the model interacting directly with the computer.
     /// If enabled, it automatically populates computer-use specific Function
@@ -4456,14 +4486,59 @@ pub struct FunctionDeclaration {
 /// containing the parameters and their values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionCall {
-    /// Required. The name of the function to call.
+    /// Optional. The name of the function to call.
     /// Matches \[FunctionDeclaration.name\].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Required. The function parameters and values in JSON object
-    /// format. See \[FunctionDeclaration.parameters\] for parameter details.
+    /// Optional. The function parameters and values in JSON object format.
+    /// See \[FunctionDeclaration.parameters\] for parameter details.
     #[prost(message, optional, tag = "2")]
     pub args: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The partial argument value of the function call.
+    /// If provided, represents the arguments/fields that are streamed
+    /// incrementally.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_args: ::prost::alloc::vec::Vec<PartialArg>,
+    /// Optional. Whether this is the last part of the FunctionCall.
+    /// If true, another partial message for the current FunctionCall is expected
+    /// to follow.
+    #[prost(bool, tag = "5")]
+    pub will_continue: bool,
+}
+/// Partial argument value of the function call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartialArg {
+    /// Required. A JSON Path (RFC 9535) to the argument being streamed.
+    /// <https://datatracker.ietf.org/doc/html/rfc9535.> e.g. "$.foo.bar\[0\].data".
+    #[prost(string, tag = "1")]
+    pub json_path: ::prost::alloc::string::String,
+    /// Optional. Whether this is not the last part of the same json_path.
+    /// If true, another PartialArg message for the current json_path is expected
+    /// to follow.
+    #[prost(bool, tag = "6")]
+    pub will_continue: bool,
+    /// The delta of field value being streamed.
+    #[prost(oneof = "partial_arg::Delta", tags = "2, 3, 4, 5")]
+    pub delta: ::core::option::Option<partial_arg::Delta>,
+}
+/// Nested message and enum types in `PartialArg`.
+pub mod partial_arg {
+    /// The delta of field value being streamed.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Delta {
+        /// Optional. Represents a null value.
+        #[prost(enumeration = "::prost_types::NullValue", tag = "2")]
+        NullValue(i32),
+        /// Optional. Represents a double value.
+        #[prost(double, tag = "3")]
+        NumberValue(f64),
+        /// Optional. Represents a string value.
+        #[prost(string, tag = "4")]
+        StringValue(::prost::alloc::string::String),
+        /// Optional. Represents a boolean value.
+        #[prost(bool, tag = "5")]
+        BoolValue(bool),
+    }
 }
 /// A datatype containing media that is part of a `FunctionResponse` message.
 ///
@@ -4888,6 +4963,11 @@ pub struct FunctionCallingConfig {
     /// will predict a function call from the set of function names provided.
     #[prost(string, repeated, tag = "2")]
     pub allowed_function_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. When set to true, arguments of a single function call will be
+    /// streamed out in multiple parts/contents/responses. Partial parameter
+    /// results will be returned in the \[FunctionCall.partial_args\] field.
+    #[prost(bool, tag = "4")]
+    pub stream_function_call_arguments: bool,
 }
 /// Nested message and enum types in `FunctionCallingConfig`.
 pub mod function_calling_config {
@@ -5819,6 +5899,80 @@ pub struct VideoMetadata {
     #[prost(message, optional, tag = "2")]
     pub end_offset: ::core::option::Option<::prost_types::Duration>,
 }
+/// Configuration for a prebuilt voice.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PrebuiltVoiceConfig {
+    /// The name of the prebuilt voice to use.
+    #[prost(string, optional, tag = "1")]
+    pub voice_name: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The configuration for the replicated voice to use.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReplicatedVoiceConfig {
+    /// Optional. The mimetype of the voice sample. The only currently supported
+    /// value is `audio/wav`. This represents 16-bit signed little-endian wav data,
+    /// with a 24kHz sampling rate. `mime_type` will default to `audio/wav` if not
+    /// set.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Optional. The sample of the custom voice.
+    #[prost(bytes = "vec", tag = "2")]
+    pub voice_sample_audio: ::prost::alloc::vec::Vec<u8>,
+}
+/// Configuration for a voice.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VoiceConfig {
+    /// The configuration for the speaker to use.
+    #[prost(oneof = "voice_config::VoiceConfig", tags = "1, 3")]
+    pub voice_config: ::core::option::Option<voice_config::VoiceConfig>,
+}
+/// Nested message and enum types in `VoiceConfig`.
+pub mod voice_config {
+    /// The configuration for the speaker to use.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum VoiceConfig {
+        /// The configuration for a prebuilt voice.
+        #[prost(message, tag = "1")]
+        PrebuiltVoiceConfig(super::PrebuiltVoiceConfig),
+        /// Optional. The configuration for a replicated voice. This enables users to
+        /// replicate a voice from an audio sample.
+        #[prost(message, tag = "3")]
+        ReplicatedVoiceConfig(super::ReplicatedVoiceConfig),
+    }
+}
+/// Configuration for a single speaker in a multi-speaker setup.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpeakerVoiceConfig {
+    /// Required. The name of the speaker. This should be the same as the speaker
+    /// name used in the prompt.
+    #[prost(string, tag = "1")]
+    pub speaker: ::prost::alloc::string::String,
+    /// Required. The configuration for the voice of this speaker.
+    #[prost(message, optional, tag = "2")]
+    pub voice_config: ::core::option::Option<VoiceConfig>,
+}
+/// Configuration for a multi-speaker text-to-speech request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiSpeakerVoiceConfig {
+    /// Required. A list of configurations for the voices of the speakers. Exactly
+    /// two speaker voice configurations must be provided.
+    #[prost(message, repeated, tag = "2")]
+    pub speaker_voice_configs: ::prost::alloc::vec::Vec<SpeakerVoiceConfig>,
+}
+/// Configuration for speech generation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpeechConfig {
+    /// The configuration for the voice to use.
+    #[prost(message, optional, tag = "1")]
+    pub voice_config: ::core::option::Option<VoiceConfig>,
+    /// Optional. The language code (ISO 639-1) for the speech synthesis.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The configuration for a multi-speaker text-to-speech request.
+    /// This field is mutually exclusive with `voice_config`.
+    #[prost(message, optional, tag = "3")]
+    pub multi_speaker_voice_config: ::core::option::Option<MultiSpeakerVoiceConfig>,
+}
 /// Config for image generation features.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageConfig {
@@ -5930,6 +6084,9 @@ pub struct GenerationConfig {
     /// Optional. Routing configuration.
     #[prost(message, optional, tag = "17")]
     pub routing_config: ::core::option::Option<generation_config::RoutingConfig>,
+    /// Optional. The speech generation config.
+    #[prost(message, optional, tag = "23")]
+    pub speech_config: ::core::option::Option<SpeechConfig>,
     /// Optional. Config for thinking features.
     /// An error will be returned if this field is set for models that don't
     /// support thinking.
@@ -7389,6 +7546,9 @@ pub struct WorkerPoolSpec {
     /// Optional. List of NFS mount spec.
     #[prost(message, repeated, tag = "4")]
     pub nfs_mounts: ::prost::alloc::vec::Vec<NfsMount>,
+    /// Optional. List of Lustre mounts.
+    #[prost(message, repeated, tag = "9")]
+    pub lustre_mounts: ::prost::alloc::vec::Vec<LustreMount>,
     /// Disk spec.
     #[prost(message, optional, tag = "5")]
     pub disk_spec: ::core::option::Option<DiskSpec>,
@@ -10670,6 +10830,10 @@ pub enum DeploymentStage {
     FinishingUp = 4,
     /// The deployment has terminated.
     DeploymentTerminated = 10,
+    /// The deployment has succeeded.
+    SuccessfullyDeployed = 11,
+    /// The deployment has failed.
+    FailedToDeploy = 12,
 }
 impl DeploymentStage {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -10687,6 +10851,8 @@ impl DeploymentStage {
             Self::StartingModelServer => "STARTING_MODEL_SERVER",
             Self::FinishingUp => "FINISHING_UP",
             Self::DeploymentTerminated => "DEPLOYMENT_TERMINATED",
+            Self::SuccessfullyDeployed => "SUCCESSFULLY_DEPLOYED",
+            Self::FailedToDeploy => "FAILED_TO_DEPLOY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10701,6 +10867,8 @@ impl DeploymentStage {
             "STARTING_MODEL_SERVER" => Some(Self::StartingModelServer),
             "FINISHING_UP" => Some(Self::FinishingUp),
             "DEPLOYMENT_TERMINATED" => Some(Self::DeploymentTerminated),
+            "SUCCESSFULLY_DEPLOYED" => Some(Self::SuccessfullyDeployed),
+            "FAILED_TO_DEPLOY" => Some(Self::FailedToDeploy),
             _ => None,
         }
     }
@@ -14110,6 +14278,11 @@ pub mod feature_online_store {
         /// Output only. Metadata of the Bigtable instance. Output only.
         #[prost(message, optional, tag = "4")]
         pub bigtable_metadata: ::core::option::Option<bigtable::BigtableMetadata>,
+        /// Optional. The zone where the underlying Bigtable cluster for the primary
+        /// Bigtable instance will be provisioned. Only the zone must be provided.
+        /// For example, only "us-central1-a" should be provided.
+        #[prost(string, tag = "5")]
+        pub zone: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Bigtable`.
     pub mod bigtable {
@@ -37800,8 +37973,9 @@ pub mod reasoning_engine_spec {
         /// Optional. The Cloud Storage URI of the `requirements.txt` file
         #[prost(string, tag = "3")]
         pub requirements_gcs_uri: ::prost::alloc::string::String,
-        /// Optional. The Python version. Currently support 3.8, 3.9, 3.10, 3.11.
-        /// If not specified, default value is 3.10.
+        /// Optional. The Python version. Supported values
+        /// are 3.9, 3.10, 3.11, 3.12, 3.13. If not specified, the default value
+        /// is 3.10.
         #[prost(string, tag = "4")]
         pub python_version: ::prost::alloc::string::String,
     }
@@ -37856,7 +38030,7 @@ pub mod reasoning_engine_spec {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceCodeSpec {
         /// Specifies where the source code is located.
-        #[prost(oneof = "source_code_spec::Source", tags = "1")]
+        #[prost(oneof = "source_code_spec::Source", tags = "1, 3")]
         pub source: ::core::option::Option<source_code_spec::Source>,
         /// Specifies the language-specific configuration for building and running
         /// the code.
@@ -37869,10 +38043,37 @@ pub mod reasoning_engine_spec {
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct InlineSource {
             /// Required. Input only. The application source code archive, provided as
-            /// a compressed tarball
-            /// (.tar.gz) file.
+            /// a compressed tarball (.tar.gz) file.
             #[prost(bytes = "vec", tag = "1")]
             pub source_archive: ::prost::alloc::vec::Vec<u8>,
+        }
+        /// Specifies the configuration for fetching source code from a Git
+        /// repository that is managed by Developer Connect. This includes the
+        /// repository, revision, and directory to use.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectConfig {
+            /// Required. The Developer Connect Git repository link, formatted as
+            /// `projects/*/locations/*/connections/*/gitRepositoryLink/*`.
+            #[prost(string, tag = "1")]
+            pub git_repository_link: ::prost::alloc::string::String,
+            /// Required. Directory, relative to the source root, in which to run the
+            /// build.
+            #[prost(string, tag = "2")]
+            pub dir: ::prost::alloc::string::String,
+            /// Required. The revision to fetch from the Git repository such as a
+            /// branch, a tag, a commit SHA, or any Git ref.
+            #[prost(string, tag = "3")]
+            pub revision: ::prost::alloc::string::String,
+        }
+        /// Specifies source code to be fetched from a Git repository managed through
+        /// the Developer Connect service.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DeveloperConnectSource {
+            /// Required. The Developer Connect configuration that defines the
+            /// specific repository, revision, and directory to use as the source code
+            /// root.
+            #[prost(message, optional, tag = "1")]
+            pub config: ::core::option::Option<DeveloperConnectConfig>,
         }
         /// Specification for running a Python application from source.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -37906,6 +38107,9 @@ pub mod reasoning_engine_spec {
             /// Source code is provided directly in the request.
             #[prost(message, tag = "1")]
             InlineSource(InlineSource),
+            /// Source code is in a Git repository managed by Developer Connect.
+            #[prost(message, tag = "3")]
+            DeveloperConnectSource(DeveloperConnectSource),
         }
         /// Specifies the language-specific configuration for building and running
         /// the code.

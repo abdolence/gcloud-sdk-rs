@@ -34,6 +34,11 @@ pub struct Job {
     /// Output only. State of the job.
     #[prost(enumeration = "job::State", tag = "15")]
     pub state: i32,
+    /// Optional. If true, the job will run in dry run mode, returning the total
+    /// object count and, if the object configuration is a prefix list, the bytes
+    /// found from source. No transformations will be performed.
+    #[prost(bool, tag = "22")]
+    pub dry_run: bool,
     /// Specifies objects to be transformed.
     #[prost(oneof = "job::Source", tags = "19")]
     pub source: ::core::option::Option<job::Source>,
@@ -163,15 +168,12 @@ pub struct Manifest {
     /// a CSV file in a Google Cloud Storage bucket. Each row in the file must
     /// include the object details i.e. BucketId and Name. Generation may
     /// optionally be specified. When it is not specified the live object is acted
-    /// upon.
-    /// `manifest_location` should either be
-    ///
-    /// 1. An absolute path to the object in the format of
-    ///    `gs://bucket_name/path/file_name.csv`.
-    /// 1. An absolute path with a single wildcard character in the file name, for
-    ///    example `gs://bucket_name/path/file_name*.csv`.
-    ///    If manifest location is specified with a wildcard, objects in all manifest
-    ///    files matching the pattern will be acted upon.
+    /// upon. `manifest_location` should either be 1) An absolute path to the
+    /// object in the format of `gs://bucket_name/path/file_name.csv`. 2) An
+    /// absolute path with a single wildcard character in the file name, for
+    /// example `gs://bucket_name/path/file_name*.csv`.
+    /// If manifest location is specified with a wildcard, objects in all manifest
+    /// files matching the pattern will be acted upon.
     #[prost(string, tag = "2")]
     pub manifest_location: ::prost::alloc::string::String,
 }
@@ -278,6 +280,64 @@ pub struct RewriteObject {
     #[prost(string, optional, tag = "1")]
     pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Describes options for object retention update.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ObjectRetention {
+    /// Required. The time when the object will be retained until. UNSET will clear
+    /// the retention. Must be specified in RFC 3339 format e.g.
+    /// YYYY-MM-DD'T'HH:MM:SS.SS'Z' or YYYY-MM-DD'T'HH:MM:SS'Z'.
+    #[prost(string, optional, tag = "1")]
+    pub retain_until_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The retention mode of the object.
+    #[prost(enumeration = "object_retention::RetentionMode", optional, tag = "2")]
+    pub retention_mode: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ObjectRetention`.
+pub mod object_retention {
+    /// Describes the retention mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RetentionMode {
+        /// If set and retain_until_time is empty, clears the retention.
+        Unspecified = 0,
+        /// Sets the retention mode to locked.
+        Locked = 1,
+        /// Sets the retention mode to unlocked.
+        Unlocked = 2,
+    }
+    impl RetentionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RETENTION_MODE_UNSPECIFIED",
+                Self::Locked => "LOCKED",
+                Self::Unlocked => "UNLOCKED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETENTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCKED" => Some(Self::Locked),
+                "UNLOCKED" => Some(Self::Unlocked),
+                _ => None,
+            }
+        }
+    }
+}
 /// Describes options for object metadata update.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PutMetadata {
@@ -301,16 +361,13 @@ pub struct PutMetadata {
     #[prost(string, optional, tag = "3")]
     pub content_language: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Updates objects Content-Type fixed metadata. Unset values will be
-    /// ignored.
-    /// Set empty values to clear the metadata. Refer to documentation in
+    /// ignored. Set empty values to clear the metadata. Refer to documentation in
     /// <https://cloud.google.com/storage/docs/metadata#content-type>
     #[prost(string, optional, tag = "4")]
     pub content_type: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Updates objects Cache-Control fixed metadata. Unset values will
-    /// be
-    /// ignored. Set empty values to clear the metadata.
-    /// Additionally, the value for Custom-Time cannot decrease. Refer to
-    /// documentation in
+    /// be ignored. Set empty values to clear the metadata. Additionally, the value
+    /// for Custom-Time cannot decrease. Refer to documentation in
     /// <https://cloud.google.com/storage/docs/metadata#caching_data.>
     #[prost(string, optional, tag = "5")]
     pub cache_control: ::core::option::Option<::prost::alloc::string::String>,
@@ -329,6 +386,13 @@ pub struct PutMetadata {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Updates objects retention lock configuration. Unset values will
+    /// be ignored. Set empty values to clear the retention for the object with
+    /// existing `Unlocked` retention mode. Object with existing `Locked` retention
+    /// mode cannot be cleared or reduce retain_until_time. Refer to documentation
+    /// in <https://cloud.google.com/storage/docs/object-lock>
+    #[prost(message, optional, tag = "8")]
+    pub object_retention: ::core::option::Option<ObjectRetention>,
 }
 /// A summary of errors by error code, plus a count and sample error log
 /// entries.
@@ -367,6 +431,10 @@ pub struct Counters {
     /// Output only. Number of objects failed.
     #[prost(int64, tag = "3")]
     pub failed_object_count: i64,
+    /// Output only. Number of bytes found from source. This field is only
+    /// populated for jobs with a prefix list object configuration.
+    #[prost(int64, optional, tag = "4")]
+    pub total_bytes_found: ::core::option::Option<i64>,
 }
 /// Specifies the Cloud Logging behavior.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

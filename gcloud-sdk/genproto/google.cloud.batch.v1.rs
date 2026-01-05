@@ -1357,6 +1357,11 @@ pub mod allocation_policy {
         /// and has been migrated to use the SPOT model as the underlying technology.
         /// This old model will still be supported.
         Preemptible = 3,
+        /// Bound to the lifecycle of the reservation in which it is provisioned.
+        ReservationBound = 4,
+        /// Instance is provisioned with DWS Flex Start and has limited max run
+        /// duration.
+        FlexStart = 5,
     }
     impl ProvisioningModel {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1369,6 +1374,8 @@ pub mod allocation_policy {
                 Self::Standard => "STANDARD",
                 Self::Spot => "SPOT",
                 Self::Preemptible => "PREEMPTIBLE",
+                Self::ReservationBound => "RESERVATION_BOUND",
+                Self::FlexStart => "FLEX_START",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1378,6 +1385,8 @@ pub mod allocation_policy {
                 "STANDARD" => Some(Self::Standard),
                 "SPOT" => Some(Self::Spot),
                 "PREEMPTIBLE" => Some(Self::Preemptible),
+                "RESERVATION_BOUND" => Some(Self::ReservationBound),
+                "FLEX_START" => Some(Self::FlexStart),
                 _ => None,
             }
         }

@@ -393,7 +393,6 @@ impl HarmCategory {
     }
 }
 /// Request to generate a completion from the model.
-/// NEXT ID: 18
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentRequest {
     /// Required. The name of the `Model` to use for generating the completion.
@@ -434,7 +433,6 @@ pub struct GenerateContentRequest {
 }
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
-/// Next ID: 29
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
     /// Optional. Number of generated responses to return. If unset, this will
@@ -791,6 +789,8 @@ pub mod candidate {
         ImageOther = 15,
         /// The model was expected to generate an image, but none was generated.
         NoImage = 16,
+        /// Image generation stopped due to recitation.
+        ImageRecitation = 17,
         /// Model generated a tool call but no tools were enabled in the request.
         UnexpectedToolCall = 12,
         /// Model called too many tools consecutively, thus the system exited
@@ -819,6 +819,7 @@ pub mod candidate {
                 Self::ImageProhibitedContent => "IMAGE_PROHIBITED_CONTENT",
                 Self::ImageOther => "IMAGE_OTHER",
                 Self::NoImage => "NO_IMAGE",
+                Self::ImageRecitation => "IMAGE_RECITATION",
                 Self::UnexpectedToolCall => "UNEXPECTED_TOOL_CALL",
                 Self::TooManyToolCalls => "TOO_MANY_TOOL_CALLS",
             }
@@ -841,6 +842,7 @@ pub mod candidate {
                 "IMAGE_PROHIBITED_CONTENT" => Some(Self::ImageProhibitedContent),
                 "IMAGE_OTHER" => Some(Self::ImageOther),
                 "NO_IMAGE" => Some(Self::NoImage),
+                "IMAGE_RECITATION" => Some(Self::ImageRecitation),
                 "UNEXPECTED_TOOL_CALL" => Some(Self::UnexpectedToolCall),
                 "TOO_MANY_TOOL_CALLS" => Some(Self::TooManyToolCalls),
                 _ => None,
@@ -985,6 +987,14 @@ pub struct GroundingMetadata {
     /// Web search queries for the following-up web search.
     #[prost(string, repeated, tag = "5")]
     pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Resource name of the Google Maps widget context token that can be
+    /// used with the PlacesContextElement widget in order to render contextual
+    /// data. Only populated in the case that grounding with Google Maps is
+    /// enabled.
+    #[prost(string, optional, tag = "7")]
+    pub google_maps_widget_context_token: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Google search entry point.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

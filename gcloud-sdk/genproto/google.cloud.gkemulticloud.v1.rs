@@ -74,9 +74,8 @@ pub struct OperationMetadata {
     /// operation. Possible values are "create", "delete", "update" and "import".
     #[prost(string, tag = "7")]
     pub verb: ::prost::alloc::string::String,
-    /// Output only. Identifies whether it has been requested cancellation
-    /// for the operation. Operations that have successfully been cancelled
-    /// have
+    /// Output only. Identifies whether cancellation has been requested for the
+    /// operation. Operations that have successfully been cancelled have
     /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
     /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
@@ -532,15 +531,16 @@ pub struct AttachedCluster {
     /// Optional. Security Posture configuration for this cluster.
     #[prost(message, optional, tag = "26")]
     pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
-    /// Optional. Input only. Tag keys/values directly bound to this resource.
+    /// Optional. Input only. Tag keys and values directly bound to this resource.
     ///
-    /// Tag key must be specified in the format <tag namespace>/<tag key name>
+    /// The tag key must be specified in the format
+    /// `<tag namespace>/<tag key name>,`
     /// where the tag namespace is the ID of the organization or name of the
-    /// project that the tag key is defined in.
-    /// The short name of a tag key or value can have a maximum length of 256
-    /// characters. The permitted character set for the short name includes UTF-8
-    /// encoded Unicode characters except single quotes ('), double quotes ("),
-    /// backslashes (), and forward slashes (/).
+    /// project that the tag key is defined in. The short name of a tag key or
+    /// value can have a maximum length of 256 characters. The permitted character
+    /// set for the short name includes UTF-8 encoded Unicode characters except
+    /// single quotation marks (`'`), double quotation marks (`"`), backslashes
+    /// (`\`), and forward slashes (`/`).
     ///
     /// See
     /// [Tags](<https://cloud.google.com/resource-manager/docs/tags/tags-overview>)
@@ -550,6 +550,10 @@ pub struct AttachedCluster {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Kubernetes configurations for auto-installed components on the
+    /// cluster.
+    #[prost(message, optional, tag = "28")]
+    pub system_components_config: ::core::option::Option<SystemComponentsConfig>,
 }
 /// Nested message and enum types in `AttachedCluster`.
 pub mod attached_cluster {
@@ -694,6 +698,24 @@ pub struct AttachedPlatformVersionInfo {
     /// Platform version name.
     #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
+    /// Optional. True if the version is available for attachedcluster creation. If
+    /// a version is enabled, it can be used to attach new clusters.
+    #[prost(bool, tag = "3")]
+    pub enabled: bool,
+    /// Optional. True if this cluster version belongs to a minor version that has
+    /// reached its end of life and is no longer in scope to receive security and
+    /// bug fixes.
+    #[prost(bool, tag = "4")]
+    pub end_of_life: bool,
+    /// Optional. The estimated date (in Pacific Time) when this cluster version
+    /// will reach its end of life. Or if this version is no longer supported (the
+    /// `end_of_life` field is true), this is the actual date (in Pacific time)
+    /// when the version reached its end of life.
+    #[prost(message, optional, tag = "5")]
+    pub end_of_life_date: ::core::option::Option<super::super::super::r#type::Date>,
+    /// Optional. The date (in Pacific Time) when the cluster version was released.
+    #[prost(message, optional, tag = "6")]
+    pub release_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// AttachedClusterError describes errors found on attached clusters.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -724,6 +746,138 @@ pub struct KubernetesSecret {
     /// Namespace in which the kubernetes secret is stored.
     #[prost(string, tag = "2")]
     pub namespace: ::prost::alloc::string::String,
+}
+/// SystemComponentsConfig defines the fields for customizing configurations for
+/// auto-installed components.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SystemComponentsConfig {
+    /// Sets custom tolerations for pods created by auto-installed components.
+    #[prost(message, repeated, tag = "1")]
+    pub tolerations: ::prost::alloc::vec::Vec<Toleration>,
+    /// Sets custom labels for pods created by auto-installed components.
+    #[prost(message, repeated, tag = "2")]
+    pub labels: ::prost::alloc::vec::Vec<Label>,
+}
+/// Toleration defines the fields for tolerations for pods created by
+/// auto-installed components.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Toleration {
+    /// Key is the taint key that the toleration applies to.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Value is the taint value that the toleration applies to.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+    /// KeyOperator represents a key's relationship to the value e.g. 'Exist'.
+    #[prost(enumeration = "toleration::KeyOperator", tag = "3")]
+    pub key_operator: i32,
+    /// Effect indicates the taint effect to match e.g. 'NoSchedule'
+    #[prost(enumeration = "toleration::Effect", tag = "4")]
+    pub effect: i32,
+}
+/// Nested message and enum types in `Toleration`.
+pub mod toleration {
+    /// KeyOperator represents a key's relationship to the value e.g. 'Equal'.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KeyOperator {
+        /// Operator is not specified.
+        Unspecified = 0,
+        /// Operator maps to 'Equal'.
+        Equal = 1,
+        /// Operator maps to 'Exists'.
+        Exists = 2,
+    }
+    impl KeyOperator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KEY_OPERATOR_UNSPECIFIED",
+                Self::Equal => "KEY_OPERATOR_EQUAL",
+                Self::Exists => "KEY_OPERATOR_EXISTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "KEY_OPERATOR_EQUAL" => Some(Self::Equal),
+                "KEY_OPERATOR_EXISTS" => Some(Self::Exists),
+                _ => None,
+            }
+        }
+    }
+    /// Effect indicates the taint effect to match e.g. 'NoSchedule'.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Effect {
+        /// Effect is not specified.
+        Unspecified = 0,
+        /// Effect maps to 'NoSchedule'.
+        NoSchedule = 1,
+        /// Effect maps to 'PreferNoSchedule'.
+        PreferNoSchedule = 2,
+        /// Effect maps to 'NoExecute'.
+        NoExecute = 3,
+    }
+    impl Effect {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EFFECT_UNSPECIFIED",
+                Self::NoSchedule => "EFFECT_NO_SCHEDULE",
+                Self::PreferNoSchedule => "EFFECT_PREFER_NO_SCHEDULE",
+                Self::NoExecute => "EFFECT_NO_EXECUTE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECT_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFFECT_NO_SCHEDULE" => Some(Self::NoSchedule),
+                "EFFECT_PREFER_NO_SCHEDULE" => Some(Self::PreferNoSchedule),
+                "EFFECT_NO_EXECUTE" => Some(Self::NoExecute),
+                _ => None,
+            }
+        }
+    }
+}
+/// Label defines the additional fields for labels for pods created by
+/// auto-installed components.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Label {
+    /// This is the key of the label.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// This is the value of the label.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
 }
 /// Request message for `AttachedClusters.GenerateAttachedClusterInstallManifest`
 /// method.
@@ -1735,7 +1889,7 @@ pub struct AwsVolumeTemplate {
     /// Optional. The throughput that the volume supports, in MiB/s. Only valid if
     /// volume_type is GP3.
     ///
-    /// If the volume_type is GP3 and this is not speficied, it defaults to 125.
+    /// If the volume_type is GP3 and this is not specified, it defaults to 125.
     #[prost(int32, tag = "5")]
     pub throughput: i32,
     /// Optional. The Amazon Resource Name (ARN) of the Customer Managed Key (CMK)
@@ -2902,6 +3056,7 @@ pub mod aws_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn create_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAwsClusterRequest>,
@@ -2932,6 +3087,7 @@ pub mod aws_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an \[AwsCluster\]\[google.cloud.gkemulticloud.v1.AwsCluster\].
+        #[deprecated]
         pub async fn update_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAwsClusterRequest>,
@@ -2963,6 +3119,7 @@ pub mod aws_clusters_client {
         }
         /// Describes a specific \[AwsCluster\]\[google.cloud.gkemulticloud.v1.AwsCluster\]
         /// resource.
+        #[deprecated]
         pub async fn get_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsClusterRequest>,
@@ -2991,6 +3148,7 @@ pub mod aws_clusters_client {
         }
         /// Lists all \[AwsCluster\]\[google.cloud.gkemulticloud.v1.AwsCluster\] resources
         /// on a given Google Cloud project and region.
+        #[deprecated]
         pub async fn list_aws_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAwsClustersRequest>,
@@ -3029,6 +3187,7 @@ pub mod aws_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn delete_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAwsClusterRequest>,
@@ -3059,6 +3218,7 @@ pub mod aws_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Generates an access token for a cluster agent.
+        #[deprecated]
         pub async fn generate_aws_cluster_agent_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAwsClusterAgentTokenRequest>,
@@ -3090,6 +3250,7 @@ pub mod aws_clusters_client {
         }
         /// Generates a short-lived access token to authenticate to a given
         /// \[AwsCluster\]\[google.cloud.gkemulticloud.v1.AwsCluster\] resource.
+        #[deprecated]
         pub async fn generate_aws_access_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAwsAccessTokenRequest>,
@@ -3125,6 +3286,7 @@ pub mod aws_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn create_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAwsNodePoolRequest>,
@@ -3155,6 +3317,7 @@ pub mod aws_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an \[AwsNodePool\]\[google.cloud.gkemulticloud.v1.AwsNodePool\].
+        #[deprecated]
         pub async fn update_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAwsNodePoolRequest>,
@@ -3190,6 +3353,7 @@ pub mod aws_clusters_client {
         /// If an update request is in progress, you cannot rollback the update.
         /// You must first cancel or let it finish unsuccessfully before you can
         /// rollback.
+        #[deprecated]
         pub async fn rollback_aws_node_pool_update(
             &mut self,
             request: impl tonic::IntoRequest<super::RollbackAwsNodePoolUpdateRequest>,
@@ -3221,6 +3385,7 @@ pub mod aws_clusters_client {
         }
         /// Describes a specific
         /// \[AwsNodePool\]\[google.cloud.gkemulticloud.v1.AwsNodePool\] resource.
+        #[deprecated]
         pub async fn get_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsNodePoolRequest>,
@@ -3250,6 +3415,7 @@ pub mod aws_clusters_client {
         /// Lists all \[AwsNodePool\]\[google.cloud.gkemulticloud.v1.AwsNodePool\]
         /// resources on a given
         /// \[AwsCluster\]\[google.cloud.gkemulticloud.v1.AwsCluster\].
+        #[deprecated]
         pub async fn list_aws_node_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAwsNodePoolsRequest>,
@@ -3285,6 +3451,7 @@ pub mod aws_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn delete_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAwsNodePoolRequest>,
@@ -3319,6 +3486,7 @@ pub mod aws_clusters_client {
         /// [OpenID Connect Discovery 1.0
         /// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
         /// for details.
+        #[deprecated]
         pub async fn get_aws_open_id_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsOpenIdConfigRequest>,
@@ -3350,6 +3518,7 @@ pub mod aws_clusters_client {
         }
         /// Gets the public component of the cluster signing keys in
         /// JSON Web Key format.
+        #[deprecated]
         pub async fn get_aws_json_web_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsJsonWebKeysRequest>,
@@ -3378,6 +3547,7 @@ pub mod aws_clusters_client {
         }
         /// Returns information, such as supported AWS regions and Kubernetes
         /// versions, on a given Google Cloud location.
+        #[deprecated]
         pub async fn get_aws_server_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsServerConfigRequest>,
@@ -4894,6 +5064,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn create_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureClientRequest>,
@@ -4925,6 +5096,7 @@ pub mod azure_clusters_client {
         }
         /// Describes a specific
         /// \[AzureClient\]\[google.cloud.gkemulticloud.v1.AzureClient\] resource.
+        #[deprecated]
         pub async fn get_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureClientRequest>,
@@ -4953,6 +5125,7 @@ pub mod azure_clusters_client {
         }
         /// Lists all \[AzureClient\]\[google.cloud.gkemulticloud.v1.AzureClient\]
         /// resources on a given Google Cloud project and region.
+        #[deprecated]
         pub async fn list_azure_clients(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureClientsRequest>,
@@ -4991,6 +5164,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn delete_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureClientRequest>,
@@ -5026,6 +5200,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn create_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureClusterRequest>,
@@ -5056,6 +5231,7 @@ pub mod azure_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an \[AzureCluster\]\[google.cloud.gkemulticloud.v1.AzureCluster\].
+        #[deprecated]
         pub async fn update_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAzureClusterRequest>,
@@ -5087,6 +5263,7 @@ pub mod azure_clusters_client {
         }
         /// Describes a specific
         /// \[AzureCluster\]\[google.cloud.gkemulticloud.v1.AzureCluster\] resource.
+        #[deprecated]
         pub async fn get_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureClusterRequest>,
@@ -5115,6 +5292,7 @@ pub mod azure_clusters_client {
         }
         /// Lists all \[AzureCluster\]\[google.cloud.gkemulticloud.v1.AzureCluster\]
         /// resources on a given Google Cloud project and region.
+        #[deprecated]
         pub async fn list_azure_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureClustersRequest>,
@@ -5153,6 +5331,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn delete_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureClusterRequest>,
@@ -5183,6 +5362,7 @@ pub mod azure_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Generates an access token for a cluster agent.
+        #[deprecated]
         pub async fn generate_azure_cluster_agent_token(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -5216,6 +5396,7 @@ pub mod azure_clusters_client {
         }
         /// Generates a short-lived access token to authenticate to a given
         /// \[AzureCluster\]\[google.cloud.gkemulticloud.v1.AzureCluster\] resource.
+        #[deprecated]
         pub async fn generate_azure_access_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAzureAccessTokenRequest>,
@@ -5252,6 +5433,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn create_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureNodePoolRequest>,
@@ -5282,6 +5464,7 @@ pub mod azure_clusters_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an \[AzureNodePool\]\[google.cloud.gkemulticloud.v1.AzureNodePool\].
+        #[deprecated]
         pub async fn update_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAzureNodePoolRequest>,
@@ -5313,6 +5496,7 @@ pub mod azure_clusters_client {
         }
         /// Describes a specific
         /// \[AzureNodePool\]\[google.cloud.gkemulticloud.v1.AzureNodePool\] resource.
+        #[deprecated]
         pub async fn get_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureNodePoolRequest>,
@@ -5342,6 +5526,7 @@ pub mod azure_clusters_client {
         /// Lists all \[AzureNodePool\]\[google.cloud.gkemulticloud.v1.AzureNodePool\]
         /// resources on a given
         /// \[AzureCluster\]\[google.cloud.gkemulticloud.v1.AzureCluster\].
+        #[deprecated]
         pub async fn list_azure_node_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureNodePoolsRequest>,
@@ -5377,6 +5562,7 @@ pub mod azure_clusters_client {
         /// If successful, the response contains a newly created
         /// \[Operation\]\[google.longrunning.Operation\] resource that can be
         /// described to track the status of the operation.
+        #[deprecated]
         pub async fn delete_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureNodePoolRequest>,
@@ -5411,6 +5597,7 @@ pub mod azure_clusters_client {
         /// [OpenID Connect Discovery 1.0
         /// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
         /// for details.
+        #[deprecated]
         pub async fn get_azure_open_id_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureOpenIdConfigRequest>,
@@ -5442,6 +5629,7 @@ pub mod azure_clusters_client {
         }
         /// Gets the public component of the cluster signing keys in
         /// JSON Web Key format.
+        #[deprecated]
         pub async fn get_azure_json_web_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureJsonWebKeysRequest>,
@@ -5473,6 +5661,7 @@ pub mod azure_clusters_client {
         }
         /// Returns information, such as supported Azure regions and Kubernetes
         /// versions, on a given Google Cloud location.
+        #[deprecated]
         pub async fn get_azure_server_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureServerConfigRequest>,

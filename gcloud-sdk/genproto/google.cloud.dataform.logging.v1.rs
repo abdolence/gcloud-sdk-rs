@@ -69,3 +69,125 @@ pub mod workflow_invocation_completion_log_entry {
         }
     }
 }
+/// Structured payload for logs generated from Dataform Act-as dry run results.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ActAsDryRunResultLogEntry {
+    /// Required. The API method name that triggered the dry run check.
+    #[prost(string, tag = "1")]
+    pub api_method: ::prost::alloc::string::String,
+    /// Required. The caller that triggered the dry run check.
+    #[prost(string, tag = "2")]
+    pub caller: ::prost::alloc::string::String,
+    /// Required. The service account used for the dry run check.
+    #[prost(string, tag = "3")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Required. The result of the dry run check. True if check passed, false if
+    /// check failed.
+    #[prost(bool, tag = "4")]
+    pub dry_run_result: bool,
+    /// Additional context specific to the API method that triggered the dry run.
+    #[prost(
+        oneof = "act_as_dry_run_result_log_entry::ApiMethodContext",
+        tags = "5, 6, 7, 8, 9, 10"
+    )]
+    pub api_method_context: ::core::option::Option<
+        act_as_dry_run_result_log_entry::ApiMethodContext,
+    >,
+}
+/// Nested message and enum types in `ActAsDryRunResultLogEntry`.
+pub mod act_as_dry_run_result_log_entry {
+    /// Context specific to `CreateRepository` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CreateRepositoryContext {
+        /// Optional. Resource name of the repository.
+        /// Format: `projects/*/locations/*/repositories/*`.
+        #[prost(string, tag = "1")]
+        pub repository: ::prost::alloc::string::String,
+    }
+    /// Context specific to `UpdateRepository` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UpdateRepositoryContext {
+        /// Optional. Resource name of the repository.
+        /// Format: `projects/*/locations/*/repositories/*`.
+        #[prost(string, tag = "1")]
+        pub repository: ::prost::alloc::string::String,
+    }
+    /// Context specific to `UpdateReleaseConfig` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UpdateReleaseConfigContext {
+        /// Optional. Resource name of the release config.
+        /// Format: `projects/*/locations/*/repositories/*/releaseConfigs/*`.
+        #[prost(string, tag = "1")]
+        pub release_config: ::prost::alloc::string::String,
+    }
+    /// Context specific to `CreateWorkflowConfig` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CreateWorkflowConfigContext {
+        /// Optional. Resource name of the workflow config.
+        /// Format: `projects/*/locations/*/repositories/*/workflowConfigs/*`.
+        #[prost(string, tag = "1")]
+        pub workflow_config: ::prost::alloc::string::String,
+    }
+    /// Context specific to `UpdateWorkflowConfig` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UpdateWorkflowConfigContext {
+        /// Optional. Resource name of the workflow config.
+        /// Format: `projects/*/locations/*/repositories/*/workflowConfigs/*`.
+        #[prost(string, tag = "1")]
+        pub workflow_config: ::prost::alloc::string::String,
+    }
+    /// Context specific to `CreateWorkflowInvocation` API calls.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CreateWorkflowInvocationContext {
+        /// Optional. Resource name of the workflow invocation.
+        /// Format: `projects/*/locations/*/repositories/*/workflowInvocations/*`.
+        #[prost(string, tag = "1")]
+        pub workflow_invocation: ::prost::alloc::string::String,
+        /// The identifier of the compilation source.
+        #[prost(
+            oneof = "create_workflow_invocation_context::CompilationSource",
+            tags = "2, 3"
+        )]
+        pub compilation_source: ::core::option::Option<
+            create_workflow_invocation_context::CompilationSource,
+        >,
+    }
+    /// Nested message and enum types in `CreateWorkflowInvocationContext`.
+    pub mod create_workflow_invocation_context {
+        /// The identifier of the compilation source.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum CompilationSource {
+            /// Optional. The name of the compilation result to use for this
+            /// invocation. Must be in the format
+            /// `projects/*/locations/*/repositories/*/compilationResults/*`.
+            #[prost(string, tag = "2")]
+            CompilationResult(::prost::alloc::string::String),
+            /// Optional. The name of the workflow config to invoke. Must be in the
+            /// format `projects/*/locations/*/repositories/*/workflowConfigs/*`.
+            #[prost(string, tag = "3")]
+            WorkflowConfig(::prost::alloc::string::String),
+        }
+    }
+    /// Additional context specific to the API method that triggered the dry run.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ApiMethodContext {
+        /// Optional. Context for `CreateWorkflowInvocation` calls.
+        #[prost(message, tag = "5")]
+        CreateWorkflowInvocationContext(CreateWorkflowInvocationContext),
+        /// Optional. Context for `CreateRepository` calls.
+        #[prost(message, tag = "6")]
+        CreateRepositoryContext(CreateRepositoryContext),
+        /// Optional. Context for `UpdateRepository` calls.
+        #[prost(message, tag = "7")]
+        UpdateRepositoryContext(UpdateRepositoryContext),
+        /// Optional. Context for `UpdateReleaseConfig` calls.
+        #[prost(message, tag = "8")]
+        UpdateReleaseConfigContext(UpdateReleaseConfigContext),
+        /// Optional. Context for `UpdateWorkflowConfig` calls.
+        #[prost(message, tag = "9")]
+        UpdateWorkflowConfigContext(UpdateWorkflowConfigContext),
+        /// Optional. Context for `CreateWorkflowConfig` calls.
+        #[prost(message, tag = "10")]
+        CreateWorkflowConfigContext(CreateWorkflowConfigContext),
+    }
+}

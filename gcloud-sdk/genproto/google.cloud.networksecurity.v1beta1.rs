@@ -471,6 +471,395 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
+/// A DNS threat detector sends DNS query logs to a *provider* that then
+/// analyzes the logs to identify threat events in the DNS queries.
+/// By default, all VPC networks in your projects are included. You can exclude
+/// specific networks by supplying `excluded_networks`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DnsThreatDetector {
+    /// Immutable. Identifier. Name of the DnsThreatDetector resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Create time stamp.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time stamp.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Any labels associated with the DnsThreatDetector, listed as key
+    /// value pairs.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. A list of network resource names which aren't monitored by this
+    /// DnsThreatDetector.
+    ///
+    /// Example:
+    /// `projects/PROJECT_ID/global/networks/NETWORK_NAME`.
+    #[prost(string, repeated, tag = "5")]
+    pub excluded_networks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. The provider used for DNS threat analysis.
+    #[prost(enumeration = "dns_threat_detector::Provider", tag = "6")]
+    pub provider: i32,
+}
+/// Nested message and enum types in `DnsThreatDetector`.
+pub mod dns_threat_detector {
+    /// Name of the provider used for DNS threat analysis.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Provider {
+        /// An unspecified provider.
+        Unspecified = 0,
+        /// The Infoblox DNS threat detector provider.
+        Infoblox = 1,
+    }
+    impl Provider {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVIDER_UNSPECIFIED",
+                Self::Infoblox => "INFOBLOX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFOBLOX" => Some(Self::Infoblox),
+                _ => None,
+            }
+        }
+    }
+}
+/// The message for requesting a list of DnsThreatDetectors in the project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDnsThreatDetectorsRequest {
+    /// Required. The parent value for `ListDnsThreatDetectorsRequest`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The requested page size. The server may return fewer items than
+    /// requested. If unspecified, the server picks an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous
+    /// `ListDnsThreatDetectorsRequest` call. Provide this to retrieve the
+    /// subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message to requesting a list of DnsThreatDetectors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDnsThreatDetectorsResponse {
+    /// The list of DnsThreatDetector resources.
+    #[prost(message, repeated, tag = "1")]
+    pub dns_threat_detectors: ::prost::alloc::vec::Vec<DnsThreatDetector>,
+    /// A token, which can be sent as `page_token`, to retrieve the next page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Unreachable `DnsThreatDetector` resources.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The message sent to get a DnsThreatDetector.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDnsThreatDetectorRequest {
+    /// Required. Name of the DnsThreatDetector resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The message to create a DnsThreatDetector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDnsThreatDetectorRequest {
+    /// Required. The value for the parent of the DnsThreatDetector resource.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID of the requesting DnsThreatDetector object.
+    /// If this field is not supplied, the service generates an identifier.
+    #[prost(string, tag = "2")]
+    pub dns_threat_detector_id: ::prost::alloc::string::String,
+    /// Required. The `DnsThreatDetector` resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub dns_threat_detector: ::core::option::Option<DnsThreatDetector>,
+}
+/// The message for updating a DnsThreatDetector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDnsThreatDetectorRequest {
+    /// Optional. The field mask is used to specify the fields to be overwritten in
+    /// the DnsThreatDetector resource by the update. The fields specified in the
+    /// update_mask are relative to the resource, not the full request. A field
+    /// will be overwritten if it is in the mask. If the mask is not provided then
+    /// all fields present in the request will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The DnsThreatDetector resource being updated.
+    #[prost(message, optional, tag = "2")]
+    pub dns_threat_detector: ::core::option::Option<DnsThreatDetector>,
+}
+/// The message for deleting a DnsThreatDetector.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDnsThreatDetectorRequest {
+    /// Required. Name of the DnsThreatDetector resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod dns_threat_detector_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The Network Security API for DNS Threat Detectors.
+    #[derive(Debug, Clone)]
+    pub struct DnsThreatDetectorServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DnsThreatDetectorServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DnsThreatDetectorServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DnsThreatDetectorServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            DnsThreatDetectorServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists DnsThreatDetectors in a given project and location.
+        pub async fn list_dns_threat_detectors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDnsThreatDetectorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDnsThreatDetectorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1beta1.DnsThreatDetectorService/ListDnsThreatDetectors",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1beta1.DnsThreatDetectorService",
+                        "ListDnsThreatDetectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a single DnsThreatDetector.
+        pub async fn get_dns_threat_detector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDnsThreatDetectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DnsThreatDetector>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1beta1.DnsThreatDetectorService/GetDnsThreatDetector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1beta1.DnsThreatDetectorService",
+                        "GetDnsThreatDetector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new DnsThreatDetector in a given project and location.
+        pub async fn create_dns_threat_detector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDnsThreatDetectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DnsThreatDetector>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1beta1.DnsThreatDetectorService/CreateDnsThreatDetector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1beta1.DnsThreatDetectorService",
+                        "CreateDnsThreatDetector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single DnsThreatDetector.
+        pub async fn update_dns_threat_detector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDnsThreatDetectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DnsThreatDetector>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1beta1.DnsThreatDetectorService/UpdateDnsThreatDetector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1beta1.DnsThreatDetectorService",
+                        "UpdateDnsThreatDetector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single DnsThreatDetector.
+        pub async fn delete_dns_threat_detector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDnsThreatDetectorRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1beta1.DnsThreatDetectorService/DeleteDnsThreatDetector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1beta1.DnsThreatDetectorService",
+                        "DeleteDnsThreatDetector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// ServerTlsPolicy is a resource that specifies how a server should authenticate
 /// incoming requests. This resource itself does not affect configuration unless
 /// it is attached to a target https proxy or endpoint config selector resource.

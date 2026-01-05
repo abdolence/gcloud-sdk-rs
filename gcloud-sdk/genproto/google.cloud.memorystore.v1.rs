@@ -40,8 +40,12 @@ pub struct Instance {
     /// Optional. Number of shards for the instance.
     #[prost(int32, tag = "11")]
     pub shard_count: i32,
-    /// Output only. Deprecated: Use the endpoints.connections.psc_auto_connection
-    /// or endpoints.connections.psc_connection values instead.
+    /// Output only. Deprecated: The discovery_endpoints parameter is deprecated.
+    /// As a result, it will not be populated if the connections are created using
+    /// endpoints parameter. Instead of this parameter, for discovery, use
+    /// endpoints.connections.pscConnection and
+    /// endpoints.connections.pscAutoConnection
+    /// with connectionType CONNECTION_TYPE_DISCOVERY.
     #[deprecated]
     #[prost(message, repeated, tag = "12")]
     pub discovery_endpoints: ::prost::alloc::vec::Vec<DiscoveryEndpoint>,
@@ -84,9 +88,19 @@ pub struct Instance {
     /// Optional. The mode config for the instance.
     #[prost(enumeration = "instance::Mode", tag = "26")]
     pub mode: i32,
+    /// Optional. Input only. Simulate a maintenance event.
+    #[prost(bool, optional, tag = "27")]
+    pub simulate_maintenance_event: ::core::option::Option<bool>,
     /// Optional. Input only. Ondemand maintenance for the instance.
+    #[deprecated]
     #[prost(bool, optional, tag = "28")]
     pub ondemand_maintenance: ::core::option::Option<bool>,
+    /// Optional. Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "29")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Optional. Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "30")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
     /// Optional. The maintenance policy for the instance. If not provided,
     /// the maintenance event will be performed based on Memorystore
     /// internal rollout schedule.
@@ -106,6 +120,12 @@ pub struct Instance {
     /// are deleted.
     #[prost(bool, optional, tag = "44")]
     pub async_instance_endpoints_deletion_enabled: ::core::option::Option<bool>,
+    /// Optional. The KMS key used to encrypt the at-rest data of the cluster.
+    #[prost(string, optional, tag = "45")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Encryption information of the data at rest of the cluster.
+    #[prost(message, optional, tag = "46")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
     /// Output only. The backup collection full resource name. Example:
     /// projects/{project}/locations/{location}/backupCollections/{collection}
     #[prost(string, optional, tag = "47")]
@@ -113,6 +133,27 @@ pub struct Instance {
     /// Optional. The automated backup config for the instance.
     #[prost(message, optional, tag = "48")]
     pub automated_backup_config: ::core::option::Option<AutomatedBackupConfig>,
+    /// Optional. This field can be used to trigger self service update to indicate
+    /// the desired maintenance version. The input to this field can be determined
+    /// by the available_maintenance_versions field.
+    #[prost(string, optional, tag = "49")]
+    pub maintenance_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. This field represents the actual maintenance version of the
+    /// instance.
+    #[prost(string, optional, tag = "50")]
+    pub effective_maintenance_version: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. This field is used to determine the available maintenance
+    /// versions for the self service update.
+    #[prost(string, repeated, tag = "51")]
+    pub available_maintenance_versions: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Immutable. Deprecated, do not use.
+    #[deprecated]
+    #[prost(bool, tag = "54")]
+    pub allow_fewer_zones_deployment: bool,
     /// The source to import from.
     #[prost(oneof = "instance::ImportSources", tags = "23, 24")]
     pub import_sources: ::core::option::Option<instance::ImportSources>,
@@ -563,6 +604,15 @@ pub struct BackupCollection {
     /// Output only. The time when the backup collection was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Total size of all backups in the backup collection.
+    #[prost(int64, tag = "8")]
+    pub total_backup_size_bytes: i64,
+    /// Output only. Total number of backups in the backup collection.
+    #[prost(int64, tag = "10")]
+    pub total_backup_count: i64,
+    /// Output only. The last time a backup was created in the backup collection.
+    #[prost(message, optional, tag = "11")]
+    pub last_backup_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Backup of an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -609,6 +659,9 @@ pub struct Backup {
     /// Output only. State of the backup.
     #[prost(enumeration = "backup::State", tag = "13")]
     pub state: i32,
+    /// Output only. Encryption information of the backup.
+    #[prost(message, optional, tag = "14")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
     /// Output only. System assigned unique identifier of the backup.
     #[prost(string, tag = "15")]
     pub uid: ::prost::alloc::string::String,
@@ -1685,6 +1738,140 @@ pub struct OperationMetadata {
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// EncryptionInfo describes the encryption information of a cluster.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionInfo {
+    /// Output only. Type of encryption.
+    #[prost(enumeration = "encryption_info::Type", tag = "1")]
+    pub encryption_type: i32,
+    /// Output only. KMS key versions that are being used to protect the data
+    /// at-rest.
+    #[prost(string, repeated, tag = "2")]
+    pub kms_key_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The state of the primary version of the KMS key perceived by
+    /// the system. This field is not populated in backups.
+    #[prost(enumeration = "encryption_info::KmsKeyState", tag = "3")]
+    pub kms_key_primary_state: i32,
+    /// Output only. The most recent time when the encryption info was updated.
+    #[prost(message, optional, tag = "4")]
+    pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `EncryptionInfo`.
+pub mod encryption_info {
+    /// Possible encryption types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Encryption type not specified. Defaults to GOOGLE_DEFAULT_ENCRYPTION.
+        Unspecified = 0,
+        /// The data is encrypted at rest with a key that is fully managed by Google.
+        /// No key version will be populated. This is the default state.
+        GoogleDefaultEncryption = 1,
+        /// The data is encrypted at rest with a key that is managed by the customer.
+        /// KMS key versions will be populated.
+        CustomerManagedEncryption = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::GoogleDefaultEncryption => "GOOGLE_DEFAULT_ENCRYPTION",
+                Self::CustomerManagedEncryption => "CUSTOMER_MANAGED_ENCRYPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
+    }
+    /// The state of the KMS key perceived by the system. Refer to the public
+    /// documentation for the impact of each state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KmsKeyState {
+        /// The default value. This value is unused.
+        Unspecified = 0,
+        /// The KMS key is enabled and correctly configured.
+        Enabled = 1,
+        /// Permission denied on the KMS key.
+        PermissionDenied = 2,
+        /// The KMS key is disabled.
+        Disabled = 3,
+        /// The KMS key is destroyed.
+        Destroyed = 4,
+        /// The KMS key is scheduled to be destroyed.
+        DestroyScheduled = 5,
+        /// The EKM key is unreachable.
+        EkmKeyUnreachableDetected = 6,
+        /// Billing is disabled for the project.
+        BillingDisabled = 7,
+        /// All other unknown failures.
+        UnknownFailure = 8,
+    }
+    impl KmsKeyState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KMS_KEY_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::Disabled => "DISABLED",
+                Self::Destroyed => "DESTROYED",
+                Self::DestroyScheduled => "DESTROY_SCHEDULED",
+                Self::EkmKeyUnreachableDetected => "EKM_KEY_UNREACHABLE_DETECTED",
+                Self::BillingDisabled => "BILLING_DISABLED",
+                Self::UnknownFailure => "UNKNOWN_FAILURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KMS_KEY_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "DISABLED" => Some(Self::Disabled),
+                "DESTROYED" => Some(Self::Destroyed),
+                "DESTROY_SCHEDULED" => Some(Self::DestroyScheduled),
+                "EKM_KEY_UNREACHABLE_DETECTED" => Some(Self::EkmKeyUnreachableDetected),
+                "BILLING_DISABLED" => Some(Self::BillingDisabled),
+                "UNKNOWN_FAILURE" => Some(Self::UnknownFailure),
+                _ => None,
+            }
+        }
+    }
 }
 /// Status of the PSC connection.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

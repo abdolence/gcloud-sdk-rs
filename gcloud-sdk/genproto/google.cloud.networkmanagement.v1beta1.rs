@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -148,10 +148,15 @@ pub mod step {
         /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
         /// used in new tests.
         ArriveAtExternalLoadBalancer = 11,
+        /// Forwarding state: arriving at a hybrid subnet. Appropriate routing
+        /// configuration will be determined here.
+        ArriveAtHybridSubnet = 38,
         /// Forwarding state: arriving at a Cloud VPN gateway.
         ArriveAtVpnGateway = 12,
         /// Forwarding state: arriving at a Cloud VPN tunnel.
         ArriveAtVpnTunnel = 13,
+        /// Forwarding state: arriving at an interconnect attachment.
+        ArriveAtInterconnectAttachment = 37,
         /// Forwarding state: arriving at a VPC connector.
         ArriveAtVpcConnector = 24,
         /// Forwarding state: for packets originating from a serverless endpoint
@@ -160,7 +165,8 @@ pub mod step {
         /// Forwarding state: for packets originating from a serverless endpoint
         /// forwarded through public (external) connectivity.
         ServerlessExternalConnection = 36,
-        /// Transition state: packet header translated.
+        /// Transition state: packet header translated. The `nat` field is populated
+        /// with the translation information.
         Nat = 14,
         /// Transition state: original connection is terminated and a new proxied
         /// connection is initiated.
@@ -209,8 +215,12 @@ pub mod step {
                 Self::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
                 Self::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
                 Self::ArriveAtExternalLoadBalancer => "ARRIVE_AT_EXTERNAL_LOAD_BALANCER",
+                Self::ArriveAtHybridSubnet => "ARRIVE_AT_HYBRID_SUBNET",
                 Self::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
                 Self::ArriveAtVpnTunnel => "ARRIVE_AT_VPN_TUNNEL",
+                Self::ArriveAtInterconnectAttachment => {
+                    "ARRIVE_AT_INTERCONNECT_ATTACHMENT"
+                }
                 Self::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
                 Self::DirectVpcEgressConnection => "DIRECT_VPC_EGRESS_CONNECTION",
                 Self::ServerlessExternalConnection => "SERVERLESS_EXTERNAL_CONNECTION",
@@ -256,8 +266,12 @@ pub mod step {
                 "ARRIVE_AT_EXTERNAL_LOAD_BALANCER" => {
                     Some(Self::ArriveAtExternalLoadBalancer)
                 }
+                "ARRIVE_AT_HYBRID_SUBNET" => Some(Self::ArriveAtHybridSubnet),
                 "ARRIVE_AT_VPN_GATEWAY" => Some(Self::ArriveAtVpnGateway),
                 "ARRIVE_AT_VPN_TUNNEL" => Some(Self::ArriveAtVpnTunnel),
+                "ARRIVE_AT_INTERCONNECT_ATTACHMENT" => {
+                    Some(Self::ArriveAtInterconnectAttachment)
+                }
                 "ARRIVE_AT_VPC_CONNECTOR" => Some(Self::ArriveAtVpcConnector),
                 "DIRECT_VPC_EGRESS_CONNECTION" => Some(Self::DirectVpcEgressConnection),
                 "SERVERLESS_EXTERNAL_CONNECTION" => {
@@ -302,12 +316,18 @@ pub mod step {
         /// Display information of a Compute Engine forwarding rule.
         #[prost(message, tag = "9")]
         ForwardingRule(super::ForwardingRuleInfo),
+        /// Display information of a hybrid subnet.
+        #[prost(message, tag = "36")]
+        HybridSubnet(super::HybridSubnetInfo),
         /// Display information of a Compute Engine VPN gateway.
         #[prost(message, tag = "10")]
         VpnGateway(super::VpnGatewayInfo),
         /// Display information of a Compute Engine VPN tunnel.
         #[prost(message, tag = "11")]
         VpnTunnel(super::VpnTunnelInfo),
+        /// Display information of an interconnect attachment.
+        #[prost(message, tag = "35")]
+        InterconnectAttachment(super::InterconnectAttachmentInfo),
         /// Display information of a VPC connector.
         #[prost(message, tag = "21")]
         VpcConnector(super::VpcConnectorInfo),
@@ -533,6 +553,9 @@ pub struct FirewallInfo {
     /// rules.
     #[prost(int32, tag = "12")]
     pub policy_priority: i32,
+    /// Target type of the firewall rule.
+    #[prost(enumeration = "firewall_info::TargetType", tag = "13")]
+    pub target_type: i32,
 }
 /// Nested message and enum types in `FirewallInfo`.
 pub mod firewall_info {
@@ -637,6 +660,50 @@ pub mod firewall_info {
                 }
                 "TRACKING_STATE" => Some(Self::TrackingState),
                 "ANALYSIS_SKIPPED" => Some(Self::AnalysisSkipped),
+                _ => None,
+            }
+        }
+    }
+    /// Target type of the firewall rule.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TargetType {
+        /// Target type is not specified. In this case we treat the rule as applying
+        /// to INSTANCES target type.
+        Unspecified = 0,
+        /// Firewall rule applies to instances.
+        Instances = 1,
+        /// Firewall rule applies to internal managed load balancers.
+        InternalManagedLb = 2,
+    }
+    impl TargetType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TARGET_TYPE_UNSPECIFIED",
+                Self::Instances => "INSTANCES",
+                Self::InternalManagedLb => "INTERNAL_MANAGED_LB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTANCES" => Some(Self::Instances),
+                "INTERNAL_MANAGED_LB" => Some(Self::InternalManagedLb),
                 _ => None,
             }
         }
@@ -1285,6 +1352,19 @@ pub mod load_balancer_backend {
         }
     }
 }
+/// For display only. Metadata associated with a hybrid subnet.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HybridSubnetInfo {
+    /// Name of a hybrid subnet.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a hybrid subnet.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Name of a Google Cloud region where the hybrid subnet is configured.
+    #[prost(string, tag = "3")]
+    pub region: ::prost::alloc::string::String,
+}
 /// For display only. Metadata associated with a Compute Engine VPN gateway.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayInfo {
@@ -1386,6 +1466,87 @@ pub mod vpn_tunnel_info {
                 "ROUTE_BASED" => Some(Self::RouteBased),
                 "POLICY_BASED" => Some(Self::PolicyBased),
                 "DYNAMIC" => Some(Self::Dynamic),
+                _ => None,
+            }
+        }
+    }
+}
+/// For display only. Metadata associated with an Interconnect attachment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InterconnectAttachmentInfo {
+    /// Name of an Interconnect attachment.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of an Interconnect attachment.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// URI of the Interconnect where the Interconnect attachment is
+    /// configured.
+    #[prost(string, tag = "3")]
+    pub interconnect_uri: ::prost::alloc::string::String,
+    /// Name of a Google Cloud region where the Interconnect attachment is
+    /// configured.
+    #[prost(string, tag = "4")]
+    pub region: ::prost::alloc::string::String,
+    /// URI of the Cloud Router to be used for dynamic routing.
+    #[prost(string, tag = "5")]
+    pub cloud_router_uri: ::prost::alloc::string::String,
+    /// The type of interconnect attachment this is.
+    #[prost(enumeration = "interconnect_attachment_info::Type", tag = "6")]
+    pub r#type: i32,
+    /// Appliance IP address that was matched for L2_DEDICATED attachments.
+    #[prost(string, tag = "7")]
+    pub l2_attachment_matched_ip_address: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `InterconnectAttachmentInfo`.
+pub mod interconnect_attachment_info {
+    /// What type of interconnect attachment this is.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified type.
+        Unspecified = 0,
+        /// Attachment to a dedicated interconnect.
+        Dedicated = 1,
+        /// Attachment to a partner interconnect, created by the customer.
+        Partner = 2,
+        /// Attachment to a partner interconnect, created by the partner.
+        PartnerProvider = 3,
+        /// Attachment to a L2 interconnect, created by the customer.
+        L2Dedicated = 4,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Dedicated => "DEDICATED",
+                Self::Partner => "PARTNER",
+                Self::PartnerProvider => "PARTNER_PROVIDER",
+                Self::L2Dedicated => "L2_DEDICATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEDICATED" => Some(Self::Dedicated),
+                "PARTNER" => Some(Self::Partner),
+                "PARTNER_PROVIDER" => Some(Self::PartnerProvider),
+                "L2_DEDICATED" => Some(Self::L2Dedicated),
                 _ => None,
             }
         }
@@ -1859,6 +2020,9 @@ pub mod abort_info {
         /// Aborted because the source endpoint is a Cloud Run revision with direct
         /// VPC access enabled, but there are no reserved serverless IP ranges.
         NoServerlessIpRanges = 37,
+        /// Aborted because the used protocol is not supported for the used IP
+        /// version.
+        IpVersionProtocolMismatch = 40,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1929,6 +2093,7 @@ pub mod abort_info {
                     "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG"
                 }
                 Self::NoServerlessIpRanges => "NO_SERVERLESS_IP_RANGES",
+                Self::IpVersionProtocolMismatch => "IP_VERSION_PROTOCOL_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2004,6 +2169,7 @@ pub mod abort_info {
                     Some(Self::UnsupportedGoogleManagedProjectConfig)
                 }
                 "NO_SERVERLESS_IP_RANGES" => Some(Self::NoServerlessIpRanges),
+                "IP_VERSION_PROTOCOL_MISMATCH" => Some(Self::IpVersionProtocolMismatch),
                 _ => None,
             }
         }
@@ -2027,6 +2193,12 @@ pub struct DropInfo {
     /// Region of the dropped packet (if relevant).
     #[prost(string, tag = "5")]
     pub region: ::prost::alloc::string::String,
+    /// Geolocation (region code) of the source IP address (if relevant).
+    #[prost(string, tag = "6")]
+    pub source_geolocation_code: ::prost::alloc::string::String,
+    /// Geolocation (region code) of the destination IP address (if relevant).
+    #[prost(string, tag = "7")]
+    pub destination_geolocation_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DropInfo`.
 pub mod drop_info {
@@ -2321,6 +2493,25 @@ pub mod drop_info {
         /// Packet from the unknown NCC network is dropped due to no known route
         /// from the source network to the destination IP address.
         NoKnownRouteFromNccNetworkToDestination = 97,
+        /// Packet is dropped by Cloud NAT due to using an unsupported protocol.
+        CloudNatProtocolUnsupported = 99,
+        /// Packet is dropped due to using an unsupported protocol (any other than
+        /// UDP) for L2 Interconnect.
+        L2InterconnectUnsupportedProtocol = 100,
+        /// Packet is dropped due to using an unsupported port (any other than
+        /// 6081) for L2 Interconnect.
+        L2InterconnectUnsupportedPort = 101,
+        /// Packet is dropped due to destination IP not matching the appliance
+        /// mapping IPs configured on the L2 Interconnect attachment.
+        L2InterconnectDestinationIpMismatch = 102,
+        /// Packet could be dropped because it matches a route associated with an NCC
+        /// spoke in the hybrid subnet context, but such a configuration is not
+        /// supported.
+        NccRouteWithinHybridSubnetUnsupported = 104,
+        /// Packet is dropped because the region of the hybrid subnet is different
+        /// from the region of the next hop of the route matched within this hybrid
+        /// subnet.
+        HybridSubnetRegionMismatch = 105,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2518,6 +2709,18 @@ pub mod drop_info {
                 Self::NoKnownRouteFromNccNetworkToDestination => {
                     "NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION"
                 }
+                Self::CloudNatProtocolUnsupported => "CLOUD_NAT_PROTOCOL_UNSUPPORTED",
+                Self::L2InterconnectUnsupportedProtocol => {
+                    "L2_INTERCONNECT_UNSUPPORTED_PROTOCOL"
+                }
+                Self::L2InterconnectUnsupportedPort => "L2_INTERCONNECT_UNSUPPORTED_PORT",
+                Self::L2InterconnectDestinationIpMismatch => {
+                    "L2_INTERCONNECT_DESTINATION_IP_MISMATCH"
+                }
+                Self::NccRouteWithinHybridSubnetUnsupported => {
+                    "NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED"
+                }
+                Self::HybridSubnetRegionMismatch => "HYBRID_SUBNET_REGION_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2736,6 +2939,22 @@ pub mod drop_info {
                 "NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION" => {
                     Some(Self::NoKnownRouteFromNccNetworkToDestination)
                 }
+                "CLOUD_NAT_PROTOCOL_UNSUPPORTED" => {
+                    Some(Self::CloudNatProtocolUnsupported)
+                }
+                "L2_INTERCONNECT_UNSUPPORTED_PROTOCOL" => {
+                    Some(Self::L2InterconnectUnsupportedProtocol)
+                }
+                "L2_INTERCONNECT_UNSUPPORTED_PORT" => {
+                    Some(Self::L2InterconnectUnsupportedPort)
+                }
+                "L2_INTERCONNECT_DESTINATION_IP_MISMATCH" => {
+                    Some(Self::L2InterconnectDestinationIpMismatch)
+                }
+                "NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED" => {
+                    Some(Self::NccRouteWithinHybridSubnetUnsupported)
+                }
+                "HYBRID_SUBNET_REGION_MISMATCH" => Some(Self::HybridSubnetRegionMismatch),
                 _ => None,
             }
         }
@@ -2990,6 +3209,8 @@ pub mod nat_info {
         CloudNat = 3,
         /// Private service connect NAT.
         PrivateServiceConnect = 4,
+        /// GKE Pod IP address masquerading.
+        GkePodIpMasquerading = 5,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3003,6 +3224,7 @@ pub mod nat_info {
                 Self::ExternalToInternal => "EXTERNAL_TO_INTERNAL",
                 Self::CloudNat => "CLOUD_NAT",
                 Self::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+                Self::GkePodIpMasquerading => "GKE_POD_IP_MASQUERADING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3013,6 +3235,7 @@ pub mod nat_info {
                 "EXTERNAL_TO_INTERNAL" => Some(Self::ExternalToInternal),
                 "CLOUD_NAT" => Some(Self::CloudNat),
                 "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "GKE_POD_IP_MASQUERADING" => Some(Self::GkePodIpMasquerading),
                 _ => None,
             }
         }
@@ -3351,8 +3574,8 @@ pub struct Endpoint {
     /// used for protocol forwarding, Private Service Connect and other network
     /// services to provide forwarding information in the control plane. Applicable
     /// only to destination endpoint. Format:
-    /// projects/{project}/global/forwardingRules/{id} or
-    /// projects/{project}/regions/{region}/forwardingRules/{id}
+    /// `projects/{project}/global/forwardingRules/{id}` or
+    /// `projects/{project}/regions/{region}/forwardingRules/{id}`
     #[prost(string, tag = "13")]
     pub forwarding_rule: ::prost::alloc::string::String,
     /// Output only. Specifies the type of the target of the forwarding rule.
@@ -4655,6 +4878,166 @@ pub mod vpc_flow_logs_config {
         VpnTunnel(::prost::alloc::string::String),
     }
 }
+/// A configuration to generate a response for GetEffectiveVpcFlowLogsConfig
+/// request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EffectiveVpcFlowLogsConfig {
+    /// Unique name of the configuration. The name can have one of the following
+    /// forms:
+    ///
+    /// * For project-level configurations:
+    ///   `projects/{project_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For organization-level configurations:
+    ///   `organizations/{organization_id}/locations/global/vpcFlowLogsConfigs/{vpc_flow_logs_config_id}`
+    ///
+    /// * For a Compute config, the name will be the path of the subnet:
+    ///   `projects/{project_id}/regions/{region}/subnetworks/{subnet_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The state of the VPC Flow Log configuration. Default value is ENABLED.
+    /// When creating a new configuration, it must be enabled.
+    /// Setting state=DISABLED will pause the log generation for this config.
+    #[prost(enumeration = "vpc_flow_logs_config::State", optional, tag = "3")]
+    pub state: ::core::option::Option<i32>,
+    /// The aggregation interval for the logs. Default value is INTERVAL_5_SEC.
+    #[prost(
+        enumeration = "vpc_flow_logs_config::AggregationInterval",
+        optional,
+        tag = "4"
+    )]
+    pub aggregation_interval: ::core::option::Option<i32>,
+    /// The value of the field must be in (0, 1\]. The sampling rate of VPC Flow
+    /// Logs where 1.0 means all collected logs are reported.
+    /// Setting the sampling rate to 0.0 is not allowed. If you want to disable VPC
+    /// Flow Logs, use the state field instead.
+    /// Default value is 1.0.
+    #[prost(float, optional, tag = "5")]
+    pub flow_sampling: ::core::option::Option<f32>,
+    /// Configures whether all, none or a subset of metadata fields should be
+    /// added to the reported VPC flow logs.
+    /// Default value is INCLUDE_ALL_METADATA.
+    #[prost(enumeration = "vpc_flow_logs_config::Metadata", optional, tag = "6")]
+    pub metadata: ::core::option::Option<i32>,
+    /// Custom metadata fields to include in the reported VPC flow logs.
+    /// Can only be specified if "metadata" was set to CUSTOM_METADATA.
+    #[prost(string, repeated, tag = "7")]
+    pub metadata_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Export filter used to define which VPC Flow Logs should be logged.
+    #[prost(string, optional, tag = "8")]
+    pub filter_expr: ::core::option::Option<::prost::alloc::string::String>,
+    /// Determines whether to include cross project annotations in the logs.
+    /// This field is available only for organization configurations. If not
+    /// specified in org configs will be set to CROSS_PROJECT_METADATA_ENABLED.
+    #[prost(
+        enumeration = "vpc_flow_logs_config::CrossProjectMetadata",
+        optional,
+        tag = "13"
+    )]
+    pub cross_project_metadata: ::core::option::Option<i32>,
+    /// Specifies the scope of the config (e.g., SUBNET, NETWORK, ORGANIZATION..).
+    #[prost(enumeration = "effective_vpc_flow_logs_config::Scope", optional, tag = "12")]
+    pub scope: ::core::option::Option<i32>,
+    /// Reference to the resource of the config scope. That is, the scope from
+    /// which traffic is logged. The target resource must belong to the same
+    /// project as the configuration.
+    /// This field is not supported for organization level configurations.
+    #[prost(
+        oneof = "effective_vpc_flow_logs_config::TargetResource",
+        tags = "100, 101, 102, 103"
+    )]
+    pub target_resource: ::core::option::Option<
+        effective_vpc_flow_logs_config::TargetResource,
+    >,
+}
+/// Nested message and enum types in `EffectiveVpcFlowLogsConfig`.
+pub mod effective_vpc_flow_logs_config {
+    /// The scope for this flow log configuration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// Scope is unspecified.
+        Unspecified = 0,
+        /// Target resource is a subnet (Network Management API).
+        Subnet = 1,
+        /// Target resource is a subnet, and the config originates from the Compute
+        /// API.
+        ComputeApiSubnet = 2,
+        /// Target resource is a network.
+        Network = 3,
+        /// Target resource is a VPN tunnel.
+        VpnTunnel = 4,
+        /// Target resource is an interconnect attachment.
+        InterconnectAttachment = 5,
+        /// Configuration applies to an entire organization.
+        Organization = 6,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::Subnet => "SUBNET",
+                Self::ComputeApiSubnet => "COMPUTE_API_SUBNET",
+                Self::Network => "NETWORK",
+                Self::VpnTunnel => "VPN_TUNNEL",
+                Self::InterconnectAttachment => "INTERCONNECT_ATTACHMENT",
+                Self::Organization => "ORGANIZATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUBNET" => Some(Self::Subnet),
+                "COMPUTE_API_SUBNET" => Some(Self::ComputeApiSubnet),
+                "NETWORK" => Some(Self::Network),
+                "VPN_TUNNEL" => Some(Self::VpnTunnel),
+                "INTERCONNECT_ATTACHMENT" => Some(Self::InterconnectAttachment),
+                "ORGANIZATION" => Some(Self::Organization),
+                _ => None,
+            }
+        }
+    }
+    /// Reference to the resource of the config scope. That is, the scope from
+    /// which traffic is logged. The target resource must belong to the same
+    /// project as the configuration.
+    /// This field is not supported for organization level configurations.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TargetResource {
+        /// Traffic will be logged from VMs, VPN tunnels and Interconnect Attachments
+        /// within the network.
+        /// Format: projects/{project_id}/global/networks/{name}
+        #[prost(string, tag = "100")]
+        Network(::prost::alloc::string::String),
+        /// Traffic will be logged from VMs within the subnetwork.
+        /// Format: projects/{project_id}/regions/{region}/subnetworks/{name}
+        #[prost(string, tag = "101")]
+        Subnet(::prost::alloc::string::String),
+        /// Traffic will be logged from the Interconnect Attachment.
+        /// Format:
+        /// projects/{project_id}/regions/{region}/interconnectAttachments/{name}
+        #[prost(string, tag = "102")]
+        InterconnectAttachment(::prost::alloc::string::String),
+        /// Traffic will be logged from the VPN Tunnel.
+        /// Format: projects/{project_id}/regions/{region}/vpnTunnels/{name}
+        #[prost(string, tag = "103")]
+        VpnTunnel(::prost::alloc::string::String),
+    }
+}
 /// Request for the `ListVpcFlowLogsConfigs` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpcFlowLogsConfigsRequest {
@@ -4783,6 +5166,48 @@ pub struct QueryOrgVpcFlowLogsConfigsResponse {
     /// List of VPC Flow Log configurations.
     #[prost(message, repeated, tag = "1")]
     pub vpc_flow_logs_configs: ::prost::alloc::vec::Vec<VpcFlowLogsConfig>,
+    /// Page token to fetch the next set of configurations.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached (when querying all locations with `-`).
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for the `ShowEffectiveFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ShowEffectiveFlowLogsConfigsRequest {
+    /// Required. The parent resource of the VpcFlowLogsConfig, specified in
+    /// the following format: `projects/{project_id}/locations/global`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource to get the effective VPC Flow Logs configuration
+    /// for. The resource must belong to the same project as the parent. The
+    /// resource must be a network, subnetwork, interconnect attachment, VPN
+    /// tunnel, or a project.
+    #[prost(string, tag = "2")]
+    pub resource: ::prost::alloc::string::String,
+    /// Optional. Number of `EffectiveVpcFlowLogsConfigs` to return. Default is 30.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. Page token from an earlier query, as returned in
+    /// `next_page_token`.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the `EffectiveVpcFlowLogsConfigs` that match the filter
+    /// expression. A filter expression must use the supported \[CEL logic
+    /// operators\]
+    /// (<https://cloud.google.com/vpc/docs/about-flow-logs-records#supported_cel_logic_operators>).
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response for the `ShowEffectiveFlowLogsConfigs` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowEffectiveFlowLogsConfigsResponse {
+    /// List of Effective Vpc Flow Logs configurations.
+    #[prost(message, repeated, tag = "1")]
+    pub effective_flow_logs_configs: ::prost::alloc::vec::Vec<
+        EffectiveVpcFlowLogsConfig,
+    >,
     /// Page token to fetch the next set of configurations.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -5089,6 +5514,37 @@ pub mod vpc_flow_logs_service_client {
                     GrpcMethod::new(
                         "google.cloud.networkmanagement.v1beta1.VpcFlowLogsService",
                         "QueryOrgVpcFlowLogsConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// ShowEffectiveFlowLogsConfigs returns a list of all VPC Flow Logs
+        /// configurations applicable to a specified resource.
+        pub async fn show_effective_flow_logs_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ShowEffectiveFlowLogsConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ShowEffectiveFlowLogsConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkmanagement.v1beta1.VpcFlowLogsService/ShowEffectiveFlowLogsConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkmanagement.v1beta1.VpcFlowLogsService",
+                        "ShowEffectiveFlowLogsConfigs",
                     ),
                 );
             self.inner.unary(req, path, codec).await
