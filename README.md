@@ -72,7 +72,7 @@ The easiest way to fix is just to include one of the provider, for example:
 rustls = "0.23"
 ```
 
-If you have multiple you may need to call `CryptoProvider::install_default()` before using the Firestore client.
+If you have multiple you may need to call `CryptoProvider::install_default()` before using the client.
 
 ```rust
 rustls::crypto::ring::default_provider().install_default().expect("Failed to install rustls crypto provider");
