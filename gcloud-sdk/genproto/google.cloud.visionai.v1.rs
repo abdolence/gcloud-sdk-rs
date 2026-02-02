@@ -3753,6 +3753,7 @@ pub mod instance {
             InputResource(::prost::alloc::string::String),
             /// If the input resource is VisionAI Stream, the associated annotations
             /// can be specified using annotated_stream instead.
+            #[deprecated]
             #[prost(message, tag = "4")]
             AnnotatedStream(super::super::StreamWithAnnotation),
         }

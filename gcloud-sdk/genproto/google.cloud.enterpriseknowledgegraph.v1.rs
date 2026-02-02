@@ -171,10 +171,13 @@ pub mod input_config {
         /// The default value.
         Unspecified = 0,
         /// People entity.
+        #[deprecated]
         People = 1,
         /// Establishment entity.
+        #[deprecated]
         Establishment = 2,
         /// Property entity. e.g. real estate property.
+        #[deprecated]
         Property = 3,
         /// Product entity.
         Product = 4,
@@ -193,8 +196,11 @@ pub mod input_config {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "ENTITY_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::People => "PEOPLE",
+                #[allow(deprecated)]
                 Self::Establishment => "ESTABLISHMENT",
+                #[allow(deprecated)]
                 Self::Property => "PROPERTY",
                 Self::Product => "PRODUCT",
                 Self::Organization => "ORGANIZATION",
@@ -206,9 +212,9 @@ pub mod input_config {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "ENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "PEOPLE" => Some(Self::People),
-                "ESTABLISHMENT" => Some(Self::Establishment),
-                "PROPERTY" => Some(Self::Property),
+                "PEOPLE" => Some(#[allow(deprecated)] Self::People),
+                "ESTABLISHMENT" => Some(#[allow(deprecated)] Self::Establishment),
+                "PROPERTY" => Some(#[allow(deprecated)] Self::Property),
                 "PRODUCT" => Some(Self::Product),
                 "ORGANIZATION" => Some(Self::Organization),
                 "LOCAL_BUSINESS" => Some(Self::LocalBusiness),

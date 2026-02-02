@@ -663,13 +663,15 @@ pub mod intelligence_config {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Filter {
         /// Bucket locations to include or exclude.
-        #[prost(oneof = "filter::CloudStorageLocations", tags = "1, 2")]
+        #[prost(oneof = "filter::CloudStorageLocationsOneOf", tags = "1, 2")]
         pub cloud_storage_locations: ::core::option::Option<
-            filter::CloudStorageLocations,
+            filter::CloudStorageLocationsOneOf,
         >,
         /// Buckets to include or exclude.
-        #[prost(oneof = "filter::CloudStorageBuckets", tags = "3, 4")]
-        pub cloud_storage_buckets: ::core::option::Option<filter::CloudStorageBuckets>,
+        #[prost(oneof = "filter::CloudStorageBucketsOneOf", tags = "3, 4")]
+        pub cloud_storage_buckets: ::core::option::Option<
+            filter::CloudStorageBucketsOneOf,
+        >,
     }
     /// Nested message and enum types in `Filter`.
     pub mod filter {
@@ -700,7 +702,7 @@ pub mod intelligence_config {
         }
         /// Bucket locations to include or exclude.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-        pub enum CloudStorageLocations {
+        pub enum CloudStorageLocationsOneOf {
             /// Bucket locations to include.
             #[prost(message, tag = "1")]
             IncludedCloudStorageLocations(CloudStorageLocations),
@@ -710,7 +712,7 @@ pub mod intelligence_config {
         }
         /// Buckets to include or exclude.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-        pub enum CloudStorageBuckets {
+        pub enum CloudStorageBucketsOneOf {
             /// Buckets to include.
             #[prost(message, tag = "3")]
             IncludedCloudStorageBuckets(CloudStorageBuckets),

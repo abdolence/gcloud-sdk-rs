@@ -2800,6 +2800,7 @@ pub mod project_settings {
         /// Redirection is enabled.
         RedirectionFromGcrIoEnabled = 2,
         /// Redirection is enabled, and has been finalized so cannot be reverted.
+        #[deprecated]
         RedirectionFromGcrIoFinalized = 3,
         /// Redirection is enabled and missing images are copied from GCR
         RedirectionFromGcrIoEnabledAndCopying = 5,
@@ -2816,6 +2817,7 @@ pub mod project_settings {
                 Self::Unspecified => "REDIRECTION_STATE_UNSPECIFIED",
                 Self::RedirectionFromGcrIoDisabled => "REDIRECTION_FROM_GCR_IO_DISABLED",
                 Self::RedirectionFromGcrIoEnabled => "REDIRECTION_FROM_GCR_IO_ENABLED",
+                #[allow(deprecated)]
                 Self::RedirectionFromGcrIoFinalized => {
                     "REDIRECTION_FROM_GCR_IO_FINALIZED"
                 }
@@ -2838,7 +2840,7 @@ pub mod project_settings {
                     Some(Self::RedirectionFromGcrIoEnabled)
                 }
                 "REDIRECTION_FROM_GCR_IO_FINALIZED" => {
-                    Some(Self::RedirectionFromGcrIoFinalized)
+                    Some(#[allow(deprecated)] Self::RedirectionFromGcrIoFinalized)
                 }
                 "REDIRECTION_FROM_GCR_IO_ENABLED_AND_COPYING" => {
                     Some(Self::RedirectionFromGcrIoEnabledAndCopying)

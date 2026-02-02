@@ -2727,6 +2727,7 @@ pub mod build_options {
         /// Build logs are stored in Cloud Storage.
         GcsOnly = 2,
         /// This option is the same as CLOUD_LOGGING_ONLY.
+        #[deprecated]
         StackdriverOnly = 3,
         /// Build logs are stored in Cloud Logging. Selecting this option will not
         /// allow [logs
@@ -2745,6 +2746,7 @@ pub mod build_options {
                 Self::LoggingUnspecified => "LOGGING_UNSPECIFIED",
                 Self::Legacy => "LEGACY",
                 Self::GcsOnly => "GCS_ONLY",
+                #[allow(deprecated)]
                 Self::StackdriverOnly => "STACKDRIVER_ONLY",
                 Self::CloudLoggingOnly => "CLOUD_LOGGING_ONLY",
                 Self::None => "NONE",
@@ -2756,7 +2758,7 @@ pub mod build_options {
                 "LOGGING_UNSPECIFIED" => Some(Self::LoggingUnspecified),
                 "LEGACY" => Some(Self::Legacy),
                 "GCS_ONLY" => Some(Self::GcsOnly),
-                "STACKDRIVER_ONLY" => Some(Self::StackdriverOnly),
+                "STACKDRIVER_ONLY" => Some(#[allow(deprecated)] Self::StackdriverOnly),
                 "CLOUD_LOGGING_ONLY" => Some(Self::CloudLoggingOnly),
                 "NONE" => Some(Self::None),
                 _ => None,

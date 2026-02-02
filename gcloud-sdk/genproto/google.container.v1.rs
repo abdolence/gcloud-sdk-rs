@@ -19,7 +19,12 @@ pub struct LinuxNodeConfig {
     /// net.ipv4.tcp_rmem
     /// net.ipv4.tcp_wmem
     /// net.ipv4.tcp_tw_reuse
+    /// net.ipv4.tcp_mtu_probing
     /// net.ipv4.tcp_max_orphans
+    /// net.ipv4.tcp_max_tw_buckets
+    /// net.ipv4.tcp_syn_retries
+    /// net.ipv4.tcp_ecn
+    /// net.ipv4.tcp_congestion_control
     /// net.netfilter.nf_conntrack_max
     /// net.netfilter.nf_conntrack_buckets
     /// net.netfilter.nf_conntrack_tcp_timeout_close_wait
@@ -29,14 +34,23 @@ pub struct LinuxNodeConfig {
     /// kernel.shmmni
     /// kernel.shmmax
     /// kernel.shmall
+    /// kernel.perf_event_paranoid
+    /// kernel.sched_rt_runtime_us
+    /// kernel.softlockup_panic
+    /// kernel.yama.ptrace_scope
+    /// kernel.kptr_restrict
+    /// kernel.dmesg_restrict
+    /// kernel.sysrq
     /// fs.aio-max-nr
     /// fs.file-max
     /// fs.inotify.max_user_instances
     /// fs.inotify.max_user_watches
     /// fs.nr_open
     /// vm.dirty_background_ratio
+    /// vm.dirty_background_bytes
     /// vm.dirty_expire_centisecs
     /// vm.dirty_ratio
+    /// vm.dirty_bytes
     /// vm.dirty_writeback_centisecs
     /// vm.max_map_count
     /// vm.overcommit_memory
@@ -74,6 +88,10 @@ pub struct LinuxNodeConfig {
     /// for more details.
     #[prost(enumeration = "linux_node_config::TransparentHugepageDefrag", tag = "5")]
     pub transparent_hugepage_defrag: i32,
+    /// Optional. Enables and configures swap space on nodes.
+    /// If omitted, swap is disabled.
+    #[prost(message, optional, tag = "12")]
+    pub swap_config: ::core::option::Option<linux_node_config::SwapConfig>,
     /// Optional. Configuration for kernel module loading on nodes.
     /// When enabled, the node pool will be provisioned with a Container-Optimized
     /// OS image that enforces kernel module signature verification.
@@ -93,6 +111,96 @@ pub mod linux_node_config {
         /// Optional. Amount of 1G hugepages
         #[prost(int32, optional, tag = "2")]
         pub hugepage_size1g: ::core::option::Option<i32>,
+    }
+    /// Configuration for swap memory on a node pool.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SwapConfig {
+        /// Optional. Enables or disables swap for the node pool.
+        #[prost(bool, optional, tag = "1")]
+        pub enabled: ::core::option::Option<bool>,
+        /// Optional. If omitted, swap space is encrypted by default.
+        #[prost(message, optional, tag = "2")]
+        pub encryption_config: ::core::option::Option<swap_config::EncryptionConfig>,
+        /// Optional. Defines the backing storage for the swap space.
+        /// If omitted, defaults to the 'boot_disk_profile'.
+        #[prost(oneof = "swap_config::PerformanceProfile", tags = "3, 4, 5")]
+        pub performance_profile: ::core::option::Option<swap_config::PerformanceProfile>,
+    }
+    /// Nested message and enum types in `SwapConfig`.
+    pub mod swap_config {
+        /// Defines encryption settings for the swap space.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct EncryptionConfig {
+            /// Optional. If true, swap space will not be encrypted.
+            /// Defaults to false (encrypted).
+            #[prost(bool, optional, tag = "1")]
+            pub disabled: ::core::option::Option<bool>,
+        }
+        /// Swap on the node's boot disk.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct BootDiskProfile {
+            /// Optional. Specifies the size of the swap space. If omitted, GKE
+            /// determines an optimal size based on node memory.
+            #[prost(oneof = "boot_disk_profile::SwapSize", tags = "1, 2")]
+            pub swap_size: ::core::option::Option<boot_disk_profile::SwapSize>,
+        }
+        /// Nested message and enum types in `BootDiskProfile`.
+        pub mod boot_disk_profile {
+            /// Optional. Specifies the size of the swap space. If omitted, GKE
+            /// determines an optimal size based on node memory.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum SwapSize {
+                /// Specifies the size of the swap space in gibibytes (GiB).
+                #[prost(int64, tag = "1")]
+                SwapSizeGib(i64),
+                /// Specifies the size of the swap space as a percentage of the boot disk
+                /// size.
+                #[prost(int32, tag = "2")]
+                SwapSizePercent(i32),
+            }
+        }
+        /// Swap on the local SSD shared with pod ephemeral storage.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct EphemeralLocalSsdProfile {
+            /// Specifies the size of the swap space to be provisioned.
+            #[prost(oneof = "ephemeral_local_ssd_profile::SwapSize", tags = "1, 2")]
+            pub swap_size: ::core::option::Option<ephemeral_local_ssd_profile::SwapSize>,
+        }
+        /// Nested message and enum types in `EphemeralLocalSsdProfile`.
+        pub mod ephemeral_local_ssd_profile {
+            /// Specifies the size of the swap space to be provisioned.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum SwapSize {
+                /// Specifies the size of the swap space in gibibytes (GiB).
+                #[prost(int64, tag = "1")]
+                SwapSizeGib(i64),
+                /// Specifies the size of the swap space as a percentage of the ephemeral
+                /// local SSD capacity.
+                #[prost(int32, tag = "2")]
+                SwapSizePercent(i32),
+            }
+        }
+        /// Provisions a new, separate local NVMe SSD exclusively for swap.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DedicatedLocalSsdProfile {
+            /// The number of physical local NVMe SSD disks to attach.
+            #[prost(int64, tag = "1")]
+            pub disk_count: i64,
+        }
+        /// Optional. Defines the backing storage for the swap space.
+        /// If omitted, defaults to the 'boot_disk_profile'.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum PerformanceProfile {
+            /// Swap on the node's boot disk.
+            #[prost(message, tag = "3")]
+            BootDiskProfile(BootDiskProfile),
+            /// Swap on the local SSD shared with pod ephemeral storage.
+            #[prost(message, tag = "4")]
+            EphemeralLocalSsdProfile(EphemeralLocalSsdProfile),
+            /// Provisions a new, separate local NVMe SSD exclusively for swap.
+            #[prost(message, tag = "5")]
+            DedicatedLocalSsdProfile(DedicatedLocalSsdProfile),
+        }
     }
     /// Configuration for kernel module loading on nodes.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -560,6 +668,24 @@ pub struct NodeKubeletConfig {
     /// be OOM killed individually instead of as a group.
     #[prost(bool, optional, tag = "22")]
     pub single_process_oom_kill: ::core::option::Option<bool>,
+    /// Optional. shutdown_grace_period_seconds is the maximum allowed grace period
+    /// (in seconds) the total duration that the node should delay the shutdown
+    /// during a graceful shutdown. This is the total grace period for pod
+    /// termination for both regular and critical pods.
+    /// <https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/>
+    /// If set to 0, node will not enable the graceful node shutdown functionality.
+    /// This field is only valid for Spot VMs.
+    /// Allowed values: 0, 30, 120.
+    #[prost(int32, optional, tag = "26")]
+    pub shutdown_grace_period_seconds: ::core::option::Option<i32>,
+    /// Optional. shutdown_grace_period_critical_pods_seconds is the maximum
+    /// allowed grace period (in seconds) used to terminate critical pods during a
+    /// node shutdown. This value should be \<= shutdown_grace_period_seconds, and
+    /// is only valid if shutdown_grace_period_seconds is set.
+    /// <https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/>
+    /// Range: \[0, 120\].
+    #[prost(int32, optional, tag = "27")]
+    pub shutdown_grace_period_critical_pods_seconds: ::core::option::Option<i32>,
 }
 /// TopologyManager defines the configuration options for Topology Manager
 /// feature. See
@@ -987,6 +1113,9 @@ pub struct NodeConfig {
     pub secondary_boot_disk_update_strategy: ::core::option::Option<
         SecondaryBootDiskUpdateStrategy,
     >,
+    /// The configuration for GPU Direct
+    #[prost(message, optional, tag = "51")]
+    pub gpu_direct_config: ::core::option::Option<GpuDirectConfig>,
     /// The maximum duration for the nodes to exist.
     /// If unspecified, the nodes can exist indefinitely.
     #[prost(message, optional, tag = "53")]
@@ -1007,6 +1136,11 @@ pub struct NodeConfig {
     /// The boot disk configuration for the node pool.
     #[prost(message, optional, tag = "57")]
     pub boot_disk: ::core::option::Option<BootDisk>,
+    /// Consolidation delay defines duration after which the Cluster Autoscaler can
+    /// scale down underutilized nodes. If not set, nodes are scaled down by
+    /// default behavior, i.e. according to the chosen autoscaling profile.
+    #[prost(message, optional, tag = "60")]
+    pub consolidation_delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `NodeConfig`.
 pub mod node_config {
@@ -1265,11 +1399,16 @@ pub struct NodeNetworkConfig {
     /// Usage=numNodes*numZones*podIPsPerNode.
     #[prost(double, tag = "16")]
     pub pod_ipv4_range_utilization: f64,
-    /// Output only. The subnetwork path for the node pool.
+    /// Optional. The subnetwork name/path for the node pool.
     /// Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}
-    /// If the cluster is associated with multiple subnetworks, the subnetwork for
-    /// the node pool is picked based on the IP utilization during node pool
-    /// creation and is immutable.
+    /// If the cluster is associated with multiple subnetworks, the subnetwork can
+    /// be either:
+    ///
+    /// 1. A user supplied subnetwork name/full path during node pool creation.
+    ///    Example1: my-subnet
+    ///    Example2: projects/gke-project/regions/us-central1/subnetworks/my-subnet
+    /// 1. A subnetwork path picked based on the IP utilization during node pool
+    ///    creation and is immutable.
     #[prost(string, tag = "19")]
     pub subnetwork: ::prost::alloc::string::String,
     /// Output only. The network tier configuration for the node pool inherits from
@@ -1592,6 +1731,11 @@ pub struct ContainerdConfig {
     /// node pool.
     #[prost(message, optional, tag = "2")]
     pub writable_cgroups: ::core::option::Option<containerd_config::WritableCgroups>,
+    /// RegistryHostConfig configures containerd registry host configuration.
+    /// Each registry_hosts represents a hosts.toml file.
+    /// At most 25 registry_hosts are allowed.
+    #[prost(message, repeated, tag = "3")]
+    pub registry_hosts: ::prost::alloc::vec::Vec<containerd_config::RegistryHostConfig>,
 }
 /// Nested message and enum types in `ContainerdConfig`.
 pub mod containerd_config {
@@ -1651,7 +1795,7 @@ pub mod containerd_config {
             /// * GCPSecretManagerCertificateConfig
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum CertificateConfig {
-                /// Google Secret Manager (GCP) certificate configuration.
+                /// Secret Manager certificate configuration.
                 #[prost(message, tag = "2")]
                 GcpSecretManagerCertificateConfig(GcpSecretManagerCertificateConfig),
             }
@@ -1663,6 +1807,165 @@ pub mod containerd_config {
         /// Optional. Whether writable cgroups is enabled.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
+    }
+    /// RegistryHostConfig configures the top-level structure for a single
+    /// containerd registry server's configuration, which represents one hosts.toml
+    /// file on the node. It will override the same fqdns in
+    /// PrivateRegistryAccessConfig.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RegistryHostConfig {
+        /// Defines the host name of the registry server, which will be used to
+        /// create configuration file as /etc/containerd/hosts.d/<server>/hosts.toml.
+        /// It supports fully qualified domain names (FQDN) and IP addresses:
+        /// Specifying port is supported.
+        /// Wildcards are NOT supported.
+        /// Examples:
+        ///
+        /// * my.customdomain.com
+        /// * 10.0.1.2:5000
+        #[prost(string, tag = "1")]
+        pub server: ::prost::alloc::string::String,
+        /// HostConfig configures a list of host-specific configurations for the
+        /// server.
+        /// Each server can have at most 10 host configurations.
+        #[prost(message, repeated, tag = "2")]
+        pub hosts: ::prost::alloc::vec::Vec<registry_host_config::HostConfig>,
+    }
+    /// Nested message and enum types in `RegistryHostConfig`.
+    pub mod registry_host_config {
+        /// CertificateConfig configures certificate for the registry.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct CertificateConfig {
+            /// One of the methods to configure the certificate.
+            #[prost(oneof = "certificate_config::Certificate", tags = "1")]
+            pub certificate: ::core::option::Option<certificate_config::Certificate>,
+        }
+        /// Nested message and enum types in `CertificateConfig`.
+        pub mod certificate_config {
+            /// One of the methods to configure the certificate.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum Certificate {
+                /// The URI configures a secret from
+                /// [Secret Manager](<https://cloud.google.com/secret-manager>)
+                /// in the format
+                /// "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION" for
+                /// global secret or
+                /// "projects/$PROJECT_ID/locations/$REGION/secrets/$SECRET_NAME/versions/$VERSION"
+                /// for regional secret. Version can be fixed (e.g. "2") or "latest"
+                #[prost(string, tag = "1")]
+                GcpSecretManagerSecretUri(::prost::alloc::string::String),
+            }
+        }
+        /// CertificateConfigPair configures pairs of certificates, which is used for
+        /// client certificate and key pairs under a registry.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct CertificateConfigPair {
+            /// Cert configures the client certificate.
+            #[prost(message, optional, tag = "1")]
+            pub cert: ::core::option::Option<CertificateConfig>,
+            /// Key configures the client private key. Optional.
+            #[prost(message, optional, tag = "2")]
+            pub key: ::core::option::Option<CertificateConfig>,
+        }
+        /// RegistryHeader configures headers for the registry.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct RegistryHeader {
+            /// Key configures the header key.
+            #[prost(string, tag = "1")]
+            pub key: ::prost::alloc::string::String,
+            /// Value configures the header value.
+            #[prost(string, repeated, tag = "2")]
+            pub value: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// HostConfig configures the registry host under a given Server.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct HostConfig {
+            /// Host configures the registry host/mirror.
+            /// It supports fully qualified domain names (FQDN) and IP addresses:
+            /// Specifying port is supported.
+            /// Wildcards are NOT supported.
+            /// Examples:
+            ///
+            /// * my.customdomain.com
+            /// * 10.0.1.2:5000
+            #[prost(string, tag = "1")]
+            pub host: ::prost::alloc::string::String,
+            /// Capabilities represent the capabilities of the registry host,
+            /// specifying what operations a host is capable of performing.
+            /// If not set, containerd enables all capabilities by default.
+            #[prost(enumeration = "HostCapability", repeated, tag = "2")]
+            pub capabilities: ::prost::alloc::vec::Vec<i32>,
+            /// OverridePath is used to indicate the host's API root endpoint is
+            /// defined in the URL path rather than by the API specification. This may
+            /// be used with non-compliant OCI registries which are missing the /v2
+            /// prefix.
+            /// If not set, containerd sets default false.
+            #[prost(bool, tag = "3")]
+            pub override_path: bool,
+            /// Header configures the registry host headers.
+            #[prost(message, repeated, tag = "4")]
+            pub header: ::prost::alloc::vec::Vec<RegistryHeader>,
+            /// CA configures the registry host certificate.
+            #[prost(message, repeated, tag = "5")]
+            pub ca: ::prost::alloc::vec::Vec<CertificateConfig>,
+            /// Client configures the registry host client certificate and key.
+            #[prost(message, repeated, tag = "6")]
+            pub client: ::prost::alloc::vec::Vec<CertificateConfigPair>,
+            /// Specifies the maximum duration allowed for a connection attempt to
+            /// complete. A shorter timeout helps reduce delays when falling back to
+            /// the original registry if the mirror is unreachable.
+            /// Maximum allowed value is 180s. If not set, containerd sets default 30s.
+            /// The value should be a decimal number of seconds with an `s` suffix.
+            #[prost(message, optional, tag = "7")]
+            pub dial_timeout: ::core::option::Option<::prost_types::Duration>,
+        }
+        /// HostCapability configures capabilities for the registry host.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum HostCapability {
+            /// UNKNOWN should never be set.
+            Unspecified = 0,
+            /// Pull represents the capability to fetch manifests and blobs by digest.
+            Pull = 1,
+            /// Resolve represents the capability to fetch manifests by name.
+            Resolve = 2,
+            /// Push represents the capability to push blobs and manifests.
+            Push = 3,
+        }
+        impl HostCapability {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "HOST_CAPABILITY_UNSPECIFIED",
+                    Self::Pull => "HOST_CAPABILITY_PULL",
+                    Self::Resolve => "HOST_CAPABILITY_RESOLVE",
+                    Self::Push => "HOST_CAPABILITY_PUSH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "HOST_CAPABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "HOST_CAPABILITY_PULL" => Some(Self::Pull),
+                    "HOST_CAPABILITY_RESOLVE" => Some(Self::Resolve),
+                    "HOST_CAPABILITY_PUSH" => Some(Self::Push),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Kubernetes taint is composed of three fields: key, value, and effect. Effect
@@ -1898,6 +2201,9 @@ pub struct AddonsConfig {
     /// Configuration for the Lustre CSI driver.
     #[prost(message, optional, tag = "23")]
     pub lustre_csi_driver_config: ::core::option::Option<LustreCsiDriverConfig>,
+    /// Optional. Configuration for the slice controller add-on.
+    #[prost(message, optional, tag = "26")]
+    pub slice_controller_config: ::core::option::Option<SliceControllerConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -2150,6 +2456,13 @@ pub struct LustreCsiDriverConfig {
     #[deprecated]
     #[prost(bool, tag = "3")]
     pub enable_legacy_lustre_port: bool,
+}
+/// Configuration for the Slice Controller.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SliceControllerConfig {
+    /// Optional. Indicates whether Slice Controller is enabled in the cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
 }
 /// Configuration options for the Ray Operator add-on.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2412,7 +2725,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -2428,7 +2741,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -2445,7 +2758,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -2462,7 +2775,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -2616,7 +2929,7 @@ pub struct Cluster {
     #[prost(string, tag = "8")]
     pub network: ::prost::alloc::string::String,
     /// The IP address range of the container pods in this cluster, in
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`). Leave blank to have
     /// one automatically chosen or specify a `/14` block in `10.0.0.0/8`.
     #[prost(string, tag = "9")]
@@ -2820,7 +3133,7 @@ pub struct Cluster {
     pub node_ipv4_cidr_size: i32,
     /// Output only. The IP address range of the Kubernetes services in
     /// this cluster, in
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`). Service addresses are
     /// typically put in the last `/16` from the container CIDR.
     #[prost(string, tag = "110")]
@@ -2852,7 +3165,7 @@ pub struct Cluster {
     #[prost(bool, tag = "115")]
     pub enable_tpu: bool,
     /// Output only. The IP address range of the Cloud TPUs in this cluster, in
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`).
     /// This field is deprecated due to the deprecation of 2VM TPU. The end of life
     /// date for 2VM TPU is 2025-04-25.
@@ -2939,6 +3252,9 @@ pub struct Cluster {
     pub anonymous_authentication_config: ::core::option::Option<
         AnonymousAuthenticationConfig,
     >,
+    /// Configuration for Managed OpenTelemetry pipeline.
+    #[prost(message, optional, tag = "168")]
+    pub managed_opentelemetry_config: ::core::option::Option<ManagedOpenTelemetryConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -3062,6 +3378,12 @@ pub struct UserManagedKeysConfig {
     /// plane nodes.
     #[prost(string, tag = "16")]
     pub control_plane_disk_encryption_key: ::prost::alloc::string::String,
+    /// Output only. All of the versions of the Cloud KMS cryptoKey that are used
+    /// by Confidential Hyperdisks on the control plane nodes.
+    #[prost(string, repeated, tag = "18")]
+    pub control_plane_disk_encryption_key_versions: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Resource path of the Cloud KMS cryptoKey to use for encryption of internal
     /// etcd backups.
     #[prost(string, tag = "17")]
@@ -3712,6 +4034,16 @@ pub struct ClusterUpdate {
     /// The desired network tier configuration for the cluster.
     #[prost(message, optional, tag = "155")]
     pub desired_network_tier_config: ::core::option::Option<NetworkTierConfig>,
+    /// The desired privileged admission config for the cluster.
+    #[prost(message, optional, tag = "159")]
+    pub desired_privileged_admission_config: ::core::option::Option<
+        PrivilegedAdmissionConfig,
+    >,
+    /// The desired managed open telemetry configuration.
+    #[prost(message, optional, tag = "163")]
+    pub desired_managed_opentelemetry_config: ::core::option::Option<
+        ManagedOpenTelemetryConfig,
+    >,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -3740,6 +4072,62 @@ pub struct AdditionalIpRangesConfig {
     /// Example2: gke-pod-range1,gke-pod-range2
     #[prost(string, repeated, tag = "2")]
     pub pod_ipv4_range_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Draining status of the additional subnet.
+    #[prost(enumeration = "additional_ip_ranges_config::Status", tag = "3")]
+    pub status: i32,
+}
+/// Nested message and enum types in `AdditionalIPRangesConfig`.
+pub mod additional_ip_ranges_config {
+    /// Additional subnet with DRAINING status will not be selected during new node
+    /// pool creation. To undrain the draining status, update the cluster to set
+    /// the sunbet to ACTIVE status. To remove the additional subnet, use the
+    /// update cluster API to remove the subnet from the
+    /// desired_additional_ip_ranges list. IP ranges can be removed regardless of
+    /// its status, as long as no node pools are using them.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// Not set, same as ACTIVE.
+        Unspecified = 0,
+        /// ACTIVE status indicates that the subnet is available for new node pool
+        /// creation.
+        Active = 1,
+        /// DRAINING status indicates that the subnet is not used for new node pool
+        /// creation.
+        Draining = 2,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Draining => "DRAINING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DRAINING" => Some(Self::Draining),
+                _ => None,
+            }
+        }
+    }
 }
 /// DesiredAdditionalIPRangesConfig is a wrapper used for cluster update
 /// operation and contains multiple AdditionalIPRangesConfigs.
@@ -4006,21 +4394,26 @@ pub mod operation {
         AutoRepairNodes = 10,
         /// Unused. Automatic node upgrade uses
         /// \[UPGRADE_NODES\]\[google.container.v1.Operation.Type.UPGRADE_NODES\].
+        #[deprecated]
         AutoUpgradeNodes = 11,
         /// Unused. Updating labels uses
         /// \[UPDATE_CLUSTER\]\[google.container.v1.Operation.Type.UPDATE_CLUSTER\].
+        #[deprecated]
         SetLabels = 12,
         /// Unused. Updating master auth uses
         /// \[UPDATE_CLUSTER\]\[google.container.v1.Operation.Type.UPDATE_CLUSTER\].
+        #[deprecated]
         SetMasterAuth = 13,
         /// The node pool is being resized. With the exception of resizing to or from
         /// size zero, the node pool is generally usable during this operation.
         SetNodePoolSize = 14,
         /// Unused. Updating network policy uses
         /// \[UPDATE_CLUSTER\]\[google.container.v1.Operation.Type.UPDATE_CLUSTER\].
+        #[deprecated]
         SetNetworkPolicy = 15,
         /// Unused. Updating maintenance policy uses
         /// \[UPDATE_CLUSTER\]\[google.container.v1.Operation.Type.UPDATE_CLUSTER\].
+        #[deprecated]
         SetMaintenancePolicy = 16,
         /// The control plane is being resized. This operation type is initiated by
         /// GKE. These operations are often performed preemptively to ensure that the
@@ -4051,11 +4444,16 @@ pub mod operation {
                 Self::DeleteNodePool => "DELETE_NODE_POOL",
                 Self::SetNodePoolManagement => "SET_NODE_POOL_MANAGEMENT",
                 Self::AutoRepairNodes => "AUTO_REPAIR_NODES",
+                #[allow(deprecated)]
                 Self::AutoUpgradeNodes => "AUTO_UPGRADE_NODES",
+                #[allow(deprecated)]
                 Self::SetLabels => "SET_LABELS",
+                #[allow(deprecated)]
                 Self::SetMasterAuth => "SET_MASTER_AUTH",
                 Self::SetNodePoolSize => "SET_NODE_POOL_SIZE",
+                #[allow(deprecated)]
                 Self::SetNetworkPolicy => "SET_NETWORK_POLICY",
+                #[allow(deprecated)]
                 Self::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
                 Self::ResizeCluster => "RESIZE_CLUSTER",
                 Self::FleetFeatureUpgrade => "FLEET_FEATURE_UPGRADE",
@@ -4075,12 +4473,14 @@ pub mod operation {
                 "DELETE_NODE_POOL" => Some(Self::DeleteNodePool),
                 "SET_NODE_POOL_MANAGEMENT" => Some(Self::SetNodePoolManagement),
                 "AUTO_REPAIR_NODES" => Some(Self::AutoRepairNodes),
-                "AUTO_UPGRADE_NODES" => Some(Self::AutoUpgradeNodes),
-                "SET_LABELS" => Some(Self::SetLabels),
-                "SET_MASTER_AUTH" => Some(Self::SetMasterAuth),
+                "AUTO_UPGRADE_NODES" => Some(#[allow(deprecated)] Self::AutoUpgradeNodes),
+                "SET_LABELS" => Some(#[allow(deprecated)] Self::SetLabels),
+                "SET_MASTER_AUTH" => Some(#[allow(deprecated)] Self::SetMasterAuth),
                 "SET_NODE_POOL_SIZE" => Some(Self::SetNodePoolSize),
-                "SET_NETWORK_POLICY" => Some(Self::SetNetworkPolicy),
-                "SET_MAINTENANCE_POLICY" => Some(Self::SetMaintenancePolicy),
+                "SET_NETWORK_POLICY" => Some(#[allow(deprecated)] Self::SetNetworkPolicy),
+                "SET_MAINTENANCE_POLICY" => {
+                    Some(#[allow(deprecated)] Self::SetMaintenancePolicy)
+                }
                 "RESIZE_CLUSTER" => Some(Self::ResizeCluster),
                 "FLEET_FEATURE_UPGRADE" => Some(Self::FleetFeatureUpgrade),
                 _ => None,
@@ -4395,6 +4795,14 @@ pub struct UpdateNodePoolRequest {
     /// node pool to the specified boot disk config.
     #[prost(message, optional, tag = "47")]
     pub boot_disk: ::core::option::Option<BootDisk>,
+    /// The desired node drain configuration for nodes in the node pool.
+    #[prost(message, optional, tag = "48")]
+    pub node_drain_config: ::core::option::Option<node_pool::NodeDrainConfig>,
+    /// Consolidation delay defines duration after which the Cluster Autoscaler can
+    /// scale down underutilized nodes. If not set, nodes are scaled down by
+    /// default behavior, i.e. according to the chosen autoscaling profile.
+    #[prost(message, optional, tag = "49")]
+    pub consolidation_delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5183,6 +5591,9 @@ pub struct NodePool {
     /// Enable best effort provisioning for nodes
     #[prost(message, optional, tag = "113")]
     pub best_effort_provisioning: ::core::option::Option<BestEffortProvisioning>,
+    /// Specifies the node drain configuration for this node pool.
+    #[prost(message, optional, tag = "116")]
+    pub node_drain_config: ::core::option::Option<node_pool::NodeDrainConfig>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -5425,6 +5836,14 @@ pub mod node_pool {
         /// API.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
+    }
+    /// NodeDrainConfig contains the node drain related configurations for this
+    /// nodepool.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NodeDrainConfig {
+        /// Whether to respect PDB during node pool deletion.
+        #[prost(bool, optional, tag = "3")]
+        pub respect_pdb_during_node_pool_deletion: ::core::option::Option<bool>,
     }
     /// The current status of the node pool instance.
     #[derive(
@@ -5714,7 +6133,7 @@ pub struct RecurringTimeWindow {
     #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<TimeWindow>,
     /// An RRULE (<https://tools.ietf.org/html/rfc5545#section-3.8.5.3>) for how
-    /// this window reccurs. They go on for the span of time between the start and
+    /// this window recurs. They go on for the span of time between the start and
     /// end time.
     ///
     /// For example, to have something repeat every weekday, you'd use:
@@ -5923,6 +6342,10 @@ pub struct ClusterAutoscaling {
     /// Default compute class is a configuration for default compute class.
     #[prost(message, optional, tag = "9")]
     pub default_compute_class_config: ::core::option::Option<DefaultComputeClassConfig>,
+    /// Autopilot general profile for the cluster, which defines the
+    /// configuration for the cluster.
+    #[prost(enumeration = "cluster_autoscaling::AutopilotGeneralProfile", tag = "14")]
+    pub autopilot_general_profile: i32,
 }
 /// Nested message and enum types in `ClusterAutoscaling`.
 pub mod cluster_autoscaling {
@@ -5965,6 +6388,45 @@ pub mod cluster_autoscaling {
                 "PROFILE_UNSPECIFIED" => Some(Self::ProfileUnspecified),
                 "OPTIMIZE_UTILIZATION" => Some(Self::OptimizeUtilization),
                 "BALANCED" => Some(Self::Balanced),
+                _ => None,
+            }
+        }
+    }
+    /// Defines possible options for Autopilot general profile.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutopilotGeneralProfile {
+        /// Use default configuration.
+        Unspecified = 0,
+        /// Avoid extra IP consumption.
+        NoPerformance = 1,
+    }
+    impl AutopilotGeneralProfile {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED",
+                Self::NoPerformance => "NO_PERFORMANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_PERFORMANCE" => Some(Self::NoPerformance),
                 _ => None,
             }
         }
@@ -6778,6 +7240,7 @@ pub mod gateway_api_config {
         Disabled = 1,
         /// Deprecated: use CHANNEL_STANDARD instead.
         /// Gateway API support is enabled, experimental CRDs are installed
+        #[deprecated]
         Experimental = 3,
         /// Gateway API support is enabled, standard CRDs are installed
         Standard = 4,
@@ -6791,6 +7254,7 @@ pub mod gateway_api_config {
             match self {
                 Self::Unspecified => "CHANNEL_UNSPECIFIED",
                 Self::Disabled => "CHANNEL_DISABLED",
+                #[allow(deprecated)]
                 Self::Experimental => "CHANNEL_EXPERIMENTAL",
                 Self::Standard => "CHANNEL_STANDARD",
             }
@@ -6800,7 +7264,7 @@ pub mod gateway_api_config {
             match value {
                 "CHANNEL_UNSPECIFIED" => Some(Self::Unspecified),
                 "CHANNEL_DISABLED" => Some(Self::Disabled),
-                "CHANNEL_EXPERIMENTAL" => Some(Self::Experimental),
+                "CHANNEL_EXPERIMENTAL" => Some(#[allow(deprecated)] Self::Experimental),
                 "CHANNEL_STANDARD" => Some(Self::Standard),
                 _ => None,
             }
@@ -7606,6 +8070,55 @@ pub struct FastSocket {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// GPUDirectConfig specifies the GPU direct strategy on the node pool.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GpuDirectConfig {
+    /// The type of GPU direct strategy to enable on the node pool.
+    #[prost(enumeration = "gpu_direct_config::GpuDirectStrategy", optional, tag = "1")]
+    pub gpu_direct_strategy: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `GPUDirectConfig`.
+pub mod gpu_direct_config {
+    /// Option for GPU direct Strategies
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GpuDirectStrategy {
+        /// Default value. No GPU Direct strategy is enabled on the node.
+        Unspecified = 0,
+        /// GPUDirect-RDMA on A3 Ultra, and A4 machine types
+        Rdma = 2,
+    }
+    impl GpuDirectStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GPU_DIRECT_STRATEGY_UNSPECIFIED",
+                Self::Rdma => "RDMA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GPU_DIRECT_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RDMA" => Some(Self::Rdma),
+                _ => None,
+            }
+        }
+    }
+}
 /// NotificationConfig is the configuration of notifications.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NotificationConfig {
@@ -7781,7 +8294,7 @@ pub struct UpgradeEvent {
 }
 /// UpgradeInfoEvent is a notification sent to customers about the upgrade
 /// information of a resource.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeInfoEvent {
     /// The resource type associated with the upgrade.
     #[prost(enumeration = "UpgradeResourceType", tag = "1")]
@@ -7820,6 +8333,10 @@ pub struct UpgradeInfoEvent {
     /// The type of the event.
     #[prost(enumeration = "upgrade_info_event::EventType", tag = "12")]
     pub event_type: i32,
+    /// The information about the disruption event. This field is only populated
+    /// when event_type is DISRUPTION_EVENT.
+    #[prost(message, optional, tag = "14")]
+    pub disruption_event: ::core::option::Option<DisruptionEvent>,
 }
 /// Nested message and enum types in `UpgradeInfoEvent`.
 pub mod upgrade_info_event {
@@ -7899,6 +8416,8 @@ pub mod upgrade_info_event {
         CosMilestoneVersionUpdate = 2,
         /// UPGRADE_LIFECYCLE indicates the event is about the upgrade lifecycle.
         UpgradeLifecycle = 3,
+        /// DISRUPTION_EVENT indicates the event is about the disruption.
+        DisruptionEvent = 4,
     }
     impl EventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7911,6 +8430,7 @@ pub mod upgrade_info_event {
                 Self::EndOfSupport => "END_OF_SUPPORT",
                 Self::CosMilestoneVersionUpdate => "COS_MILESTONE_VERSION_UPDATE",
                 Self::UpgradeLifecycle => "UPGRADE_LIFECYCLE",
+                Self::DisruptionEvent => "DISRUPTION_EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7920,6 +8440,87 @@ pub mod upgrade_info_event {
                 "END_OF_SUPPORT" => Some(Self::EndOfSupport),
                 "COS_MILESTONE_VERSION_UPDATE" => Some(Self::CosMilestoneVersionUpdate),
                 "UPGRADE_LIFECYCLE" => Some(Self::UpgradeLifecycle),
+                "DISRUPTION_EVENT" => Some(Self::DisruptionEvent),
+                _ => None,
+            }
+        }
+    }
+}
+/// DisruptionEvent is a notification sent to customers about the disruption
+/// event of a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisruptionEvent {
+    /// The type of the disruption event.
+    #[prost(enumeration = "disruption_event::DisruptionType", tag = "1")]
+    pub disruption_type: i32,
+    /// The node whose drain is blocked by PDB. This field is set for both
+    /// POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+    #[prost(string, tag = "2")]
+    pub pdb_blocked_node: ::prost::alloc::string::String,
+    /// The pods whose evictions are blocked by PDB. This field is set for
+    /// both POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+    #[prost(message, repeated, tag = "3")]
+    pub pdb_blocked_pod: ::prost::alloc::vec::Vec<disruption_event::PdbBlockedPod>,
+    /// The timeout in seconds for which the node drain is blocked by PDB.
+    /// After this timeout, pods are forcefully evicted.
+    /// This field is only populated when event_type is
+    /// POD_PDB_VIOLATION.
+    #[prost(message, optional, tag = "4")]
+    pub pdb_violation_timeout: ::core::option::Option<::prost_types::Duration>,
+}
+/// Nested message and enum types in `DisruptionEvent`.
+pub mod disruption_event {
+    /// The namespace/name of the pod whose eviction is blocked by PDB.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PdbBlockedPod {
+        /// The namespace of the pod.
+        #[prost(string, tag = "1")]
+        pub namespace: ::prost::alloc::string::String,
+        /// The name of the pod.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// The type of the disruption event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DisruptionType {
+        /// DISRUPTION_TYPE_UNSPECIFIED indicates the disruption type is unspecified.
+        Unspecified = 0,
+        /// POD_NOT_ENOUGH_PDB indicates there are still running pods
+        /// on the node during node drain because their evictions are blocked by PDB.
+        PodNotEnoughPdb = 1,
+        /// POD_PDB_VIOLATION indicates that there are force pod
+        /// evictions during node drain which violate the PDB.
+        PodPdbViolation = 2,
+    }
+    impl DisruptionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DISRUPTION_TYPE_UNSPECIFIED",
+                Self::PodNotEnoughPdb => "POD_NOT_ENOUGH_PDB",
+                Self::PodPdbViolation => "POD_PDB_VIOLATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISRUPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POD_NOT_ENOUGH_PDB" => Some(Self::PodNotEnoughPdb),
+                "POD_PDB_VIOLATION" => Some(Self::PodPdbViolation),
                 _ => None,
             }
         }
@@ -9459,6 +10060,65 @@ pub mod network_tier_config {
         }
     }
 }
+/// ManagedOpenTelemetryConfig is the configuration for the GKE Managed
+/// OpenTelemetry pipeline.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ManagedOpenTelemetryConfig {
+    /// Scope of the Managed OpenTelemetry pipeline.
+    #[prost(enumeration = "managed_open_telemetry_config::Scope", optional, tag = "1")]
+    pub scope: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ManagedOpenTelemetryConfig`.
+pub mod managed_open_telemetry_config {
+    /// Scope is the scope of the Managed OpenTelemetry pipeline.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// SCOPE_UNSPECIFIED is when the scope is not set.
+        Unspecified = 0,
+        /// NONE is used to disable the Managed OpenTelemetry pipeline.
+        None = 1,
+        /// COLLECTION_AND_INSTRUMENTATION_COMPONENTS is used to enable the Managed
+        /// OpenTelemetry pipeline for collection and instrumentation components.
+        CollectionAndInstrumentationComponents = 2,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::CollectionAndInstrumentationComponents => {
+                    "COLLECTION_AND_INSTRUMENTATION_COMPONENTS"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "COLLECTION_AND_INSTRUMENTATION_COMPONENTS" => {
+                    Some(Self::CollectionAndInstrumentationComponents)
+                }
+                _ => None,
+            }
+        }
+    }
+}
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -9596,6 +10256,10 @@ pub enum NodePoolUpdateStrategy {
     /// SURGE is the traditional way of upgrade a node pool.
     /// max_surge and max_unavailable determines the level of upgrade parallelism.
     Surge = 3,
+    /// SHORT_LIVED is the dedicated upgrade strategy for
+    /// QueuedProvisioning and flex start nodepools scaled up only by enqueueing to
+    /// the Dynamic Workload Scheduler (DWS).
+    ShortLived = 5,
 }
 impl NodePoolUpdateStrategy {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -9607,6 +10271,7 @@ impl NodePoolUpdateStrategy {
             Self::Unspecified => "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED",
             Self::BlueGreen => "BLUE_GREEN",
             Self::Surge => "SURGE",
+            Self::ShortLived => "SHORT_LIVED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9615,6 +10280,7 @@ impl NodePoolUpdateStrategy {
             "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
             "BLUE_GREEN" => Some(Self::BlueGreen),
             "SURGE" => Some(Self::Surge),
+            "SHORT_LIVED" => Some(Self::ShortLived),
             _ => None,
         }
     }

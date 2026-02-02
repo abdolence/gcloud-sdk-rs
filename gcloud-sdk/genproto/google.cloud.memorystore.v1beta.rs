@@ -349,6 +349,7 @@ pub mod instance {
         /// Mode is not specified.
         Unspecified = 0,
         /// Deprecated: Use CLUSTER_DISABLED instead.
+        #[deprecated]
         Standalone = 1,
         /// Instance is in cluster mode.
         Cluster = 2,
@@ -363,6 +364,7 @@ pub mod instance {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "MODE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Standalone => "STANDALONE",
                 Self::Cluster => "CLUSTER",
                 Self::ClusterDisabled => "CLUSTER_DISABLED",
@@ -372,7 +374,7 @@ pub mod instance {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                "STANDALONE" => Some(Self::Standalone),
+                "STANDALONE" => Some(#[allow(deprecated)] Self::Standalone),
                 "CLUSTER" => Some(Self::Cluster),
                 "CLUSTER_DISABLED" => Some(Self::ClusterDisabled),
                 _ => None,

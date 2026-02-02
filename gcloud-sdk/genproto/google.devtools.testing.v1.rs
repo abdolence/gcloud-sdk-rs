@@ -1604,6 +1604,7 @@ pub enum InvalidMatrixDetails {
     PlistCannotBeParsed = 30,
     /// The APK is marked as "testOnly".
     /// Deprecated and not currently used.
+    #[deprecated]
     TestOnlyApk = 21,
     /// The input IPA could not be parsed.
     MalformedIpa = 22,
@@ -1669,6 +1670,7 @@ impl InvalidMatrixDetails {
             Self::UseDestinationArtifacts => "USE_DESTINATION_ARTIFACTS",
             Self::TestNotAppHosted => "TEST_NOT_APP_HOSTED",
             Self::PlistCannotBeParsed => "PLIST_CANNOT_BE_PARSED",
+            #[allow(deprecated)]
             Self::TestOnlyApk => "TEST_ONLY_APK",
             Self::MalformedIpa => "MALFORMED_IPA",
             Self::MissingUrlScheme => "MISSING_URL_SCHEME",
@@ -1717,7 +1719,7 @@ impl InvalidMatrixDetails {
             "USE_DESTINATION_ARTIFACTS" => Some(Self::UseDestinationArtifacts),
             "TEST_NOT_APP_HOSTED" => Some(Self::TestNotAppHosted),
             "PLIST_CANNOT_BE_PARSED" => Some(Self::PlistCannotBeParsed),
-            "TEST_ONLY_APK" => Some(Self::TestOnlyApk),
+            "TEST_ONLY_APK" => Some(#[allow(deprecated)] Self::TestOnlyApk),
             "MALFORMED_IPA" => Some(Self::MalformedIpa),
             "MISSING_URL_SCHEME" => Some(Self::MissingUrlScheme),
             "MALFORMED_APP_BUNDLE" => Some(Self::MalformedAppBundle),

@@ -130,6 +130,7 @@ pub mod topic {
             /// reflected in the cost of this topic; a topic with `scale` of 2 and
             /// count of 10 is charged for 20 partitions. This value must be in the
             /// range \[1,4\].
+            #[deprecated]
             #[prost(int32, tag = "2")]
             Scale(i32),
             /// The capacity configuration.

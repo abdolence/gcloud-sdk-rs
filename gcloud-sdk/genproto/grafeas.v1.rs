@@ -2038,6 +2038,12 @@ pub struct DiscoveryOccurrence {
     pub vulnerability_attestation: ::core::option::Option<
         discovery_occurrence::VulnerabilityAttestation,
     >,
+    /// Files that make up the resource described by the occurrence.
+    #[prost(message, repeated, tag = "11")]
+    pub files: ::prost::alloc::vec::Vec<discovery_occurrence::File>,
+    /// The last time vulnerability scan results changed.
+    #[prost(message, optional, tag = "12")]
+    pub last_vulnerability_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `DiscoveryOccurrence`.
 pub mod discovery_occurrence {
@@ -2168,6 +2174,16 @@ pub mod discovery_occurrence {
                 }
             }
         }
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct File {
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Whether the resource is continuously analyzed.
     #[derive(
@@ -2690,6 +2706,13 @@ pub struct SecretOccurrence {
     /// Status of the secret.
     #[prost(message, repeated, tag = "3")]
     pub statuses: ::prost::alloc::vec::Vec<SecretStatus>,
+    /// Scan result of the secret.
+    #[prost(message, optional, tag = "4")]
+    pub data: ::core::option::Option<::prost_types::Any>,
+    /// Hash value, typically a digest for the secret data, that allows unique
+    /// identification of a specific secret.
+    #[prost(message, optional, tag = "5")]
+    pub digest: ::core::option::Option<Digest>,
 }
 /// The location of the secret.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2779,9 +2802,52 @@ pub enum SecretKind {
     Unspecified = 0,
     /// The secret kind is unknown.
     Unknown = 1,
-    /// A GCP service account key per:
+    /// A Google Cloud service account key per:
     /// <https://cloud.google.com/iam/docs/creating-managing-service-account-keys>
     GcpServiceAccountKey = 2,
+    /// A Google Cloud API key per:
+    /// <https://cloud.google.com/docs/authentication/api-keys>
+    GcpApiKey = 3,
+    /// A Google Cloud OAuth2 client credentials per:
+    /// <https://developers.google.com/identity/protocols/oauth2>
+    GcpOauth2ClientCredentials = 4,
+    /// A Google Cloud OAuth2 access token per:
+    /// <https://cloud.google.com/docs/authentication/token-types#access>
+    GcpOauth2AccessToken = 5,
+    /// An Anthropic Admin API key.
+    AnthropicAdminApiKey = 6,
+    /// An Anthropic API key.
+    AnthropicApiKey = 7,
+    /// An Azure access token.
+    AzureAccessToken = 8,
+    /// An Azure Identity Platform ID token.
+    AzureIdentityToken = 9,
+    /// A Docker Hub personal access token.
+    DockerHubPersonalAccessToken = 10,
+    /// A GitHub App refresh token.
+    GithubAppRefreshToken = 11,
+    /// A GitHub App server-to-server token.
+    GithubAppServerToServerToken = 12,
+    /// A GitHub App user-to-server token.
+    GithubAppUserToServerToken = 13,
+    /// A GitHub personal access token (classic).
+    GithubClassicPersonalAccessToken = 14,
+    /// A GitHub fine-grained personal access token.
+    GithubFineGrainedPersonalAccessToken = 15,
+    /// A GitHub OAuth token.
+    GithubOauthToken = 16,
+    /// A Hugging Face API key.
+    HuggingfaceApiKey = 17,
+    /// An OpenAI API key.
+    OpenaiApiKey = 18,
+    /// A Perplexity API key.
+    PerplexityApiKey = 19,
+    /// A Stripe secret key.
+    StripeSecretKey = 20,
+    /// A Stripe restricted key.
+    StripeRestrictedKey = 21,
+    /// A Stripe webhook secret.
+    StripeWebhookSecret = 22,
 }
 impl SecretKind {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2793,6 +2859,38 @@ impl SecretKind {
             Self::Unspecified => "SECRET_KIND_UNSPECIFIED",
             Self::Unknown => "SECRET_KIND_UNKNOWN",
             Self::GcpServiceAccountKey => "SECRET_KIND_GCP_SERVICE_ACCOUNT_KEY",
+            Self::GcpApiKey => "SECRET_KIND_GCP_API_KEY",
+            Self::GcpOauth2ClientCredentials => {
+                "SECRET_KIND_GCP_OAUTH2_CLIENT_CREDENTIALS"
+            }
+            Self::GcpOauth2AccessToken => "SECRET_KIND_GCP_OAUTH2_ACCESS_TOKEN",
+            Self::AnthropicAdminApiKey => "SECRET_KIND_ANTHROPIC_ADMIN_API_KEY",
+            Self::AnthropicApiKey => "SECRET_KIND_ANTHROPIC_API_KEY",
+            Self::AzureAccessToken => "SECRET_KIND_AZURE_ACCESS_TOKEN",
+            Self::AzureIdentityToken => "SECRET_KIND_AZURE_IDENTITY_TOKEN",
+            Self::DockerHubPersonalAccessToken => {
+                "SECRET_KIND_DOCKER_HUB_PERSONAL_ACCESS_TOKEN"
+            }
+            Self::GithubAppRefreshToken => "SECRET_KIND_GITHUB_APP_REFRESH_TOKEN",
+            Self::GithubAppServerToServerToken => {
+                "SECRET_KIND_GITHUB_APP_SERVER_TO_SERVER_TOKEN"
+            }
+            Self::GithubAppUserToServerToken => {
+                "SECRET_KIND_GITHUB_APP_USER_TO_SERVER_TOKEN"
+            }
+            Self::GithubClassicPersonalAccessToken => {
+                "SECRET_KIND_GITHUB_CLASSIC_PERSONAL_ACCESS_TOKEN"
+            }
+            Self::GithubFineGrainedPersonalAccessToken => {
+                "SECRET_KIND_GITHUB_FINE_GRAINED_PERSONAL_ACCESS_TOKEN"
+            }
+            Self::GithubOauthToken => "SECRET_KIND_GITHUB_OAUTH_TOKEN",
+            Self::HuggingfaceApiKey => "SECRET_KIND_HUGGINGFACE_API_KEY",
+            Self::OpenaiApiKey => "SECRET_KIND_OPENAI_API_KEY",
+            Self::PerplexityApiKey => "SECRET_KIND_PERPLEXITY_API_KEY",
+            Self::StripeSecretKey => "SECRET_KIND_STRIPE_SECRET_KEY",
+            Self::StripeRestrictedKey => "SECRET_KIND_STRIPE_RESTRICTED_KEY",
+            Self::StripeWebhookSecret => "SECRET_KIND_STRIPE_WEBHOOK_SECRET",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2801,6 +2899,38 @@ impl SecretKind {
             "SECRET_KIND_UNSPECIFIED" => Some(Self::Unspecified),
             "SECRET_KIND_UNKNOWN" => Some(Self::Unknown),
             "SECRET_KIND_GCP_SERVICE_ACCOUNT_KEY" => Some(Self::GcpServiceAccountKey),
+            "SECRET_KIND_GCP_API_KEY" => Some(Self::GcpApiKey),
+            "SECRET_KIND_GCP_OAUTH2_CLIENT_CREDENTIALS" => {
+                Some(Self::GcpOauth2ClientCredentials)
+            }
+            "SECRET_KIND_GCP_OAUTH2_ACCESS_TOKEN" => Some(Self::GcpOauth2AccessToken),
+            "SECRET_KIND_ANTHROPIC_ADMIN_API_KEY" => Some(Self::AnthropicAdminApiKey),
+            "SECRET_KIND_ANTHROPIC_API_KEY" => Some(Self::AnthropicApiKey),
+            "SECRET_KIND_AZURE_ACCESS_TOKEN" => Some(Self::AzureAccessToken),
+            "SECRET_KIND_AZURE_IDENTITY_TOKEN" => Some(Self::AzureIdentityToken),
+            "SECRET_KIND_DOCKER_HUB_PERSONAL_ACCESS_TOKEN" => {
+                Some(Self::DockerHubPersonalAccessToken)
+            }
+            "SECRET_KIND_GITHUB_APP_REFRESH_TOKEN" => Some(Self::GithubAppRefreshToken),
+            "SECRET_KIND_GITHUB_APP_SERVER_TO_SERVER_TOKEN" => {
+                Some(Self::GithubAppServerToServerToken)
+            }
+            "SECRET_KIND_GITHUB_APP_USER_TO_SERVER_TOKEN" => {
+                Some(Self::GithubAppUserToServerToken)
+            }
+            "SECRET_KIND_GITHUB_CLASSIC_PERSONAL_ACCESS_TOKEN" => {
+                Some(Self::GithubClassicPersonalAccessToken)
+            }
+            "SECRET_KIND_GITHUB_FINE_GRAINED_PERSONAL_ACCESS_TOKEN" => {
+                Some(Self::GithubFineGrainedPersonalAccessToken)
+            }
+            "SECRET_KIND_GITHUB_OAUTH_TOKEN" => Some(Self::GithubOauthToken),
+            "SECRET_KIND_HUGGINGFACE_API_KEY" => Some(Self::HuggingfaceApiKey),
+            "SECRET_KIND_OPENAI_API_KEY" => Some(Self::OpenaiApiKey),
+            "SECRET_KIND_PERPLEXITY_API_KEY" => Some(Self::PerplexityApiKey),
+            "SECRET_KIND_STRIPE_SECRET_KEY" => Some(Self::StripeSecretKey),
+            "SECRET_KIND_STRIPE_RESTRICTED_KEY" => Some(Self::StripeRestrictedKey),
+            "SECRET_KIND_STRIPE_WEBHOOK_SECRET" => Some(Self::StripeWebhookSecret),
             _ => None,
         }
     }
@@ -3260,6 +3390,35 @@ pub mod vulnerability_assessment_note {
         }
     }
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Risk {
+    /// CISA maintains the authoritative source of vulnerabilities that have been
+    /// exploited in the wild.
+    #[prost(message, optional, tag = "1")]
+    pub cisa_kev: ::core::option::Option<CisaKnownExploitedVulnerabilities>,
+    /// The Exploit Prediction Scoring System (EPSS) estimates the likelihood
+    /// (probability) that a software vulnerability will be exploited in the wild.
+    #[prost(message, optional, tag = "2")]
+    pub epss: ::core::option::Option<ExploitPredictionScoringSystem>,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CisaKnownExploitedVulnerabilities {
+    /// Whether the vulnerability is known to have been leveraged as part of a
+    /// ransomware campaign.
+    #[prost(string, tag = "1")]
+    pub known_ransomware_campaign_use: ::prost::alloc::string::String,
+}
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ExploitPredictionScoringSystem {
+    /// The percentile of the current score, the proportion of all scored
+    /// vulnerabilities with the same or a lower EPSS score
+    #[prost(double, tag = "1")]
+    pub percentile: f64,
+    /// The EPSS score representing the probability \[0-1\] of exploitation in the
+    /// wild in the next 30 days
+    #[prost(double, tag = "2")]
+    pub score: f64,
+}
 /// A security vulnerability that can be found in resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityNote {
@@ -3457,6 +3616,9 @@ pub struct VulnerabilityOccurrence {
     /// Occurrence-specific extra details about the vulnerability.
     #[prost(string, tag = "14")]
     pub extra_details: ::prost::alloc::string::String,
+    /// Risk information about the vulnerability, such as CISA, EPSS, etc.
+    #[prost(message, optional, tag = "15")]
+    pub risk: ::core::option::Option<Risk>,
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
 pub mod vulnerability_occurrence {
@@ -3749,6 +3911,13 @@ pub struct ListOccurrencesRequest {
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// If set, the request will return all reachable Occurrences
+    /// and report all unreachable regions in the `unreachable` field in
+    /// the response.
+    ///
+    /// Only applicable for requests in the global region.
+    #[prost(bool, tag = "5")]
+    pub return_partial_success: bool,
 }
 /// Response for listing occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3761,6 +3930,12 @@ pub struct ListOccurrencesResponse {
     /// results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable regions. Populated for requests from the global region
+    /// when `return_partial_success` is set.
+    ///
+    /// Format: `projects/\[PROJECT_ID\]/locations/\[LOCATION\]`
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to delete an occurrence.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3828,6 +4003,13 @@ pub struct ListNotesRequest {
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// If set, the request will return all reachable Notes
+    /// and report all unreachable regions in the `unreachable` field in
+    /// the response.
+    ///
+    /// Only applicable for requests in the global region.
+    #[prost(bool, tag = "5")]
+    pub return_partial_success: bool,
 }
 /// Response for listing notes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3840,6 +4022,12 @@ pub struct ListNotesResponse {
     /// results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable regions. Populated for requests from the global region
+    /// when `return_partial_success` is set.
+    ///
+    /// Format: `projects/\[PROJECT_ID\]/locations/\[LOCATION\]`
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to delete a note.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

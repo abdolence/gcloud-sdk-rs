@@ -733,6 +733,7 @@ pub enum Unit {
     /// Pebibytes (2^50 bytes)
     Pib = 9,
     /// Terabits (10^12 bits) per second
+    #[deprecated]
     Tbps = 10,
     GbpsBits = 11,
     GibBits = 12,
@@ -760,6 +761,7 @@ impl Unit {
             Self::Qps => "QPS",
             Self::Mb => "MB",
             Self::Pib => "PIB",
+            #[allow(deprecated)]
             Self::Tbps => "TBPS",
             Self::GbpsBits => "GBPS_BITS",
             Self::GibBits => "GIB_BITS",
@@ -784,7 +786,7 @@ impl Unit {
             "QPS" => Some(Self::Qps),
             "MB" => Some(Self::Mb),
             "PIB" => Some(Self::Pib),
-            "TBPS" => Some(Self::Tbps),
+            "TBPS" => Some(#[allow(deprecated)] Self::Tbps),
             "GBPS_BITS" => Some(Self::GbpsBits),
             "GIB_BITS" => Some(Self::GibBits),
             "MBPS_BITS" => Some(Self::MbpsBits),

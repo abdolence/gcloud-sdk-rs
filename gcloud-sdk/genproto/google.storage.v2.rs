@@ -207,6 +207,9 @@ pub struct ComposeObjectRequest {
     /// the combined checksums of the component objects.
     #[prost(message, optional, tag = "10")]
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
+    /// Whether the source objects should be deleted in the compose request.
+    #[prost(bool, optional, tag = "11")]
+    pub delete_source_objects: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `ComposeObjectRequest`.
 pub mod compose_object_request {
@@ -641,16 +644,16 @@ pub struct ReadRange {
     /// length is 15 bytes, a `ReadObjectRequest` with `read_offset` = -5 and
     /// `read_length` = 3 would return bytes 10 through 12 of the object.
     /// Requesting a negative offset with magnitude larger than the size of the
-    /// object returns the entire object. A `read_offset` larger than the size
-    /// of the object results in an `OutOfRange` error.
+    /// object is equivalent to `read_offset` = 0. A `read_offset` larger than the
+    /// size of the object results in an `OutOfRange` error.
     #[prost(int64, tag = "1")]
     pub read_offset: i64,
     /// Optional. The maximum number of data bytes the server is allowed to return
     /// across all response messages with the same `read_id`. A `read_length` of
     /// zero indicates to read until the resource end, and a negative `read_length`
-    /// causes an error. If the stream returns fewer bytes than allowed by the
-    /// `read_length` and no error occurred, the stream includes all data from the
-    /// `read_offset` to the resource end.
+    /// causes an `OutOfRange` error. If the stream returns fewer bytes than
+    /// allowed by the `read_length` and no error occurred, the stream includes all
+    /// data from the `read_offset` to the resource end.
     #[prost(int64, tag = "2")]
     pub read_length: i64,
     /// Required. Read identifier provided by the client. When the client issues
@@ -2275,6 +2278,9 @@ pub struct ObjectCustomContextPayload {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectContexts {
     /// Optional. User-defined object contexts.
+    /// The maximum key or value size is `256` characters.
+    /// The maximum number of entries is `50`.
+    /// The maximum total serialized size of all entries is `25KiB`.
     #[prost(map = "string, message", tag = "1")]
     pub custom: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3309,13 +3315,12 @@ pub mod storage_client {
         }
         /// Reads an object's data.
         ///
-        /// This bi-directional API reads data from an object, allowing you to
-        /// request multiple data ranges within a single stream, even across
-        /// several messages. If an error occurs with any request, the stream
-        /// closes with a relevant error code. Since you can have multiple
-        /// outstanding requests, the error response includes a
-        /// `BidiReadObjectRangesError` field detailing the specific error for
-        /// each pending `read_id`.
+        /// This bi-directional API reads data from an object, allowing you to request
+        /// multiple data ranges within a single stream, even across several messages.
+        /// If an error occurs with any request, the stream closes with a relevant
+        /// error code. Since you can have multiple outstanding requests, the error
+        /// response includes a `BidiReadObjectError` proto in its `details` field,
+        /// reporting the specific error, if any, for each pending `read_id`.
         ///
         /// **IAM Permissions**:
         ///

@@ -1626,8 +1626,48 @@ pub struct JavaScriptUdf {
     #[prost(string, tag = "2")]
     pub code: ::prost::alloc::string::String,
 }
+/// Configuration for making inference requests against Vertex AI models.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AiInference {
+    /// Required. An endpoint to a Vertex AI model of the form
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}` or
+    /// `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`.
+    /// Vertex AI API requests will be sent to this endpoint.
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The service account to use to make prediction requests against
+    /// endpoints. The resource creator or updater that specifies this field must
+    /// have `iam.serviceAccounts.actAs` permission on the service account. If not
+    /// specified, the Pub/Sub [service
+    /// agent]({$universe.dns_names.final_documentation_domain}/iam/docs/service-agents),
+    /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+    #[prost(string, tag = "3")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// The format of inference requests made to the endpoint.
+    #[prost(oneof = "ai_inference::InferenceMode", tags = "2")]
+    pub inference_mode: ::core::option::Option<ai_inference::InferenceMode>,
+}
+/// Nested message and enum types in `AIInference`.
+pub mod ai_inference {
+    /// Configuration for making inferences using arbitrary JSON payloads.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UnstructuredInference {
+        /// Optional. A parameters object to be included in each inference request.
+        /// The parameters object is combined with the data field of the Pub/Sub
+        /// message to form the inference request.
+        #[prost(message, optional, tag = "1")]
+        pub parameters: ::core::option::Option<::prost_types::Struct>,
+    }
+    /// The format of inference requests made to the endpoint.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum InferenceMode {
+        /// Optional. Requests and responses can be any arbitrary JSON object.
+        #[prost(message, tag = "2")]
+        UnstructuredInference(UnstructuredInference),
+    }
+}
 /// All supported message transforms types.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageTransform {
     /// Optional. This field is deprecated, use the `disabled` field to disable
     /// transforms.
@@ -1639,18 +1679,23 @@ pub struct MessageTransform {
     #[prost(bool, tag = "4")]
     pub disabled: bool,
     /// The type of transform to apply to messages.
-    #[prost(oneof = "message_transform::Transform", tags = "2")]
+    #[prost(oneof = "message_transform::Transform", tags = "2, 6")]
     pub transform: ::core::option::Option<message_transform::Transform>,
 }
 /// Nested message and enum types in `MessageTransform`.
 pub mod message_transform {
     /// The type of transform to apply to messages.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transform {
         /// Optional. JavaScript User Defined Function. If multiple JavaScriptUDF's
         /// are specified on a resource, each must have a unique `function_name`.
         #[prost(message, tag = "2")]
         JavascriptUdf(super::JavaScriptUdf),
+        /// Optional. AI Inference. Specifies the Vertex AI endpoint that inference
+        /// requests built from the Pub/Sub message data and provided parameters will
+        /// be sent to.
+        #[prost(message, tag = "6")]
+        AiInference(super::AiInference),
     }
 }
 /// A topic resource.
@@ -1819,7 +1864,7 @@ pub struct PubsubMessage {
 /// Request for the GetTopic method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTopicRequest {
-    /// Required. Identifier. The name of the topic to get.
+    /// Required. The name of the topic to get.
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
@@ -1841,8 +1886,8 @@ pub struct UpdateTopicRequest {
 /// Request for the Publish method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishRequest {
-    /// Required. Identifier. The messages in the request will be published on this
-    /// topic. Format is `projects/{project}/topics/{topic}`.
+    /// Required. The messages in the request will be published on this topic.
+    /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
     /// Required. The messages to publish.
@@ -1861,7 +1906,7 @@ pub struct PublishResponse {
 /// Request for the `ListTopics` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTopicsRequest {
-    /// Required. Identifier. The name of the project in which to list topics.
+    /// Required. The name of the project in which to list topics.
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -1945,7 +1990,7 @@ pub struct ListTopicSnapshotsResponse {
 /// Request for the `DeleteTopic` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTopicRequest {
-    /// Required. Identifier. Name of the topic to delete.
+    /// Required. Name of the topic to delete.
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
@@ -2113,7 +2158,7 @@ pub struct Subscription {
     #[prost(enumeration = "subscription::State", tag = "19")]
     pub state: i32,
     /// Output only. Information about the associated Analytics Hub subscription.
-    /// Only set if the subscritpion is created by Analytics Hub.
+    /// Only set if the subscription is created by Analytics Hub.
     #[prost(message, optional, tag = "23")]
     pub analytics_hub_subscription_info: ::core::option::Option<
         subscription::AnalyticsHubSubscriptionInfo,
@@ -2456,6 +2501,10 @@ pub mod big_query_config {
         /// Cannot write to the destination because enforce_in_transit is set to true
         /// and the destination locations are not in the allowed regions.
         InTransitLocationRestriction = 5,
+        /// Cannot write to the BigQuery table because the table is not in the same
+        /// location as where Vertex AI models used in `message_transform`s are
+        /// deployed.
+        VertexAiLocationRestriction = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2470,6 +2519,7 @@ pub mod big_query_config {
                 Self::NotFound => "NOT_FOUND",
                 Self::SchemaMismatch => "SCHEMA_MISMATCH",
                 Self::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
+                Self::VertexAiLocationRestriction => "VERTEX_AI_LOCATION_RESTRICTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2482,6 +2532,9 @@ pub mod big_query_config {
                 "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
                 "IN_TRANSIT_LOCATION_RESTRICTION" => {
                     Some(Self::InTransitLocationRestriction)
+                }
+                "VERTEX_AI_LOCATION_RESTRICTION" => {
+                    Some(Self::VertexAiLocationRestriction)
                 }
                 _ => None,
             }
@@ -2594,6 +2647,10 @@ pub mod cloud_storage_config {
         /// Cannot write to the Cloud Storage bucket due to an incompatibility
         /// between the topic schema and subscription settings.
         SchemaMismatch = 5,
+        /// Cannot write to the Cloud Storage bucket because the bucket is not in the
+        /// same location as where Vertex AI models used in `message_transform`s are
+        /// deployed.
+        VertexAiLocationRestriction = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2608,6 +2665,7 @@ pub mod cloud_storage_config {
                 Self::NotFound => "NOT_FOUND",
                 Self::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
                 Self::SchemaMismatch => "SCHEMA_MISMATCH",
+                Self::VertexAiLocationRestriction => "VERTEX_AI_LOCATION_RESTRICTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2621,6 +2679,9 @@ pub mod cloud_storage_config {
                     Some(Self::InTransitLocationRestriction)
                 }
                 "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
+                "VERTEX_AI_LOCATION_RESTRICTION" => {
+                    Some(Self::VertexAiLocationRestriction)
+                }
                 _ => None,
             }
         }
@@ -2669,7 +2730,7 @@ pub struct ReceivedMessage {
 /// Request for the GetSubscription method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubscriptionRequest {
-    /// Required. Identifier. The name of the subscription to get.
+    /// Required. The name of the subscription to get.
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "1")]
     pub subscription: ::prost::alloc::string::String,
@@ -2688,8 +2749,8 @@ pub struct UpdateSubscriptionRequest {
 /// Request for the `ListSubscriptions` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
-    /// Required. Identifier. The name of the project in which to list
-    /// subscriptions. Format is `projects/{project-id}`.
+    /// Required. The name of the project in which to list subscriptions.
+    /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// Optional. Maximum number of subscriptions to return.
@@ -2716,7 +2777,7 @@ pub struct ListSubscriptionsResponse {
 /// Request for the DeleteSubscription method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
-    /// Required. Identifier. The subscription to delete.
+    /// Required. The subscription to delete.
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "1")]
     pub subscription: ::prost::alloc::string::String,
@@ -2969,10 +3030,10 @@ pub mod streaming_pull_response {
 /// Request for the `CreateSnapshot` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotRequest {
-    /// Required. Identifier. User-provided name for this snapshot. If the name is
-    /// not provided in the request, the server will assign a random name for this
-    /// snapshot on the same project as the subscription. Note that for REST API
-    /// requests, you must specify a name.  See the [resource name
+    /// Required. User-provided name for this snapshot. If the name is not provided
+    /// in the request, the server will assign a random name for this snapshot on
+    /// the same project as the subscription. Note that for REST API requests, you
+    /// must specify a name.  See the [resource name
     /// rules](<https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names>).
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
@@ -3055,7 +3116,7 @@ pub struct Snapshot {
 /// Request for the GetSnapshot method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSnapshotRequest {
-    /// Required. Identifier. The name of the snapshot to get.
+    /// Required. The name of the snapshot to get.
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
     pub snapshot: ::prost::alloc::string::String,
@@ -3063,7 +3124,7 @@ pub struct GetSnapshotRequest {
 /// Request for the `ListSnapshots` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSnapshotsRequest {
-    /// Required. Identifier. The name of the project in which to list snapshots.
+    /// Required. The name of the project in which to list snapshots.
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -3091,7 +3152,7 @@ pub struct ListSnapshotsResponse {
 /// Request for the `DeleteSnapshot` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
-    /// Required. Identifier. The name of the snapshot to delete.
+    /// Required. The name of the snapshot to delete.
     /// Format is `projects/{project}/snapshots/{snap}`.
     #[prost(string, tag = "1")]
     pub snapshot: ::prost::alloc::string::String,

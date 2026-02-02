@@ -411,6 +411,7 @@ pub mod asset_reference {
         #[prost(string, tag = "10")]
         Asset(::prost::alloc::string::String),
         /// Output only. The cloud storage object path.
+        #[deprecated]
         #[prost(string, tag = "11")]
         GcsPath(::prost::alloc::string::String),
         /// Output only. The git source.

@@ -124,6 +124,7 @@ pub mod cloud_repo_source_context {
         #[prost(string, tag = "2")]
         RevisionId(::prost::alloc::string::String),
         /// The name of an alias (branch, tag, etc.).
+        #[deprecated]
         #[prost(string, tag = "3")]
         AliasName(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.
@@ -168,6 +169,7 @@ pub mod gerrit_source_context {
         #[prost(string, tag = "3")]
         RevisionId(::prost::alloc::string::String),
         /// The name of an alias (branch, tag, etc.).
+        #[deprecated]
         #[prost(string, tag = "4")]
         AliasName(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.

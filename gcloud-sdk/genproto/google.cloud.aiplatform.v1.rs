@@ -7,6 +7,7 @@ pub enum AcceleratorType {
     Unspecified = 0,
     /// Deprecated: Nvidia Tesla K80 GPU has reached end of support,
     /// see <https://cloud.google.com/compute/docs/eol/k80-eol.>
+    #[deprecated]
     NvidiaTeslaK80 = 1,
     /// Nvidia Tesla P100 GPU.
     NvidiaTeslaP100 = 2,
@@ -51,6 +52,7 @@ impl AcceleratorType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
             Self::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
             Self::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
@@ -75,7 +77,7 @@ impl AcceleratorType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "NVIDIA_TESLA_K80" => Some(Self::NvidiaTeslaK80),
+            "NVIDIA_TESLA_K80" => Some(#[allow(deprecated)] Self::NvidiaTeslaK80),
             "NVIDIA_TESLA_P100" => Some(Self::NvidiaTeslaP100),
             "NVIDIA_TESLA_V100" => Some(Self::NvidiaTeslaV100),
             "NVIDIA_TESLA_P4" => Some(Self::NvidiaTeslaP4),
@@ -5700,6 +5702,7 @@ pub mod import_rag_files_config {
     pub enum PartialFailureSink {
         /// The Cloud Storage path to write partial failures to.
         /// Deprecated. Prefer to use `import_result_gcs_sink`.
+        #[deprecated]
         #[prost(message, tag = "11")]
         PartialFailureGcsSink(super::GcsDestination),
         /// The BigQuery destination to write partial failures to. It should be a
@@ -5709,6 +5712,7 @@ pub mod import_rag_files_config {
         /// table exists, the schema will be validated and data will be added to this
         /// existing table.
         /// Deprecated. Prefer to use `import_result_bq_sink`.
+        #[deprecated]
         #[prost(message, tag = "12")]
         PartialFailureBigquerySink(super::BigQueryDestination),
     }
@@ -5822,6 +5826,10 @@ pub struct Part {
     /// requests.
     #[prost(bytes = "vec", tag = "11")]
     pub thought_signature: ::prost::alloc::vec::Vec<u8>,
+    /// per part media resolution.
+    /// Media resolution for the input media.
+    #[prost(message, optional, tag = "12")]
+    pub media_resolution: ::core::option::Option<part::MediaResolution>,
     #[prost(oneof = "part::Data", tags = "1, 2, 3, 5, 6, 8, 9")]
     pub data: ::core::option::Option<part::Data>,
     #[prost(oneof = "part::Metadata", tags = "4")]
@@ -5829,6 +5837,75 @@ pub struct Part {
 }
 /// Nested message and enum types in `Part`.
 pub mod part {
+    /// per part media resolution.
+    /// Media resolution for the input media.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MediaResolution {
+        #[prost(oneof = "media_resolution::Value", tags = "1")]
+        pub value: ::core::option::Option<media_resolution::Value>,
+    }
+    /// Nested message and enum types in `MediaResolution`.
+    pub mod media_resolution {
+        /// The media resolution level.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Level {
+            /// Media resolution has not been set.
+            MediaResolutionUnspecified = 0,
+            /// Media resolution set to low.
+            MediaResolutionLow = 1,
+            /// Media resolution set to medium.
+            MediaResolutionMedium = 2,
+            /// Media resolution set to high.
+            MediaResolutionHigh = 3,
+            /// Media resolution set to ultra high. This is for image only.
+            MediaResolutionUltraHigh = 4,
+        }
+        impl Level {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::MediaResolutionUnspecified => "MEDIA_RESOLUTION_UNSPECIFIED",
+                    Self::MediaResolutionLow => "MEDIA_RESOLUTION_LOW",
+                    Self::MediaResolutionMedium => "MEDIA_RESOLUTION_MEDIUM",
+                    Self::MediaResolutionHigh => "MEDIA_RESOLUTION_HIGH",
+                    Self::MediaResolutionUltraHigh => "MEDIA_RESOLUTION_ULTRA_HIGH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MEDIA_RESOLUTION_UNSPECIFIED" => {
+                        Some(Self::MediaResolutionUnspecified)
+                    }
+                    "MEDIA_RESOLUTION_LOW" => Some(Self::MediaResolutionLow),
+                    "MEDIA_RESOLUTION_MEDIUM" => Some(Self::MediaResolutionMedium),
+                    "MEDIA_RESOLUTION_HIGH" => Some(Self::MediaResolutionHigh),
+                    "MEDIA_RESOLUTION_ULTRA_HIGH" => Some(Self::MediaResolutionUltraHigh),
+                    _ => None,
+                }
+            }
+        }
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Value {
+            /// The tokenization quality used for given media.
+            #[prost(enumeration = "Level", tag = "1")]
+            Level(i32),
+        }
+    }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Optional. Text part (can be code).
@@ -5858,7 +5935,7 @@ pub mod part {
         #[prost(message, tag = "9")]
         CodeExecutionResult(super::CodeExecutionResult),
     }
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Optional. Video metadata. The metadata should only be specified while the
         /// video data is presented in inline_data or file_data.
@@ -5890,7 +5967,7 @@ pub struct FileData {
     pub file_uri: ::prost::alloc::string::String,
 }
 /// Metadata describes the input video content.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoMetadata {
     /// Optional. The start offset of the video.
     #[prost(message, optional, tag = "1")]
@@ -5898,6 +5975,10 @@ pub struct VideoMetadata {
     /// Optional. The end offset of the video.
     #[prost(message, optional, tag = "2")]
     pub end_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The frame rate of the video sent to the model. If not specified,
+    /// the default value is 1.0. The valid range is (0.0, 24.0\].
+    #[prost(double, tag = "3")]
+    pub fps: f64,
 }
 /// Configuration for a prebuilt voice.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5976,6 +6057,9 @@ pub struct SpeechConfig {
 /// Config for image generation features.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageConfig {
+    /// Optional. The image output format for generated images.
+    #[prost(message, optional, tag = "1")]
+    pub image_output_options: ::core::option::Option<image_config::ImageOutputOptions>,
     /// Optional. The desired aspect ratio for the generated images. The following
     /// aspect ratios are supported:
     ///
@@ -5987,6 +6071,75 @@ pub struct ImageConfig {
     /// "21:9"
     #[prost(string, optional, tag = "2")]
     pub aspect_ratio: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Controls whether the model can generate people.
+    #[prost(enumeration = "image_config::PersonGeneration", optional, tag = "3")]
+    pub person_generation: ::core::option::Option<i32>,
+    /// Optional. Specifies the size of generated images. Supported values are
+    /// `1K`, `2K`, `4K`. If not specified, the model will use default value `1K`.
+    #[prost(string, optional, tag = "4")]
+    pub image_size: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ImageConfig`.
+pub mod image_config {
+    /// The image output format for generated images.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ImageOutputOptions {
+        /// Optional. The image format that the output should be saved as.
+        #[prost(string, optional, tag = "1")]
+        pub mime_type: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. The compression quality of the output image.
+        #[prost(int32, optional, tag = "2")]
+        pub compression_quality: ::core::option::Option<i32>,
+    }
+    /// Enum for controlling the generation of people in images.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PersonGeneration {
+        /// The default behavior is unspecified. The model will decide whether to
+        /// generate images of people.
+        Unspecified = 0,
+        /// Allows the model to generate images of people, including adults and
+        /// children.
+        AllowAll = 1,
+        /// Allows the model to generate images of adults, but not children.
+        AllowAdult = 2,
+        /// Prevents the model from generating images of people.
+        AllowNone = 3,
+    }
+    impl PersonGeneration {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PERSON_GENERATION_UNSPECIFIED",
+                Self::AllowAll => "ALLOW_ALL",
+                Self::AllowAdult => "ALLOW_ADULT",
+                Self::AllowNone => "ALLOW_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERSON_GENERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW_ALL" => Some(Self::AllowAll),
+                "ALLOW_ADULT" => Some(Self::AllowAdult),
+                "ALLOW_NONE" => Some(Self::AllowNone),
+                _ => None,
+            }
+        }
+    }
 }
 /// Generation config.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6084,6 +6237,30 @@ pub struct GenerationConfig {
     /// Optional. Routing configuration.
     #[prost(message, optional, tag = "17")]
     pub routing_config: ::core::option::Option<generation_config::RoutingConfig>,
+    /// Optional. If enabled, audio timestamps will be included in the request to
+    /// the model. This can be useful for synchronizing audio with other modalities
+    /// in the response.
+    #[prost(bool, optional, tag = "20")]
+    pub audio_timestamp: ::core::option::Option<bool>,
+    /// Optional. The modalities of the response. The model will generate a
+    /// response that includes all the specified modalities. For example, if this
+    /// is set to `\[TEXT, IMAGE\]`, the response will include both text and an
+    /// image.
+    #[prost(
+        enumeration = "generation_config::Modality",
+        repeated,
+        packed = "false",
+        tag = "21"
+    )]
+    pub response_modalities: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The token resolution at which input media content is sampled.
+    /// This is used to control the trade-off between the quality of the response
+    /// and the number of tokens used to represent the media. A higher resolution
+    /// allows the model to perceive more detail, which can lead to a more nuanced
+    /// response, but it will also use more tokens. This does not affect the
+    /// image dimensions sent to the model.
+    #[prost(enumeration = "generation_config::MediaResolution", optional, tag = "22")]
+    pub media_resolution: ::core::option::Option<i32>,
     /// Optional. The speech generation config.
     #[prost(message, optional, tag = "23")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
@@ -6200,6 +6377,157 @@ pub mod generation_config {
         /// This is only applied when enable_thinking is true.
         #[prost(int32, optional, tag = "3")]
         pub thinking_budget: ::core::option::Option<i32>,
+        /// Optional. The number of thoughts tokens that the model should generate.
+        #[prost(enumeration = "thinking_config::ThinkingLevel", optional, tag = "4")]
+        pub thinking_level: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ThinkingConfig`.
+    pub mod thinking_config {
+        /// The thinking level for the model.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ThinkingLevel {
+            /// Unspecified thinking level.
+            Unspecified = 0,
+            /// Low thinking level.
+            Low = 1,
+            /// Medium thinking level.
+            Medium = 2,
+            /// High thinking level.
+            High = 3,
+            /// MINIMAL thinking level.
+            Minimal = 4,
+        }
+        impl ThinkingLevel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "THINKING_LEVEL_UNSPECIFIED",
+                    Self::Low => "LOW",
+                    Self::Medium => "MEDIUM",
+                    Self::High => "HIGH",
+                    Self::Minimal => "MINIMAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "THINKING_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LOW" => Some(Self::Low),
+                    "MEDIUM" => Some(Self::Medium),
+                    "HIGH" => Some(Self::High),
+                    "MINIMAL" => Some(Self::Minimal),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The modalities of the response.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Modality {
+        /// Unspecified modality. Will be processed as text.
+        Unspecified = 0,
+        /// Text modality.
+        Text = 1,
+        /// Image modality.
+        Image = 2,
+        /// Audio modality.
+        Audio = 3,
+    }
+    impl Modality {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODALITY_UNSPECIFIED",
+                Self::Text => "TEXT",
+                Self::Image => "IMAGE",
+                Self::Audio => "AUDIO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "TEXT" => Some(Self::Text),
+                "IMAGE" => Some(Self::Image),
+                "AUDIO" => Some(Self::Audio),
+                _ => None,
+            }
+        }
+    }
+    /// Media resolution for the input media.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MediaResolution {
+        /// Media resolution has not been set.
+        Unspecified = 0,
+        /// Media resolution set to low (64 tokens).
+        Low = 1,
+        /// Media resolution set to medium (256 tokens).
+        Medium = 2,
+        /// Media resolution set to high (zoomed reframing with 256 tokens).
+        High = 3,
+    }
+    impl MediaResolution {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEDIA_RESOLUTION_UNSPECIFIED",
+                Self::Low => "MEDIA_RESOLUTION_LOW",
+                Self::Medium => "MEDIA_RESOLUTION_MEDIUM",
+                Self::High => "MEDIA_RESOLUTION_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEDIA_RESOLUTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEDIA_RESOLUTION_LOW" => Some(Self::Low),
+                "MEDIA_RESOLUTION_MEDIUM" => Some(Self::Medium),
+                "MEDIA_RESOLUTION_HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
 }
 /// Safety settings.
@@ -6956,6 +7284,7 @@ pub enum HarmCategory {
     SexuallyExplicit = 4,
     /// Deprecated: Election filter is not longer supported.
     /// The harm category is civic integrity.
+    #[deprecated]
     CivicIntegrity = 5,
     /// The harm category is for jailbreak prompts.
     Jailbreak = 6,
@@ -6972,6 +7301,7 @@ impl HarmCategory {
             Self::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
             Self::Harassment => "HARM_CATEGORY_HARASSMENT",
             Self::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            #[allow(deprecated)]
             Self::CivicIntegrity => "HARM_CATEGORY_CIVIC_INTEGRITY",
             Self::Jailbreak => "HARM_CATEGORY_JAILBREAK",
         }
@@ -6984,7 +7314,9 @@ impl HarmCategory {
             "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
             "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
             "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
-            "HARM_CATEGORY_CIVIC_INTEGRITY" => Some(Self::CivicIntegrity),
+            "HARM_CATEGORY_CIVIC_INTEGRITY" => {
+                Some(#[allow(deprecated)] Self::CivicIntegrity)
+            }
             "HARM_CATEGORY_JAILBREAK" => Some(Self::Jailbreak),
             _ => None,
         }
@@ -7664,8 +7996,10 @@ pub mod scheduling {
         /// Strategy will default to STANDARD.
         Unspecified = 0,
         /// Deprecated. Regular on-demand provisioning strategy.
+        #[deprecated]
         OnDemand = 1,
         /// Deprecated. Low cost by making potential use of spot resources.
+        #[deprecated]
         LowCost = 2,
         /// Standard provisioning strategy uses regular on-demand resources.
         Standard = 3,
@@ -7682,7 +8016,9 @@ pub mod scheduling {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "STRATEGY_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::OnDemand => "ON_DEMAND",
+                #[allow(deprecated)]
                 Self::LowCost => "LOW_COST",
                 Self::Standard => "STANDARD",
                 Self::Spot => "SPOT",
@@ -7693,8 +8029,8 @@ pub mod scheduling {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
-                "ON_DEMAND" => Some(Self::OnDemand),
-                "LOW_COST" => Some(Self::LowCost),
+                "ON_DEMAND" => Some(#[allow(deprecated)] Self::OnDemand),
+                "LOW_COST" => Some(#[allow(deprecated)] Self::LowCost),
                 "STANDARD" => Some(Self::Standard),
                 "SPOT" => Some(Self::Spot),
                 "FLEX_START" => Some(Self::FlexStart),
@@ -31503,9 +31839,11 @@ pub mod publisher_model {
             #[prost(string, tag = "2")]
             ResourceName(::prost::alloc::string::String),
             /// Use case (CUJ) of the resource.
+            #[deprecated]
             #[prost(string, tag = "3")]
             UseCase(::prost::alloc::string::String),
             /// Description of the resource.
+            #[deprecated]
             #[prost(string, tag = "4")]
             Description(::prost::alloc::string::String),
         }

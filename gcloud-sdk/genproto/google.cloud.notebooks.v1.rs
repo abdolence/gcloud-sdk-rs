@@ -1694,6 +1694,7 @@ pub mod runtime_accelerator_config {
         /// Accelerator type is not specified.
         Unspecified = 0,
         /// Accelerator type is Nvidia Tesla K80.
+        #[deprecated]
         NvidiaTeslaK80 = 1,
         /// Accelerator type is Nvidia Tesla P100.
         NvidiaTeslaP100 = 2,
@@ -1724,6 +1725,7 @@ pub mod runtime_accelerator_config {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
                 Self::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
                 Self::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
@@ -1741,7 +1743,7 @@ pub mod runtime_accelerator_config {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "NVIDIA_TESLA_K80" => Some(Self::NvidiaTeslaK80),
+                "NVIDIA_TESLA_K80" => Some(#[allow(deprecated)] Self::NvidiaTeslaK80),
                 "NVIDIA_TESLA_P100" => Some(Self::NvidiaTeslaP100),
                 "NVIDIA_TESLA_V100" => Some(Self::NvidiaTeslaV100),
                 "NVIDIA_TESLA_P4" => Some(Self::NvidiaTeslaP4),

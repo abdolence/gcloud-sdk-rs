@@ -134,8 +134,9 @@ pub struct Document {
     #[prost(message, optional, tag = "18")]
     pub chunked_document: ::core::option::Option<document::ChunkedDocument>,
     /// Optional. The blob assets in this document. This is used to store the
-    /// content of the inline blobs in this document, e.g. image bytes, such that
-    /// it can be referenced by other fields in the document via asset id.
+    /// content of the inline blobs in this document, for example, image bytes,
+    /// such that it can be referenced by other fields in the document via asset
+    /// id.
     #[prost(message, repeated, tag = "19")]
     pub blob_assets: ::prost::alloc::vec::Vec<document::BlobAsset>,
     /// The entity validation output for the document. This is the validation
@@ -149,10 +150,10 @@ pub struct Document {
     /// entity extraction results at different stages of the processing.
     #[prost(message, repeated, tag = "22")]
     pub entities_revisions: ::prost::alloc::vec::Vec<document::EntitiesRevision>,
-    /// The entity revision id that `document.entities` field is based on.
+    /// The entity revision ID that `document.entities` field is based on.
     /// If this field is set and `entities_revisions` is not empty, the entities in
     /// `document.entities` field are the entities in the entity revision with this
-    /// id and `document.entity_validation_output` field is the
+    /// ID and `document.entity_validation_output` field is the
     /// `entity_validation_output` field in this entity revision.
     #[prost(string, tag = "23")]
     pub entities_revision_id: ::prost::alloc::string::String,
@@ -277,7 +278,7 @@ pub mod document {
         /// A list of visually detected tokens on the page.
         #[prost(message, repeated, tag = "8")]
         pub tokens: ::prost::alloc::vec::Vec<page::Token>,
-        /// A list of detected non-text visual elements e.g. checkbox,
+        /// A list of detected non-text visual elements for example, checkbox,
         /// signature etc. on the page.
         #[prost(message, repeated, tag = "9")]
         pub visual_elements: ::prost::alloc::vec::Vec<page::VisualElement>,
@@ -363,9 +364,9 @@ pub mod document {
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] within
-            /// context of the object this layout is for. e.g. confidence can be for a
-            /// single token, a table, a visual element, etc. depending on context.
-            /// Range `\[0, 1\]`.
+            /// context of the object this layout is for. For example, confidence can
+            /// be for a single token, a table, a visual element, etc. depending on
+            /// context. Range `\[0, 1\]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
             /// The bounding polygon for the
@@ -634,8 +635,8 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
-        /// Detected non-text visual elements e.g. checkbox, signature etc. on the
-        /// page.
+        /// Detected non-text visual elements, for example, checkbox, signature, etc.
+        /// on the page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for
@@ -705,7 +706,8 @@ pub mod document {
         pub struct FormField {
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for the
             /// \[FormField\]\[google.cloud.documentai.v1beta3.Document.Page.FormField\]
-            /// name. e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.
+            /// name. For example, `Address`, `Email`, `Grand total`, `Phone number`,
+            /// etc.
             #[prost(message, optional, tag = "1")]
             pub field_name: ::core::option::Option<Layout>,
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for the
@@ -811,10 +813,10 @@ pub mod document {
         /// \[Document.text\]\[google.cloud.documentai.v1beta3.Document.text\].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
-        /// Required. Entity type from a schema e.g. `Address`.
+        /// Required. Entity type from a schema for example, `Address`.
         #[prost(string, tag = "2")]
         pub r#type: ::prost::alloc::string::String,
-        /// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
+        /// Optional. Text value of the entity for example, `1600 Amphitheatre Pkwy`.
         #[prost(string, tag = "3")]
         pub mention_text: ::prost::alloc::string::String,
         /// Optional. Deprecated.  Use `id` field instead.
@@ -827,14 +829,14 @@ pub mod document {
         /// the page where it was found.
         #[prost(message, optional, tag = "6")]
         pub page_anchor: ::core::option::Option<PageAnchor>,
-        /// Optional. Canonical id. This will be a unique value in the entity list
+        /// Optional. Canonical ID. This will be a unique value in the entity list
         /// for this document.
         #[prost(string, tag = "7")]
         pub id: ::prost::alloc::string::String,
         /// Optional. Normalized entity value. Absent if the extracted value could
-        /// not be converted or the type (e.g. address) is not supported for certain
-        /// parsers. This field is also only populated for certain supported document
-        /// types.
+        /// not be converted or the type (for example, address) is not supported for
+        /// certain parsers. This field is also only populated for certain supported
+        /// document types.
         #[prost(message, optional, tag = "9")]
         pub normalized_value: ::core::option::Option<entity::NormalizedValue>,
         /// Optional. Entities can be nested to form a hierarchical data structure
@@ -976,10 +978,10 @@ pub mod document {
     /// \[Entities\]\[google.cloud.documentai.v1beta3.Document.Entity\].
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EntityRelation {
-        /// Subject entity id.
+        /// Subject entity ID.
         #[prost(string, tag = "1")]
         pub subject_id: ::prost::alloc::string::String,
-        /// Object entity id.
+        /// Object entity ID.
         #[prost(string, tag = "2")]
         pub object_id: ::prost::alloc::string::String,
         /// Relationship description.
@@ -1153,7 +1155,7 @@ pub mod document {
         #[deprecated]
         #[prost(int32, tag = "1")]
         pub revision: i32,
-        /// The Id of this operation.  Needs to be unique within the scope of the
+        /// The ID of this operation.  Needs to be unique within the scope of the
         /// revision.
         #[deprecated]
         #[prost(int32, tag = "2")]
@@ -1178,7 +1180,7 @@ pub mod document {
             /// of entities, properties within entities, etc.) in the parent revision.
             #[prost(int32, tag = "3")]
             pub index: i32,
-            /// The id of the parent provenance.
+            /// The ID of the parent provenance.
             #[deprecated]
             #[prost(int32, tag = "2")]
             pub id: i32,
@@ -1213,11 +1215,14 @@ pub mod document {
             Replace = 3,
             /// Deprecated. Request human review for the element identified by
             /// `parent`.
+            #[deprecated]
             EvalRequested = 4,
             /// Deprecated. Element is reviewed and approved at human review,
             /// confidence will be set to 1.0.
+            #[deprecated]
             EvalApproved = 5,
             /// Deprecated. Element is skipped in the validation process.
+            #[deprecated]
             EvalSkipped = 6,
         }
         impl OperationType {
@@ -1232,8 +1237,11 @@ pub mod document {
                     Self::Remove => "REMOVE",
                     Self::Update => "UPDATE",
                     Self::Replace => "REPLACE",
+                    #[allow(deprecated)]
                     Self::EvalRequested => "EVAL_REQUESTED",
+                    #[allow(deprecated)]
                     Self::EvalApproved => "EVAL_APPROVED",
+                    #[allow(deprecated)]
                     Self::EvalSkipped => "EVAL_SKIPPED",
                 }
             }
@@ -1245,9 +1253,9 @@ pub mod document {
                     "REMOVE" => Some(Self::Remove),
                     "UPDATE" => Some(Self::Update),
                     "REPLACE" => Some(Self::Replace),
-                    "EVAL_REQUESTED" => Some(Self::EvalRequested),
-                    "EVAL_APPROVED" => Some(Self::EvalApproved),
-                    "EVAL_SKIPPED" => Some(Self::EvalSkipped),
+                    "EVAL_REQUESTED" => Some(#[allow(deprecated)] Self::EvalRequested),
+                    "EVAL_APPROVED" => Some(#[allow(deprecated)] Self::EvalApproved),
+                    "EVAL_SKIPPED" => Some(#[allow(deprecated)] Self::EvalSkipped),
                     _ => None,
                 }
             }
@@ -1256,7 +1264,7 @@ pub mod document {
     /// Contains past or forward revisions of this document.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Revision {
-        /// Id of the revision, internally generated by doc proto storage.
+        /// ID of the revision, internally generated by doc proto storage.
         /// Unique within the context of the document.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
@@ -1266,7 +1274,7 @@ pub mod document {
         #[deprecated]
         #[prost(int32, repeated, packed = "false", tag = "2")]
         pub parent: ::prost::alloc::vec::Vec<i32>,
-        /// The revisions that this revision is based on. Must include all the ids
+        /// The revisions that this revision is based on. Must include all the IDs
         /// that have anything to do with this revision - eg. there are
         /// `provenance.parent.revision` fields that index into this field.
         #[prost(string, repeated, tag = "7")]
@@ -1287,7 +1295,7 @@ pub mod document {
         /// Human Review information of the document.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HumanReview {
-            /// Human review state. e.g. `requested`, `succeeded`, `rejected`.
+            /// Human review state. For example, `requested`, `succeeded`, `rejected`.
             #[prost(string, tag = "1")]
             pub state: ::prost::alloc::string::String,
             /// A message providing more details about the current state of processing.
@@ -1298,7 +1306,7 @@ pub mod document {
         /// Who/what made the change
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Source {
-            /// If the change was made by a person specify the name or id of that
+            /// If the change was made by a person specify the name or ID of that
             /// person.
             #[prost(string, tag = "4")]
             Agent(::prost::alloc::string::String),
@@ -1472,18 +1480,18 @@ pub mod document {
                 /// Source of the image.
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum ImageSource {
-                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// Optional. Asset ID of the inline image. If set, find the image
                     /// content in the blob_assets field.
                     #[prost(string, tag = "4")]
                     BlobAssetId(::prost::alloc::string::String),
-                    /// Optional. Google Cloud Storage uri of the image.
+                    /// Optional. Google Cloud Storage URI of the image.
                     #[prost(string, tag = "5")]
                     GcsUri(::prost::alloc::string::String),
-                    /// Optional. Data uri of the image.
+                    /// Optional. Data URI of the image.
                     /// It is composed of four parts: a prefix (data:), a MIME type
                     /// indicating the type of data, an optional base64 token if
                     /// non-textual, and the data itself:
-                    /// data:\[<mediatype>\]\[;base64\],<data>
+                    /// data:\[<mediatype>\]\[;base64\],<data>.
                     #[prost(string, tag = "6")]
                     DataUri(::prost::alloc::string::String),
                 }
@@ -1588,18 +1596,18 @@ pub mod document {
                 /// Source of the image.
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum ImageSource {
-                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// Optional. Asset ID of the inline image. If set, find the image
                     /// content in the blob_assets field.
                     #[prost(string, tag = "1")]
                     BlobAssetId(::prost::alloc::string::String),
-                    /// Optional. Google Cloud Storage uri of the image.
+                    /// Optional. Google Cloud Storage URI of the image.
                     #[prost(string, tag = "2")]
                     GcsUri(::prost::alloc::string::String),
-                    /// Optional. Data uri of the image.
+                    /// Optional. Data URI of the image.
                     /// It is composed of four parts: a prefix (data:), a MIME type
                     /// indicating the type of data, an optional base64 token if
                     /// non-textual, and the data itself:
-                    /// data:\[<mediatype>\]\[;base64\],<data>
+                    /// data:\[<mediatype>\]\[;base64\],<data>.
                     #[prost(string, tag = "3")]
                     DataUri(::prost::alloc::string::String),
                 }
@@ -1612,7 +1620,7 @@ pub mod document {
                 pub annotations: ::core::option::Option<super::super::Annotations>,
             }
             /// The chunk field in the chunk. A chunk field could be one of the various
-            /// types (e.g. image, table) supported.
+            /// types (for example, image, table) supported.
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct ChunkField {
                 /// The type of the chunk field.
@@ -1635,14 +1643,14 @@ pub mod document {
         }
     }
     /// Represents a blob asset. It's used to store the content of the inline blob
-    /// in this document, e.g. image bytes, such that it can be referenced by
-    /// other fields in the document via asset id.
+    /// in this document, for example, image bytes, such that it can be referenced
+    /// by other fields in the document via asset ID.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BlobAsset {
-        /// Optional. The id of the blob asset.
+        /// Optional. The ID of the blob asset.
         #[prost(string, tag = "1")]
         pub asset_id: ::prost::alloc::string::String,
-        /// Optional. The content of the blob asset, e.g. image bytes.
+        /// Optional. The content of the blob asset, for example, image bytes.
         #[prost(bytes = "vec", tag = "2")]
         pub content: ::prost::alloc::vec::Vec<u8>,
         /// The mime type of the blob asset.
@@ -1743,7 +1751,7 @@ pub mod document {
     /// Entity revision.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntitiesRevision {
-        /// The revision id.
+        /// The revision ID.
         #[prost(string, tag = "1")]
         pub revision_id: ::prost::alloc::string::String,
         /// The entities in this revision.
@@ -1831,7 +1839,7 @@ pub mod revision_ref {
         /// Reads the revision by the predefined case.
         #[prost(enumeration = "RevisionCase", tag = "1")]
         RevisionCase(i32),
-        /// Reads the revision given by the id.
+        /// Reads the revision given by the ID.
         #[prost(string, tag = "2")]
         RevisionId(::prost::alloc::string::String),
         /// Reads the revision generated by the processor version.
@@ -2497,6 +2505,7 @@ pub mod dataset {
         GcsManagedConfig(GcsManagedConfig),
         /// Optional. Deprecated. Warehouse-based dataset configuration is not
         /// supported.
+        #[deprecated]
         #[prost(message, tag = "5")]
         DocumentWarehouseConfig(DocumentWarehouseConfig),
         /// Optional. Unmanaged dataset configuration. Use this configuration if the
@@ -3376,12 +3385,14 @@ pub mod process_options {
             #[prost(bool, tag = "2")]
             pub include_ancestor_headings: bool,
             /// Optional. The number of tokens to group together when evaluating
-            /// semantic similarity. THIS FIELD IS NOT YET USED.
+            /// semantic similarity.
+            /// **Note:** This field is not yet used.
             #[prost(bool, tag = "3")]
             pub semantic_chunking_group_size: bool,
             /// Optional. The percentile of cosine dissimilarity that must be exceeded
             /// between a group of tokens and the next. The smaller this number is, the
-            /// more chunks will be generated. THIS FIELD IS NOT YET USED.
+            /// more chunks will be generated.
+            /// **Note:** This field is not yet used.
             #[prost(int32, tag = "4")]
             pub breakpoint_percentile_threshold: i32,
         }

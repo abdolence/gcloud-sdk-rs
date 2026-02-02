@@ -236,10 +236,12 @@ pub mod annotate_assessment_request {
         /// Provides information that the event was related to a login event in which
         /// the user typed the correct password. Deprecated, prefer indicating
         /// CORRECT_PASSWORD through the reasons field instead.
+        #[deprecated]
         PasswordCorrect = 3,
         /// Provides information that the event was related to a login event in which
         /// the user typed the incorrect password. Deprecated, prefer indicating
         /// INCORRECT_PASSWORD through the reasons field instead.
+        #[deprecated]
         PasswordIncorrect = 4,
     }
     impl Annotation {
@@ -252,7 +254,9 @@ pub mod annotate_assessment_request {
                 Self::Unspecified => "ANNOTATION_UNSPECIFIED",
                 Self::Legitimate => "LEGITIMATE",
                 Self::Fraudulent => "FRAUDULENT",
+                #[allow(deprecated)]
                 Self::PasswordCorrect => "PASSWORD_CORRECT",
+                #[allow(deprecated)]
                 Self::PasswordIncorrect => "PASSWORD_INCORRECT",
             }
         }
@@ -262,8 +266,10 @@ pub mod annotate_assessment_request {
                 "ANNOTATION_UNSPECIFIED" => Some(Self::Unspecified),
                 "LEGITIMATE" => Some(Self::Legitimate),
                 "FRAUDULENT" => Some(Self::Fraudulent),
-                "PASSWORD_CORRECT" => Some(Self::PasswordCorrect),
-                "PASSWORD_INCORRECT" => Some(Self::PasswordIncorrect),
+                "PASSWORD_CORRECT" => Some(#[allow(deprecated)] Self::PasswordCorrect),
+                "PASSWORD_INCORRECT" => {
+                    Some(#[allow(deprecated)] Self::PasswordIncorrect)
+                }
                 _ => None,
             }
         }
@@ -787,6 +793,7 @@ pub mod token_properties {
         /// This may be a configuration error (for example, development keys used in
         /// production) or end users trying to use verification tokens from other
         /// sites.
+        #[deprecated]
         SiteMismatch = 5,
         /// The user verification token was not present.  It is a required input.
         Missing = 6,
@@ -806,6 +813,7 @@ pub mod token_properties {
                 Self::Malformed => "MALFORMED",
                 Self::Expired => "EXPIRED",
                 Self::Dupe => "DUPE",
+                #[allow(deprecated)]
                 Self::SiteMismatch => "SITE_MISMATCH",
                 Self::Missing => "MISSING",
                 Self::BrowserError => "BROWSER_ERROR",
@@ -819,7 +827,7 @@ pub mod token_properties {
                 "MALFORMED" => Some(Self::Malformed),
                 "EXPIRED" => Some(Self::Expired),
                 "DUPE" => Some(Self::Dupe),
-                "SITE_MISMATCH" => Some(Self::SiteMismatch),
+                "SITE_MISMATCH" => Some(#[allow(deprecated)] Self::SiteMismatch),
                 "MISSING" => Some(Self::Missing),
                 "BROWSER_ERROR" => Some(Self::BrowserError),
                 _ => None,

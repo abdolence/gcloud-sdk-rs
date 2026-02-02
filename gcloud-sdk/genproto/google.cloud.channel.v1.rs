@@ -2661,6 +2661,7 @@ pub mod repricing_config {
         /// supports this value. Deprecated: This is no longer supported. Use
         /// \[RepricingConfig.entitlement_granularity\]\[google.cloud.channel.v1.RepricingConfig.entitlement_granularity\]
         /// instead.
+        #[deprecated]
         #[prost(message, tag = "5")]
         ChannelPartnerGranularity(ChannelPartnerGranularity),
     }

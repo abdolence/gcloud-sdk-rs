@@ -214,6 +214,8 @@ pub mod deployment {
         /// Cloud Storage bucket creation failed due to an issue unrelated to
         /// permissions.
         BucketCreationFailed = 8,
+        /// Failed to import values from an external source.
+        ExternalValueSourceImportFailed = 10,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -231,6 +233,9 @@ pub mod deployment {
                     "BUCKET_CREATION_PERMISSION_DENIED"
                 }
                 Self::BucketCreationFailed => "BUCKET_CREATION_FAILED",
+                Self::ExternalValueSourceImportFailed => {
+                    "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -245,6 +250,9 @@ pub mod deployment {
                     Some(Self::BucketCreationPermissionDenied)
                 }
                 "BUCKET_CREATION_FAILED" => Some(Self::BucketCreationFailed),
+                "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED" => {
+                    Some(Self::ExternalValueSourceImportFailed)
+                }
                 _ => None,
             }
         }
@@ -922,6 +930,8 @@ pub mod revision {
         /// quota validation failed for one or more resources in terraform
         /// configuration files.
         QuotaValidationFailed = 7,
+        /// Failed to import values from an external source.
+        ExternalValueSourceImportFailed = 8,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -935,6 +945,9 @@ pub mod revision {
                 Self::ApplyBuildApiFailed => "APPLY_BUILD_API_FAILED",
                 Self::ApplyBuildRunFailed => "APPLY_BUILD_RUN_FAILED",
                 Self::QuotaValidationFailed => "QUOTA_VALIDATION_FAILED",
+                Self::ExternalValueSourceImportFailed => {
+                    "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -945,6 +958,9 @@ pub mod revision {
                 "APPLY_BUILD_API_FAILED" => Some(Self::ApplyBuildApiFailed),
                 "APPLY_BUILD_RUN_FAILED" => Some(Self::ApplyBuildRunFailed),
                 "QUOTA_VALIDATION_FAILED" => Some(Self::QuotaValidationFailed),
+                "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED" => {
+                    Some(Self::ExternalValueSourceImportFailed)
+                }
                 _ => None,
             }
         }
@@ -1669,6 +1685,8 @@ pub mod preview {
         PreviewBuildApiFailed = 5,
         /// Preview created a build but build failed and logs were generated.
         PreviewBuildRunFailed = 6,
+        /// Failed to import values from an external source.
+        ExternalValueSourceImportFailed = 7,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1686,6 +1704,9 @@ pub mod preview {
                 Self::DeploymentLockAcquireFailed => "DEPLOYMENT_LOCK_ACQUIRE_FAILED",
                 Self::PreviewBuildApiFailed => "PREVIEW_BUILD_API_FAILED",
                 Self::PreviewBuildRunFailed => "PREVIEW_BUILD_RUN_FAILED",
+                Self::ExternalValueSourceImportFailed => {
+                    "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1702,6 +1723,9 @@ pub mod preview {
                 }
                 "PREVIEW_BUILD_API_FAILED" => Some(Self::PreviewBuildApiFailed),
                 "PREVIEW_BUILD_RUN_FAILED" => Some(Self::PreviewBuildRunFailed),
+                "EXTERNAL_VALUE_SOURCE_IMPORT_FAILED" => {
+                    Some(Self::ExternalValueSourceImportFailed)
+                }
                 _ => None,
             }
         }
@@ -2435,6 +2459,41 @@ pub mod provider_config {
             }
         }
     }
+}
+/// The request message for the GetAutoMigrationConfig method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAutoMigrationConfigRequest {
+    /// Required. The name of the AutoMigrationConfig.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// AutoMigrationConfig contains the automigration configuration for a project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AutoMigrationConfig {
+    /// Identifier. The name of the AutoMigrationConfig.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time the AutoMigrationConfig was last updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Whether the auto migration is enabled for the project.
+    #[prost(bool, tag = "3")]
+    pub auto_migration_enabled: bool,
+}
+/// The request message for the UpdateAutoMigrationConfig method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateAutoMigrationConfigRequest {
+    /// Optional. The update mask applies to the resource. See
+    /// \[google.protobuf.FieldMask\]\[google.protobuf.FieldMask\].
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The AutoMigrationConfig to update.
+    #[prost(message, optional, tag = "2")]
+    pub auto_migration_config: ::core::option::Option<AutoMigrationConfig>,
 }
 /// Enum values to control quota checks for resources in terraform
 /// configuration files.
@@ -3281,6 +3340,66 @@ pub mod config_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.config.v1.Config", "GetResourceDrift"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get the AutoMigrationConfig for a given project and location.
+        pub async fn get_auto_migration_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAutoMigrationConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AutoMigrationConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/GetAutoMigrationConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "GetAutoMigrationConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the AutoMigrationConfig for a given project and location.
+        pub async fn update_auto_migration_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAutoMigrationConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/UpdateAutoMigrationConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "UpdateAutoMigrationConfig",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

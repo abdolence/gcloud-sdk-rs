@@ -2004,7 +2004,7 @@ pub struct DeleteSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Common request options for various APIs.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestOptions {
     /// Priority for the request.
     #[prost(enumeration = "request_options::Priority", tag = "1")]
@@ -2034,9 +2034,24 @@ pub struct RequestOptions {
     /// Any leading underscore (\_) characters are removed from the string.
     #[prost(string, tag = "3")]
     pub transaction_tag: ::prost::alloc::string::String,
+    /// Optional. Optional context that may be needed for some requests.
+    #[prost(message, optional, tag = "4")]
+    pub client_context: ::core::option::Option<request_options::ClientContext>,
 }
 /// Nested message and enum types in `RequestOptions`.
 pub mod request_options {
+    /// Container for various pieces of client-owned context attached to a request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClientContext {
+        /// Optional. Map of parameter name to value for this request. These values
+        /// will be returned by any SECURE_CONTEXT() calls invoked by this request
+        /// (e.g., by queries against Parameterized Secure Views).
+        #[prost(map = "string, message", tag = "1")]
+        pub secure_context: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost_types::Value,
+        >,
+    }
     /// The relative priority for requests. Note that priority isn't applicable
     /// for \[BeginTransaction\]\[google.spanner.v1.Spanner.BeginTransaction\].
     ///

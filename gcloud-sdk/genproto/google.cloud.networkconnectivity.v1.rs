@@ -5666,10 +5666,10 @@ pub struct InternalRange {
     /// See: <https://google.aip.dev/122#fields-representing-resource-names>
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Time when the internal range was created.
+    /// Output only. Time when the internal range was created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time when the internal range was updated.
+    /// Output only. Time when the internal range was updated.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// User-defined labels.
@@ -5714,10 +5714,11 @@ pub struct InternalRange {
     #[prost(int32, tag = "10")]
     pub prefix_length: i32,
     /// Optional. Can be set to narrow down or pick a different address space while
-    /// searching for a free range. If not set, defaults to the "10.0.0.0/8"
-    /// address space. This can be used to search in other rfc-1918 address
-    /// spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918
-    /// address spaces used in the VPC.
+    /// searching for a free range. If not set, defaults to the \["10.0.0.0/8",
+    /// "172.16.0.0/12", "192.168.0.0/16"\] address space (for auto-mode networks,
+    /// the "10.0.0.0/9" range is used instead of "10.0.0.0/8"). This can be used
+    /// to target the search in other rfc-1918 address spaces like "172.16.0.0/12"
+    /// and "192.168.0.0/16" or non-rfc-1918 address spaces used in the VPC.
     #[prost(string, repeated, tag = "11")]
     pub target_cidr_range: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The list of resources that refer to this internal range.

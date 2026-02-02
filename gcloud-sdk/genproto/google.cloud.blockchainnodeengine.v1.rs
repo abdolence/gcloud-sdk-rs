@@ -248,6 +248,7 @@ pub mod blockchain_node {
             Mainnet = 1,
             /// Deprecated: The Ethereum Testnet based on Goerli protocol. Please
             /// use another test network.
+            #[deprecated]
             TestnetGoerliPrater = 2,
             /// The Ethereum Testnet based on Sepolia/Bepolia protocol.
             /// See <https://github.com/eth-clients/sepolia.>
@@ -265,6 +266,7 @@ pub mod blockchain_node {
                 match self {
                     Self::Unspecified => "NETWORK_UNSPECIFIED",
                     Self::Mainnet => "MAINNET",
+                    #[allow(deprecated)]
                     Self::TestnetGoerliPrater => "TESTNET_GOERLI_PRATER",
                     Self::TestnetSepolia => "TESTNET_SEPOLIA",
                     Self::TestnetHolesky => "TESTNET_HOLESKY",
@@ -275,7 +277,9 @@ pub mod blockchain_node {
                 match value {
                     "NETWORK_UNSPECIFIED" => Some(Self::Unspecified),
                     "MAINNET" => Some(Self::Mainnet),
-                    "TESTNET_GOERLI_PRATER" => Some(Self::TestnetGoerliPrater),
+                    "TESTNET_GOERLI_PRATER" => {
+                        Some(#[allow(deprecated)] Self::TestnetGoerliPrater)
+                    }
                     "TESTNET_SEPOLIA" => Some(Self::TestnetSepolia),
                     "TESTNET_HOLESKY" => Some(Self::TestnetHolesky),
                     _ => None,

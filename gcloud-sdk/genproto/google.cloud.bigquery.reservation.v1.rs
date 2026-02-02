@@ -428,11 +428,13 @@ pub mod capacity_commitment {
         Flex = 3,
         /// Same as FLEX, should only be used if flat-rate commitments are still
         /// available.
+        #[deprecated]
         FlexFlatRate = 7,
         /// Trial commitments have a committed period of 182 days after becoming
         /// ACTIVE. After that, they are converted to a new commitment based on the
         /// `renewal_plan`. Default `renewal_plan` for Trial commitment is Flex so
         /// that it can be deleted right after committed period ends.
+        #[deprecated]
         Trial = 5,
         /// Monthly commitments have a committed period of 30 days after becoming
         /// ACTIVE. After that, they are not in a committed period anymore and can be
@@ -440,6 +442,7 @@ pub mod capacity_commitment {
         Monthly = 2,
         /// Same as MONTHLY, should only be used if flat-rate commitments are still
         /// available.
+        #[deprecated]
         MonthlyFlatRate = 8,
         /// Annual commitments have a committed period of 365 days after becoming
         /// ACTIVE. After that they are converted to a new commitment based on the
@@ -447,6 +450,7 @@ pub mod capacity_commitment {
         Annual = 4,
         /// Same as ANNUAL, should only be used if flat-rate commitments are still
         /// available.
+        #[deprecated]
         AnnualFlatRate = 9,
         /// 3-year commitments have a committed period of 1095(3 * 365) days after
         /// becoming ACTIVE. After that they are converted to a new commitment based
@@ -469,11 +473,15 @@ pub mod capacity_commitment {
             match self {
                 Self::Unspecified => "COMMITMENT_PLAN_UNSPECIFIED",
                 Self::Flex => "FLEX",
+                #[allow(deprecated)]
                 Self::FlexFlatRate => "FLEX_FLAT_RATE",
+                #[allow(deprecated)]
                 Self::Trial => "TRIAL",
                 Self::Monthly => "MONTHLY",
+                #[allow(deprecated)]
                 Self::MonthlyFlatRate => "MONTHLY_FLAT_RATE",
                 Self::Annual => "ANNUAL",
+                #[allow(deprecated)]
                 Self::AnnualFlatRate => "ANNUAL_FLAT_RATE",
                 Self::ThreeYear => "THREE_YEAR",
                 Self::None => "NONE",
@@ -484,12 +492,12 @@ pub mod capacity_commitment {
             match value {
                 "COMMITMENT_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
                 "FLEX" => Some(Self::Flex),
-                "FLEX_FLAT_RATE" => Some(Self::FlexFlatRate),
-                "TRIAL" => Some(Self::Trial),
+                "FLEX_FLAT_RATE" => Some(#[allow(deprecated)] Self::FlexFlatRate),
+                "TRIAL" => Some(#[allow(deprecated)] Self::Trial),
                 "MONTHLY" => Some(Self::Monthly),
-                "MONTHLY_FLAT_RATE" => Some(Self::MonthlyFlatRate),
+                "MONTHLY_FLAT_RATE" => Some(#[allow(deprecated)] Self::MonthlyFlatRate),
                 "ANNUAL" => Some(Self::Annual),
-                "ANNUAL_FLAT_RATE" => Some(Self::AnnualFlatRate),
+                "ANNUAL_FLAT_RATE" => Some(#[allow(deprecated)] Self::AnnualFlatRate),
                 "THREE_YEAR" => Some(Self::ThreeYear),
                 "NONE" => Some(Self::None),
                 _ => None,

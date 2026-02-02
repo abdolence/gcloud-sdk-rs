@@ -866,6 +866,7 @@ pub mod ekm_metadata {
         /// EKM Partner Thales
         Thales = 3,
         /// This enum value is never used.
+        #[deprecated]
         Virtru = 4,
     }
     impl EkmSolution {
@@ -879,6 +880,7 @@ pub mod ekm_metadata {
                 Self::Fortanix => "FORTANIX",
                 Self::Futurex => "FUTUREX",
                 Self::Thales => "THALES",
+                #[allow(deprecated)]
                 Self::Virtru => "VIRTRU",
             }
         }
@@ -889,7 +891,7 @@ pub mod ekm_metadata {
                 "FORTANIX" => Some(Self::Fortanix),
                 "FUTUREX" => Some(Self::Futurex),
                 "THALES" => Some(Self::Thales),
-                "VIRTRU" => Some(Self::Virtru),
+                "VIRTRU" => Some(#[allow(deprecated)] Self::Virtru),
                 _ => None,
             }
         }
