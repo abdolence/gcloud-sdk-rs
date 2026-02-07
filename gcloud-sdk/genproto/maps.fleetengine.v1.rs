@@ -98,9 +98,11 @@ pub mod terminal_point_id {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Id {
         /// Deprecated.
+        #[deprecated]
         #[prost(string, tag = "2")]
         PlaceId(::prost::alloc::string::String),
         /// Deprecated.
+        #[deprecated]
         #[prost(string, tag = "3")]
         GeneratedId(::prost::alloc::string::String),
     }

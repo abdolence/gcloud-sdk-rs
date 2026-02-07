@@ -9,7 +9,7 @@ pub struct QuotaInfo {
     /// `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The id of the quota, which is unquie within the service.
+    /// The id of the quota, which is unique within the service.
     /// Example: `CpusPerProjectPerRegion`
     #[prost(string, tag = "2")]
     pub quota_id: ::prost::alloc::string::String,

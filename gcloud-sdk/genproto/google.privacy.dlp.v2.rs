@@ -5442,6 +5442,7 @@ pub mod action {
         /// Deprecated because Data Catalog is being turned down. Use
         /// publish_findings_to_dataplex_catalog to publish findings to Dataplex
         /// Universal Catalog.
+        #[deprecated]
         #[prost(message, tag = "5")]
         PublishFindingsToCloudDataCatalog(PublishFindingsToCloudDataCatalog),
         /// Publish findings as an aspect to Dataplex Universal Catalog.

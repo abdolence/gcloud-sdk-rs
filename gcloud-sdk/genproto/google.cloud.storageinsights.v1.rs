@@ -552,14 +552,14 @@ pub struct DatasetConfig {
     #[prost(oneof = "dataset_config::SourceOptions", tags = "7, 24, 25, 21")]
     pub source_options: ::core::option::Option<dataset_config::SourceOptions>,
     /// Cloud Storage locations to include or exclude.
-    #[prost(oneof = "dataset_config::CloudStorageLocations", tags = "8, 9")]
+    #[prost(oneof = "dataset_config::CloudStorageLocationsOneOf", tags = "8, 9")]
     pub cloud_storage_locations: ::core::option::Option<
-        dataset_config::CloudStorageLocations,
+        dataset_config::CloudStorageLocationsOneOf,
     >,
     /// Cloud Storage buckets to include or exclude.
-    #[prost(oneof = "dataset_config::CloudStorageBuckets", tags = "10, 11")]
+    #[prost(oneof = "dataset_config::CloudStorageBucketsOneOf", tags = "10, 11")]
     pub cloud_storage_buckets: ::core::option::Option<
-        dataset_config::CloudStorageBuckets,
+        dataset_config::CloudStorageBucketsOneOf,
     >,
 }
 /// Nested message and enum types in `DatasetConfig`.
@@ -817,7 +817,7 @@ pub mod dataset_config {
     }
     /// Cloud Storage locations to include or exclude.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-    pub enum CloudStorageLocations {
+    pub enum CloudStorageLocationsOneOf {
         #[prost(message, tag = "8")]
         IncludeCloudStorageLocations(CloudStorageLocations),
         #[prost(message, tag = "9")]
@@ -825,7 +825,7 @@ pub mod dataset_config {
     }
     /// Cloud Storage buckets to include or exclude.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum CloudStorageBuckets {
+    pub enum CloudStorageBucketsOneOf {
         #[prost(message, tag = "10")]
         IncludeCloudStorageBuckets(CloudStorageBuckets),
         #[prost(message, tag = "11")]

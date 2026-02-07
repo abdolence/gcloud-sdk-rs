@@ -35,13 +35,12 @@ impl DistanceMetric {
 /// A dataObject resource in Vector Search.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataObject {
-    /// Immutable. The fully qualified resource name of the dataObject.
+    /// Identifier. The fully qualified resource name of the dataObject.
     ///
     /// Format:
     /// `projects/{project}/locations/{location}/collections/{collection}/dataObjects/{data_object_id}`
     /// The data_object_id must be 1-63 characters
-    /// long, and comply with
-    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// long, and comply with [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The id of the dataObject.
@@ -113,7 +112,7 @@ pub struct VertexEmbeddingConfig {
     pub model_id: ::prost::alloc::string::String,
     /// Required. Required: Text template for the input to the model. The template
     /// must contain one or more references to fields in the DataObject, e.g.:
-    /// "Movie Title: {title} ---- Movie Plot: {plot}"".
+    /// "Movie Title: {title} ---- Movie Plot: {plot}".
     #[prost(string, tag = "2")]
     pub text_template: ::prost::alloc::string::String,
     /// Required. Required: Task type for the embeddings.
@@ -212,10 +211,10 @@ pub mod search_hint {
     /// The type of index to use.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum IndexType {
-        /// Specifies that the search should use a particular index.
+        /// Optional. Specifies that the search should use a particular index.
         #[prost(message, tag = "1")]
         UseIndex(IndexHint),
-        /// If set to true, the search will use the system's default
+        /// Optional. If set to true, the search will use the system's default
         /// K-Nearest Neighbor (KNN) index engine.
         #[prost(bool, tag = "2")]
         UseKnn(bool),
@@ -307,9 +306,14 @@ pub struct SemanticSearch {
     /// Optional. The number of data objects to return.
     #[prost(int32, optional, tag = "4")]
     pub top_k: ::core::option::Option<i32>,
+    /// Optional. Sets the search hint. If no strategy is specified, the service
+    /// will use an index if one is available, and fall back to KNN search
+    /// otherwise.
+    #[prost(message, optional, tag = "7")]
+    pub search_hint: ::core::option::Option<SearchHint>,
 }
 /// Defines a text search operation.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSearch {
     /// Required. The query text.
     #[prost(string, tag = "1")]
@@ -323,6 +327,10 @@ pub struct TextSearch {
     /// Optional. The number of results to return.
     #[prost(int32, optional, tag = "4")]
     pub top_k: ::core::option::Option<i32>,
+    /// Optional. A JSON filter expression, e.g. `{"genre": {"$eq": "sci-fi"}}`,
+    /// represented as a `google.protobuf.Struct`.
+    #[prost(message, optional, tag = "5")]
+    pub filter: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request for performing a single search.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -823,7 +831,7 @@ pub struct CreateDataObjectRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The id of the dataObject to create.
     /// The id must be 1-63 characters long, and comply with
-    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>).
     /// Specifically, it must be 1-63 characters long and match the regular
     /// expression `[a-z](?:\[-a-z0-9\]{0,61}\[a-z0-9\])?`.
     #[prost(string, tag = "2")]
@@ -1332,7 +1340,7 @@ pub struct CreateCollectionRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. ID of the Collection to create.
     /// The id must be 1-63 characters long, and comply with
-    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>).
     /// Specifically, it must be 1-63 characters long and match the regular
     /// expression `[a-z](?:\[-a-z0-9\]{0,61}\[a-z0-9\])?`.
     #[prost(string, tag = "2")]
@@ -1369,7 +1377,8 @@ pub struct UpdateCollectionRequest {
     /// The following fields support update: `display_name`, `description`,
     /// `labels`, `data_schema`, `vector_schema`.
     /// For `data_schema` and `vector_schema`, fields can only be added, not
-    /// modified or deleted.
+    /// deleted, but `vertex_embedding_config` in `vector_schema` can be added or
+    /// removed.
     /// Partial updates for `data_schema` and `vector_schema` are also supported
     /// by using sub-field paths in `update_mask`, e.g.
     /// `data_schema.properties.foo` or `vector_schema.my_vector_field`.
@@ -1468,7 +1477,7 @@ pub struct CreateIndexRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. ID of the Index to create.
     /// The id must be 1-63 characters long, and comply with
-    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>).
     /// Specifically, it must be 1-63 characters long and match the regular
     /// expression `[a-z](?:\[-a-z0-9\]{0,61}\[a-z0-9\])?`.
     #[prost(string, tag = "2")]
@@ -1583,7 +1592,8 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// Request message for \[DataObjectService.ImportDataObjects\]\[\].
+/// Request message for
+/// \[VectorSearchService.ImportDataObjects\]\[google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataObjectsRequest {
     /// Required. The resource name of the Collection to import DataObjects into.
@@ -1606,6 +1616,12 @@ pub mod import_data_objects_request {
         /// encountered during the import.
         #[prost(string, tag = "2")]
         pub error_uri: ::prost::alloc::string::String,
+        /// Optional. URI prefix of the Cloud Storage location to write DataObject
+        /// `IDs` and `etags` of DataObjects that were successfully imported. The
+        /// service will write the successfully imported DataObjects to sharded files
+        /// under this prefix. If this field is empty, no output will be written.
+        #[prost(string, tag = "3")]
+        pub output_uri: ::prost::alloc::string::String,
     }
     /// The configuration for the import data and error results.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -1615,7 +1631,8 @@ pub mod import_data_objects_request {
         GcsImport(GcsImportConfig),
     }
 }
-/// Metadata for \[DataObjectService.ImportDataObjects\]\[\].
+/// Metadata for
+/// \[VectorSearchService.ImportDataObjects\]\[google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects\].
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataObjectsMetadata {
     /// The time the operation was created.
@@ -1631,13 +1648,104 @@ pub struct ImportDataObjectsMetadata {
     #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
-/// Response for \[DataObjectService.ImportDataObjects\]\[\].
+/// Response for
+/// \[VectorSearchService.ImportDataObjects\]\[google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataObjectsResponse {
     /// Status of the LRO
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
+/// Request message for
+/// \[VectorSearchService.ExportDataObjects\]\[google.cloud.vectorsearch.v1beta.VectorSearchService.ExportDataObjects\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportDataObjectsRequest {
+    /// Required. The resource name of the Collection from which we want to export
+    /// Data Objects. Format:
+    /// `projects/{project}/locations/{location}/collections/{collection}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The configuration for the export data.
+    #[prost(oneof = "export_data_objects_request::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_data_objects_request::Destination>,
+}
+/// Nested message and enum types in `ExportDataObjectsRequest`.
+pub mod export_data_objects_request {
+    /// Google Cloud Storage configuration for the export.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GcsExportDestination {
+        /// Required. URI prefix of the Cloud Storage where to export Data Objects.
+        /// The bucket is required to be in the same region as the collection.
+        #[prost(string, tag = "1")]
+        pub export_uri: ::prost::alloc::string::String,
+        /// Required. The format of the exported Data Objects.
+        #[prost(enumeration = "gcs_export_destination::Format", tag = "2")]
+        pub format: i32,
+    }
+    /// Nested message and enum types in `GcsExportDestination`.
+    pub mod gcs_export_destination {
+        /// Options for the format of the exported Data Objects.
+        /// New formats may be added in the future.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Format {
+            /// Unspecified format.
+            Unspecified = 0,
+            /// The exported Data Objects will be in JSON format.
+            Json = 1,
+        }
+        impl Format {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "FORMAT_UNSPECIFIED",
+                    Self::Json => "JSON",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JSON" => Some(Self::Json),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The configuration for the export data.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Destination {
+        /// The Cloud Storage location where user wants to export Data Objects.
+        #[prost(message, tag = "2")]
+        GcsDestination(GcsExportDestination),
+    }
+}
+/// Metadata for the ExportDataObjects LRO.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportDataObjectsMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished.
+    #[prost(message, optional, tag = "2")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response for the ExportDataObjects LRO.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportDataObjectsResponse {}
 /// Generated client implementations.
 pub mod vector_search_service_client {
     #![allow(
@@ -2024,6 +2132,36 @@ pub mod vector_search_service_client {
                     GrpcMethod::new(
                         "google.cloud.vectorsearch.v1beta.VectorSearchService",
                         "ImportDataObjects",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates a Long-Running Operation to export DataObjects from a Collection.
+        pub async fn export_data_objects(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportDataObjectsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vectorsearch.v1beta.VectorSearchService/ExportDataObjects",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vectorsearch.v1beta.VectorSearchService",
+                        "ExportDataObjects",
                     ),
                 );
             self.inner.unary(req, path, codec).await

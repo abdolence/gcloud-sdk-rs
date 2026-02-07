@@ -3266,7 +3266,7 @@ pub struct AttachedGif {
 ///
 /// For example usage, see [Quote another
 /// message](<https://developers.google.com/workspace/chat/create-messages#quote-a-message>).
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotedMessageMetadata {
     /// Required. Resource name of the message that is quoted.
     ///
@@ -3283,6 +3283,108 @@ pub struct QuotedMessageMetadata {
     /// message, the request fails.
     #[prost(message, optional, tag = "2")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Specifies the quote type. If not set, defaults to REPLY in the
+    /// message read/write path for backward compatibility.
+    #[prost(enumeration = "quoted_message_metadata::QuoteType", tag = "4")]
+    pub quote_type: i32,
+    /// Output only. A snapshot of the quoted message's content.
+    #[prost(message, optional, tag = "5")]
+    pub quoted_message_snapshot: ::core::option::Option<QuotedMessageSnapshot>,
+    /// Output only. Metadata about the source space of the quoted message.
+    /// Populated only for FORWARD quote type.
+    #[prost(message, optional, tag = "6")]
+    pub forwarded_metadata: ::core::option::Option<ForwardedMetadata>,
+}
+/// Nested message and enum types in `QuotedMessageMetadata`.
+pub mod quoted_message_metadata {
+    /// The quote type of the quoted message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QuoteType {
+        /// Reserved. This value is unused.
+        Unspecified = 0,
+        /// If quote_type is `REPLY`, you can do the following:
+        ///
+        /// * If you're replying in a thread, you can quote another message in that
+        ///   thread.
+        ///
+        /// * If you're creating a root message, you can quote another root message
+        ///   in that space.
+        ///
+        /// You can't quote a message reply from a different thread.
+        Reply = 1,
+    }
+    impl QuoteType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUOTE_TYPE_UNSPECIFIED",
+                Self::Reply => "REPLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUOTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REPLY" => Some(Self::Reply),
+                _ => None,
+            }
+        }
+    }
+}
+/// Provides a snapshot of the content of the quoted message at the time of
+/// quoting or forwarding
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuotedMessageSnapshot {
+    /// Output only. The quoted message's author name.
+    /// Populated for both REPLY & FORWARD quote types.
+    #[prost(string, tag = "1")]
+    pub sender: ::prost::alloc::string::String,
+    /// Output only. Snapshot of the quoted message's text content.
+    #[prost(string, tag = "2")]
+    pub text: ::prost::alloc::string::String,
+    /// Output only. Contains the quoted message `text` with markups added to
+    /// support rich formatting like hyperlinks,custom emojis, markup, etc.
+    /// Populated only for FORWARD quote type.
+    #[prost(string, tag = "3")]
+    pub formatted_text: ::prost::alloc::string::String,
+    /// Output only. Annotations parsed from the text body of the quoted message.
+    /// Populated only for FORWARD quote type.
+    #[prost(message, repeated, tag = "4")]
+    pub annotations: ::prost::alloc::vec::Vec<Annotation>,
+    /// Output only. Attachments that were part of the quoted message. These are
+    /// copies of the quoted message's attachment metadata. Populated only for
+    /// FORWARD quote type.
+    #[prost(message, repeated, tag = "5")]
+    pub attachments: ::prost::alloc::vec::Vec<Attachment>,
+}
+/// Metadata about the source space from which a message was forwarded.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ForwardedMetadata {
+    /// Output only. The resource name of the source space.
+    /// Format: spaces/{space}
+    #[prost(string, tag = "1")]
+    pub space: ::prost::alloc::string::String,
+    /// Output only. The display name of the source space or DM at the time of
+    /// forwarding. For `SPACE`, this is the space name. For `DIRECT_MESSAGE`, this
+    /// is the other participant's name (e.g., "User A"). For `GROUP_CHAT`, this is
+    /// a generated name based on members' first names, limited to 5 including the
+    /// creator (e.g., "User A, User B").
+    #[prost(string, tag = "2")]
+    pub space_display_name: ::prost::alloc::string::String,
 }
 /// A thread in a Google Chat space. For example usage, see
 /// [Start or reply to a message

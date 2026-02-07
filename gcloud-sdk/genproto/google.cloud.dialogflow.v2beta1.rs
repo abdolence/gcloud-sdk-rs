@@ -274,6 +274,7 @@ pub mod agent {
         Enterprise = 2,
         /// Essentials Edition (same as TIER_ENTERPRISE), previously known as
         /// Enterprise Plus Edition.
+        #[deprecated]
         EnterprisePlus = 3,
     }
     impl Tier {
@@ -286,6 +287,7 @@ pub mod agent {
                 Self::Unspecified => "TIER_UNSPECIFIED",
                 Self::Standard => "TIER_STANDARD",
                 Self::Enterprise => "TIER_ENTERPRISE",
+                #[allow(deprecated)]
                 Self::EnterprisePlus => "TIER_ENTERPRISE_PLUS",
             }
         }
@@ -295,7 +297,7 @@ pub mod agent {
                 "TIER_UNSPECIFIED" => Some(Self::Unspecified),
                 "TIER_STANDARD" => Some(Self::Standard),
                 "TIER_ENTERPRISE" => Some(Self::Enterprise),
-                "TIER_ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+                "TIER_ENTERPRISE_PLUS" => Some(#[allow(deprecated)] Self::EnterprisePlus),
                 _ => None,
             }
         }
@@ -3641,6 +3643,7 @@ pub mod intent {
             /// supported way to create new training phrases. If you have existing
             /// training phrases in template mode, they will be removed during training
             /// and it can cause a drop in agent performance.
+            #[deprecated]
             Template = 2,
         }
         impl Type {
@@ -3652,6 +3655,7 @@ pub mod intent {
                 match self {
                     Self::Unspecified => "TYPE_UNSPECIFIED",
                     Self::Example => "EXAMPLE",
+                    #[allow(deprecated)]
                     Self::Template => "TEMPLATE",
                 }
             }
@@ -3660,7 +3664,7 @@ pub mod intent {
                 match value {
                     "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                     "EXAMPLE" => Some(Self::Example),
-                    "TEMPLATE" => Some(Self::Template),
+                    "TEMPLATE" => Some(#[allow(deprecated)] Self::Template),
                     _ => None,
                 }
             }
@@ -8885,6 +8889,11 @@ pub struct StreamingAnalyzeContentRequest {
     /// return partial responses.
     #[prost(bool, tag = "12")]
     pub enable_partial_automated_agent_reply: bool,
+    /// Optional. If multiple utterances are detected in the audio stream, process
+    /// them individually instead of stitching them together to form a single
+    /// utterance.
+    #[prost(bool, tag = "18")]
+    pub output_multiple_utterances: bool,
     /// if true, `StreamingAnalyzeContentResponse.debugging_info` will get
     /// populated.
     #[prost(bool, tag = "19")]
@@ -14466,6 +14475,7 @@ pub mod document {
         /// EXTRACTIVE_QA and FAQ knowledge types.
         /// Note: This field is in the process of being deprecated, please use
         /// raw_content instead.
+        #[deprecated]
         #[prost(string, tag = "6")]
         Content(::prost::alloc::string::String),
         /// The raw content of the document. This field is only permitted for
@@ -18937,6 +18947,7 @@ pub mod tool {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Specification {
         /// Vertex extension tool specification.
+        #[deprecated]
         #[prost(message, tag = "4")]
         ExtensionSpec(ExtensionTool),
         /// Client side executed function specification.

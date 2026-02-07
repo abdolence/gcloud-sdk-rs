@@ -134,8 +134,9 @@ pub struct Document {
     #[prost(message, optional, tag = "18")]
     pub chunked_document: ::core::option::Option<document::ChunkedDocument>,
     /// Optional. The blob assets in this document. This is used to store the
-    /// content of the inline blobs in this document, e.g. image bytes, such that
-    /// it can be referenced by other fields in the document via asset id.
+    /// content of the inline blobs in this document, for example, image bytes,
+    /// such that it can be referenced by other fields in the document via asset
+    /// id.
     #[prost(message, repeated, tag = "19")]
     pub blob_assets: ::prost::alloc::vec::Vec<document::BlobAsset>,
     /// The entity validation output for the document. This is the validation
@@ -149,7 +150,7 @@ pub struct Document {
     /// entity extraction results at different stages of the processing.
     #[prost(message, repeated, tag = "22")]
     pub entities_revisions: ::prost::alloc::vec::Vec<document::EntitiesRevision>,
-    /// The entity revision id that `document.entities` field is based on.
+    /// The entity revision ID that `document.entities` field is based on.
     /// If this field is set and `entities_revisions` is not empty, the entities in
     /// `document.entities` field are the entities in the entity revision with this
     /// id and `document.entity_validation_output` field is the
@@ -277,7 +278,7 @@ pub mod document {
         /// A list of visually detected tokens on the page.
         #[prost(message, repeated, tag = "8")]
         pub tokens: ::prost::alloc::vec::Vec<page::Token>,
-        /// A list of detected non-text visual elements e.g. checkbox,
+        /// A list of detected non-text visual elements, for example, checkbox,
         /// signature etc. on the page.
         #[prost(message, repeated, tag = "9")]
         pub visual_elements: ::prost::alloc::vec::Vec<page::VisualElement>,
@@ -363,9 +364,9 @@ pub mod document {
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] within
-            /// context of the object this layout is for. e.g. confidence can be for a
-            /// single token, a table, a visual element, etc. depending on context.
-            /// Range `\[0, 1\]`.
+            /// context of the object this layout is for. For example, confidence can
+            /// be for a single token, a table, a visual element, etc. depending on
+            /// context. Range `\[0, 1\]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
             /// The bounding polygon for the
@@ -634,8 +635,8 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
-        /// Detected non-text visual elements e.g. checkbox, signature etc. on the
-        /// page.
+        /// Detected non-text visual elements, for example, checkbox, signature etc.
+        /// on the page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for
@@ -705,7 +706,8 @@ pub mod document {
         pub struct FormField {
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for the
             /// \[FormField\]\[google.cloud.documentai.v1beta3.Document.Page.FormField\]
-            /// name. e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.
+            /// name. For example, `Address`, `Email`, `Grand total`, `Phone number`,
+            /// etc.
             #[prost(message, optional, tag = "1")]
             pub field_name: ::core::option::Option<Layout>,
             /// \[Layout\]\[google.cloud.documentai.v1beta3.Document.Page.Layout\] for the
@@ -811,10 +813,10 @@ pub mod document {
         /// \[Document.text\]\[google.cloud.documentai.v1beta3.Document.text\].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
-        /// Required. Entity type from a schema e.g. `Address`.
+        /// Required. Entity type from a schema, for example, `Address`.
         #[prost(string, tag = "2")]
         pub r#type: ::prost::alloc::string::String,
-        /// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
+        /// Optional. Text value of the entity, for example, `1600 Amphitheatre  Pkwy`.
         #[prost(string, tag = "3")]
         pub mention_text: ::prost::alloc::string::String,
         /// Optional. Deprecated.  Use `id` field instead.
@@ -832,9 +834,9 @@ pub mod document {
         #[prost(string, tag = "7")]
         pub id: ::prost::alloc::string::String,
         /// Optional. Normalized entity value. Absent if the extracted value could
-        /// not be converted or the type (e.g. address) is not supported for certain
-        /// parsers. This field is also only populated for certain supported document
-        /// types.
+        /// not be converted or the type (for example, address) is not supported for
+        /// certain parsers. This field is also only populated for certain supported
+        /// document types.
         #[prost(message, optional, tag = "9")]
         pub normalized_value: ::core::option::Option<entity::NormalizedValue>,
         /// Optional. Entities can be nested to form a hierarchical data structure
@@ -1213,11 +1215,14 @@ pub mod document {
             Replace = 3,
             /// Deprecated. Request human review for the element identified by
             /// `parent`.
+            #[deprecated]
             EvalRequested = 4,
             /// Deprecated. Element is reviewed and approved at human review,
             /// confidence will be set to 1.0.
+            #[deprecated]
             EvalApproved = 5,
             /// Deprecated. Element is skipped in the validation process.
+            #[deprecated]
             EvalSkipped = 6,
         }
         impl OperationType {
@@ -1232,8 +1237,11 @@ pub mod document {
                     Self::Remove => "REMOVE",
                     Self::Update => "UPDATE",
                     Self::Replace => "REPLACE",
+                    #[allow(deprecated)]
                     Self::EvalRequested => "EVAL_REQUESTED",
+                    #[allow(deprecated)]
                     Self::EvalApproved => "EVAL_APPROVED",
+                    #[allow(deprecated)]
                     Self::EvalSkipped => "EVAL_SKIPPED",
                 }
             }
@@ -1245,9 +1253,9 @@ pub mod document {
                     "REMOVE" => Some(Self::Remove),
                     "UPDATE" => Some(Self::Update),
                     "REPLACE" => Some(Self::Replace),
-                    "EVAL_REQUESTED" => Some(Self::EvalRequested),
-                    "EVAL_APPROVED" => Some(Self::EvalApproved),
-                    "EVAL_SKIPPED" => Some(Self::EvalSkipped),
+                    "EVAL_REQUESTED" => Some(#[allow(deprecated)] Self::EvalRequested),
+                    "EVAL_APPROVED" => Some(#[allow(deprecated)] Self::EvalApproved),
+                    "EVAL_SKIPPED" => Some(#[allow(deprecated)] Self::EvalSkipped),
                     _ => None,
                 }
             }
@@ -1287,7 +1295,7 @@ pub mod document {
         /// Human Review information of the document.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HumanReview {
-            /// Human review state. e.g. `requested`, `succeeded`, `rejected`.
+            /// Human review state. For example, `requested`, `succeeded`, `rejected`.
             #[prost(string, tag = "1")]
             pub state: ::prost::alloc::string::String,
             /// A message providing more details about the current state of processing.
@@ -1612,7 +1620,7 @@ pub mod document {
                 pub annotations: ::core::option::Option<super::super::Annotations>,
             }
             /// The chunk field in the chunk. A chunk field could be one of the various
-            /// types (e.g. image, table) supported.
+            /// types (for example, image, table) supported.
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct ChunkField {
                 /// The type of the chunk field.
@@ -1635,14 +1643,14 @@ pub mod document {
         }
     }
     /// Represents a blob asset. It's used to store the content of the inline blob
-    /// in this document, e.g. image bytes, such that it can be referenced by
-    /// other fields in the document via asset id.
+    /// in this document, for example, image bytes, such that it can be referenced
+    /// by other fields in the document via asset ID.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BlobAsset {
         /// Optional. The id of the blob asset.
         #[prost(string, tag = "1")]
         pub asset_id: ::prost::alloc::string::String,
-        /// Optional. The content of the blob asset, e.g. image bytes.
+        /// Optional. The content of the blob asset, for example, image bytes.
         #[prost(bytes = "vec", tag = "2")]
         pub content: ::prost::alloc::vec::Vec<u8>,
         /// The mime type of the blob asset.
@@ -1669,7 +1677,7 @@ pub mod document {
         /// Validation result for a single validation rule.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ValidationResult {
-            /// The name of the validation rule.
+            /// The display name of the validation rule.
             #[prost(string, tag = "1")]
             pub rule_name: ::prost::alloc::string::String,
             /// The description of the validation rule.
@@ -1752,6 +1760,9 @@ pub mod document {
         /// The entity validation output for this revision.
         #[prost(message, optional, tag = "3")]
         pub entity_validation_output: ::core::option::Option<EntityValidationOutput>,
+        /// Optional. The history of this revision.
+        #[prost(message, optional, tag = "4")]
+        pub provenance: ::core::option::Option<Provenance>,
     }
     /// Original source document from the user.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -1841,6 +1852,13 @@ pub mod revision_ref {
         LatestProcessorVersion(::prost::alloc::string::String),
     }
 }
+/// A set of inline documents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Documents {
+    /// The list of documents.
+    #[prost(message, repeated, tag = "1")]
+    pub documents: ::prost::alloc::vec::Vec<Document>,
+}
 /// Payload message of raw document content (bytes).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RawDocument {
@@ -1882,6 +1900,13 @@ pub struct GcsPrefix {
     /// The URI prefix.
     #[prost(string, tag = "1")]
     pub gcs_uri_prefix: ::prost::alloc::string::String,
+}
+/// Specifies a set of raw documents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawDocuments {
+    /// Specifies raw document content and mime type.
+    #[prost(message, repeated, tag = "1")]
+    pub documents: ::prost::alloc::vec::Vec<RawDocument>,
 }
 /// The common config to specify a set of documents used as input.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2152,7 +2177,7 @@ pub struct EntityTypeMetadata {
 /// The schema defines the output of the processed document by a processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentSchema {
-    /// Display name to show to users.
+    /// Display name to show users.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
     /// Description of the schema.
@@ -2164,6 +2189,11 @@ pub struct DocumentSchema {
     /// Metadata of the schema.
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<document_schema::Metadata>,
+    /// Optional. Document level prompt provided by the user. This custom text is
+    /// injected into the AI model's prompt to provide extra, document-wide
+    /// guidance for processing.
+    #[prost(string, tag = "5")]
+    pub document_prompt: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DocumentSchema`.
 pub mod document_schema {
@@ -2183,7 +2213,7 @@ pub mod document_schema {
         /// * Maximum 64 characters.
         /// * Must start with a letter.
         /// * Allowed characters: ASCII letters `\[a-z0-9_-\]`.  (For backward
-        ///   compatibility internal infrastructure and tooling can handle any ascii
+        ///   compatibility, internal infrastructure and tooling can handle any ASCII
         ///   character.)
         /// * The `/` is sometimes used to denote a property of a type.  For example
         ///   `line_item/amount`.  This convention is deprecated, but will still be
@@ -2254,9 +2284,9 @@ pub mod document_schema {
             /// For example, a bank statement might only have one
             /// `account_number`, but this account number can be mentioned in several
             /// places on the document.  In this case, the `account_number` is
-            /// considered a `REQUIRED_ONCE` entity type. If, on the other hand, we
-            /// expect a bank statement to contain the status of multiple different
-            /// accounts for the customers, the occurrence type is set to
+            /// considered a `REQUIRED_ONCE` entity type. If, on the other hand, it's
+            /// expected that a bank statement contains the status of multiple
+            /// different accounts for the customers, the occurrence type is set to
             /// `REQUIRED_MULTIPLE`.
             #[derive(
                 Clone,
@@ -2360,7 +2390,7 @@ pub mod document_schema {
         pub enum ValueSource {
             /// If specified, lists all the possible values for this entity.  This
             /// should not be more than a handful of values.  If the number of values
-            /// is >10 or could change frequently use the `EntityType.value_ontology`
+            /// is >10 or could change frequently, use the `EntityType.value_ontology`
             /// field and specify a list of all possible values in a value ontology
             /// file.
             #[prost(message, tag = "14")]
@@ -2382,7 +2412,7 @@ pub mod document_schema {
         /// If set, all the nested entities must be prefixed with the parents.
         #[prost(bool, tag = "6")]
         pub prefixed_naming_on_properties: bool,
-        /// If set, we will skip the naming format validation in the schema. So the
+        /// If set, this will skip the naming format validation in the schema. So the
         /// string values in `DocumentSchema.EntityType.name` and
         /// `DocumentSchema.EntityType.Property.name` will not be checked.
         #[prost(bool, tag = "7")]
@@ -2410,8 +2440,6 @@ pub struct Dataset {
     pub satisfies_pzi: bool,
     #[prost(oneof = "dataset::StorageSource", tags = "3, 5, 6")]
     pub storage_source: ::core::option::Option<dataset::StorageSource>,
-    #[prost(oneof = "dataset::IndexingSource", tags = "4")]
-    pub indexing_source: ::core::option::Option<dataset::IndexingSource>,
 }
 /// Nested message and enum types in `Dataset`.
 pub mod dataset {
@@ -2438,9 +2466,6 @@ pub mod dataset {
     /// Configuration specific to an unmanaged dataset.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UnmanagedDatasetConfig {}
-    /// Configuration specific to spanner-based indexing.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct SpannerIndexingConfig {}
     /// Different states of a dataset.
     #[derive(
         Clone,
@@ -2497,6 +2522,7 @@ pub mod dataset {
         GcsManagedConfig(GcsManagedConfig),
         /// Optional. Deprecated. Warehouse-based dataset configuration is not
         /// supported.
+        #[deprecated]
         #[prost(message, tag = "5")]
         DocumentWarehouseConfig(DocumentWarehouseConfig),
         /// Optional. Unmanaged dataset configuration. Use this configuration if the
@@ -2504,14 +2530,6 @@ pub mod dataset {
         /// user-managed).
         #[prost(message, tag = "6")]
         UnmanagedDatasetConfig(UnmanagedDatasetConfig),
-    }
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
-    pub enum IndexingSource {
-        /// Optional. A lightweight indexing source with low latency and high
-        /// reliability, but lacking advanced features like CMEK and content-based
-        /// search.
-        #[prost(message, tag = "4")]
-        SpannerIndexingConfig(SpannerIndexingConfig),
     }
 }
 /// Document Identifier.
@@ -2646,6 +2664,9 @@ pub struct Evaluation {
     /// The KMS key version with which data is encrypted.
     #[prost(string, tag = "7")]
     pub kms_key_version_name: ::prost::alloc::string::String,
+    /// Contains all revisions of the evaluation, excluding the latest one.
+    #[prost(message, repeated, tag = "9")]
+    pub revisions: ::prost::alloc::vec::Vec<evaluation::EvaluationRevision>,
 }
 /// Nested message and enum types in `Evaluation`.
 pub mod evaluation {
@@ -2676,7 +2697,7 @@ pub mod evaluation {
         /// The calculated recall.
         #[prost(float, tag = "2")]
         pub recall: f32,
-        /// The calculated f1 score.
+        /// The calculated F1 score.
         #[prost(float, tag = "3")]
         pub f1_score: f32,
         /// The amount of occurrences in predicted documents.
@@ -2792,6 +2813,25 @@ pub mod evaluation {
                 }
             }
         }
+    }
+    /// A revision of the evaluation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EvaluationRevision {
+        /// Output only. The revision ID of the evaluation.
+        #[prost(string, tag = "1")]
+        pub revision_id: ::prost::alloc::string::String,
+        /// Output only. Counters for the documents used in the evaluation.
+        #[prost(message, optional, tag = "2")]
+        pub document_counters: ::core::option::Option<Counters>,
+        /// Output only. Metrics for all the entities in aggregate.
+        #[prost(message, optional, tag = "3")]
+        pub all_entities_metrics: ::core::option::Option<MultiConfidenceMetrics>,
+        /// Output only. Metrics across confidence levels, for different entities.
+        #[prost(map = "string, message", tag = "4")]
+        pub entity_metrics: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            MultiConfidenceMetrics,
+        >,
     }
 }
 /// The common metadata for long running operations.
@@ -2950,11 +2990,11 @@ pub mod processor_version {
         /// Information for a pretrained Google-managed foundation model.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct FoundationGenAiModelInfo {
-            /// Whether finetuning is allowed for this base processor version.
+            /// Whether fine tuning is allowed for this base processor version.
             #[prost(bool, tag = "1")]
             pub finetuning_allowed: bool,
             /// The minimum number of labeled documents in the training dataset
-            /// required for finetuning.
+            /// required for fine tuning.
             #[prost(int32, tag = "2")]
             pub min_train_labeled_documents: i32,
         }
@@ -3362,6 +3402,9 @@ pub mod process_options {
         /// Optional. Whether to include table annotations in layout parser response.
         #[prost(bool, tag = "6")]
         pub enable_table_annotation: bool,
+        /// Optional. Whether to split table.
+        #[prost(bool, tag = "8")]
+        pub enable_table_split: bool,
     }
     /// Nested message and enum types in `LayoutConfig`.
     pub mod layout_config {
@@ -3376,12 +3419,14 @@ pub mod process_options {
             #[prost(bool, tag = "2")]
             pub include_ancestor_headings: bool,
             /// Optional. The number of tokens to group together when evaluating
-            /// semantic similarity. THIS FIELD IS NOT YET USED.
+            /// semantic similarity.
+            /// **Note:** This field is not yet used.
             #[prost(bool, tag = "3")]
             pub semantic_chunking_group_size: bool,
             /// Optional. The percentile of cosine dissimilarity that must be exceeded
             /// between a group of tokens and the next. The smaller this number is, the
-            /// more chunks will be generated. THIS FIELD IS NOT YET USED.
+            /// more chunks will be generated.
+            /// **Note:** This field is not yet used.
             #[prost(int32, tag = "4")]
             pub breakpoint_percentile_threshold: i32,
         }
@@ -3440,6 +3485,7 @@ pub struct ProcessRequest {
     pub document: ::core::option::Option<Document>,
     /// Whether human review should be skipped for this request. Default to
     /// `false`.
+    #[deprecated]
     #[prost(bool, tag = "3")]
     pub skip_human_review: bool,
     /// Specifies which fields to include in the
@@ -3613,6 +3659,7 @@ pub struct BatchProcessRequest {
     pub document_output_config: ::core::option::Option<DocumentOutputConfig>,
     /// Whether human review should be skipped for this request. Default to
     /// `false`.
+    #[deprecated]
     #[prost(bool, tag = "4")]
     pub skip_human_review: bool,
     /// Inference-time options for the process API
@@ -4633,6 +4680,15 @@ pub struct ImportProcessorVersionMetadata {
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
+/// The long-running operation metadata for the
+/// \[UpdateProcessorVersion\]\[google.cloud.documentai.v1beta3.DocumentProcessorService.UpdateProcessorVersion\]
+/// method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateProcessorVersionMetadata {
+    /// The basic metadata for the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
 /// Generated client implementations.
 pub mod document_processor_service_client {
     #![allow(
@@ -5280,6 +5336,7 @@ pub mod document_processor_service_client {
         }
         /// Send a document for Human Review. The input document should be processed by
         /// the specified processor.
+        #[deprecated]
         pub async fn review_document(
             &mut self,
             request: impl tonic::IntoRequest<super::ReviewDocumentRequest>,
@@ -5468,6 +5525,13 @@ pub mod import_documents_request {
         /// The common config to specify a set of documents used as input.
         #[prost(message, optional, tag = "1")]
         pub batch_input_config: ::core::option::Option<super::BatchDocumentsInputConfig>,
+        /// Optional. If set, determines the type of the documents to be imported in
+        /// this batch. It can be used to auto-label the documents with a single
+        /// entity of the provided type. This field can only be used with a
+        /// classifier or splitter processor. Providing this field is mutually
+        /// exclusive with `entities` and `auto_labeling_config`.
+        #[prost(string, tag = "6")]
+        pub document_type: ::prost::alloc::string::String,
         #[prost(oneof = "batch_documents_import_config::SplitTypeConfig", tags = "2, 3")]
         pub split_type_config: ::core::option::Option<
             batch_documents_import_config::SplitTypeConfig,

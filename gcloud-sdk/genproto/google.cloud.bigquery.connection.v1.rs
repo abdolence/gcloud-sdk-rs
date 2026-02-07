@@ -271,6 +271,7 @@ pub mod aws_properties {
         /// Authentication using Google owned AWS IAM user's access key to assume
         /// into customer's AWS IAM Role.
         /// Deprecated, do not use.
+        #[deprecated]
         #[prost(message, tag = "2")]
         CrossAccountRole(super::AwsCrossAccountRole),
         /// Authentication using Google owned service account to assume into

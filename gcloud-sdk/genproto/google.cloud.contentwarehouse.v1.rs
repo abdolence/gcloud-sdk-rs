@@ -145,6 +145,7 @@ pub enum DatabaseType {
     /// Internal Spanner
     DbInfraSpanner = 1,
     /// Cloud Sql with a Postgres Sql instance
+    #[deprecated]
     DbCloudSqlPostgres = 2,
 }
 impl DatabaseType {
@@ -156,6 +157,7 @@ impl DatabaseType {
         match self {
             Self::DbUnknown => "DB_UNKNOWN",
             Self::DbInfraSpanner => "DB_INFRA_SPANNER",
+            #[allow(deprecated)]
             Self::DbCloudSqlPostgres => "DB_CLOUD_SQL_POSTGRES",
         }
     }
@@ -164,7 +166,9 @@ impl DatabaseType {
         match value {
             "DB_UNKNOWN" => Some(Self::DbUnknown),
             "DB_INFRA_SPANNER" => Some(Self::DbInfraSpanner),
-            "DB_CLOUD_SQL_POSTGRES" => Some(Self::DbCloudSqlPostgres),
+            "DB_CLOUD_SQL_POSTGRES" => {
+                Some(#[allow(deprecated)] Self::DbCloudSqlPostgres)
+            }
             _ => None,
         }
     }

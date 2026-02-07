@@ -43,6 +43,9 @@ pub struct BdrBackupRestoreJobLog {
     /// Backup.
     #[prost(string, optional, tag = "12")]
     pub backup_rule: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup retention in days.
+    #[prost(int32, optional, tag = "21")]
+    pub backup_retention_days: ::core::option::Option<i32>,
     /// Full resource name backup vault name
     #[prost(string, optional, tag = "13")]
     pub backup_vault_name: ::core::option::Option<::prost::alloc::string::String>,

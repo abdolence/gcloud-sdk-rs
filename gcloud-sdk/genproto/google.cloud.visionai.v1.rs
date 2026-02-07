@@ -3753,6 +3753,7 @@ pub mod instance {
             InputResource(::prost::alloc::string::String),
             /// If the input resource is VisionAI Stream, the associated annotations
             /// can be specified using annotated_stream instead.
+            #[deprecated]
             #[prost(message, tag = "4")]
             AnnotatedStream(super::super::StreamWithAnnotation),
         }
@@ -11244,7 +11245,7 @@ pub struct SearchIndexEndpointRequest {
     /// If negative, INVALID_ARGUMENT error will be returned.
     /// If unspecified or 0, API will pick a default size, which is 10.
     /// If the requested page size is larger than the maximum size, API will pick
-    /// the maximum size, which is 100.
+    /// the maximum size, which is 200.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// The continuation token to fetch the next page. If empty, it means it is
@@ -11404,8 +11405,8 @@ pub struct SearchResultItem {
     /// image query).
     /// By default this represents cosine similarity between the query and the
     /// retrieved media content. The value is in the range of \[-1, 1\].
-    /// Note that search ranking is not only decided by this relevance score,
-    /// but also other factors such as the match of annotations.
+    /// Note that search ranking is not only decided by this relevance score, but
+    /// also other factors such as the match of annotations.
     #[prost(double, tag = "6")]
     pub relevance: f64,
     /// Search result annotations specified by result_annotation_keys in search

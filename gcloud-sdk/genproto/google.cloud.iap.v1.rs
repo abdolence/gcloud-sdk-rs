@@ -326,6 +326,7 @@ pub mod reauth_settings {
         Unspecified = 0,
         /// Prompts the user to log in again.
         Login = 1,
+        #[deprecated]
         Password = 2,
         /// User must use their secure key 2nd factor device.
         SecureKey = 3,
@@ -341,6 +342,7 @@ pub mod reauth_settings {
             match self {
                 Self::Unspecified => "METHOD_UNSPECIFIED",
                 Self::Login => "LOGIN",
+                #[allow(deprecated)]
                 Self::Password => "PASSWORD",
                 Self::SecureKey => "SECURE_KEY",
                 Self::EnrolledSecondFactors => "ENROLLED_SECOND_FACTORS",
@@ -351,7 +353,7 @@ pub mod reauth_settings {
             match value {
                 "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
                 "LOGIN" => Some(Self::Login),
-                "PASSWORD" => Some(Self::Password),
+                "PASSWORD" => Some(#[allow(deprecated)] Self::Password),
                 "SECURE_KEY" => Some(Self::SecureKey),
                 "ENROLLED_SECOND_FACTORS" => Some(Self::EnrolledSecondFactors),
                 _ => None,

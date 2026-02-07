@@ -452,7 +452,7 @@ pub struct CheckBuildStageStatusResponse {
     pub cloud_build: ::core::option::Option<CloudBuild>,
 }
 /// Request message for staging a build artifact.
-/// -- NEXT_TAG: 3 --
+/// -- NEXT_TAG: 6 --
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StageBuildRequest {
     /// Required. The full resource name of the build artifact.
@@ -465,6 +465,21 @@ pub struct StageBuildRequest {
     /// builds.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The source location of the artifact, defaults to
+    /// `chromeos-image-archive` if missing.
+    #[prost(string, tag = "3")]
+    pub source_bucket_id: ::prost::alloc::string::String,
+    /// Optional. The branch directory in the source_bucket_id where the artifact
+    /// is located, such as `firmware-ec-R143-16463.2.B`. If unspecified, the build
+    /// will be found in goldeneye by version number.
+    #[prost(string, tag = "4")]
+    pub branch: ::prost::alloc::string::String,
+    /// Optional. The name of the artifact to stage, such as
+    /// `karis.EC.16463.2.6.tar.bz2` or `rex/firmware_from_source.tar.bz2` If
+    /// unspecified, the default artifacts will be staged. This only makes sense
+    /// for firmware artifacts.
+    #[prost(string, tag = "5")]
+    pub artifact: ::prost::alloc::string::String,
 }
 /// Response message for staging a build artifact.
 /// -- NEXT_TAG: 3 --

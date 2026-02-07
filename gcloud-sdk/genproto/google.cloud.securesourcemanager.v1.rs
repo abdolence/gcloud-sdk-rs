@@ -179,6 +179,7 @@ pub mod instance {
         PausedCmekUnavailable = 1,
         /// INSTANCE_RESUMING indicates that the instance was previously paused
         /// and is under the process of being brought back.
+        #[deprecated]
         InstanceResuming = 2,
     }
     impl StateNote {
@@ -190,6 +191,7 @@ pub mod instance {
             match self {
                 Self::Unspecified => "STATE_NOTE_UNSPECIFIED",
                 Self::PausedCmekUnavailable => "PAUSED_CMEK_UNAVAILABLE",
+                #[allow(deprecated)]
                 Self::InstanceResuming => "INSTANCE_RESUMING",
             }
         }
@@ -198,7 +200,7 @@ pub mod instance {
             match value {
                 "STATE_NOTE_UNSPECIFIED" => Some(Self::Unspecified),
                 "PAUSED_CMEK_UNAVAILABLE" => Some(Self::PausedCmekUnavailable),
-                "INSTANCE_RESUMING" => Some(Self::InstanceResuming),
+                "INSTANCE_RESUMING" => Some(#[allow(deprecated)] Self::InstanceResuming),
                 _ => None,
             }
         }

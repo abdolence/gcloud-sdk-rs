@@ -860,6 +860,7 @@ pub mod time_series_filter {
         PickTimeSeriesFilter(super::PickTimeSeriesFilter),
         /// Statistics based time series filter.
         /// Note: This field is deprecated and completely ignored by the API.
+        #[deprecated]
         #[prost(message, tag = "5")]
         StatisticalTimeSeriesFilter(super::StatisticalTimeSeriesFilter),
     }
@@ -909,6 +910,7 @@ pub mod time_series_filter_ratio {
         PickTimeSeriesFilter(super::PickTimeSeriesFilter),
         /// Statistics based time series filter.
         /// Note: This field is deprecated and completely ignored by the API.
+        #[deprecated]
         #[prost(message, tag = "5")]
         StatisticalTimeSeriesFilter(super::StatisticalTimeSeriesFilter),
     }

@@ -7,6 +7,7 @@ pub enum AcceleratorType {
     Unspecified = 0,
     /// Deprecated: Nvidia Tesla K80 GPU has reached end of support,
     /// see <https://cloud.google.com/compute/docs/eol/k80-eol.>
+    #[deprecated]
     NvidiaTeslaK80 = 1,
     /// Nvidia Tesla P100 GPU.
     NvidiaTeslaP100 = 2,
@@ -51,6 +52,7 @@ impl AcceleratorType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
             Self::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
             Self::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
@@ -75,7 +77,7 @@ impl AcceleratorType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "NVIDIA_TESLA_K80" => Some(Self::NvidiaTeslaK80),
+            "NVIDIA_TESLA_K80" => Some(#[allow(deprecated)] Self::NvidiaTeslaK80),
             "NVIDIA_TESLA_P100" => Some(Self::NvidiaTeslaP100),
             "NVIDIA_TESLA_V100" => Some(Self::NvidiaTeslaV100),
             "NVIDIA_TESLA_P4" => Some(Self::NvidiaTeslaP4),
@@ -1046,6 +1048,26 @@ pub struct BigQueryDestination {
     ///   `bq://projectId.bqDatasetId.bqTableId`.
     #[prost(string, tag = "1")]
     pub output_uri: ::prost::alloc::string::String,
+}
+/// The Vertex Multimodal Dataset for the input content.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VertexMultimodalDatasetSource {
+    /// Required. The resource name of the Vertex Dataset.
+    /// Format: `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub dataset_name: ::prost::alloc::string::String,
+}
+/// The details for a Vertex Multimodal Dataset output.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VertexMultimodalDatasetDestination {
+    /// Optional. The destination of the underlying BigQuery table that will be
+    /// created for the output Multimodal Dataset. If not specified, the BigQuery
+    /// table will be created in a default BigQuery dataset.
+    #[prost(message, optional, tag = "1")]
+    pub bigquery_destination: ::core::option::Option<BigQueryDestination>,
+    /// Optional. Display name of the output dataset.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
 }
 /// The storage details for CSV output content.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4777,7 +4799,7 @@ pub mod batch_prediction_job {
         #[prost(string, tag = "1")]
         pub instances_format: ::prost::alloc::string::String,
         /// Required. The source of the input.
-        #[prost(oneof = "input_config::Source", tags = "2, 3")]
+        #[prost(oneof = "input_config::Source", tags = "2, 3, 4")]
         pub source: ::core::option::Option<input_config::Source>,
     }
     /// Nested message and enum types in `InputConfig`.
@@ -4795,6 +4817,10 @@ pub mod batch_prediction_job {
             /// be ignored.
             #[prost(message, tag = "3")]
             BigquerySource(super::super::BigQuerySource),
+            /// A Vertex Managed Dataset. Currently, only datasets of type Multimodal
+            /// are supported.
+            #[prost(message, tag = "4")]
+            VertexMultimodalDatasetSource(super::super::VertexMultimodalDatasetSource),
         }
     }
     /// Configuration defining how to transform batch prediction input instances to
@@ -4912,7 +4938,7 @@ pub mod batch_prediction_job {
         #[prost(string, tag = "1")]
         pub predictions_format: ::prost::alloc::string::String,
         /// Required. The destination of the output.
-        #[prost(oneof = "output_config::Destination", tags = "2, 3")]
+        #[prost(oneof = "output_config::Destination", tags = "2, 3, 6")]
         pub destination: ::core::option::Option<output_config::Destination>,
     }
     /// Nested message and enum types in `OutputConfig`.
@@ -4966,6 +4992,12 @@ pub mod batch_prediction_job {
             /// represented as a STRUCT, and containing only `code` and `message`.
             #[prost(message, tag = "3")]
             BigqueryDestination(super::super::BigQueryDestination),
+            /// The details for a Vertex Multimodal Dataset that will be created for
+            /// the output.
+            #[prost(message, tag = "6")]
+            VertexMultimodalDatasetDestination(
+                super::super::VertexMultimodalDatasetDestination,
+            ),
         }
     }
     /// Further describes this job's output.
@@ -4980,7 +5012,7 @@ pub mod batch_prediction_job {
         #[prost(string, tag = "4")]
         pub bigquery_output_table: ::prost::alloc::string::String,
         /// The output location into which prediction output is written.
-        #[prost(oneof = "output_info::OutputLocation", tags = "1, 2")]
+        #[prost(oneof = "output_info::OutputLocation", tags = "1, 2, 5")]
         pub output_location: ::core::option::Option<output_info::OutputLocation>,
     }
     /// Nested message and enum types in `OutputInfo`.
@@ -4997,6 +5029,11 @@ pub mod batch_prediction_job {
             /// format, into which the prediction output is written.
             #[prost(string, tag = "2")]
             BigqueryOutputDataset(::prost::alloc::string::String),
+            /// Output only. The resource name of the Vertex Managed Dataset created,
+            /// into which the prediction output is written. Format:
+            /// `projects/{project}/locations/{location}/datasets/{dataset}`
+            #[prost(string, tag = "5")]
+            VertexMultimodalDatasetName(::prost::alloc::string::String),
         }
     }
 }
@@ -5494,14 +5531,59 @@ pub struct FunctionCall {
     /// execute the `function_call` and return the response with the matching `id`.
     #[prost(string, tag = "3")]
     pub id: ::prost::alloc::string::String,
-    /// Required. The name of the function to call.
+    /// Optional. The name of the function to call.
     /// Matches \[FunctionDeclaration.name\].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Required. The function parameters and values in JSON object
-    /// format. See \[FunctionDeclaration.parameters\] for parameter details.
+    /// Optional. The function parameters and values in JSON object format.
+    /// See \[FunctionDeclaration.parameters\] for parameter details.
     #[prost(message, optional, tag = "2")]
     pub args: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The partial argument value of the function call.
+    /// If provided, represents the arguments/fields that are streamed
+    /// incrementally.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_args: ::prost::alloc::vec::Vec<PartialArg>,
+    /// Optional. Whether this is the last part of the FunctionCall.
+    /// If true, another partial message for the current FunctionCall is expected
+    /// to follow.
+    #[prost(bool, tag = "5")]
+    pub will_continue: bool,
+}
+/// Partial argument value of the function call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartialArg {
+    /// Required. A JSON Path (RFC 9535) to the argument being streamed.
+    /// <https://datatracker.ietf.org/doc/html/rfc9535.> e.g. "$.foo.bar\[0\].data".
+    #[prost(string, tag = "1")]
+    pub json_path: ::prost::alloc::string::String,
+    /// Optional. Whether this is not the last part of the same json_path.
+    /// If true, another PartialArg message for the current json_path is expected
+    /// to follow.
+    #[prost(bool, tag = "6")]
+    pub will_continue: bool,
+    /// The delta of field value being streamed.
+    #[prost(oneof = "partial_arg::Delta", tags = "2, 3, 4, 5")]
+    pub delta: ::core::option::Option<partial_arg::Delta>,
+}
+/// Nested message and enum types in `PartialArg`.
+pub mod partial_arg {
+    /// The delta of field value being streamed.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Delta {
+        /// Optional. Represents a null value.
+        #[prost(enumeration = "::prost_types::NullValue", tag = "2")]
+        NullValue(i32),
+        /// Optional. Represents a double value.
+        #[prost(double, tag = "3")]
+        NumberValue(f64),
+        /// Optional. Represents a string value.
+        #[prost(string, tag = "4")]
+        StringValue(::prost::alloc::string::String),
+        /// Optional. Represents a boolean value.
+        #[prost(bool, tag = "5")]
+        BoolValue(bool),
+    }
 }
 /// A datatype containing media that is part of a `FunctionResponse` message.
 ///
@@ -5943,6 +6025,11 @@ pub struct FunctionCallingConfig {
     /// will predict a function call from the set of function names provided.
     #[prost(string, repeated, tag = "2")]
     pub allowed_function_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. When set to true, arguments of a single function call will be
+    /// streamed out in multiple parts/contents/responses. Partial parameter
+    /// results will be returned in the \[FunctionCall.partial_args\] field.
+    #[prost(bool, tag = "4")]
+    pub stream_function_call_arguments: bool,
 }
 /// Nested message and enum types in `FunctionCallingConfig`.
 pub mod function_calling_config {
@@ -7033,6 +7120,7 @@ pub mod import_rag_files_config {
     pub enum PartialFailureSink {
         /// The Cloud Storage path to write partial failures to.
         /// Deprecated. Prefer to use `import_result_gcs_sink`.
+        #[deprecated]
         #[prost(message, tag = "11")]
         PartialFailureGcsSink(super::GcsDestination),
         /// The BigQuery destination to write partial failures to. It should be a
@@ -7042,6 +7130,7 @@ pub mod import_rag_files_config {
         /// table exists, the schema will be validated and data will be added to this
         /// existing table.
         /// Deprecated. Prefer to use `import_result_bq_sink`.
+        #[deprecated]
         #[prost(message, tag = "12")]
         PartialFailureBigquerySink(super::BigQueryDestination),
     }
@@ -7068,6 +7157,9 @@ pub struct RagManagedDbConfig {
     /// The tier of the RagManagedDb.
     #[prost(oneof = "rag_managed_db_config::Tier", tags = "1, 4, 2, 3")]
     pub tier: ::core::option::Option<rag_managed_db_config::Tier>,
+    /// The choice of backend for your RagEngine.
+    #[prost(oneof = "rag_managed_db_config::Mode", tags = "5, 6")]
+    pub mode: ::core::option::Option<rag_managed_db_config::Mode>,
 }
 /// Nested message and enum types in `RagManagedDbConfig`.
 pub mod rag_managed_db_config {
@@ -7089,7 +7181,7 @@ pub mod rag_managed_db_config {
     /// * Latency insensitive workload.
     /// * Only using RAG Engine with external vector DBs.
     ///
-    /// NOTE: This is the default tier if not explicitly chosen.
+    /// NOTE: This is the default tier under Spanner mode if not explicitly chosen.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Basic {}
     /// Disables the RAG Engine service and deletes all your data held
@@ -7100,22 +7192,67 @@ pub mod rag_managed_db_config {
     /// UpdateRagEngineConfig API.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Unprovisioned {}
+    /// Message to configure the Spanner database used by RagManagedDb.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Spanner {
+        /// The tier of the RagManagedDb, built on top of Spanner.
+        #[prost(oneof = "spanner::Tier", tags = "1, 2, 3")]
+        pub tier: ::core::option::Option<spanner::Tier>,
+    }
+    /// Nested message and enum types in `Spanner`.
+    pub mod spanner {
+        /// The tier of the RagManagedDb, built on top of Spanner.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Tier {
+            /// Sets the RagManagedDb to the Scaled tier.
+            #[prost(message, tag = "1")]
+            Scaled(super::Scaled),
+            /// Sets the RagManagedDb to the Basic tier. This is the default tier for
+            /// Spanner mode if not explicitly chosen.
+            #[prost(message, tag = "2")]
+            Basic(super::Basic),
+            /// Sets the RagManagedDb to the Unprovisioned tier.
+            #[prost(message, tag = "3")]
+            Unprovisioned(super::Unprovisioned),
+        }
+    }
+    /// Message to configure the serverless mode offered by RAG Engine.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Serverless {}
     /// The tier of the RagManagedDb.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Tier {
         /// Sets the RagManagedDb to the Enterprise tier.
+        #[deprecated]
         #[prost(message, tag = "1")]
         Enterprise(Enterprise),
-        /// Sets the RagManagedDb to the Scaled tier. This is the default tier
-        /// if not explicitly chosen.
+        /// Deprecated: Use `mode` instead to set the tier under Spanner.
+        /// Sets the RagManagedDb to the Scaled tier.
+        #[deprecated]
         #[prost(message, tag = "4")]
         Scaled(Scaled),
+        /// Deprecated: Use `mode` instead to set the tier under Spanner.
         /// Sets the RagManagedDb to the Basic tier.
+        #[deprecated]
         #[prost(message, tag = "2")]
         Basic(Basic),
+        /// Deprecated: Use `mode` instead to set the tier under Spanner.
         /// Sets the RagManagedDb to the Unprovisioned tier.
+        #[deprecated]
         #[prost(message, tag = "3")]
         Unprovisioned(Unprovisioned),
+    }
+    /// The choice of backend for your RagEngine.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Mode {
+        /// Sets the backend to be the serverless mode offered by RAG Engine.
+        #[prost(message, tag = "5")]
+        Serverless(Serverless),
+        /// Sets the RAG Engine backend to be RagManagedDb, built on top of Spanner.
+        ///
+        /// NOTE: This is the default mode (w/ Basic Tier) if not explicitly chosen.
+        #[prost(message, tag = "6")]
+        Spanner(Spanner),
     }
 }
 /// Config for RagEngine.
@@ -8467,6 +8604,7 @@ pub enum HarmCategory {
     SexuallyExplicit = 4,
     /// Deprecated: Election filter is not longer supported.
     /// The harm category is civic integrity.
+    #[deprecated]
     CivicIntegrity = 5,
     /// The harm category is for jailbreak prompts.
     Jailbreak = 6,
@@ -8483,6 +8621,7 @@ impl HarmCategory {
             Self::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
             Self::Harassment => "HARM_CATEGORY_HARASSMENT",
             Self::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            #[allow(deprecated)]
             Self::CivicIntegrity => "HARM_CATEGORY_CIVIC_INTEGRITY",
             Self::Jailbreak => "HARM_CATEGORY_JAILBREAK",
         }
@@ -8495,7 +8634,9 @@ impl HarmCategory {
             "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
             "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
             "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
-            "HARM_CATEGORY_CIVIC_INTEGRITY" => Some(Self::CivicIntegrity),
+            "HARM_CATEGORY_CIVIC_INTEGRITY" => {
+                Some(#[allow(deprecated)] Self::CivicIntegrity)
+            }
             "HARM_CATEGORY_JAILBREAK" => Some(Self::Jailbreak),
             _ => None,
         }
@@ -9181,8 +9322,10 @@ pub mod scheduling {
         /// Strategy will default to STANDARD.
         Unspecified = 0,
         /// Deprecated. Regular on-demand provisioning strategy.
+        #[deprecated]
         OnDemand = 1,
         /// Deprecated. Low cost by making potential use of spot resources.
+        #[deprecated]
         LowCost = 2,
         /// Standard provisioning strategy uses regular on-demand resources.
         Standard = 3,
@@ -9199,7 +9342,9 @@ pub mod scheduling {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "STRATEGY_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::OnDemand => "ON_DEMAND",
+                #[allow(deprecated)]
                 Self::LowCost => "LOW_COST",
                 Self::Standard => "STANDARD",
                 Self::Spot => "SPOT",
@@ -9210,8 +9355,8 @@ pub mod scheduling {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
-                "ON_DEMAND" => Some(Self::OnDemand),
-                "LOW_COST" => Some(Self::LowCost),
+                "ON_DEMAND" => Some(#[allow(deprecated)] Self::OnDemand),
+                "LOW_COST" => Some(#[allow(deprecated)] Self::LowCost),
                 "STANDARD" => Some(Self::Standard),
                 "SPOT" => Some(Self::Spot),
                 "FLEX_START" => Some(Self::FlexStart),
@@ -9552,6 +9697,8 @@ pub struct SavedQuery {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Output only. Identifier. The resource name of the Dataset.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the Dataset.
@@ -9760,6 +9907,8 @@ pub struct ExportFractionSplit {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetVersion {
     /// Output only. Identifier. The resource name of the DatasetVersion.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when this DatasetVersion was created.
@@ -21185,6 +21334,7 @@ pub mod fetch_feature_values_request {
     pub enum EntityId {
         /// Simple ID. The whole string will be used as is to identify Entity to
         /// fetch feature values for.
+        #[deprecated]
         #[prost(string, tag = "3")]
         Id(::prost::alloc::string::String),
     }
@@ -27445,6 +27595,7 @@ pub mod study_spec {
         MedianAutomatedStoppingSpec(MedianAutomatedStoppingSpec),
         /// Deprecated.
         /// The automated early stopping using convex stopping rule.
+        #[deprecated]
         #[prost(message, tag = "8")]
         ConvexStopConfig(ConvexStopConfig),
         /// The automated early stopping spec using convex stopping rule.
@@ -36093,9 +36244,11 @@ pub mod publisher_model {
             #[prost(string, tag = "2")]
             ResourceName(::prost::alloc::string::String),
             /// Use case (CUJ) of the resource.
+            #[deprecated]
             #[prost(string, tag = "3")]
             UseCase(::prost::alloc::string::String),
             /// Description of the resource.
+            #[deprecated]
             #[prost(string, tag = "4")]
             Description(::prost::alloc::string::String),
         }
@@ -43001,6 +43154,7 @@ pub mod artifact_type_schema {
         /// format.
         /// Deprecated. Use \[PipelineArtifactTypeSchema.schema_title\]\[\] or
         /// \[PipelineArtifactTypeSchema.instance_schema\]\[\] instead.
+        #[deprecated]
         #[prost(string, tag = "2")]
         SchemaUri(::prost::alloc::string::String),
         /// Contains a raw YAML string, describing the format of
@@ -47391,6 +47545,13 @@ pub struct Schedule {
     /// execution of the operations/jobs created by the requests (if applicable).
     #[prost(int64, tag = "11")]
     pub max_concurrent_run_count: i64,
+    /// Optional. Specifies the maximum number of active runs that can be executed
+    /// concurrently for this Schedule. This limits the number of runs that can be
+    /// in a non-terminal state at the same time.
+    /// Currently, this field is only supported for requests of type
+    /// CreatePipelineJobRequest.
+    #[prost(int64, tag = "21")]
+    pub max_concurrent_active_run_count: i64,
     /// Optional. Whether new scheduled runs can be queued when max_concurrent_runs
     /// limit is reached. If set to true, new runs will be queued instead of
     /// skipped. Default to false.
@@ -51120,6 +51281,10 @@ pub struct DeleteRagCorpusRequest {
     /// RagFiles.
     #[prost(bool, tag = "2")]
     pub force: bool,
+    /// Optional. If set to true, any errors generated by external vector database
+    /// during the deletion will be ignored. The default value is false.
+    #[prost(bool, tag = "3")]
+    pub force_delete: bool,
 }
 /// Request message for
 /// \[VertexRagDataService.UploadRagFile\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.UploadRagFile\].

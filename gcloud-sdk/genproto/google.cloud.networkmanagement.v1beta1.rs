@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -99,6 +99,9 @@ pub mod step {
         /// Initial state: packet originating from a Cloud SQL instance.
         /// A CloudSQLInstanceInfo is populated with starting instance information.
         StartFromCloudSqlInstance = 22,
+        /// Initial state: packet originating from a Google Kubernetes Engine Pod.
+        /// A GkePodInfo is populated with starting Pod information.
+        StartFromGkePod = 39,
         /// Initial state: packet originating from a Redis instance.
         /// A RedisInstanceInfo is populated with starting instance information.
         StartFromRedisInstance = 32,
@@ -143,10 +146,12 @@ pub mod step {
         /// Forwarding state: arriving at a Compute Engine internal load balancer.
         /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
         /// used in new tests.
+        #[deprecated]
         ArriveAtInternalLoadBalancer = 10,
         /// Forwarding state: arriving at a Compute Engine external load balancer.
         /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
         /// used in new tests.
+        #[deprecated]
         ArriveAtExternalLoadBalancer = 11,
         /// Forwarding state: arriving at a hybrid subnet. Appropriate routing
         /// configuration will be determined here.
@@ -168,6 +173,9 @@ pub mod step {
         /// Transition state: packet header translated. The `nat` field is populated
         /// with the translation information.
         Nat = 14,
+        /// Transition state: GKE Pod IP masquerading is skipped. The
+        /// `ip_masquerading_skipped` field is populated with the reason.
+        SkipGkePodIpMasquerading = 40,
         /// Transition state: original connection is terminated and a new proxied
         /// connection is initiated.
         ProxyConnection = 15,
@@ -198,6 +206,7 @@ pub mod step {
                 Self::StartFromPrivateNetwork => "START_FROM_PRIVATE_NETWORK",
                 Self::StartFromGkeMaster => "START_FROM_GKE_MASTER",
                 Self::StartFromCloudSqlInstance => "START_FROM_CLOUD_SQL_INSTANCE",
+                Self::StartFromGkePod => "START_FROM_GKE_POD",
                 Self::StartFromRedisInstance => "START_FROM_REDIS_INSTANCE",
                 Self::StartFromRedisCluster => "START_FROM_REDIS_CLUSTER",
                 Self::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
@@ -213,7 +222,9 @@ pub mod step {
                 Self::AnalyzeLoadBalancerBackend => "ANALYZE_LOAD_BALANCER_BACKEND",
                 Self::SpoofingApproved => "SPOOFING_APPROVED",
                 Self::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
+                #[allow(deprecated)]
                 Self::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
+                #[allow(deprecated)]
                 Self::ArriveAtExternalLoadBalancer => "ARRIVE_AT_EXTERNAL_LOAD_BALANCER",
                 Self::ArriveAtHybridSubnet => "ARRIVE_AT_HYBRID_SUBNET",
                 Self::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
@@ -225,6 +236,7 @@ pub mod step {
                 Self::DirectVpcEgressConnection => "DIRECT_VPC_EGRESS_CONNECTION",
                 Self::ServerlessExternalConnection => "SERVERLESS_EXTERNAL_CONNECTION",
                 Self::Nat => "NAT",
+                Self::SkipGkePodIpMasquerading => "SKIP_GKE_POD_IP_MASQUERADING",
                 Self::ProxyConnection => "PROXY_CONNECTION",
                 Self::Deliver => "DELIVER",
                 Self::Drop => "DROP",
@@ -243,6 +255,7 @@ pub mod step {
                 "START_FROM_PRIVATE_NETWORK" => Some(Self::StartFromPrivateNetwork),
                 "START_FROM_GKE_MASTER" => Some(Self::StartFromGkeMaster),
                 "START_FROM_CLOUD_SQL_INSTANCE" => Some(Self::StartFromCloudSqlInstance),
+                "START_FROM_GKE_POD" => Some(Self::StartFromGkePod),
                 "START_FROM_REDIS_INSTANCE" => Some(Self::StartFromRedisInstance),
                 "START_FROM_REDIS_CLUSTER" => Some(Self::StartFromRedisCluster),
                 "START_FROM_CLOUD_FUNCTION" => Some(Self::StartFromCloudFunction),
@@ -261,10 +274,10 @@ pub mod step {
                 "SPOOFING_APPROVED" => Some(Self::SpoofingApproved),
                 "ARRIVE_AT_INSTANCE" => Some(Self::ArriveAtInstance),
                 "ARRIVE_AT_INTERNAL_LOAD_BALANCER" => {
-                    Some(Self::ArriveAtInternalLoadBalancer)
+                    Some(#[allow(deprecated)] Self::ArriveAtInternalLoadBalancer)
                 }
                 "ARRIVE_AT_EXTERNAL_LOAD_BALANCER" => {
-                    Some(Self::ArriveAtExternalLoadBalancer)
+                    Some(#[allow(deprecated)] Self::ArriveAtExternalLoadBalancer)
                 }
                 "ARRIVE_AT_HYBRID_SUBNET" => Some(Self::ArriveAtHybridSubnet),
                 "ARRIVE_AT_VPN_GATEWAY" => Some(Self::ArriveAtVpnGateway),
@@ -278,6 +291,7 @@ pub mod step {
                     Some(Self::ServerlessExternalConnection)
                 }
                 "NAT" => Some(Self::Nat),
+                "SKIP_GKE_POD_IP_MASQUERADING" => Some(Self::SkipGkePodIpMasquerading),
                 "PROXY_CONNECTION" => Some(Self::ProxyConnection),
                 "DELIVER" => Some(Self::Deliver),
                 "DROP" => Some(Self::Drop),
@@ -351,6 +365,7 @@ pub mod step {
         Drop(super::DropInfo),
         /// Display information of the load balancers. Deprecated in favor of the
         /// `load_balancer_backend_info` field, not used in new tests.
+        #[deprecated]
         #[prost(message, tag = "16")]
         LoadBalancer(super::LoadBalancerInfo),
         /// Display information of a Google Cloud network.
@@ -359,6 +374,13 @@ pub mod step {
         /// Display information of a Google Kubernetes Engine cluster master.
         #[prost(message, tag = "18")]
         GkeMaster(super::GkeMasterInfo),
+        /// Display information of a Google Kubernetes Engine Pod.
+        #[prost(message, tag = "37")]
+        GkePod(super::GkePodInfo),
+        /// Display information of the reason why GKE Pod IP masquerading was
+        /// skipped.
+        #[prost(message, tag = "38")]
+        IpMasqueradingSkipped(super::IpMasqueradingSkippedInfo),
         /// Display information of a Cloud SQL instance.
         #[prost(message, tag = "19")]
         CloudSqlInstance(super::CloudSqlInstanceInfo),
@@ -592,14 +614,18 @@ pub mod firewall_info {
         /// For details, see [VPC connector's implicit
         /// rules](<https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>).
         ServerlessVpcAccessManagedFirewallRule = 4,
-        /// Global network firewall policy rule.
+        /// User-defined global network firewall policy rule.
         /// For details, see [Network firewall
         /// policies](<https://cloud.google.com/vpc/docs/network-firewall-policies>).
         NetworkFirewallPolicyRule = 5,
-        /// Regional network firewall policy rule.
+        /// User-defined regional network firewall policy rule.
         /// For details, see [Regional network firewall
         /// policies](<https://cloud.google.com/firewall/docs/regional-firewall-policies>).
         NetworkRegionalFirewallPolicyRule = 6,
+        /// System-defined global network firewall policy rule.
+        SystemNetworkFirewallPolicyRule = 7,
+        /// System-defined regional network firewall policy rule.
+        SystemRegionalNetworkFirewallPolicyRule = 8,
         /// Firewall policy rule containing attributes not yet supported in
         /// Connectivity tests. Firewall analysis is skipped if such a rule can
         /// potentially be matched. Please see the [list of unsupported
@@ -634,6 +660,12 @@ pub mod firewall_info {
                 Self::NetworkRegionalFirewallPolicyRule => {
                     "NETWORK_REGIONAL_FIREWALL_POLICY_RULE"
                 }
+                Self::SystemNetworkFirewallPolicyRule => {
+                    "SYSTEM_NETWORK_FIREWALL_POLICY_RULE"
+                }
+                Self::SystemRegionalNetworkFirewallPolicyRule => {
+                    "SYSTEM_REGIONAL_NETWORK_FIREWALL_POLICY_RULE"
+                }
                 Self::UnsupportedFirewallPolicyRule => "UNSUPPORTED_FIREWALL_POLICY_RULE",
                 Self::TrackingState => "TRACKING_STATE",
                 Self::AnalysisSkipped => "ANALYSIS_SKIPPED",
@@ -654,6 +686,12 @@ pub mod firewall_info {
                 "NETWORK_FIREWALL_POLICY_RULE" => Some(Self::NetworkFirewallPolicyRule),
                 "NETWORK_REGIONAL_FIREWALL_POLICY_RULE" => {
                     Some(Self::NetworkRegionalFirewallPolicyRule)
+                }
+                "SYSTEM_NETWORK_FIREWALL_POLICY_RULE" => {
+                    Some(Self::SystemNetworkFirewallPolicyRule)
+                }
+                "SYSTEM_REGIONAL_NETWORK_FIREWALL_POLICY_RULE" => {
+                    Some(Self::SystemRegionalNetworkFirewallPolicyRule)
                 }
                 "UNSUPPORTED_FIREWALL_POLICY_RULE" => {
                     Some(Self::UnsupportedFirewallPolicyRule)
@@ -1661,6 +1699,8 @@ pub mod deliver_info {
         RedisInstance = 16,
         /// Target is a Redis Cluster.
         RedisCluster = 17,
+        /// Target is a GKE Pod.
+        GkePod = 19,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1687,6 +1727,7 @@ pub mod deliver_info {
                 Self::GoogleManagedService => "GOOGLE_MANAGED_SERVICE",
                 Self::RedisInstance => "REDIS_INSTANCE",
                 Self::RedisCluster => "REDIS_CLUSTER",
+                Self::GkePod => "GKE_POD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1710,6 +1751,7 @@ pub mod deliver_info {
                 "GOOGLE_MANAGED_SERVICE" => Some(Self::GoogleManagedService),
                 "REDIS_INSTANCE" => Some(Self::RedisInstance),
                 "REDIS_CLUSTER" => Some(Self::RedisCluster),
+                "GKE_POD" => Some(Self::GkePod),
                 _ => None,
             }
         }
@@ -1819,10 +1861,12 @@ pub mod forward_info {
         /// Forwarded to a Cloud Interconnect connection.
         Interconnect = 3,
         /// Forwarded to a Google Kubernetes Engine Container cluster master.
+        #[deprecated]
         GkeMaster = 4,
         /// Forwarded to the next hop of a custom route imported from a peering VPC.
         ImportedCustomRouteNextHop = 5,
         /// Forwarded to a Cloud SQL instance.
+        #[deprecated]
         CloudSqlInstance = 6,
         /// Forwarded to a VPC network in another project.
         AnotherProject = 7,
@@ -1844,8 +1888,10 @@ pub mod forward_info {
                 Self::PeeringVpc => "PEERING_VPC",
                 Self::VpnGateway => "VPN_GATEWAY",
                 Self::Interconnect => "INTERCONNECT",
+                #[allow(deprecated)]
                 Self::GkeMaster => "GKE_MASTER",
                 Self::ImportedCustomRouteNextHop => "IMPORTED_CUSTOM_ROUTE_NEXT_HOP",
+                #[allow(deprecated)]
                 Self::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
                 Self::AnotherProject => "ANOTHER_PROJECT",
                 Self::NccHub => "NCC_HUB",
@@ -1860,11 +1906,11 @@ pub mod forward_info {
                 "PEERING_VPC" => Some(Self::PeeringVpc),
                 "VPN_GATEWAY" => Some(Self::VpnGateway),
                 "INTERCONNECT" => Some(Self::Interconnect),
-                "GKE_MASTER" => Some(Self::GkeMaster),
+                "GKE_MASTER" => Some(#[allow(deprecated)] Self::GkeMaster),
                 "IMPORTED_CUSTOM_ROUTE_NEXT_HOP" => {
                     Some(Self::ImportedCustomRouteNextHop)
                 }
-                "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
+                "CLOUD_SQL_INSTANCE" => Some(#[allow(deprecated)] Self::CloudSqlInstance),
                 "ANOTHER_PROJECT" => Some(Self::AnotherProject),
                 "NCC_HUB" => Some(Self::NccHub),
                 "ROUTER_APPLIANCE" => Some(Self::RouterAppliance),
@@ -1912,28 +1958,36 @@ pub mod abort_info {
         /// Cause is unspecified.
         Unspecified = 0,
         /// Aborted due to unknown network. Deprecated, not used in the new tests.
+        #[deprecated]
         UnknownNetwork = 1,
         /// Aborted because no project information can be derived from the test
         /// input. Deprecated, not used in the new tests.
+        #[deprecated]
         UnknownProject = 3,
         /// Aborted because traffic is sent from a public IP to an instance without
         /// an external IP. Deprecated, not used in the new tests.
+        #[deprecated]
         NoExternalIp = 7,
         /// Aborted because none of the traces matches destination information
         /// specified in the input test request. Deprecated, not used in the new
         /// tests.
+        #[deprecated]
         UnintendedDestination = 8,
         /// Aborted because the source endpoint could not be found. Deprecated, not
         /// used in the new tests.
+        #[deprecated]
         SourceEndpointNotFound = 11,
         /// Aborted because the source network does not match the source endpoint.
         /// Deprecated, not used in the new tests.
+        #[deprecated]
         MismatchedSourceNetwork = 12,
         /// Aborted because the destination endpoint could not be found. Deprecated,
         /// not used in the new tests.
+        #[deprecated]
         DestinationEndpointNotFound = 13,
         /// Aborted because the destination network does not match the destination
         /// endpoint. Deprecated, not used in the new tests.
+        #[deprecated]
         MismatchedDestinationNetwork = 14,
         /// Aborted because no endpoint with the packet's destination IP address is
         /// found.
@@ -1956,9 +2010,19 @@ pub mod abort_info {
         /// Aborted because user lacks permission to access Cloud Router configs
         /// required to run the test.
         PermissionDeniedNoCloudRouterConfigs = 36,
-        /// Aborted because no valid source or destination endpoint is derived from
-        /// the input test request.
+        /// Aborted because no valid source or destination endpoint can be derived
+        /// from the test request.
         NoSourceLocation = 5,
+        /// Aborted because the source IP address is not contained within the subnet
+        /// ranges of the provided VPC network.
+        NoSourceGcpNetworkLocation = 42,
+        /// Aborted because the source IP address is not contained within the
+        /// destination ranges of the routes towards non-GCP networks in the provided
+        /// VPC network.
+        NoSourceNonGcpNetworkLocation = 43,
+        /// Aborted because the source IP address can't be resolved as an Internet
+        /// IP address.
+        NoSourceInternetLocation = 44,
         /// Aborted because the source or destination endpoint specified in
         /// the request is invalid. Some examples:
         ///
@@ -2001,6 +2065,10 @@ pub mod abort_info {
         /// Aborted because tests with a PSC-based Cloud SQL instance as a source are
         /// not supported.
         SourcePscCloudSqlUnsupported = 20,
+        /// Aborted because tests with the external database as a source are not
+        /// supported. In such replication scenarios, the connection is initiated by
+        /// the Cloud SQL replica instance.
+        SourceExternalCloudSqlUnsupported = 45,
         /// Aborted because tests with a Redis Cluster as a source are not supported.
         SourceRedisClusterUnsupported = 34,
         /// Aborted because tests with a Redis Instance as a source are not
@@ -2023,6 +2091,10 @@ pub mod abort_info {
         /// Aborted because the used protocol is not supported for the used IP
         /// version.
         IpVersionProtocolMismatch = 40,
+        /// Aborted because selected GKE Pod endpoint location is unknown. This is
+        /// often the case for "Pending" Pods, which don't have assigned IP addresses
+        /// yet.
+        GkePodUnknownEndpointLocation = 41,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2032,13 +2104,21 @@ pub mod abort_info {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "CAUSE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::UnknownNetwork => "UNKNOWN_NETWORK",
+                #[allow(deprecated)]
                 Self::UnknownProject => "UNKNOWN_PROJECT",
+                #[allow(deprecated)]
                 Self::NoExternalIp => "NO_EXTERNAL_IP",
+                #[allow(deprecated)]
                 Self::UnintendedDestination => "UNINTENDED_DESTINATION",
+                #[allow(deprecated)]
                 Self::SourceEndpointNotFound => "SOURCE_ENDPOINT_NOT_FOUND",
+                #[allow(deprecated)]
                 Self::MismatchedSourceNetwork => "MISMATCHED_SOURCE_NETWORK",
+                #[allow(deprecated)]
                 Self::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
+                #[allow(deprecated)]
                 Self::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
                 Self::UnknownIp => "UNKNOWN_IP",
                 Self::GoogleManagedServiceUnknownIp => {
@@ -2058,6 +2138,11 @@ pub mod abort_info {
                     "PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS"
                 }
                 Self::NoSourceLocation => "NO_SOURCE_LOCATION",
+                Self::NoSourceGcpNetworkLocation => "NO_SOURCE_GCP_NETWORK_LOCATION",
+                Self::NoSourceNonGcpNetworkLocation => {
+                    "NO_SOURCE_NON_GCP_NETWORK_LOCATION"
+                }
+                Self::NoSourceInternetLocation => "NO_SOURCE_INTERNET_LOCATION",
                 Self::InvalidArgument => "INVALID_ARGUMENT",
                 Self::TraceTooLong => "TRACE_TOO_LONG",
                 Self::InternalError => "INTERNAL_ERROR",
@@ -2078,6 +2163,9 @@ pub mod abort_info {
                     "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT"
                 }
                 Self::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
+                Self::SourceExternalCloudSqlUnsupported => {
+                    "SOURCE_EXTERNAL_CLOUD_SQL_UNSUPPORTED"
+                }
                 Self::SourceRedisClusterUnsupported => "SOURCE_REDIS_CLUSTER_UNSUPPORTED",
                 Self::SourceRedisInstanceUnsupported => {
                     "SOURCE_REDIS_INSTANCE_UNSUPPORTED"
@@ -2094,23 +2182,32 @@ pub mod abort_info {
                 }
                 Self::NoServerlessIpRanges => "NO_SERVERLESS_IP_RANGES",
                 Self::IpVersionProtocolMismatch => "IP_VERSION_PROTOCOL_MISMATCH",
+                Self::GkePodUnknownEndpointLocation => {
+                    "GKE_POD_UNKNOWN_ENDPOINT_LOCATION"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
-                "UNKNOWN_NETWORK" => Some(Self::UnknownNetwork),
-                "UNKNOWN_PROJECT" => Some(Self::UnknownProject),
-                "NO_EXTERNAL_IP" => Some(Self::NoExternalIp),
-                "UNINTENDED_DESTINATION" => Some(Self::UnintendedDestination),
-                "SOURCE_ENDPOINT_NOT_FOUND" => Some(Self::SourceEndpointNotFound),
-                "MISMATCHED_SOURCE_NETWORK" => Some(Self::MismatchedSourceNetwork),
+                "UNKNOWN_NETWORK" => Some(#[allow(deprecated)] Self::UnknownNetwork),
+                "UNKNOWN_PROJECT" => Some(#[allow(deprecated)] Self::UnknownProject),
+                "NO_EXTERNAL_IP" => Some(#[allow(deprecated)] Self::NoExternalIp),
+                "UNINTENDED_DESTINATION" => {
+                    Some(#[allow(deprecated)] Self::UnintendedDestination)
+                }
+                "SOURCE_ENDPOINT_NOT_FOUND" => {
+                    Some(#[allow(deprecated)] Self::SourceEndpointNotFound)
+                }
+                "MISMATCHED_SOURCE_NETWORK" => {
+                    Some(#[allow(deprecated)] Self::MismatchedSourceNetwork)
+                }
                 "DESTINATION_ENDPOINT_NOT_FOUND" => {
-                    Some(Self::DestinationEndpointNotFound)
+                    Some(#[allow(deprecated)] Self::DestinationEndpointNotFound)
                 }
                 "MISMATCHED_DESTINATION_NETWORK" => {
-                    Some(Self::MismatchedDestinationNetwork)
+                    Some(#[allow(deprecated)] Self::MismatchedDestinationNetwork)
                 }
                 "UNKNOWN_IP" => Some(Self::UnknownIp),
                 "GOOGLE_MANAGED_SERVICE_UNKNOWN_IP" => {
@@ -2130,6 +2227,13 @@ pub mod abort_info {
                     Some(Self::PermissionDeniedNoCloudRouterConfigs)
                 }
                 "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
+                "NO_SOURCE_GCP_NETWORK_LOCATION" => {
+                    Some(Self::NoSourceGcpNetworkLocation)
+                }
+                "NO_SOURCE_NON_GCP_NETWORK_LOCATION" => {
+                    Some(Self::NoSourceNonGcpNetworkLocation)
+                }
+                "NO_SOURCE_INTERNET_LOCATION" => Some(Self::NoSourceInternetLocation),
                 "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
                 "TRACE_TOO_LONG" => Some(Self::TraceTooLong),
                 "INTERNAL_ERROR" => Some(Self::InternalError),
@@ -2152,6 +2256,9 @@ pub mod abort_info {
                 "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED" => {
                     Some(Self::SourcePscCloudSqlUnsupported)
                 }
+                "SOURCE_EXTERNAL_CLOUD_SQL_UNSUPPORTED" => {
+                    Some(Self::SourceExternalCloudSqlUnsupported)
+                }
                 "SOURCE_REDIS_CLUSTER_UNSUPPORTED" => {
                     Some(Self::SourceRedisClusterUnsupported)
                 }
@@ -2170,6 +2277,9 @@ pub mod abort_info {
                 }
                 "NO_SERVERLESS_IP_RANGES" => Some(Self::NoServerlessIpRanges),
                 "IP_VERSION_PROTOCOL_MISMATCH" => Some(Self::IpVersionProtocolMismatch),
+                "GKE_POD_UNKNOWN_ENDPOINT_LOCATION" => {
+                    Some(Self::GkePodUnknownEndpointLocation)
+                }
                 _ => None,
             }
         }
@@ -2252,9 +2362,10 @@ pub mod drop_info {
         /// Route's next hop forwarding rule type is invalid (it's not a forwarding
         /// rule of the internal passthrough load balancer).
         RouteNextHopForwardingRuleTypeInvalid = 53,
-        /// Packet is sent from the Internet or Google service to the private IPv6
-        /// address.
+        /// Packet is sent from the Internet to the private IPv6 address.
         NoRouteFromInternetToPrivateIpv6Address = 44,
+        /// Packet is sent from the Internet to the private IPv4 address.
+        NoRouteFromInternetToPrivateIpv4Address = 109,
         /// Packet is sent from the external IPv6 source address of an instance to
         /// the private IPv6 address of an instance.
         NoRouteFromExternalIpv6SourceToPrivateIpv6Address = 98,
@@ -2298,6 +2409,8 @@ pub mod drop_info {
         InstanceNotRunning = 14,
         /// Packet sent from or to a GKE cluster that is not in running state.
         GkeClusterNotRunning = 27,
+        /// Packet sent from or to a GKE Pod that is not in running state.
+        GkePodNotRunning = 103,
         /// Packet sent from or to a Cloud SQL instance that is not in running state.
         CloudSqlInstanceNotRunning = 28,
         /// Packet sent from or to a Redis Instance that is not in running state.
@@ -2487,6 +2600,9 @@ pub mod drop_info {
         /// Packet with destination IP address within the reserved NAT64 range is
         /// dropped due to no matching NAT gateway in the subnet.
         NoMatchingNat64Gateway = 90,
+        /// Packet is dropped due to matching a Private NAT64 gateway with no rules
+        /// for source IPv6 addresses.
+        NoConfiguredPrivateNat64Rule = 107,
         /// Packet is dropped due to being sent to a backend of a passthrough load
         /// balancer that doesn't use the same IP version as the frontend.
         LoadBalancerBackendIpVersionMismatch = 96,
@@ -2512,6 +2628,9 @@ pub mod drop_info {
         /// from the region of the next hop of the route matched within this hybrid
         /// subnet.
         HybridSubnetRegionMismatch = 105,
+        /// Packet is dropped because no matching route was found in the hybrid
+        /// subnet.
+        HybridSubnetNoRoute = 106,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2549,6 +2668,9 @@ pub mod drop_info {
                 Self::NoRouteFromInternetToPrivateIpv6Address => {
                     "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS"
                 }
+                Self::NoRouteFromInternetToPrivateIpv4Address => {
+                    "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV4_ADDRESS"
+                }
                 Self::NoRouteFromExternalIpv6SourceToPrivateIpv6Address => {
                     "NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS"
                 }
@@ -2575,6 +2697,7 @@ pub mod drop_info {
                 }
                 Self::InstanceNotRunning => "INSTANCE_NOT_RUNNING",
                 Self::GkeClusterNotRunning => "GKE_CLUSTER_NOT_RUNNING",
+                Self::GkePodNotRunning => "GKE_POD_NOT_RUNNING",
                 Self::CloudSqlInstanceNotRunning => "CLOUD_SQL_INSTANCE_NOT_RUNNING",
                 Self::RedisInstanceNotRunning => "REDIS_INSTANCE_NOT_RUNNING",
                 Self::RedisClusterNotRunning => "REDIS_CLUSTER_NOT_RUNNING",
@@ -2703,6 +2826,7 @@ pub mod drop_info {
                     "TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED"
                 }
                 Self::NoMatchingNat64Gateway => "NO_MATCHING_NAT64_GATEWAY",
+                Self::NoConfiguredPrivateNat64Rule => "NO_CONFIGURED_PRIVATE_NAT64_RULE",
                 Self::LoadBalancerBackendIpVersionMismatch => {
                     "LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH"
                 }
@@ -2721,6 +2845,7 @@ pub mod drop_info {
                     "NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED"
                 }
                 Self::HybridSubnetRegionMismatch => "HYBRID_SUBNET_REGION_MISMATCH",
+                Self::HybridSubnetNoRoute => "HYBRID_SUBNET_NO_ROUTE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2757,6 +2882,9 @@ pub mod drop_info {
                 "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS" => {
                     Some(Self::NoRouteFromInternetToPrivateIpv6Address)
                 }
+                "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV4_ADDRESS" => {
+                    Some(Self::NoRouteFromInternetToPrivateIpv4Address)
+                }
                 "NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS" => {
                     Some(Self::NoRouteFromExternalIpv6SourceToPrivateIpv6Address)
                 }
@@ -2785,6 +2913,7 @@ pub mod drop_info {
                 }
                 "INSTANCE_NOT_RUNNING" => Some(Self::InstanceNotRunning),
                 "GKE_CLUSTER_NOT_RUNNING" => Some(Self::GkeClusterNotRunning),
+                "GKE_POD_NOT_RUNNING" => Some(Self::GkePodNotRunning),
                 "CLOUD_SQL_INSTANCE_NOT_RUNNING" => {
                     Some(Self::CloudSqlInstanceNotRunning)
                 }
@@ -2933,6 +3062,9 @@ pub mod drop_info {
                     Some(Self::TrafficFromHybridEndpointToInternetDisallowed)
                 }
                 "NO_MATCHING_NAT64_GATEWAY" => Some(Self::NoMatchingNat64Gateway),
+                "NO_CONFIGURED_PRIVATE_NAT64_RULE" => {
+                    Some(Self::NoConfiguredPrivateNat64Rule)
+                }
                 "LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH" => {
                     Some(Self::LoadBalancerBackendIpVersionMismatch)
                 }
@@ -2955,6 +3087,7 @@ pub mod drop_info {
                     Some(Self::NccRouteWithinHybridSubnetUnsupported)
                 }
                 "HYBRID_SUBNET_REGION_MISMATCH" => Some(Self::HybridSubnetRegionMismatch),
+                "HYBRID_SUBNET_NO_ROUTE" => Some(Self::HybridSubnetNoRoute),
                 _ => None,
             }
         }
@@ -2979,6 +3112,122 @@ pub struct GkeMasterInfo {
     /// DNS endpoint of a GKE cluster control plane.
     #[prost(string, tag = "7")]
     pub dns_endpoint: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a Google Kubernetes Engine (GKE)
+/// Pod.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GkePodInfo {
+    /// URI of a GKE Pod.
+    /// For Pods in regional Clusters, the URI format is:
+    /// `projects/{project}/locations/{location}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}`
+    /// For Pods in zonal Clusters, the URI format is:
+    /// `projects/{project}/zones/{zone}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}`
+    #[prost(string, tag = "1")]
+    pub pod_uri: ::prost::alloc::string::String,
+    /// IP address of a GKE Pod. If the Pod is dual-stack, this is the IP address
+    /// relevant to the trace.
+    #[prost(string, tag = "2")]
+    pub ip_address: ::prost::alloc::string::String,
+    /// URI of the network containing the GKE Pod.
+    #[prost(string, tag = "3")]
+    pub network_uri: ::prost::alloc::string::String,
+}
+/// For display only. Contains information about why IP masquerading was skipped
+/// for the packet.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IpMasqueradingSkippedInfo {
+    /// Reason why IP masquerading was not applied.
+    #[prost(enumeration = "ip_masquerading_skipped_info::Reason", tag = "1")]
+    pub reason: i32,
+    /// The matched non-masquerade IP range. Only set if reason is
+    /// DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE or
+    /// DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE.
+    #[prost(string, tag = "2")]
+    pub non_masquerade_range: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `IpMasqueradingSkippedInfo`.
+pub mod ip_masquerading_skipped_info {
+    /// Reason why IP masquerading was skipped.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Reason {
+        /// Unused default value.
+        Unspecified = 0,
+        /// Masquerading not applied because destination IP is in one of configured
+        /// non-masquerade ranges.
+        DestinationIpInConfiguredNonMasqueradeRange = 1,
+        /// Masquerading not applied because destination IP is in one of default
+        /// non-masquerade ranges.
+        DestinationIpInDefaultNonMasqueradeRange = 2,
+        /// Masquerading not applied because destination is on the same Node.
+        DestinationOnSameNode = 3,
+        /// Masquerading not applied because ip-masq-agent doesn't exist and default
+        /// SNAT is disabled.
+        DefaultSnatDisabled = 4,
+        /// Masquerading not applied because the packet's IP version is IPv6.
+        NoMasqueradingForIpv6 = 5,
+        /// Masquerading not applied because the source Pod uses the host Node's
+        /// network namespace, including the Node's IP address.
+        PodUsesNodeNetworkNamespace = 6,
+        /// Masquerading not applied because the packet is a return packet.
+        NoMasqueradingForReturnPacket = 7,
+    }
+    impl Reason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REASON_UNSPECIFIED",
+                Self::DestinationIpInConfiguredNonMasqueradeRange => {
+                    "DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE"
+                }
+                Self::DestinationIpInDefaultNonMasqueradeRange => {
+                    "DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE"
+                }
+                Self::DestinationOnSameNode => "DESTINATION_ON_SAME_NODE",
+                Self::DefaultSnatDisabled => "DEFAULT_SNAT_DISABLED",
+                Self::NoMasqueradingForIpv6 => "NO_MASQUERADING_FOR_IPV6",
+                Self::PodUsesNodeNetworkNamespace => "POD_USES_NODE_NETWORK_NAMESPACE",
+                Self::NoMasqueradingForReturnPacket => {
+                    "NO_MASQUERADING_FOR_RETURN_PACKET"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE" => {
+                    Some(Self::DestinationIpInConfiguredNonMasqueradeRange)
+                }
+                "DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE" => {
+                    Some(Self::DestinationIpInDefaultNonMasqueradeRange)
+                }
+                "DESTINATION_ON_SAME_NODE" => Some(Self::DestinationOnSameNode),
+                "DEFAULT_SNAT_DISABLED" => Some(Self::DefaultSnatDisabled),
+                "NO_MASQUERADING_FOR_IPV6" => Some(Self::NoMasqueradingForIpv6),
+                "POD_USES_NODE_NETWORK_NAMESPACE" => {
+                    Some(Self::PodUsesNodeNetworkNamespace)
+                }
+                "NO_MASQUERADING_FOR_RETURN_PACKET" => {
+                    Some(Self::NoMasqueradingForReturnPacket)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// For display only. Metadata associated with a Cloud SQL instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3182,6 +3431,9 @@ pub struct NatInfo {
     /// The name of Cloud NAT Gateway. Only valid when type is CLOUD_NAT.
     #[prost(string, tag = "13")]
     pub nat_gateway_name: ::prost::alloc::string::String,
+    /// Type of Cloud NAT gateway. Only valid when `type` is CLOUD_NAT.
+    #[prost(enumeration = "nat_info::CloudNatGatewayType", tag = "14")]
+    pub cloud_nat_gateway_type: i32,
 }
 /// Nested message and enum types in `NatInfo`.
 pub mod nat_info {
@@ -3236,6 +3488,61 @@ pub mod nat_info {
                 "CLOUD_NAT" => Some(Self::CloudNat),
                 "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
                 "GKE_POD_IP_MASQUERADING" => Some(Self::GkePodIpMasquerading),
+                _ => None,
+            }
+        }
+    }
+    /// Types of Cloud NAT gateway.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CloudNatGatewayType {
+        /// Type is unspecified.
+        Unspecified = 0,
+        /// Public NAT gateway.
+        PublicNat44 = 1,
+        /// Public NAT64 gateway.
+        PublicNat64 = 2,
+        /// Private NAT gateway for NCC.
+        PrivateNatNcc = 3,
+        /// Private NAT gateway for hybrid connectivity.
+        PrivateNatHybrid = 4,
+        /// Private NAT64 gateway.
+        PrivateNat64 = 5,
+    }
+    impl CloudNatGatewayType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLOUD_NAT_GATEWAY_TYPE_UNSPECIFIED",
+                Self::PublicNat44 => "PUBLIC_NAT44",
+                Self::PublicNat64 => "PUBLIC_NAT64",
+                Self::PrivateNatNcc => "PRIVATE_NAT_NCC",
+                Self::PrivateNatHybrid => "PRIVATE_NAT_HYBRID",
+                Self::PrivateNat64 => "PRIVATE_NAT64",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOUD_NAT_GATEWAY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PUBLIC_NAT44" => Some(Self::PublicNat44),
+                "PUBLIC_NAT64" => Some(Self::PublicNat64),
+                "PRIVATE_NAT_NCC" => Some(Self::PrivateNatNcc),
+                "PRIVATE_NAT_HYBRID" => Some(Self::PrivateNatHybrid),
+                "PRIVATE_NAT64" => Some(Self::PrivateNat64),
                 _ => None,
             }
         }
@@ -3609,6 +3916,10 @@ pub struct Endpoint {
     /// Applicable only to destination endpoint.
     #[prost(string, tag = "18")]
     pub redis_cluster: ::prost::alloc::string::String,
+    /// A [GKE Pod](<https://cloud.google.com/kubernetes-engine/docs/concepts/pod>)
+    /// URI.
+    #[prost(string, tag = "21")]
+    pub gke_pod: ::prost::alloc::string::String,
     /// A [Cloud Function](<https://cloud.google.com/functions>). Applicable only to
     /// source endpoint.
     #[prost(message, optional, tag = "10")]
@@ -3623,24 +3934,18 @@ pub struct Endpoint {
     /// Applicable only to source endpoint.
     #[prost(message, optional, tag = "12")]
     pub cloud_run_revision: ::core::option::Option<endpoint::CloudRunRevisionEndpoint>,
-    /// A VPC network URI.
+    /// A VPC network URI. For source endpoints, used according to the
+    /// `network_type`. For destination endpoints, used only when the source is an
+    /// external IP address endpoint, and the destination is an internal IP address
+    /// endpoint.
     #[prost(string, tag = "4")]
     pub network: ::prost::alloc::string::String,
-    /// Type of the network where the endpoint is located.
-    /// Applicable only to source endpoint, as destination network type can be
-    /// inferred from the source.
+    /// For source endpoints, type of the network where the endpoint is located.
+    /// Not relevant for destination endpoints.
     #[prost(enumeration = "endpoint::NetworkType", tag = "5")]
     pub network_type: i32,
-    /// Project ID where the endpoint is located.
-    /// The project ID can be derived from the URI if you provide a endpoint or
-    /// network URI.
-    /// The following are two cases where you may need to provide the project ID:
-    ///
-    /// 1. Only the IP address is specified, and the IP address is within a Google
-    ///    Cloud project.
-    /// 1. When you are using Shared VPC and the IP address that you provide is
-    ///    from the service project. In this case, the network that the IP address
-    ///    resides in is defined in the host project.
+    /// For source endpoints, endpoint project ID. Used according to the
+    /// `network_type`. Not relevant for destination endpoints.
     #[prost(string, tag = "6")]
     pub project_id: ::prost::alloc::string::String,
 }
@@ -3677,8 +3982,8 @@ pub mod endpoint {
         #[prost(string, tag = "2")]
         pub service_uri: ::prost::alloc::string::String,
     }
-    /// The type definition of an endpoint's network. Use one of the
-    /// following choices:
+    /// The type of the network of the IP address endpoint. Relevant for the source
+    /// IP address endpoints.
     #[derive(
         Clone,
         Copy,
@@ -3692,16 +3997,31 @@ pub mod endpoint {
     )]
     #[repr(i32)]
     pub enum NetworkType {
-        /// Default type if unspecified.
+        /// Unspecified. The test will analyze all possible IP address locations.
+        /// This might take longer and produce inaccurate or ambiguous results, so
+        /// prefer specifying an explicit network type.
+        ///
+        /// The `project_id` field should be set to the project where the GCP
+        /// endpoint is located, or where the non-GCP endpoint should be reachable
+        /// from (via routes to non-GCP networks). The project might also be inferred
+        /// from the Connectivity Test project or other projects referenced in the
+        /// request.
         Unspecified = 0,
-        /// A network hosted within Google Cloud.
-        /// To receive more detailed output, specify the URI for the source or
-        /// destination network.
+        /// A VPC network. Should be used for internal IP addresses in VPC networks.
+        /// The `network` field should be set to the URI of this network. Only
+        /// endpoints within this network will be considered.
         GcpNetwork = 1,
-        /// A network hosted outside of Google Cloud.
-        /// This can be an on-premises network, an internet resource or a network
-        /// hosted by another cloud provider.
+        /// A non-GCP network (for example, an on-premises network or another cloud
+        /// provider network). Should be used for internal IP addresses outside of
+        /// Google Cloud. The `network` field should be set to the URI of the VPC
+        /// network containing a corresponding Cloud VPN tunnel, Cloud Interconnect
+        /// VLAN attachment, or a router appliance instance. Only endpoints reachable
+        /// from the provided VPC network via the routes to non-GCP networks will be
+        /// considered.
         NonGcpNetwork = 2,
+        /// Internet. Should be used for internet-routable external IP addresses or
+        /// IP addresses for global Google APIs and services.
+        Internet = 3,
     }
     impl NetworkType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3713,6 +4033,7 @@ pub mod endpoint {
                 Self::Unspecified => "NETWORK_TYPE_UNSPECIFIED",
                 Self::GcpNetwork => "GCP_NETWORK",
                 Self::NonGcpNetwork => "NON_GCP_NETWORK",
+                Self::Internet => "INTERNET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3721,6 +4042,7 @@ pub mod endpoint {
                 "NETWORK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "GCP_NETWORK" => Some(Self::GcpNetwork),
                 "NON_GCP_NETWORK" => Some(Self::NonGcpNetwork),
+                "INTERNET" => Some(Self::Internet),
                 _ => None,
             }
         }
@@ -5044,7 +5366,7 @@ pub struct ListVpcFlowLogsConfigsRequest {
     /// Required. The parent resource of the VpcFlowLogsConfig,
     /// in one of the following formats:
     ///
-    /// * For project-level resourcs: `projects/{project_id}/locations/global`
+    /// * For project-level resources: `projects/{project_id}/locations/global`
     ///
     /// * For organization-level resources:
     ///   `organizations/{organization_id}/locations/global`

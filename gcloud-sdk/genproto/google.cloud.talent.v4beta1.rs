@@ -2783,6 +2783,7 @@ pub mod location_filter {
         Unspecified = 0,
         /// Deprecated: Ignore telecommute status of jobs. Use
         /// TELECOMMUTE_JOBS_EXCLUDED if want to exclude telecommute jobs.
+        #[deprecated]
         TelecommuteExcluded = 1,
         /// Allow telecommute jobs.
         TelecommuteAllowed = 2,
@@ -2797,6 +2798,7 @@ pub mod location_filter {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "TELECOMMUTE_PREFERENCE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::TelecommuteExcluded => "TELECOMMUTE_EXCLUDED",
                 Self::TelecommuteAllowed => "TELECOMMUTE_ALLOWED",
                 Self::TelecommuteJobsExcluded => "TELECOMMUTE_JOBS_EXCLUDED",
@@ -2806,7 +2808,9 @@ pub mod location_filter {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "TELECOMMUTE_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
-                "TELECOMMUTE_EXCLUDED" => Some(Self::TelecommuteExcluded),
+                "TELECOMMUTE_EXCLUDED" => {
+                    Some(#[allow(deprecated)] Self::TelecommuteExcluded)
+                }
                 "TELECOMMUTE_ALLOWED" => Some(Self::TelecommuteAllowed),
                 "TELECOMMUTE_JOBS_EXCLUDED" => Some(Self::TelecommuteJobsExcluded),
                 _ => None,

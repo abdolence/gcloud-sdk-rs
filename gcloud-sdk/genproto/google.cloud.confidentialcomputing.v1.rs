@@ -66,6 +66,11 @@ pub struct VerifyAttestationRequest {
     pub tee_attestation: ::core::option::Option<
         verify_attestation_request::TeeAttestation,
     >,
+    /// An optional device attestation report.
+    #[prost(oneof = "verify_attestation_request::DeviceAttestation", tags = "9")]
+    pub device_attestation: ::core::option::Option<
+        verify_attestation_request::DeviceAttestation,
+    >,
 }
 /// Nested message and enum types in `VerifyAttestationRequest`.
 pub mod verify_attestation_request {
@@ -79,6 +84,146 @@ pub mod verify_attestation_request {
         /// Optional. An SEV-SNP Attestation Report.
         #[prost(message, tag = "7")]
         SevSnpAttestation(super::SevSnpAttestation),
+    }
+    /// An optional device attestation report.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DeviceAttestation {
+        /// Optional. An Nvidia attestation report for GPU and NVSwitch devices.
+        #[prost(message, tag = "9")]
+        NvidiaAttestation(super::NvidiaAttestation),
+    }
+}
+/// An Nvidia attestation report for GPU and NVSwitch devices.
+/// Contains necessary attestation evidence that the client collects for
+/// verification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NvidiaAttestation {
+    /// The Confidential Computing feature that the attestation is for.
+    #[prost(oneof = "nvidia_attestation::CcFeature", tags = "1, 2, 3")]
+    pub cc_feature: ::core::option::Option<nvidia_attestation::CcFeature>,
+}
+/// Nested message and enum types in `NvidiaAttestation`.
+pub mod nvidia_attestation {
+    /// GpuInfo contains the attestation evidence for a GPU device.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GpuInfo {
+        /// Optional. The UUID of the GPU device.
+        #[prost(string, tag = "1")]
+        pub uuid: ::prost::alloc::string::String,
+        /// Optional. The driver version of the GPU.
+        #[prost(string, tag = "2")]
+        pub driver_version: ::prost::alloc::string::String,
+        /// Optional. The vBIOS version of the GPU.
+        #[prost(string, tag = "3")]
+        pub vbios_version: ::prost::alloc::string::String,
+        /// Optional. The GPU architecture type.
+        #[prost(enumeration = "GpuArchitectureType", tag = "4")]
+        pub gpu_architecture_type: i32,
+        /// Optional. The raw attestation certificate chain for the GPU device.
+        #[prost(bytes = "vec", tag = "5")]
+        pub attestation_certificate_chain: ::prost::alloc::vec::Vec<u8>,
+        /// Optional. The raw attestation report for the GPU device.
+        /// This field contains SPDM request/response defined in
+        /// <https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.0.pdf>
+        #[prost(bytes = "vec", tag = "6")]
+        pub attestation_report: ::prost::alloc::vec::Vec<u8>,
+    }
+    /// SwitchInfo contains the attestation evidence for a NVSwitch device.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SwitchInfo {
+        /// Optional. The UUID of the NVSwitch device.
+        #[prost(string, tag = "1")]
+        pub uuid: ::prost::alloc::string::String,
+        /// Optional. The raw attestation certificate chain for the NVSwitch device.
+        #[prost(bytes = "vec", tag = "2")]
+        pub attestation_certificate_chain: ::prost::alloc::vec::Vec<u8>,
+        /// Optional. The raw attestation report for the NvSwitch device.
+        /// This field contains SPDM request/response defined in
+        /// <https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.0.pdf>
+        #[prost(bytes = "vec", tag = "3")]
+        pub attestation_report: ::prost::alloc::vec::Vec<u8>,
+    }
+    /// Single GPU Passthrough (SPT) attestation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SinglePassthroughAttestation {
+        /// Optional. Single GPU quote.
+        #[prost(message, optional, tag = "1")]
+        pub gpu_quote: ::core::option::Option<GpuInfo>,
+    }
+    /// Protected PCIe (PPCIE) attestation.
+    /// Eight Hopper GPUs with Four NVSwitch Passthrough.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProtectedPcieAttestation {
+        /// Optional. A list of GPU infos.
+        #[prost(message, repeated, tag = "1")]
+        pub gpu_quotes: ::prost::alloc::vec::Vec<GpuInfo>,
+        /// Optional. A list of SWITCH infos.
+        #[prost(message, repeated, tag = "2")]
+        pub switch_quotes: ::prost::alloc::vec::Vec<SwitchInfo>,
+    }
+    /// MultiGpuSecurePassthroughAttestation contains the attestation evidence
+    /// for a Multi-GPU Secure Passthrough (MPT) attestation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiGpuSecurePassthroughAttestation {
+        /// Optional. A list of GPU quotes.
+        #[prost(message, repeated, tag = "1")]
+        pub gpu_quotes: ::prost::alloc::vec::Vec<GpuInfo>,
+    }
+    /// GpuArchitectureType enumerates the supported GPU architecture types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GpuArchitectureType {
+        /// Unspecified GPU architecture type.
+        Unspecified = 0,
+        /// Hopper GPU architecture type.
+        Hopper = 8,
+        /// Blackwell GPU architecture type.
+        Blackwell = 10,
+    }
+    impl GpuArchitectureType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GPU_ARCHITECTURE_TYPE_UNSPECIFIED",
+                Self::Hopper => "GPU_ARCHITECTURE_TYPE_HOPPER",
+                Self::Blackwell => "GPU_ARCHITECTURE_TYPE_BLACKWELL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GPU_ARCHITECTURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GPU_ARCHITECTURE_TYPE_HOPPER" => Some(Self::Hopper),
+                "GPU_ARCHITECTURE_TYPE_BLACKWELL" => Some(Self::Blackwell),
+                _ => None,
+            }
+        }
+    }
+    /// The Confidential Computing feature that the attestation is for.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CcFeature {
+        /// Single GPU Passthrough (SPT) attestation.
+        #[prost(message, tag = "1")]
+        Spt(SinglePassthroughAttestation),
+        /// Protected PCIe (PPCIE) attestation.
+        #[prost(message, tag = "2")]
+        Ppcie(ProtectedPcieAttestation),
+        /// Multi-GPU Secure Passthrough (MPT) attestation.
+        #[prost(message, tag = "3")]
+        Mpt(MultiGpuSecurePassthroughAttestation),
     }
 }
 /// A TDX Attestation quote.
@@ -321,6 +466,10 @@ pub struct VerifyConfidentialSpaceRequest {
     pub options: ::core::option::Option<
         verify_confidential_space_request::ConfidentialSpaceOptions,
     >,
+    /// Optional. An optional Nvidia attestation report, used to populate hardware
+    /// rooted claims for Nvidia devices.
+    #[prost(message, optional, tag = "8")]
+    pub nvidia_attestation: ::core::option::Option<NvidiaAttestation>,
     /// Required. A tee attestation report, used to populate hardware rooted
     /// claims.
     #[prost(oneof = "verify_confidential_space_request::TeeAttestation", tags = "3, 4")]
@@ -418,6 +567,11 @@ pub struct VerifyConfidentialGkeRequest {
     /// provided Challenge will be consumed, and cannot be used again.
     #[prost(string, tag = "1")]
     pub challenge: ::prost::alloc::string::String,
+    /// Optional. A collection of fields that modify the token output.
+    #[prost(message, optional, tag = "3")]
+    pub options: ::core::option::Option<
+        verify_confidential_gke_request::ConfidentialGkeOptions,
+    >,
     /// Required. A tee attestation report, used to populate hardware rooted
     /// claims.
     #[prost(oneof = "verify_confidential_gke_request::TeeAttestation", tags = "2")]
@@ -427,6 +581,23 @@ pub struct VerifyConfidentialGkeRequest {
 }
 /// Nested message and enum types in `VerifyConfidentialGkeRequest`.
 pub mod verify_confidential_gke_request {
+    /// Token options for Confidential GKE attestation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ConfidentialGkeOptions {
+        /// Optional. Optional string to issue the token with a custom audience
+        /// claim. Required if custom nonces are specified.
+        #[prost(string, tag = "1")]
+        pub audience: ::prost::alloc::string::String,
+        /// Optional. Optional parameter to place one or more nonces in the eat_nonce
+        /// claim in the output token. The minimum size for JSON-encoded EATs is 10
+        /// bytes and the maximum size is 74 bytes.
+        #[prost(string, repeated, tag = "3")]
+        pub nonce: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Optional specification for how to sign the attestation token.
+        /// Defaults to SIGNATURE_TYPE_OIDC if unspecified.
+        #[prost(enumeration = "super::SignatureType", tag = "4")]
+        pub signature_type: i32,
+    }
     /// Required. A tee attestation report, used to populate hardware rooted
     /// claims.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
