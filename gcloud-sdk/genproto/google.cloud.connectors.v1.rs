@@ -1317,6 +1317,7 @@ pub enum DataType {
     /// Data type is not specified.
     Unspecified = 0,
     /// DEPRECATED! Use DATA_TYPE_INTEGER.
+    #[deprecated]
     Int = 1,
     /// Short integer(int16) data type.
     Smallint = 2,
@@ -1325,18 +1326,22 @@ pub enum DataType {
     /// Date data type.
     Date = 4,
     /// DEPRECATED! Use DATA_TYPE_TIMESTAMP.
+    #[deprecated]
     Datetime = 5,
     /// Time data type.
     Time = 6,
     /// DEPRECATED! Use DATA_TYPE_VARCHAR.
+    #[deprecated]
     String = 7,
     /// DEPRECATED! Use DATA_TYPE_BIGINT.
+    #[deprecated]
     Long = 8,
     /// Boolean data type.
     Boolean = 9,
     /// Decimal data type.
     Decimal = 10,
     /// DEPRECATED! Use DATA_TYPE_VARCHAR.
+    #[deprecated]
     Uuid = 11,
     /// UNSUPPORTED! Binary data type.
     Blob = 12,
@@ -1413,16 +1418,21 @@ impl DataType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::Int => "DATA_TYPE_INT",
             Self::Smallint => "DATA_TYPE_SMALLINT",
             Self::Double => "DATA_TYPE_DOUBLE",
             Self::Date => "DATA_TYPE_DATE",
+            #[allow(deprecated)]
             Self::Datetime => "DATA_TYPE_DATETIME",
             Self::Time => "DATA_TYPE_TIME",
+            #[allow(deprecated)]
             Self::String => "DATA_TYPE_STRING",
+            #[allow(deprecated)]
             Self::Long => "DATA_TYPE_LONG",
             Self::Boolean => "DATA_TYPE_BOOLEAN",
             Self::Decimal => "DATA_TYPE_DECIMAL",
+            #[allow(deprecated)]
             Self::Uuid => "DATA_TYPE_UUID",
             Self::Blob => "DATA_TYPE_BLOB",
             Self::Bit => "DATA_TYPE_BIT",
@@ -1463,17 +1473,17 @@ impl DataType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "DATA_TYPE_INT" => Some(Self::Int),
+            "DATA_TYPE_INT" => Some(#[allow(deprecated)] Self::Int),
             "DATA_TYPE_SMALLINT" => Some(Self::Smallint),
             "DATA_TYPE_DOUBLE" => Some(Self::Double),
             "DATA_TYPE_DATE" => Some(Self::Date),
-            "DATA_TYPE_DATETIME" => Some(Self::Datetime),
+            "DATA_TYPE_DATETIME" => Some(#[allow(deprecated)] Self::Datetime),
             "DATA_TYPE_TIME" => Some(Self::Time),
-            "DATA_TYPE_STRING" => Some(Self::String),
-            "DATA_TYPE_LONG" => Some(Self::Long),
+            "DATA_TYPE_STRING" => Some(#[allow(deprecated)] Self::String),
+            "DATA_TYPE_LONG" => Some(#[allow(deprecated)] Self::Long),
             "DATA_TYPE_BOOLEAN" => Some(Self::Boolean),
             "DATA_TYPE_DECIMAL" => Some(Self::Decimal),
-            "DATA_TYPE_UUID" => Some(Self::Uuid),
+            "DATA_TYPE_UUID" => Some(#[allow(deprecated)] Self::Uuid),
             "DATA_TYPE_BLOB" => Some(Self::Blob),
             "DATA_TYPE_BIT" => Some(Self::Bit),
             "DATA_TYPE_TINYINT" => Some(Self::Tinyint),
@@ -2018,8 +2028,10 @@ pub mod runtime_config {
         /// STATE_UNSPECIFIED.
         Unspecified = 0,
         /// INACTIVE.
+        #[deprecated]
         Inactive = 1,
         /// ACTIVATING.
+        #[deprecated]
         Activating = 2,
         /// ACTIVE.
         Active = 3,
@@ -2038,7 +2050,9 @@ pub mod runtime_config {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "STATE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Inactive => "INACTIVE",
+                #[allow(deprecated)]
                 Self::Activating => "ACTIVATING",
                 Self::Active => "ACTIVE",
                 Self::Creating => "CREATING",
@@ -2050,8 +2064,8 @@ pub mod runtime_config {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "INACTIVE" => Some(Self::Inactive),
-                "ACTIVATING" => Some(Self::Activating),
+                "INACTIVE" => Some(#[allow(deprecated)] Self::Inactive),
+                "ACTIVATING" => Some(#[allow(deprecated)] Self::Activating),
                 "ACTIVE" => Some(Self::Active),
                 "CREATING" => Some(Self::Creating),
                 "DELETING" => Some(Self::Deleting),

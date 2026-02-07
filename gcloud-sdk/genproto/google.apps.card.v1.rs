@@ -1668,6 +1668,26 @@ pub mod selection_input {
         /// A set of switches. Users can turn on one or more switches.
         Switch = 2,
         /// A dropdown menu. Users can select one item from the menu.
+        ///
+        /// For Google Chat apps, you can populate items using a dynamic data source
+        /// and autosuggest items as users type in the menu. For example, users can
+        /// start typing the name of a Google Chat space and the widget autosuggests
+        /// the space. To dynamically populate items for a dropdown menu, use one of
+        /// the following types of data sources:
+        ///
+        /// * Google Workspace data: Items are populated using data from Google
+        ///   Workspace, such as Google Workspace users or Google Chat spaces.
+        /// * External data: Items are populated from an external data
+        ///   source outside of Google Workspace.
+        ///
+        /// For examples of how to implement dropdown menus for Chat apps, see
+        /// [Add a dropdown
+        /// menu](<https://developers.google.com/workspace/chat/design-interactive-card-dialog#dropdown-menu>)
+        /// and [Dynamically populate drop-down
+        /// menus](<https://developers.google.com/workspace/chat/design-interactive-card-dialog#dynamic-dropdown-menu>).
+        ///
+        /// [Google Workspace add-ons and Chat
+        /// apps](<https://developers.google.com/workspace/extend>):
         Dropdown = 3,
         /// A menu with a text box. Users can type and select one or more items.
         /// For Google Workspace add-ons, you must populate items using a static

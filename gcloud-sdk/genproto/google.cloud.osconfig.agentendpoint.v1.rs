@@ -121,7 +121,7 @@ pub mod inventory {
     }
     /// Nested message and enum types in `VersionedPackage`.
     pub mod versioned_package {
-        /// Information related to the actuall source of the versioned package. This
+        /// Information related to the actual source of the versioned package. This
         /// includes source package name and version if available.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Source {
@@ -284,9 +284,9 @@ pub mod os_policy_resource_config_step {
         Validation = 1,
         /// Check the current desired state status of the resource.
         DesiredStateCheck = 2,
-        /// Enforce the desired state for a resource that is not in desired state.
+        /// Apply the desired state for a resource that is not in desired state.
         DesiredStateEnforcement = 3,
-        /// Re-check desired state status for a resource after enforcement of all
+        /// Re-check desired state status for a resource after applying all
         /// resources in the current configuration run.
         ///
         /// This step is used to determine the final desired state status for the
@@ -838,7 +838,7 @@ pub mod os_policy {
                 Goo(GooRepository),
             }
         }
-        /// A resource that contains custom validation and enforcement steps.
+        /// A resource that contains custom validation and execution steps.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ExecResource {
             /// Required. What to run to validate this resource is in the desired
@@ -848,7 +848,7 @@ pub mod os_policy {
             #[prost(message, optional, tag = "1")]
             pub validate: ::core::option::Option<exec_resource::Exec>,
             /// What to run to bring this resource into the desired state.
-            /// A exit code of 100 indicates "success", any other exit code idicates a
+            /// A exit code of 100 indicates "success", any other exit code indicates a
             /// failure running enforce.
             #[prost(message, optional, tag = "2")]
             pub enforce: ::core::option::Option<exec_resource::Exec>,
@@ -1352,7 +1352,7 @@ pub mod windows_update_settings {
         Security = 2,
         /// "A widely released and frequent software update that contains additions
         /// to a product’s definition database. Definition databases are often used
-        /// to detect objects that have specific attributes, such as malicious code,
+        /// to detect objects that have specific attributes, such as harmful code,
         /// phishing websites, or junk mail." \[1\]
         Definition = 3,
         /// "Software that controls the input and output of a device." \[1\]
@@ -2061,6 +2061,76 @@ impl TaskType {
         }
     }
 }
+/// The inventory details of a VM.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VmInventory {
+    /// Required. Base level operating system information for the VM.
+    #[prost(message, optional, tag = "1")]
+    pub os_info: ::core::option::Option<vm_inventory::OsInfo>,
+    /// Required. A list of installed packages currently on the VM.
+    #[prost(message, repeated, tag = "2")]
+    pub installed_packages: ::prost::alloc::vec::Vec<vm_inventory::InventoryItem>,
+    /// Required. A list of software updates available for the VM as reported by
+    /// the update managers.
+    #[prost(message, repeated, tag = "3")]
+    pub available_packages: ::prost::alloc::vec::Vec<vm_inventory::InventoryItem>,
+}
+/// Nested message and enum types in `VmInventory`.
+pub mod vm_inventory {
+    /// Operating system information for the VM.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OsInfo {
+        /// Required. The VM hostname.
+        #[prost(string, tag = "1")]
+        pub host_name: ::prost::alloc::string::String,
+        /// Optional. The operating system long name.
+        /// For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
+        /// Datacenter'.
+        #[prost(string, tag = "2")]
+        pub long_name: ::prost::alloc::string::String,
+        /// Required. The operating system short name.
+        /// For example, 'windows' or 'debian'.
+        #[prost(string, tag = "3")]
+        pub short_name: ::prost::alloc::string::String,
+        /// Optional. The version of the operating system.
+        #[prost(string, tag = "4")]
+        pub version: ::prost::alloc::string::String,
+        /// Required. The system architecture of the operating system.
+        #[prost(string, tag = "5")]
+        pub architecture: ::prost::alloc::string::String,
+        /// Optional. The kernel version of the operating system.
+        #[prost(string, tag = "6")]
+        pub kernel_version: ::prost::alloc::string::String,
+        /// Optional. The kernel release of the operating system.
+        #[prost(string, tag = "7")]
+        pub kernel_release: ::prost::alloc::string::String,
+        /// Required. The current version of the OS Config agent running on the VM.
+        #[prost(string, tag = "8")]
+        pub osconfig_agent_version: ::prost::alloc::string::String,
+    }
+    /// A VM package representation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InventoryItem {
+        /// Required. Human-readable name of the software, to show to the user.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. Package type, e.g. "java/maven", "javascript/npm", "os/dpkg"
+        #[prost(string, tag = "2")]
+        pub r#type: ::prost::alloc::string::String,
+        /// Required. Version of the package.
+        #[prost(string, tag = "3")]
+        pub version: ::prost::alloc::string::String,
+        /// Required. Purl is a package identifier.
+        #[prost(string, tag = "4")]
+        pub purl: ::prost::alloc::string::String,
+        /// Required. Path or source of files related to the package.
+        #[prost(string, repeated, tag = "5")]
+        pub location: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Metadata of the package extracted by extractor.
+        #[prost(message, optional, tag = "6")]
+        pub metadata: ::core::option::Option<::prost_types::Struct>,
+    }
+}
 /// A request message to receive task notifications.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveTaskNotificationRequest {
@@ -2245,6 +2315,32 @@ pub struct ReportInventoryRequest {
 /// The response message after the agent has reported inventory.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportInventoryResponse {
+    /// If true, the full inventory should be reported back to the server.
+    #[prost(bool, tag = "1")]
+    pub report_full_inventory: bool,
+}
+/// The request message for reporting the agent's VM inventory.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportVmInventoryRequest {
+    /// Required. This is the Compute Engine instance identity token described in
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
+    /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
+    #[prost(string, tag = "1")]
+    pub instance_id_token: ::prost::alloc::string::String,
+    /// Required. This is a client created checksum that should be generated based
+    /// on the contents of the reported inventory. This will be used by the service
+    /// to determine if it has the latest version of inventory.
+    #[prost(string, tag = "2")]
+    pub inventory_checksum: ::prost::alloc::string::String,
+    /// Optional. This is the details of the VM inventory. Should only be provided
+    /// if the inventory has changed since the last report, or if instructed by the
+    /// service to provide full inventory.
+    #[prost(message, optional, tag = "3")]
+    pub vm_inventory: ::core::option::Option<VmInventory>,
+}
+/// The response message after the agent has reported VM inventory.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReportVmInventoryResponse {
     /// If true, the full inventory should be reported back to the server.
     #[prost(bool, tag = "1")]
     pub report_full_inventory: bool,
@@ -2520,6 +2616,36 @@ pub mod agent_endpoint_service_client {
                     GrpcMethod::new(
                         "google.cloud.osconfig.agentendpoint.v1.AgentEndpointService",
                         "ReportInventory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reports the VMs current inventory.
+        pub async fn report_vm_inventory(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReportVmInventoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportVmInventoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/ReportVmInventory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.agentendpoint.v1.AgentEndpointService",
+                        "ReportVmInventory",
                     ),
                 );
             self.inner.unary(req, path, codec).await

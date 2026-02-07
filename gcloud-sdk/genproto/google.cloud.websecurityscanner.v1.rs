@@ -505,6 +505,7 @@ pub mod scan_config {
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Authentication {
             /// Authentication using a Google account.
+            #[deprecated]
             #[prost(message, tag = "1")]
             GoogleAccount(GoogleAccount),
             /// Authentication using a custom account.

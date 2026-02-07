@@ -557,7 +557,7 @@ pub struct DataLayers {
     /// (where we don't have data) are stored as -9999.
     #[prost(string, tag = "3")]
     pub dsm_url: ::prost::alloc::string::String,
-    /// The URL for an image of RGB data (aerial photo) of the region.
+    /// The URL for an image of RGB data (aerial or satellite photo) of the region.
     #[prost(string, tag = "4")]
     pub rgb_url: ::prost::alloc::string::String,
     /// The URL for the building mask image: one bit per pixel saying whether that
@@ -754,6 +754,15 @@ impl SolarPanelOrientation {
     }
 }
 /// Specifies pre-GA experiments that can be enabled in the API.
+///
+/// Requests using this field are classified as a pre-GA offering
+/// under the [Google Maps Platform Service Specific
+/// Terms](<https://cloud.google.com/maps-platform/terms/maps-service-terms>). See
+/// [launch stage
+/// descriptions](<https://cloud.google.com/maps-platform/terms/launch-stages>) for
+/// more details.
+///
+/// New values may be added to this enum in the future.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Experiment {

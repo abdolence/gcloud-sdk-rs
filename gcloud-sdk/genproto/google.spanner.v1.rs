@@ -1664,6 +1664,14 @@ pub struct ResultSet {
     /// \[Commit\]\[google.spanner.v1.Spanner.Commit\] request for this transaction.
     #[prost(message, optional, tag = "5")]
     pub precommit_token: ::core::option::Option<MultiplexedSessionPrecommitToken>,
+    /// Optional. A cache update expresses a set of changes the client should
+    /// incorporate into its location cache. The client should discard the changes
+    /// if they are older than the data it already has. This data can be obtained
+    /// in response to requests that included a `RoutingHint` field, but may also
+    /// be obtained by explicit location-fetching RPCs which may be added in the
+    /// future.
+    #[prost(message, optional, tag = "6")]
+    pub cache_update: ::core::option::Option<CacheUpdate>,
 }
 /// Partial results from a streaming read or SQL query. Streaming reads and
 /// SQL queries better tolerate large result sets, large rows, and large
@@ -2004,7 +2012,7 @@ pub struct DeleteSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Common request options for various APIs.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestOptions {
     /// Priority for the request.
     #[prost(enumeration = "request_options::Priority", tag = "1")]
@@ -2024,8 +2032,9 @@ pub struct RequestOptions {
     /// A tag used for statistics collection about this transaction.
     /// Both `request_tag` and `transaction_tag` can be specified for a read or
     /// query that belongs to a transaction.
-    /// The value of transaction_tag should be the same for all requests belonging
-    /// to the same transaction.
+    /// To enable tagging on a transaction, `transaction_tag` must be set to the
+    /// same value for all requests belonging to the same transaction, including
+    /// \[BeginTransaction\]\[google.spanner.v1.Spanner.BeginTransaction\].
     /// If this request doesn't belong to any transaction, `transaction_tag` is
     /// ignored.
     /// Legal characters for `transaction_tag` values are all printable characters
@@ -2034,9 +2043,24 @@ pub struct RequestOptions {
     /// Any leading underscore (\_) characters are removed from the string.
     #[prost(string, tag = "3")]
     pub transaction_tag: ::prost::alloc::string::String,
+    /// Optional. Optional context that may be needed for some requests.
+    #[prost(message, optional, tag = "4")]
+    pub client_context: ::core::option::Option<request_options::ClientContext>,
 }
 /// Nested message and enum types in `RequestOptions`.
 pub mod request_options {
+    /// Container for various pieces of client-owned context attached to a request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClientContext {
+        /// Optional. Map of parameter name to value for this request. These values
+        /// will be returned by any SECURE_CONTEXT() calls invoked by this request
+        /// (e.g., by queries against Parameterized Secure Views).
+        #[prost(map = "string, message", tag = "1")]
+        pub secure_context: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost_types::Value,
+        >,
+    }
     /// The relative priority for requests. Note that priority isn't applicable
     /// for \[BeginTransaction\]\[google.spanner.v1.Spanner.BeginTransaction\].
     ///
@@ -2645,7 +2669,8 @@ pub struct PartitionQueryRequest {
     /// operations.
     #[prost(string, tag = "3")]
     pub sql: ::prost::alloc::string::String,
-    /// Parameter names and values that bind to placeholders in the SQL string.
+    /// Optional. Parameter names and values that bind to placeholders in the SQL
+    /// string.
     ///
     /// A parameter placeholder consists of the `@` character followed by the
     /// parameter name (for example, `@firstName`). Parameter names can contain
@@ -2659,9 +2684,9 @@ pub struct PartitionQueryRequest {
     /// It's an error to execute a SQL statement with unbound parameters.
     #[prost(message, optional, tag = "4")]
     pub params: ::core::option::Option<::prost_types::Struct>,
-    /// It isn't always possible for Cloud Spanner to infer the right SQL type
-    /// from a JSON value. For example, values of type `BYTES` and values
-    /// of type `STRING` both appear in
+    /// Optional. It isn't always possible for Cloud Spanner to infer the right SQL
+    /// type from a JSON value. For example, values of type `BYTES` and values of
+    /// type `STRING` both appear in
     /// \[params\]\[google.spanner.v1.PartitionQueryRequest.params\] as JSON strings.
     ///
     /// In these cases, `param_types` can be used to specify the exact
@@ -3097,7 +3122,12 @@ pub struct BatchWriteResponse {
     #[prost(message, optional, tag = "2")]
     pub status: ::core::option::Option<super::super::rpc::Status>,
     /// The commit timestamp of the transaction that applied this batch.
-    /// Present if `status` is `OK`, absent otherwise.
+    /// Present if status is OK and the mutation groups were applied, absent
+    /// otherwise.
+    ///
+    /// For mutation groups with conditions, a status=OK and missing
+    /// commit_timestamp means that the mutation groups were not applied due to the
+    /// condition not being satisfied after evaluation.
     #[prost(message, optional, tag = "3")]
     pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }

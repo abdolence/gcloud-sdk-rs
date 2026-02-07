@@ -1350,6 +1350,20 @@ pub mod pin_control_metadata {
         pub product_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
+/// A list of string values.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StringList {
+    /// String values.
+    #[prost(string, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A message with a list of double values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DoubleList {
+    /// The list of double values.
+    #[prost(double, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<f64>,
+}
 /// At which level we offer configuration for attributes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -5156,6 +5170,32 @@ pub struct SearchRequest {
     /// for revenue optimization.
     #[prost(string, tag = "46")]
     pub place_id: ::prost::alloc::string::String,
+    /// Optional. The user attributes that could be used for personalization of
+    /// search results.
+    ///
+    /// * Populate at most 100 key-value pairs per query.
+    /// * Only supports string keys and repeated string values.
+    /// * Duplicate keys are not allowed within a single query.
+    ///
+    /// Example:
+    /// user_attributes: \[
+    /// { key: "pets"
+    /// value {
+    /// values: "dog"
+    /// values: "cat"
+    /// }
+    /// },
+    /// { key: "state"
+    /// value {
+    /// values: "CA"
+    /// }
+    /// }
+    /// \]
+    #[prost(map = "string, message", tag = "47")]
+    pub user_attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        StringList,
+    >,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -5523,7 +5563,8 @@ pub mod search_request {
         /// \[Condition.DISABLED\]\[google.cloud.retail.v2beta.SearchRequest.QueryExpansionSpec.Condition.DISABLED\].
         #[prost(enumeration = "query_expansion_spec::Condition", tag = "1")]
         pub condition: i32,
-        /// Whether to pin unexpanded results. If this field is set to true,
+        /// Whether to pin unexpanded results. The default value is false. If this
+        /// field is set to true,
         /// unexpanded products are always at the top of the search results, followed
         /// by the expanded results.
         #[prost(bool, tag = "2")]
@@ -6035,6 +6076,12 @@ pub mod search_response {
         /// * `purchased`: Indicates that this product has been purchased before.
         #[prost(string, repeated, tag = "7")]
         pub personal_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Google provided available scores.
+        #[prost(map = "string, message", tag = "8")]
+        pub model_scores: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            super::DoubleList,
+        >,
     }
     /// A facet result.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6412,6 +6459,7 @@ pub mod control {
         ///
         /// Note that this field is deprecated and will throw NOT_IMPLEMENTED if
         /// used for creating a control.
+        #[deprecated]
         #[prost(message, tag = "3")]
         FacetSpec(super::search_request::FacetSpec),
         /// A rule control - a condition-action pair.

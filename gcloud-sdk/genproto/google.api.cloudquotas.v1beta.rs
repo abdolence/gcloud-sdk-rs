@@ -9,7 +9,7 @@ pub struct QuotaInfo {
     /// `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The id of the quota, which is unquie within the service.
+    /// The id of the quota, which is unique within the service.
     /// For example, `CpusPerProjectPerRegion`
     #[prost(string, tag = "2")]
     pub quota_id: ::prost::alloc::string::String,
@@ -875,10 +875,14 @@ pub struct UpdateQuotaAdjusterSettingsRequest {
 /// Adjuster.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QuotaAdjusterSettings {
-    /// Identifier. Name of the config would be of the format:
-    /// projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
-    /// folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
-    /// organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
+    /// Identifier. Name of the configuration, in the formats below:
+    ///
+    /// * For a project:
+    ///   projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
+    /// * For a folder:
+    ///   folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
+    /// * For an organization:
+    ///   organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The configured value of the enablement at the given resource.
@@ -1052,7 +1056,7 @@ pub mod quota_adjuster_settings_manager_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// RPC Method for updating QuotaAdjusterSettings based on the request
+        /// Updates the QuotaAdjusterSettings for the specified resource.
         pub async fn update_quota_adjuster_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateQuotaAdjusterSettingsRequest>,
@@ -1082,7 +1086,7 @@ pub mod quota_adjuster_settings_manager_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// RPC Method for getting QuotaAdjusterSettings based on the request
+        /// Gets the QuotaAdjusterSettings for the specified resource.
         pub async fn get_quota_adjuster_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetQuotaAdjusterSettingsRequest>,

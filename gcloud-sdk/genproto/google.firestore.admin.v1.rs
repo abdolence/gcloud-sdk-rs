@@ -101,6 +101,41 @@ pub mod backup {
         }
     }
 }
+/// The Realtime Updates mode.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RealtimeUpdatesMode {
+    /// The Realtime Updates feature is not specified.
+    Unspecified = 0,
+    /// The Realtime Updates feature is enabled by default.
+    ///
+    /// This could potentially degrade write performance for the database.
+    Enabled = 1,
+    /// The Realtime Updates feature is disabled by default.
+    Disabled = 2,
+}
+impl RealtimeUpdatesMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "REALTIME_UPDATES_MODE_UNSPECIFIED",
+            Self::Enabled => "REALTIME_UPDATES_MODE_ENABLED",
+            Self::Disabled => "REALTIME_UPDATES_MODE_DISABLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REALTIME_UPDATES_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REALTIME_UPDATES_MODE_ENABLED" => Some(Self::Enabled),
+            "REALTIME_UPDATES_MODE_DISABLED" => Some(Self::Disabled),
+            _ => None,
+        }
+    }
+}
 /// A Cloud Firestore Database.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
@@ -134,6 +169,10 @@ pub struct Database {
     #[prost(enumeration = "database::DatabaseType", tag = "10")]
     pub r#type: i32,
     /// The concurrency control mode to use for this database.
+    ///
+    /// If unspecified in a CreateDatabase request, this will default based on the
+    /// database edition: Optimistic for Enterprise and Pessimistic for all other
+    /// databases.
     #[prost(enumeration = "database::ConcurrencyMode", tag = "15")]
     pub concurrency_mode: i32,
     /// Output only. The period during which past versions of data are retained in
@@ -216,6 +255,22 @@ pub struct Database {
     /// Immutable. The edition of the database.
     #[prost(enumeration = "database::DatabaseEdition", tag = "28")]
     pub database_edition: i32,
+    /// Immutable. The default Realtime Updates mode to use for this database.
+    #[prost(enumeration = "RealtimeUpdatesMode", tag = "31")]
+    pub realtime_updates_mode: i32,
+    /// Optional. The Firestore API data access mode to use for this database. If
+    /// not set on write:
+    ///
+    /// * the default value is DATA_ACCESS_MODE_DISABLED for Enterprise Edition.
+    /// * the default value is DATA_ACCESS_MODE_ENABLED for Standard Edition.
+    #[prost(enumeration = "database::DataAccessMode", tag = "33")]
+    pub firestore_data_access_mode: i32,
+    /// Optional. The MongoDB compatible API data access mode to use for this
+    /// database. If not set on write, the default value is
+    /// DATA_ACCESS_MODE_ENABLED for Enterprise Edition. The value is always
+    /// DATA_ACCESS_MODE_DISABLED for Standard Edition.
+    #[prost(enumeration = "database::DataAccessMode", tag = "34")]
+    pub mongodb_compatible_data_access_mode: i32,
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
@@ -281,7 +336,8 @@ pub mod database {
     /// Encryption configuration for a new database being created from another
     /// source.
     ///
-    /// The source could be a \[Backup\]\[google.firestore.admin.v1.Backup\] .
+    /// The source could be a \[Backup\]\[google.firestore.admin.v1.Backup\] or a
+    /// \[PitrSnapshot\]\[google.firestore.admin.v1.PitrSnapshot\].
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EncryptionConfig {
         /// The method for encrypting the database.
@@ -393,18 +449,23 @@ pub mod database {
         Unspecified = 0,
         /// Use optimistic concurrency control by default. This mode is available
         /// for Cloud Firestore databases.
+        ///
+        /// This is the default setting for Cloud Firestore Enterprise Edition
+        /// databases.
         Optimistic = 1,
         /// Use pessimistic concurrency control by default. This mode is available
         /// for Cloud Firestore databases.
         ///
-        /// This is the default setting for Cloud Firestore.
+        /// This is the default setting for Cloud Firestore Standard Edition
+        /// databases.
         Pessimistic = 2,
         /// Use optimistic concurrency control with entity groups by default.
         ///
-        /// This is the only available mode for Cloud Datastore.
+        /// This mode is enabled for some databases that were automatically upgraded
+        /// from Cloud Datastore to Cloud Firestore with Datastore Mode.
         ///
-        /// This mode is also available for Cloud Firestore with Datastore Mode but
-        /// is not recommended.
+        /// It is not recommended for any new databases, and not supported for
+        /// Firestore Native databases.
         OptimisticWithEntityGroups = 3,
     }
     impl ConcurrencyMode {
@@ -625,6 +686,49 @@ pub mod database {
             }
         }
     }
+    /// The data access mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataAccessMode {
+        /// Not Used.
+        Unspecified = 0,
+        /// Accessing the database through the API is allowed.
+        Enabled = 1,
+        /// Accessing the database through the API is disallowed.
+        Disabled = 2,
+    }
+    impl DataAccessMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_ACCESS_MODE_UNSPECIFIED",
+                Self::Enabled => "DATA_ACCESS_MODE_ENABLED",
+                Self::Disabled => "DATA_ACCESS_MODE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_ACCESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_ACCESS_MODE_ENABLED" => Some(Self::Enabled),
+                "DATA_ACCESS_MODE_DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
 }
 /// Cloud Firestore indexes enable simple and complex queries against
 /// documents in a database.
@@ -680,6 +784,10 @@ pub struct Index {
     /// Optional. The number of shards for the index.
     #[prost(int32, tag = "8")]
     pub shard_count: i32,
+    /// Optional. Whether it is an unique index. Unique index ensures all values
+    /// for the indexed field(s) are unique across documents.
+    #[prost(bool, tag = "10")]
+    pub unique: bool,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
@@ -1001,21 +1109,63 @@ pub mod index {
         /// Unspecified. It will use database default setting. This value is input
         /// only.
         Unspecified = 0,
-        /// In order for an index entry to be added, the document must
-        /// contain all fields specified in the index.
+        /// An index entry will only exist if ALL fields are present in the document.
         ///
-        /// This is the only allowed value for indexes having ApiScope `ANY_API` and
-        /// `DATASTORE_MODE_API`.
+        /// This is both the default and only allowed value for Standard Edition
+        /// databases (for both Cloud Firestore `ANY_API` and Cloud Datastore
+        /// `DATASTORE_MODE_API`).
+        ///
+        /// Take for example the following document:
+        ///
+        /// ```text,
+        /// {
+        ///   "__name__": "...",
+        ///   "a": 1,
+        ///   "b": 2,
+        ///   "c": 3
+        /// }
+        /// ```
+        ///
+        /// an index on `(a ASC, b ASC, c ASC, __name__ ASC)` will generate an index
+        /// entry for this document since `a`, 'b', `c`, and `__name__` are all
+        /// present but an index of `(a ASC, d ASC, __name__ ASC)` will not generate
+        /// an index entry for this document since `d` is missing.
+        ///
+        /// This means that such indexes can only be used to serve a query when the
+        /// query has either implicit or explicit requirements that all fields from
+        /// the index are present.
         SparseAll = 1,
-        /// In order for an index entry to be added, the document must
-        /// contain at least one of the fields specified in the index.
-        /// Non-existent fields are treated as having a NULL value when generating
-        /// index entries.
+        /// An index entry will exist if ANY field are present in the document.
+        ///
+        /// This is used as the definition of a sparse index for Enterprise Edition
+        /// databases.
+        ///
+        /// Take for example the following document:
+        ///
+        /// ```text,
+        /// {
+        ///   "__name__": "...",
+        ///   "a": 1,
+        ///   "b": 2,
+        ///   "c": 3
+        /// }
+        /// ```
+        ///
+        /// an index on `(a ASC, d ASC)` will generate an index entry for this
+        /// document since `a` is present, and will fill in an `unset` value for `d`.
+        /// An index on `(d ASC, e ASC)` will not generate any index entry as neither
+        /// `d` nor `e` are present.
+        ///
+        /// An index that contains `__name__` will generate an index entry for all
+        /// documents since Firestore guarantees that all documents have a `__name__`
+        /// field.
         SparseAny = 2,
-        /// An index entry will be added regardless of whether the
-        /// document contains any of the fields specified in the index.
-        /// Non-existent fields are treated as having a NULL value when generating
-        /// index entries.
+        /// An index entry will exist regardless of if the fields are present or not.
+        ///
+        /// This is the default density for an Enterprise Edition database.
+        ///
+        /// The index will store `unset` values for fields that are not present in
+        /// the document.
         Dense = 3,
     }
     impl Density {
@@ -1118,10 +1268,13 @@ pub mod field {
     /// set.
     ///
     /// Storing a timestamp value into a TTL-enabled field will be treated as
-    /// the document's absolute expiration time. Timestamp values in the past
-    /// indicate that the document is eligible for immediate expiration. Using any
-    /// other data type or leaving the field absent will disable expiration for the
-    /// individual document.
+    /// the document's absolute expiration time. For Enterprise edition databases,
+    /// the timestamp value may also be stored in an array value in the
+    /// TTL-enabled field.
+    ///
+    /// Timestamp values in the past indicate that the document is eligible for
+    /// immediate expiration. Using any other data type or leaving the field absent
+    /// will disable expiration for the individual document.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TtlConfig {
         /// Output only. The state of the TTL configuration.
@@ -1785,7 +1938,7 @@ pub struct CreateDatabaseRequest {
     /// with first character a letter and the last a letter or a number. Must not
     /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
     ///
-    /// "(default)" database ID is also valid.
+    /// "(default)" database ID is also valid if the database is Standard edition.
     #[prost(string, tag = "3")]
     pub database_id: ::prost::alloc::string::String,
 }
@@ -2124,8 +2277,8 @@ pub struct ExportDocumentsRequest {
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Which collection IDs to export. Unspecified means all collections. Each
-    /// collection ID in this list must be unique.
+    /// IDs of the collection groups to export. Unspecified means all
+    /// collection groups. Each collection group in this list must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
@@ -2164,8 +2317,9 @@ pub struct ImportDocumentsRequest {
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Which collection IDs to import. Unspecified means all collections included
-    /// in the import. Each collection ID in this list must be unique.
+    /// IDs of the collection groups to import. Unspecified means all collection
+    /// groups that were included in the export. Each collection group in this list
+    /// must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Location of the exported files.
@@ -2302,7 +2456,7 @@ pub struct RestoreDatabaseRequest {
     /// with first character a letter and the last a letter or a number. Must not
     /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
     ///
-    /// "(default)" database ID is also valid.
+    /// "(default)" database ID is also valid if the database is Standard edition.
     #[prost(string, tag = "2")]
     pub database_id: ::prost::alloc::string::String,
     /// Required. Backup to restore from. Must be from the same project as the
@@ -2347,7 +2501,7 @@ pub struct CloneDatabaseRequest {
     /// with first character a letter and the last a letter or a number. Must not
     /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
     ///
-    /// "(default)" database ID is also valid.
+    /// "(default)" database ID is also valid if the database is Standard edition.
     #[prost(string, tag = "2")]
     pub database_id: ::prost::alloc::string::String,
     /// Required. Specification of the PITR data to clone from. The source database

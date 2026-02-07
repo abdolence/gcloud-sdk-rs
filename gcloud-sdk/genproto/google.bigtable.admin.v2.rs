@@ -646,6 +646,7 @@ pub mod app_profile {
         /// If you set this field, `standard_isolation.priority` will be set instead.
         ///
         /// The priority of requests sent using this app profile.
+        #[deprecated]
         #[prost(enumeration = "Priority", tag = "7")]
         Priority(i32),
         /// The standard options used for isolating this app profile's traffic from
@@ -2554,6 +2555,7 @@ pub mod r#type {
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Deprecated: if set, converts to an empty `utf8_bytes`.
+                #[deprecated]
                 #[prost(message, tag = "1")]
                 Utf8Raw(Utf8Raw),
                 /// Use `Utf8Bytes` encoding.
@@ -3032,6 +3034,15 @@ pub struct Table {
     /// Note one can still delete the data stored in the table through Data APIs.
     #[prost(bool, tag = "9")]
     pub deletion_protection: bool,
+    /// Rules to specify what data is stored in each storage tier.
+    /// Different tiers store data differently, providing different trade-offs
+    /// between cost and performance. Different parts of a table can be stored
+    /// separately on different tiers.
+    /// If a config is specified, tiered storage is enabled for this table.
+    /// Otherwise, tiered storage is disabled.
+    /// Only SSD instances can configure tiered storage.
+    #[prost(message, optional, tag = "14")]
+    pub tiered_storage_config: ::core::option::Option<TieredStorageConfig>,
     /// The row key schema for this table. The schema is used to decode the raw row
     /// key bytes into a structured format. The order of field declarations in this
     /// schema is important, as it reflects how the raw row key bytes are
@@ -3818,6 +3829,36 @@ pub struct BackupInfo {
     /// projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
     #[prost(string, tag = "10")]
     pub source_backup: ::prost::alloc::string::String,
+}
+/// Config for tiered storage.
+/// A valid config must have a valid TieredStorageRule. Otherwise the whole
+/// TieredStorageConfig must be unset.
+/// By default all data is stored in the SSD tier (only SSD instances can
+/// configure tiered storage).
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TieredStorageConfig {
+    /// Rule to specify what data is stored in the infrequent access(IA) tier.
+    /// The IA tier allows storing more data per node with reduced performance.
+    #[prost(message, optional, tag = "1")]
+    pub infrequent_access: ::core::option::Option<TieredStorageRule>,
+}
+/// Rule to specify what data is stored in a storage tier.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TieredStorageRule {
+    /// Rules to specify what data is stored in this tier.
+    #[prost(oneof = "tiered_storage_rule::Rule", tags = "1")]
+    pub rule: ::core::option::Option<tiered_storage_rule::Rule>,
+}
+/// Nested message and enum types in `TieredStorageRule`.
+pub mod tiered_storage_rule {
+    /// Rules to specify what data is stored in this tier.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Rule {
+        /// Include cells older than the given age.
+        /// For the infrequent access tier, this value must be at least 30 days.
+        #[prost(message, tag = "1")]
+        IncludeIfOlderThan(::prost_types::Duration),
+    }
 }
 /// Represents a protobuf schema.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

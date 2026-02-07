@@ -142,10 +142,10 @@ pub struct Document {
     /// entity extraction results at different stages of the processing.
     #[prost(message, repeated, tag = "22")]
     pub entities_revisions: ::prost::alloc::vec::Vec<document::EntitiesRevision>,
-    /// The entity revision id that `document.entities` field is based on.
+    /// The entity revision ID that `document.entities` field is based on.
     /// If this field is set and `entities_revisions` is not empty, the entities in
     /// `document.entities` field are the entities in the entity revision with this
-    /// id and `document.entity_validation_output` field is the
+    /// ID and `document.entity_validation_output` field is the
     /// `entity_validation_output` field in this entity revision.
     #[prost(string, tag = "23")]
     pub entities_revision_id: ::prost::alloc::string::String,
@@ -1200,11 +1200,14 @@ pub mod document {
             Replace = 3,
             /// Deprecated. Request human review for the element identified by
             /// `parent`.
+            #[deprecated]
             EvalRequested = 4,
             /// Deprecated. Element is reviewed and approved at human review,
             /// confidence will be set to 1.0.
+            #[deprecated]
             EvalApproved = 5,
             /// Deprecated. Element is skipped in the validation process.
+            #[deprecated]
             EvalSkipped = 6,
         }
         impl OperationType {
@@ -1219,8 +1222,11 @@ pub mod document {
                     Self::Remove => "REMOVE",
                     Self::Update => "UPDATE",
                     Self::Replace => "REPLACE",
+                    #[allow(deprecated)]
                     Self::EvalRequested => "EVAL_REQUESTED",
+                    #[allow(deprecated)]
                     Self::EvalApproved => "EVAL_APPROVED",
+                    #[allow(deprecated)]
                     Self::EvalSkipped => "EVAL_SKIPPED",
                 }
             }
@@ -1232,9 +1238,9 @@ pub mod document {
                     "REMOVE" => Some(Self::Remove),
                     "UPDATE" => Some(Self::Update),
                     "REPLACE" => Some(Self::Replace),
-                    "EVAL_REQUESTED" => Some(Self::EvalRequested),
-                    "EVAL_APPROVED" => Some(Self::EvalApproved),
-                    "EVAL_SKIPPED" => Some(Self::EvalSkipped),
+                    "EVAL_REQUESTED" => Some(#[allow(deprecated)] Self::EvalRequested),
+                    "EVAL_APPROVED" => Some(#[allow(deprecated)] Self::EvalApproved),
+                    "EVAL_SKIPPED" => Some(#[allow(deprecated)] Self::EvalSkipped),
                     _ => None,
                 }
             }

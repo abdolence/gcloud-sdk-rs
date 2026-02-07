@@ -215,6 +215,7 @@ pub mod workload {
             /// ignored only in CreateWorkload requests. ListWorkloads and GetWorkload
             /// will continue to provide projects information.
             /// Use CONSUMER_FOLDER instead.
+            #[deprecated]
             ConsumerProject = 1,
             /// Consumer Folder.
             ConsumerFolder = 4,
@@ -231,6 +232,7 @@ pub mod workload {
             pub fn as_str_name(&self) -> &'static str {
                 match self {
                     Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+                    #[allow(deprecated)]
                     Self::ConsumerProject => "CONSUMER_PROJECT",
                     Self::ConsumerFolder => "CONSUMER_FOLDER",
                     Self::EncryptionKeysProject => "ENCRYPTION_KEYS_PROJECT",
@@ -241,7 +243,9 @@ pub mod workload {
             pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
                 match value {
                     "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                    "CONSUMER_PROJECT" => Some(Self::ConsumerProject),
+                    "CONSUMER_PROJECT" => {
+                        Some(#[allow(deprecated)] Self::ConsumerProject)
+                    }
                     "CONSUMER_FOLDER" => Some(Self::ConsumerFolder),
                     "ENCRYPTION_KEYS_PROJECT" => Some(Self::EncryptionKeysProject),
                     "KEYRING" => Some(Self::Keyring),

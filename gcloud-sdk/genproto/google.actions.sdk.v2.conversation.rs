@@ -545,6 +545,7 @@ pub mod content {
         #[prost(message, tag = "4")]
         Media(super::Media),
         /// A response to be used for interactive canvas experience.
+        #[deprecated]
         #[prost(message, tag = "5")]
         Canvas(super::Canvas),
         /// A card presenting a collection of options to select from.

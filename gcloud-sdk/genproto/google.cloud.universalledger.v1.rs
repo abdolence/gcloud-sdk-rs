@@ -152,6 +152,13 @@ pub struct Int64List {
     #[prost(int64, repeated, packed = "false", tag = "1")]
     pub value: ::prost::alloc::vec::Vec<i64>,
 }
+/// A list of account IDs.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AccountIdList {
+    /// Optional. The account ID values.
+    #[prost(string, repeated, tag = "1")]
+    pub value: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A list of booleans.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoolList {
@@ -170,7 +177,7 @@ pub struct DictList {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DictValue {
     /// Each key can be exactly one kind.
-    #[prost(oneof = "dict_value::Keys", tags = "1, 2, 3")]
+    #[prost(oneof = "dict_value::Keys", tags = "1, 2, 3, 8")]
     pub keys: ::core::option::Option<dict_value::Keys>,
     /// Each value can be exactly one kind.
     #[prost(oneof = "dict_value::Values", tags = "4, 5, 6, 7")]
@@ -190,6 +197,9 @@ pub mod dict_value {
         /// Optional. A list of int64 keys.
         #[prost(message, tag = "3")]
         Int64Keys(super::Int64List),
+        /// Optional. A list of account ID keys.
+        #[prost(message, tag = "8")]
+        AccountIdKeys(super::AccountIdList),
     }
     /// Each value can be exactly one kind.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -277,15 +287,25 @@ pub struct FractionalFee {
     pub amount: i64,
     /// Optional. Indicates who pays the fee. By default, it will be the
     /// transaction sender. If set to `FEE_PAYER_OTHER`, then a valid fee account
-    /// must also be supplied.
+    /// must also be supplied in `fee_account_id` (or the deprecated `fee_account`
+    /// field).
     #[prost(enumeration = "FeePayer", tag = "2")]
     pub fee_payer: i32,
     /// Optional. Optional fee account in case the fee is to be paid from an
     /// account other than the transaction sender or receiver. If a fee account is
     /// specified, fee payer must be set to `FEE_PAYER_OTHER` and the transaction
-    /// must also be signed by the fee account.
+    /// must also be signed by the fee account. Deprecated: use `fee_account_id`
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "3")]
     pub fee_account: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account from which the fee is paid. This is an
+    /// optional field which is only required if the fee is to be paid from an
+    /// account other than the transaction sender or receiver. If a fee account ID
+    /// is specified, fee payer must be set to `FEE_PAYER_OTHER` and the
+    /// transaction must also be signed by the fee account.
+    #[prost(string, tag = "4")]
+    pub fee_account_id: ::prost::alloc::string::String,
 }
 /// Initiates a settlement operation between two token managers.
 /// The sender must be a clearinghouse account.
@@ -297,13 +317,24 @@ pub struct FractionalFee {
 /// token managers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SettlementRequest {
-    /// Required. Immutable. The account ID of the party that needs to make the
-    /// fund transfer.
+    /// Optional. Immutable. The account ID of the party that needs to make the
+    /// fund transfer. Deprecated: use `payer_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub payer: ::core::option::Option<Entity>,
-    /// Required. Immutable. The account ID of the party that needs to be paid.
+    /// Optional. Immutable. The account ID of the party that needs to make the
+    /// fund transfer. One of `payer` or `payer_id` must be specified.
+    #[prost(string, tag = "6")]
+    pub payer_id: ::prost::alloc::string::String,
+    /// Optional. Immutable. The account ID of the party that needs to be paid.
+    /// Deprecated: use `beneficiary_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub beneficiary: ::core::option::Option<Entity>,
+    /// Optional. Immutable. The account ID of the party that will receive the
+    /// funds. One of `beneficiary` or `beneficiary_id` must be specified.
+    #[prost(string, tag = "7")]
+    pub beneficiary_id: ::prost::alloc::string::String,
     /// Required. Immutable. The balance of issued tokens that need to be
     /// transferred by the `payer` account to the `beneficiary` account on the
     /// ledger.
@@ -322,11 +353,10 @@ pub struct SettlementRequest {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAccount {
-    /// Required. Immutable. The public key of the account owner. Note that this is
-    /// *not* the public key of the sender. This is the public key of the *new*
-    /// account owner and it will be stored on the chain. It will be used to
-    /// validate the signature of the transactions emanating from the created
-    /// account.
+    /// Required. The public key of the account owner. Note that this is *not* the
+    /// public key of the sender. This is the public key of the *new* account owner
+    /// and it will be stored on the ledger. It will be used to validate the
+    /// signature of the transactions emanating from the created account.
     ///
     /// The format of the public key is defined by the `key_format` field.
     #[prost(bytes = "vec", tag = "1")]
@@ -344,15 +374,23 @@ pub struct CreateAccount {
     #[prost(enumeration = "AccountStatus", tag = "3")]
     pub account_status: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
     /// Optional. The token manager for this account. This field is optional and if
     /// not supplied, the default token manager associated to the account manager
     /// (that is, the sender of this transaction) will be used.
+    /// Deprecated: use `token_manager_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "5")]
     pub token_manager: ::core::option::Option<Entity>,
+    /// Optional. The ID of the token manager for this account. This field is
+    /// optional and if not supplied, the default token manager associated to the
+    /// account manager (that is, the sender of this transaction) will be used. The
+    /// value is limited to 60 characters.
+    #[prost(string, tag = "7")]
+    pub token_manager_id: ::prost::alloc::string::String,
 }
 /// Marks an account as `ACCOUNT_STATUS_INACTIVE`. The sender must be the account
 /// manager of the account to deactivate.
@@ -361,9 +399,15 @@ pub struct CreateAccount {
 /// on the account regardless of the roles.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeactivateAccount {
-    /// Required. The ID of the account to be deactivated.
+    /// Optional. The ID of the account to be deactivated.
+    /// Deprecated: use `account_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account to be deactivated. One of `account` or
+    /// `account_id` must be specified. The value is limited to 60 characters.
+    #[prost(string, tag = "2")]
+    pub account_id: ::prost::alloc::string::String,
 }
 /// Marks an account as `ACCOUNT_STATUS_ACTIVE`. The sender must be the account
 /// manager of the account to activate.
@@ -372,17 +416,29 @@ pub struct DeactivateAccount {
 /// account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActivateAccount {
-    /// Required. The ID of the account to be activated.
+    /// Optional. The ID of the account to be activated.
+    /// Deprecated: use `account_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account to be activated. One of `account` or
+    /// `account_id` must be specified. The value is limited to 60 characters.
+    #[prost(string, tag = "2")]
+    pub account_id: ::prost::alloc::string::String,
 }
 /// Adds the specified roles to the account. The sender must be the account
 /// manager of the account to modify.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddRoles {
-    /// Required. The ID of the account to be modified.
+    /// Optional. The ID of the account to be modified.
+    /// Deprecated: use `account_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account to be modified. One of `account` or
+    /// `account_id` must be specified. The value is limited to 60 characters.
+    #[prost(string, tag = "3")]
+    pub account_id: ::prost::alloc::string::String,
     /// Required. The roles to be added.
     #[prost(enumeration = "Role", repeated, packed = "false", tag = "2")]
     pub roles: ::prost::alloc::vec::Vec<i32>,
@@ -391,9 +447,15 @@ pub struct AddRoles {
 /// manager of the account to modify.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRoles {
-    /// Required. The ID of the account to be modified.
+    /// Optional. The ID of the account to be modified.
+    /// Deprecated: use `account_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account to be modified. One of `account` or
+    /// `account_id` must be specified. The value is limited to 60 characters.
+    #[prost(string, tag = "3")]
+    pub account_id: ::prost::alloc::string::String,
     /// Required. The roles to be removed.
     #[prost(enumeration = "Role", repeated, packed = "false", tag = "2")]
     pub roles: ::prost::alloc::vec::Vec<i32>,
@@ -403,13 +465,28 @@ pub struct RemoveRoles {
 /// to provide consent, the new manager must also sign this transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChangeAccountManager {
-    /// Required. The ID of the account whose manager is to be changed.
+    /// Optional. The ID of the account whose manager is to be changed.
+    /// Deprecated: use `account_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Entity>,
-    /// Required. The ID of the new proposed account manager. Validation requires
-    /// that the new manager has also signed this transaction.
+    /// Optional. The ID of the account whose manager is to be changed. One of
+    /// `account` or `account_id` must be specified. The value is limited to 60
+    /// characters.
+    #[prost(string, tag = "3")]
+    pub account_id: ::prost::alloc::string::String,
+    /// Optional. The ID of the new proposed account manager. Validation requires
+    /// that the new manager has also signed this transaction. Deprecated: use
+    /// `next_manager_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub next_manager: ::core::option::Option<Entity>,
+    /// Optional. The ID of the new proposed account manager. Validation requires
+    /// that the new manager has also signed this transaction. One of
+    /// `next_manager` or `next_manager_id` must be specified. The value is limited
+    /// to 60 characters.
+    #[prost(string, tag = "4")]
+    pub next_manager_id: ::prost::alloc::string::String,
 }
 /// Transactions for token issuance and minting.
 /// Notifies the network that the target account has deposited reserve funds and
@@ -417,11 +494,17 @@ pub struct ChangeAccountManager {
 /// account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IncreaseTokenIssuanceLimit {
-    /// Required. The ID of the institutional account whose mint limit is to be
+    /// Optional. The ID of the institutional account whose mint limit is to be
     /// raised. This account must be a token manager for the transaction to be
-    /// valid.
+    /// valid. Deprecated: use `token_manager_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub token_manager: ::core::option::Option<Entity>,
+    /// Optional. The ID of the institutional account whose mint limit is to be
+    /// raised. This account must be a token manager for the transaction to be
+    /// valid. One of `token_manager` or `token_manager_id` must be specified.
+    #[prost(string, tag = "3")]
+    pub token_manager_id: ::prost::alloc::string::String,
     /// Required. The amount by which to raise the limit. The amount must be
     /// positive.
     #[prost(message, optional, tag = "2")]
@@ -437,11 +520,19 @@ pub struct IncreaseTokenIssuanceLimit {
 /// the requested reduced limit).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecreaseTokenIssuanceLimit {
-    /// Required. The ID of the institutional account whose mint limit is to be
+    /// Optional. The ID of the institutional account whose mint limit is to be
     /// lowered. This account must have the `ADMIN_ROLE_TOKEN_MANAGER` permission
-    /// on it for the transaction to be valid.
+    /// on it for the transaction to be valid. Deprecated: use `token_manager_id`
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub token_manager: ::core::option::Option<Entity>,
+    /// Optional. The ID of the institutional account whose mint limit is to be
+    /// lowered. This account must have the `ADMIN_ROLE_TOKEN_MANAGER` permission
+    /// on it for the transaction to be valid. One of `token_manager` or
+    /// `token_manager_id` must be specified.
+    #[prost(string, tag = "3")]
+    pub token_manager_id: ::prost::alloc::string::String,
     /// Required. The amount by which to lower the limit. The amount must be
     /// positive. The transaction will fail if the reduced limit will fall below
     /// the currently issued tokens.
@@ -457,10 +548,17 @@ pub struct Mint {
     /// higher than that, the transaction must be rejected
     #[prost(message, optional, tag = "1")]
     pub mint_amount: ::core::option::Option<CurrencyValue>,
-    /// Required. The account to which the minted amount should be transferred.
+    /// Optional. The account to which the minted amount should be transferred.
     /// The beneficiary account must have the `ROLE_RECEIVER` enabled on it.
+    /// Deprecated: use `beneficiary_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub beneficiary: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account to which the minted amount should be
+    /// transferred. The receiving account must have the `ROLE_RECEIVER` enabled on
+    /// it. One of `beneficiary` or `beneficiary_id` must be specified.
+    #[prost(string, tag = "3")]
+    pub beneficiary_id: ::prost::alloc::string::String,
 }
 /// Burns currency tokens. The sender must be a token manager and the account
 /// supplying the tokens to burn must additionally sign the transaction.
@@ -474,10 +572,16 @@ pub struct Burn {
     /// Required. The amount to burn.
     #[prost(message, optional, tag = "1")]
     pub burn_amount: ::core::option::Option<CurrencyValue>,
-    /// Required. The account supplying the tokens to burn. The account must have
-    /// the `ROLE_PAYER` enabled on it.
+    /// Optional. The account supplying the tokens to burn. The account must have
+    /// the `ROLE_PAYER` enabled on it. Deprecated: use `payer_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub payer: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account supplying the tokens to burn. The payer
+    /// account must have the `ROLE_PAYER` enabled on it. One of `payer` or
+    /// `payer_id` must be specified.
+    #[prost(string, tag = "3")]
+    pub payer_id: ::prost::alloc::string::String,
 }
 /// Transfers tokens from one user account to another. The sender must be a
 /// regular user account, as opposed to a privileged account like a token manager
@@ -487,13 +591,19 @@ pub struct Burn {
 /// it, while the receiver must have the `ROLE_RECEIVER` enabled on it.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Transfer {
-    /// Required. The account that receives the tokens.
+    /// Optional. The account that receives the tokens.
+    /// Deprecated: use `beneficiary_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub beneficiary: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account that receives the tokens. One of
+    /// `beneficiary` or `beneficiary_id` must be specified.
+    #[prost(string, tag = "4")]
+    pub beneficiary_id: ::prost::alloc::string::String,
     /// Required. The amount to transfer. The amount must be positive.
     #[prost(message, optional, tag = "2")]
     pub amount: ::core::option::Option<CurrencyValue>,
-    /// Required. The transaction fee to be paid, as a fraction of the amount to
+    /// Optional. The transaction fee to be paid, as a fraction of the amount to
     /// transfer.
     #[prost(message, optional, tag = "3")]
     pub fractional_fee: ::core::option::Option<FractionalFee>,
@@ -507,10 +617,10 @@ pub struct Transfer {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateTokenManager {
-    /// The public key of the new token manager. Note that this is *not* the public
-    /// key of the operator. This public key will be associated with the token
-    /// manager and stored on the chain. It will be used to validate the signature
-    /// of the transactions emanating from the token manager's account.
+    /// Required. The public key of the new token manager. Note that this is *not*
+    /// the public key of the operator. This public key will be associated with the
+    /// token manager and stored on the ledger. It will be used to validate the
+    /// signature of the transactions emanating from the token manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
     #[prost(bytes = "vec", tag = "1")]
@@ -521,7 +631,7 @@ pub struct CreateTokenManager {
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
@@ -534,10 +644,11 @@ pub struct CreateTokenManager {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAccountManager {
-    /// The public key of the new account manager. Note that this is *not* the
-    /// public key of the operator. This public key will be associated with the
-    /// account manager and stored on the chain. It will be used to validate the
-    /// signature of the transactions emanating from the account manager's account.
+    /// Required. The public key of the new account manager. Note that this is
+    /// *not* the public key of the operator. This public key will be associated
+    /// with the account manager and stored on the ledger. It will be used to
+    /// validate the signature of the transactions emanating from the account
+    /// manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
     #[prost(bytes = "vec", tag = "1")]
@@ -547,12 +658,17 @@ pub struct CreateAccountManager {
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
-    /// The default token manager for the accounts that will be created by this
-    /// manager.
+    /// Optional. The default token manager for the accounts that will be created
+    /// by this manager. Deprecated: use `default_token_manager_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub default_token_manager: ::core::option::Option<Entity>,
+    /// Optional. The ID of the default token manager for the accounts that will be
+    /// created by this manager. The value is limited to 60 characters.
+    #[prost(string, tag = "3")]
+    pub default_token_manager_id: ::prost::alloc::string::String,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
@@ -565,9 +681,9 @@ pub struct CreateAccountManager {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateClearinghouse {
-    /// The public key of the new clearinghouse. Note that this is *not* the public
-    /// key of the operator. This public key will be associated with the
-    /// clearinghouse and stored on the chain. It will be used to validate
+    /// Required. The public key of the new clearinghouse. Note that this is *not*
+    /// the public key of the operator. This public key will be associated with the
+    /// clearinghouse and stored on the ledger. It will be used to validate
     /// signature of the transactions emanating from the clearinghouse's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
@@ -579,7 +695,7 @@ pub struct CreateClearinghouse {
     #[prost(enumeration = "KeyFormat", tag = "6")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
@@ -596,9 +712,9 @@ pub struct CreateClearinghouse {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferPlatformOperator {
-    /// The public key of the new platform operator. This public key will be
-    /// associated with the platform operator and stored on the chain. It will be
-    /// used to validate the signature of the transactions emanating from the
+    /// Required. The public key of the new platform operator. This public key will
+    /// be associated with the platform operator and stored on the ledger. It will
+    /// be used to validate the signature of the transactions emanating from the
     /// platform operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
@@ -610,7 +726,7 @@ pub struct TransferPlatformOperator {
     #[prost(enumeration = "KeyFormat", tag = "3")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
@@ -628,9 +744,9 @@ pub struct TransferPlatformOperator {
 /// transaction should be sent instead.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCurrencyOperator {
-    /// The public key of the new currency operator. This public key will be
-    /// associated with the currency operator and stored on the chain. It will be
-    /// used to validate the signature of the transactions emanating from the
+    /// Required. The public key of the new currency operator. This public key will
+    /// be associated with the currency operator and stored on the ledger. It will
+    /// be used to validate the signature of the transactions emanating from the
     /// operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
@@ -642,7 +758,7 @@ pub struct CreateCurrencyOperator {
     #[prost(enumeration = "KeyFormat", tag = "4")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
@@ -660,9 +776,9 @@ pub struct CreateCurrencyOperator {
 /// of the finalized transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferCurrencyOperator {
-    /// The public key of the new currency operator. This public key will be
-    /// associated with the currency operator and stored on the chain. It will be
-    /// used to validate the signature of the transactions emanating from the
+    /// Required. The public key of the new currency operator. This public key will
+    /// be associated with the currency operator and stored on the ledger. It will
+    /// be used to validate the signature of the transactions emanating from the
     /// currency operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
@@ -674,19 +790,26 @@ pub struct TransferCurrencyOperator {
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
-    /// system but stored on-chain in the account. Maximum length is 128
+    /// system but stored on the ledger in the account. Maximum length is 128
     /// characters. May be left empty. Once created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
-    /// The currency operator to be replaced. Must be active.
+    /// Optional. The currency operator to be replaced. Must be active.
+    /// Deprecated: use `currency_operator_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "4")]
     pub currency_operator: ::core::option::Option<Entity>,
+    /// Optional. The ID of the currency operator to be replaced. Must be active.
+    /// One of `currency_operator` or `currency_operator_id` must be specified. The
+    /// value is limited to 60 characters.
+    #[prost(string, tag = "6")]
+    pub currency_operator_id: ::prost::alloc::string::String,
 }
 /// Triggers the creation of a snapshot of the network. The sender must be
 /// the platform operator.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSnapshot {}
-/// Stores a contract on the blockchain.
+/// Stores a contract on the ledger.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContract {
     /// Serialised biter_bytecode.Contract bytes.
@@ -704,9 +827,15 @@ pub struct CreateContract {
 /// Note that, at the moment, there is no support for revoking permissions.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrantContractPermissions {
-    /// ID of the contract to which permissions are being granted.
+    /// Optional. ID of the contract to which permissions are being granted.
+    /// Deprecated: use `contract_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub contract: ::core::option::Option<Entity>,
+    /// Optional. The ID of the contract to which permissions are being granted.
+    /// One of `contract` or `contract_id` must be specified.
+    #[prost(string, tag = "3")]
+    pub contract_id: ::prost::alloc::string::String,
     /// The permissions to be granted.
     #[prost(enumeration = "ContractPermission", repeated, tag = "2")]
     pub permissions: ::prost::alloc::vec::Vec<i32>,
@@ -714,9 +843,15 @@ pub struct GrantContractPermissions {
 /// Invokes the execution of a contract method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvokeContractMethod {
-    /// ID of the contract to run.
+    /// Optional. ID of the contract to run.
+    /// Deprecated: use `contract_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub contract: ::core::option::Option<Entity>,
+    /// Optional. The ID of the contract to run. One of `contract` or `contract_id`
+    /// must be specified.
+    #[prost(string, tag = "5")]
+    pub contract_id: ::prost::alloc::string::String,
     /// Name of the method to run.
     #[prost(string, tag = "2")]
     pub method_name: ::prost::alloc::string::String,
@@ -818,9 +953,9 @@ pub enum SettlementMode {
     /// be used.
     Unspecified = 0,
     /// The clearinghouse is responsible for tracking the ownership of the
-    /// off-chain funds, and periodically issuing
+    /// off-ledger funds, and periodically issuing
     /// \[SettlementRequest\]\[google.cloud.universalledger.v1.SettlementRequest\]
-    /// transactions to maintain the corresponding on-chain balances in sync.
+    /// transactions to maintain the corresponding balances on the ledger in sync.
     Deferred = 1,
     /// The clearinghouse maintains a single pool of funds and the ledger acts as
     /// the golden source for the allocation of those funds between the token
@@ -857,7 +992,7 @@ pub struct Account {
     /// with each transaction sent by this account.
     #[prost(int64, tag = "1")]
     pub sequence_number: i64,
-    /// Output only. The public key associated with this account, used for
+    /// Output only. The primary public key associated with this account, used for
     /// signature verification.
     #[prost(bytes = "vec", tag = "2")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
@@ -869,7 +1004,7 @@ pub struct Account {
     #[prost(string, tag = "9")]
     pub comment: ::prost::alloc::string::String,
     /// Specific details based on the type of account.
-    #[prost(oneof = "account::AccountDetails", tags = "6, 4, 5, 11, 10, 7, 8")]
+    #[prost(oneof = "account::AccountDetails", tags = "6, 4, 5, 12, 11, 10, 7, 8")]
     pub account_details: ::core::option::Option<account::AccountDetails>,
 }
 /// Nested message and enum types in `Account`.
@@ -886,6 +1021,9 @@ pub mod account {
         /// Output only. Details for a token manager account.
         #[prost(message, tag = "5")]
         TokenManagerDetails(super::TokenManagerDetails),
+        /// Output only. Details for a contract token manager account.
+        #[prost(message, tag = "12")]
+        ContractTokenManagerDetails(super::ContractTokenManagerDetails),
         /// Output only. Details for a smart contract account.
         #[prost(message, tag = "11")]
         ContractDetails(super::ContractDetails),
@@ -921,6 +1059,33 @@ pub struct TokenManagerDetails {
     /// This number will increase when minting and decrease when burning.
     #[prost(message, optional, tag = "2")]
     pub issued_tokens: ::core::option::Option<CurrencyValue>,
+}
+/// Details specific to a Contract Token Manager.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContractTokenManagerDetails {
+    /// Output only. The amount of tokens this contract token manager is allowed
+    /// to provide backing for.
+    ///
+    /// Since contract token managers cannot increase or decrease
+    /// their issuance limit, this should equal the `issued_tokens`.
+    #[prost(message, optional, tag = "1")]
+    pub issuance_limit: ::core::option::Option<CurrencyValue>,
+    /// Output only. The amount of tokens this contract token manager is
+    /// providing backing for (that is, its total liability).
+    ///
+    /// This equals to the sum of all balances held in contracts for its currency,
+    /// plus its net position in the settlement matrix.
+    #[prost(message, optional, tag = "2")]
+    pub issued_tokens: ::core::option::Option<CurrencyValue>,
+    /// Output only. The account ID of the previous contract token manager for this
+    /// currency. This forms an audit trail that can be traversed to discover all
+    /// previous managers. If this is the first contract token manager for the
+    /// currency, this will be empty.
+    #[prost(string, tag = "3")]
+    pub previous_contract_token_manager_id: ::prost::alloc::string::String,
+    /// Output only. The status of this account.
+    #[prost(enumeration = "AccountStatus", tag = "4")]
+    pub account_status: i32,
 }
 /// Details specific to a User account.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -966,6 +1131,10 @@ pub struct CurrencyOperatorDetails {
     /// Output only. The platform operator which created this currency operator.
     #[prost(message, optional, tag = "4")]
     pub platform_operator_entity_id: ::core::option::Option<Entity>,
+    /// Output only. The contract token manager associated with this currency
+    /// operator.
+    #[prost(message, optional, tag = "5")]
+    pub contract_token_manager: ::core::option::Option<Entity>,
 }
 /// Details specific to a Platform Operator.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1005,6 +1174,13 @@ pub struct ContractDetails {
     /// Output only. The contract fields (field name -> value) for this contract.
     #[prost(message, optional, tag = "3")]
     pub contract_fields: ::core::option::Option<Fields>,
+    /// Output only. The currency balances held by the contract (currency operator
+    /// -> balance).
+    #[prost(map = "string, message", tag = "4")]
+    pub currency_balances: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        CurrencyValue,
+    >,
 }
 /// A balance to settle between two token managers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1121,13 +1297,24 @@ impl EventType {
 /// Represents a transaction initiated by a client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientTransaction {
-    /// Required. The transaction sender.
+    /// Optional. The transaction sender.
+    /// Deprecated: use `sender_id` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub source: ::core::option::Option<Entity>,
+    /// Optional. The ID of the account that is sending this transaction.
+    /// One of `source` or `sender_id` must be set.
+    #[prost(string, tag = "11")]
+    pub sender_id: ::prost::alloc::string::String,
     /// Optional. Accounts that, in addition to the sender, have signed this
-    /// transaction.
+    /// transaction. Deprecated: Use `other_signatory_ids` instead.
+    #[deprecated]
     #[prost(message, repeated, tag = "2")]
     pub signatories: ::prost::alloc::vec::Vec<Entity>,
+    /// Optional. The IDs of accounts that, in addition to the sender, have signed
+    /// this transaction.
+    #[prost(string, repeated, tag = "12")]
+    pub other_signatory_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. A unique, monotonically increasing number, starting from 0.
     ///
     /// This number must be increased by one for each transaction previously
@@ -1181,14 +1368,18 @@ pub mod client_transaction {
         /// * \[CreateContract\]\[google.cloud.universalledger.v1.CreateContract\]
         /// * \[GrantContractPermissions\]\[google.cloud.universalledger.v1.GrantContractPermissions\]
         /// * \[InvokeContractMethod\]\[google.cloud.universalledger.v1.InvokeContractMethod\]
+        /// * \[CreateContractTokenManager\]\[google.cloud.universalledger.v1.CreateContractTokenManager\]
+        /// * \[TransferContractTokenManager\]\[google.cloud.universalledger.v1.TransferContractTokenManager\]
+        /// * \[RemoveSigningPublicKey\]\[google.cloud.universalledger.v1.RemoveSigningPublicKey\]
+        /// * \[ReplaceSigningPublicKey\]\[google.cloud.universalledger.v1.ReplaceSigningPublicKey\]
         ///
         /// <!--
         /// clang-format on
         /// -->
         #[prost(message, tag = "5")]
         App(::prost_types::Any),
-        /// An operational transaction message. Note this can only be sent by the
-        /// platform operator. Should be any one of:
+        /// Optional. An operational transaction message. Note this can only be sent
+        /// by the platform operator. Should be any one of:
         ///
         /// <!--
         /// clang-format off
@@ -1201,8 +1392,8 @@ pub mod client_transaction {
         /// -->
         #[prost(message, tag = "6")]
         Operational(::prost_types::Any),
-        /// A transaction chain including multiple transaction units to execute
-        /// in sequence.
+        /// Optional. Message for a transaction chain including multiple transaction
+        /// units to execute in sequence.
         #[prost(message, tag = "8")]
         Chain(super::TransactionChain),
     }
@@ -1283,11 +1474,11 @@ pub struct RoundCertificate {
     /// lookup the public key against which the `validator_signatures` is verified.
     #[prost(string, tag = "2")]
     pub validator_id: ::prost::alloc::string::String,
-    /// Output only. The hex representation of the homomorphic hash over the world
-    /// state after the effects of this round are applied.
+    /// Output only. The hex representation of the homomorphic digest over the
+    /// world state after the effects of this round are applied.
     #[prost(string, tag = "3")]
     pub round_state_checksum_hex: ::prost::alloc::string::String,
-    /// Output only. The hex representation of the homomorphic hash over the
+    /// Output only. The hex representation of the homomorphic digest over the
     /// aggregated transaction effects of this round.
     #[prost(string, tag = "4")]
     pub round_delta_checksum_hex: ::prost::alloc::string::String,
@@ -1295,8 +1486,8 @@ pub struct RoundCertificate {
     /// batches (executed in the round) as the leaves.
     #[prost(message, optional, tag = "6")]
     pub merkle_tree: ::core::option::Option<MerkleTree>,
-    /// Optional. The signature of the validator. This is signed over the hash
-    /// digest of the preceding payload of this record.
+    /// Optional. The signature of the validator. This is signed over the digest of
+    /// the preceding payload of this record.
     #[prost(bytes = "vec", repeated, tag = "5")]
     pub validator_signatures: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     /// Output only. Boolean to indicate if the round is finalized, i.e., whether a
@@ -1347,7 +1538,7 @@ pub struct TransactionStatus {
 /// Effects of the execution of a transaction in the world state.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionEffects {
-    /// The resulting status of the transaction execution.
+    /// Output only. The resulting status of the transaction execution.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<TransactionStatus>,
     /// Output only. The effects of the transaction in the world state.
@@ -1382,8 +1573,7 @@ pub mod transaction_event {
 /// Certificate of the execution of a specific transaction in a round.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionCertificate {
-    /// Output only. Hex encoded SHA-256 hash of the
-    /// `serialized_signed_transaction` that uniquely identifies the transaction.
+    /// Output only. Digest of the transaction this certificate is for.
     #[prost(string, tag = "1")]
     pub transaction_digest_hex: ::prost::alloc::string::String,
     /// Output only. The ID of the execution round at which this transaction was
@@ -1400,8 +1590,8 @@ pub struct TransactionCertificate {
     /// as a hexadecimal string.
     #[prost(string, tag = "4")]
     pub transaction_effects_state_checksum_hex: ::prost::alloc::string::String,
-    /// The cryptographic digest of all the previous fields in sequence.
-    /// Used to build a Merkle tree for the proof of inclusion.
+    /// Output only. The cryptographic digest of all the previous fields in
+    /// sequence. Used to build a Merkle tree for the proof of inclusion.
     #[prost(string, tag = "5")]
     pub certification_results_digest_hex: ::prost::alloc::string::String,
 }
@@ -1409,25 +1599,25 @@ pub struct TransactionCertificate {
 /// state.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProofOfInclusion {
-    /// Certificate of the inclusion of the transaction effects in a specific
-    /// round.
+    /// Output only. Certificate of the inclusion of the transaction effects in a
+    /// specific round.
     #[prost(message, optional, tag = "1")]
     pub transaction_certificate: ::core::option::Option<TransactionCertificate>,
-    /// Certificate of the execution of the round.
+    /// Output only. Certificate of the execution of the round.
     #[prost(message, optional, tag = "2")]
     pub round_certificate: ::core::option::Option<RoundCertificate>,
     /// Output only. Cryptographic proof of inclusion of the transaction effects in
     /// the execution round.
     ///
-    /// It is given as a path from a given leaf (a transaction hash) to the root of
-    /// the execution round. The path is represented as a list of (left child,
+    /// It is given as a path from a given leaf (a transaction digest) to the root
+    /// of the execution round. The path is represented as a list of (left child,
     /// right child) pairs, and the first pair is the left and right children of
     /// the given leaf's parent node. For example, assuming the Merkle tree was
-    /// built with eight leaf hashes `\[t0, t1, t2, t3, t4, t5, t6, t7\]`, having the
-    /// following structure:
+    /// built with eight leaf digests `\[t0, t1, t2, t3, t4, t5, t6, t7\]`, having
+    /// the following structure:
     ///
     /// ```text
-    ///         ______root_hash______
+    ///         _____root_digest____
     ///        |                    |
     ///     __ h20__             __h21__
     ///    |        |           |       |
@@ -1441,7 +1631,7 @@ pub struct ProofOfInclusion {
     ///
     /// One can consecutively compute SHA-256 hashes of each
     /// path node to verify that the path hashes to the same value as the
-    /// `round_certificate.merkle_tree.root_hash_hex`. Thus, verifying that the
+    /// `round_certificate.merkle_tree.root_digest_hex`. Thus, verifying that the
     /// leaf was included in the round's Merkle tree.
     #[prost(message, repeated, tag = "3")]
     pub path_to_round_root: ::prost::alloc::vec::Vec<proof_of_inclusion::MerkleTreeNode>,
@@ -1451,10 +1641,12 @@ pub mod proof_of_inclusion {
     /// Represents a node in a Merkle tree path.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MerkleTreeNode {
-        /// The hex representation of the hash of the left child of a node.
+        /// Output only. The hex representation of the hash of the left child of a
+        /// node.
         #[prost(string, tag = "1")]
         pub left_child_hash_hex: ::prost::alloc::string::String,
-        /// The hex representation of the hash of the right child of a node.
+        /// Output only. The hex representation of the hash of the right child of a
+        /// node.
         #[prost(string, tag = "2")]
         pub right_child_hash_hex: ::prost::alloc::string::String,
     }
@@ -1465,11 +1657,12 @@ pub struct TransactionAttempt {
     /// Output only. The current status of the transaction attempt.
     #[prost(enumeration = "transaction_attempt::TransactionStatus", tag = "1")]
     pub status: i32,
-    /// Certificate of the inclusion of the transaction effects in the world state.
-    /// Only provided if status is `FINALIZED`.
+    /// Output only. Certificate of the inclusion of the transaction effects in the
+    /// world state. Only provided if status is `FINALIZED`.
     #[prost(message, optional, tag = "2")]
     pub proof_of_inclusion: ::core::option::Option<ProofOfInclusion>,
-    /// The ordered status events recorded for the transaction attempt.
+    /// Output only. The ordered status events recorded for the transaction
+    /// attempt.
     #[prost(message, repeated, tag = "3")]
     pub status_events: ::prost::alloc::vec::Vec<StatusEvent>,
 }
@@ -1519,6 +1712,14 @@ pub mod transaction_attempt {
             }
         }
     }
+}
+/// The state of a transaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransactionState {
+    /// One entry per each known submission of the transaction to the validator
+    /// handling the request.
+    #[prost(message, repeated, tag = "1")]
+    pub transaction_attempts: ::prost::alloc::vec::Vec<TransactionAttempt>,
 }
 /// Represents a Universal Ledger endpoint.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1573,17 +1774,14 @@ pub struct QueryAccountRequest {
     /// The location is a region.
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
-    /// Required. The account ID to get information about.
+    /// Required. The account ID to get information about. The value is limited to
+    /// 60 characters.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
     /// Optional. The ID of the execution round (similar to block "height") at
     /// which to request data. The returned account information will be accurate
     /// for the world state at this execution round. If unspecified, uses the
-    /// latest finalized round as known by the serving validator.
-    ///
-    /// The method does not block to wait for the absolute latest state across the
-    /// entire network. Instead, it returns the state as known by the contacted
-    /// validator, ensuring low latency and high availability. The state at a
+    /// latest finalized round as known by the serving validator. The state at a
     /// given round ID is always consistent and canonical.
     #[prost(int64, tag = "3")]
     pub round_id: i64,
@@ -1671,6 +1869,40 @@ pub struct QueryTransactionStateResponse {
     /// handling the request.
     #[prost(message, repeated, tag = "1")]
     pub transaction_attempts: ::prost::alloc::vec::Vec<TransactionAttempt>,
+}
+/// Request message for QueryData.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryDataRequest {
+    /// Required. The endpoint to serve the request.
+    /// Format: `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    /// The location is a region.
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. A protobuf serialized
+    /// \[SignedQueryRequest\]\[google.cloud.universalledger.v1.SignedQueryRequest\] to
+    /// query the Universal Ledger network.
+    #[prost(bytes = "vec", tag = "2")]
+    pub serialized_signed_query_request: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for QueryData.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDataResponse {
+    /// The Query specific response message. Should be any one of:
+    #[prost(oneof = "query_data_response::Kind", tags = "1, 2")]
+    pub kind: ::core::option::Option<query_data_response::Kind>,
+}
+/// Nested message and enum types in `QueryDataResponse`.
+pub mod query_data_response {
+    /// The Query specific response message. Should be any one of:
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        /// The account information, if the query was for an account.
+        #[prost(message, tag = "1")]
+        Account(super::Account),
+        /// The state of a transaction, if the query was for a transaction.
+        #[prost(message, tag = "2")]
+        TransactionState(super::TransactionState),
+    }
 }
 /// Generated client implementations.
 pub mod universal_ledger_client {
@@ -1959,6 +2191,37 @@ pub mod universal_ledger_client {
                     GrpcMethod::new(
                         "google.cloud.universalledger.v1.UniversalLedger",
                         "QueryAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries the network for information stored on the ledger,
+        /// such as accounts and transactions.
+        pub async fn query_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.universalledger.v1.UniversalLedger/QueryData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.universalledger.v1.UniversalLedger",
+                        "QueryData",
                     ),
                 );
             self.inner.unary(req, path, codec).await

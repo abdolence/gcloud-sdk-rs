@@ -1067,6 +1067,7 @@ pub mod restore_instance_request {
     pub enum Source {
         /// The resource name of the snapshot, in the format
         /// `projects/{project_id}/locations/{location_id}/snapshots/{snapshot_id}`.
+        #[deprecated]
         #[prost(string, tag = "3")]
         SourceSnapshot(::prost::alloc::string::String),
         /// The resource name of the backup, in the format

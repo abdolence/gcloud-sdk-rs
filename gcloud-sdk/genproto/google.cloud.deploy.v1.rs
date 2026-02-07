@@ -20,6 +20,7 @@ pub enum Type {
     /// Deploy Policy evaluation.
     DeployPolicyEvaluation = 8,
     /// Deprecated: This field is never used. Use release_render log type instead.
+    #[deprecated]
     RenderStatuesChange = 2,
 }
 impl Type {
@@ -37,6 +38,7 @@ impl Type {
             Self::ResourceDeleted => "TYPE_RESOURCE_DELETED",
             Self::RolloutUpdate => "TYPE_ROLLOUT_UPDATE",
             Self::DeployPolicyEvaluation => "TYPE_DEPLOY_POLICY_EVALUATION",
+            #[allow(deprecated)]
             Self::RenderStatuesChange => "TYPE_RENDER_STATUES_CHANGE",
         }
     }
@@ -51,7 +53,9 @@ impl Type {
             "TYPE_RESOURCE_DELETED" => Some(Self::ResourceDeleted),
             "TYPE_ROLLOUT_UPDATE" => Some(Self::RolloutUpdate),
             "TYPE_DEPLOY_POLICY_EVALUATION" => Some(Self::DeployPolicyEvaluation),
-            "TYPE_RENDER_STATUES_CHANGE" => Some(Self::RenderStatuesChange),
+            "TYPE_RENDER_STATUES_CHANGE" => {
+                Some(#[allow(deprecated)] Self::RenderStatuesChange)
+            }
             _ => None,
         }
     }

@@ -264,6 +264,7 @@ pub enum ReportCauseCode {
     RouteInvalidNextHopVmStopped = 3,
     RouteInvalidNextHopIlbMisconfigured = 4,
     RouteInvalidNextHopVpnTunnelDeleted = 5,
+    #[deprecated]
     RouteInvalidNextHopIlbBackendIpForwardingDisabled = 6,
     RouteInvalidNextHopIlbVipNotAssigned = 7,
     RouteInvalidNextHopVmWrongNetwork = 8,
@@ -277,9 +278,12 @@ pub enum ReportCauseCode {
     IpUtilizationIpAllocationSummary = 21,
     /// Kubernetes Engine
     GkeNodeToControlPlaneBlockedByRoutingIssue = 201,
+    #[deprecated]
     GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall = 202,
     GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall = 203,
+    #[deprecated]
     GkeControlPlaneToNodeBlockedByRoutingIssue = 211,
+    #[deprecated]
     GkeControlPlaneToNodeBlockedByIngressFirewallOnNode = 212,
     GkeIpUtilizationPodRangesAllocationHigh = 221,
     GkeIpUtilizationPodRangesAllocationLimitesAutoscaling = 222,
@@ -289,8 +293,11 @@ pub enum ReportCauseCode {
     GkeIpMasqAgentConfigMapNotCoveringPodCidr = 251,
     GkeIpMasqAgentCustomConfigNotCoveringPodCidr = 252,
     /// Managed Services
+    #[deprecated]
     CloudSqlPrivateIpBlockedByEgressFirewall = 601,
+    #[deprecated]
     CloudSqlPrivateIpBlockedByRoutingIssue = 602,
+    #[deprecated]
     CloudSqlPrivateIpInstanceNotRunning = 603,
     /// Hybrid Connectivity
     DynamicRouteShadowedFullyShadowedBySubnetRoute = 801,
@@ -301,9 +308,13 @@ pub enum ReportCauseCode {
     NccDynamicRouteShadowedFullyShadowedBySubnetRoute = 822,
     NccDynamicRouteShadowedFullyShadowedByPeeringSubnetRoute = 823,
     NccDynamicRouteShadowedFullyShadowedByStaticRoute = 824,
+    #[deprecated]
     DynamicRouteShadowedPartiallyShadowedBySubnetRoute = 805,
+    #[deprecated]
     DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute = 806,
+    #[deprecated]
     DynamicRouteShadowedPartiallyShadowedByStaticRoute = 807,
+    #[deprecated]
     DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute = 808,
     /// Network Services
     LoadBalancerHealthCheckFirewallHealthCheckFirewallNotConfigured = 1001,
@@ -332,6 +343,7 @@ impl ReportCauseCode {
             Self::RouteInvalidNextHopVpnTunnelDeleted => {
                 "ROUTE_INVALID_NEXT_HOP_VPN_TUNNEL_DELETED"
             }
+            #[allow(deprecated)]
             Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED"
             }
@@ -365,15 +377,18 @@ impl ReportCauseCode {
             Self::GkeNodeToControlPlaneBlockedByRoutingIssue => {
                 "GKE_NODE_TO_CONTROL_PLANE_BLOCKED_BY_ROUTING_ISSUE"
             }
+            #[allow(deprecated)]
             Self::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall => {
                 "GKE_NODE_TO_CONTROL_PLANE_PUBLIC_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL"
             }
             Self::GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall => {
                 "GKE_NODE_TO_CONTROL_PLANE_PRIVATE_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL"
             }
+            #[allow(deprecated)]
             Self::GkeControlPlaneToNodeBlockedByRoutingIssue => {
                 "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_ROUTING_ISSUE"
             }
+            #[allow(deprecated)]
             Self::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode => {
                 "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_INGRESS_FIREWALL_ON_NODE"
             }
@@ -398,12 +413,15 @@ impl ReportCauseCode {
             Self::GkeIpMasqAgentCustomConfigNotCoveringPodCidr => {
                 "GKE_IP_MASQ_AGENT_CUSTOM_CONFIG_NOT_COVERING_POD_CIDR"
             }
+            #[allow(deprecated)]
             Self::CloudSqlPrivateIpBlockedByEgressFirewall => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL"
             }
+            #[allow(deprecated)]
             Self::CloudSqlPrivateIpBlockedByRoutingIssue => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_ROUTING_ISSUE"
             }
+            #[allow(deprecated)]
             Self::CloudSqlPrivateIpInstanceNotRunning => {
                 "CLOUD_SQL_PRIVATE_IP_INSTANCE_NOT_RUNNING"
             }
@@ -431,15 +449,19 @@ impl ReportCauseCode {
             Self::NccDynamicRouteShadowedFullyShadowedByStaticRoute => {
                 "NCC_DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_STATIC_ROUTE"
             }
+            #[allow(deprecated)]
             Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE"
             }
+            #[allow(deprecated)]
             Self::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_SUBNET_ROUTE"
             }
+            #[allow(deprecated)]
             Self::DynamicRouteShadowedPartiallyShadowedByStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_STATIC_ROUTE"
             }
+            #[allow(deprecated)]
             Self::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_STATIC_ROUTE"
             }
@@ -483,7 +505,10 @@ impl ReportCauseCode {
                 Some(Self::RouteInvalidNextHopVpnTunnelDeleted)
             }
             "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED" => {
-                Some(Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled)
+                Some(
+                    #[allow(deprecated)]
+                    Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled,
+                )
             }
             "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED" => {
                 Some(Self::RouteInvalidNextHopIlbVipNotAssigned)
@@ -516,16 +541,25 @@ impl ReportCauseCode {
                 Some(Self::GkeNodeToControlPlaneBlockedByRoutingIssue)
             }
             "GKE_NODE_TO_CONTROL_PLANE_PUBLIC_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL" => {
-                Some(Self::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall)
+                Some(
+                    #[allow(deprecated)]
+                    Self::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall,
+                )
             }
             "GKE_NODE_TO_CONTROL_PLANE_PRIVATE_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL" => {
                 Some(Self::GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall)
             }
             "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_ROUTING_ISSUE" => {
-                Some(Self::GkeControlPlaneToNodeBlockedByRoutingIssue)
+                Some(
+                    #[allow(deprecated)]
+                    Self::GkeControlPlaneToNodeBlockedByRoutingIssue,
+                )
             }
             "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_INGRESS_FIREWALL_ON_NODE" => {
-                Some(Self::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode)
+                Some(
+                    #[allow(deprecated)]
+                    Self::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode,
+                )
             }
             "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_HIGH" => {
                 Some(Self::GkeIpUtilizationPodRangesAllocationHigh)
@@ -549,13 +583,13 @@ impl ReportCauseCode {
                 Some(Self::GkeIpMasqAgentCustomConfigNotCoveringPodCidr)
             }
             "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL" => {
-                Some(Self::CloudSqlPrivateIpBlockedByEgressFirewall)
+                Some(#[allow(deprecated)] Self::CloudSqlPrivateIpBlockedByEgressFirewall)
             }
             "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_ROUTING_ISSUE" => {
-                Some(Self::CloudSqlPrivateIpBlockedByRoutingIssue)
+                Some(#[allow(deprecated)] Self::CloudSqlPrivateIpBlockedByRoutingIssue)
             }
             "CLOUD_SQL_PRIVATE_IP_INSTANCE_NOT_RUNNING" => {
-                Some(Self::CloudSqlPrivateIpInstanceNotRunning)
+                Some(#[allow(deprecated)] Self::CloudSqlPrivateIpInstanceNotRunning)
             }
             "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_SUBNET_ROUTE" => {
                 Some(Self::DynamicRouteShadowedFullyShadowedBySubnetRoute)
@@ -582,16 +616,28 @@ impl ReportCauseCode {
                 Some(Self::NccDynamicRouteShadowedFullyShadowedByStaticRoute)
             }
             "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE" => {
-                Some(Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute)
+                Some(
+                    #[allow(deprecated)]
+                    Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute,
+                )
             }
             "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_SUBNET_ROUTE" => {
-                Some(Self::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute)
+                Some(
+                    #[allow(deprecated)]
+                    Self::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute,
+                )
             }
             "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_STATIC_ROUTE" => {
-                Some(Self::DynamicRouteShadowedPartiallyShadowedByStaticRoute)
+                Some(
+                    #[allow(deprecated)]
+                    Self::DynamicRouteShadowedPartiallyShadowedByStaticRoute,
+                )
             }
             "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_STATIC_ROUTE" => {
-                Some(Self::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute)
+                Some(
+                    #[allow(deprecated)]
+                    Self::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute,
+                )
             }
             "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_FIREWALL_NOT_CONFIGURED" => {
                 Some(

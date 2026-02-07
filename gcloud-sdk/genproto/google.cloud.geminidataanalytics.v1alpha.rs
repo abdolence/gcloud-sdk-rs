@@ -1528,6 +1528,33 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a new DataAgent in a given project and location synchronously.
+        pub async fn create_data_agent_sync(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataAgentRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataAgent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/CreateDataAgentSync",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "CreateDataAgentSync",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Updates the parameters of a single DataAgent.
         pub async fn update_data_agent(
             &mut self,
@@ -1558,6 +1585,33 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates the parameters of a single DataAgent synchronously.
+        pub async fn update_data_agent_sync(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataAgentRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataAgent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/UpdateDataAgentSync",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "UpdateDataAgentSync",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a single DataAgent.
         pub async fn delete_data_agent(
             &mut self,
@@ -1584,6 +1638,33 @@ pub mod data_agent_service_client {
                     GrpcMethod::new(
                         "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
                         "DeleteDataAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single DataAgent synchronously.
+        pub async fn delete_data_agent_sync(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataAgentRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/DeleteDataAgentSync",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "DeleteDataAgentSync",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2038,7 +2119,7 @@ pub struct SystemMessage {
     #[prost(int32, optional, tag = "12")]
     pub group_id: ::core::option::Option<i32>,
     /// The kind of content in the system message.
-    #[prost(oneof = "system_message::Kind", tags = "1, 2, 3, 4, 5, 6, 13")]
+    #[prost(oneof = "system_message::Kind", tags = "1, 2, 3, 4, 5, 6, 13, 14")]
     pub kind: ::core::option::Option<system_message::Kind>,
 }
 /// Nested message and enum types in `SystemMessage`.
@@ -2067,6 +2148,9 @@ pub mod system_message {
         /// Optional. A message containing example queries.
         #[prost(message, tag = "13")]
         ExampleQueries(super::ExampleQueries),
+        /// Optional. A message containing clarification questions.
+        #[prost(message, tag = "14")]
+        Clarification(super::ClarificationMessage),
     }
 }
 /// A multi-part text message.
@@ -2078,6 +2162,10 @@ pub struct TextMessage {
     /// Optional. The type of the text message.
     #[prost(enumeration = "text_message::TextType", tag = "2")]
     pub text_type: i32,
+    /// Optional. An opaque signature for a thought so it can be reused in
+    /// subsequent requests.
+    #[prost(bytes = "vec", tag = "3")]
+    pub thought_signature: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `TextMessage`.
 pub mod text_message {
@@ -2099,7 +2187,7 @@ pub mod text_message {
         Unspecified = 0,
         /// The text is a final response to the user question.
         FinalResponse = 1,
-        /// The text is a thinking plan generated by the thinking tool.
+        /// The text is a thought from the model.
         Thought = 2,
         /// The text is an informational message about the agent's progress, such as
         /// a tool being invoked. This is distinct from the agent's internal thought
@@ -2194,6 +2282,7 @@ pub mod data_message {
         Result(super::DataResult),
         /// Looker Query generated by the system to retrieve data.
         /// DEPRECATED: generated looker query is now under DataQuery.looker.
+        #[deprecated]
         #[prost(message, tag = "4")]
         GeneratedLookerQuery(super::LookerQuery),
         /// A BigQuery job executed by the system to retrieve data.
@@ -2251,6 +2340,15 @@ pub struct DataResult {
     /// are represented as lists or structs.
     #[prost(message, repeated, tag = "2")]
     pub data: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+    /// Optional. Formatted representation of the data, when applicable.
+    /// Each row is a struct that directly corresponds to the row at the same index
+    /// within the `data` field. Its values are string representations of the
+    /// original data, formatted according to data source specifications (e.g.,
+    /// "$1,234.56" for currency). Columns without formatting will default to
+    /// their raw value representation. If no columns have formatting rules, this
+    /// field will be empty.
+    #[prost(message, repeated, tag = "6")]
+    pub formatted_data: ::prost::alloc::vec::Vec<::prost_types::Struct>,
 }
 /// A BigQuery job executed by the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2425,6 +2523,126 @@ pub struct ErrorMessage {
     /// Output only. The text of the error.
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
+}
+/// Represents a single question to the user to help clarify their query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClarificationQuestion {
+    /// Required. The natural language question to ask the user.
+    #[prost(string, tag = "1")]
+    pub question: ::prost::alloc::string::String,
+    /// Required. The selection mode for this question.
+    #[prost(enumeration = "clarification_question::SelectionMode", tag = "2")]
+    pub selection_mode: i32,
+    /// Required. A list of distinct options for the user to choose from.
+    /// The number of options is limited to a maximum of 5.
+    #[prost(string, repeated, tag = "3")]
+    pub options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The type of clarification question.
+    #[prost(
+        enumeration = "clarification_question::ClarificationQuestionType",
+        tag = "4"
+    )]
+    pub clarification_question_type: i32,
+}
+/// Nested message and enum types in `ClarificationQuestion`.
+pub mod clarification_question {
+    /// The selection mode for the clarification question.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SelectionMode {
+        /// Unspecified selection mode.
+        Unspecified = 0,
+        /// The user can select only one option.
+        SingleSelect = 1,
+        /// The user can select multiple options.
+        MultiSelect = 2,
+    }
+    impl SelectionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SELECTION_MODE_UNSPECIFIED",
+                Self::SingleSelect => "SINGLE_SELECT",
+                Self::MultiSelect => "MULTI_SELECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SELECTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SINGLE_SELECT" => Some(Self::SingleSelect),
+                "MULTI_SELECT" => Some(Self::MultiSelect),
+                _ => None,
+            }
+        }
+    }
+    /// The type of clarification question.
+    /// This enum may be extended with new values in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClarificationQuestionType {
+        /// Unspecified clarification question type.
+        Unspecified = 0,
+        /// The clarification question is for filter values.
+        FilterValues = 1,
+        /// The clarification question is for data fields. This is a generic term
+        /// encompassing SQL columns, Looker fields (dimensions/measures), or
+        /// nested data structure properties.
+        Fields = 2,
+    }
+    impl ClarificationQuestionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED",
+                Self::FilterValues => "FILTER_VALUES",
+                Self::Fields => "FIELDS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FILTER_VALUES" => Some(Self::FilterValues),
+                "FIELDS" => Some(Self::Fields),
+                _ => None,
+            }
+        }
+    }
+}
+/// A message of questions to help clarify the user's query. This is returned
+/// when the system cannot confidently answer the user's question.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClarificationMessage {
+    /// Required. A batch of clarification questions to ask the user.
+    #[prost(message, repeated, tag = "1")]
+    pub questions: ::prost::alloc::vec::Vec<ClarificationQuestion>,
 }
 /// A message containing derived and authored example queries.
 #[derive(Clone, PartialEq, ::prost::Message)]

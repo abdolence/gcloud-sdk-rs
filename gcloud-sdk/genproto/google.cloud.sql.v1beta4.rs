@@ -183,6 +183,9 @@ pub struct BackupConfiguration {
         tag = "11"
     )]
     pub transactional_log_storage_state: ::core::option::Option<i32>,
+    /// Output only. Backup tier that manages the backups for the instance.
+    #[prost(enumeration = "backup_configuration::BackupTier", optional, tag = "12")]
+    pub backup_tier: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `BackupConfiguration`.
 pub mod backup_configuration {
@@ -244,6 +247,55 @@ pub mod backup_configuration {
             }
         }
     }
+    /// Backup tier that manages the backups for the instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupTier {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Instance is managed by Cloud SQL.
+        Standard = 1,
+        /// Deprecated: ADVANCED is deprecated. Please use ENHANCED instead.
+        #[deprecated]
+        Advanced = 2,
+        /// Instance is managed by Google Cloud Backup and DR Service.
+        Enhanced = 3,
+    }
+    impl BackupTier {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_TIER_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                #[allow(deprecated)]
+                Self::Advanced => "ADVANCED",
+                Self::Enhanced => "ENHANCED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "ADVANCED" => Some(#[allow(deprecated)] Self::Advanced),
+                "ENHANCED" => Some(Self::Enhanced),
+                _ => None,
+            }
+        }
+    }
 }
 /// A BackupRun resource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -299,6 +351,10 @@ pub struct BackupRun {
     /// Location of the backups.
     #[prost(string, tag = "13")]
     pub location: ::prost::alloc::string::String,
+    /// Output only. The instance database version at the time this backup was
+    /// made.
+    #[prost(enumeration = "SqlDatabaseVersion", tag = "15")]
+    pub database_version: i32,
     /// Encryption configuration specific to a backup.
     #[prost(message, optional, tag = "16")]
     pub disk_encryption_configuration: ::core::option::Option<
@@ -314,6 +370,216 @@ pub struct BackupRun {
     /// a different time zone. Now relevant only for SQL Server.
     #[prost(string, tag = "23")]
     pub time_zone: ::prost::alloc::string::String,
+    /// Output only. The maximum chargeable bytes for the backup.
+    #[prost(int64, optional, tag = "24")]
+    pub max_chargeable_bytes: ::core::option::Option<i64>,
+}
+/// A backup resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Backup {
+    /// Output only. The resource name of the backup.
+    /// Format: projects/{project}/backups/{backup}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. This is always `sql#backup`.
+    #[prost(string, tag = "2")]
+    pub kind: ::prost::alloc::string::String,
+    /// Output only. The URI of this resource.
+    #[prost(string, tag = "3")]
+    pub self_link: ::prost::alloc::string::String,
+    /// Output only. The type of this backup. The type can be "AUTOMATED",
+    /// "ON_DEMAND", or “FINAL”.
+    #[prost(enumeration = "backup::SqlBackupType", tag = "4")]
+    pub r#type: i32,
+    /// The description of this backup.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The name of the database instance.
+    #[prost(string, tag = "6")]
+    pub instance: ::prost::alloc::string::String,
+    /// The storage location of the backups. The location can be multi-regional.
+    #[prost(string, tag = "7")]
+    pub location: ::prost::alloc::string::String,
+    /// Output only. This output contains the following values:
+    /// start_time: All database writes up to this time are available.
+    /// end_time: Any database writes after this time aren't available.
+    #[prost(message, optional, tag = "8")]
+    pub backup_interval: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// Output only. The state of this backup.
+    #[prost(enumeration = "backup::SqlBackupState", tag = "9")]
+    pub state: i32,
+    /// Output only. Information about why the backup operation fails (for example,
+    /// when the backup state fails).
+    #[prost(message, optional, tag = "10")]
+    pub error: ::core::option::Option<OperationError>,
+    /// Output only. This output contains the encryption configuration for a backup
+    /// and the resource name of the KMS key for disk encryption.
+    #[prost(string, tag = "11")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// Output only. This output contains the encryption status for a backup and
+    /// the version of the KMS key that's used to encrypt the Cloud SQL instance.
+    #[prost(string, tag = "12")]
+    pub kms_key_version: ::prost::alloc::string::String,
+    /// Output only. Specifies the kind of backup, PHYSICAL or DEFAULT_SNAPSHOT.
+    #[prost(enumeration = "SqlBackupKind", tag = "13")]
+    pub backup_kind: i32,
+    /// Output only. This output contains a backup time zone. If a Cloud SQL for
+    /// SQL Server instance has a different time zone from the backup's time zone,
+    /// then the restore to the instance doesn't happen.
+    #[prost(string, tag = "15")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Output only. The database version of the instance of at the time this
+    /// backup was made.
+    #[prost(enumeration = "SqlDatabaseVersion", tag = "20")]
+    pub database_version: i32,
+    /// Output only. The maximum chargeable bytes for the backup.
+    #[prost(int64, optional, tag = "23")]
+    pub max_chargeable_bytes: ::core::option::Option<i64>,
+    /// Optional. Output only. Timestamp in UTC of when the instance associated
+    /// with this backup is deleted.
+    #[prost(message, optional, tag = "24")]
+    pub instance_deletion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Output only. Instance setting of the source instance that's
+    /// associated with this backup.
+    #[prost(message, optional, tag = "25")]
+    pub instance_settings: ::core::option::Option<DatabaseInstance>,
+    /// Output only. The mapping to backup run resource used for IAM validations.
+    #[prost(string, tag = "26")]
+    pub backup_run: ::prost::alloc::string::String,
+    /// Output only. This status indicates whether the backup satisfies PZS.
+    ///
+    /// The status is reserved for future use.
+    #[prost(message, optional, tag = "27")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. This status indicates whether the backup satisfies PZI.
+    ///
+    /// The status is reserved for future use.
+    #[prost(message, optional, tag = "28")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    #[prost(oneof = "backup::Expiration", tags = "16, 17")]
+    pub expiration: ::core::option::Option<backup::Expiration>,
+}
+/// Nested message and enum types in `Backup`.
+pub mod backup {
+    /// The backup type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SqlBackupType {
+        /// This is an unknown backup type.
+        Unspecified = 0,
+        /// The backup schedule triggers a backup automatically.
+        Automated = 1,
+        /// The user triggers a backup manually.
+        OnDemand = 2,
+        /// The backup that's created when the instance is deleted.
+        Final = 3,
+    }
+    impl SqlBackupType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SQL_BACKUP_TYPE_UNSPECIFIED",
+                Self::Automated => "AUTOMATED",
+                Self::OnDemand => "ON_DEMAND",
+                Self::Final => "FINAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_BACKUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATED" => Some(Self::Automated),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                "FINAL" => Some(Self::Final),
+                _ => None,
+            }
+        }
+    }
+    /// The backup's state
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SqlBackupState {
+        /// The state of the backup is unknown.
+        Unspecified = 0,
+        /// The backup that's added to a queue.
+        Enqueued = 1,
+        /// The backup is in progress.
+        Running = 2,
+        /// The backup failed.
+        Failed = 3,
+        /// The backup is successful.
+        Successful = 4,
+        /// The backup is being deleted.
+        Deleting = 5,
+        /// Deletion of the backup failed.
+        DeletionFailed = 6,
+    }
+    impl SqlBackupState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SQL_BACKUP_STATE_UNSPECIFIED",
+                Self::Enqueued => "ENQUEUED",
+                Self::Running => "RUNNING",
+                Self::Failed => "FAILED",
+                Self::Successful => "SUCCESSFUL",
+                Self::Deleting => "DELETING",
+                Self::DeletionFailed => "DELETION_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_BACKUP_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENQUEUED" => Some(Self::Enqueued),
+                "RUNNING" => Some(Self::Running),
+                "FAILED" => Some(Self::Failed),
+                "SUCCESSFUL" => Some(Self::Successful),
+                "DELETING" => Some(Self::Deleting),
+                "DELETION_FAILED" => Some(Self::DeletionFailed),
+                _ => None,
+            }
+        }
+    }
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// Input only. The time-to-live (TTL) interval for this resource (in days).
+        /// For example: ttlDays:7, means 7 days from the current time. The
+        /// expiration time can't exceed 365 days from the time that the backup is
+        /// created.
+        #[prost(int64, tag = "16")]
+        TtlDays(i64),
+        /// Backup expiration time.
+        /// A UTC timestamp of when this resource expired.
+        #[prost(message, tag = "17")]
+        ExpiryTime(::prost_types::Timestamp),
+    }
 }
 /// Backup run list results.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -351,6 +617,10 @@ pub struct BackupContext {
     /// This is always `sql#backupContext`.
     #[prost(string, tag = "2")]
     pub kind: ::prost::alloc::string::String,
+    /// The name of the backup.
+    /// Format: projects/{project}/backups/{backup}
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Database instance clone context.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -397,6 +667,22 @@ pub struct CloneContext {
     /// preferred_zone field.
     #[prost(string, optional, tag = "11")]
     pub preferred_secondary_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// The timestamp used to identify the time when the source instance is
+    /// deleted. If this instance is deleted, then you must set the timestamp.
+    #[prost(message, optional, tag = "12")]
+    pub source_instance_deletion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The project ID of the destination project where the cloned
+    /// instance will be created. To perform a cross-project clone, this field is
+    /// required. If not specified, the clone is created in the same project
+    /// as the source instance.
+    #[prost(string, optional, tag = "13")]
+    pub destination_project: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The fully qualified URI of the VPC network to which the cloned
+    /// instance will be connected via Private Services Access for private IP. For
+    /// example:`projects/my-network-project/global/networks/my-network`. This
+    /// field is only required for cross-project cloning.
+    #[prost(string, optional, tag = "14")]
+    pub destination_network: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a SQL database on the Cloud SQL instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -684,12 +970,55 @@ pub struct DatabaseInstance {
     /// A primary instance and disaster recovery (DR) replica pair.
     /// A DR replica is a cross-region replica that you designate
     /// for failover in the event that the primary instance
-    /// experiences regional failure. Only applicable to MySQL.
+    /// experiences regional failure.
+    /// Applicable to MySQL and PostgreSQL.
     #[prost(message, optional, tag = "54")]
     pub replication_cluster: ::core::option::Option<ReplicationCluster>,
     /// Gemini instance configuration.
     #[prost(message, optional, tag = "55")]
     pub gemini_config: ::core::option::Option<GeminiInstanceConfig>,
+    /// Output only. This status indicates whether the instance satisfies PZI.
+    ///
+    /// The status is reserved for future use.
+    #[prost(message, optional, tag = "56")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Input only. Whether Cloud SQL is enabled to switch storing point-in-time
+    /// recovery log files from a data disk to Cloud Storage.
+    #[prost(message, optional, tag = "57")]
+    pub switch_transaction_logs_to_cloud_storage_enabled: ::core::option::Option<bool>,
+    /// Input only. Determines whether an in-place major version upgrade of
+    /// replicas happens when an in-place major version upgrade of a primary
+    /// instance is initiated.
+    #[prost(message, optional, tag = "59")]
+    pub include_replicas_for_major_version_upgrade: ::core::option::Option<bool>,
+    /// Optional. Input only. Immutable. Tag keys and tag values that are bound to
+    /// this instance. You must represent each item in the map as:
+    /// `"<tag-key-namespaced-name>" : "<tag-value-short-name>"`.
+    ///
+    /// For example, a single resource can have the following tags:
+    ///
+    /// ```text,
+    ///   "123/environment": "production",
+    ///   "123/costCenter": "marketing",
+    /// ```
+    ///
+    /// For more information on tag creation and management, see
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-overview.>
+    #[prost(map = "string, string", tag = "60")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The number of read pool nodes in a read pool.
+    #[prost(int32, optional, tag = "63")]
+    pub node_count: ::core::option::Option<i32>,
+    /// Output only. Entries containing information about each read pool node of
+    /// the read pool.
+    #[prost(message, repeated, tag = "64")]
+    pub nodes: ::prost::alloc::vec::Vec<database_instance::PoolNodeConfig>,
+    /// Output only. The list of DNS names used by this instance.
+    #[prost(message, repeated, tag = "67")]
+    pub dns_names: ::prost::alloc::vec::Vec<DnsNameMapping>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
@@ -794,6 +1123,43 @@ pub mod database_instance {
             }
         }
     }
+    /// Details of a single read pool node of a read pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PoolNodeConfig {
+        /// Output only. The name of the read pool node, to be used for retrieving
+        /// metrics and logs.
+        #[prost(string, optional, tag = "1")]
+        pub name: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. The zone of the read pool node.
+        #[prost(string, optional, tag = "2")]
+        pub gce_zone: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. Mappings containing IP addresses that can be used to connect
+        /// to the read pool node.
+        #[prost(message, repeated, tag = "3")]
+        pub ip_addresses: ::prost::alloc::vec::Vec<super::IpMapping>,
+        /// Output only. The DNS name of the read pool node.
+        #[prost(string, optional, tag = "4")]
+        pub dns_name: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. The current state of the read pool node.
+        #[prost(enumeration = "SqlInstanceState", optional, tag = "5")]
+        pub state: ::core::option::Option<i32>,
+        /// Output only. The list of DNS names used by this read pool node.
+        #[prost(message, repeated, tag = "6")]
+        pub dns_names: ::prost::alloc::vec::Vec<super::DnsNameMapping>,
+        /// Output only. The Private Service Connect (PSC) service attachment of the
+        /// read pool node.
+        #[prost(string, optional, tag = "7")]
+        pub psc_service_attachment_link: ::core::option::Option<
+            ::prost::alloc::string::String,
+        >,
+        /// Output only. The list of settings for requested automatically-setup
+        /// Private Service Connect (PSC) consumer endpoints that can be used to
+        /// connect to this read pool node.
+        #[prost(message, repeated, tag = "8")]
+        pub psc_auto_connections: ::prost::alloc::vec::Vec<
+            super::PscAutoConnectionConfig,
+        >,
+    }
     /// The current serving state of the database instance.
     #[derive(
         Clone,
@@ -824,7 +1190,11 @@ pub mod database_instance {
         /// maintenance.
         Failed = 6,
         /// Deprecated
+        #[deprecated]
         OnlineMaintenance = 7,
+        /// (Applicable to read pool nodes only.) The read pool node needs to be
+        /// repaired. The database might be unavailable.
+        Repairing = 8,
     }
     impl SqlInstanceState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -840,7 +1210,9 @@ pub mod database_instance {
                 Self::PendingCreate => "PENDING_CREATE",
                 Self::Maintenance => "MAINTENANCE",
                 Self::Failed => "FAILED",
+                #[allow(deprecated)]
                 Self::OnlineMaintenance => "ONLINE_MAINTENANCE",
+                Self::Repairing => "REPAIRING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -853,7 +1225,10 @@ pub mod database_instance {
                 "PENDING_CREATE" => Some(Self::PendingCreate),
                 "MAINTENANCE" => Some(Self::Maintenance),
                 "FAILED" => Some(Self::Failed),
-                "ONLINE_MAINTENANCE" => Some(Self::OnlineMaintenance),
+                "ONLINE_MAINTENANCE" => {
+                    Some(#[allow(deprecated)] Self::OnlineMaintenance)
+                }
+                "REPAIRING" => Some(Self::Repairing),
                 _ => None,
             }
         }
@@ -901,6 +1276,161 @@ pub mod database_instance {
         }
     }
 }
+/// DNS metadata.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DnsNameMapping {
+    /// Output only. The DNS name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The connection type of the DNS name.
+    #[prost(enumeration = "dns_name_mapping::ConnectionType", tag = "2")]
+    pub connection_type: i32,
+    /// Output only. The scope that the DNS name applies to.
+    #[prost(enumeration = "dns_name_mapping::DnsScope", tag = "3")]
+    pub dns_scope: i32,
+    /// Output only. The manager for this DNS record.
+    #[prost(enumeration = "dns_name_mapping::RecordManager", tag = "4")]
+    pub record_manager: i32,
+}
+/// Nested message and enum types in `DnsNameMapping`.
+pub mod dns_name_mapping {
+    /// The connection type of the DNS name.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConnectionType {
+        /// Unknown connection type.
+        Unspecified = 0,
+        /// Public IP.
+        Public = 1,
+        /// Private services access (private IP).
+        PrivateServicesAccess = 2,
+        /// Private Service Connect.
+        PrivateServiceConnect = 3,
+    }
+    impl ConnectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONNECTION_TYPE_UNSPECIFIED",
+                Self::Public => "PUBLIC",
+                Self::PrivateServicesAccess => "PRIVATE_SERVICES_ACCESS",
+                Self::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PUBLIC" => Some(Self::Public),
+                "PRIVATE_SERVICES_ACCESS" => Some(Self::PrivateServicesAccess),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                _ => None,
+            }
+        }
+    }
+    /// The scope that the DNS name applies to.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DnsScope {
+        /// DNS scope not set. This value should not be used.
+        Unspecified = 0,
+        /// Indicates an instance-level DNS name.
+        Instance = 1,
+        /// Indicates a cluster-level DNS name.
+        Cluster = 2,
+    }
+    impl DnsScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DNS_SCOPE_UNSPECIFIED",
+                Self::Instance => "INSTANCE",
+                Self::Cluster => "CLUSTER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DNS_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTANCE" => Some(Self::Instance),
+                "CLUSTER" => Some(Self::Cluster),
+                _ => None,
+            }
+        }
+    }
+    /// The system responsible for managing the DNS record.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RecordManager {
+        /// Record manager not set. This value should not be used.
+        Unspecified = 0,
+        /// The record may be managed by the customer. It is not automatically
+        /// managed by Cloud SQL automation.
+        Customer = 1,
+        /// The record is managed by Cloud SQL, which will create, update, and delete
+        /// the DNS records for the zone automatically when the Cloud SQL database
+        /// instance is created or updated.
+        CloudSqlAutomation = 2,
+    }
+    impl RecordManager {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RECORD_MANAGER_UNSPECIFIED",
+                Self::Customer => "CUSTOMER",
+                Self::CloudSqlAutomation => "CLOUD_SQL_AUTOMATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECORD_MANAGER_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOMER" => Some(Self::Customer),
+                "CLOUD_SQL_AUTOMATION" => Some(Self::CloudSqlAutomation),
+                _ => None,
+            }
+        }
+    }
+}
 /// Gemini instance configuration.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GeminiInstanceConfig {
@@ -926,16 +1456,17 @@ pub struct GeminiInstanceConfig {
 /// A primary instance and disaster recovery (DR) replica pair.
 /// A DR replica is a cross-region replica that you designate for failover
 /// in the event that the primary instance has regional failure.
-/// Only applicable to MySQL.
+/// Applicable to MySQL and PostgreSQL.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReplicationCluster {
-    /// Output only. If set, it indicates this instance has a private service
-    /// access (PSA) dns endpoint that is pointing to the primary instance of the
-    /// cluster. If this instance is the primary, the dns should be pointing to
-    /// this instance. After Switchover or Replica failover, this DNS endpoint
-    /// points to the promoted instance. This is a read-only field, returned to the
-    /// user as information. This field can exist even if a standalone instance
-    /// does not yet have a replica, or had a DR replica that was deleted.
+    /// Output only. If set, this field indicates this instance has a private
+    /// service access (PSA) DNS endpoint that is pointing to the primary instance
+    /// of the cluster. If this instance is the primary, then the DNS endpoint
+    /// points to this instance. After a switchover or replica failover operation,
+    /// this DNS endpoint points to the promoted instance. This is a read-only
+    /// field, returned to the user as information. This field can exist even if a
+    /// standalone instance doesn't have a DR replica yet or the DR replica is
+    /// deleted.
     #[prost(string, optional, tag = "1")]
     pub psa_write_endpoint: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. If the instance is a primary instance, then this field identifies
@@ -1032,7 +1563,7 @@ pub struct DemoteMasterMySqlReplicaConfiguration {
     /// The password for the replication connection.
     #[prost(string, tag = "3")]
     pub password: ::prost::alloc::string::String,
-    /// PEM representation of the replica's private key. The corresponsing public
+    /// PEM representation of the replica's private key. The corresponding public
     /// key is encoded in the client's certificate. The format of the replica's
     /// private key can be either PKCS #1 or PKCS #8.
     #[prost(string, tag = "4")]
@@ -1072,8 +1603,11 @@ pub struct ExportContext {
     /// If `fileType` is `CSV`, you can specify one database,
     /// either by using this property or by using the
     /// `csvExportOptions.selectQuery` property, which takes precedence
-    /// over this property. <br /> `PostgreSQL instances:` You must specify
-    /// one database to be exported. If `fileType` is `CSV`,
+    /// over this property. <br /> `PostgreSQL instances:` If you don't specify a
+    /// database by name, all user databases in the instance are
+    /// exported. This excludes system databases and Cloud SQL databases used to
+    /// manage internal operations. Exporting all user databases is only available
+    /// for directory-formatted parallel export. If `fileType` is `CSV`,
     /// this database must match the one specified in the
     /// `csvExportOptions.selectQuery` property. <br /> `SQL Server  instances:` You must specify one database to be exported, and the
     /// `fileType` must be `BAK`.
@@ -1092,12 +1626,15 @@ pub struct ExportContext {
     /// The file type for the specified uri.
     #[prost(enumeration = "SqlFileType", tag = "6")]
     pub file_type: i32,
-    /// Option for export offload.
+    /// Whether to perform a serverless export.
     #[prost(message, optional, tag = "8")]
     pub offload: ::core::option::Option<bool>,
     /// Options for exporting data as BAK files.
     #[prost(message, optional, tag = "9")]
     pub bak_export_options: ::core::option::Option<export_context::SqlBakExportOptions>,
+    /// Optional. Export parameters specific to SQL Server TDE certificates
+    #[prost(message, optional, tag = "10")]
+    pub tde_export_options: ::core::option::Option<export_context::SqlTdeExportOptions>,
 }
 /// Nested message and enum types in `ExportContext`.
 pub mod export_context {
@@ -1142,6 +1679,11 @@ pub mod export_context {
         /// Optional. Whether or not the export should be parallel.
         #[prost(message, optional, tag = "5")]
         pub parallel: ::core::option::Option<bool>,
+        /// Optional. Options for exporting from a Cloud SQL for PostgreSQL instance.
+        #[prost(message, optional, tag = "6")]
+        pub postgres_export_options: ::core::option::Option<
+            sql_export_options::PostgresExportOptions,
+        >,
     }
     /// Nested message and enum types in `SqlExportOptions`.
     pub mod sql_export_options {
@@ -1156,6 +1698,19 @@ pub mod export_context {
             /// is set to OFF.
             #[prost(message, optional, tag = "1")]
             pub master_data: ::core::option::Option<i32>,
+        }
+        /// Options for exporting from a Cloud SQL for PostgreSQL instance.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct PostgresExportOptions {
+            /// Optional. Use this option to include DROP <code>\<object\></code>
+            /// SQL statements. Use these statements to delete database objects before
+            /// running the import operation.
+            #[prost(message, optional, tag = "1")]
+            pub clean: ::core::option::Option<bool>,
+            /// Optional. Option to include an IF EXISTS SQL statement with each DROP
+            /// statement produced by clean.
+            #[prost(message, optional, tag = "2")]
+            pub if_exists: ::core::option::Option<bool>,
         }
     }
     /// Options for exporting BAK files (SQL Server-only)
@@ -1180,6 +1735,42 @@ pub mod export_context {
         /// copy_only backup can not be served as differential base
         #[prost(message, optional, tag = "6")]
         pub differential_base: ::core::option::Option<bool>,
+        /// Optional. The begin timestamp when transaction log will be included in
+        /// the export operation. [RFC 3339](<https://tools.ietf.org/html/rfc3339>)
+        /// format (for example, `2023-10-01T16:19:00.094`) in UTC. When omitted, all
+        /// available logs from the beginning of retention period will be included.
+        /// Only applied to Cloud SQL for SQL Server.
+        #[prost(message, optional, tag = "7")]
+        pub export_log_start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Optional. The end timestamp when transaction log will be included in the
+        /// export operation. [RFC 3339](<https://tools.ietf.org/html/rfc3339>) format
+        /// (for example, `2023-10-01T16:19:00.094`) in UTC. When omitted, all
+        /// available logs until current time will be included. Only applied to Cloud
+        /// SQL for SQL Server.
+        #[prost(message, optional, tag = "8")]
+        pub export_log_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SqlTdeExportOptions {
+        /// Required. Path to the TDE certificate public key
+        /// in the form gs://bucketName/fileName.
+        /// The instance must have write access to the location.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "1")]
+        pub certificate_path: ::prost::alloc::string::String,
+        /// Required. Path to the TDE certificate private key
+        /// in the form gs://bucketName/fileName.
+        /// The instance must have write access to the location.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "2")]
+        pub private_key_path: ::prost::alloc::string::String,
+        /// Required. Password that encrypts the private key.
+        #[prost(string, tag = "3")]
+        pub private_key_password: ::prost::alloc::string::String,
+        /// Required. Certificate name.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "5")]
+        pub name: ::prost::alloc::string::String,
     }
 }
 /// Database instance failover context.
@@ -1240,6 +1831,25 @@ pub struct Flag {
     /// with min_value and max_value to add additional values.
     #[prost(int64, repeated, tag = "10")]
     pub allowed_int_values: ::prost::alloc::vec::Vec<i64>,
+    /// Scope of flag.
+    #[prost(enumeration = "SqlFlagScope", tag = "15")]
+    pub flag_scope: i32,
+    /// Recommended flag value for UI display.
+    #[prost(oneof = "flag::RecommendedValue", tags = "16, 17")]
+    pub recommended_value: ::core::option::Option<flag::RecommendedValue>,
+}
+/// Nested message and enum types in `Flag`.
+pub mod flag {
+    /// Recommended flag value for UI display.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum RecommendedValue {
+        /// Recommended flag value in string format for UI display.
+        #[prost(string, tag = "16")]
+        RecommendedStringValue(::prost::alloc::string::String),
+        /// Recommended flag value in integer format for UI display.
+        #[prost(message, tag = "17")]
+        RecommendedIntValue(i64),
+    }
 }
 /// Flags list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1262,7 +1872,9 @@ pub struct ImportContext {
     pub uri: ::prost::alloc::string::String,
     /// The target database for the import. If `fileType` is `SQL`, this field
     /// is required only if the import file does not specify a database, and is
-    /// overridden by any database specification in the import file. If
+    /// overridden by any database specification in the import file. For entire
+    /// instance parallel import operations, the database is overridden by the
+    /// database name stored in subdirectory name. If
     /// `fileType` is `CSV`, one database must be specified.
     #[prost(string, tag = "2")]
     pub database: ::prost::alloc::string::String,
@@ -1288,6 +1900,10 @@ pub struct ImportContext {
     /// Optional. Options for importing data from SQL statements.
     #[prost(message, optional, tag = "8")]
     pub sql_import_options: ::core::option::Option<import_context::SqlImportOptions>,
+    /// Optional. Import parameters specific to SQL Server .TDE files
+    /// Import parameters specific to SQL Server TDE certificates
+    #[prost(message, optional, tag = "9")]
+    pub tde_import_options: ::core::option::Option<import_context::SqlTdeImportOptions>,
 }
 /// Nested message and enum types in `ImportContext`.
 pub mod import_context {
@@ -1299,6 +1915,25 @@ pub mod import_context {
         /// Optional. Whether or not the import should be parallel.
         #[prost(message, optional, tag = "2")]
         pub parallel: ::core::option::Option<bool>,
+        /// Optional. Options for importing from a Cloud SQL for PostgreSQL instance.
+        #[prost(message, optional, tag = "3")]
+        pub postgres_import_options: ::core::option::Option<
+            sql_import_options::PostgresImportOptions,
+        >,
+    }
+    /// Nested message and enum types in `SqlImportOptions`.
+    pub mod sql_import_options {
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct PostgresImportOptions {
+            /// Optional. The --clean flag for the pg_restore utility. This flag
+            /// applies only if you enabled Cloud SQL to import files in parallel.
+            #[prost(message, optional, tag = "1")]
+            pub clean: ::core::option::Option<bool>,
+            /// Optional. The --if-exists flag for the pg_restore utility. This flag
+            /// applies only if you enabled Cloud SQL to import files in parallel.
+            #[prost(message, optional, tag = "2")]
+            pub if_exists: ::core::option::Option<bool>,
+        }
     }
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SqlCsvImportOptions {
@@ -1336,7 +1971,7 @@ pub mod import_context {
         #[prost(message, optional, tag = "2")]
         pub striped: ::core::option::Option<bool>,
         /// Whether or not the backup importing will restore database
-        /// with NORECOVERY option
+        /// with NORECOVERY option.
         /// Applies only to Cloud SQL for SQL Server.
         #[prost(message, optional, tag = "4")]
         pub no_recovery: ::core::option::Option<bool>,
@@ -1378,7 +2013,32 @@ pub mod import_context {
             /// Password that encrypts the private key
             #[prost(string, tag = "3")]
             pub pvk_password: ::prost::alloc::string::String,
+            /// Optional. Whether the imported file remains encrypted.
+            #[prost(message, optional, tag = "5")]
+            pub keep_encrypted: ::core::option::Option<bool>,
         }
+    }
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SqlTdeImportOptions {
+        /// Required. Path to the TDE certificate public key
+        /// in the form gs://bucketName/fileName.
+        /// The instance must have read access to the file.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "1")]
+        pub certificate_path: ::prost::alloc::string::String,
+        /// Required. Path to the TDE certificate private key
+        /// in the form gs://bucketName/fileName.
+        /// The instance must have read access to the file.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "2")]
+        pub private_key_path: ::prost::alloc::string::String,
+        /// Required. Password that encrypts the private key.
+        #[prost(string, tag = "3")]
+        pub private_key_password: ::prost::alloc::string::String,
+        /// Required. Certificate name.
+        /// Applicable only for SQL Server instances.
+        #[prost(string, tag = "5")]
+        pub name: ::prost::alloc::string::String,
     }
 }
 /// Database instance clone request.
@@ -1425,6 +2085,16 @@ pub struct InstancesImportRequest {
     #[prost(message, optional, tag = "1")]
     pub import_context: ::core::option::Option<ImportContext>,
 }
+/// Request for Pre-checks for MVU
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancesPreCheckMajorVersionUpgradeRequest {
+    /// Required. Contains details about the pre-check major version upgrade
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub pre_check_major_version_upgrade_context: ::core::option::Option<
+        PreCheckMajorVersionUpgradeContext,
+    >,
+}
 /// MySQL-specific external server sync settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlSyncConfig {
@@ -1461,12 +2131,68 @@ pub struct InstancesListServerCasResponse {
     #[prost(string, tag = "3")]
     pub kind: ::prost::alloc::string::String,
 }
+/// Instances ListServerCertificatess response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancesListServerCertificatesResponse {
+    /// List of server CA certificates for the instance.
+    #[prost(message, repeated, tag = "1")]
+    pub ca_certs: ::prost::alloc::vec::Vec<SslCert>,
+    /// List of server certificates for the instance, signed by the corresponding
+    /// CA from the `ca_certs` list.
+    #[prost(message, repeated, tag = "2")]
+    pub server_certs: ::prost::alloc::vec::Vec<SslCert>,
+    /// The `sha1_fingerprint` of the active certificate from `server_certs`.
+    #[prost(string, tag = "3")]
+    pub active_version: ::prost::alloc::string::String,
+    /// This is always `sql#instancesListServerCertificates`.
+    #[prost(string, tag = "4")]
+    pub kind: ::prost::alloc::string::String,
+}
+/// Instances ListEntraIdCertificates response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancesListEntraIdCertificatesResponse {
+    /// List of Entra ID certificates for the instance.
+    #[prost(message, repeated, tag = "1")]
+    pub certs: ::prost::alloc::vec::Vec<SslCert>,
+    /// The `sha1_fingerprint` of the active certificate from `certs`.
+    #[prost(string, tag = "2")]
+    pub active_version: ::prost::alloc::string::String,
+    /// This is always `sql#instancesListEntraIdCertificates`.
+    #[prost(string, tag = "3")]
+    pub kind: ::prost::alloc::string::String,
+}
 /// Database instance restore backup request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRestoreBackupRequest {
     /// Parameters required to perform the restore backup operation.
     #[prost(message, optional, tag = "1")]
     pub restore_backup_context: ::core::option::Option<RestoreBackupContext>,
+    /// The name of the backup that's used to restore a Cloud SQL instance:
+    /// Format:  projects/{project-id}/backups/{backup-uid}. Only one of
+    /// restore_backup_context, backup, backupdr_backup can be passed to the input.
+    #[prost(string, tag = "2")]
+    pub backup: ::prost::alloc::string::String,
+    /// The name of the backup that's used to restore a Cloud SQL instance:
+    /// Format:
+    /// "projects/{project-id}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}/backups/{backup-uid}".
+    /// Only one of restore_backup_context, backup, backupdr_backup can be
+    /// passed to the input.
+    #[prost(string, tag = "4")]
+    pub backupdr_backup: ::prost::alloc::string::String,
+    /// Optional. By using this parameter, Cloud SQL overrides any instance
+    /// settings stored in the backup you are restoring from. You can't change the
+    /// instance's major database version and you can only increase the disk size.
+    /// You can use this field to restore new instances only. This field is not
+    /// applicable for restore to existing instances.
+    #[prost(message, optional, tag = "3")]
+    pub restore_instance_settings: ::core::option::Option<DatabaseInstance>,
+    /// Optional. This field has the same purpose as restore_instance_settings,
+    /// changes any instance settings stored in the backup you are restoring from.
+    /// With the difference that these fields are cleared in the settings.
+    #[prost(string, repeated, tag = "5")]
+    pub restore_instance_clear_overrides_field_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Rotate Server CA request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1474,6 +2200,24 @@ pub struct InstancesRotateServerCaRequest {
     /// Contains details about the rotate server CA operation.
     #[prost(message, optional, tag = "1")]
     pub rotate_server_ca_context: ::core::option::Option<RotateServerCaContext>,
+}
+/// Rotate Server Certificate request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InstancesRotateServerCertificateRequest {
+    /// Optional. Contains details about the rotate server CA operation.
+    #[prost(message, optional, tag = "1")]
+    pub rotate_server_certificate_context: ::core::option::Option<
+        RotateServerCertificateContext,
+    >,
+}
+/// Rotate Entra ID Certificate request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InstancesRotateEntraIdCertificateRequest {
+    /// Optional. Contains details about the rotate Entra ID certificate operation.
+    #[prost(message, optional, tag = "1")]
+    pub rotate_entra_id_certificate_context: ::core::option::Option<
+        RotateEntraIdCertificateContext,
+    >,
 }
 /// Instance truncate log request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1489,12 +2233,131 @@ pub struct InstancesAcquireSsrsLeaseRequest {
     #[prost(message, optional, tag = "1")]
     pub acquire_ssrs_lease_context: ::core::option::Option<AcquireSsrsLeaseContext>,
 }
+/// Context to perform a point-in-time restore of an instance managed by
+/// Backup and Disaster Recovery (DR) Service.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PointInTimeRestoreContext {
+    /// The Backup and Disaster Recovery (DR) Service Datasource URI.
+    /// Format:
+    /// projects/{project}/locations/{region}/backupVaults/{backupvault}/dataSources/{datasource}.
+    #[prost(string, optional, tag = "1")]
+    pub datasource: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The date and time to which you want to restore the instance.
+    #[prost(message, optional, tag = "2")]
+    pub point_in_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Target instance name.
+    #[prost(string, optional, tag = "3")]
+    pub target_instance: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The resource link for the VPC network from which the Cloud SQL
+    /// instance is accessible for private IP. For example,
+    /// `/projects/myProject/global/networks/default`.
+    #[prost(string, optional, tag = "4")]
+    pub private_network: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The name of the allocated IP range for the internal IP Cloud SQL
+    /// instance. For example: "google-managed-services-default". If you set this,
+    /// then Cloud SQL creates the IP address for the cloned instance in the
+    /// allocated range. This range must comply with [RFC
+    /// 1035](<https://tools.ietf.org/html/rfc1035>) standards. Specifically, the
+    /// name must be 1-63 characters long and match the regular expression
+    /// [a-z](\[-a-z0-9\]*[a-z0-9])?. Reserved for future use.
+    #[prost(string, optional, tag = "5")]
+    pub allocated_ip_range: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Point-in-time recovery of an instance to the specified zone. If
+    /// no zone is specified, then clone to the same primary zone as the source
+    /// instance.
+    #[prost(string, optional, tag = "6")]
+    pub preferred_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Point-in-time recovery of a regional instance in the specified
+    /// zones. If not specified, clone to the same secondary zone as the source
+    /// instance. This value cannot be the same as the preferred_zone field.
+    #[prost(string, optional, tag = "9")]
+    pub preferred_secondary_zone: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// Perform disk shrink context.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformDiskShrinkContext {
     /// The target disk shrink size in GigaBytes.
     #[prost(int64, tag = "1")]
     pub target_size_gb: i64,
+}
+/// Structured PreCheckResponse containing message, type, and required
+/// actions.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PreCheckResponse {
+    /// The message to be displayed to the user.
+    #[prost(string, optional, tag = "2")]
+    pub message: ::core::option::Option<::prost::alloc::string::String>,
+    /// The type of message whether it is an info, warning, or error.
+    #[prost(enumeration = "pre_check_response::MessageType", optional, tag = "3")]
+    pub message_type: ::core::option::Option<i32>,
+    /// The actions that the user needs to take. Use repeated for multiple
+    /// actions.
+    #[prost(string, repeated, tag = "4")]
+    pub actions_required: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `PreCheckResponse`.
+pub mod pre_check_response {
+    /// The type of message which can be an info, a warning, or an error that
+    /// requires user intervention.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MessageType {
+        /// Default unspecified value to prevent unintended behavior changes.
+        Unspecified = 0,
+        /// General informational messages that don't require action.
+        Info = 1,
+        /// Warnings that might impact the upgrade but don't block it.
+        Warning = 2,
+        /// Errors that a user must resolve before proceeding with the upgrade.
+        Error = 3,
+    }
+    impl MessageType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MESSAGE_TYPE_UNSPECIFIED",
+                Self::Info => "INFO",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MESSAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
+/// Pre-check major version upgrade context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PreCheckMajorVersionUpgradeContext {
+    /// Required. The target database version to upgrade to.
+    #[prost(enumeration = "SqlDatabaseVersion", tag = "1")]
+    pub target_database_version: i32,
+    /// Output only. The responses from the precheck operation.
+    #[prost(message, repeated, tag = "2")]
+    pub pre_check_response: ::prost::alloc::vec::Vec<PreCheckResponse>,
+    /// Optional. This is always `sql#preCheckMajorVersionUpgradeContext`.
+    #[prost(string, tag = "3")]
+    pub kind: ::prost::alloc::string::String,
 }
 /// Instance get disk shrink config response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1592,7 +2455,8 @@ pub mod sql_external_sync_setting_error {
         /// SQL Server Agent is not running.
         SqlserverAgentNotRunning = 19,
         /// The table definition is not support due to missing primary key or replica
-        /// identity, applicable for postgres.
+        /// identity, applicable for postgres. Note that this is a warning and won't
+        /// block the migration.
         UnsupportedTableDefinition = 20,
         /// The customer has a definer that will break EM setup.
         UnsupportedDefiner = 21,
@@ -1667,6 +2531,41 @@ pub mod sql_external_sync_setting_error {
         /// data to the destination instance, you must enable the PGAudit extension
         /// on the instance.
         ExtensionsNotEnabledInReplica = 48,
+        /// The source database has generated columns that can't be migrated. Please
+        /// change them to regular columns before migration.
+        UnsupportedColumns = 49,
+        /// The source database has users that aren't created in the replica.
+        /// First, create all users, which are in the pg_user_mappings table
+        /// of the source database, in the destination instance. Then, perform the
+        /// migration.
+        UsersNotCreatedInReplica = 50,
+        /// The selected objects include system objects that aren't supported for
+        /// migration.
+        UnsupportedSystemObjects = 51,
+        /// The source database has tables with the FULL or NOTHING replica identity.
+        /// Before starting your migration, either remove the identity or change it
+        /// to DEFAULT. Note that this is an error and will block the migration.
+        UnsupportedTablesWithReplicaIdentity = 52,
+        /// The selected objects don't exist on the source instance.
+        SelectedObjectsNotExistOnSource = 53,
+        /// PSC only destination instance does not have a network attachment URI.
+        PscOnlyInstanceWithNoNetworkAttachmentUri = 54,
+        /// Selected objects reference unselected objects. Based on their object type
+        /// (foreign key constraint or view), selected objects will fail during
+        /// migration.
+        SelectedObjectsReferenceUnselectedObjects = 55,
+        /// The migration will delete existing data in the replica; set
+        /// \[replica_overwrite_enabled\]\[google.cloud.sql.v1beta4.SqlInstancesStartExternalSyncRequest.replica_overwrite_enabled\]
+        /// in the request to acknowledge this. This is an error. MySQL only.
+        PromptDeleteExisting = 56,
+        /// The migration will delete existing data in the replica;
+        /// \[replica_overwrite_enabled\]\[google.cloud.sql.v1beta4.SqlInstancesStartExternalSyncRequest.replica_overwrite_enabled\]
+        /// was set in the request acknowledging this. This is a warning rather than
+        /// an error. MySQL only.
+        WillDeleteExisting = 57,
+        /// The replication user is missing specific privileges to setup DDL
+        /// replication. (e.g. CREATE EVENT TRIGGER, CREATE SCHEMA) for PostgreSQL.
+        PgDdlReplicationInsufficientPrivilege = 58,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1735,6 +2634,26 @@ pub mod sql_external_sync_setting_error {
                 Self::PgCronFlagEnabledInReplica => "PG_CRON_FLAG_ENABLED_IN_REPLICA",
                 Self::ExtensionsNotEnabledInReplica => {
                     "EXTENSIONS_NOT_ENABLED_IN_REPLICA"
+                }
+                Self::UnsupportedColumns => "UNSUPPORTED_COLUMNS",
+                Self::UsersNotCreatedInReplica => "USERS_NOT_CREATED_IN_REPLICA",
+                Self::UnsupportedSystemObjects => "UNSUPPORTED_SYSTEM_OBJECTS",
+                Self::UnsupportedTablesWithReplicaIdentity => {
+                    "UNSUPPORTED_TABLES_WITH_REPLICA_IDENTITY"
+                }
+                Self::SelectedObjectsNotExistOnSource => {
+                    "SELECTED_OBJECTS_NOT_EXIST_ON_SOURCE"
+                }
+                Self::PscOnlyInstanceWithNoNetworkAttachmentUri => {
+                    "PSC_ONLY_INSTANCE_WITH_NO_NETWORK_ATTACHMENT_URI"
+                }
+                Self::SelectedObjectsReferenceUnselectedObjects => {
+                    "SELECTED_OBJECTS_REFERENCE_UNSELECTED_OBJECTS"
+                }
+                Self::PromptDeleteExisting => "PROMPT_DELETE_EXISTING",
+                Self::WillDeleteExisting => "WILL_DELETE_EXISTING",
+                Self::PgDdlReplicationInsufficientPrivilege => {
+                    "PG_DDL_REPLICATION_INSUFFICIENT_PRIVILEGE"
                 }
             }
         }
@@ -1818,6 +2737,26 @@ pub mod sql_external_sync_setting_error {
                 "EXTENSIONS_NOT_ENABLED_IN_REPLICA" => {
                     Some(Self::ExtensionsNotEnabledInReplica)
                 }
+                "UNSUPPORTED_COLUMNS" => Some(Self::UnsupportedColumns),
+                "USERS_NOT_CREATED_IN_REPLICA" => Some(Self::UsersNotCreatedInReplica),
+                "UNSUPPORTED_SYSTEM_OBJECTS" => Some(Self::UnsupportedSystemObjects),
+                "UNSUPPORTED_TABLES_WITH_REPLICA_IDENTITY" => {
+                    Some(Self::UnsupportedTablesWithReplicaIdentity)
+                }
+                "SELECTED_OBJECTS_NOT_EXIST_ON_SOURCE" => {
+                    Some(Self::SelectedObjectsNotExistOnSource)
+                }
+                "PSC_ONLY_INSTANCE_WITH_NO_NETWORK_ATTACHMENT_URI" => {
+                    Some(Self::PscOnlyInstanceWithNoNetworkAttachmentUri)
+                }
+                "SELECTED_OBJECTS_REFERENCE_UNSELECTED_OBJECTS" => {
+                    Some(Self::SelectedObjectsReferenceUnselectedObjects)
+                }
+                "PROMPT_DELETE_EXISTING" => Some(Self::PromptDeleteExisting),
+                "WILL_DELETE_EXISTING" => Some(Self::WillDeleteExisting),
+                "PG_DDL_REPLICATION_INSUFFICIENT_PRIVILEGE" => {
+                    Some(Self::PgDdlReplicationInsufficientPrivilege)
+                }
                 _ => None,
             }
         }
@@ -1890,6 +2829,31 @@ pub struct IpConfiguration {
     /// PSC settings for this instance.
     #[prost(message, optional, tag = "9")]
     pub psc_config: ::core::option::Option<PscConfig>,
+    /// Specify what type of CA is used for the server certificate.
+    #[prost(enumeration = "ip_configuration::CaMode", optional, tag = "10")]
+    pub server_ca_mode: ::core::option::Option<i32>,
+    /// Optional. Custom Subject Alternative Name(SAN)s for a Cloud SQL instance.
+    #[prost(string, repeated, tag = "11")]
+    pub custom_subject_alternative_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The resource name of the server CA pool for an instance with
+    /// `CUSTOMER_MANAGED_CAS_CA` as the `server_ca_mode`.
+    /// Format: projects/{PROJECT}/locations/{REGION}/caPools/{CA_POOL_ID}
+    #[prost(string, optional, tag = "12")]
+    pub server_ca_pool: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Controls the automatic server certificate rotation feature. This
+    /// feature is disabled by default. When enabled, the server certificate will
+    /// be automatically rotated during Cloud SQL scheduled maintenance or
+    /// self-service maintenance updates up to six months before it expires. This
+    /// setting can only be set if server_ca_mode is either GOOGLE_MANAGED_CAS_CA
+    /// or CUSTOMER_MANAGED_CAS_CA.
+    #[prost(
+        enumeration = "ip_configuration::ServerCertificateRotationMode",
+        optional,
+        tag = "16"
+    )]
+    pub server_certificate_rotation_mode: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `IpConfiguration`.
 pub mod ip_configuration {
@@ -1969,9 +2933,112 @@ pub mod ip_configuration {
             }
         }
     }
+    /// Various Certificate Authority (CA) modes for certificate signing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CaMode {
+        /// CA mode is unspecified. It is effectively the same as
+        /// `GOOGLE_MANAGED_INTERNAL_CA`.
+        Unspecified = 0,
+        /// Google-managed self-signed internal CA.
+        GoogleManagedInternalCa = 1,
+        /// Google-managed regional CA part of root CA hierarchy hosted on Google
+        /// Cloud's Certificate Authority Service (CAS).
+        GoogleManagedCasCa = 2,
+        /// Customer-managed CA hosted on Google Cloud's Certificate Authority
+        /// Service (CAS).
+        CustomerManagedCasCa = 3,
+    }
+    impl CaMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CA_MODE_UNSPECIFIED",
+                Self::GoogleManagedInternalCa => "GOOGLE_MANAGED_INTERNAL_CA",
+                Self::GoogleManagedCasCa => "GOOGLE_MANAGED_CAS_CA",
+                Self::CustomerManagedCasCa => "CUSTOMER_MANAGED_CAS_CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CA_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED_INTERNAL_CA" => Some(Self::GoogleManagedInternalCa),
+                "GOOGLE_MANAGED_CAS_CA" => Some(Self::GoogleManagedCasCa),
+                "CUSTOMER_MANAGED_CAS_CA" => Some(Self::CustomerManagedCasCa),
+                _ => None,
+            }
+        }
+    }
+    /// Settings for automatic server certificate rotation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ServerCertificateRotationMode {
+        /// Unspecified: no automatic server certificate rotation.
+        Unspecified = 0,
+        /// No automatic server certificate rotation. The user must [manage server
+        /// certificate
+        /// rotation](/sql/docs/mysql/manage-ssl-instance#rotate-server-certificate-cas)
+        /// on their side.
+        NoAutomaticRotation = 1,
+        /// Automatic server certificate rotation during Cloud SQL scheduled
+        /// maintenance or self-service maintenance updates. Requires
+        /// `server_ca_mode` to be `GOOGLE_MANAGED_CAS_CA` or
+        /// `CUSTOMER_MANAGED_CAS_CA`.
+        AutomaticRotationDuringMaintenance = 2,
+    }
+    impl ServerCertificateRotationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+                Self::NoAutomaticRotation => "NO_AUTOMATIC_ROTATION",
+                Self::AutomaticRotationDuringMaintenance => {
+                    "AUTOMATIC_ROTATION_DURING_MAINTENANCE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_AUTOMATIC_ROTATION" => Some(Self::NoAutomaticRotation),
+                "AUTOMATIC_ROTATION_DURING_MAINTENANCE" => {
+                    Some(Self::AutomaticRotationDuringMaintenance)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// PSC settings for a Cloud SQL instance.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscConfig {
     /// Whether PSC connectivity is enabled for this instance.
     #[prost(bool, optional, tag = "1")]
@@ -1986,6 +3053,46 @@ pub struct PscConfig {
     pub allowed_consumer_projects: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Optional. The list of settings for requested Private Service Connect
+    /// consumer endpoints that can be used to connect to this Cloud SQL instance.
+    #[prost(message, repeated, tag = "3")]
+    pub psc_auto_connections: ::prost::alloc::vec::Vec<PscAutoConnectionConfig>,
+    /// Optional. The network attachment of the consumer network that the
+    /// Private Service Connect enabled Cloud SQL instance is
+    /// authorized to connect via PSC interface.
+    /// format: projects/PROJECT/regions/REGION/networkAttachments/ID
+    #[prost(string, tag = "4")]
+    pub network_attachment_uri: ::prost::alloc::string::String,
+}
+/// Settings for an automatically-setup Private Service Connect consumer endpoint
+/// that is used to connect to a Cloud SQL instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PscAutoConnectionConfig {
+    /// Optional. This is the project ID of consumer service project of this
+    /// consumer endpoint.
+    ///
+    /// Optional. This is only applicable if consumer_network is a shared vpc
+    /// network.
+    #[prost(string, tag = "1")]
+    pub consumer_project: ::prost::alloc::string::String,
+    /// Optional. The consumer network of this consumer endpoint. This must be a
+    /// resource path that includes both the host project and the network name.
+    ///
+    /// For example, `projects/project1/global/networks/network1`.
+    ///
+    /// The consumer host project of this network might be different from the
+    /// consumer service project.
+    #[prost(string, tag = "2")]
+    pub consumer_network: ::prost::alloc::string::String,
+    /// The IP address of the consumer endpoint.
+    #[prost(string, optional, tag = "3")]
+    pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
+    /// The connection status of the consumer endpoint.
+    #[prost(string, optional, tag = "4")]
+    pub status: ::core::option::Option<::prost::alloc::string::String>,
+    /// The connection policy status of the consumer network.
+    #[prost(string, optional, tag = "5")]
+    pub consumer_network_status: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Database instance IP mapping
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2034,15 +3141,17 @@ pub struct LocationPreference {
 /// is restarted for system maintenance purposes.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceWindow {
-    /// hour of day - 0 to 23.
+    /// Hour of day - 0 to 23. Specify in the UTC time zone.
     #[prost(message, optional, tag = "1")]
     pub hour: ::core::option::Option<i32>,
-    /// day of week (1-7), starting on Monday.
+    /// Day of week - `MONDAY`, `TUESDAY`, `WEDNESDAY`, `THURSDAY`, `FRIDAY`,
+    /// `SATURDAY`, or `SUNDAY`. Specify in the UTC time zone.
+    /// Returned in output as an integer, 1 to 7, where `1` equals Monday.
     #[prost(message, optional, tag = "2")]
     pub day: ::core::option::Option<i32>,
-    /// Maintenance timing setting: `canary` (Earlier) or `stable` (Later).
-    /// [Learn
-    /// more](<https://cloud.google.com/sql/docs/mysql/instance-settings#maintenance-timing-2ndgen>).
+    /// Maintenance timing settings: `canary`, `stable`, or `week5`.
+    /// For more information, see [About maintenance on Cloud SQL
+    /// instances](<https://cloud.google.com/sql/docs/mysql/maintenance>).
     #[prost(enumeration = "SqlUpdateTrack", tag = "3")]
     pub update_track: i32,
     /// This is always `sql#maintenanceWindow`.
@@ -2085,7 +3194,7 @@ pub struct InsightsConfig {
     #[prost(bool, tag = "3")]
     pub record_application_tags: bool,
     /// Maximum query length stored in bytes. Default value: 1024 bytes.
-    /// Range: 256-4500 bytes. Query length more than this field value will be
+    /// Range: 256-4500 bytes. Query lengths greater than this field value will be
     /// truncated to this value. When unset, query length will be the default
     /// value. Changing query length will restart the database.
     #[prost(message, optional, tag = "4")]
@@ -2094,6 +3203,9 @@ pub struct InsightsConfig {
     /// for all queries combined. Default is 5.
     #[prost(message, optional, tag = "5")]
     pub query_plans_per_minute: ::core::option::Option<i32>,
+    /// Optional. Whether enhanced query insights feature is enabled.
+    #[prost(message, optional, tag = "8")]
+    pub enhanced_query_insights_enabled: ::core::option::Option<bool>,
 }
 /// Read-replica configuration specific to MySQL databases.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2124,7 +3236,7 @@ pub struct MySqlReplicaConfiguration {
     /// PEM representation of the replica's x509 certificate.
     #[prost(string, tag = "7")]
     pub client_certificate: ::prost::alloc::string::String,
-    /// PEM representation of the replica's private key. The corresponsing public
+    /// PEM representation of the replica's private key. The corresponding public
     /// key is encoded in the client's certificate.
     #[prost(string, tag = "8")]
     pub client_key: ::prost::alloc::string::String,
@@ -2139,8 +3251,16 @@ pub struct MySqlReplicaConfiguration {
     #[prost(string, tag = "11")]
     pub kind: ::prost::alloc::string::String,
 }
-/// On-premises instance configuration.
+/// A list of objects that the user selects for replication from an external
+/// source instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectedObjects {
+    /// Required. The name of the database to migrate.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+}
+/// On-premises instance configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnPremisesConfiguration {
     /// The host and port of the on-premises instance in host:port format
     #[prost(string, tag = "1")]
@@ -2160,7 +3280,7 @@ pub struct OnPremisesConfiguration {
     /// PEM representation of the replica's x509 certificate.
     #[prost(string, tag = "6")]
     pub client_certificate: ::prost::alloc::string::String,
-    /// PEM representation of the replica's private key. The corresponsing public
+    /// PEM representation of the replica's private key. The corresponding public
     /// key is encoded in the client's certificate.
     #[prost(string, tag = "7")]
     pub client_key: ::prost::alloc::string::String,
@@ -2170,6 +3290,64 @@ pub struct OnPremisesConfiguration {
     /// The reference to Cloud SQL instance if the source is Cloud SQL.
     #[prost(message, optional, tag = "15")]
     pub source_instance: ::core::option::Option<InstanceReference>,
+    /// Optional. A list of objects that the user selects for replication from an
+    /// external source instance.
+    #[prost(message, repeated, tag = "16")]
+    pub selected_objects: ::prost::alloc::vec::Vec<SelectedObjects>,
+    /// Optional. SslOption for replica connection to the on-premises source.
+    #[prost(enumeration = "on_premises_configuration::SslOption", tag = "18")]
+    pub ssl_option: i32,
+}
+/// Nested message and enum types in `OnPremisesConfiguration`.
+pub mod on_premises_configuration {
+    /// SslOption defines the SSL mode to be used for replica connection to the
+    /// on-premises source.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SslOption {
+        /// Unknown SSL option i.e. SSL option not specified by user.
+        Unspecified = 0,
+        /// SSL is disabled for replica connection to the on-premises source.
+        Disable = 1,
+        /// SSL is required for replica connection to the on-premises source.
+        Require = 2,
+        /// Verify CA is required for replica connection to the on-premises source.
+        VerifyCa = 3,
+    }
+    impl SslOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SSL_OPTION_UNSPECIFIED",
+                Self::Disable => "DISABLE",
+                Self::Require => "REQUIRE",
+                Self::VerifyCa => "VERIFY_CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SSL_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLE" => Some(Self::Disable),
+                "REQUIRE" => Some(Self::Require),
+                "VERIFY_CA" => Some(Self::VerifyCa),
+                _ => None,
+            }
+        }
+    }
 }
 /// Disk encryption configuration for an instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2190,6 +3368,25 @@ pub struct DiskEncryptionStatus {
     /// This is always `sql#diskEncryptionStatus`.
     #[prost(string, tag = "2")]
     pub kind: ::prost::alloc::string::String,
+}
+/// The sub operation type based on the operation type.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlSubOperationType {
+    /// Sub operation details corresponding to the operation type.
+    #[prost(oneof = "sql_sub_operation_type::SubOperationDetails", tags = "1")]
+    pub sub_operation_details: ::core::option::Option<
+        sql_sub_operation_type::SubOperationDetails,
+    >,
+}
+/// Nested message and enum types in `SqlSubOperationType`.
+pub mod sql_sub_operation_type {
+    /// Sub operation details corresponding to the operation type.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SubOperationDetails {
+        /// The type of maintenance to be performed on the instance.
+        #[prost(enumeration = "super::SqlMaintenanceType", tag = "1")]
+        MaintenanceType(i32),
+    }
 }
 /// An Operation resource. For successful operations that return an
 /// Operation resource, only the fields relevant to the operation are populated
@@ -2254,12 +3451,22 @@ pub struct Operation {
     /// The context for backup operation, if applicable.
     #[prost(message, optional, tag = "17")]
     pub backup_context: ::core::option::Option<BackupContext>,
+    /// The context for pre-check major version upgrade operation, if applicable.
+    /// This field is only populated when the operation_type is
+    /// PRE_CHECK_MAJOR_VERSION_UPGRADE.
+    /// The PreCheckMajorVersionUpgradeContext message itself contains the details
+    /// for that pre-check, such as the target database version for the upgrade
+    /// and the results of the check (including any warnings or errors found).
+    #[prost(message, optional, tag = "50")]
+    pub pre_check_major_version_upgrade_context: ::core::option::Option<
+        PreCheckMajorVersionUpgradeContext,
+    >,
     /// An identifier that uniquely identifies the operation. You can use this
     /// identifier to retrieve the Operations resource that has information about
     /// the operation.
     #[prost(string, tag = "12")]
     pub name: ::prost::alloc::string::String,
-    /// Name of the database instance related to this operation.
+    /// Name of the resource on which this operation runs.
     #[prost(string, tag = "13")]
     pub target_id: ::prost::alloc::string::String,
     /// The URI of this resource.
@@ -2271,6 +3478,9 @@ pub struct Operation {
     /// The context for acquire SSRS lease operation, if applicable.
     #[prost(message, optional, tag = "20")]
     pub acquire_ssrs_lease_context: ::core::option::Option<AcquireSsrsLeaseContext>,
+    /// Optional. The sub operation based on the operation type.
+    #[prost(message, optional, tag = "48")]
+    pub sub_operation_type: ::core::option::Option<SqlSubOperationType>,
 }
 /// Nested message and enum types in `Operation`.
 pub mod operation {
@@ -2303,7 +3513,9 @@ pub mod operation {
         Delete = 5,
         /// Restarts the Cloud SQL instance.
         Restart = 6,
+        #[deprecated]
         Backup = 7,
+        #[deprecated]
         Snapshot = 8,
         /// Performs instance backup.
         BackupVolume = 9,
@@ -2327,7 +3539,8 @@ pub mod operation {
         CreateUser = 19,
         /// Deletes a user from a Cloud SQL instance.
         DeleteUser = 20,
-        /// Updates an existing user in a Cloud SQL instance.
+        /// Updates an existing user in a Cloud SQL instance. If a user with the
+        /// specified username doesn't exist, a new user is created.
         UpdateUser = 21,
         /// Creates a database in the Cloud SQL instance.
         CreateDatabase = 22,
@@ -2350,9 +3563,12 @@ pub mod operation {
         /// typically causes the instance to be unavailable for 1-3 minutes.
         Maintenance = 30,
         /// This field is deprecated, and will be removed in future version of API.
+        #[deprecated]
         EnablePrivateIp = 31,
+        #[deprecated]
         DeferMaintenance = 32,
         /// Creates clone instance.
+        #[deprecated]
         CreateClone = 33,
         /// Reschedule maintenance to another time.
         RescheduleMaintenance = 34,
@@ -2369,6 +3585,8 @@ pub mod operation {
         /// Switches the roles of the primary and replica pair. The target instance
         /// should be the replica.
         Switchover = 39,
+        /// Update a backup.
+        UpdateBackup = 40,
         /// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
         AcquireSsrsLease = 42,
         /// Release a lease for the setup of SQL Server Reporting Services (SSRS).
@@ -2383,15 +3601,30 @@ pub mod operation {
         /// groups of replicas first, followed by the primary instance. For each
         /// instance, maintenance typically causes the instance to be unavailable for
         /// 1-3 minutes.
+        #[deprecated]
         ClusterMaintenance = 45,
         /// Indicates that the instance (and any of its replicas) are currently in
         /// maintenance. This is initiated as a self-service request by using SSM.
         /// Maintenance typically causes the instance to be unavailable for 1-3
         /// minutes.
+        #[deprecated]
         SelfServiceMaintenance = 46,
         /// Switches a primary instance to a replica. This operation runs as part of
         /// a switchover operation to the original primary instance.
         SwitchoverToReplica = 47,
+        /// Updates the major version of a Cloud SQL instance.
+        MajorVersionUpgrade = 48,
+        /// Deprecated: ADVANCED_BACKUP is deprecated. Use ENHANCED_BACKUP instead.
+        #[deprecated]
+        AdvancedBackup = 49,
+        /// Changes the BackupTier of a Cloud SQL instance.
+        ManageBackup = 50,
+        /// Creates a backup for an Enhanced BackupTier Cloud SQL instance.
+        EnhancedBackup = 51,
+        /// Repairs entire read pool or specified read pool nodes in the read pool.
+        RepairReadPool = 52,
+        /// Creates a Cloud SQL read pool instance.
+        CreateReadPool = 53,
     }
     impl SqlOperationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2407,7 +3640,9 @@ pub mod operation {
                 Self::Update => "UPDATE",
                 Self::Delete => "DELETE",
                 Self::Restart => "RESTART",
+                #[allow(deprecated)]
                 Self::Backup => "BACKUP",
+                #[allow(deprecated)]
                 Self::Snapshot => "SNAPSHOT",
                 Self::BackupVolume => "BACKUP_VOLUME",
                 Self::DeleteVolume => "DELETE_VOLUME",
@@ -2430,8 +3665,11 @@ pub mod operation {
                 Self::TruncateLog => "TRUNCATE_LOG",
                 Self::DemoteMaster => "DEMOTE_MASTER",
                 Self::Maintenance => "MAINTENANCE",
+                #[allow(deprecated)]
                 Self::EnablePrivateIp => "ENABLE_PRIVATE_IP",
+                #[allow(deprecated)]
                 Self::DeferMaintenance => "DEFER_MAINTENANCE",
+                #[allow(deprecated)]
                 Self::CreateClone => "CREATE_CLONE",
                 Self::RescheduleMaintenance => "RESCHEDULE_MAINTENANCE",
                 Self::StartExternalSync => "START_EXTERNAL_SYNC",
@@ -2439,12 +3677,22 @@ pub mod operation {
                 Self::AutoRestart => "AUTO_RESTART",
                 Self::Reencrypt => "REENCRYPT",
                 Self::Switchover => "SWITCHOVER",
+                Self::UpdateBackup => "UPDATE_BACKUP",
                 Self::AcquireSsrsLease => "ACQUIRE_SSRS_LEASE",
                 Self::ReleaseSsrsLease => "RELEASE_SSRS_LEASE",
                 Self::ReconfigureOldPrimary => "RECONFIGURE_OLD_PRIMARY",
+                #[allow(deprecated)]
                 Self::ClusterMaintenance => "CLUSTER_MAINTENANCE",
+                #[allow(deprecated)]
                 Self::SelfServiceMaintenance => "SELF_SERVICE_MAINTENANCE",
                 Self::SwitchoverToReplica => "SWITCHOVER_TO_REPLICA",
+                Self::MajorVersionUpgrade => "MAJOR_VERSION_UPGRADE",
+                #[allow(deprecated)]
+                Self::AdvancedBackup => "ADVANCED_BACKUP",
+                Self::ManageBackup => "MANAGE_BACKUP",
+                Self::EnhancedBackup => "ENHANCED_BACKUP",
+                Self::RepairReadPool => "REPAIR_READ_POOL",
+                Self::CreateReadPool => "CREATE_READ_POOL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2457,8 +3705,8 @@ pub mod operation {
                 "UPDATE" => Some(Self::Update),
                 "DELETE" => Some(Self::Delete),
                 "RESTART" => Some(Self::Restart),
-                "BACKUP" => Some(Self::Backup),
-                "SNAPSHOT" => Some(Self::Snapshot),
+                "BACKUP" => Some(#[allow(deprecated)] Self::Backup),
+                "SNAPSHOT" => Some(#[allow(deprecated)] Self::Snapshot),
                 "BACKUP_VOLUME" => Some(Self::BackupVolume),
                 "DELETE_VOLUME" => Some(Self::DeleteVolume),
                 "RESTORE_VOLUME" => Some(Self::RestoreVolume),
@@ -2480,21 +3728,32 @@ pub mod operation {
                 "TRUNCATE_LOG" => Some(Self::TruncateLog),
                 "DEMOTE_MASTER" => Some(Self::DemoteMaster),
                 "MAINTENANCE" => Some(Self::Maintenance),
-                "ENABLE_PRIVATE_IP" => Some(Self::EnablePrivateIp),
-                "DEFER_MAINTENANCE" => Some(Self::DeferMaintenance),
-                "CREATE_CLONE" => Some(Self::CreateClone),
+                "ENABLE_PRIVATE_IP" => Some(#[allow(deprecated)] Self::EnablePrivateIp),
+                "DEFER_MAINTENANCE" => Some(#[allow(deprecated)] Self::DeferMaintenance),
+                "CREATE_CLONE" => Some(#[allow(deprecated)] Self::CreateClone),
                 "RESCHEDULE_MAINTENANCE" => Some(Self::RescheduleMaintenance),
                 "START_EXTERNAL_SYNC" => Some(Self::StartExternalSync),
                 "LOG_CLEANUP" => Some(Self::LogCleanup),
                 "AUTO_RESTART" => Some(Self::AutoRestart),
                 "REENCRYPT" => Some(Self::Reencrypt),
                 "SWITCHOVER" => Some(Self::Switchover),
+                "UPDATE_BACKUP" => Some(Self::UpdateBackup),
                 "ACQUIRE_SSRS_LEASE" => Some(Self::AcquireSsrsLease),
                 "RELEASE_SSRS_LEASE" => Some(Self::ReleaseSsrsLease),
                 "RECONFIGURE_OLD_PRIMARY" => Some(Self::ReconfigureOldPrimary),
-                "CLUSTER_MAINTENANCE" => Some(Self::ClusterMaintenance),
-                "SELF_SERVICE_MAINTENANCE" => Some(Self::SelfServiceMaintenance),
+                "CLUSTER_MAINTENANCE" => {
+                    Some(#[allow(deprecated)] Self::ClusterMaintenance)
+                }
+                "SELF_SERVICE_MAINTENANCE" => {
+                    Some(#[allow(deprecated)] Self::SelfServiceMaintenance)
+                }
                 "SWITCHOVER_TO_REPLICA" => Some(Self::SwitchoverToReplica),
+                "MAJOR_VERSION_UPGRADE" => Some(Self::MajorVersionUpgrade),
+                "ADVANCED_BACKUP" => Some(#[allow(deprecated)] Self::AdvancedBackup),
+                "MANAGE_BACKUP" => Some(Self::ManageBackup),
+                "ENHANCED_BACKUP" => Some(Self::EnhancedBackup),
+                "REPAIR_READ_POOL" => Some(Self::RepairReadPool),
+                "CREATE_READ_POOL" => Some(Self::CreateReadPool),
                 _ => None,
             }
         }
@@ -2570,7 +3829,10 @@ pub struct OperationErrors {
     #[prost(message, repeated, tag = "2")]
     pub errors: ::prost::alloc::vec::Vec<OperationError>,
 }
-/// Database instance local user password validation policy
+/// Database instance local user password validation policy.
+/// This message defines the password policy for local database users.
+/// When enabled, it enforces constraints on password complexity, length,
+/// and reuse. Keep this policy enabled to help prevent unauthorized access.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PasswordValidationPolicy {
     /// Minimum number of characters allowed.
@@ -2589,7 +3851,9 @@ pub struct PasswordValidationPolicy {
     /// supported for PostgreSQL.
     #[prost(message, optional, tag = "5")]
     pub password_change_interval: ::core::option::Option<::prost_types::Duration>,
-    /// Whether the password policy is enabled or not.
+    /// Whether to enable the password policy or not. When enabled, passwords must
+    /// meet complexity requirements. Keep this policy enabled to help prevent
+    /// unauthorized access. Disabling this policy allows weak passwords.
     #[prost(message, optional, tag = "6")]
     pub enable_password_policy: ::core::option::Option<bool>,
     /// This field is deprecated and will be removed in a future version of the
@@ -2710,12 +3974,48 @@ pub struct RotateServerCaContext {
     #[prost(string, tag = "2")]
     pub next_version: ::prost::alloc::string::String,
 }
+/// Instance rotate server certificate context.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RotateServerCertificateContext {
+    /// Optional. This is always `sql#rotateServerCertificateContext`.
+    #[prost(string, tag = "1")]
+    pub kind: ::prost::alloc::string::String,
+    /// Optional. The fingerprint of the next version to be rotated to. If left
+    /// unspecified, will be rotated to the most recently added server certificate
+    /// version.
+    #[prost(string, tag = "2")]
+    pub next_version: ::prost::alloc::string::String,
+}
+/// Instance rotate Entra ID certificate context.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RotateEntraIdCertificateContext {
+    /// Optional. This is always `sql#rotateEntraIdCertificateContext`.
+    #[prost(string, tag = "1")]
+    pub kind: ::prost::alloc::string::String,
+    /// Optional. The fingerprint of the next version to be rotated to. If left
+    /// unspecified, will be rotated to the most recently added Entra ID
+    /// certificate version.
+    #[prost(string, tag = "2")]
+    pub next_version: ::prost::alloc::string::String,
+}
 /// Data cache configurations.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataCacheConfig {
     /// Whether data cache is enabled for the instance.
     #[prost(bool, tag = "1")]
     pub data_cache_enabled: bool,
+}
+/// Config used to determine the final backup settings for the instance.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FinalBackupConfig {
+    /// Whether the final backup is enabled for the instance.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+    /// The number of days to retain the final backup after the instance deletion.
+    /// The final backup will be purged at (time_of_instance_deletion +
+    /// retention_days).
+    #[prost(int32, optional, tag = "3")]
+    pub retention_days: ::core::option::Option<i32>,
 }
 /// Database instance settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2870,10 +4170,14 @@ pub struct Settings {
     /// Configuration for data cache.
     #[prost(message, optional, tag = "37")]
     pub data_cache_config: ::core::option::Option<DataCacheConfig>,
+    /// Optional. Configuration value for recreation of replica after certain
+    /// replication lag.
+    #[prost(message, optional, tag = "39")]
+    pub replication_lag_max_seconds: ::core::option::Option<i32>,
     /// Optional. When this parameter is set to true, Cloud SQL instances can
     /// connect to Vertex AI to pass requests for real-time predictions and
     /// insights to the AI. The default value is false. This applies only to Cloud
-    /// SQL for PostgreSQL instances.
+    /// SQL for MySQL and Cloud SQL for PostgreSQL instances.
     #[prost(message, optional, tag = "40")]
     pub enable_google_ml_integration: ::core::option::Option<bool>,
     /// Optional. By default, Cloud SQL instances have schema extraction disabled
@@ -2881,11 +4185,45 @@ pub struct Settings {
     /// Dataplex on Cloud SQL instances is activated.
     #[prost(message, optional, tag = "41")]
     pub enable_dataplex_integration: ::core::option::Option<bool>,
+    /// Optional. When this parameter is set to true, Cloud SQL retains backups of
+    /// the instance even after the instance is deleted. The ON_DEMAND backup will
+    /// be retained until customer deletes the backup or the project. The AUTOMATED
+    /// backup will be retained based on the backups retention setting.
+    #[prost(message, optional, tag = "42")]
+    pub retain_backups_on_delete: ::core::option::Option<bool>,
+    /// Optional. Provisioned number of I/O operations per second for the data
+    /// disk. This field is only used for hyperdisk-balanced disk types.
+    #[prost(int64, optional, tag = "43")]
+    pub data_disk_provisioned_iops: ::core::option::Option<i64>,
+    /// Optional. Provisioned throughput measured in MiB per second for the data
+    /// disk. This field is only used for hyperdisk-balanced disk types.
+    #[prost(int64, optional, tag = "44")]
+    pub data_disk_provisioned_throughput: ::core::option::Option<i64>,
+    /// Optional. The managed connection pooling configuration for the instance.
+    #[prost(message, optional, tag = "45")]
+    pub connection_pool_config: ::core::option::Option<ConnectionPoolConfig>,
+    /// Optional. The final backup configuration for the instance.
+    #[prost(message, optional, tag = "47")]
+    pub final_backup_config: ::core::option::Option<FinalBackupConfig>,
+    /// Optional. The read pool auto-scale configuration for the instance.
+    #[prost(message, optional, tag = "48")]
+    pub read_pool_auto_scale_config: ::core::option::Option<ReadPoolAutoScaleConfig>,
     /// Optional. Cloud SQL for MySQL auto-upgrade configuration. When this
     /// parameter is set to true, auto-upgrade is enabled for MySQL 8.0 minor
     /// versions. The MySQL version must be 8.0.35 or higher.
     #[prost(bool, optional, tag = "50")]
     pub auto_upgrade_enabled: ::core::option::Option<bool>,
+    /// Optional. The Microsoft Entra ID configuration for the SQL Server instance.
+    #[prost(message, optional, tag = "52")]
+    pub entraid_config: ::core::option::Option<SqlServerEntraIdConfig>,
+    /// This parameter controls whether to allow using ExecuteSql API to connect to
+    /// the instance. Not allowed by default.
+    #[prost(enumeration = "settings::DataApiAccess", optional, tag = "53")]
+    pub data_api_access: ::core::option::Option<i32>,
+    /// Optional. Configuration for Performance Capture, provides diagnostic
+    /// metrics during high load situations.
+    #[prost(message, optional, tag = "54")]
+    pub performance_capture_config: ::core::option::Option<PerformanceCaptureConfig>,
 }
 /// Nested message and enum types in `Settings`.
 pub mod settings {
@@ -2910,6 +4248,7 @@ pub mod settings {
         /// The instance never starts.
         Never = 2,
         /// The instance starts upon receiving requests.
+        #[deprecated]
         OnDemand = 3,
     }
     impl SqlActivationPolicy {
@@ -2922,6 +4261,7 @@ pub mod settings {
                 Self::Unspecified => "SQL_ACTIVATION_POLICY_UNSPECIFIED",
                 Self::Always => "ALWAYS",
                 Self::Never => "NEVER",
+                #[allow(deprecated)]
                 Self::OnDemand => "ON_DEMAND",
             }
         }
@@ -2931,12 +4271,12 @@ pub mod settings {
                 "SQL_ACTIVATION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
                 "ALWAYS" => Some(Self::Always),
                 "NEVER" => Some(Self::Never),
-                "ON_DEMAND" => Some(Self::OnDemand),
+                "ON_DEMAND" => Some(#[allow(deprecated)] Self::OnDemand),
                 _ => None,
             }
         }
     }
-    /// The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS.
+    /// The edition of the instance.
     #[derive(
         Clone,
         Copy,
@@ -3024,6 +4364,77 @@ pub mod settings {
             }
         }
     }
+    /// ExecuteSql API's access to the instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataApiAccess {
+        /// Unspecified, effectively the same as `DISALLOW_DATA_API`.
+        Unspecified = 0,
+        /// Disallow using ExecuteSql API to connect to the instance.
+        DisallowDataApi = 1,
+        /// Allow using ExecuteSql API to connect to the instance. For private IP
+        /// instances, this allows authorized users to access the instance from
+        /// the public internet using ExecuteSql API.
+        AllowDataApi = 2,
+    }
+    impl DataApiAccess {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_API_ACCESS_UNSPECIFIED",
+                Self::DisallowDataApi => "DISALLOW_DATA_API",
+                Self::AllowDataApi => "ALLOW_DATA_API",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_API_ACCESS_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISALLOW_DATA_API" => Some(Self::DisallowDataApi),
+                "ALLOW_DATA_API" => Some(Self::AllowDataApi),
+                _ => None,
+            }
+        }
+    }
+}
+/// Performance Capture configuration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PerformanceCaptureConfig {
+    /// Optional. Enable or disable the Performance Capture.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+    /// Optional. The time interval in seconds between any two probes.
+    #[prost(int32, optional, tag = "2")]
+    pub probing_interval_seconds: ::core::option::Option<i32>,
+    /// Optional. The minimum number of consecutive readings above threshold that
+    /// triggers instance state capture.
+    #[prost(int32, optional, tag = "3")]
+    pub probe_threshold: ::core::option::Option<i32>,
+    /// Optional. The minimum number of server threads running to trigger the
+    /// capture on primary.
+    #[prost(int32, optional, tag = "4")]
+    pub running_threads_threshold: ::core::option::Option<i32>,
+    /// Optional. The minimum number of seconds replica must be lagging behind
+    /// primary to trigger capture on replica.
+    #[prost(int32, optional, tag = "5")]
+    pub seconds_behind_source_threshold: ::core::option::Option<i32>,
+    /// Optional. The amount of time in seconds that a transaction needs to have
+    /// been open before the watcher starts recording it.
+    #[prost(int32, optional, tag = "8")]
+    pub transaction_duration_threshold: ::core::option::Option<i32>,
 }
 /// Specifies options for controlling advanced machine features.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3214,6 +4625,80 @@ pub struct SqlActiveDirectoryConfig {
     /// The name of the domain (e.g., mydomain.com).
     #[prost(string, tag = "2")]
     pub domain: ::prost::alloc::string::String,
+    /// Optional. The mode of the Active Directory configuration.
+    #[prost(enumeration = "sql_active_directory_config::ActiveDirectoryMode", tag = "3")]
+    pub mode: i32,
+    /// Optional. Domain controller IPv4 addresses used to bootstrap Active
+    /// Directory.
+    #[prost(string, repeated, tag = "4")]
+    pub dns_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The secret manager key storing the administrator credential.
+    /// (e.g., projects/{project}/secrets/{secret}).
+    #[prost(string, tag = "5")]
+    pub admin_credential_secret_name: ::prost::alloc::string::String,
+    /// Optional. The organizational unit distinguished name. This is the full
+    /// hierarchical path to the organizational unit.
+    #[prost(string, tag = "6")]
+    pub organizational_unit: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SqlActiveDirectoryConfig`.
+pub mod sql_active_directory_config {
+    /// The modes of Active Directory configuration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ActiveDirectoryMode {
+        /// Unspecified mode.
+        Unspecified = 0,
+        /// Managed Active Directory mode. This is the fallback option to maintain
+        /// backward compatibility.
+        ManagedActiveDirectory = 1,
+        /// Deprecated: Use CUSTOMER_MANAGED_ACTIVE_DIRECTORY instead.
+        #[deprecated]
+        SelfManagedActiveDirectory = 2,
+        /// Customer-managed Active Directory mode.
+        CustomerManagedActiveDirectory = 3,
+    }
+    impl ActiveDirectoryMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACTIVE_DIRECTORY_MODE_UNSPECIFIED",
+                Self::ManagedActiveDirectory => "MANAGED_ACTIVE_DIRECTORY",
+                #[allow(deprecated)]
+                Self::SelfManagedActiveDirectory => "SELF_MANAGED_ACTIVE_DIRECTORY",
+                Self::CustomerManagedActiveDirectory => {
+                    "CUSTOMER_MANAGED_ACTIVE_DIRECTORY"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTIVE_DIRECTORY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MANAGED_ACTIVE_DIRECTORY" => Some(Self::ManagedActiveDirectory),
+                "SELF_MANAGED_ACTIVE_DIRECTORY" => {
+                    Some(#[allow(deprecated)] Self::SelfManagedActiveDirectory)
+                }
+                "CUSTOMER_MANAGED_ACTIVE_DIRECTORY" => {
+                    Some(Self::CustomerManagedActiveDirectory)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// SQL Server specific audit configuration.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3230,6 +4715,86 @@ pub struct SqlServerAuditConfig {
     /// How often to upload generated audit files.
     #[prost(message, optional, tag = "4")]
     pub upload_interval: ::core::option::Option<::prost_types::Duration>,
+}
+/// SQL Server Entra ID configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlServerEntraIdConfig {
+    /// Output only. This is always sql#sqlServerEntraIdConfig
+    #[prost(string, tag = "1")]
+    pub kind: ::prost::alloc::string::String,
+    /// Optional. The tenant ID for the Entra ID configuration.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// Optional. The application ID for the Entra ID configuration.
+    #[prost(string, tag = "3")]
+    pub application_id: ::prost::alloc::string::String,
+}
+/// Connection pool flags for Cloud SQL instances managed connection pool
+/// configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConnectionPoolFlags {
+    /// Required. The name of the flag.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The value of the flag. Boolean flags are set to `on` for true
+    /// and `off` for false. This field must be omitted if the flag
+    /// doesn't take a value.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// The read pool auto-scale configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadPoolAutoScaleConfig {
+    /// Indicates whether read pool auto scaling is enabled.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+    /// Minimum number of read pool nodes to be maintained.
+    #[prost(int32, optional, tag = "2")]
+    pub min_node_count: ::core::option::Option<i32>,
+    /// Maximum number of read pool nodes to be maintained.
+    #[prost(int32, optional, tag = "3")]
+    pub max_node_count: ::core::option::Option<i32>,
+    /// Optional. Target metrics for read pool auto scaling.
+    #[prost(message, repeated, tag = "4")]
+    pub target_metrics: ::prost::alloc::vec::Vec<
+        read_pool_auto_scale_config::TargetMetric,
+    >,
+    /// Indicates whether read pool auto scaling supports scale in operations
+    /// (removing nodes).
+    #[prost(bool, optional, tag = "5")]
+    pub disable_scale_in: ::core::option::Option<bool>,
+    /// The cooldown period for scale in operations.
+    #[prost(int32, optional, tag = "6")]
+    pub scale_in_cooldown_seconds: ::core::option::Option<i32>,
+    /// The cooldown period for scale out operations.
+    #[prost(int32, optional, tag = "7")]
+    pub scale_out_cooldown_seconds: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ReadPoolAutoScaleConfig`.
+pub mod read_pool_auto_scale_config {
+    /// Target metric for read pool auto scaling.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TargetMetric {
+        /// The metric name to be used for auto scaling.
+        #[prost(string, optional, tag = "1")]
+        pub metric: ::core::option::Option<::prost::alloc::string::String>,
+        /// The target value for the metric.
+        #[prost(float, optional, tag = "2")]
+        pub target_value: ::core::option::Option<f32>,
+    }
+}
+/// The managed connection pooling configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectionPoolConfig {
+    /// Whether managed connection pooling is enabled.
+    #[prost(bool, optional, tag = "1")]
+    pub connection_pooling_enabled: ::core::option::Option<bool>,
+    /// Optional. List of connection pool configuration flags.
+    #[prost(message, repeated, tag = "8")]
+    pub flags: ::prost::alloc::vec::Vec<ConnectionPoolFlags>,
+    /// Output only. Number of connection poolers.
+    #[prost(int32, optional, tag = "9")]
+    pub pooler_count: ::core::option::Option<i32>,
 }
 /// Acquire SSRS lease context.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3259,6 +4824,8 @@ pub enum SqlFileType {
     /// File in CSV format.
     Csv = 2,
     Bak = 4,
+    /// TDE certificate.
+    Tde = 8,
 }
 impl SqlFileType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3271,6 +4838,7 @@ impl SqlFileType {
             Self::Sql => "SQL",
             Self::Csv => "CSV",
             Self::Bak => "BAK",
+            Self::Tde => "TDE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3280,6 +4848,7 @@ impl SqlFileType {
             "SQL" => Some(Self::Sql),
             "CSV" => Some(Self::Csv),
             "BAK" => Some(Self::Bak),
+            "TDE" => Some(Self::Tde),
             _ => None,
         }
     }
@@ -3316,6 +4885,60 @@ impl BakType {
             "FULL" => Some(Self::Full),
             "DIFF" => Some(Self::Diff),
             "TLOG" => Some(Self::Tlog),
+            _ => None,
+        }
+    }
+}
+/// The type of maintenance to be performed on the instance.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SqlMaintenanceType {
+    /// Maintenance type is unspecified.
+    Unspecified = 0,
+    /// Indicates that a standalone instance is undergoing maintenance. The
+    /// instance can be either a primary instance or a replica.
+    InstanceMaintenance = 1,
+    /// Indicates that the primary instance and all of its replicas, including
+    /// cascading replicas, are undergoing maintenance. Maintenance is performed on
+    /// groups of replicas first, followed by the primary instance.
+    ReplicaIncludedMaintenance = 2,
+    /// Indicates that the standalone instance is undergoing maintenance, initiated
+    /// by self-service. The instance can be either a primary instance or a
+    /// replica.
+    InstanceSelfServiceMaintenance = 3,
+    /// Indicates that the primary instance and all of its replicas are undergoing
+    /// maintenance, initiated by self-service. Maintenance is performed on groups
+    /// of replicas first, followed by the primary instance.
+    ReplicaIncludedSelfServiceMaintenance = 4,
+}
+impl SqlMaintenanceType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SQL_MAINTENANCE_TYPE_UNSPECIFIED",
+            Self::InstanceMaintenance => "INSTANCE_MAINTENANCE",
+            Self::ReplicaIncludedMaintenance => "REPLICA_INCLUDED_MAINTENANCE",
+            Self::InstanceSelfServiceMaintenance => "INSTANCE_SELF_SERVICE_MAINTENANCE",
+            Self::ReplicaIncludedSelfServiceMaintenance => {
+                "REPLICA_INCLUDED_SELF_SERVICE_MAINTENANCE"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_MAINTENANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "INSTANCE_MAINTENANCE" => Some(Self::InstanceMaintenance),
+            "REPLICA_INCLUDED_MAINTENANCE" => Some(Self::ReplicaIncludedMaintenance),
+            "INSTANCE_SELF_SERVICE_MAINTENANCE" => {
+                Some(Self::InstanceSelfServiceMaintenance)
+            }
+            "REPLICA_INCLUDED_SELF_SERVICE_MAINTENANCE" => {
+                Some(Self::ReplicaIncludedSelfServiceMaintenance)
+            }
             _ => None,
         }
     }
@@ -3422,9 +5045,9 @@ impl SqlBackupRunType {
 pub enum SqlBackupKind {
     /// This is an unknown BackupKind.
     Unspecified = 0,
-    /// The snapshot based backups
+    /// Snapshot-based backups.
     Snapshot = 1,
-    /// Physical backups
+    /// Physical backups.
     Physical = 2,
 }
 impl SqlBackupKind {
@@ -3455,6 +5078,7 @@ pub enum SqlBackendType {
     /// This is an unknown backend type for instance.
     Unspecified = 0,
     /// V1 speckle instance.
+    #[deprecated]
     FirstGen = 1,
     /// V2 speckle instance.
     SecondGen = 2,
@@ -3469,6 +5093,7 @@ impl SqlBackendType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "SQL_BACKEND_TYPE_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::FirstGen => "FIRST_GEN",
             Self::SecondGen => "SECOND_GEN",
             Self::External => "EXTERNAL",
@@ -3478,7 +5103,7 @@ impl SqlBackendType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "SQL_BACKEND_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "FIRST_GEN" => Some(Self::FirstGen),
+            "FIRST_GEN" => Some(#[allow(deprecated)] Self::FirstGen),
             "SECOND_GEN" => Some(Self::SecondGen),
             "EXTERNAL" => Some(Self::External),
             _ => None,
@@ -3544,6 +5169,8 @@ pub enum SqlInstanceType {
     OnPremisesInstance = 2,
     /// A Cloud SQL instance acting as a read-replica.
     ReadReplicaInstance = 3,
+    /// A Cloud SQL read pool.
+    ReadPoolInstance = 5,
 }
 impl SqlInstanceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3556,6 +5183,7 @@ impl SqlInstanceType {
             Self::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
             Self::OnPremisesInstance => "ON_PREMISES_INSTANCE",
             Self::ReadReplicaInstance => "READ_REPLICA_INSTANCE",
+            Self::ReadPoolInstance => "READ_POOL_INSTANCE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3565,6 +5193,7 @@ impl SqlInstanceType {
             "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
             "ON_PREMISES_INSTANCE" => Some(Self::OnPremisesInstance),
             "READ_REPLICA_INSTANCE" => Some(Self::ReadReplicaInstance),
+            "READ_POOL_INSTANCE" => Some(Self::ReadPoolInstance),
             _ => None,
         }
     }
@@ -3576,13 +5205,64 @@ pub enum SqlDatabaseVersion {
     /// This is an unknown database version.
     Unspecified = 0,
     /// The database version is MySQL 5.1.
+    #[deprecated]
     Mysql51 = 2,
     /// The database version is MySQL 5.5.
+    #[deprecated]
     Mysql55 = 3,
     /// The database version is MySQL 5.6.
     Mysql56 = 5,
     /// The database version is MySQL 5.7.
     Mysql57 = 6,
+    /// The database version is MySQL 8.
+    Mysql80 = 20,
+    /// The database major version is MySQL 8.0 and the minor version is 18.
+    Mysql8018 = 41,
+    /// The database major version is MySQL 8.0 and the minor version is 26.
+    Mysql8026 = 85,
+    /// The database major version is MySQL 8.0 and the minor version is 27.
+    Mysql8027 = 111,
+    /// The database major version is MySQL 8.0 and the minor version is 28.
+    Mysql8028 = 132,
+    /// The database major version is MySQL 8.0 and the minor version is 29.
+    #[deprecated]
+    Mysql8029 = 148,
+    /// The database major version is MySQL 8.0 and the minor version is 30.
+    Mysql8030 = 174,
+    /// The database major version is MySQL 8.0 and the minor version is 31.
+    Mysql8031 = 197,
+    /// The database major version is MySQL 8.0 and the minor version is 32.
+    Mysql8032 = 213,
+    /// The database major version is MySQL 8.0 and the minor version is 33.
+    Mysql8033 = 238,
+    /// The database major version is MySQL 8.0 and the minor version is 34.
+    Mysql8034 = 239,
+    /// The database major version is MySQL 8.0 and the minor version is 35.
+    Mysql8035 = 240,
+    /// The database major version is MySQL 8.0 and the minor version is 36.
+    Mysql8036 = 241,
+    /// The database major version is MySQL 8.0 and the minor version is 37.
+    Mysql8037 = 355,
+    /// The database major version is MySQL 8.0 and the minor version is 39.
+    Mysql8039 = 357,
+    /// The database major version is MySQL 8.0 and the minor version is 40.
+    Mysql8040 = 358,
+    /// The database major version is MySQL 8.0 and the minor version is 41.
+    Mysql8041 = 488,
+    /// The database major version is MySQL 8.0 and the minor version is 42.
+    Mysql8042 = 489,
+    /// The database major version is MySQL 8.0 and the minor version is 43.
+    Mysql8043 = 553,
+    /// The database major version is MySQL 8.0 and the minor version is 44.
+    Mysql8044 = 554,
+    /// The database major version is MySQL 8.0 and the minor version is 45.
+    Mysql8045 = 555,
+    /// The database major version is MySQL 8.0 and the minor version is 46.
+    Mysql8046 = 556,
+    /// The database version is MySQL 8.4.
+    Mysql84 = 398,
+    /// The database version is MySQL 9.7.
+    Mysql97 = 654,
     /// The database version is SQL Server 2017 Standard.
     Sqlserver2017Standard = 11,
     /// The database version is SQL Server 2017 Enterprise.
@@ -3611,44 +5291,6 @@ pub enum SqlDatabaseVersion {
     Postgres17 = 408,
     /// The database version is PostgreSQL 18.
     Postgres18 = 557,
-    /// The database version is MySQL 8.
-    Mysql80 = 20,
-    /// The database major version is MySQL 8.0 and the minor version is 18.
-    Mysql8018 = 41,
-    /// The database major version is MySQL 8.0 and the minor version is 26.
-    Mysql8026 = 85,
-    /// The database major version is MySQL 8.0 and the minor version is 27.
-    Mysql8027 = 111,
-    /// The database major version is MySQL 8.0 and the minor version is 28.
-    Mysql8028 = 132,
-    /// The database major version is MySQL 8.0 and the minor version is 29.
-    Mysql8029 = 148,
-    /// The database major version is MySQL 8.0 and the minor version is 30.
-    Mysql8030 = 174,
-    /// The database major version is MySQL 8.0 and the minor version is 31.
-    Mysql8031 = 197,
-    /// The database major version is MySQL 8.0 and the minor version is 32.
-    Mysql8032 = 213,
-    /// The database major version is MySQL 8.0 and the minor version is 33.
-    Mysql8033 = 238,
-    /// The database major version is MySQL 8.0 and the minor version is 34.
-    Mysql8034 = 239,
-    /// The database major version is MySQL 8.0 and the minor version is 35.
-    Mysql8035 = 240,
-    /// The database major version is MySQL 8.0 and the minor version is 36.
-    Mysql8036 = 241,
-    /// The database major version is MySQL 8.0 and the minor version is 37.
-    Mysql8037 = 355,
-    /// The database major version is MySQL 8.0 and the minor version is 38.
-    Mysql8038 = 356,
-    /// The database major version is MySQL 8.0 and the minor version is 39.
-    Mysql8039 = 357,
-    /// The database major version is MySQL 8.0 and the minor version is 40.
-    Mysql8040 = 358,
-    /// The database version is MySQL 8.4.
-    Mysql84 = 398,
-    /// The database version is MySQL 8.4 and the patch version is 0.
-    Mysql840 = 399,
     /// The database version is SQL Server 2019 Standard.
     Sqlserver2019Standard = 26,
     /// The database version is SQL Server 2019 Enterprise.
@@ -3674,10 +5316,37 @@ impl SqlDatabaseVersion {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "SQL_DATABASE_VERSION_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::Mysql51 => "MYSQL_5_1",
+            #[allow(deprecated)]
             Self::Mysql55 => "MYSQL_5_5",
             Self::Mysql56 => "MYSQL_5_6",
             Self::Mysql57 => "MYSQL_5_7",
+            Self::Mysql80 => "MYSQL_8_0",
+            Self::Mysql8018 => "MYSQL_8_0_18",
+            Self::Mysql8026 => "MYSQL_8_0_26",
+            Self::Mysql8027 => "MYSQL_8_0_27",
+            Self::Mysql8028 => "MYSQL_8_0_28",
+            #[allow(deprecated)]
+            Self::Mysql8029 => "MYSQL_8_0_29",
+            Self::Mysql8030 => "MYSQL_8_0_30",
+            Self::Mysql8031 => "MYSQL_8_0_31",
+            Self::Mysql8032 => "MYSQL_8_0_32",
+            Self::Mysql8033 => "MYSQL_8_0_33",
+            Self::Mysql8034 => "MYSQL_8_0_34",
+            Self::Mysql8035 => "MYSQL_8_0_35",
+            Self::Mysql8036 => "MYSQL_8_0_36",
+            Self::Mysql8037 => "MYSQL_8_0_37",
+            Self::Mysql8039 => "MYSQL_8_0_39",
+            Self::Mysql8040 => "MYSQL_8_0_40",
+            Self::Mysql8041 => "MYSQL_8_0_41",
+            Self::Mysql8042 => "MYSQL_8_0_42",
+            Self::Mysql8043 => "MYSQL_8_0_43",
+            Self::Mysql8044 => "MYSQL_8_0_44",
+            Self::Mysql8045 => "MYSQL_8_0_45",
+            Self::Mysql8046 => "MYSQL_8_0_46",
+            Self::Mysql84 => "MYSQL_8_4",
+            Self::Mysql97 => "MYSQL_9_7",
             Self::Sqlserver2017Standard => "SQLSERVER_2017_STANDARD",
             Self::Sqlserver2017Enterprise => "SQLSERVER_2017_ENTERPRISE",
             Self::Sqlserver2017Express => "SQLSERVER_2017_EXPRESS",
@@ -3692,25 +5361,6 @@ impl SqlDatabaseVersion {
             Self::Postgres16 => "POSTGRES_16",
             Self::Postgres17 => "POSTGRES_17",
             Self::Postgres18 => "POSTGRES_18",
-            Self::Mysql80 => "MYSQL_8_0",
-            Self::Mysql8018 => "MYSQL_8_0_18",
-            Self::Mysql8026 => "MYSQL_8_0_26",
-            Self::Mysql8027 => "MYSQL_8_0_27",
-            Self::Mysql8028 => "MYSQL_8_0_28",
-            Self::Mysql8029 => "MYSQL_8_0_29",
-            Self::Mysql8030 => "MYSQL_8_0_30",
-            Self::Mysql8031 => "MYSQL_8_0_31",
-            Self::Mysql8032 => "MYSQL_8_0_32",
-            Self::Mysql8033 => "MYSQL_8_0_33",
-            Self::Mysql8034 => "MYSQL_8_0_34",
-            Self::Mysql8035 => "MYSQL_8_0_35",
-            Self::Mysql8036 => "MYSQL_8_0_36",
-            Self::Mysql8037 => "MYSQL_8_0_37",
-            Self::Mysql8038 => "MYSQL_8_0_38",
-            Self::Mysql8039 => "MYSQL_8_0_39",
-            Self::Mysql8040 => "MYSQL_8_0_40",
-            Self::Mysql84 => "MYSQL_8_4",
-            Self::Mysql840 => "MYSQL_8_4_0",
             Self::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
             Self::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
             Self::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
@@ -3725,10 +5375,34 @@ impl SqlDatabaseVersion {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "SQL_DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
-            "MYSQL_5_1" => Some(Self::Mysql51),
-            "MYSQL_5_5" => Some(Self::Mysql55),
+            "MYSQL_5_1" => Some(#[allow(deprecated)] Self::Mysql51),
+            "MYSQL_5_5" => Some(#[allow(deprecated)] Self::Mysql55),
             "MYSQL_5_6" => Some(Self::Mysql56),
             "MYSQL_5_7" => Some(Self::Mysql57),
+            "MYSQL_8_0" => Some(Self::Mysql80),
+            "MYSQL_8_0_18" => Some(Self::Mysql8018),
+            "MYSQL_8_0_26" => Some(Self::Mysql8026),
+            "MYSQL_8_0_27" => Some(Self::Mysql8027),
+            "MYSQL_8_0_28" => Some(Self::Mysql8028),
+            "MYSQL_8_0_29" => Some(#[allow(deprecated)] Self::Mysql8029),
+            "MYSQL_8_0_30" => Some(Self::Mysql8030),
+            "MYSQL_8_0_31" => Some(Self::Mysql8031),
+            "MYSQL_8_0_32" => Some(Self::Mysql8032),
+            "MYSQL_8_0_33" => Some(Self::Mysql8033),
+            "MYSQL_8_0_34" => Some(Self::Mysql8034),
+            "MYSQL_8_0_35" => Some(Self::Mysql8035),
+            "MYSQL_8_0_36" => Some(Self::Mysql8036),
+            "MYSQL_8_0_37" => Some(Self::Mysql8037),
+            "MYSQL_8_0_39" => Some(Self::Mysql8039),
+            "MYSQL_8_0_40" => Some(Self::Mysql8040),
+            "MYSQL_8_0_41" => Some(Self::Mysql8041),
+            "MYSQL_8_0_42" => Some(Self::Mysql8042),
+            "MYSQL_8_0_43" => Some(Self::Mysql8043),
+            "MYSQL_8_0_44" => Some(Self::Mysql8044),
+            "MYSQL_8_0_45" => Some(Self::Mysql8045),
+            "MYSQL_8_0_46" => Some(Self::Mysql8046),
+            "MYSQL_8_4" => Some(Self::Mysql84),
+            "MYSQL_9_7" => Some(Self::Mysql97),
             "SQLSERVER_2017_STANDARD" => Some(Self::Sqlserver2017Standard),
             "SQLSERVER_2017_ENTERPRISE" => Some(Self::Sqlserver2017Enterprise),
             "SQLSERVER_2017_EXPRESS" => Some(Self::Sqlserver2017Express),
@@ -3743,25 +5417,6 @@ impl SqlDatabaseVersion {
             "POSTGRES_16" => Some(Self::Postgres16),
             "POSTGRES_17" => Some(Self::Postgres17),
             "POSTGRES_18" => Some(Self::Postgres18),
-            "MYSQL_8_0" => Some(Self::Mysql80),
-            "MYSQL_8_0_18" => Some(Self::Mysql8018),
-            "MYSQL_8_0_26" => Some(Self::Mysql8026),
-            "MYSQL_8_0_27" => Some(Self::Mysql8027),
-            "MYSQL_8_0_28" => Some(Self::Mysql8028),
-            "MYSQL_8_0_29" => Some(Self::Mysql8029),
-            "MYSQL_8_0_30" => Some(Self::Mysql8030),
-            "MYSQL_8_0_31" => Some(Self::Mysql8031),
-            "MYSQL_8_0_32" => Some(Self::Mysql8032),
-            "MYSQL_8_0_33" => Some(Self::Mysql8033),
-            "MYSQL_8_0_34" => Some(Self::Mysql8034),
-            "MYSQL_8_0_35" => Some(Self::Mysql8035),
-            "MYSQL_8_0_36" => Some(Self::Mysql8036),
-            "MYSQL_8_0_37" => Some(Self::Mysql8037),
-            "MYSQL_8_0_38" => Some(Self::Mysql8038),
-            "MYSQL_8_0_39" => Some(Self::Mysql8039),
-            "MYSQL_8_0_40" => Some(Self::Mysql8040),
-            "MYSQL_8_4" => Some(Self::Mysql84),
-            "MYSQL_8_4_0" => Some(Self::Mysql840),
             "SQLSERVER_2019_STANDARD" => Some(Self::Sqlserver2019Standard),
             "SQLSERVER_2019_ENTERPRISE" => Some(Self::Sqlserver2019Enterprise),
             "SQLSERVER_2019_EXPRESS" => Some(Self::Sqlserver2019Express),
@@ -3780,7 +5435,7 @@ impl SqlDatabaseVersion {
 pub enum SqlSuspensionReason {
     /// This is an unknown suspension reason.
     Unspecified = 0,
-    /// The instance is suspended due to billing issues (for example:, GCP account
+    /// The instance is suspended due to billing issues (for example:, account
     /// issue)
     BillingIssue = 2,
     /// The instance is suspended due to illegal content (for example:, child
@@ -3899,7 +5554,10 @@ pub enum SqlDataDiskType {
     PdHdd = 2,
     /// This field is deprecated and will be removed from a future version of the
     /// API.
+    #[deprecated]
     ObsoleteLocalSsd = 3,
+    /// A Hyperdisk Balanced data disk.
+    HyperdiskBalanced = 4,
 }
 impl SqlDataDiskType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3911,7 +5569,9 @@ impl SqlDataDiskType {
             Self::Unspecified => "SQL_DATA_DISK_TYPE_UNSPECIFIED",
             Self::PdSsd => "PD_SSD",
             Self::PdHdd => "PD_HDD",
+            #[allow(deprecated)]
             Self::ObsoleteLocalSsd => "OBSOLETE_LOCAL_SSD",
+            Self::HyperdiskBalanced => "HYPERDISK_BALANCED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3920,7 +5580,8 @@ impl SqlDataDiskType {
             "SQL_DATA_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "PD_SSD" => Some(Self::PdSsd),
             "PD_HDD" => Some(Self::PdHdd),
-            "OBSOLETE_LOCAL_SSD" => Some(Self::ObsoleteLocalSsd),
+            "OBSOLETE_LOCAL_SSD" => Some(#[allow(deprecated)] Self::ObsoleteLocalSsd),
+            "HYPERDISK_BALANCED" => Some(Self::HyperdiskBalanced),
             _ => None,
         }
     }
@@ -3963,18 +5624,19 @@ impl SqlAvailabilityType {
 pub enum SqlUpdateTrack {
     /// This is an unknown maintenance timing preference.
     Unspecified = 0,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to restart for new version early in maintenance
-    /// window.
+    /// For an instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 7 to 14 days
+    /// after the notification is sent out. Also referred to as `Week 1` (Console)
+    /// and `preview` (gcloud CLI).
     Canary = 1,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to let Cloud SQL choose the timing of restart (within
-    /// its Maintenance window, if applicable).
+    /// For an instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 15 to 21 days
+    /// after the notification is sent out. Also referred to as `Week 2` (Console)
+    /// and `production` (gcloud CLI).
     Stable = 2,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to let Cloud SQL choose the timing of restart (within
-    /// its Maintenance window, if applicable) to be at least 5 weeks after the
-    /// notification.
+    /// For instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 35 to 42 days
+    /// after the notification is sent out.
     Week5 = 3,
 }
 impl SqlUpdateTrack {
@@ -4053,6 +5715,122 @@ impl SqlFlagType {
             _ => None,
         }
     }
+}
+/// Scopes of a flag describe where the flag is used.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SqlFlagScope {
+    /// Assume database flags if unspecified
+    Unspecified = 0,
+    /// database flags
+    Database = 1,
+    /// connection pool configuration flags
+    ConnectionPool = 2,
+}
+impl SqlFlagScope {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SQL_FLAG_SCOPE_UNSPECIFIED",
+            Self::Database => "SQL_FLAG_SCOPE_DATABASE",
+            Self::ConnectionPool => "SQL_FLAG_SCOPE_CONNECTION_POOL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_FLAG_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SQL_FLAG_SCOPE_DATABASE" => Some(Self::Database),
+            "SQL_FLAG_SCOPE_CONNECTION_POOL" => Some(Self::ConnectionPool),
+            _ => None,
+        }
+    }
+}
+/// The request payload to create the backup
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBackupRequest {
+    /// Required. The parent resource where this backup is created.
+    /// Format: projects/{project}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Backup to create.
+    #[prost(message, optional, tag = "2")]
+    pub backup: ::core::option::Option<Backup>,
+}
+/// The request payload to get the backup.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. The name of the backup to retrieve.
+    /// Format: projects/{project}/backups/{backup}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request payload to list the backups.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListBackupsRequest {
+    /// Required. The parent that owns this collection of backups.
+    /// Format: projects/{project}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of backups to return per response. The service might
+    /// return fewer backups than this value. If a value for this parameter isn't
+    /// specified, then, at most, 500 backups are returned. The maximum value is
+    /// 2,000. Any values that you set, which are greater than 2,000, are changed
+    /// to 2,000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListBackups` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListBackups` must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Multiple filter queries are separated by spaces. For example,
+    /// 'instance:abc AND type:FINAL, 'location:us',
+    /// 'backupInterval.startTime>=1950-01-01T01:01:25.771Z'. You can filter by
+    /// type, instance, backupInterval.startTime (creation time), or location.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response payload containing a list of the backups.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsResponse {
+    /// A list of backups.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, then there aren't subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// If a region isn't unavailable or if an unknown error occurs, then a warning
+    /// message is returned.
+    #[prost(message, repeated, tag = "3")]
+    pub warnings: ::prost::alloc::vec::Vec<ApiWarning>,
+}
+/// The request payload to update the backup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBackupRequest {
+    /// Required. The backup to update.
+    /// The backup’s `name` field is used to identify the backup to update.
+    /// Format: projects/{project}/backups/{backup}
+    #[prost(message, optional, tag = "1")]
+    pub backup: ::core::option::Option<Backup>,
+    /// The list of fields that you can update. You can update only the description
+    /// and retention period of the final backup.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request payload to delete the backup.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteBackupRequest {
+    /// Required. The name of the backup to delete.
+    /// Format: projects/{project}/backups/{backup}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlBackupRunsDeleteRequest {
@@ -4172,6 +5950,10 @@ pub struct SqlFlagsListRequest {
     /// method returns flags for all database types and versions.
     #[prost(string, tag = "1")]
     pub database_version: ::prost::alloc::string::String,
+    /// Optional. Specify the scope of flags to be returned by SqlFlagsListService.
+    /// Return list of database flags if unspecified.
+    #[prost(enumeration = "SqlFlagScope", optional, tag = "3")]
+    pub flag_scope: ::core::option::Option<i32>,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesAddServerCaRequest {
@@ -4179,6 +5961,26 @@ pub struct SqlInstancesAddServerCaRequest {
     #[prost(string, tag = "1")]
     pub instance: ::prost::alloc::string::String,
     /// Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request for AddServerCertificate RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesAddServerCertificateRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request for AddEntraIdCertificate RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesAddEntraIdCertificateRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
 }
@@ -4202,6 +6004,27 @@ pub struct SqlInstancesDeleteRequest {
     /// Project ID of the project that contains the instance to be deleted.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Flag to opt-in for final backup. By default, it is turned off.
+    #[prost(bool, optional, tag = "7")]
+    pub enable_final_backup: ::core::option::Option<bool>,
+    /// Optional. The description of the final backup.
+    #[prost(string, tag = "5")]
+    pub final_backup_description: ::prost::alloc::string::String,
+    #[prost(oneof = "sql_instances_delete_request::Expiration", tags = "4, 6")]
+    pub expiration: ::core::option::Option<sql_instances_delete_request::Expiration>,
+}
+/// Nested message and enum types in `SqlInstancesDeleteRequest`.
+pub mod sql_instances_delete_request {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// Optional. Retention period of the final backup.
+        #[prost(int64, tag = "4")]
+        FinalBackupTtlDays(i64),
+        /// Optional. Final Backup expiration time.
+        /// Timestamp in UTC of when this resource is considered expired.
+        #[prost(message, tag = "6")]
+        FinalBackupExpiryTime(::prost_types::Timestamp),
+    }
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesDemoteMasterRequest {
@@ -4314,6 +6137,25 @@ pub struct SqlInstancesListServerCasRequest {
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
 }
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesListServerCertificatesRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request message for SqlInstancesService.ListEntraIdCertificates.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesListEntraIdCertificatesRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPatchRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4333,13 +6175,12 @@ pub struct SqlInstancesPromoteReplicaRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
-    /// Set to true to invoke a replica failover to the designated DR replica.
+    /// Set to true to invoke a replica failover to the DR replica.
     /// As part of replica failover, the promote operation attempts
     /// to add the original primary instance as a replica of the promoted
     /// DR replica when the original primary instance comes back online.
     /// If set to false or not specified, then the original primary
     /// instance becomes an independent Cloud SQL primary instance.
-    /// Only applicable to MySQL.
     #[prost(bool, tag = "3")]
     pub failover: bool,
 }
@@ -4352,9 +6193,9 @@ pub struct SqlInstancesSwitchoverRequest {
     /// ID of the project that contains the replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
-    /// Optional. (MySQL only) Cloud SQL instance operations timeout, which is a
-    /// sum of all database operations. Default value is 10 minutes and can be
-    /// modified to a maximum value of 24 hours.
+    /// Optional. (MySQL and PostgreSQL only) Cloud SQL instance operations
+    /// timeout, which is a sum of all database operations. Default value is 10
+    /// minutes and can be modified to a maximum value of 24 hours.
     #[prost(message, optional, tag = "3")]
     pub db_timeout: ::core::option::Option<::prost_types::Duration>,
 }
@@ -4366,6 +6207,60 @@ pub struct SqlInstancesResetSslConfigRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Reset SSL mode to use.
+    #[prost(
+        enumeration = "sql_instances_reset_ssl_config_request::ResetSslMode",
+        tag = "3"
+    )]
+    pub mode: i32,
+}
+/// Nested message and enum types in `SqlInstancesResetSslConfigRequest`.
+pub mod sql_instances_reset_ssl_config_request {
+    /// Reset SSL mode to selectively refresh the SSL materials.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ResetSslMode {
+        /// Reset SSL mode is not specified.
+        Unspecified = 0,
+        /// Refresh all TLS configs. This is the default behaviour.
+        All = 1,
+        /// Refreshes the replication-related TLS configuration settings provided by
+        /// the primary instance.
+        /// Not applicable to on-premises replication instances.
+        SyncFromPrimary = 2,
+    }
+    impl ResetSslMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RESET_SSL_MODE_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::SyncFromPrimary => "SYNC_FROM_PRIMARY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESET_SSL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "SYNC_FROM_PRIMARY" => Some(Self::SyncFromPrimary),
+                _ => None,
+            }
+        }
+    }
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesRestartRequest {
@@ -4376,7 +6271,7 @@ pub struct SqlInstancesRestartRequest {
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRestoreBackupRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
     #[prost(string, tag = "1")]
@@ -4397,6 +6292,31 @@ pub struct SqlInstancesRotateServerCaRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesRotateServerCaRequest>,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesRotateServerCertificateRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// Required. Rotate server certificate request body.
+    #[prost(message, optional, tag = "100")]
+    pub body: ::core::option::Option<InstancesRotateServerCertificateRequest>,
+}
+/// Request message for SqlInstancesService.RotateEntraIdCertificate.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesRotateEntraIdCertificateRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// Required. Rotate Entra ID certificate request body.
+    #[prost(message, optional, tag = "100")]
+    pub body: ::core::option::Option<InstancesRotateEntraIdCertificateRequest>,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesStartReplicaRequest {
@@ -4538,6 +6458,13 @@ pub struct SqlInstancesPerformDiskShrinkRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<PerformDiskShrinkContext>,
 }
+/// The selected object that Cloud SQL migrates.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExternalSyncSelectedObject {
+    /// The name of the database that Cloud SQL migrates.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4570,6 +6497,10 @@ pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// PostgreSQL.
     #[prost(enumeration = "ExternalSyncParallelLevel", tag = "8")]
     pub sync_parallel_level: i32,
+    /// Optional. Migrate only the specified objects from the source instance. If
+    /// this field is empty, then migrate all objects.
+    #[prost(message, repeated, tag = "9")]
+    pub selected_objects: ::prost::alloc::vec::Vec<ExternalSyncSelectedObject>,
     #[prost(
         oneof = "sql_instances_verify_external_sync_settings_request::SyncConfig",
         tags = "6"
@@ -4704,6 +6635,12 @@ pub struct SqlInstancesStartExternalSyncRequest {
         tag = "8"
     )]
     pub migration_type: i32,
+    /// Optional. MySQL only. True if end-user has confirmed that this SES call
+    /// will wipe replica databases overlapping with the proposed selected_objects.
+    /// If this field is not set and there are both overlapping and additional
+    /// databases proposed, an error will be returned.
+    #[prost(bool, tag = "9")]
+    pub replica_overwrite_enabled: bool,
     #[prost(oneof = "sql_instances_start_external_sync_request::SyncConfig", tags = "6")]
     pub sync_config: ::core::option::Option<
         sql_instances_start_external_sync_request::SyncConfig,
@@ -4837,6 +6774,10 @@ pub struct SqlInstancesGetLatestRecoveryTimeRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// The timestamp used to identify the time when the source instance is
+    /// deleted. If this instance is deleted, then you must set the timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub source_instance_deletion_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Instance get latest recovery time response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4847,6 +6788,22 @@ pub struct SqlInstancesGetLatestRecoveryTimeResponse {
     /// Timestamp, identifies the latest recovery time of the source instance.
     #[prost(message, optional, tag = "2")]
     pub latest_recovery_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Timestamp, identifies the earliest recovery time of the source instance.
+    #[prost(message, optional, tag = "3")]
+    pub earliest_recovery_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Execute SQL statements request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesExecuteSqlRequest {
+    /// Required. Database instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// The request body.
+    #[prost(message, optional, tag = "100")]
+    pub body: ::core::option::Option<ExecuteSqlPayload>,
 }
 /// Request to release a lease for SSRS.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4869,6 +6826,191 @@ pub struct SqlInstancesReleaseSsrsLeaseResponse {
     #[prost(string, tag = "1")]
     pub operation_id: ::prost::alloc::string::String,
 }
+/// The request payload used to execute SQL statements.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecuteSqlPayload {
+    /// Optional. The name of an existing database user to connect to the database.
+    /// When `auto_iam_authn` is set to true, this field is ignored and the API
+    /// caller's IAM user is used.
+    #[prost(string, tag = "1")]
+    pub user: ::prost::alloc::string::String,
+    /// Required. SQL statements to run on the database. It can be a single
+    /// statement or a sequence of statements separated by semicolons.
+    #[prost(string, tag = "2")]
+    pub sql_statement: ::prost::alloc::string::String,
+    /// Optional. Name of the database on which the statement will be executed.
+    #[prost(string, tag = "3")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. The maximum number of rows returned per SQL statement.
+    #[prost(int64, tag = "10")]
+    pub row_limit: i64,
+    /// Optional. Controls how the API should respond when the SQL execution result
+    /// is incomplete due to the size limit or another error. The default mode is
+    /// to throw an error.
+    #[prost(enumeration = "execute_sql_payload::PartialResultMode", tag = "13")]
+    pub partial_result_mode: i32,
+    /// Optional. Specifies the name of the application that is making the request.
+    /// This field is used for telemetry. Only alphanumeric characters, dashes, and
+    /// underscores are allowed. The maximum length is 32 characters.
+    #[prost(string, tag = "16")]
+    pub application: ::prost::alloc::string::String,
+    /// Credentials for the database connection.
+    #[prost(oneof = "execute_sql_payload::UserPassword", tags = "11")]
+    pub user_password: ::core::option::Option<execute_sql_payload::UserPassword>,
+}
+/// Nested message and enum types in `ExecuteSqlPayload`.
+pub mod execute_sql_payload {
+    /// Controls how the API should respond when the SQL execution result exceeds
+    /// 10 MB.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PartialResultMode {
+        /// Unspecified mode, effectively the same as `FAIL_PARTIAL_RESULT`.
+        Unspecified = 0,
+        /// Throw an error if the result exceeds 10 MB or if only a partial result
+        /// can be retrieved. Don't return the result.
+        FailPartialResult = 1,
+        /// Return a truncated result and set `partial_result` to true if the result
+        /// exceeds 10 MB or if only a partial result can be retrieved due to error.
+        /// Don't throw an error.
+        AllowPartialResult = 2,
+    }
+    impl PartialResultMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PARTIAL_RESULT_MODE_UNSPECIFIED",
+                Self::FailPartialResult => "FAIL_PARTIAL_RESULT",
+                Self::AllowPartialResult => "ALLOW_PARTIAL_RESULT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTIAL_RESULT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FAIL_PARTIAL_RESULT" => Some(Self::FailPartialResult),
+                "ALLOW_PARTIAL_RESULT" => Some(Self::AllowPartialResult),
+                _ => None,
+            }
+        }
+    }
+    /// Credentials for the database connection.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum UserPassword {
+        /// Optional. When set to true, the API caller identity associated with the
+        /// request is used for database authentication. The API caller must be an
+        /// IAM user in the database.
+        #[prost(bool, tag = "11")]
+        AutoIamAuthn(bool),
+    }
+}
+/// Execute SQL statements response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlInstancesExecuteSqlResponse {
+    /// A list of notices and warnings generated during query execution.
+    /// For PostgreSQL, this includes all notices and warnings.
+    /// For MySQL, this includes warnings generated by the last executed statement.
+    /// To retrieve all warnings for a multi-statement query, `SHOW WARNINGS` must
+    /// be executed after each statement.
+    #[prost(message, repeated, tag = "9")]
+    pub messages: ::prost::alloc::vec::Vec<sql_instances_execute_sql_response::Message>,
+    /// The additional metadata information regarding the execution of the SQL
+    /// statements.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<Metadata>,
+    /// The list of results after executing all the SQL statements.
+    #[prost(message, repeated, tag = "7")]
+    pub results: ::prost::alloc::vec::Vec<QueryResult>,
+    /// Contains the error from the database if the SQL execution failed.
+    #[prost(message, optional, tag = "8")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// Nested message and enum types in `SqlInstancesExecuteSqlResponse`.
+pub mod sql_instances_execute_sql_response {
+    /// Represents a notice or warning message from the database.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Message {
+        /// The full message string.
+        /// For PostgreSQL, this is a formatted string that may include severity,
+        /// code, and the notice/warning message.
+        /// For MySQL, this contains the warning message.
+        #[prost(string, optional, tag = "1")]
+        pub message: ::core::option::Option<::prost::alloc::string::String>,
+        /// The severity of the message (e.g., "NOTICE" for PostgreSQL, "WARNING" for
+        /// MySQL).
+        #[prost(string, optional, tag = "2")]
+        pub severity: ::core::option::Option<::prost::alloc::string::String>,
+    }
+}
+/// QueryResult contains the result of executing a single SQL statement.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryResult {
+    /// List of columns included in the result. This also includes the data type
+    /// of the column.
+    #[prost(message, repeated, tag = "1")]
+    pub columns: ::prost::alloc::vec::Vec<Column>,
+    /// Rows returned by the SQL statement.
+    #[prost(message, repeated, tag = "2")]
+    pub rows: ::prost::alloc::vec::Vec<Row>,
+    /// Message related to the SQL execution result.
+    #[prost(string, tag = "3")]
+    pub message: ::prost::alloc::string::String,
+    /// Set to true if the SQL execution's result is truncated due to size limits
+    /// or an error retrieving results.
+    #[prost(bool, tag = "4")]
+    pub partial_result: bool,
+    /// If results were truncated due to an error, details of that error.
+    #[prost(message, optional, tag = "8")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// Contains the name and datatype of a column.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Column {
+    /// Name of the column.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Datatype of the column.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+}
+/// Contains the values for a row.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Row {
+    /// The values for the row.
+    #[prost(message, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<Value>,
+}
+/// The cell value of the table.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Value {
+    /// The cell value represented in string format.
+    #[prost(string, tag = "1")]
+    pub value: ::prost::alloc::string::String,
+    /// If cell value is null, then this flag will be set to true.
+    #[prost(bool, tag = "2")]
+    pub null_value: bool,
+}
+/// The additional metadata information regarding the execution of the SQL
+/// statements.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Metadata {
+    /// The time taken to execute the SQL statements.
+    #[prost(message, optional, tag = "1")]
+    pub sql_statement_execution_time: ::core::option::Option<::prost_types::Duration>,
+}
 /// Request to acquire a lease for SSRS.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesAcquireSsrsLeaseRequest {
@@ -4886,12 +7028,39 @@ pub struct SqlInstancesAcquireSsrsLeaseRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesAcquireSsrsLeaseRequest>,
 }
+/// Request for Pre-checks for MVU
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlInstancesPreCheckMajorVersionUpgradeRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Project ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// Required. The context for request to perform the pre-check major version
+    /// upgrade operation.
+    #[prost(message, optional, tag = "3")]
+    pub body: ::core::option::Option<InstancesPreCheckMajorVersionUpgradeRequest>,
+}
 /// Acquire SSRS lease response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlInstancesAcquireSsrsLeaseResponse {
     /// The unique identifier for this operation.
     #[prost(string, optional, tag = "1")]
     pub operation_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request to perform a point in time restore on a Google Cloud Backup and
+/// Disaster Recovery managed instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqlInstancesPointInTimeRestoreRequest {
+    /// Required. The parent resource where you created this instance.
+    /// Format: projects/{project}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The context for request to perform a PITR on a Google Cloud
+    /// Backup and Disaster Recovery managed instance.
+    #[prost(message, optional, tag = "100")]
+    pub context: ::core::option::Option<PointInTimeRestoreContext>,
 }
 /// External Sync parallel level.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5615,7 +7784,9 @@ pub mod sql_instances_service_client {
         /// instance. Required to prepare for a certificate rotation. If a CA version
         /// was previously added but never used in a certificate rotation, this
         /// operation replaces that version. There cannot be more than one CA version
-        /// waiting to be rotated in.
+        /// waiting to be rotated in. For instances that have enabled Certificate
+        /// Authority Service (CAS) based server CA, use AddServerCertificate to add a
+        /// new server certificate.
         pub async fn add_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesAddServerCaRequest>,
@@ -5638,6 +7809,72 @@ pub mod sql_instances_service_client {
                     GrpcMethod::new(
                         "google.cloud.sql.v1beta4.SqlInstancesService",
                         "AddServerCa",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Add a new trusted server certificate version for the specified instance
+        /// using Certificate Authority Service (CAS) server CA. Required to prepare
+        /// for a certificate rotation. If a server certificate version was previously
+        /// added but never used in a certificate rotation, this operation replaces
+        /// that version. There cannot be more than one certificate version waiting to
+        /// be rotated in. For instances not using CAS server CA, use AddServerCa
+        /// instead.
+        pub async fn add_server_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesAddServerCertificateRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/AddServerCertificate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "AddServerCertificate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds a new Entra ID certificate for the specified instance. If an Entra ID
+        /// certificate was previously added but never used in a certificate rotation,
+        /// this operation replaces that version.
+        pub async fn add_entra_id_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesAddEntraIdCertificateRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/AddEntraIdCertificate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "AddEntraIdCertificate",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -5991,6 +8228,78 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists all versions of server certificates and certificate authorities (CAs)
+        /// for the specified instance. There can be up to three sets of certs listed:
+        /// the certificate that is currently in use, a future that has been added but
+        /// not yet used to sign a certificate, and a certificate that has been rotated
+        /// out. For instances not using Certificate Authority Service (CAS) server CA,
+        /// use ListServerCas instead.
+        pub async fn list_server_certificates(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesListServerCertificatesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::InstancesListServerCertificatesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/ListServerCertificates",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "ListServerCertificates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all versions of EntraID certificates for the specified instance.
+        /// There can be up to three sets of certificates listed: the certificate that
+        /// is currently in use, a future that has been added but not yet used to sign
+        /// a certificate, and a certificate that has been rotated out.
+        pub async fn list_entra_id_certificates(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesListEntraIdCertificatesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::InstancesListEntraIdCertificatesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/ListEntraIdCertificates",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "ListEntraIdCertificates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Partially updates settings of a Cloud SQL instance by merging the request
         /// with the current configuration. This method supports patch semantics.
         pub async fn patch(
@@ -6048,7 +8357,7 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Switches over from the primary instance to the designated DR replica
+        /// Switches over from the primary instance to the DR replica
         /// instance.
         pub async fn switchover(
             &mut self,
@@ -6160,7 +8469,9 @@ pub mod sql_instances_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Rotates the server certificate to one signed by the Certificate Authority
-        /// (CA) version previously added with the addServerCA method.
+        /// (CA) version previously added with the addServerCA method. For instances
+        /// that have enabled Certificate Authority Service (CAS) based server CA,
+        /// use RotateServerCertificate to rotate the server certificate.
         pub async fn rotate_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesRotateServerCaRequest>,
@@ -6183,6 +8494,67 @@ pub mod sql_instances_service_client {
                     GrpcMethod::new(
                         "google.cloud.sql.v1beta4.SqlInstancesService",
                         "RotateServerCa",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Rotates the server certificate version to one previously added with the
+        /// addServerCertificate method. For instances not using Certificate Authority
+        /// Service (CAS) server CA, use RotateServerCa instead.
+        pub async fn rotate_server_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesRotateServerCertificateRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/RotateServerCertificate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "RotateServerCertificate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Rotates the Entra Id certificate version to one previously added with the
+        /// addEntraIdCertificate method.
+        pub async fn rotate_entra_id_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesRotateEntraIdCertificateRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/RotateEntraIdCertificate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "RotateEntraIdCertificate",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -6535,6 +8907,36 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Execute SQL statements.
+        pub async fn execute_sql(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SqlInstancesExecuteSqlRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SqlInstancesExecuteSqlResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/ExecuteSql",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "ExecuteSql",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
         pub async fn acquire_ssrs_lease(
             &mut self,
@@ -6591,6 +8993,65 @@ pub mod sql_instances_service_client {
                     GrpcMethod::new(
                         "google.cloud.sql.v1beta4.SqlInstancesService",
                         "ReleaseSsrsLease",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Execute MVU Pre-checks
+        pub async fn pre_check_major_version_upgrade(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesPreCheckMajorVersionUpgradeRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/PreCheckMajorVersionUpgrade",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "PreCheckMajorVersionUpgrade",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Point in time restore for an instance managed by Google Cloud Backup and
+        /// Disaster Recovery.
+        pub async fn point_in_time_restore(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SqlInstancesPointInTimeRestoreRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlInstancesService/PointInTimeRestore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "PointInTimeRestore",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -6747,6 +9208,7 @@ pub mod sql_operations_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Cancels an instance operation that has been performed on an instance.
+        /// Ordinarily, this method name should be `CancelSqlOperation`.
         pub async fn cancel(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlOperationsCancelRequest>,
@@ -6984,6 +9446,239 @@ pub mod sql_ssl_certs_service_client {
         }
     }
 }
+/// Generated client implementations.
+pub mod sql_backups_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    #[derive(Debug, Clone)]
+    pub struct SqlBackupsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SqlBackupsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SqlBackupsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SqlBackupsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SqlBackupsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a backup for a Cloud SQL instance. This API can be used only to
+        /// create on-demand backups.
+        pub async fn create_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlBackupsService/CreateBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupsService",
+                        "CreateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a resource containing information about a backup.
+        pub async fn get_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlBackupsService/GetBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupsService",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all backups associated with the project.
+        pub async fn list_backups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlBackupsService/ListBackups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupsService",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the retention period and the description of the backup. You can use
+        /// this API to update final backups only.
+        pub async fn update_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlBackupsService/UpdateBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupsService",
+                        "UpdateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the backup.
+        pub async fn delete_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlBackupsService/DeleteBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupsService",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Connect settings retrieval request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConnectSettingsRequest {
@@ -7039,6 +9734,147 @@ pub struct ConnectSettings {
     /// The dns name of the instance.
     #[prost(string, tag = "34")]
     pub dns_name: ::prost::alloc::string::String,
+    /// Specify what type of CA is used for the server certificate.
+    #[prost(enumeration = "connect_settings::CaMode", tag = "35")]
+    pub server_ca_mode: i32,
+    /// Custom subject alternative names for the server certificate.
+    #[prost(string, repeated, tag = "37")]
+    pub custom_subject_alternative_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The list of DNS names used by this instance.
+    #[prost(message, repeated, tag = "38")]
+    pub dns_names: ::prost::alloc::vec::Vec<DnsNameMapping>,
+    /// The number of read pool nodes in a read pool.
+    #[prost(int32, optional, tag = "63")]
+    pub node_count: ::core::option::Option<i32>,
+    /// Output only. Entries containing information about each read pool node of
+    /// the read pool.
+    #[prost(message, repeated, tag = "64")]
+    pub nodes: ::prost::alloc::vec::Vec<connect_settings::ConnectPoolNodeConfig>,
+    /// Optional. Output only. mdx_protocol_support controls how the client uses
+    /// metadata exchange when connecting to the instance. The values in the list
+    /// representing parts of the MDX protocol that are supported by this instance.
+    /// When the list is empty, the instance does not support MDX, so the client
+    /// must not send an MDX request. The default is empty.
+    #[prost(
+        enumeration = "connect_settings::MdxProtocolSupport",
+        repeated,
+        packed = "false",
+        tag = "39"
+    )]
+    pub mdx_protocol_support: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `ConnectSettings`.
+pub mod connect_settings {
+    /// Details of a single read pool node of a read pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConnectPoolNodeConfig {
+        /// Output only. The name of the read pool node. Doesn't include the project
+        /// ID.
+        #[prost(string, optional, tag = "1")]
+        pub name: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. Mappings containing IP addresses that can be used to connect
+        /// to the read pool node.
+        #[prost(message, repeated, tag = "2")]
+        pub ip_addresses: ::prost::alloc::vec::Vec<super::IpMapping>,
+        /// Output only. The DNS name of the read pool node.
+        #[prost(string, optional, tag = "3")]
+        pub dns_name: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. The list of DNS names used by this read pool node.
+        #[prost(message, repeated, tag = "4")]
+        pub dns_names: ::prost::alloc::vec::Vec<super::DnsNameMapping>,
+    }
+    /// Various Certificate Authority (CA) modes for certificate signing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CaMode {
+        /// CA mode is unspecified. It is effectively the same as
+        /// `GOOGLE_MANAGED_INTERNAL_CA`.
+        Unspecified = 0,
+        /// Google-managed self-signed internal CA.
+        GoogleManagedInternalCa = 1,
+        /// Google-managed regional CA part of root CA hierarchy hosted on Google
+        /// Cloud's Certificate Authority Service (CAS).
+        GoogleManagedCasCa = 2,
+        /// Customer-managed CA hosted on Google Cloud's Certificate Authority
+        /// Service (CAS).
+        CustomerManagedCasCa = 3,
+    }
+    impl CaMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CA_MODE_UNSPECIFIED",
+                Self::GoogleManagedInternalCa => "GOOGLE_MANAGED_INTERNAL_CA",
+                Self::GoogleManagedCasCa => "GOOGLE_MANAGED_CAS_CA",
+                Self::CustomerManagedCasCa => "CUSTOMER_MANAGED_CAS_CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CA_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED_INTERNAL_CA" => Some(Self::GoogleManagedInternalCa),
+                "GOOGLE_MANAGED_CAS_CA" => Some(Self::GoogleManagedCasCa),
+                "CUSTOMER_MANAGED_CAS_CA" => Some(Self::CustomerManagedCasCa),
+                _ => None,
+            }
+        }
+    }
+    /// MdxProtocolSupport describes parts of the MDX protocol supported by this
+    /// instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MdxProtocolSupport {
+        /// Not specified.
+        Unspecified = 0,
+        /// Client should send the client protocol type in the MDX request.
+        ClientProtocolType = 1,
+    }
+    impl MdxProtocolSupport {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MDX_PROTOCOL_SUPPORT_UNSPECIFIED",
+                Self::ClientProtocolType => "CLIENT_PROTOCOL_TYPE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MDX_PROTOCOL_SUPPORT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLIENT_PROTOCOL_TYPE" => Some(Self::ClientProtocolType),
+                _ => None,
+            }
+        }
+    }
 }
 /// Ephemeral certificate creation request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -7544,6 +10380,15 @@ pub struct SqlUsersUpdateRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. List of database roles to grant to the user. body.database_roles
+    /// will be ignored for update request.
+    #[prost(string, repeated, tag = "5")]
+    pub database_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Specifies whether to revoke existing roles that are not present
+    /// in the `database_roles` field. If `false` or unset, the database roles
+    /// specified in `database_roles` are added to the user's existing roles.
+    #[prost(bool, optional, tag = "6")]
+    pub revoke_existing_roles: ::core::option::Option<bool>,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
 }
@@ -7615,12 +10460,22 @@ pub struct User {
     /// login. The default is the database's built-in user type.
     #[prost(enumeration = "user::SqlUserType", tag = "8")]
     pub r#type: i32,
+    /// Optional. The full email for an IAM user. For normal database users, this
+    /// will not be filled. Only applicable to MySQL database users.
+    #[prost(string, tag = "11")]
+    pub iam_email: ::prost::alloc::string::String,
     /// User level password validation policy.
     #[prost(message, optional, tag = "12")]
     pub password_policy: ::core::option::Option<UserPasswordValidationPolicy>,
     /// Dual password status for the user.
     #[prost(enumeration = "user::DualPasswordType", optional, tag = "13")]
     pub dual_password_type: ::core::option::Option<i32>,
+    /// Indicates if a group is active or inactive for IAM database authentication.
+    #[prost(enumeration = "user::IamStatus", optional, tag = "14")]
+    pub iam_status: ::core::option::Option<i32>,
+    /// Optional. Role memberships of the user
+    #[prost(string, repeated, tag = "15")]
+    pub database_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// User details for specific database type
     #[prost(oneof = "user::UserDetails", tags = "9")]
     pub user_details: ::core::option::Option<user::UserDetails>,
@@ -7647,12 +10502,15 @@ pub mod user {
         CloudIamUser = 1,
         /// Cloud IAM service account.
         CloudIamServiceAccount = 2,
-        /// Cloud IAM group non-login user.
+        /// Cloud IAM group. Not used for login.
         CloudIamGroup = 3,
-        /// Cloud IAM group login user.
+        /// Read-only. Login for a user that belongs to the Cloud IAM group.
         CloudIamGroupUser = 4,
-        /// Cloud IAM group service account.
+        /// Read-only. Login for a service account that belongs to the
+        /// Cloud IAM group.
         CloudIamGroupServiceAccount = 5,
+        /// Microsoft Entra ID user.
+        EntraidUser = 7,
     }
     impl SqlUserType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7667,6 +10525,7 @@ pub mod user {
                 Self::CloudIamGroup => "CLOUD_IAM_GROUP",
                 Self::CloudIamGroupUser => "CLOUD_IAM_GROUP_USER",
                 Self::CloudIamGroupServiceAccount => "CLOUD_IAM_GROUP_SERVICE_ACCOUNT",
+                Self::EntraidUser => "ENTRAID_USER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7680,6 +10539,7 @@ pub mod user {
                 "CLOUD_IAM_GROUP_SERVICE_ACCOUNT" => {
                     Some(Self::CloudIamGroupServiceAccount)
                 }
+                "ENTRAID_USER" => Some(Self::EntraidUser),
                 _ => None,
             }
         }
@@ -7727,6 +10587,54 @@ pub mod user {
                 "NO_MODIFY_DUAL_PASSWORD" => Some(Self::NoModifyDualPassword),
                 "NO_DUAL_PASSWORD" => Some(Self::NoDualPassword),
                 "DUAL_PASSWORD" => Some(Self::DualPassword),
+                _ => None,
+            }
+        }
+    }
+    /// Indicates if a group is available for IAM database authentication.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IamStatus {
+        /// The default value for users that are not of type CLOUD_IAM_GROUP.
+        /// Only CLOUD_IAM_GROUP users will be inactive or active.
+        /// Users with an IamStatus of IAM_STATUS_UNSPECIFIED will not
+        /// display whether they are active or inactive as that is not applicable to
+        /// them.
+        Unspecified = 0,
+        /// INACTIVE indicates a group is not available for IAM database
+        /// authentication.
+        Inactive = 1,
+        /// ACTIVE indicates a group is available for IAM database authentication.
+        Active = 2,
+    }
+    impl IamStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "IAM_STATUS_UNSPECIFIED",
+                Self::Inactive => "INACTIVE",
+                Self::Active => "ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IAM_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "INACTIVE" => Some(Self::Inactive),
+                "ACTIVE" => Some(Self::Active),
                 _ => None,
             }
         }

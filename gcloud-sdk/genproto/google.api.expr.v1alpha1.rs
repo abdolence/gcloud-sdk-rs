@@ -328,11 +328,13 @@ pub mod constant {
         /// protobuf.Duration value.
         ///
         /// Deprecated: duration is no longer considered a builtin cel type.
+        #[deprecated]
         #[prost(message, tag = "8")]
         DurationValue(::prost_types::Duration),
         /// protobuf.Timestamp value.
         ///
         /// Deprecated: timestamp is no longer considered a builtin cel type.
+        #[deprecated]
         #[prost(message, tag = "9")]
         TimestampValue(::prost_types::Timestamp),
     }

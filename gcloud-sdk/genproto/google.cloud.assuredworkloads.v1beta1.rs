@@ -337,6 +337,7 @@ pub mod workload {
             Unspecified = 0,
             /// Deprecated. Existing workloads will continue to support this, but new
             /// CreateWorkloadRequests should not specify this as an input value.
+            #[deprecated]
             ConsumerProject = 1,
             /// Consumer Folder.
             ConsumerFolder = 4,
@@ -353,6 +354,7 @@ pub mod workload {
             pub fn as_str_name(&self) -> &'static str {
                 match self {
                     Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+                    #[allow(deprecated)]
                     Self::ConsumerProject => "CONSUMER_PROJECT",
                     Self::ConsumerFolder => "CONSUMER_FOLDER",
                     Self::EncryptionKeysProject => "ENCRYPTION_KEYS_PROJECT",
@@ -363,7 +365,9 @@ pub mod workload {
             pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
                 match value {
                     "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                    "CONSUMER_PROJECT" => Some(Self::ConsumerProject),
+                    "CONSUMER_PROJECT" => {
+                        Some(#[allow(deprecated)] Self::ConsumerProject)
+                    }
                     "CONSUMER_FOLDER" => Some(Self::ConsumerFolder),
                     "ENCRYPTION_KEYS_PROJECT" => Some(Self::EncryptionKeysProject),
                     "KEYRING" => Some(Self::Keyring),
@@ -686,15 +690,19 @@ pub mod workload {
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
         /// Input only. Immutable. Settings specific to resources needed for IL4.
+        #[deprecated]
         #[prost(message, tag = "7")]
         Il4Settings(Il4Settings),
         /// Input only. Immutable. Settings specific to resources needed for CJIS.
+        #[deprecated]
         #[prost(message, tag = "8")]
         CjisSettings(CjisSettings),
         /// Input only. Immutable. Settings specific to resources needed for FedRAMP High.
+        #[deprecated]
         #[prost(message, tag = "11")]
         FedrampHighSettings(FedrampHighSettings),
         /// Input only. Immutable. Settings specific to resources needed for FedRAMP Moderate.
+        #[deprecated]
         #[prost(message, tag = "12")]
         FedrampModerateSettings(FedrampModerateSettings),
     }

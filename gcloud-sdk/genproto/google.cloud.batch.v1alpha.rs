@@ -34,6 +34,7 @@ pub mod volume {
         #[prost(message, tag = "1")]
         Nfs(super::Nfs),
         /// Deprecated: please use device_name instead.
+        #[deprecated]
         #[prost(message, tag = "2")]
         Pd(super::Pd),
         /// A Google Cloud Storage (GCS) volume.
@@ -1558,6 +1559,7 @@ pub mod allocation_policy {
         /// old preemptible VM model (indicated by this field) is the older model,
         /// and has been migrated to use the SPOT model as the underlying technology.
         /// This old model will still be supported.
+        #[deprecated]
         Preemptible = 3,
         /// Bound to the lifecycle of the reservation in which it is provisioned.
         ReservationBound = 4,
@@ -1575,6 +1577,7 @@ pub mod allocation_policy {
                 Self::Unspecified => "PROVISIONING_MODEL_UNSPECIFIED",
                 Self::Standard => "STANDARD",
                 Self::Spot => "SPOT",
+                #[allow(deprecated)]
                 Self::Preemptible => "PREEMPTIBLE",
                 Self::ReservationBound => "RESERVATION_BOUND",
                 Self::FlexStart => "FLEX_START",
@@ -1586,7 +1589,7 @@ pub mod allocation_policy {
                 "PROVISIONING_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
                 "STANDARD" => Some(Self::Standard),
                 "SPOT" => Some(Self::Spot),
-                "PREEMPTIBLE" => Some(Self::Preemptible),
+                "PREEMPTIBLE" => Some(#[allow(deprecated)] Self::Preemptible),
                 "RESERVATION_BOUND" => Some(Self::ReservationBound),
                 "FLEX_START" => Some(Self::FlexStart),
                 _ => None,

@@ -130,6 +130,7 @@ pub mod r#type {
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Deprecated: if set, converts to an empty `utf8_bytes`.
+                #[deprecated]
                 #[prost(message, tag = "1")]
                 Utf8Raw(Utf8Raw),
                 /// Use `Utf8Bytes` encoding.
@@ -2456,6 +2457,7 @@ pub mod execute_query_request {
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
         /// messages.
+        #[deprecated]
         #[prost(message, tag = "4")]
         ProtoFormat(super::ProtoFormat),
     }

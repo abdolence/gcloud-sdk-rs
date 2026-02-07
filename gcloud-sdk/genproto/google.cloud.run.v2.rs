@@ -659,6 +659,20 @@ pub mod condition {
         ExecutionReason(i32),
     }
 }
+/// ContainerStatus holds the information of container name and image digest
+/// value.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContainerStatus {
+    /// The name of the container, if specified.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// ImageDigest holds the resolved digest for the image specified and resolved
+    /// during the creation of Revision. This field holds the digest value
+    /// regardless of whether a tag or digest was originally specified in the
+    /// Container object.
+    #[prost(string, tag = "2")]
+    pub image_digest: ::prost::alloc::string::String,
+}
 /// A single application container.
 /// This specifies both the container to run, the command to run in the container
 /// and the arguments to supply to it.
@@ -717,6 +731,9 @@ pub struct Container {
     /// fails.
     #[prost(message, optional, tag = "11")]
     pub startup_probe: ::core::option::Option<Probe>,
+    /// Readiness probe to be used for health checks.
+    #[prost(message, optional, tag = "14")]
+    pub readiness_probe: ::core::option::Option<Probe>,
     /// Names of the containers that must start before this container.
     #[prost(string, repeated, tag = "12")]
     pub depends_on: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -2072,6 +2089,534 @@ pub struct ExecutionTemplate {
     /// execution.
     #[prost(message, optional, tag = "5")]
     pub template: ::core::option::Option<TaskTemplate>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateInstanceRequest {
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<Instance>,
+    /// Required. The unique identifier for the Instance. It must begin with
+    /// letter, and cannot end with hyphen; must contain fewer than 50 characters.
+    /// The name of the instance becomes {parent}/instances/{instance_id}.
+    #[prost(string, tag = "3")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Optional. Indicates that the request should be validated and default values
+    /// populated, without persisting the request or creating any resources.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetInstanceRequest {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteInstanceRequest {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Indicates that the request should be validated without actually
+    /// deleting any resources.
+    #[prost(bool, tag = "2")]
+    pub validate_only: bool,
+    /// Optional. A system-generated fingerprint for this version of the
+    /// resource. May be used to detect modification conflict during updates.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Request message for retrieving a list of Instances.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListInstancesRequest {
+    /// Required. The location and project to list resources on.
+    /// Format: projects/{project}/locations/{location}, where {project} can be
+    /// project id or number.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of Instances to return in this call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous call to ListInstances.
+    /// All other parameters must match.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, returns deleted (but unexpired) resources along with
+    /// active ones.
+    #[prost(bool, tag = "4")]
+    pub show_deleted: bool,
+}
+/// Response message containing a list of Instances.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInstancesResponse {
+    /// The resulting list of Instances.
+    #[prost(message, repeated, tag = "1")]
+    pub instances: ::prost::alloc::vec::Vec<Instance>,
+    /// A token indicating there are more items than page_size. Use it in the next
+    /// ListInstances request to continue.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for deleting an Instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StopInstanceRequest {
+    /// Required. The name of the Instance to stop.
+    /// Format:
+    /// `projects/{project}/locations/{location}/instances/{instance}`,
+    /// where `{project}` can be project id or number.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Indicates that the request should be validated without actually
+    /// stopping any resources.
+    #[prost(bool, tag = "2")]
+    pub validate_only: bool,
+    /// Optional. A system-generated fingerprint for this version of the resource.
+    /// This may be used to detect modification conflict during updates.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Request message for starting an Instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartInstanceRequest {
+    /// Required. The name of the Instance to stop.
+    /// Format:
+    /// `projects/{project}/locations/{location}/instances/{instance}`,
+    /// where `{project}` can be project id or number.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Indicates that the request should be validated without actually
+    /// stopping any resources.
+    #[prost(bool, tag = "2")]
+    pub validate_only: bool,
+    /// Optional. A system-generated fingerprint for this version of the resource.
+    /// This may be used to detect modification conflict during updates.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// A Cloud Run Instance represents a single group of containers running in a
+/// region.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Instance {
+    /// The fully qualified name of this Instance. In CreateInstanceRequest, this
+    /// field is ignored, and instead composed from CreateInstanceRequest.parent
+    /// and CreateInstanceRequest.instance_id.
+    ///
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// User-provided description of the Instance. This field currently has a
+    /// 512-character limit.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Server assigned unique identifier for the trigger. The value
+    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
+    #[prost(string, tag = "4")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. A number that monotonically increases every time the user
+    /// modifies the desired state.
+    /// Please note that unlike v1, this is an int64 value. As with most Google
+    /// APIs, its JSON representation will be a `string` instead of an `integer`.
+    #[prost(int64, tag = "5")]
+    pub generation: i64,
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    #[prost(map = "string, string", tag = "7")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The creation time.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last-modified time.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The deletion time.
+    #[prost(message, optional, tag = "10")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. For a deleted resource, the time after which it will be
+    /// permamently deleted.
+    #[prost(message, optional, tag = "11")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Email address of the authenticated creator.
+    #[prost(string, tag = "12")]
+    pub creator: ::prost::alloc::string::String,
+    /// Output only. Email address of the last authenticated modifier.
+    #[prost(string, tag = "13")]
+    pub last_modifier: ::prost::alloc::string::String,
+    /// Arbitrary identifier for the API client.
+    #[prost(string, tag = "14")]
+    pub client: ::prost::alloc::string::String,
+    /// Arbitrary version identifier for the API client.
+    #[prost(string, tag = "15")]
+    pub client_version: ::prost::alloc::string::String,
+    /// The launch stage as defined by [Google Cloud Platform
+    /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
+    /// Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
+    /// is assumed.
+    /// Set the launch stage to a preview stage on input to allow use of preview
+    /// features in that stage. On read (or output), describes whether the
+    /// resource uses preview features.
+    ///
+    /// <p>
+    ///   For example, if ALPHA is provided as input, but only BETA and GA-level
+    ///   features are used, this field will be BETA on output.
+    #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "16")]
+    pub launch_stage: i32,
+    /// Settings for the Binary Authorization feature.
+    #[prost(message, optional, tag = "17")]
+    pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
+    /// Optional. VPC Access configuration to use for this Revision. For more
+    /// information, visit
+    /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
+    #[prost(message, optional, tag = "18")]
+    pub vpc_access: ::core::option::Option<VpcAccess>,
+    #[prost(string, tag = "19")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Required. Holds the single container that defines the unit of execution for
+    /// this Instance.
+    #[prost(message, repeated, tag = "20")]
+    pub containers: ::prost::alloc::vec::Vec<Container>,
+    /// A list of Volumes to make available to containers.
+    #[prost(message, repeated, tag = "21")]
+    pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// A reference to a customer managed encryption key (CMEK) to use to encrypt
+    /// this container image. For more information, go to
+    /// <https://cloud.google.com/run/docs/securing/using-cmek>
+    #[prost(string, tag = "22")]
+    pub encryption_key: ::prost::alloc::string::String,
+    /// The action to take if the encryption key is revoked.
+    #[prost(enumeration = "EncryptionKeyRevocationAction", tag = "24")]
+    pub encryption_key_revocation_action: i32,
+    /// If encryption_key_revocation_action is SHUTDOWN, the duration before
+    /// shutting down all instances. The minimum increment is 1 hour.
+    #[prost(message, optional, tag = "25")]
+    pub encryption_key_shutdown_duration: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// Optional. The node selector for the instance.
+    #[prost(message, optional, tag = "26")]
+    pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. True if GPU zonal redundancy is disabled on this instance.
+    #[prost(bool, optional, tag = "27")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
+    /// Optional. Provides the ingress settings for this Instance. On output,
+    /// returns the currently observed ingress settings, or
+    /// INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+    #[prost(enumeration = "IngressTraffic", tag = "28")]
+    pub ingress: i32,
+    /// Optional. Disables IAM permission check for run.routes.invoke for callers
+    /// of this Instance. For more information, visit
+    /// <https://cloud.google.com/run/docs/securing/managing-access#invoker_check.>
+    #[prost(bool, tag = "29")]
+    pub invoker_iam_disabled: bool,
+    /// Optional. IAP settings on the Instance.
+    #[prost(bool, tag = "30")]
+    pub iap_enabled: bool,
+    /// Output only. The generation of this Instance currently serving traffic. See
+    /// comments in `reconciling` for additional information on reconciliation
+    /// process in Cloud Run. Please note that unlike v1, this is an int64 value.
+    /// As with most Google APIs, its JSON representation will be a `string`
+    /// instead of an `integer`.
+    #[prost(int64, tag = "40")]
+    pub observed_generation: i64,
+    /// Output only. The Google Console URI to obtain logs for the Instance.
+    #[prost(string, tag = "41")]
+    pub log_uri: ::prost::alloc::string::String,
+    /// Output only. The Condition of this Instance, containing its readiness
+    /// status, and detailed error information in case it did not reach a serving
+    /// state. See comments in `reconciling` for additional information on
+    /// reconciliation process in Cloud Run.
+    #[prost(message, optional, tag = "42")]
+    pub terminal_condition: ::core::option::Option<Condition>,
+    /// Output only. The Conditions of all other associated sub-resources. They
+    /// contain additional diagnostics information in case the Instance does not
+    /// reach its Serving state. See comments in `reconciling` for additional
+    /// information on reconciliation process in Cloud Run.
+    #[prost(message, repeated, tag = "43")]
+    pub conditions: ::prost::alloc::vec::Vec<Condition>,
+    /// Output only. Status information for each of the specified containers. The
+    /// status includes the resolved digest for specified images.
+    #[prost(message, repeated, tag = "44")]
+    pub container_statuses: ::prost::alloc::vec::Vec<ContainerStatus>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "46")]
+    pub satisfies_pzs: bool,
+    /// Output only. All URLs serving traffic for this Instance.
+    #[prost(string, repeated, tag = "45")]
+    pub urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Returns true if the Instance is currently being acted upon by
+    /// the system to bring it into the desired state.
+    ///
+    /// When a new Instance is created, or an existing one is updated, Cloud Run
+    /// will asynchronously perform all necessary steps to bring the Instance to
+    /// the desired serving state. This process is called reconciliation. While
+    /// reconciliation is in process, `observed_generation` will have a transient
+    /// value that might mismatch the intended state.
+    /// Once reconciliation is over (and this field is false), there are two
+    /// possible outcomes: reconciliation succeeded and the serving state matches
+    /// the Instance, or there was an error, and reconciliation failed. This state
+    /// can be found in `terminal_condition.state`.
+    #[prost(bool, tag = "98")]
+    pub reconciling: bool,
+    /// Optional. A system-generated fingerprint for this version of the
+    /// resource. May be used to detect modification conflict during updates.
+    #[prost(string, tag = "99")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod instances_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The Cloud Run Instances API allows you to manage Cloud Run Instances.
+    #[derive(Debug, Clone)]
+    pub struct InstancesClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl InstancesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> InstancesClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InstancesClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            InstancesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates an Instance.
+        pub async fn create_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/CreateInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Instances", "CreateInstance"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Instance
+        pub async fn delete_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/DeleteInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Instances", "DeleteInstance"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Instance
+        pub async fn get_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetInstanceRequest>,
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/GetInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Instances", "GetInstance"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Instances. Results are sorted by creation time, descending.
+        pub async fn list_instances(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListInstancesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/ListInstances",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Instances", "ListInstances"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops an Instance.
+        pub async fn stop_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/StopInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Instances", "StopInstance"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Starts an Instance.
+        pub async fn start_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Instances/StartInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Instances", "StartInstance"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
 }
 /// Holds a single instance split entry for the Worker. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.

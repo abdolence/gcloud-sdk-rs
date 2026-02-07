@@ -7141,6 +7141,7 @@ pub mod control {
         ///
         /// Note that this field is deprecated and will throw NOT_IMPLEMENTED if
         /// used for creating a control.
+        #[deprecated]
         #[prost(message, tag = "3")]
         FacetSpec(super::search_request::FacetSpec),
         /// A rule control - a condition-action pair.

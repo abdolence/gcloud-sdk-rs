@@ -597,6 +597,8 @@ pub mod hash {
         Sha256 = 1,
         /// MD5 hash.
         Md5 = 2,
+        /// Dirsum SHA256 hash.
+        DirsumSha256 = 3,
     }
     impl HashType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -608,6 +610,7 @@ pub mod hash {
                 Self::Unspecified => "HASH_TYPE_UNSPECIFIED",
                 Self::Sha256 => "SHA256",
                 Self::Md5 => "MD5",
+                Self::DirsumSha256 => "DIRSUM_SHA256",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -616,6 +619,7 @@ pub mod hash {
                 "HASH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "SHA256" => Some(Self::Sha256),
                 "MD5" => Some(Self::Md5),
+                "DIRSUM_SHA256" => Some(Self::DirsumSha256),
                 _ => None,
             }
         }
@@ -2800,6 +2804,7 @@ pub mod project_settings {
         /// Redirection is enabled.
         RedirectionFromGcrIoEnabled = 2,
         /// Redirection is enabled, and has been finalized so cannot be reverted.
+        #[deprecated]
         RedirectionFromGcrIoFinalized = 3,
         /// Redirection is enabled and missing images are copied from GCR
         RedirectionFromGcrIoEnabledAndCopying = 5,
@@ -2816,6 +2821,7 @@ pub mod project_settings {
                 Self::Unspecified => "REDIRECTION_STATE_UNSPECIFIED",
                 Self::RedirectionFromGcrIoDisabled => "REDIRECTION_FROM_GCR_IO_DISABLED",
                 Self::RedirectionFromGcrIoEnabled => "REDIRECTION_FROM_GCR_IO_ENABLED",
+                #[allow(deprecated)]
                 Self::RedirectionFromGcrIoFinalized => {
                     "REDIRECTION_FROM_GCR_IO_FINALIZED"
                 }
@@ -2838,7 +2844,7 @@ pub mod project_settings {
                     Some(Self::RedirectionFromGcrIoEnabled)
                 }
                 "REDIRECTION_FROM_GCR_IO_FINALIZED" => {
-                    Some(Self::RedirectionFromGcrIoFinalized)
+                    Some(#[allow(deprecated)] Self::RedirectionFromGcrIoFinalized)
                 }
                 "REDIRECTION_FROM_GCR_IO_ENABLED_AND_COPYING" => {
                     Some(Self::RedirectionFromGcrIoEnabledAndCopying)

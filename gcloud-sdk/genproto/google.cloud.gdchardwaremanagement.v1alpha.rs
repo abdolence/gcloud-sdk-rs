@@ -1199,6 +1199,7 @@ pub mod hardware_physical_info {
         C13 = 2,
         /// Deprecated: Please use TYPE_G_BS1363, CEE_7_3, CEE_7_5 or TYPE_F
         /// instead.
+        #[deprecated]
         StandardEu = 3,
         /// Type G / BS1363.
         TypeGBs1363 = 4,
@@ -1219,6 +1220,7 @@ pub mod hardware_physical_info {
                 Self::Unspecified => "POWER_RECEPTACLE_TYPE_UNSPECIFIED",
                 Self::Nema515 => "NEMA_5_15",
                 Self::C13 => "C_13",
+                #[allow(deprecated)]
                 Self::StandardEu => "STANDARD_EU",
                 Self::TypeGBs1363 => "TYPE_G_BS1363",
                 Self::Cee73 => "CEE_7_3",
@@ -1232,7 +1234,7 @@ pub mod hardware_physical_info {
                 "POWER_RECEPTACLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "NEMA_5_15" => Some(Self::Nema515),
                 "C_13" => Some(Self::C13),
-                "STANDARD_EU" => Some(Self::StandardEu),
+                "STANDARD_EU" => Some(#[allow(deprecated)] Self::StandardEu),
                 "TYPE_G_BS1363" => Some(Self::TypeGBs1363),
                 "CEE_7_3" => Some(Self::Cee73),
                 "CEE_7_5" => Some(Self::Cee75),

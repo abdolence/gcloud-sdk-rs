@@ -108,6 +108,7 @@ pub mod operation_metadata {
         #[prost(message, tag = "20")]
         UndeletePhraseSetRequest(super::UndeletePhraseSetRequest),
         /// The UpdateConfigRequest that spawned the Operation.
+        #[deprecated]
         #[prost(message, tag = "21")]
         UpdateConfigRequest(super::UpdateConfigRequest),
     }
@@ -514,23 +515,25 @@ pub mod explicit_decoding_config {
 /// Configuration to enable speaker diarization.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
-    /// Required. Minimum number of speakers in the conversation. This range gives
-    /// you more flexibility by allowing the system to automatically determine the
-    /// correct number of speakers.
-    ///
-    /// To fix the number of speakers detected in the audio, set
-    /// `min_speaker_count` = `max_speaker_count`.
+    /// Optional. The system automatically determines the number of speakers. This
+    /// value is not currently used.
     #[prost(int32, tag = "2")]
     pub min_speaker_count: i32,
-    /// Required. Maximum number of speakers in the conversation. Valid values are:
-    /// 1-6. Must be >= `min_speaker_count`. This range gives you more flexibility
-    /// by allowing the system to automatically determine the correct number of
-    /// speakers.
+    /// Optional. The system automatically determines the number of speakers. This
+    /// value is not currently used.
     #[prost(int32, tag = "3")]
     pub max_speaker_count: i32,
 }
+/// Configuration to enable custom prompt in chirp3.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomPromptConfig {
+    /// Optional. The custom instructions to override the existing instructions for
+    /// chirp3.
+    #[prost(string, tag = "1")]
+    pub custom_prompt: ::prost::alloc::string::String,
+}
 /// Available recognition features.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecognitionFeatures {
     /// If set to `true`, the server will attempt to filter out profanities,
     /// replacing all but the initial character in each filtered word with
@@ -569,14 +572,8 @@ pub struct RecognitionFeatures {
     /// Mode for recognizing multi-channel audio.
     #[prost(enumeration = "recognition_features::MultiChannelMode", tag = "17")]
     pub multi_channel_mode: i32,
-    /// Configuration to enable speaker diarization and set additional
-    /// parameters to make diarization better suited for your application.
-    /// When this is enabled, we send all the words from the beginning of the
-    /// audio for the top alternative in every consecutive STREAMING responses.
-    /// This is done in order to improve our speaker tags as our models learn to
-    /// identify the speakers in the conversation over time.
-    /// For non-streaming requests, the diarization results will be provided only
-    /// in the top alternative of the FINAL SpeechRecognitionResult.
+    /// Configuration to enable speaker diarization. To enable diarization, set
+    /// this field to an empty SpeakerDiarizationConfig message.
     #[prost(message, optional, tag = "9")]
     pub diarization_config: ::core::option::Option<SpeakerDiarizationConfig>,
     /// Maximum number of recognition hypotheses to be returned.
@@ -585,6 +582,9 @@ pub struct RecognitionFeatures {
     /// one. If omitted, will return a maximum of one.
     #[prost(int32, tag = "16")]
     pub max_alternatives: i32,
+    /// Optional. Configuration to enable custom prompt for chirp3.
+    #[prost(message, optional, tag = "18")]
+    pub custom_prompt_config: ::core::option::Option<CustomPromptConfig>,
 }
 /// Nested message and enum types in `RecognitionFeatures`.
 pub mod recognition_features {
@@ -865,6 +865,10 @@ pub struct RecognitionResponseMetadata {
     /// When available, billed audio seconds for the corresponding request.
     #[prost(message, optional, tag = "6")]
     pub total_billed_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Output only. Provides the prompt used for the recognition
+    /// request.
+    #[prost(string, optional, tag = "10")]
+    pub prompt: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
 #[derive(Clone, PartialEq, ::prost::Message)]

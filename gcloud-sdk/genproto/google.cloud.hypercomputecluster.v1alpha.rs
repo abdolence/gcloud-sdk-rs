@@ -245,6 +245,7 @@ pub mod network_resource {
         #[prost(message, tag = "3")]
         Network(super::NetworkReference),
         /// Deprecated: Use network instead.
+        #[deprecated]
         #[prost(message, tag = "1")]
         ComputeNetwork(super::ComputeNetworkReference),
     }
@@ -286,9 +287,11 @@ pub mod network_resource_config {
         #[prost(message, tag = "4")]
         ExistingNetwork(super::ExistingNetworkConfig),
         /// Immutable. Deprecated: Use new_network instead.
+        #[deprecated]
         #[prost(message, tag = "1")]
         NewComputeNetwork(super::NewComputeNetworkConfig),
         /// Immutable. Deprecated: Use existing_network instead.
+        #[deprecated]
         #[prost(message, tag = "2")]
         ExistingComputeNetwork(super::ExistingComputeNetworkConfig),
     }
@@ -475,12 +478,16 @@ pub mod new_filestore_config {
         /// high-performance computing workloads.
         Regional = 6,
         /// Deprecated: Use a different tier instead.
+        #[deprecated]
         BasicHdd = 1,
         /// Deprecated: Use a different tier instead.
+        #[deprecated]
         BasicSsd = 2,
         /// Deprecated: Use a different tier instead.
+        #[deprecated]
         HighScaleSsd = 3,
         /// Deprecated: Use a different tier instead.
+        #[deprecated]
         Enterprise = 5,
     }
     impl Tier {
@@ -493,9 +500,13 @@ pub mod new_filestore_config {
                 Self::Unspecified => "TIER_UNSPECIFIED",
                 Self::Zonal => "ZONAL",
                 Self::Regional => "REGIONAL",
+                #[allow(deprecated)]
                 Self::BasicHdd => "BASIC_HDD",
+                #[allow(deprecated)]
                 Self::BasicSsd => "BASIC_SSD",
+                #[allow(deprecated)]
                 Self::HighScaleSsd => "HIGH_SCALE_SSD",
+                #[allow(deprecated)]
                 Self::Enterprise => "ENTERPRISE",
             }
         }
@@ -505,10 +516,10 @@ pub mod new_filestore_config {
                 "TIER_UNSPECIFIED" => Some(Self::Unspecified),
                 "ZONAL" => Some(Self::Zonal),
                 "REGIONAL" => Some(Self::Regional),
-                "BASIC_HDD" => Some(Self::BasicHdd),
-                "BASIC_SSD" => Some(Self::BasicSsd),
-                "HIGH_SCALE_SSD" => Some(Self::HighScaleSsd),
-                "ENTERPRISE" => Some(Self::Enterprise),
+                "BASIC_HDD" => Some(#[allow(deprecated)] Self::BasicHdd),
+                "BASIC_SSD" => Some(#[allow(deprecated)] Self::BasicSsd),
+                "HIGH_SCALE_SSD" => Some(#[allow(deprecated)] Self::HighScaleSsd),
+                "ENTERPRISE" => Some(#[allow(deprecated)] Self::Enterprise),
                 _ => None,
             }
         }
@@ -792,15 +803,19 @@ pub mod compute_resource {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConfigOneof {
         /// Deprecated: Use config.
+        #[deprecated]
         #[prost(message, tag = "2")]
         NewOnDemandInstances(super::NewOnDemandInstancesConfig),
         /// Deprecated: Use config.
+        #[deprecated]
         #[prost(message, tag = "3")]
         NewSpotInstances(super::NewSpotInstancesConfig),
         /// Deprecated: Use config.
+        #[deprecated]
         #[prost(message, tag = "4")]
         NewReservedInstances(super::NewReservedInstancesConfig),
         /// Deprecated: Use config.
+        #[deprecated]
         #[prost(message, tag = "5")]
         NewDwsFlexInstances(super::NewDwsFlexInstancesConfig),
     }
@@ -997,12 +1012,16 @@ pub mod new_reserved_instances_config {
     #[repr(i32)]
     pub enum ReservationType {
         /// Deprecated: Do not use.
+        #[deprecated]
         Unspecified = 0,
         /// Deprecated: Do not use.
+        #[deprecated]
         NoReservation = 1,
         /// Deprecated: Do not use.
+        #[deprecated]
         AnyReservation = 2,
         /// Deprecated: Do not use.
+        #[deprecated]
         SpecificReservation = 3,
     }
     impl ReservationType {
@@ -1012,19 +1031,27 @@ pub mod new_reserved_instances_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "RESERVATION_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::NoReservation => "NO_RESERVATION",
+                #[allow(deprecated)]
                 Self::AnyReservation => "ANY_RESERVATION",
+                #[allow(deprecated)]
                 Self::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "RESERVATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "NO_RESERVATION" => Some(Self::NoReservation),
-                "ANY_RESERVATION" => Some(Self::AnyReservation),
-                "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                "RESERVATION_TYPE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "NO_RESERVATION" => Some(#[allow(deprecated)] Self::NoReservation),
+                "ANY_RESERVATION" => Some(#[allow(deprecated)] Self::AnyReservation),
+                "SPECIFIC_RESERVATION" => {
+                    Some(#[allow(deprecated)] Self::SpecificReservation)
+                }
                 _ => None,
             }
         }
@@ -1086,10 +1113,13 @@ pub mod new_flex_start_instances_config {
     #[repr(i32)]
     pub enum TerminationAction {
         /// Deprecated: Do not use.
+        #[deprecated]
         Unspecified = 0,
         /// Deprecated: Do not use.
+        #[deprecated]
         Stop = 1,
         /// Deprecated: Do not use.
+        #[deprecated]
         Delete = 2,
     }
     impl TerminationAction {
@@ -1099,17 +1129,22 @@ pub mod new_flex_start_instances_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "TERMINATION_ACTION_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Stop => "STOP",
+                #[allow(deprecated)]
                 Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "TERMINATION_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
-                "STOP" => Some(Self::Stop),
-                "DELETE" => Some(Self::Delete),
+                "TERMINATION_ACTION_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "STOP" => Some(#[allow(deprecated)] Self::Stop),
+                "DELETE" => Some(#[allow(deprecated)] Self::Delete),
                 _ => None,
             }
         }
@@ -2442,10 +2477,13 @@ pub mod new_dws_flex_instances_config {
     #[repr(i32)]
     pub enum TerminationAction {
         /// Deprecated: Do not use.
+        #[deprecated]
         Unspecified = 0,
         /// Deprecated: Do not use.
+        #[deprecated]
         Stop = 1,
         /// Deprecated: Do not use.
+        #[deprecated]
         Delete = 2,
     }
     impl TerminationAction {
@@ -2455,17 +2493,22 @@ pub mod new_dws_flex_instances_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "TERMINATION_ACTION_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Stop => "STOP",
+                #[allow(deprecated)]
                 Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "TERMINATION_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
-                "STOP" => Some(Self::Stop),
-                "DELETE" => Some(Self::Delete),
+                "TERMINATION_ACTION_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "STOP" => Some(#[allow(deprecated)] Self::Stop),
+                "DELETE" => Some(#[allow(deprecated)] Self::Delete),
                 _ => None,
             }
         }
@@ -2504,12 +2547,16 @@ pub mod reservation_affinity {
     #[repr(i32)]
     pub enum ReservationType {
         /// Deprecated: Do not use.
+        #[deprecated]
         Unspecified = 0,
         /// Deprecated: Do not use.
+        #[deprecated]
         NoReservation = 1,
         /// Deprecated: Do not use.
+        #[deprecated]
         AnyReservation = 2,
         /// Deprecated: Do not use.
+        #[deprecated]
         SpecificReservation = 3,
     }
     impl ReservationType {
@@ -2519,20 +2566,30 @@ pub mod reservation_affinity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "RESERVATION_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::NoReservation => "RESERVATION_TYPE_NO_RESERVATION",
+                #[allow(deprecated)]
                 Self::AnyReservation => "RESERVATION_TYPE_ANY_RESERVATION",
+                #[allow(deprecated)]
                 Self::SpecificReservation => "RESERVATION_TYPE_SPECIFIC_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "RESERVATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "RESERVATION_TYPE_NO_RESERVATION" => Some(Self::NoReservation),
-                "RESERVATION_TYPE_ANY_RESERVATION" => Some(Self::AnyReservation),
+                "RESERVATION_TYPE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "RESERVATION_TYPE_NO_RESERVATION" => {
+                    Some(#[allow(deprecated)] Self::NoReservation)
+                }
+                "RESERVATION_TYPE_ANY_RESERVATION" => {
+                    Some(#[allow(deprecated)] Self::AnyReservation)
+                }
                 "RESERVATION_TYPE_SPECIFIC_RESERVATION" => {
-                    Some(Self::SpecificReservation)
+                    Some(#[allow(deprecated)] Self::SpecificReservation)
                 }
                 _ => None,
             }

@@ -181,14 +181,17 @@ pub mod ssl_config {
         /// SSL mode is not specified. Defaults to ENCRYPTED_ONLY.
         Unspecified = 0,
         /// SSL connections are optional. CA verification not enforced.
+        #[deprecated]
         Allow = 1,
         /// SSL connections are required. CA verification not enforced.
         /// Clients may use locally self-signed certificates (default psql client
         /// behavior).
+        #[deprecated]
         Require = 2,
         /// SSL connections are required. CA verification enforced.
         /// Clients must have certificates signed by a Cluster CA, for example, using
         /// GenerateClientCertificate.
+        #[deprecated]
         VerifyCa = 3,
         /// SSL connections are optional. CA verification not enforced.
         AllowUnencryptedAndEncrypted = 4,
@@ -203,8 +206,11 @@ pub mod ssl_config {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "SSL_MODE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Allow => "SSL_MODE_ALLOW",
+                #[allow(deprecated)]
                 Self::Require => "SSL_MODE_REQUIRE",
+                #[allow(deprecated)]
                 Self::VerifyCa => "SSL_MODE_VERIFY_CA",
                 Self::AllowUnencryptedAndEncrypted => "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
                 Self::EncryptedOnly => "ENCRYPTED_ONLY",
@@ -214,9 +220,9 @@ pub mod ssl_config {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "SSL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                "SSL_MODE_ALLOW" => Some(Self::Allow),
-                "SSL_MODE_REQUIRE" => Some(Self::Require),
-                "SSL_MODE_VERIFY_CA" => Some(Self::VerifyCa),
+                "SSL_MODE_ALLOW" => Some(#[allow(deprecated)] Self::Allow),
+                "SSL_MODE_REQUIRE" => Some(#[allow(deprecated)] Self::Require),
+                "SSL_MODE_VERIFY_CA" => Some(#[allow(deprecated)] Self::VerifyCa),
                 "ALLOW_UNENCRYPTED_AND_ENCRYPTED" => {
                     Some(Self::AllowUnencryptedAndEncrypted)
                 }
@@ -2191,6 +2197,7 @@ pub enum DatabaseVersion {
     /// This is an unknown database version.
     Unspecified = 0,
     /// DEPRECATED - The database version is Postgres 13.
+    #[deprecated]
     Postgres13 = 1,
     /// The database version is Postgres 14.
     Postgres14 = 2,
@@ -2209,6 +2216,7 @@ impl DatabaseVersion {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "DATABASE_VERSION_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::Postgres13 => "POSTGRES_13",
             Self::Postgres14 => "POSTGRES_14",
             Self::Postgres15 => "POSTGRES_15",
@@ -2220,7 +2228,7 @@ impl DatabaseVersion {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
-            "POSTGRES_13" => Some(Self::Postgres13),
+            "POSTGRES_13" => Some(#[allow(deprecated)] Self::Postgres13),
             "POSTGRES_14" => Some(Self::Postgres14),
             "POSTGRES_15" => Some(Self::Postgres15),
             "POSTGRES_16" => Some(Self::Postgres16),

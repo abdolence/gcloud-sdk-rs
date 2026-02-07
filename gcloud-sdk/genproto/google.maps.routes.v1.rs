@@ -243,6 +243,7 @@ pub enum TollPass {
     UsMiGrosseIleTollBridgePassTag = 37,
     /// MI, USA.
     /// Deprecated as this pass type no longer exists.
+    #[deprecated]
     UsMiIqProxCard = 38,
     /// MI, USA.
     UsMiIqTag = 95,
@@ -398,6 +399,7 @@ impl TollPass {
             Self::UsMiGrosseIleTollBridgePassTag => {
                 "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG"
             }
+            #[allow(deprecated)]
             Self::UsMiIqProxCard => "US_MI_IQ_PROX_CARD",
             Self::UsMiIqTag => "US_MI_IQ_TAG",
             Self::UsMiMackinacBridgeMacPass => "US_MI_MACKINAC_BRIDGE_MAC_PASS",
@@ -514,7 +516,7 @@ impl TollPass {
             "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG" => {
                 Some(Self::UsMiGrosseIleTollBridgePassTag)
             }
-            "US_MI_IQ_PROX_CARD" => Some(Self::UsMiIqProxCard),
+            "US_MI_IQ_PROX_CARD" => Some(#[allow(deprecated)] Self::UsMiIqProxCard),
             "US_MI_IQ_TAG" => Some(Self::UsMiIqTag),
             "US_MI_MACKINAC_BRIDGE_MAC_PASS" => Some(Self::UsMiMackinacBridgeMacPass),
             "US_MI_NEXPRESS_TOLL" => Some(Self::UsMiNexpressToll),
