@@ -418,6 +418,7 @@ grafeas-v1beta1-discovery = []
 maps-fleetengine-v1 = []
 
 # REST features
+google-rest-artifactregistry-v1 = ["rest"]
 google-rest-bigquery-v2 = ["rest"]
 google-rest-cloudresourcemanager-v3 = ["rest"]
 google-rest-compute-v1 = ["rest"]
