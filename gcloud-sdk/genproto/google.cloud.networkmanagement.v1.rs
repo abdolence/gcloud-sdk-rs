@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29, 42"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -160,18 +160,33 @@ pub mod step {
         ArriveAtInterconnectAttachment = 37,
         /// Forwarding state: arriving at a VPC connector.
         ArriveAtVpcConnector = 24,
+        /// Forwarding state: arriving at a GKE Pod.
+        ArriveAtGkePod = 44,
         /// Forwarding state: for packets originating from a serverless endpoint
         /// forwarded through Direct VPC egress.
         DirectVpcEgressConnection = 35,
         /// Forwarding state: for packets originating from a serverless endpoint
         /// forwarded through public (external) connectivity.
         ServerlessExternalConnection = 36,
+        /// Forwarding state: Layer 7 packet inspection by the firewall endpoint
+        /// based on the configured security profile group.
+        NgfwPacketInspection = 47,
         /// Transition state: packet header translated. The `nat` field is populated
         /// with the translation information.
         Nat = 14,
         /// Transition state: GKE Pod IP masquerading is skipped. The
         /// `ip_masquerading_skipped` field is populated with the reason.
         SkipGkePodIpMasquerading = 40,
+        /// Transition state: GKE Ingress Network Policy is skipped. The
+        /// `gke_network_policy_skipped` field is populated with the reason.
+        SkipGkeIngressNetworkPolicy = 41,
+        /// Transition state: GKE Egress Network Policy is skipped. The
+        /// `gke_network_policy_skipped` field is populated with the reason.
+        SkipGkeEgressNetworkPolicy = 42,
+        /// Config checking state: verify ingress GKE network policy.
+        ApplyIngressGkeNetworkPolicy = 45,
+        /// Config checking state: verify egress GKE network policy.
+        ApplyEgressGkeNetworkPolicy = 46,
         /// Transition state: original connection is terminated and a new proxied
         /// connection is initiated.
         ProxyConnection = 15,
@@ -229,10 +244,16 @@ pub mod step {
                     "ARRIVE_AT_INTERCONNECT_ATTACHMENT"
                 }
                 Self::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
+                Self::ArriveAtGkePod => "ARRIVE_AT_GKE_POD",
                 Self::DirectVpcEgressConnection => "DIRECT_VPC_EGRESS_CONNECTION",
                 Self::ServerlessExternalConnection => "SERVERLESS_EXTERNAL_CONNECTION",
+                Self::NgfwPacketInspection => "NGFW_PACKET_INSPECTION",
                 Self::Nat => "NAT",
                 Self::SkipGkePodIpMasquerading => "SKIP_GKE_POD_IP_MASQUERADING",
+                Self::SkipGkeIngressNetworkPolicy => "SKIP_GKE_INGRESS_NETWORK_POLICY",
+                Self::SkipGkeEgressNetworkPolicy => "SKIP_GKE_EGRESS_NETWORK_POLICY",
+                Self::ApplyIngressGkeNetworkPolicy => "APPLY_INGRESS_GKE_NETWORK_POLICY",
+                Self::ApplyEgressGkeNetworkPolicy => "APPLY_EGRESS_GKE_NETWORK_POLICY",
                 Self::ProxyConnection => "PROXY_CONNECTION",
                 Self::Deliver => "DELIVER",
                 Self::Drop => "DROP",
@@ -282,12 +303,26 @@ pub mod step {
                     Some(Self::ArriveAtInterconnectAttachment)
                 }
                 "ARRIVE_AT_VPC_CONNECTOR" => Some(Self::ArriveAtVpcConnector),
+                "ARRIVE_AT_GKE_POD" => Some(Self::ArriveAtGkePod),
                 "DIRECT_VPC_EGRESS_CONNECTION" => Some(Self::DirectVpcEgressConnection),
                 "SERVERLESS_EXTERNAL_CONNECTION" => {
                     Some(Self::ServerlessExternalConnection)
                 }
+                "NGFW_PACKET_INSPECTION" => Some(Self::NgfwPacketInspection),
                 "NAT" => Some(Self::Nat),
                 "SKIP_GKE_POD_IP_MASQUERADING" => Some(Self::SkipGkePodIpMasquerading),
+                "SKIP_GKE_INGRESS_NETWORK_POLICY" => {
+                    Some(Self::SkipGkeIngressNetworkPolicy)
+                }
+                "SKIP_GKE_EGRESS_NETWORK_POLICY" => {
+                    Some(Self::SkipGkeEgressNetworkPolicy)
+                }
+                "APPLY_INGRESS_GKE_NETWORK_POLICY" => {
+                    Some(Self::ApplyIngressGkeNetworkPolicy)
+                }
+                "APPLY_EGRESS_GKE_NETWORK_POLICY" => {
+                    Some(Self::ApplyEgressGkeNetworkPolicy)
+                }
                 "PROXY_CONNECTION" => Some(Self::ProxyConnection),
                 "DELIVER" => Some(Self::Deliver),
                 "DROP" => Some(Self::Drop),
@@ -377,6 +412,13 @@ pub mod step {
         /// skipped.
         #[prost(message, tag = "38")]
         IpMasqueradingSkipped(super::IpMasqueradingSkippedInfo),
+        /// Display information of a GKE Network Policy.
+        #[prost(message, tag = "39")]
+        GkeNetworkPolicy(super::GkeNetworkPolicyInfo),
+        /// Display information of the reason why GKE Network Policy evaluation was
+        /// skipped.
+        #[prost(message, tag = "40")]
+        GkeNetworkPolicySkipped(super::GkeNetworkPolicySkippedInfo),
         /// Display information of a Cloud SQL instance.
         #[prost(message, tag = "19")]
         CloudSqlInstance(super::CloudSqlInstanceInfo),
@@ -411,6 +453,9 @@ pub mod step {
         /// only for return traces.
         #[prost(message, tag = "29")]
         ServerlessNeg(super::ServerlessNegInfo),
+        /// Display information of a layer 7 packet inspection by the firewall.
+        #[prost(message, tag = "42")]
+        NgfwPacketInspection(super::NgfwPacketInspectionInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -2629,6 +2674,11 @@ pub mod drop_info {
         /// Packet is dropped because no matching route was found in the hybrid
         /// subnet.
         HybridSubnetNoRoute = 106,
+        /// Packet is dropped by GKE Network Policy.
+        GkeNetworkPolicy = 108,
+        /// Packet is dropped because there is no valid matching route from the
+        /// network of the Google-managed service to the destination.
+        NoValidRouteFromGoogleManagedNetworkToDestination = 110,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2844,6 +2894,10 @@ pub mod drop_info {
                 }
                 Self::HybridSubnetRegionMismatch => "HYBRID_SUBNET_REGION_MISMATCH",
                 Self::HybridSubnetNoRoute => "HYBRID_SUBNET_NO_ROUTE",
+                Self::GkeNetworkPolicy => "GKE_NETWORK_POLICY",
+                Self::NoValidRouteFromGoogleManagedNetworkToDestination => {
+                    "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3086,6 +3140,10 @@ pub mod drop_info {
                 }
                 "HYBRID_SUBNET_REGION_MISMATCH" => Some(Self::HybridSubnetRegionMismatch),
                 "HYBRID_SUBNET_NO_ROUTE" => Some(Self::HybridSubnetNoRoute),
+                "GKE_NETWORK_POLICY" => Some(Self::GkeNetworkPolicy),
+                "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION" => {
+                    Some(Self::NoValidRouteFromGoogleManagedNetworkToDestination)
+                }
                 _ => None,
             }
         }
@@ -3221,6 +3279,108 @@ pub mod ip_masquerading_skipped_info {
                 }
                 "NO_MASQUERADING_FOR_RETURN_PACKET" => {
                     Some(Self::NoMasqueradingForReturnPacket)
+                }
+                _ => None,
+            }
+        }
+    }
+}
+/// For display only. Metadata associated with a GKE Network Policy.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GkeNetworkPolicyInfo {
+    /// The name of the Network Policy.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The URI of the Network Policy.
+    /// Format for a Network Policy in a zonal cluster:
+    /// `projects/<project_id>/zones/<zone>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>`
+    /// Format for a Network Policy in a regional cluster:
+    /// `projects/<project_id>/locations/<location>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>`
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Possible values: INGRESS, EGRESS
+    #[prost(string, tag = "3")]
+    pub direction: ::prost::alloc::string::String,
+    /// Possible values: ALLOW, DENY
+    #[prost(string, tag = "4")]
+    pub action: ::prost::alloc::string::String,
+}
+/// For display only. Contains information about why GKE Network Policy
+/// evaluation was skipped.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GkeNetworkPolicySkippedInfo {
+    /// Reason why Network Policy evaluation was skipped.
+    #[prost(enumeration = "gke_network_policy_skipped_info::Reason", tag = "1")]
+    pub reason: i32,
+}
+/// Nested message and enum types in `GkeNetworkPolicySkippedInfo`.
+pub mod gke_network_policy_skipped_info {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Reason {
+        /// Unused default value.
+        Unspecified = 0,
+        /// Network Policy is disabled on the cluster.
+        NetworkPolicyDisabled = 1,
+        /// Ingress traffic to a Pod from a source on the same Node is always
+        /// allowed.
+        IngressSourceOnSameNode = 2,
+        /// Egress traffic from a Pod that uses the Node's network namespace is not
+        /// subject to Network Policy.
+        EgressFromNodeNetworkNamespacePod = 3,
+        /// Network Policy is not applied to response traffic. This is because GKE
+        /// Network Policy evaluation is stateful in both GKE Dataplane V2 (eBPF) and
+        /// legacy (iptables) implementations.
+        NetworkPolicyNotAppliedToResponseTraffic = 4,
+        /// Network Policy evaluation is currently not supported for clusters with
+        /// FQDN Network Policies enabled.
+        NetworkPolicyAnalysisUnsupported = 100,
+    }
+    impl Reason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REASON_UNSPECIFIED",
+                Self::NetworkPolicyDisabled => "NETWORK_POLICY_DISABLED",
+                Self::IngressSourceOnSameNode => "INGRESS_SOURCE_ON_SAME_NODE",
+                Self::EgressFromNodeNetworkNamespacePod => {
+                    "EGRESS_FROM_NODE_NETWORK_NAMESPACE_POD"
+                }
+                Self::NetworkPolicyNotAppliedToResponseTraffic => {
+                    "NETWORK_POLICY_NOT_APPLIED_TO_RESPONSE_TRAFFIC"
+                }
+                Self::NetworkPolicyAnalysisUnsupported => {
+                    "NETWORK_POLICY_ANALYSIS_UNSUPPORTED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "NETWORK_POLICY_DISABLED" => Some(Self::NetworkPolicyDisabled),
+                "INGRESS_SOURCE_ON_SAME_NODE" => Some(Self::IngressSourceOnSameNode),
+                "EGRESS_FROM_NODE_NETWORK_NAMESPACE_POD" => {
+                    Some(Self::EgressFromNodeNetworkNamespacePod)
+                }
+                "NETWORK_POLICY_NOT_APPLIED_TO_RESPONSE_TRAFFIC" => {
+                    Some(Self::NetworkPolicyNotAppliedToResponseTraffic)
+                }
+                "NETWORK_POLICY_ANALYSIS_UNSUPPORTED" => {
+                    Some(Self::NetworkPolicyAnalysisUnsupported)
                 }
                 _ => None,
             }
@@ -3712,6 +3872,15 @@ pub struct ServerlessNegInfo {
     /// URI of the serverless network endpoint group.
     #[prost(string, tag = "1")]
     pub neg_uri: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a layer 7 packet inspection by the
+/// firewall.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NgfwPacketInspectionInfo {
+    /// URI of the security profile group associated with this firewall packet
+    /// inspection.
+    #[prost(string, tag = "1")]
+    pub security_profile_group_uri: ::prost::alloc::string::String,
 }
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load

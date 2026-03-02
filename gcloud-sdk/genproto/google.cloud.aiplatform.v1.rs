@@ -27771,6 +27771,71 @@ pub mod generate_content_response {
         pub candidates_tokens_details: ::prost::alloc::vec::Vec<
             super::ModalityTokenCount,
         >,
+        /// Output only. A detailed breakdown by modality of the token counts from
+        /// the results of tool executions, which are provided back to the model as
+        /// input.
+        #[prost(message, repeated, tag = "12")]
+        pub tool_use_prompt_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
+        /// Output only. The traffic type for this request.
+        #[prost(enumeration = "usage_metadata::TrafficType", tag = "8")]
+        pub traffic_type: i32,
+    }
+    /// Nested message and enum types in `UsageMetadata`.
+    pub mod usage_metadata {
+        /// The type of traffic that this request was processed with, indicating
+        /// which quota is consumed.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TrafficType {
+            /// Unspecified request traffic type.
+            Unspecified = 0,
+            /// The request was processed using Pay-As-You-Go quota.
+            OnDemand = 1,
+            /// Type for Priority Pay-As-You-Go traffic.
+            OnDemandPriority = 3,
+            /// Type for Flex traffic.
+            OnDemandFlex = 4,
+            /// Type for Provisioned Throughput traffic.
+            ProvisionedThroughput = 2,
+        }
+        impl TrafficType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TRAFFIC_TYPE_UNSPECIFIED",
+                    Self::OnDemand => "ON_DEMAND",
+                    Self::OnDemandPriority => "ON_DEMAND_PRIORITY",
+                    Self::OnDemandFlex => "ON_DEMAND_FLEX",
+                    Self::ProvisionedThroughput => "PROVISIONED_THROUGHPUT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TRAFFIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ON_DEMAND" => Some(Self::OnDemand),
+                    "ON_DEMAND_PRIORITY" => Some(Self::OnDemandPriority),
+                    "ON_DEMAND_FLEX" => Some(Self::OnDemandFlex),
+                    "PROVISIONED_THROUGHPUT" => Some(Self::ProvisionedThroughput),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Request message for
@@ -38400,14 +38465,14 @@ pub mod reasoning_engine_spec {
         pub container_concurrency: ::core::option::Option<i32>,
     }
     /// Specification for deploying from source code.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourceCodeSpec {
         /// Specifies where the source code is located.
         #[prost(oneof = "source_code_spec::Source", tags = "1, 3")]
         pub source: ::core::option::Option<source_code_spec::Source>,
         /// Specifies the language-specific configuration for building and running
         /// the code.
-        #[prost(oneof = "source_code_spec::LanguageSpec", tags = "2")]
+        #[prost(oneof = "source_code_spec::LanguageSpec", tags = "2, 5")]
         pub language_spec: ::core::option::Option<source_code_spec::LanguageSpec>,
     }
     /// Nested message and enum types in `SourceCodeSpec`.
@@ -38419,6 +38484,18 @@ pub mod reasoning_engine_spec {
             /// a compressed tarball (.tar.gz) file.
             #[prost(bytes = "vec", tag = "1")]
             pub source_archive: ::prost::alloc::vec::Vec<u8>,
+        }
+        /// The image spec for building an image (within a single build step), based
+        /// on the config file (i.e. Dockerfile) in the source directory.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ImageSpec {
+            /// Optional. Build arguments to be used. They will be passed through
+            /// --build-arg flags.
+            #[prost(map = "string, string", tag = "1")]
+            pub build_args: ::std::collections::HashMap<
+                ::prost::alloc::string::String,
+                ::prost::alloc::string::String,
+            >,
         }
         /// Specifies the configuration for fetching source code from a Git
         /// repository that is managed by Developer Connect. This includes the
@@ -38486,17 +38563,20 @@ pub mod reasoning_engine_spec {
         }
         /// Specifies the language-specific configuration for building and running
         /// the code.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum LanguageSpec {
             /// Configuration for a Python application.
             #[prost(message, tag = "2")]
             PythonSpec(PythonSpec),
+            /// Optional. Configuration for building an image with custom config file.
+            #[prost(message, tag = "5")]
+            ImageSpec(ImageSpec),
         }
     }
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeploymentSource {
         /// Deploy from source code files with a defined entrypoint.
         #[prost(message, tag = "11")]
@@ -39149,6 +39229,13 @@ pub struct Schedule {
     /// execution of the operations/jobs created by the requests (if applicable).
     #[prost(int64, tag = "11")]
     pub max_concurrent_run_count: i64,
+    /// Optional. Specifies the maximum number of active runs that can be executed
+    /// concurrently for this Schedule. This limits the number of runs that can be
+    /// in a non-terminal state at the same time.
+    /// Currently, this field is only supported for requests of type
+    /// CreatePipelineJobRequest.
+    #[prost(int64, tag = "21")]
+    pub max_concurrent_active_run_count: i64,
     /// Optional. Whether new scheduled runs can be queued when max_concurrent_runs
     /// limit is reached. If set to true, new runs will be queued instead of
     /// skipped. Default to false.
@@ -39730,6 +39817,653 @@ pub mod schedule_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.ScheduleService",
                         "UpdateSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// A session contains a set of actions between users and Vertex agents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Session {
+    /// Identifier. The resource name of the session.
+    /// Format:
+    /// 'projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the session was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the session was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The display name of the session.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The labels with user-defined metadata to organize your Sessions.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Session specific memory which stores key conversation points.
+    #[prost(message, optional, tag = "10")]
+    pub session_state: ::core::option::Option<::prost_types::Struct>,
+    /// Required. Immutable. String id provided by the user
+    #[prost(string, tag = "12")]
+    pub user_id: ::prost::alloc::string::String,
+    /// The expiration of the session.
+    #[prost(oneof = "session::Expiration", tags = "13, 14")]
+    pub expiration: ::core::option::Option<session::Expiration>,
+}
+/// Nested message and enum types in `Session`.
+pub mod session {
+    /// The expiration of the session.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// Optional. Timestamp of when this session is considered expired.
+        /// This is *always* provided on output, regardless of what was sent
+        /// on input.
+        /// The minimum value is 24 hours from the time of creation.
+        #[prost(message, tag = "13")]
+        ExpireTime(::prost_types::Timestamp),
+        /// Optional. Input only. The TTL for this session.
+        /// The minimum value is 24 hours.
+        #[prost(message, tag = "14")]
+        Ttl(::prost_types::Duration),
+    }
+}
+/// An event represents a message from either the user or agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionEvent {
+    /// Identifier. The resource name of the event.
+    /// Format:`projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}/events/{event}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the agent that sent the event, or user.
+    #[prost(string, tag = "3")]
+    pub author: ::prost::alloc::string::String,
+    /// Optional. Content of the event provided by the author.
+    #[prost(message, optional, tag = "4")]
+    pub content: ::core::option::Option<Content>,
+    /// Required. The invocation id of the event, multiple events can have the same
+    /// invocation id.
+    #[prost(string, tag = "5")]
+    pub invocation_id: ::prost::alloc::string::String,
+    /// Optional. Actions executed by the agent.
+    #[prost(message, optional, tag = "6")]
+    pub actions: ::core::option::Option<EventActions>,
+    /// Required. Timestamp when the event was created on client side.
+    #[prost(message, optional, tag = "8")]
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Error code if the response is an error. Code varies by model.
+    #[prost(string, tag = "9")]
+    pub error_code: ::prost::alloc::string::String,
+    /// Optional. Error message if the response is an error.
+    #[prost(string, tag = "10")]
+    pub error_message: ::prost::alloc::string::String,
+    /// Optional. Metadata relating to this event.
+    #[prost(message, optional, tag = "11")]
+    pub event_metadata: ::core::option::Option<EventMetadata>,
+}
+/// Metadata relating to a LLM response event.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventMetadata {
+    /// Optional. Metadata returned to client when grounding is enabled.
+    #[prost(message, optional, tag = "1")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
+    /// Optional. Indicates whether the text content is part of a unfinished text
+    /// stream. Only used for streaming mode and when the content is plain text.
+    #[prost(bool, tag = "2")]
+    pub partial: bool,
+    /// Optional. Indicates whether the response from the model is complete.
+    /// Only used for streaming mode.
+    #[prost(bool, tag = "3")]
+    pub turn_complete: bool,
+    /// Optional. Flag indicating that LLM was interrupted when generating the
+    /// content. Usually it's due to user interruption during a bidi streaming.
+    #[prost(bool, tag = "4")]
+    pub interrupted: bool,
+    /// Optional. Set of ids of the long running function calls.
+    /// Agent client will know from this field about which function call is long
+    /// running. Only valid for function call event.
+    #[prost(string, repeated, tag = "5")]
+    pub long_running_tool_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The branch of the event.
+    /// The format is like agent_1.agent_2.agent_3, where agent_1 is the parent of
+    /// agent_2, and agent_2 is the parent of agent_3.
+    /// Branch is used when multiple child agents shouldn't see their siblings'
+    /// conversation history.
+    #[prost(string, tag = "6")]
+    pub branch: ::prost::alloc::string::String,
+    /// The custom metadata of the LlmResponse.
+    #[prost(message, optional, tag = "7")]
+    pub custom_metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Audio transcription of user input.
+    #[prost(message, optional, tag = "10")]
+    pub input_transcription: ::core::option::Option<Transcription>,
+    /// Optional. Audio transcription of model output.
+    #[prost(message, optional, tag = "11")]
+    pub output_transcription: ::core::option::Option<Transcription>,
+}
+/// Actions are parts of events that are executed by the agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventActions {
+    /// Optional. If true, it won't call model to summarize function response.
+    /// Only used for function_response event.
+    #[prost(bool, tag = "1")]
+    pub skip_summarization: bool,
+    /// Optional. Indicates that the event is updating the state with the given
+    /// delta.
+    #[prost(message, optional, tag = "2")]
+    pub state_delta: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Indicates that the event is updating an artifact. key is the
+    /// filename, value is the version.
+    #[prost(map = "string, int32", tag = "3")]
+    pub artifact_delta: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    /// Optional. The agent is escalating to a higher level agent.
+    #[prost(bool, tag = "6")]
+    pub escalate: bool,
+    /// Optional. Will only be set by a tool response indicating tool request euc.
+    /// Struct key is the function call id since one function call response (from
+    /// model) could correspond to multiple function calls. Struct value is the
+    /// required auth config, which can be another struct.
+    #[prost(message, optional, tag = "7")]
+    pub requested_auth_configs: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. If set, the event transfers to the specified agent.
+    #[prost(string, tag = "8")]
+    pub transfer_agent: ::prost::alloc::string::String,
+}
+/// Audio transcription in Server Content.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Transcription {
+    /// Optional. Transcription text.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// Optional. The bool indicates the end of the transcription.
+    #[prost(bool, tag = "2")]
+    pub finished: bool,
+}
+/// Request message for
+/// \[SessionService.CreateSession\]\[google.cloud.aiplatform.v1.SessionService.CreateSession\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionRequest {
+    /// Required. The resource name of the location to create the session in.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The session to create.
+    #[prost(message, optional, tag = "2")]
+    pub session: ::core::option::Option<Session>,
+}
+/// Metadata associated with the
+/// \[SessionService.CreateSession\]\[google.cloud.aiplatform.v1.SessionService.CreateSession\]
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// \[SessionService.GetSession\]\[google.cloud.aiplatform.v1.SessionService.GetSession\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetSessionRequest {
+    /// Required. The resource name of the session.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[SessionService.ListSessions\]\[google.cloud.aiplatform.v1.SessionService.ListSessions\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListSessionsRequest {
+    /// Required. The resource name of the location to list sessions from.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of sessions to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 sessions will be
+    /// returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The
+    /// \[next_page_token\]\[google.cloud.aiplatform.v1.ListSessionsResponse.next_page_token\]
+    /// value returned from a previous list
+    /// \[SessionService.ListSessions\]\[google.cloud.aiplatform.v1.SessionService.ListSessions\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    /// Supported fields:
+    /// \* `display_name`
+    /// \* `user_id`
+    /// \* `labels`
+    ///
+    /// Example: `display_name="abc"`, `user_id="123"`, `labels.key="value"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    /// * `create_time`
+    /// * `update_time`
+    ///
+    /// Example: `create_time desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[SessionService.ListSessions\]\[google.cloud.aiplatform.v1.SessionService.ListSessions\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsResponse {
+    /// A list of sessions matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub sessions: ::prost::alloc::vec::Vec<Session>,
+    /// A token, which can be sent as
+    /// \[ListSessionsRequest.page_token\]\[google.cloud.aiplatform.v1.ListSessionsRequest.page_token\]
+    /// to retrieve the next page. Absence of this field indicates there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[SessionService.UpdateSession\]\[google.cloud.aiplatform.v1.SessionService.UpdateSession\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSessionRequest {
+    /// Required. The session to update.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(message, optional, tag = "1")]
+    pub session: ::core::option::Option<Session>,
+    /// Optional. Field mask is used to control which fields get updated. If the
+    /// mask is not present, all fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// \[SessionService.DeleteSession\]\[google.cloud.aiplatform.v1.SessionService.DeleteSession\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteSessionRequest {
+    /// Required. The resource name of the session.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[SessionService.ListEvents\]\[google.cloud.aiplatform.v1.SessionService.ListEvents\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListEventsRequest {
+    /// Required. The resource name of the session to list events from.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of events to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 events will be returned.
+    /// These events are ordered by timestamp in ascending order.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The
+    /// \[next_page_token\]\[google.cloud.aiplatform.v1.ListEventsResponse.next_page_token\]
+    /// value returned from a previous list
+    /// \[SessionService.ListEvents\]\[google.cloud.aiplatform.v1.SessionService.ListEvents\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    /// Supported fields:
+    /// \* `timestamp` range (i.e. `timestamp>="2025-01-31T11:30:00-04:00"` where
+    /// the timestamp is in RFC 3339 format)
+    ///
+    /// More detail in [AIP-160](<https://google.aip.dev/160>).
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    /// * `timestamp`
+    ///
+    /// Example: `timestamp desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[SessionService.ListEvents\]\[google.cloud.aiplatform.v1.SessionService.ListEvents\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventsResponse {
+    /// A list of events matching the request. Ordered by timestamp in ascending
+    /// order.
+    #[prost(message, repeated, tag = "1")]
+    pub session_events: ::prost::alloc::vec::Vec<SessionEvent>,
+    /// A token, which can be sent as
+    /// \[ListEventsRequest.page_token\]\[google.cloud.aiplatform.v1.ListEventsRequest.page_token\]
+    /// to retrieve the next page. Absence of this field indicates there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[SessionService.AppendEvent\]\[google.cloud.aiplatform.v1.SessionService.AppendEvent\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppendEventRequest {
+    /// Required. The resource name of the session to append event to.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The event to append to the session.
+    #[prost(message, optional, tag = "2")]
+    pub event: ::core::option::Option<SessionEvent>,
+}
+/// Response message for
+/// \[SessionService.AppendEvent\]\[google.cloud.aiplatform.v1.SessionService.AppendEvent\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AppendEventResponse {}
+/// Generated client implementations.
+pub mod session_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service that manages Vertex Session related resources.
+    #[derive(Debug, Clone)]
+    pub struct SessionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SessionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SessionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SessionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new \[Session\]\[google.cloud.aiplatform.v1.Session\].
+        pub async fn create_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/CreateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "CreateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specific \[Session\]\[google.cloud.aiplatform.v1.Session\].
+        pub async fn get_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/GetSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "GetSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists \[Sessions\]\[google.cloud.aiplatform.v1.Session\] in a given reasoning
+        /// engine.
+        pub async fn list_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/ListSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "ListSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specific \[Session\]\[google.cloud.aiplatform.v1.Session\].
+        pub async fn update_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/UpdateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "UpdateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes details of the specific
+        /// \[Session\]\[google.cloud.aiplatform.v1.Session\].
+        pub async fn delete_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/DeleteSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "DeleteSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists \[Events\]\[google.cloud.aiplatform.v1.Event\] in a given session.
+        pub async fn list_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/ListEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "ListEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Appends an event to a given session.
+        pub async fn append_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AppendEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AppendEventResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.SessionService/AppendEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.SessionService",
+                        "AppendEvent",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -44,7 +44,6 @@ pub struct DataObject {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The id of the dataObject.
-    #[deprecated]
     #[prost(string, tag = "2")]
     pub data_object_id: ::prost::alloc::string::String,
     /// Output only. Timestamp the dataObject was created at.
@@ -59,11 +58,14 @@ pub struct DataObject {
     /// Optional. The vectors of the dataObject.
     #[prost(map = "string, message", tag = "7")]
     pub vectors: ::std::collections::HashMap<::prost::alloc::string::String, Vector>,
+    /// Optional. The etag of the dataObject.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// A vector which can be either dense or sparse.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vector {
-    /// The values of the vector.
+    /// Deprecated: Use `dense` or `sparse` instead.
     #[deprecated]
     #[prost(float, repeated, packed = "false", tag = "1")]
     pub values: ::prost::alloc::vec::Vec<f32>,
@@ -193,7 +195,7 @@ pub struct OutputFields {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchHint {
     /// The type of index to use.
-    #[prost(oneof = "search_hint::IndexType", tags = "1, 2")]
+    #[prost(oneof = "search_hint::IndexType", tags = "1, 2, 3, 4")]
     pub index_type: ::core::option::Option<search_hint::IndexType>,
 }
 /// Nested message and enum types in `SearchHint`.
@@ -207,17 +209,57 @@ pub mod search_hint {
         /// `projects/{project}/locations/{location}/collections/{collection}/indexes/{index}`
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
+        /// The parameters for the index.
+        #[prost(oneof = "index_hint::Params", tags = "2")]
+        pub params: ::core::option::Option<index_hint::Params>,
     }
+    /// Nested message and enum types in `IndexHint`.
+    pub mod index_hint {
+        /// Parameters for dense ScaNN.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DenseScannParams {
+            /// Optional. Dense ANN param overrides to control recall and latency.
+            /// The percentage of leaves to search, in the range \[0, 100\].
+            #[prost(int32, tag = "1")]
+            pub search_leaves_pct: i32,
+            /// Optional. The number of initial candidates. Must be a positive integer
+            /// (> 0).
+            #[prost(int32, tag = "2")]
+            pub initial_candidate_count: i32,
+        }
+        /// The parameters for the index.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Params {
+            /// Optional. Dense ScaNN parameters.
+            #[prost(message, tag = "2")]
+            DenseScannParams(DenseScannParams),
+        }
+    }
+    /// KnnHint will be used if search should be explicitly done on system's
+    /// default K-Nearest Neighbor (KNN) index engine.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct KnnHint {}
     /// The type of index to use.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum IndexType {
-        /// Optional. Specifies that the search should use a particular index.
+        /// Optional. Deprecated: Use `index_hint` instead.
+        /// Specifies that the search should use a particular index.
+        #[deprecated]
         #[prost(message, tag = "1")]
         UseIndex(IndexHint),
-        /// Optional. If set to true, the search will use the system's default
+        /// Optional. Deprecated: Use `knn_hint` instead.
+        /// If set to true, the search will use the system's default
         /// K-Nearest Neighbor (KNN) index engine.
+        #[deprecated]
         #[prost(bool, tag = "2")]
         UseKnn(bool),
+        /// Optional. If set, the search will use the system's default
+        /// K-Nearest Neighbor (KNN) index engine.
+        #[prost(message, tag = "3")]
+        KnnHint(KnnHint),
+        /// Optional. Specifies that the search should use a particular index.
+        #[prost(message, tag = "4")]
+        IndexHint(IndexHint),
     }
 }
 /// A single search request within a batch operation.
@@ -293,7 +335,7 @@ pub struct SemanticSearch {
     /// Required. The vector field to search.
     #[prost(string, tag = "2")]
     pub search_field: ::prost::alloc::string::String,
-    /// Optional. The task type of the query embedding.
+    /// Required. The task type of the query embedding.
     #[prost(enumeration = "EmbeddingTaskType", tag = "5")]
     pub task_type: i32,
     /// Optional. The fields to return in the search results.
@@ -339,7 +381,9 @@ pub struct SearchDataObjectsRequest {
     /// Format: `projects/{project}/locations/{location}/collections/{collection}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The standard list page size.
+    /// Optional. The standard list page size. Only supported for KNN. If not set,
+    /// up to search_type.top_k results will be returned. The maximum value is
+    /// 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// Optional. The standard list page token.
@@ -376,7 +420,8 @@ pub struct SearchResult {
     /// Output only. The matching data object.
     #[prost(message, optional, tag = "1")]
     pub data_object: ::core::option::Option<DataObject>,
-    /// Output only. The similarity distance.
+    /// Output only. Similarity distance or ranker score returned by
+    /// BatchSearchDataObjects.
     #[prost(double, optional, tag = "2")]
     pub distance: ::core::option::Option<f64>,
 }
@@ -445,7 +490,7 @@ pub struct AggregateDataObjectsRequest {
 /// \[DataObjectSearchService.AggregateDataObjects\]\[google.cloud.vectorsearch.v1beta.DataObjectSearchService.AggregateDataObjects\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregateDataObjectsResponse {
-    /// The aggregated results of the query.
+    /// Output only. The aggregated results of the query.
     #[prost(message, repeated, tag = "1")]
     pub aggregate_results: ::prost::alloc::vec::Vec<::prost_types::Struct>,
 }
@@ -464,7 +509,8 @@ pub struct QueryDataObjectsRequest {
     /// Optional. Mask specifying which fields to return.
     #[prost(message, optional, tag = "7")]
     pub output_fields: ::core::option::Option<OutputFields>,
-    /// Optional. The standard list page size.
+    /// Optional. The standard list page size. Default is 100.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// Optional. The standard list page token.
@@ -480,10 +526,10 @@ pub struct QueryDataObjectsRequest {
 /// \[DataObjectSearchService.QueryDataObjects\]\[google.cloud.vectorsearch.v1beta.DataObjectSearchService.QueryDataObjects\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDataObjectsResponse {
-    /// The list of dataObjects that match the query.
+    /// Output only. The list of dataObjects that match the query.
     #[prost(message, repeated, tag = "4")]
     pub data_objects: ::prost::alloc::vec::Vec<DataObject>,
-    /// A token to retrieve next page of results.
+    /// Output only. A token to retrieve next page of results.
     /// Pass to \[DataObjectSearchService.QueryDataObjectsRequest.page_token\]\[\] to
     /// obtain that page.
     #[prost(string, tag = "3")]
@@ -526,7 +572,7 @@ pub mod batch_search_data_objects_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ranker {
     /// The ranking method to use.
-    #[prost(oneof = "ranker::Ranker", tags = "1, 2")]
+    #[prost(oneof = "ranker::Ranker", tags = "1")]
     pub ranker: ::core::option::Option<ranker::Ranker>,
 }
 /// Nested message and enum types in `Ranker`.
@@ -537,9 +583,6 @@ pub mod ranker {
         /// Reciprocal Rank Fusion ranking.
         #[prost(message, tag = "1")]
         Rrf(super::ReciprocalRankFusion),
-        /// Vertex AI ranking.
-        #[prost(message, tag = "2")]
-        Vertex(super::VertexRanker),
     }
 }
 /// Defines the Reciprocal Rank Fusion (RRF) algorithm for result ranking.
@@ -548,25 +591,6 @@ pub struct ReciprocalRankFusion {
     /// Required. The weights to apply to each search result set during fusion.
     #[prost(double, repeated, packed = "false", tag = "1")]
     pub weights: ::prost::alloc::vec::Vec<f64>,
-}
-/// Defines a ranker using the Vertex AI ranking service.
-/// See <https://cloud.google.com/generative-ai-app-builder/docs/ranking> for
-/// details.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct VertexRanker {
-    /// Required. The query against which the records are ranked and scored.
-    #[prost(string, tag = "1")]
-    pub query: ::prost::alloc::string::String,
-    /// Optional. The template used to generate the record's title.
-    #[prost(string, tag = "2")]
-    pub title_template: ::prost::alloc::string::String,
-    /// Optional. The template used to generate the record's content.
-    #[prost(string, tag = "3")]
-    pub content_template: ::prost::alloc::string::String,
-    /// Required. The model used for ranking documents. If no model is specified,
-    /// then semantic-ranker-default@latest is used.
-    #[prost(string, tag = "4")]
-    pub model: ::prost::alloc::string::String,
 }
 /// A response from a batch search operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -859,7 +883,7 @@ pub struct BatchCreateDataObjectsRequest {
 /// \[DataObjectService.BatchCreateDataObjects\]\[google.cloud.vectorsearch.v1beta.DataObjectService.BatchCreateDataObjects\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateDataObjectsResponse {
-    /// DataObjects created.
+    /// Output only. DataObjects created.
     #[prost(message, repeated, tag = "1")]
     pub data_objects: ::prost::alloc::vec::Vec<DataObject>,
 }
@@ -913,6 +937,11 @@ pub struct DeleteDataObjectRequest {
     /// `projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the DataObject.
+    /// If an etag is provided and does not match the current etag of the
+    /// DataObject, deletion will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[DataObjectService.BatchDeleteDataObjects\]\[google.cloud.vectorsearch.v1beta.DataObjectService.BatchDeleteDataObjects\].
@@ -1466,6 +1495,29 @@ pub struct Index {
     /// retrieval.
     #[prost(string, repeated, tag = "7")]
     pub store_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The infrastructure type of the index.
+    #[prost(oneof = "index::InfraType", tags = "11")]
+    pub infra_type: ::core::option::Option<index::InfraType>,
+    /// The type of the index.
+    #[prost(oneof = "index::IndexType", tags = "12")]
+    pub index_type: ::core::option::Option<index::IndexType>,
+}
+/// Nested message and enum types in `Index`.
+pub mod index {
+    /// The infrastructure type of the index.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum InfraType {
+        /// Optional. Dedicated infrastructure for the index.
+        #[prost(message, tag = "11")]
+        DedicatedInfrastructure(super::DedicatedInfrastructure),
+    }
+    /// The type of the index.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum IndexType {
+        /// Optional. Dense ScaNN index.
+        #[prost(message, tag = "12")]
+        DenseScann(super::DenseScannIndex),
+    }
 }
 /// Message for creating an Index.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1635,16 +1687,16 @@ pub mod import_data_objects_request {
 /// \[VectorSearchService.ImportDataObjects\]\[google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects\].
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataObjectsMetadata {
-    /// The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the operation was last updated.
+    /// Output only. The time the operation was last updated.
     #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Number of DataObjects that were processed successfully.
+    /// Output only. Number of DataObjects that were processed successfully.
     #[prost(int64, tag = "3")]
     pub success_count: i64,
-    /// Number of DataObjects that failed during processing.
+    /// Output only. Number of DataObjects that failed during processing.
     #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
@@ -1685,7 +1737,6 @@ pub mod export_data_objects_request {
     /// Nested message and enum types in `GcsExportDestination`.
     pub mod gcs_export_destination {
         /// Options for the format of the exported Data Objects.
-        /// New formats may be added in the future.
         #[derive(
             Clone,
             Copy,
@@ -1736,16 +1787,140 @@ pub mod export_data_objects_request {
 /// Metadata for the ExportDataObjects LRO.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataObjectsMetadata {
-    /// The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the operation finished.
+    /// Output only. The time the operation finished.
     #[prost(message, optional, tag = "2")]
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response for the ExportDataObjects LRO.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataObjectsResponse {}
+/// Represents dedicated infrastructure for the index.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DedicatedInfrastructure {
+    /// Optional. Mode of the dedicated infrastructure.
+    #[prost(enumeration = "dedicated_infrastructure::Mode", optional, tag = "1")]
+    pub mode: ::core::option::Option<i32>,
+    /// Optional. Autoscaling specification.
+    #[prost(message, optional, tag = "2")]
+    pub autoscaling_spec: ::core::option::Option<
+        dedicated_infrastructure::AutoscalingSpec,
+    >,
+}
+/// Nested message and enum types in `DedicatedInfrastructure`.
+pub mod dedicated_infrastructure {
+    /// Specification for autoscaling.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AutoscalingSpec {
+        /// Optional. The minimum number of replicas. If not set or set to `0`,
+        /// defaults to `2`. Must be >= `2` and \<= `1000`.
+        #[prost(int32, tag = "1")]
+        pub min_replica_count: i32,
+        /// Optional. The maximum number of replicas. If not set or set to `0`,
+        /// defaults to the greater of `min_replica_count` and `5`. Must be >=
+        /// `min_replica_count` and \<= `1000`.
+        #[prost(int32, tag = "2")]
+        pub max_replica_count: i32,
+    }
+    /// Mode of the dedicated infrastructure.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default will use `PERFORMANCE_OPTIMIZED`.
+        Unspecified = 0,
+        /// This is storage optimized variation.
+        StorageOptimized = 1,
+        /// This is Performance optimized on E2 or equivalent family.
+        PerformanceOptimized = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::StorageOptimized => "STORAGE_OPTIMIZED",
+                Self::PerformanceOptimized => "PERFORMANCE_OPTIMIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STORAGE_OPTIMIZED" => Some(Self::StorageOptimized),
+                "PERFORMANCE_OPTIMIZED" => Some(Self::PerformanceOptimized),
+                _ => None,
+            }
+        }
+    }
+}
+/// Dense ScaNN index configuration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DenseScannIndex {
+    /// Optional. Feature norm type.
+    #[prost(enumeration = "dense_scann_index::FeatureNormType", tag = "2")]
+    pub feature_norm_type: i32,
+}
+/// Nested message and enum types in `DenseScannIndex`.
+pub mod dense_scann_index {
+    /// Feature norm type for ScaNN index.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FeatureNormType {
+        /// Unspecified feature norm type.
+        Unspecified = 0,
+        /// No norm applied.
+        None = 1,
+        /// Unit L2 norm.
+        UnitL2Norm = 2,
+    }
+    impl FeatureNormType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FEATURE_NORM_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::UnitL2Norm => "UNIT_L2_NORM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEATURE_NORM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "UNIT_L2_NORM" => Some(Self::UnitL2Norm),
+                _ => None,
+            }
+        }
+    }
+}
 /// Generated client implementations.
 pub mod vector_search_service_client {
     #![allow(

@@ -10820,6 +10820,10 @@ pub struct GeminiExample {
     /// Enforced on GenerateContentResponse.candidates.
     #[prost(message, repeated, tag = "3")]
     pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    /// Optional. Settings for prompt and response sanitization using the Model
+    /// Armor service. If supplied, safety_settings must not be supplied.
+    #[prost(message, optional, tag = "11")]
+    pub model_armor_config: ::core::option::Option<ModelArmorConfig>,
     /// Optional. Generation config.
     #[prost(message, optional, tag = "4")]
     pub generation_config: ::core::option::Option<GenerationConfig>,
@@ -13861,18 +13865,18 @@ pub struct EvaluateDatasetOperationMetadata {
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
-/// Response in LRO for EvaluationService.EvaluateDataset.
+/// The results from an evaluation run performed by the EvaluationService.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateDatasetResponse {
     /// Output only. Aggregation statistics derived from results of
-    /// EvaluationService.EvaluateDataset.
+    /// EvaluationService.
     #[prost(message, optional, tag = "1")]
     pub aggregation_output: ::core::option::Option<AggregationOutput>,
-    /// Output only. Output info for EvaluationService.EvaluateDataset.
+    /// Output only. Output info for EvaluationService.
     #[prost(message, optional, tag = "3")]
     pub output_info: ::core::option::Option<OutputInfo>,
 }
-/// Describes the info for output of EvaluationService.EvaluateDataset.
+/// Describes the info for output of EvaluationService.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutputInfo {
     /// The output location into which evaluation output is written.
@@ -13973,8 +13977,8 @@ pub mod output_config {
         GcsDestination(super::GcsDestination),
     }
 }
-/// The metric used for dataset level evaluation.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+/// The metric used for running evaluations.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metric {
     /// Optional. The aggregation metrics to use.
     #[prost(
@@ -13984,13 +13988,15 @@ pub struct Metric {
         tag = "1"
     )]
     pub aggregation_metrics: ::prost::alloc::vec::Vec<i32>,
-    /// The metric spec used for evaluation.
-    #[prost(oneof = "metric::MetricSpec", tags = "2, 3, 4, 5, 6")]
+    /// The spec for the metric.
+    /// It would be either a pre-defined metric, or a inline metric spec.
+    #[prost(oneof = "metric::MetricSpec", tags = "8, 9, 10, 2, 3, 4, 5, 6")]
     pub metric_spec: ::core::option::Option<metric::MetricSpec>,
 }
 /// Nested message and enum types in `Metric`.
 pub mod metric {
-    /// The aggregation metrics supported by EvaluationService.EvaluateDataset.
+    /// The per-metric statistics on evaluation results supported by
+    /// `EvaluationService.EvaluateDataset`.
     #[derive(
         Clone,
         Copy,
@@ -14065,9 +14071,19 @@ pub mod metric {
             }
         }
     }
-    /// The metric spec used for evaluation.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    /// The spec for the metric.
+    /// It would be either a pre-defined metric, or a inline metric spec.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MetricSpec {
+        /// The spec for a pre-defined metric.
+        #[prost(message, tag = "8")]
+        PredefinedMetricSpec(super::PredefinedMetricSpec),
+        /// Spec for a computation based metric.
+        #[prost(message, tag = "9")]
+        ComputationBasedMetricSpec(super::ComputationBasedMetricSpec),
+        /// Spec for an LLM based metric.
+        #[prost(message, tag = "10")]
+        LlmBasedMetricSpec(super::LlmBasedMetricSpec),
         /// Spec for pointwise metric.
         #[prost(message, tag = "2")]
         PointwiseMetricSpec(super::PointwiseMetricSpec),
@@ -14268,6 +14284,11 @@ pub mod evaluate_instances_request {
 /// Response message for EvaluationService.EvaluateInstances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateInstancesResponse {
+    /// Metric results for each instance.
+    /// The order of the metric results is guaranteed to be the same as the order
+    /// of the instances in the request.
+    #[prost(message, repeated, tag = "43")]
+    pub metric_results: ::prost::alloc::vec::Vec<MetricResult>,
     /// Evaluation results will be served in the same order as presented in
     /// EvaluationRequest.instances.
     #[prost(
@@ -14392,6 +14413,129 @@ pub mod evaluate_instances_response {
         RubricBasedInstructionFollowingResult(
             super::RubricBasedInstructionFollowingResult,
         ),
+    }
+}
+/// Result for a single metric on a single instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricResult {
+    /// Output only. The score for the metric.
+    /// Please refer to each metric's documentation for the meaning of the score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. The explanation for the metric result.
+    #[prost(string, optional, tag = "3")]
+    pub explanation: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The error status for the metric result.
+    #[prost(message, optional, tag = "4")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// The spec for a pre-defined metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredefinedMetricSpec {
+    /// Required. The name of a pre-defined metric, such as
+    /// "instruction_following_v1" or "text_quality_v1".
+    #[prost(string, tag = "1")]
+    pub metric_spec_name: ::prost::alloc::string::String,
+    /// Optional. The parameters needed to run the pre-defined metric.
+    #[prost(message, optional, tag = "2")]
+    pub metric_spec_parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// Specification for a computation based metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputationBasedMetricSpec {
+    /// Required. The type of the computation based metric.
+    #[prost(
+        enumeration = "computation_based_metric_spec::ComputationBasedMetricType",
+        optional,
+        tag = "1"
+    )]
+    pub r#type: ::core::option::Option<i32>,
+    /// Optional. A map of parameters for the metric, e.g. {"rouge_type":
+    /// "rougeL"}.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// Nested message and enum types in `ComputationBasedMetricSpec`.
+pub mod computation_based_metric_spec {
+    /// Types of computation based metrics.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ComputationBasedMetricType {
+        /// Unspecified computation based metric type.
+        Unspecified = 0,
+        /// Exact match metric.
+        ExactMatch = 1,
+        /// BLEU metric.
+        Bleu = 2,
+        /// ROUGE metric.
+        Rouge = 3,
+    }
+    impl ComputationBasedMetricType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPUTATION_BASED_METRIC_TYPE_UNSPECIFIED",
+                Self::ExactMatch => "EXACT_MATCH",
+                Self::Bleu => "BLEU",
+                Self::Rouge => "ROUGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPUTATION_BASED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT_MATCH" => Some(Self::ExactMatch),
+                "BLEU" => Some(Self::Bleu),
+                "ROUGE" => Some(Self::Rouge),
+                _ => None,
+            }
+        }
+    }
+}
+/// Specification for an LLM based metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LlmBasedMetricSpec {
+    /// Required. Template for the prompt sent to the judge model.
+    #[prost(string, optional, tag = "1")]
+    pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. System instructions for the judge model.
+    #[prost(string, optional, tag = "2")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Optional configuration for the judge LLM (Autorater).
+    #[prost(message, optional, tag = "3")]
+    pub judge_autorater_config: ::core::option::Option<AutoraterConfig>,
+    /// Optional. Optional additional configuration for the metric.
+    #[prost(message, optional, tag = "7")]
+    pub additional_config: ::core::option::Option<::prost_types::Struct>,
+    /// Source of the rubrics to be used for evaluation.
+    #[prost(oneof = "llm_based_metric_spec::RubricsSource", tags = "4, 6")]
+    pub rubrics_source: ::core::option::Option<llm_based_metric_spec::RubricsSource>,
+}
+/// Nested message and enum types in `LLMBasedMetricSpec`.
+pub mod llm_based_metric_spec {
+    /// Source of the rubrics to be used for evaluation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RubricsSource {
+        /// Use a pre-defined group of rubrics associated with the input.
+        /// Refers to a key in the rubric_groups map of EvaluationInstance.
+        #[prost(string, tag = "4")]
+        RubricGroupKey(::prost::alloc::string::String),
+        /// Dynamically generate rubrics using a predefined spec.
+        #[prost(message, tag = "6")]
+        PredefinedRubricGenerationSpec(super::PredefinedMetricSpec),
     }
 }
 /// Input for exact match metric.
@@ -26228,6 +26372,10 @@ pub struct EvaluationConfig {
     /// Optional. Autorater config for evaluation.
     #[prost(message, optional, tag = "3")]
     pub autorater_config: ::core::option::Option<AutoraterConfig>,
+    /// Optional. Configuration options for inference generation and outputs.
+    /// If not set, default generation parameters are used.
+    #[prost(message, optional, tag = "5")]
+    pub inference_generation_config: ::core::option::Option<GenerationConfig>,
 }
 /// Evaluate Dataset Run Result for Tuning Job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26236,11 +26384,15 @@ pub struct EvaluateDatasetRun {
     /// `projects/{project}/locations/{location}/operations/{operation_id}`.
     #[prost(string, tag = "1")]
     pub operation_name: ::prost::alloc::string::String,
+    /// Output only. The resource name of the evaluation run. Format:
+    /// `projects/{project}/locations/{location}/evaluationRuns/{evaluation_run_id}`.
+    #[prost(string, tag = "5")]
+    pub evaluation_run: ::prost::alloc::string::String,
     /// Output only. The checkpoint id used in the evaluation run. Only populated
     /// when evaluating checkpoints.
     #[prost(string, tag = "2")]
     pub checkpoint_id: ::prost::alloc::string::String,
-    /// Output only. Results for EvaluationService.EvaluateDataset.
+    /// Output only. Results for EvaluationService.
     #[prost(message, optional, tag = "3")]
     pub evaluate_dataset_response: ::core::option::Option<EvaluateDatasetResponse>,
     /// Output only. The error of the evaluation run if any.
@@ -46687,14 +46839,14 @@ pub mod reasoning_engine_spec {
         pub container_concurrency: ::core::option::Option<i32>,
     }
     /// Specification for deploying from source code.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourceCodeSpec {
         /// Specifies where the source code is located.
         #[prost(oneof = "source_code_spec::Source", tags = "1, 3")]
         pub source: ::core::option::Option<source_code_spec::Source>,
         /// Specifies the language-specific configuration for building and running
         /// the code.
-        #[prost(oneof = "source_code_spec::LanguageSpec", tags = "2")]
+        #[prost(oneof = "source_code_spec::LanguageSpec", tags = "2, 5")]
         pub language_spec: ::core::option::Option<source_code_spec::LanguageSpec>,
     }
     /// Nested message and enum types in `SourceCodeSpec`.
@@ -46707,6 +46859,18 @@ pub mod reasoning_engine_spec {
             /// (.tar.gz) file.
             #[prost(bytes = "vec", tag = "1")]
             pub source_archive: ::prost::alloc::vec::Vec<u8>,
+        }
+        /// The image spec for building an image (within a single build step), based
+        /// on the config file (i.e. Dockerfile) in the source directory.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ImageSpec {
+            /// Optional. Build arguments to be used. They will be passed through
+            /// --build-arg flags.
+            #[prost(map = "string, string", tag = "1")]
+            pub build_args: ::std::collections::HashMap<
+                ::prost::alloc::string::String,
+                ::prost::alloc::string::String,
+            >,
         }
         /// Specifies the configuration for fetching source code from a Git
         /// repository that is managed by Developer Connect. This includes the
@@ -46774,17 +46938,20 @@ pub mod reasoning_engine_spec {
         }
         /// Specifies the language-specific configuration for building and running
         /// the code.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum LanguageSpec {
             /// Configuration for a Python application.
             #[prost(message, tag = "2")]
             PythonSpec(PythonSpec),
+            /// Optional. Configuration for building an image with custom config file.
+            #[prost(message, tag = "5")]
+            ImageSpec(ImageSpec),
         }
     }
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeploymentSource {
         /// Deploy from source code files with a defined entrypoint.
         #[prost(message, tag = "11")]
@@ -48159,6 +48326,18 @@ pub struct Session {
     /// Optional. The display name of the session.
     #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
+    /// The labels with user-defined metadata to organize your Sessions.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. Session specific memory which stores key conversation points.
     #[prost(message, optional, tag = "10")]
     pub session_state: ::core::option::Option<::prost_types::Struct>,
@@ -48177,9 +48356,11 @@ pub mod session {
         /// Optional. Timestamp of when this session is considered expired.
         /// This is *always* provided on output, regardless of what was sent
         /// on input.
+        /// The minimum value is 24 hours from the time of creation.
         #[prost(message, tag = "13")]
         ExpireTime(::prost_types::Timestamp),
         /// Optional. Input only. The TTL for this session.
+        /// The minimum value is 24 hours.
         #[prost(message, tag = "14")]
         Ttl(::prost_types::Duration),
     }
@@ -48250,6 +48431,12 @@ pub struct EventMetadata {
     /// The custom metadata of the LlmResponse.
     #[prost(message, optional, tag = "7")]
     pub custom_metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Audio transcription of user input.
+    #[prost(message, optional, tag = "10")]
+    pub input_transcription: ::core::option::Option<Transcription>,
+    /// Optional. Audio transcription of model output.
+    #[prost(message, optional, tag = "11")]
+    pub output_transcription: ::core::option::Option<Transcription>,
 }
 /// Actions are parts of events that are executed by the agent.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -48278,6 +48465,16 @@ pub struct EventActions {
     /// Optional. If set, the event transfers to the specified agent.
     #[prost(string, tag = "8")]
     pub transfer_agent: ::prost::alloc::string::String,
+}
+/// Audio transcription in Server Content.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Transcription {
+    /// Optional. Transcription text.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// Optional. The bool indicates the end of the transcription.
+    #[prost(bool, tag = "2")]
+    pub finished: bool,
 }
 /// Request message for
 /// \[SessionService.CreateSession\]\[google.cloud.aiplatform.v1beta1.SessionService.CreateSession\].
@@ -48336,8 +48533,9 @@ pub struct ListSessionsRequest {
     /// Supported fields:
     /// \* `display_name`
     /// \* `user_id`
+    /// \* `labels`
     ///
-    /// Example: `display_name="abc"`, `user_id="123"`.
+    /// Example: `display_name="abc"`, `user_id="123"`, `labels.key="value"`.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. A comma-separated list of fields to order by, sorted in ascending

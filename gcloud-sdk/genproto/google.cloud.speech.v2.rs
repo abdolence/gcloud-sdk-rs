@@ -988,6 +988,12 @@ pub struct StreamingRecognitionFeatures {
     pub voice_activity_timeout: ::core::option::Option<
         streaming_recognition_features::VoiceActivityTimeout,
     >,
+    /// Optional. Endpointing sensitivity for this stream.
+    #[prost(
+        enumeration = "streaming_recognition_features::EndpointingSensitivity",
+        tag = "8"
+    )]
+    pub endpointing_sensitivity: i32,
 }
 /// Nested message and enum types in `StreamingRecognitionFeatures`.
 pub mod streaming_recognition_features {
@@ -1004,6 +1010,60 @@ pub mod streaming_recognition_features {
         /// will close the stream.
         #[prost(message, optional, tag = "2")]
         pub speech_end_timeout: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// Endpointing sensitivity is intended for applications that want to minimize
+    /// result latency, possibly at the expense of quality. Some utterances may be
+    /// broken up into multiple fragments.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EndpointingSensitivity {
+        /// If no value is specified, the values for
+        /// ENDPOINTING_SENSITIVITY_STANDARD will be used.
+        Unspecified = 0,
+        /// Standard sensitivity, no optimization for latency.
+        Standard = 1,
+        /// Super short sensitivity, optimized for super short utterances like single
+        /// words ("Yes", "No", "Hello", etc.) or a single phrase, command or short
+        /// query (e.g. "check balance", "five dollars", "call Mom").
+        Supershort = 2,
+        /// Short sensitivity, optimized for short utterances like single sentences.
+        /// (e.g. "Remind me to call the dentist tomorrow morning at nine",
+        /// "Navigate to the nearest coffee shop that is currently open")
+        Short = 3,
+    }
+    impl EndpointingSensitivity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENDPOINTING_SENSITIVITY_UNSPECIFIED",
+                Self::Standard => "ENDPOINTING_SENSITIVITY_STANDARD",
+                Self::Supershort => "ENDPOINTING_SENSITIVITY_SUPERSHORT",
+                Self::Short => "ENDPOINTING_SENSITIVITY_SHORT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENDPOINTING_SENSITIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENDPOINTING_SENSITIVITY_STANDARD" => Some(Self::Standard),
+                "ENDPOINTING_SENSITIVITY_SUPERSHORT" => Some(Self::Supershort),
+                "ENDPOINTING_SENSITIVITY_SHORT" => Some(Self::Short),
+                _ => None,
+            }
+        }
     }
 }
 /// Provides configuration information for the StreamingRecognize request.

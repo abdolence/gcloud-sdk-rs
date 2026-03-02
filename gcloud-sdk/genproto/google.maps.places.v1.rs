@@ -213,6 +213,41 @@ pub struct AuthorAttribution {
     #[prost(string, tag = "3")]
     pub photo_uri: ::prost::alloc::string::String,
 }
+/// A block of content that can be served individually.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContentBlock {
+    /// Content related to the topic.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The list of resource names of the referenced places. This name can be used
+    /// in other APIs that accept Place resource names.
+    #[prost(string, repeated, tag = "4")]
+    pub referenced_places: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Information about a photo of a place.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Photo {
+    /// Identifier. A reference representing this place photo which may be used to
+    /// look up this place photo again (also called the API "resource" name:
+    /// `places/{place_id}/photos/{photo}`).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The maximum available width, in pixels.
+    #[prost(int32, tag = "2")]
+    pub width_px: i32,
+    /// The maximum available height, in pixels.
+    #[prost(int32, tag = "3")]
+    pub height_px: i32,
+    /// This photo's authors.
+    #[prost(message, repeated, tag = "4")]
+    pub author_attributions: ::prost::alloc::vec::Vec<AuthorAttribution>,
+    /// A link where users can flag a problem with the photo.
+    #[prost(string, tag = "5")]
+    pub flag_content_uri: ::prost::alloc::string::String,
+    /// A link to show the photo on Google Maps.
+    #[prost(string, tag = "6")]
+    pub google_maps_uri: ::prost::alloc::string::String,
+}
 /// Information about a review of a place.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Review {
@@ -257,70 +292,14 @@ pub struct Review {
 /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
 /// for more details.
 ///
-/// Reference that the generative content is related to.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct References {
-    /// Reviews that serve as references.
-    #[prost(message, repeated, tag = "1")]
-    pub reviews: ::prost::alloc::vec::Vec<Review>,
-    /// The list of resource names of the referenced places. This name can be used
-    /// in other APIs that accept Place resource names.
-    #[prost(string, repeated, tag = "2")]
-    pub places: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// A block of content that can be served individually.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ContentBlock {
-    /// The topic of the content, for example "overview" or "restaurant".
-    #[prost(string, tag = "1")]
-    pub topic: ::prost::alloc::string::String,
-    /// Content related to the topic.
-    #[prost(message, optional, tag = "2")]
-    pub content: ::core::option::Option<super::super::super::r#type::LocalizedText>,
-    /// Experimental: See
-    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
-    /// for more details.
-    ///
-    /// References that are related to this block of content.
-    #[prost(message, optional, tag = "3")]
-    pub references: ::core::option::Option<References>,
-}
-/// Information about a photo of a place.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Photo {
-    /// Identifier. A reference representing this place photo which may be used to
-    /// look up this place photo again (also called the API "resource" name:
-    /// `places/{place_id}/photos/{photo}`).
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The maximum available width, in pixels.
-    #[prost(int32, tag = "2")]
-    pub width_px: i32,
-    /// The maximum available height, in pixels.
-    #[prost(int32, tag = "3")]
-    pub height_px: i32,
-    /// This photo's authors.
-    #[prost(message, repeated, tag = "4")]
-    pub author_attributions: ::prost::alloc::vec::Vec<AuthorAttribution>,
-    /// A link where users can flag a problem with the photo.
-    #[prost(string, tag = "5")]
-    pub flag_content_uri: ::prost::alloc::string::String,
-    /// A link to show the photo on Google Maps.
-    #[prost(string, tag = "6")]
-    pub google_maps_uri: ::prost::alloc::string::String,
-}
-/// Experimental: See
-/// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
-/// for more details.
-///
 /// Content that is contextual to the place query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContextualContent {
-    /// List of reviews about this place, contexual to the place query.
+    /// List of reviews about this place, contextual to the place query.
     #[prost(message, repeated, tag = "1")]
     pub reviews: ::prost::alloc::vec::Vec<Review>,
-    /// Information (including references) about photos of this place, contexual to
-    /// the place query.
+    /// Information (including references) about photos of this place, contextual
+    /// to the place query.
     #[prost(message, repeated, tag = "2")]
     pub photos: ::prost::alloc::vec::Vec<Photo>,
     /// Experimental: See
@@ -762,6 +741,15 @@ pub struct Place {
     pub primary_type_display_name: ::core::option::Option<
         super::super::super::r#type::LocalizedText,
     >,
+    /// The type label of the place on Google Maps, localized to the request
+    /// language if applicable, for example, "Restaurant", "Cafe", "Airport", etc.
+    /// The type label may be different from the primary type display name and may
+    /// not be a supported type in [Places API Place Types
+    /// table](<https://developers.google.com/maps/documentation/places/web-service/place-types>).
+    #[prost(message, optional, tag = "96")]
+    pub google_maps_type_label: ::core::option::Option<
+        super::super::super::r#type::LocalizedText,
+    >,
     /// A human-readable phone number for the place, in national format.
     #[prost(string, tag = "7")]
     pub national_phone_number: ::prost::alloc::string::String,
@@ -1009,6 +997,9 @@ pub struct Place {
     /// <https://developers.google.com/maps/documentation/geocoding/address-descriptors/coverage.>
     #[prost(message, optional, tag = "84")]
     pub address_descriptor: ::core::option::Option<AddressDescriptor>,
+    /// Links to trigger different Google Maps actions.
+    #[prost(message, optional, tag = "85")]
+    pub google_maps_links: ::core::option::Option<place::GoogleMapsLinks>,
     /// The price range associated with a Place.
     #[prost(message, optional, tag = "86")]
     pub price_range: ::core::option::Option<PriceRange>,
@@ -1392,6 +1383,26 @@ pub mod place {
         #[prost(string, tag = "2")]
         pub id: ::prost::alloc::string::String,
     }
+    /// Links to trigger different Google Maps actions.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GoogleMapsLinks {
+        /// A link to show the directions to the place. The link only populates the
+        /// destination location and uses the default travel mode `DRIVE`.
+        #[prost(string, tag = "1")]
+        pub directions_uri: ::prost::alloc::string::String,
+        /// A link to show this place.
+        #[prost(string, tag = "2")]
+        pub place_uri: ::prost::alloc::string::String,
+        /// A link to write a review for this place on Google Maps.
+        #[prost(string, tag = "3")]
+        pub write_a_review_uri: ::prost::alloc::string::String,
+        /// A link to show reviews of this place on Google Maps.
+        #[prost(string, tag = "4")]
+        pub reviews_uri: ::prost::alloc::string::String,
+        /// A link to show photos of this place on Google Maps.
+        #[prost(string, tag = "5")]
+        pub photos_uri: ::prost::alloc::string::String,
+    }
     /// AI-generated summary of the place using user reviews.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReviewSummary {
@@ -1417,7 +1428,7 @@ pub mod place {
     /// The summary of amenities near the EV charging station. This only applies to
     /// places with type `electric_vehicle_charging_station`. The `overview` field
     /// is guaranteed to be provided while the other fields are optional.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EvChargeAmenitySummary {
         /// An overview of the available amenities. This is guaranteed to be
         /// provided.
@@ -1444,7 +1455,7 @@ pub mod place {
         >,
     }
     /// A summary of points of interest near the place.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NeighborhoodSummary {
         /// An overview summary of the neighborhood.
         #[prost(message, optional, tag = "1")]
@@ -2898,4 +2909,19 @@ pub mod places_client {
             self.inner.unary(req, path, codec).await
         }
     }
+}
+/// Experimental: See
+/// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+/// for more details.
+///
+/// Reference that the generative content is related to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct References {
+    /// Reviews that serve as references.
+    #[prost(message, repeated, tag = "1")]
+    pub reviews: ::prost::alloc::vec::Vec<Review>,
+    /// The list of resource names of the referenced places. This name can be used
+    /// in other APIs that accept Place resource names.
+    #[prost(string, repeated, tag = "2")]
+    pub places: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

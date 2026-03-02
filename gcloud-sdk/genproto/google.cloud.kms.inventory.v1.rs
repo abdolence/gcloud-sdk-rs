@@ -163,9 +163,13 @@ pub struct GetProtectedResourcesSummaryRequest {
     /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The scope to use if the kms organization service account is not
+    /// configured.
+    #[prost(enumeration = "FallbackScope", tag = "2")]
+    pub fallback_scope: i32,
 }
 /// Aggregate information about the resources protected by a Cloud KMS key in the
-/// same Cloud organization as the key.
+/// same Cloud organization/project as the key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtectedResourcesSummary {
     /// The full name of the ProtectedResourcesSummary resource.
@@ -190,13 +194,25 @@ pub struct ProtectedResourcesSummary {
     /// The number of resources protected by the key grouped by region.
     #[prost(map = "string, int64", tag = "4")]
     pub locations: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
+    /// Warning messages for the state of response
+    /// \[ProtectedResourcesSummary\]\[google.cloud.kms.inventory.v1.ProtectedResourcesSummary\]
+    /// For example, if the organization service account is not configured,
+    /// INSUFFICIENT_PERMISSIONS_PARTIAL_DATA warning will be returned.
+    #[prost(message, repeated, tag = "7")]
+    pub warnings: ::prost::alloc::vec::Vec<Warning>,
 }
 /// Request message for
 /// \[KeyTrackingService.SearchProtectedResources\]\[google.cloud.kms.inventory.v1.KeyTrackingService.SearchProtectedResources\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchProtectedResourcesRequest {
-    /// Required. Resource name of the organization.
-    /// Example: organizations/123
+    /// Required. A scope can be an organization or a project. Resources protected
+    /// by the crypto key in provided scope will be returned.
+    ///
+    /// The following values are allowed:
+    ///
+    /// * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/12345678")
+    /// * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+    /// * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
     #[prost(string, tag = "2")]
     pub scope: ::prost::alloc::string::String,
     /// Required. The resource name of the
@@ -300,6 +316,119 @@ pub struct ProtectedResource {
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// A warning message that indicates potential problems with the response data.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Warning {
+    /// The specific warning code for the displayed message.
+    #[prost(enumeration = "warning::WarningCode", tag = "1")]
+    pub warning_code: i32,
+    /// The literal message providing context and details about the warnings.
+    #[prost(string, tag = "2")]
+    pub display_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Warning`.
+pub mod warning {
+    /// Different types of warnings that can be returned to the user.
+    /// The display_message contains detailed information regarding the
+    /// warning_code.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum WarningCode {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Indicates that the caller or service agent lacks necessary permissions
+        /// to view some of the requested data. The response may be partial.
+        /// Example:
+        ///
+        /// * KMS organization service agent {service_agent_name} lacks the
+        ///   `cloudasset.assets.searchAllResources` permission on the scope.
+        InsufficientPermissionsPartialData = 1,
+        /// Indicates that a resource limit has been exceeded, resulting in partial
+        /// data. Example:
+        ///
+        /// * The project has more than 10,000 assets (resources,
+        ///   crypto keys, key handles, IAM policies, etc).
+        ResourceLimitExceededPartialData = 2,
+        /// Indicates that the project exists outside of an organization resource.
+        /// Thus the analysis is only done for the project level data and results
+        /// might be partial.
+        OrgLessProjectPartialData = 3,
+    }
+    impl WarningCode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "WARNING_CODE_UNSPECIFIED",
+                Self::InsufficientPermissionsPartialData => {
+                    "INSUFFICIENT_PERMISSIONS_PARTIAL_DATA"
+                }
+                Self::ResourceLimitExceededPartialData => {
+                    "RESOURCE_LIMIT_EXCEEDED_PARTIAL_DATA"
+                }
+                Self::OrgLessProjectPartialData => "ORG_LESS_PROJECT_PARTIAL_DATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WARNING_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSUFFICIENT_PERMISSIONS_PARTIAL_DATA" => {
+                    Some(Self::InsufficientPermissionsPartialData)
+                }
+                "RESOURCE_LIMIT_EXCEEDED_PARTIAL_DATA" => {
+                    Some(Self::ResourceLimitExceededPartialData)
+                }
+                "ORG_LESS_PROJECT_PARTIAL_DATA" => Some(Self::OrgLessProjectPartialData),
+                _ => None,
+            }
+        }
+    }
+}
+/// Specifies the scope to use if the organization service agent is not
+/// configured.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FallbackScope {
+    /// Unspecified scope type.
+    Unspecified = 0,
+    /// If set to `FALLBACK_SCOPE_PROJECT`, the API will fall back to using key's
+    /// project as request scope if the kms organization service account is not
+    /// configured.
+    Project = 1,
+}
+impl FallbackScope {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FALLBACK_SCOPE_UNSPECIFIED",
+            Self::Project => "FALLBACK_SCOPE_PROJECT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FALLBACK_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FALLBACK_SCOPE_PROJECT" => Some(Self::Project),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod key_tracking_service_client {
     #![allow(
@@ -394,10 +523,16 @@ pub mod key_tracking_service_client {
             self
         }
         /// Returns aggregate information about the resources protected by the given
-        /// Cloud KMS \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. Only resources within
-        /// the same Cloud organization as the key will be returned. The project that
-        /// holds the key must be part of an organization in order for this call to
-        /// succeed.
+        /// Cloud KMS \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. By default,
+        /// summary of resources within the same Cloud organization as the key will be
+        /// returned, which requires the KMS organization service account to be
+        /// configured(refer
+        /// https://docs.cloud.google.com/kms/docs/view-key-usage#required-roles).
+        /// If the KMS organization service account is not configured or key's project
+        /// is not part of an organization, set
+        /// \[fallback_scope\]\[google.cloud.kms.inventory.v1.GetProtectedResourcesSummaryRequest.fallback_scope\]
+        /// to `FALLBACK_SCOPE_PROJECT` to retrieve a summary of protected resources
+        /// within the key's project.
         pub async fn get_protected_resources_summary(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProtectedResourcesSummaryRequest>,
@@ -428,7 +563,8 @@ pub mod key_tracking_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns metadata about the resources protected by the given Cloud KMS
-        /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] in the given Cloud organization.
+        /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] in the given Cloud
+        /// organization/project.
         pub async fn search_protected_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchProtectedResourcesRequest>,
