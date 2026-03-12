@@ -17,8 +17,8 @@ doctest = false
 
 [features]
 default = ["tls-roots"]
-tls-roots = ["reqwest/rustls-tls-native-roots-no-provider", "tonic/tls-native-roots"]
-tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots-no-provider"]
+tls-roots = ["reqwest/native-tls", "tonic/tls-native-roots"]
+tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
 rest = ["serde_with"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
@@ -449,7 +449,7 @@ tokio= { version =  "1", default-features = false }
 tracing = "0.1"
 secret-vault-value = { version="1.0", features=["serde"] }
 once_cell = "1.19"
-reqwest = { version=">=0.12.7", features=["multipart", "json", "gzip", "stream"], default-features = false  }
+reqwest = { version = "0.13", features = ["multipart", "json", "gzip", "stream", "http2", "form", "query"], default-features = false  }
 bytes = { version = "1"}
 serde_with = { version = "3", optional = true, features = ["base64"] }
 aws-config = { version = "1.1", features = ["behavior-version-latest"], optional = true }
