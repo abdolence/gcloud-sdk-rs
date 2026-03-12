@@ -41,12 +41,61 @@ pub struct AutoscalingPolicy {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The type of the clusters for which this autoscaling policy is to
+    /// be configured.
+    #[prost(enumeration = "autoscaling_policy::ClusterType", tag = "7")]
+    pub cluster_type: i32,
     /// Autoscaling algorithm for policy.
     #[prost(oneof = "autoscaling_policy::Algorithm", tags = "3")]
     pub algorithm: ::core::option::Option<autoscaling_policy::Algorithm>,
 }
 /// Nested message and enum types in `AutoscalingPolicy`.
 pub mod autoscaling_policy {
+    /// The type of the clusters for which this autoscaling policy is to be
+    /// configured.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClusterType {
+        /// Not set.
+        Unspecified = 0,
+        /// Standard dataproc cluster with a minimum of two primary workers.
+        Standard = 1,
+        /// Clusters that can use only secondary workers and be scaled down to zero
+        /// secondary worker nodes.
+        ZeroScale = 2,
+    }
+    impl ClusterType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLUSTER_TYPE_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::ZeroScale => "ZERO_SCALE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "ZERO_SCALE" => Some(Self::ZeroScale),
+                _ => None,
+            }
+        }
+    }
     /// Autoscaling algorithm for policy.
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Algorithm {
@@ -2287,6 +2336,9 @@ pub struct Cluster {
 /// The cluster config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterConfig {
+    /// Optional. The type of the cluster.
+    #[prost(enumeration = "cluster_config::ClusterType", tag = "27")]
+    pub cluster_type: i32,
     /// Optional. The cluster tier.
     #[prost(enumeration = "cluster_config::ClusterTier", tag = "29")]
     pub cluster_tier: i32,
@@ -2380,6 +2432,54 @@ pub struct ClusterConfig {
 }
 /// Nested message and enum types in `ClusterConfig`.
 pub mod cluster_config {
+    /// The type of the cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClusterType {
+        /// Not set.
+        Unspecified = 0,
+        /// Standard dataproc cluster with a minimum of two primary workers.
+        Standard = 1,
+        /// <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/single-node-clusters>
+        SingleNode = 2,
+        /// Clusters that can use only secondary workers and be scaled down to zero
+        /// secondary worker nodes.
+        ZeroScale = 3,
+    }
+    impl ClusterType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLUSTER_TYPE_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::SingleNode => "SINGLE_NODE",
+                Self::ZeroScale => "ZERO_SCALE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "SINGLE_NODE" => Some(Self::SingleNode),
+                "ZERO_SCALE" => Some(Self::ZeroScale),
+                _ => None,
+            }
+        }
+    }
     /// The cluster tier.
     #[derive(
         Clone,

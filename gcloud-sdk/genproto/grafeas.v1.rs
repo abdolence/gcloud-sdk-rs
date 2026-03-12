@@ -108,6 +108,9 @@ pub struct BaseImage {
     /// The number of layers that the base image is composed of.
     #[prost(int32, tag = "3")]
     pub layer_count: i32,
+    /// The registry in which the base image is from.
+    #[prost(string, tag = "4")]
+    pub registry: ::prost::alloc::string::String,
 }
 /// Details about the layer a package was found in.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3452,6 +3455,9 @@ pub struct VulnerabilityNote {
     /// The full description of the v2 CVSS for this vulnerability.
     #[prost(message, optional, tag = "8")]
     pub cvss_v2: ::core::option::Option<Cvss>,
+    /// The time this advisory was published by the source.
+    #[prost(message, optional, tag = "9")]
+    pub advisory_publish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `VulnerabilityNote`.
 pub mod vulnerability_note {

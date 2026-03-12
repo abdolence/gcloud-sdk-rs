@@ -1993,6 +1993,27 @@ pub struct SearchRequest {
     /// Raw search query.
     #[prost(string, tag = "3")]
     pub query: ::prost::alloc::string::String,
+    /// Optional. The categories associated with a category page. Must be set for
+    /// category navigation queries to achieve good search quality. The format
+    /// should be the same as
+    /// \[PageInfo.page_category\]\[google.cloud.discoveryengine.v1.PageInfo.page_category\].
+    /// This field is the equivalent of the query for browse (navigation) queries.
+    /// It's used by the browse model when the query is empty.
+    ///
+    /// If the field is empty, it will not be used by the browse model.
+    /// If the field contains more than one element, only the first element will
+    /// be used.
+    ///
+    /// To represent full path of a category, use '>' character to separate
+    /// different hierarchies. If '>' is part of the category name, replace it with
+    /// other character(s).
+    /// For example, `Graphics Cards > RTX>4090 > Founders Edition` where "RTX >
+    /// 4090" represents one level, can be rewritten as \`Graphics Cards > RTX_4090
+    ///
+    /// >
+    /// > Founders Edition\`
+    #[prost(string, repeated, tag = "63")]
+    pub page_categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Raw image query.
     #[prost(message, optional, tag = "19")]
     pub image_query: ::core::option::Option<search_request::ImageQuery>,
@@ -2025,6 +2046,8 @@ pub struct SearchRequest {
     /// unset.
     ///
     /// If this field is negative, an  `INVALID_ARGUMENT`  is returned.
+    ///
+    /// A large offset may be capped to a reasonable threshold.
     #[prost(int32, tag = "6")]
     pub offset: i32,
     /// The maximum number of results to return for OneBox.
@@ -2140,10 +2163,10 @@ pub struct SearchRequest {
     pub spell_correction_spec: ::core::option::Option<
         search_request::SpellCorrectionSpec,
     >,
-    /// A unique identifier for tracking visitors. For example, this could be
-    /// implemented with an HTTP cookie, which should be able to uniquely identify
-    /// a visitor on a single device. This unique identifier should not change if
-    /// the visitor logs in or out of the website.
+    /// Optional. A unique identifier for tracking visitors. For example, this
+    /// could be implemented with an HTTP cookie, which should be able to uniquely
+    /// identify a visitor on a single device. This unique identifier should not
+    /// change if the visitor logs in or out of the website.
     ///
     /// This field should NOT have a fixed value such as `unknown_visitor`.
     ///
@@ -2159,84 +2182,8 @@ pub struct SearchRequest {
     /// A specification for configuring the behavior of content search.
     #[prost(message, optional, tag = "24")]
     pub content_search_spec: ::core::option::Option<search_request::ContentSearchSpec>,
-    /// Whether to turn on safe search. This is only supported for
-    /// website search.
-    #[prost(bool, tag = "20")]
-    pub safe_search: bool,
-    /// The user labels applied to a resource must meet the following requirements:
-    ///
-    /// * Each resource can have multiple labels, up to a maximum of 64.
-    /// * Each label must be a key-value pair.
-    /// * Keys have a minimum length of 1 character and a maximum length of 63
-    ///   characters and cannot be empty. Values can be empty and have a maximum
-    ///   length of 63 characters.
-    /// * Keys and values can contain only lowercase letters, numeric characters,
-    ///   underscores, and dashes. All characters must use UTF-8 encoding, and
-    ///   international characters are allowed.
-    /// * The key portion of a label must be unique. However, you can use the same
-    ///   key with multiple resources.
-    /// * Keys must start with a lowercase letter or international character.
-    ///
-    /// See [Google Cloud
-    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
-    /// for more details.
-    #[prost(map = "string, string", tag = "22")]
-    pub user_labels: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Search as you type configuration. Only supported for the
-    /// \[IndustryVertical.MEDIA\]\[google.cloud.discoveryengine.v1.IndustryVertical.MEDIA\]
-    /// vertical.
-    #[prost(message, optional, tag = "31")]
-    pub search_as_you_type_spec: ::core::option::Option<
-        search_request::SearchAsYouTypeSpec,
-    >,
-    /// Optional. Config for display feature, like match highlighting on search
-    /// results.
-    #[prost(message, optional, tag = "38")]
-    pub display_spec: ::core::option::Option<search_request::DisplaySpec>,
-    /// The session resource name. Optional.
-    ///
-    /// Session allows users to do multi-turn /search API calls or coordination
-    /// between /search API calls and /answer API calls.
-    ///
-    /// Example #1 (multi-turn /search API calls):
-    /// Call /search API with the session ID generated in the first call.
-    /// Here, the previous search query gets considered in query
-    /// standing. I.e., if the first query is "How did Alphabet do in 2022?"
-    /// and the current query is "How about 2023?", the current query will
-    /// be interpreted as "How did Alphabet do in 2023?".
-    ///
-    /// Example #2 (coordination between /search API calls and /answer API calls):
-    /// Call /answer API with the session ID generated in the first call.
-    /// Here, the answer generation happens in the context of the search
-    /// results from the first search call.
-    ///
-    /// Multi-turn Search feature is currently at private GA stage. Please use
-    /// v1alpha or v1beta version instead before we launch this feature to public
-    /// GA. Or ask for allowlisting through Google Support team.
-    #[prost(string, tag = "41")]
-    pub session: ::prost::alloc::string::String,
-    /// Session specification.
-    ///
-    /// Can be used only when `session` is set.
-    #[prost(message, optional, tag = "42")]
-    pub session_spec: ::core::option::Option<search_request::SessionSpec>,
-    /// The relevance threshold of the search results.
-    ///
-    /// Default to Google defined threshold, leveraging a balance of
-    /// precision and recall to deliver both highly accurate results and
-    /// comprehensive coverage of relevant information.
-    ///
-    /// This feature is not supported for healthcare search.
-    #[prost(enumeration = "search_request::RelevanceThreshold", tag = "44")]
-    pub relevance_threshold: i32,
-    /// Optional. The specification for returning the relevance score.
-    #[prost(message, optional, tag = "52")]
-    pub relevance_score_spec: ::core::option::Option<search_request::RelevanceScoreSpec>,
-    /// The ranking expression controls the customized ranking on retrieval
-    /// documents. This overrides
+    /// Optional. The ranking expression controls the customized ranking on
+    /// retrieval documents. This overrides
     /// \[ServingConfig.ranking_expression\]\[google.cloud.discoveryengine.v1.ServingConfig.ranking_expression\].
     /// The syntax and supported features depend on the
     /// `ranking_expression_backend` value. If `ranking_expression_backend` is not
@@ -2327,9 +2274,109 @@ pub struct SearchRequest {
     /// * `base_rank`: the default rank of the result
     #[prost(string, tag = "26")]
     pub ranking_expression: ::prost::alloc::string::String,
-    /// The backend to use for the ranking expression evaluation.
+    /// Optional. The backend to use for the ranking expression evaluation.
     #[prost(enumeration = "search_request::RankingExpressionBackend", tag = "53")]
     pub ranking_expression_backend: i32,
+    /// Whether to turn on safe search. This is only supported for
+    /// website search.
+    #[prost(bool, tag = "20")]
+    pub safe_search: bool,
+    /// The user labels applied to a resource must meet the following requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///   characters and cannot be empty. Values can be empty and have a maximum
+    ///   length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///   underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///   international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///   key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "22")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Config for natural language query understanding capabilities,
+    /// such as extracting structured field filters from the query. Refer to [this
+    /// documentation](<https://cloud.google.com/generative-ai-app-builder/docs/natural-language-queries>)
+    /// for more information.
+    /// If `naturalLanguageQueryUnderstandingSpec` is not specified, no additional
+    /// natural language query understanding will be done.
+    #[prost(message, optional, tag = "28")]
+    pub natural_language_query_understanding_spec: ::core::option::Option<
+        search_request::NaturalLanguageQueryUnderstandingSpec,
+    >,
+    /// Search as you type configuration. Only supported for the
+    /// \[IndustryVertical.MEDIA\]\[google.cloud.discoveryengine.v1.IndustryVertical.MEDIA\]
+    /// vertical.
+    #[prost(message, optional, tag = "31")]
+    pub search_as_you_type_spec: ::core::option::Option<
+        search_request::SearchAsYouTypeSpec,
+    >,
+    /// Optional. Config for display feature, like match highlighting on search
+    /// results.
+    #[prost(message, optional, tag = "38")]
+    pub display_spec: ::core::option::Option<search_request::DisplaySpec>,
+    /// Optional. Crowding specifications for improving result diversity.
+    /// If multiple CrowdingSpecs are specified, crowding will be evaluated on
+    /// each unique combination of the `field` values, and max_count will be the
+    /// maximum value of `max_count` across all CrowdingSpecs.
+    /// For example, if the first CrowdingSpec has `field` = "color" and
+    /// `max_count` = 3, and the second CrowdingSpec has `field` = "size" and
+    /// `max_count` = 2, then after 3 documents that share the same color AND size
+    /// have been returned, subsequent ones should be
+    /// removed or demoted.
+    #[prost(message, repeated, tag = "40")]
+    pub crowding_specs: ::prost::alloc::vec::Vec<search_request::CrowdingSpec>,
+    /// The session resource name. Optional.
+    ///
+    /// Session allows users to do multi-turn /search API calls or coordination
+    /// between /search API calls and /answer API calls.
+    ///
+    /// Example #1 (multi-turn /search API calls):
+    /// Call /search API with the session ID generated in the first call.
+    /// Here, the previous search query gets considered in query
+    /// standing. I.e., if the first query is "How did Alphabet do in 2022?"
+    /// and the current query is "How about 2023?", the current query will
+    /// be interpreted as "How did Alphabet do in 2023?".
+    ///
+    /// Example #2 (coordination between /search API calls and /answer API calls):
+    /// Call /answer API with the session ID generated in the first call.
+    /// Here, the answer generation happens in the context of the search
+    /// results from the first search call.
+    ///
+    /// Multi-turn Search feature is currently at private GA stage. Please use
+    /// v1alpha or v1beta version instead before we launch this feature to public
+    /// GA. Or ask for allowlisting through Google Support team.
+    #[prost(string, tag = "41")]
+    pub session: ::prost::alloc::string::String,
+    /// Session specification.
+    ///
+    /// Can be used only when `session` is set.
+    #[prost(message, optional, tag = "42")]
+    pub session_spec: ::core::option::Option<search_request::SessionSpec>,
+    /// The global relevance threshold of the search results.
+    ///
+    /// Defaults to Google defined threshold, leveraging a balance of
+    /// precision and recall to deliver both highly accurate results and
+    /// comprehensive coverage of relevant information.
+    ///
+    /// If more granular relevance filtering is required, use the
+    /// `relevance_filter_spec` instead.
+    ///
+    /// This feature is not supported for healthcare search.
+    #[prost(enumeration = "search_request::RelevanceThreshold", tag = "44")]
+    pub relevance_threshold: i32,
+    /// Optional. The specification for returning the relevance score.
+    #[prost(message, optional, tag = "52")]
+    pub relevance_score_spec: ::core::option::Option<search_request::RelevanceScoreSpec>,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -2357,6 +2404,8 @@ pub mod search_request {
         /// Required. Full resource name of
         /// \[DataStore\]\[google.cloud.discoveryengine.v1.DataStore\], such as
         /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+        /// The path must include the project number, project id is not supported for
+        /// this field.
         #[prost(string, tag = "1")]
         pub data_store: ::prost::alloc::string::String,
         /// Optional. Filter specification to filter documents in the data store
@@ -3151,6 +3200,150 @@ pub mod search_request {
             }
         }
     }
+    /// Specification to enable natural language understanding capabilities for
+    /// search requests.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NaturalLanguageQueryUnderstandingSpec {
+        /// The condition under which filter extraction should occur.
+        /// Server behavior defaults to `DISABLED`.
+        #[prost(
+            enumeration = "natural_language_query_understanding_spec::FilterExtractionCondition",
+            tag = "1"
+        )]
+        pub filter_extraction_condition: i32,
+        /// Field names used for location-based filtering, where geolocation filters
+        /// are detected in natural language search queries.
+        /// Only valid when the FilterExtractionCondition is set to `ENABLED`.
+        ///
+        /// If this field is set, it overrides the field names set in
+        /// \[ServingConfig.geo_search_query_detection_field_names\]\[google.cloud.discoveryengine.v1.ServingConfig.geo_search_query_detection_field_names\].
+        #[prost(string, repeated, tag = "2")]
+        pub geo_search_query_detection_field_names: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. Controls behavior of how extracted filters are applied to the
+        /// search. The default behavior depends on the request. For single datastore
+        /// structured search, the default is `HARD_FILTER`. For multi-datastore
+        /// search, the default behavior is `SOFT_BOOST`.
+        /// Location-based filters are always applied as hard filters, and the
+        /// `SOFT_BOOST` setting will not affect them.
+        /// This field is only used if
+        /// \[SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition\]\[google.cloud.discoveryengine.v1.SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition\]
+        /// is set to
+        /// \[FilterExtractionCondition.ENABLED\]\[google.cloud.discoveryengine.v1.SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition.ENABLED\].
+        #[prost(
+            enumeration = "natural_language_query_understanding_spec::ExtractedFilterBehavior",
+            tag = "3"
+        )]
+        pub extracted_filter_behavior: i32,
+        /// Optional. Allowlist of fields that can be used for natural language
+        /// filter extraction. By default, if this is unspecified, all indexable
+        /// fields are eligible for natural language filter extraction (but are not
+        /// guaranteed to be used). If any fields are specified in
+        /// allowed_field_names, only the fields that are both marked as indexable in
+        /// the schema and specified in the allowlist will be eligible for natural
+        /// language filter extraction. Note: for multi-datastore search, this is not
+        /// yet supported, and will be ignored.
+        #[prost(string, repeated, tag = "4")]
+        pub allowed_field_names: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Nested message and enum types in `NaturalLanguageQueryUnderstandingSpec`.
+    pub mod natural_language_query_understanding_spec {
+        /// Enum describing under which condition filter extraction should occur.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum FilterExtractionCondition {
+            /// Server behavior defaults to `DISABLED`.
+            ConditionUnspecified = 0,
+            /// Disables NL filter extraction.
+            Disabled = 1,
+            /// Enables NL filter extraction.
+            Enabled = 2,
+        }
+        impl FilterExtractionCondition {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::ConditionUnspecified => "CONDITION_UNSPECIFIED",
+                    Self::Disabled => "DISABLED",
+                    Self::Enabled => "ENABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONDITION_UNSPECIFIED" => Some(Self::ConditionUnspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
+                    _ => None,
+                }
+            }
+        }
+        /// Enum describing how extracted filters are applied to the search.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ExtractedFilterBehavior {
+            /// `EXTRACTED_FILTER_BEHAVIOR_UNSPECIFIED` will use the default behavior
+            /// for extracted filters. For single datastore search, the default is to
+            /// apply as hard filters. For multi-datastore search, the default is to
+            /// apply as soft boosts.
+            Unspecified = 0,
+            /// Applies all extracted filters as hard filters on the results. Results
+            /// that do not pass the extracted filters will not be returned in the
+            /// result set.
+            HardFilter = 1,
+            /// Applies all extracted filters as soft boosts. Results that pass the
+            /// filters will be boosted up to higher ranks in the result set.
+            SoftBoost = 2,
+        }
+        impl ExtractedFilterBehavior {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "EXTRACTED_FILTER_BEHAVIOR_UNSPECIFIED",
+                    Self::HardFilter => "HARD_FILTER",
+                    Self::SoftBoost => "SOFT_BOOST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "EXTRACTED_FILTER_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "HARD_FILTER" => Some(Self::HardFilter),
+                    "SOFT_BOOST" => Some(Self::SoftBoost),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// Specification for search as you type in search requests.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SearchAsYouTypeSpec {
@@ -3267,6 +3460,79 @@ pub mod search_request {
             }
         }
     }
+    /// Specification for crowding. Crowding improves the diversity of search
+    /// results by limiting the number of results that share the same field value.
+    /// For example, crowding on the color field with a max_count of 3 and mode
+    /// DROP_CROWDED_RESULTS will return at most 3 results with the same color
+    /// across all pages.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CrowdingSpec {
+        /// The field to use for crowding. Documents can be crowded by a field in the
+        /// \[Document\]\[google.cloud.discoveryengine.v1.Document\] object. Crowding
+        /// field is case sensitive.
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        /// The maximum number of documents to keep per value of the field. Once
+        /// there are at least max_count previous results which contain the same
+        /// value for the given field (according to the order specified in
+        /// `order_by`), later results with the same value are "crowded away".
+        /// If not specified, the default value is 1.
+        #[prost(int32, tag = "2")]
+        pub max_count: i32,
+        /// Mode to use for documents that are crowded away.
+        #[prost(enumeration = "crowding_spec::Mode", tag = "3")]
+        pub mode: i32,
+    }
+    /// Nested message and enum types in `CrowdingSpec`.
+    pub mod crowding_spec {
+        /// Enum describing the mode to use for documents that are crowded away.
+        /// They can be dropped or demoted to the later pages.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Mode {
+            /// Unspecified crowding mode. In this case, server behavior defaults to
+            /// \[Mode.DROP_CROWDED_RESULTS\]\[google.cloud.discoveryengine.v1.SearchRequest.CrowdingSpec.Mode.DROP_CROWDED_RESULTS\].
+            Unspecified = 0,
+            /// Drop crowded results.
+            DropCrowdedResults = 1,
+            /// Demote crowded results to the later pages.
+            DemoteCrowdedResultsToEnd = 2,
+        }
+        impl Mode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "MODE_UNSPECIFIED",
+                    Self::DropCrowdedResults => "DROP_CROWDED_RESULTS",
+                    Self::DemoteCrowdedResultsToEnd => "DEMOTE_CROWDED_RESULTS_TO_END",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DROP_CROWDED_RESULTS" => Some(Self::DropCrowdedResults),
+                    "DEMOTE_CROWDED_RESULTS_TO_END" => {
+                        Some(Self::DemoteCrowdedResultsToEnd)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
     /// Session specification.
     ///
     /// Multi-turn Search feature is currently at private GA stage. Please use
@@ -3321,6 +3587,67 @@ pub mod search_request {
         #[prost(bool, tag = "1")]
         pub return_relevance_score: bool,
     }
+    /// The backend to use for the ranking expression evaluation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RankingExpressionBackend {
+        /// Default option for unspecified/unknown values.
+        Unspecified = 0,
+        /// Deprecated: Use `RANK_BY_EMBEDDING` instead.
+        /// Ranking by custom embedding model, the default way to evaluate the
+        /// ranking expression. Legacy enum option, `RANK_BY_EMBEDDING` should be
+        /// used instead.
+        #[deprecated]
+        Byoe = 1,
+        /// Deprecated: Use `RANK_BY_FORMULA` instead.
+        /// Ranking by custom formula. Legacy enum option, `RANK_BY_FORMULA` should
+        /// be used instead.
+        #[deprecated]
+        Clearbox = 2,
+        /// Ranking by custom embedding model, the default way to evaluate the
+        /// ranking expression.
+        RankByEmbedding = 3,
+        /// Ranking by custom formula.
+        RankByFormula = 4,
+    }
+    impl RankingExpressionBackend {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RANKING_EXPRESSION_BACKEND_UNSPECIFIED",
+                #[allow(deprecated)]
+                Self::Byoe => "BYOE",
+                #[allow(deprecated)]
+                Self::Clearbox => "CLEARBOX",
+                Self::RankByEmbedding => "RANK_BY_EMBEDDING",
+                Self::RankByFormula => "RANK_BY_FORMULA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RANKING_EXPRESSION_BACKEND_UNSPECIFIED" => Some(Self::Unspecified),
+                "BYOE" => Some(#[allow(deprecated)] Self::Byoe),
+                "CLEARBOX" => Some(#[allow(deprecated)] Self::Clearbox),
+                "RANK_BY_EMBEDDING" => Some(Self::RankByEmbedding),
+                "RANK_BY_FORMULA" => Some(Self::RankByFormula),
+                _ => None,
+            }
+        }
+    }
     /// The relevance threshold of the search results. The higher relevance
     /// threshold is, the higher relevant results are shown and the less number of
     /// results are returned.
@@ -3371,50 +3698,6 @@ pub mod search_request {
                 "LOW" => Some(Self::Low),
                 "MEDIUM" => Some(Self::Medium),
                 "HIGH" => Some(Self::High),
-                _ => None,
-            }
-        }
-    }
-    /// The backend to use for the ranking expression evaluation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum RankingExpressionBackend {
-        /// Default option for unspecified/unknown values.
-        Unspecified = 0,
-        /// Ranking by custom embedding model, the default way to evaluate the
-        /// ranking expression.
-        RankByEmbedding = 3,
-        /// Ranking by custom formula.
-        RankByFormula = 4,
-    }
-    impl RankingExpressionBackend {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "RANKING_EXPRESSION_BACKEND_UNSPECIFIED",
-                Self::RankByEmbedding => "RANK_BY_EMBEDDING",
-                Self::RankByFormula => "RANK_BY_FORMULA",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "RANKING_EXPRESSION_BACKEND_UNSPECIFIED" => Some(Self::Unspecified),
-                "RANK_BY_EMBEDDING" => Some(Self::RankByEmbedding),
-                "RANK_BY_FORMULA" => Some(Self::RankByFormula),
                 _ => None,
             }
         }
@@ -3475,6 +3758,12 @@ pub struct SearchResponse {
     pub query_expansion_info: ::core::option::Option<
         search_response::QueryExpansionInfo,
     >,
+    /// Output only. Natural language query understanding information for the
+    /// returned results.
+    #[prost(message, optional, tag = "15")]
+    pub natural_language_query_understanding_info: ::core::option::Option<
+        search_response::NaturalLanguageQueryUnderstandingInfo,
+    >,
     /// Session information.
     ///
     /// Only set if
@@ -3485,6 +3774,9 @@ pub struct SearchResponse {
     /// Promotions for site search.
     #[prost(message, repeated, tag = "23")]
     pub search_link_promotions: ::prost::alloc::vec::Vec<SearchLinkPromotion>,
+    /// Output only. Indicates the semantic state of the search response.
+    #[prost(enumeration = "search_response::SemanticState", tag = "36")]
+    pub semantic_state: i32,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -3511,7 +3803,7 @@ pub mod search_response {
             ::prost::alloc::string::String,
             super::DoubleList,
         >,
-        /// A set of ranking signals associated with the result.
+        /// Optional. A set of ranking signals associated with the result.
         #[prost(message, optional, tag = "7")]
         pub rank_signals: ::core::option::Option<search_result::RankSignals>,
     }
@@ -3520,31 +3812,31 @@ pub mod search_response {
         /// A set of ranking signals.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct RankSignals {
-            /// Keyword matching adjustment.
+            /// Optional. Keyword matching adjustment.
             #[prost(float, optional, tag = "1")]
             pub keyword_similarity_score: ::core::option::Option<f32>,
-            /// Semantic relevance adjustment.
+            /// Optional. Semantic relevance adjustment.
             #[prost(float, optional, tag = "2")]
             pub relevance_score: ::core::option::Option<f32>,
-            /// Semantic similarity adjustment.
+            /// Optional. Semantic similarity adjustment.
             #[prost(float, optional, tag = "3")]
             pub semantic_similarity_score: ::core::option::Option<f32>,
-            /// Predicted conversion rate adjustment as a rank.
+            /// Optional. Predicted conversion rate adjustment as a rank.
             #[prost(float, optional, tag = "4")]
             pub pctr_rank: ::core::option::Option<f32>,
-            /// Topicality adjustment as a rank.
+            /// Optional. Topicality adjustment as a rank.
             #[prost(float, optional, tag = "6")]
             pub topicality_rank: ::core::option::Option<f32>,
-            /// Age of the document in hours.
+            /// Optional. Age of the document in hours.
             #[prost(float, optional, tag = "7")]
             pub document_age: ::core::option::Option<f32>,
-            /// Combined custom boosts for a doc.
+            /// Optional. Combined custom boosts for a doc.
             #[prost(float, optional, tag = "8")]
             pub boosting_factor: ::core::option::Option<f32>,
-            /// The default rank of the result.
+            /// Optional. The default rank of the result.
             #[prost(float, tag = "32")]
             pub default_rank: f32,
-            /// A list of custom clearbox signals.
+            /// Optional. A list of custom clearbox signals.
             #[prost(message, repeated, tag = "33")]
             pub custom_signals: ::prost::alloc::vec::Vec<rank_signals::CustomSignal>,
         }
@@ -3553,10 +3845,11 @@ pub mod search_response {
             /// Custom clearbox signal represented by name and value pair.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct CustomSignal {
-                /// Name of the signal.
+                /// Optional. Name of the signal.
                 #[prost(string, tag = "1")]
                 pub name: ::prost::alloc::string::String,
-                /// Float value representing the ranking signal (e.g. 1.25 for BM25).
+                /// Optional. Float value representing the ranking signal (e.g. 1.25 for
+                /// BM25).
                 #[prost(float, tag = "2")]
                 pub value: f32,
             }
@@ -3844,6 +4137,202 @@ pub mod search_response {
         #[prost(int64, tag = "2")]
         pub pinned_result_count: i64,
     }
+    /// Information describing what natural language understanding was
+    /// done on the input query.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NaturalLanguageQueryUnderstandingInfo {
+        /// The filters that were extracted from the input query.
+        #[prost(string, tag = "1")]
+        pub extracted_filters: ::prost::alloc::string::String,
+        /// Rewritten input query minus the extracted filters.
+        #[prost(string, tag = "2")]
+        pub rewritten_query: ::prost::alloc::string::String,
+        /// The classified intents from the input query.
+        #[prost(string, repeated, tag = "5")]
+        pub classified_intents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The filters that were extracted from the input query represented in a
+        /// structured form.
+        #[prost(message, optional, tag = "3")]
+        pub structured_extracted_filter: ::core::option::Option<
+            natural_language_query_understanding_info::StructuredExtractedFilter,
+        >,
+    }
+    /// Nested message and enum types in `NaturalLanguageQueryUnderstandingInfo`.
+    pub mod natural_language_query_understanding_info {
+        /// The filters that were extracted from the input query represented in a
+        /// structured form.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct StructuredExtractedFilter {
+            /// The expression denoting the filter that was extracted from the input
+            /// query in a structured form. It can be a simple expression denoting a
+            /// single string, numerical or geolocation constraint or a compound
+            /// expression which is a combination of multiple expressions connected
+            /// using logical (OR and AND) operators.
+            #[prost(message, optional, tag = "1")]
+            pub expression: ::core::option::Option<
+                structured_extracted_filter::Expression,
+            >,
+        }
+        /// Nested message and enum types in `StructuredExtractedFilter`.
+        pub mod structured_extracted_filter {
+            /// Constraint expression of a string field.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct StringConstraint {
+                /// Name of the string field as defined in the schema.
+                #[prost(string, tag = "1")]
+                pub field_name: ::prost::alloc::string::String,
+                /// Values of the string field. The record will only be returned if the
+                /// field value matches one of the values specified here.
+                #[prost(string, repeated, tag = "2")]
+                pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+                /// Identifies the keywords within the search query that match a filter.
+                #[prost(string, tag = "3")]
+                pub query_segment: ::prost::alloc::string::String,
+            }
+            /// Constraint expression of a number field. Example: price \< 100.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct NumberConstraint {
+                /// Name of the numerical field as defined in the schema.
+                #[prost(string, tag = "1")]
+                pub field_name: ::prost::alloc::string::String,
+                /// The comparison operation performed between the field value and the
+                /// value specified in the constraint.
+                #[prost(enumeration = "number_constraint::Comparison", tag = "2")]
+                pub comparison: i32,
+                /// The value specified in the numerical constraint.
+                #[prost(double, tag = "3")]
+                pub value: f64,
+                /// Identifies the keywords within the search query that match a filter.
+                #[prost(string, tag = "4")]
+                pub query_segment: ::prost::alloc::string::String,
+            }
+            /// Nested message and enum types in `NumberConstraint`.
+            pub mod number_constraint {
+                /// The comparison operation that was performed.
+                #[derive(
+                    Clone,
+                    Copy,
+                    Debug,
+                    PartialEq,
+                    Eq,
+                    Hash,
+                    PartialOrd,
+                    Ord,
+                    ::prost::Enumeration
+                )]
+                #[repr(i32)]
+                pub enum Comparison {
+                    /// Undefined comparison operator.
+                    Unspecified = 0,
+                    /// Denotes equality `=` operator.
+                    Equals = 1,
+                    /// Denotes less than or equal to `<=` operator.
+                    LessThanEquals = 2,
+                    /// Denotes less than `<` operator.
+                    LessThan = 3,
+                    /// Denotes greater than or equal to `>=` operator.
+                    GreaterThanEquals = 4,
+                    /// Denotes greater than `>` operator.
+                    GreaterThan = 5,
+                }
+                impl Comparison {
+                    /// String value of the enum field names used in the ProtoBuf definition.
+                    ///
+                    /// The values are not transformed in any way and thus are considered stable
+                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                    pub fn as_str_name(&self) -> &'static str {
+                        match self {
+                            Self::Unspecified => "COMPARISON_UNSPECIFIED",
+                            Self::Equals => "EQUALS",
+                            Self::LessThanEquals => "LESS_THAN_EQUALS",
+                            Self::LessThan => "LESS_THAN",
+                            Self::GreaterThanEquals => "GREATER_THAN_EQUALS",
+                            Self::GreaterThan => "GREATER_THAN",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "COMPARISON_UNSPECIFIED" => Some(Self::Unspecified),
+                            "EQUALS" => Some(Self::Equals),
+                            "LESS_THAN_EQUALS" => Some(Self::LessThanEquals),
+                            "LESS_THAN" => Some(Self::LessThan),
+                            "GREATER_THAN_EQUALS" => Some(Self::GreaterThanEquals),
+                            "GREATER_THAN" => Some(Self::GreaterThan),
+                            _ => None,
+                        }
+                    }
+                }
+            }
+            /// Constraint of a geolocation field.
+            /// Name of the geolocation field as defined in the schema.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct GeolocationConstraint {
+                /// The name of the geolocation field as defined in the schema.
+                #[prost(string, tag = "1")]
+                pub field_name: ::prost::alloc::string::String,
+                /// The reference address that was inferred from the input query. The
+                /// proximity of the reference address to the geolocation field will be
+                /// used to filter the results.
+                #[prost(string, tag = "2")]
+                pub address: ::prost::alloc::string::String,
+                /// The latitude of the geolocation inferred from the input query.
+                #[prost(double, tag = "4")]
+                pub latitude: f64,
+                /// The longitude of the geolocation inferred from the input query.
+                #[prost(double, tag = "5")]
+                pub longitude: f64,
+                /// The radius in meters around the address. The record is returned if
+                /// the location of the geolocation field is within the radius.
+                #[prost(float, tag = "3")]
+                pub radius_in_meters: f32,
+            }
+            /// Logical `And` operator.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct AndExpression {
+                /// The expressions that were ANDed together.
+                #[prost(message, repeated, tag = "1")]
+                pub expressions: ::prost::alloc::vec::Vec<Expression>,
+            }
+            /// Logical `Or` operator.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct OrExpression {
+                /// The expressions that were ORed together.
+                #[prost(message, repeated, tag = "1")]
+                pub expressions: ::prost::alloc::vec::Vec<Expression>,
+            }
+            /// The expression denoting the filter that was extracted from the input
+            /// query.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Expression {
+                /// The expression type.
+                #[prost(oneof = "expression::Expr", tags = "1, 2, 3, 4, 5")]
+                pub expr: ::core::option::Option<expression::Expr>,
+            }
+            /// Nested message and enum types in `Expression`.
+            pub mod expression {
+                /// The expression type.
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum Expr {
+                    /// String constraint expression.
+                    #[prost(message, tag = "1")]
+                    StringConstraint(super::StringConstraint),
+                    /// Numerical constraint expression.
+                    #[prost(message, tag = "2")]
+                    NumberConstraint(super::NumberConstraint),
+                    /// Geolocation constraint expression.
+                    #[prost(message, tag = "3")]
+                    GeolocationConstraint(super::GeolocationConstraint),
+                    /// Logical "And" compound operator connecting multiple expressions.
+                    #[prost(message, tag = "4")]
+                    AndExpr(super::AndExpression),
+                    /// Logical "Or" compound operator connecting multiple expressions.
+                    #[prost(message, tag = "5")]
+                    OrExpr(super::OrExpression),
+                }
+            }
+        }
+    }
     /// Information about the session.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SessionInfo {
@@ -3861,6 +4350,49 @@ pub mod search_response {
         /// this search call.
         #[prost(string, tag = "2")]
         pub query_id: ::prost::alloc::string::String,
+    }
+    /// Semantic state of the search response.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SemanticState {
+        /// Default value. Should not be used.
+        Unspecified = 0,
+        /// Semantic search was disabled for this search response.
+        Disabled = 1,
+        /// Semantic search was enabled for this search response.
+        Enabled = 2,
+    }
+    impl SemanticState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SEMANTIC_STATE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEMANTIC_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
     }
 }
 /// Generated client implementations.
@@ -9859,6 +10391,11 @@ pub struct DataStore {
     /// Optional. Configuration for advanced site search.
     #[prost(message, optional, tag = "12")]
     pub advanced_site_search_config: ::core::option::Option<AdvancedSiteSearchConfig>,
+    /// Optional. Configuration for Natural Language Query Understanding.
+    #[prost(message, optional, tag = "34")]
+    pub natural_language_query_understanding_config: ::core::option::Option<
+        NaturalLanguageQueryUnderstandingConfig,
+    >,
     /// Input only. The KMS key to be used to protect this DataStore at creation
     /// time.
     ///
@@ -10027,6 +10564,68 @@ pub struct AdvancedSiteSearchConfig {
     /// If set true, automatic refresh is disabled for the DataStore.
     #[prost(bool, optional, tag = "4")]
     pub disable_automatic_refresh: ::core::option::Option<bool>,
+}
+/// Configuration for Natural Language Query Understanding.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NaturalLanguageQueryUnderstandingConfig {
+    /// Mode of Natural Language Query Understanding. If this field is unset, the
+    /// behavior defaults to
+    /// \[NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED\]\[google.cloud.discoveryengine.v1.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED\].
+    #[prost(
+        enumeration = "natural_language_query_understanding_config::Mode",
+        tag = "1"
+    )]
+    pub mode: i32,
+}
+/// Nested message and enum types in `NaturalLanguageQueryUnderstandingConfig`.
+pub mod natural_language_query_understanding_config {
+    /// Mode of Natural Language Query Understanding. When the
+    /// NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the natural
+    /// language understanding capabilities will be enabled for a search request if
+    /// the NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition in the
+    /// SearchRequest is ENABLED.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value.
+        Unspecified = 0,
+        /// Natural Language Query Understanding is disabled.
+        Disabled = 1,
+        /// Natural Language Query Understanding is enabled.
+        Enabled = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
+    }
 }
 /// Config to store data store type configuration for workspace data
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

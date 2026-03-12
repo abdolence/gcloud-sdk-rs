@@ -594,11 +594,32 @@ pub mod crypto_key_version {
         /// datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/.
         KemXwing = 63,
         /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
+        /// security level 1. Randomized version.
+        PqSignMlDsa44 = 68,
+        /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
         /// security level 3. Randomized version.
         PqSignMlDsa65 = 56,
+        /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
+        /// security level 5. Randomized version.
+        PqSignMlDsa87 = 69,
         /// The post-quantum stateless hash-based digital signature algorithm, at
         /// security level 1. Randomized version.
         PqSignSlhDsaSha2128s = 57,
+        /// The post-quantum stateless hash-based digital signature algorithm, at
+        /// security level 1. Randomized pre-hash version supporting SHA256 digests.
+        PqSignHashSlhDsaSha2128sSha256 = 60,
+        /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
+        /// security level 1. Randomized version supporting externally-computed
+        /// message representatives.
+        PqSignMlDsa44ExternalMu = 70,
+        /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
+        /// security level 3. Randomized version supporting externally-computed
+        /// message representatives.
+        PqSignMlDsa65ExternalMu = 67,
+        /// The post-quantum Module-Lattice-Based Digital Signature Algorithm, at
+        /// security level 5. Randomized version supporting externally-computed
+        /// message representatives.
+        PqSignMlDsa87ExternalMu = 71,
     }
     impl CryptoKeyVersionAlgorithm {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -646,8 +667,16 @@ pub mod crypto_key_version {
                 Self::MlKem768 => "ML_KEM_768",
                 Self::MlKem1024 => "ML_KEM_1024",
                 Self::KemXwing => "KEM_XWING",
+                Self::PqSignMlDsa44 => "PQ_SIGN_ML_DSA_44",
                 Self::PqSignMlDsa65 => "PQ_SIGN_ML_DSA_65",
+                Self::PqSignMlDsa87 => "PQ_SIGN_ML_DSA_87",
                 Self::PqSignSlhDsaSha2128s => "PQ_SIGN_SLH_DSA_SHA2_128S",
+                Self::PqSignHashSlhDsaSha2128sSha256 => {
+                    "PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256"
+                }
+                Self::PqSignMlDsa44ExternalMu => "PQ_SIGN_ML_DSA_44_EXTERNAL_MU",
+                Self::PqSignMlDsa65ExternalMu => "PQ_SIGN_ML_DSA_65_EXTERNAL_MU",
+                Self::PqSignMlDsa87ExternalMu => "PQ_SIGN_ML_DSA_87_EXTERNAL_MU",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -694,8 +723,16 @@ pub mod crypto_key_version {
                 "ML_KEM_768" => Some(Self::MlKem768),
                 "ML_KEM_1024" => Some(Self::MlKem1024),
                 "KEM_XWING" => Some(Self::KemXwing),
+                "PQ_SIGN_ML_DSA_44" => Some(Self::PqSignMlDsa44),
                 "PQ_SIGN_ML_DSA_65" => Some(Self::PqSignMlDsa65),
+                "PQ_SIGN_ML_DSA_87" => Some(Self::PqSignMlDsa87),
                 "PQ_SIGN_SLH_DSA_SHA2_128S" => Some(Self::PqSignSlhDsaSha2128s),
+                "PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256" => {
+                    Some(Self::PqSignHashSlhDsaSha2128sSha256)
+                }
+                "PQ_SIGN_ML_DSA_44_EXTERNAL_MU" => Some(Self::PqSignMlDsa44ExternalMu),
+                "PQ_SIGN_ML_DSA_65_EXTERNAL_MU" => Some(Self::PqSignMlDsa65ExternalMu),
+                "PQ_SIGN_ML_DSA_87_EXTERNAL_MU" => Some(Self::PqSignMlDsa87ExternalMu),
                 _ => None,
             }
         }
@@ -1102,8 +1139,7 @@ pub struct ImportJob {
     /// operations are performed. Currently, this field is only populated for keys
     /// stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may
     /// apply to additional \[ProtectionLevels\]\[google.cloud.kms.v1.ProtectionLevel\]
-    /// in the future.
-    /// Supported resources:
+    /// in the future. Supported resources:
     ///
     /// * `"projects/*/locations/*/singleTenantHsmInstances/*"`
     #[prost(string, tag = "11")]
@@ -1300,6 +1336,30 @@ pub struct KeyAccessJustificationsPolicy {
     /// fail.
     #[prost(enumeration = "AccessReason", repeated, tag = "1")]
     pub allowed_access_reasons: ::prost::alloc::vec::Vec<i32>,
+}
+/// A RetiredResource resource represents the record of a deleted
+/// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. Its purpose is to provide
+/// visibility into retained user data and to prevent reuse of these names for
+/// new \[CryptoKeys\]\[google.cloud.kms.v1.CryptoKey\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetiredResource {
+    /// Output only. Identifier. The resource name for this
+    /// \[RetiredResource\]\[google.cloud.kms.v1.RetiredResource\] in the format
+    /// `projects/*/locations/*/retiredResources/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The full resource name of the original
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] that was deleted in the format
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, tag = "2")]
+    pub original_resource: ::prost::alloc::string::String,
+    /// Output only. The resource type of the original deleted resource.
+    #[prost(string, tag = "3")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Output only. The time at which the original resource was deleted and this
+    /// RetiredResource record was created.
+    #[prost(message, optional, tag = "4")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// \[ProtectionLevel\]\[google.cloud.kms.v1.ProtectionLevel\] specifies how
 /// cryptographic operations are performed. For more information, see \[Protection
@@ -1792,7 +1852,8 @@ pub struct UpdateAutokeyConfigRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutokeyConfigRequest {
     /// Required. Name of the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\]
-    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` or
+    /// `projects/{PROJECT_NUMBER}/autokeyConfig`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1800,7 +1861,8 @@ pub struct GetAutokeyConfigRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutokeyConfig {
     /// Identifier. Name of the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\]
-    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` or
+    /// `projects/{PROJECT_NUMBER}/autokeyConfig`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
@@ -1825,6 +1887,11 @@ pub struct AutokeyConfig {
     /// ABORTED error on a mismatched etag.
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. KeyProjectResolutionMode for the AutokeyConfig.
+    /// Valid values are `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, or
+    /// `DISABLED`.
+    #[prost(enumeration = "autokey_config::KeyProjectResolutionMode", tag = "8")]
+    pub key_project_resolution_mode: i32,
 }
 /// Nested message and enum types in `AutokeyConfig`.
 pub mod autokey_config {
@@ -1852,6 +1919,9 @@ pub mod autokey_config {
         /// The AutokeyConfig is not yet initialized or has been reset to its default
         /// uninitialized state.
         Uninitialized = 3,
+        /// The service account lacks the necessary permissions in the key project to
+        /// configure Autokey.
+        KeyProjectPermissionDenied = 4,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1864,6 +1934,7 @@ pub mod autokey_config {
                 Self::Active => "ACTIVE",
                 Self::KeyProjectDeleted => "KEY_PROJECT_DELETED",
                 Self::Uninitialized => "UNINITIALIZED",
+                Self::KeyProjectPermissionDenied => "KEY_PROJECT_PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1873,6 +1944,69 @@ pub mod autokey_config {
                 "ACTIVE" => Some(Self::Active),
                 "KEY_PROJECT_DELETED" => Some(Self::KeyProjectDeleted),
                 "UNINITIALIZED" => Some(Self::Uninitialized),
+                "KEY_PROJECT_PERMISSION_DENIED" => Some(Self::KeyProjectPermissionDenied),
+                _ => None,
+            }
+        }
+    }
+    /// Defines the resolution mode enum for the key project.
+    /// The
+    /// \[KeyProjectResolutionMode\]\[google.cloud.kms.v1.AutokeyConfig.KeyProjectResolutionMode\]
+    /// determines the mechanism by which
+    /// \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\] identifies a
+    /// \[key_project\]\[google.cloud.kms.v1.AutokeyConfig.key_project\] at its
+    /// specific configuration node. This parameter also determines if Autokey can
+    /// be used within this project or folder.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KeyProjectResolutionMode {
+        /// Default value. KeyProjectResolutionMode when not specified will act as
+        /// `DEDICATED_KEY_PROJECT`.
+        Unspecified = 0,
+        /// Keys are created in a dedicated project specified by `key_project`.
+        DedicatedKeyProject = 1,
+        /// Keys are created in the same project as the resource requesting the key.
+        /// The `key_project` must not be set when this mode is used.
+        ResourceProject = 2,
+        /// Disables the AutokeyConfig. When this mode is set, any AutokeyConfig
+        /// from higher levels in the resource hierarchy are ignored for this
+        /// resource and its descendants. This setting can be overridden
+        /// by a more specific configuration at a lower level. For example,
+        /// if Autokey is disabled on a folder, it can be re-enabled on a sub-folder
+        /// or project within that folder by setting a different mode (e.g.,
+        /// DEDICATED_KEY_PROJECT or RESOURCE_PROJECT).
+        Disabled = 3,
+    }
+    impl KeyProjectResolutionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED",
+                Self::DedicatedKeyProject => "DEDICATED_KEY_PROJECT",
+                Self::ResourceProject => "RESOURCE_PROJECT",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEDICATED_KEY_PROJECT" => Some(Self::DedicatedKeyProject),
+                "RESOURCE_PROJECT" => Some(Self::ResourceProject),
+                "DISABLED" => Some(Self::Disabled),
                 _ => None,
             }
         }
@@ -1909,13 +2043,15 @@ pub mod autokey_admin_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides interfaces for managing [Cloud KMS
-    /// Autokey](https://cloud.google.com/kms/help/autokey) folder-level
-    /// configurations. A configuration is inherited by all descendent projects. A
-    /// configuration at one folder overrides any other configurations in its
-    /// ancestry. Setting a configuration on a folder is a prerequisite for Cloud KMS
-    /// Autokey, so that users working in a descendant project can request
-    /// provisioned \[CryptoKeys\]\[google.cloud.kms.v1.CryptoKey\], ready for Customer
-    /// Managed Encryption Key (CMEK) use, on-demand.
+    /// Autokey](https://cloud.google.com/kms/help/autokey) folder-level or
+    /// project-level configurations. A configuration is inherited by all descendent
+    /// folders and projects. A configuration at a folder or project overrides any
+    /// other configurations in its ancestry. Setting a configuration on a folder is
+    /// a prerequisite for Cloud KMS Autokey, so that users working in a descendant
+    /// project can request provisioned \[CryptoKeys\]\[google.cloud.kms.v1.CryptoKey\],
+    /// ready for Customer Managed Encryption Key (CMEK) use, on-demand when using
+    /// the dedicated key project mode. This is not required when using the delegated
+    /// key management mode for same-project keys.
     #[derive(Debug, Clone)]
     pub struct AutokeyAdminClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1996,8 +2132,8 @@ pub mod autokey_admin_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Updates the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\] for a
-        /// folder. The caller must have both `cloudkms.autokeyConfigs.update`
+        /// Updates the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\] for a folder
+        /// or a project. The caller must have both `cloudkms.autokeyConfigs.update`
         /// permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy`
         /// permission on the provided key project. A
         /// \[KeyHandle\]\[google.cloud.kms.v1.KeyHandle\] creation in the folder's
@@ -2029,8 +2165,8 @@ pub mod autokey_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\] for a
-        /// folder.
+        /// Returns the \[AutokeyConfig\]\[google.cloud.kms.v1.AutokeyConfig\] for a folder
+        /// or project.
         pub async fn get_autokey_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAutokeyConfigRequest>,
@@ -4184,6 +4320,30 @@ pub struct ListImportJobsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
+/// Request message for
+/// \[KeyManagementService.ListRetiredResources\]\[google.cloud.kms.v1.KeyManagementService.ListRetiredResources\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRetiredResourcesRequest {
+    /// Required. The project-specific location holding the
+    /// \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\], in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Optional limit on the number of
+    /// \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\] to be included in
+    /// the response. Further
+    /// \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\] can subsequently be
+    /// obtained by including the
+    /// \[ListRetiredResourcesResponse.next_page_token\]\[google.cloud.kms.v1.ListRetiredResourcesResponse.next_page_token\]
+    /// in a subsequent request. If unspecified, the server will pick an
+    /// appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Optional pagination token, returned earlier via
+    /// \[ListRetiredResourcesResponse.next_page_token\]\[google.cloud.kms.v1.ListRetiredResourcesResponse.next_page_token\].
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
 /// Response message for
 /// \[KeyManagementService.ListKeyRings\]\[google.cloud.kms.v1.KeyManagementService.ListKeyRings\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4269,6 +4429,23 @@ pub struct ListImportJobsResponse {
     #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
+/// Response message for
+/// \[KeyManagementService.ListRetiredResources\]\[google.cloud.kms.v1.KeyManagementService.ListRetiredResources\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRetiredResourcesResponse {
+    /// The list of \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\].
+    #[prost(message, repeated, tag = "1")]
+    pub retired_resources: ::prost::alloc::vec::Vec<RetiredResource>,
+    /// A token to retrieve the next page of results. Pass this value in
+    /// \[ListRetiredResourcesRequest.page_token\]\[google.cloud.kms.v1.ListRetiredResourcesRequest.page_token\]
+    /// to retrieve the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The total number of \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\]
+    /// that matched the query.
+    #[prost(int64, tag = "3")]
+    pub total_size: i64,
+}
 /// Request message for
 /// \[KeyManagementService.GetKeyRing\]\[google.cloud.kms.v1.KeyManagementService.GetKeyRing\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4320,6 +4497,15 @@ pub struct GetPublicKeyRequest {
 pub struct GetImportJobRequest {
     /// Required. The \[name\]\[google.cloud.kms.v1.ImportJob.name\] of the
     /// \[ImportJob\]\[google.cloud.kms.v1.ImportJob\] to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[KeyManagementService.GetRetiredResource\]\[google.cloud.kms.v1.KeyManagementService.GetRetiredResource\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRetiredResourceRequest {
+    /// Required. The \[name\]\[google.cloud.kms.v1.RetiredResource.name\] of the
+    /// \[RetiredResource\]\[google.cloud.kms.v1.RetiredResource\] to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4381,6 +4567,24 @@ pub struct CreateCryptoKeyVersionRequest {
     /// initial field values.
     #[prost(message, optional, tag = "2")]
     pub crypto_key_version: ::core::option::Option<CryptoKeyVersion>,
+}
+/// Request message for
+/// \[KeyManagementService.DeleteCryptoKey\]\[google.cloud.kms.v1.KeyManagementService.DeleteCryptoKey\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCryptoKeyRequest {
+    /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKey.name\] of the
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[KeyManagementService.DeleteCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCryptoKeyVersionRequest {
+    /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKeyVersion.name\] of the
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[KeyManagementService.ImportCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion\].
@@ -5632,6 +5836,23 @@ pub struct LocationMetadata {
     #[prost(bool, tag = "3")]
     pub hsm_single_tenant_available: bool,
 }
+/// Represents the metadata of the
+/// \[KeyManagementService.DeleteCryptoKey\]\[google.cloud.kms.v1.KeyManagementService.DeleteCryptoKey\]
+/// long-running operation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCryptoKeyMetadata {
+    /// Output only. The resource name of the
+    /// \[RetiredResource\]\[google.cloud.kms.v1.RetiredResource\] created as a result
+    /// of this operation, in the format
+    /// `projects/*/locations/*/retiredResources/*`.
+    #[prost(string, tag = "1")]
+    pub retired_resource: ::prost::alloc::string::String,
+}
+/// Represents the metadata of the
+/// \[KeyManagementService.DeleteCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion\]
+/// long-running operation.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCryptoKeyVersionMetadata {}
 /// Generated client implementations.
 pub mod key_management_service_client {
     #![allow(
@@ -5855,6 +6076,38 @@ pub mod key_management_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists the \[RetiredResources\]\[google.cloud.kms.v1.RetiredResource\] which are
+        /// the records of deleted \[CryptoKeys\]\[google.cloud.kms.v1.CryptoKey\].
+        /// RetiredResources prevent the reuse of these resource names after deletion.
+        pub async fn list_retired_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRetiredResourcesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRetiredResourcesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/ListRetiredResources",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "ListRetiredResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Returns metadata for a given \[KeyRing\]\[google.cloud.kms.v1.KeyRing\].
         pub async fn get_key_ring(
             &mut self,
@@ -6001,6 +6254,38 @@ pub mod key_management_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Retrieves a specific \[RetiredResource\]\[google.cloud.kms.v1.RetiredResource\]
+        /// resource, which represents the record of a deleted
+        /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
+        pub async fn get_retired_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRetiredResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RetiredResource>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/GetRetiredResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "GetRetiredResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Create a new \[KeyRing\]\[google.cloud.kms.v1.KeyRing\] in a given Project and
         /// Location.
         pub async fn create_key_ring(
@@ -6092,6 +6377,81 @@ pub mod key_management_service_client {
                     GrpcMethod::new(
                         "google.cloud.kms.v1.KeyManagementService",
                         "CreateCryptoKeyVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes the given \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
+        /// All child \[CryptoKeyVersions\]\[google.cloud.kms.v1.CryptoKeyVersion\] must
+        /// have been previously deleted using
+        /// \[KeyManagementService.DeleteCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion\].
+        /// The specified crypto key will be immediately and permanently deleted upon
+        /// calling this method. This action cannot be undone.
+        pub async fn delete_crypto_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCryptoKeyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/DeleteCryptoKey",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "DeleteCryptoKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes the given
+        /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\]. Only possible if
+        /// the version has not been previously imported and if its
+        /// \[state\]\[google.cloud.kms.v1.CryptoKeyVersion.state\] is one of
+        /// \[DESTROYED\]\[CryptoKeyVersionState.DESTROYED\],
+        /// \[IMPORT_FAILED\]\[CryptoKeyVersionState.IMPORT_FAILED\], or
+        /// \[GENERATION_FAILED\]\[CryptoKeyVersionState.GENERATION_FAILED\].
+        /// Successfully imported
+        /// \[CryptoKeyVersions\]\[google.cloud.kms.v1.CryptoKeyVersion\] cannot be deleted
+        /// at this time. The specified version will be immediately and permanently
+        /// deleted upon calling this method. This action cannot be undone.
+        pub async fn delete_crypto_key_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCryptoKeyVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/DeleteCryptoKeyVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "DeleteCryptoKeyVersion",
                     ),
                 );
             self.inner.unary(req, path, codec).await

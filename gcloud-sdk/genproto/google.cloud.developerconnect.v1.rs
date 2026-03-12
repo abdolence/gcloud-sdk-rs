@@ -90,7 +90,10 @@ pub struct Connection {
     #[prost(message, optional, tag = "19")]
     pub git_proxy_config: ::core::option::Option<GitProxyConfig>,
     /// Configuration for the connection depending on the type of provider.
-    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 13, 14, 16, 17, 18")]
+    #[prost(
+        oneof = "connection::ConnectionConfig",
+        tags = "5, 13, 14, 16, 17, 18, 20, 21"
+    )]
     pub connection_config: ::core::option::Option<connection::ConnectionConfig>,
 }
 /// Nested message and enum types in `Connection`.
@@ -116,6 +119,12 @@ pub mod connection {
         /// Configuration for connections to an instance of Bitbucket Clouds.
         #[prost(message, tag = "18")]
         BitbucketCloudConfig(super::BitbucketCloudConfig),
+        /// Configuration for connections to an instance of Secure Source Manager.
+        #[prost(message, tag = "20")]
+        SecureSourceManagerInstanceConfig(super::SecureSourceManagerInstanceConfig),
+        /// Optional. Configuration for connections to an HTTP service provider.
+        #[prost(message, tag = "21")]
+        HttpConfig(super::GenericHttpEndpointConfig),
     }
 }
 /// The crypto key configuration. This field is used by the Customer-managed
@@ -129,12 +138,20 @@ pub struct CryptoKeyConfig {
     pub key_reference: ::prost::alloc::string::String,
 }
 /// The git proxy configuration.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitProxyConfig {
     /// Optional. Setting this to true allows the git proxy to be used for
     /// performing git operations on the repositories linked in the connection.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+    /// Output only. The base URI for the HTTP proxy endpoint. Has
+    /// the format
+    /// `<https://{generatedID}-c-h-{shortRegion}.developerconnect.dev`>
+    /// Populated only when enabled is set to true.
+    /// This endpoint is used by other Google services that integrate with
+    /// Developer Connect.
+    #[prost(string, tag = "2")]
+    pub http_proxy_base_uri: ::prost::alloc::string::String,
 }
 /// Describes stage and necessary actions to be taken by the
 /// user to complete the installation. Used for GitHub and GitHub Enterprise
@@ -208,6 +225,81 @@ pub mod installation_state {
         }
     }
 }
+/// Defines the configuration for connections to an HTTP service provider.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenericHttpEndpointConfig {
+    /// Required. Immutable. The service provider's https endpoint.
+    #[prost(string, tag = "3")]
+    pub host_uri: ::prost::alloc::string::String,
+    /// Optional. Configuration for using Service Directory to privately connect to
+    /// a HTTP service provider. This should only be set if the Http service
+    /// provider is hosted on-premises and not reachable by public internet. If
+    /// this field is left empty, calls to the HTTP service provider will be made
+    /// over the public internet.
+    #[prost(message, optional, tag = "4")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// Optional. The SSL certificate to use for requests to the HTTP service
+    /// provider.
+    #[prost(string, tag = "5")]
+    pub ssl_ca_certificate: ::prost::alloc::string::String,
+    /// The authentication mechanism to use for requests to the HTTP service
+    /// provider.
+    #[prost(oneof = "generic_http_endpoint_config::Authentication", tags = "1, 2")]
+    pub authentication: ::core::option::Option<
+        generic_http_endpoint_config::Authentication,
+    >,
+}
+/// Nested message and enum types in `GenericHTTPEndpointConfig`.
+pub mod generic_http_endpoint_config {
+    /// Basic authentication with username and password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BasicAuthentication {
+        /// Required. The username to authenticate as.
+        #[prost(string, tag = "1")]
+        pub username: ::prost::alloc::string::String,
+        /// The password to authenticate as.
+        #[prost(oneof = "basic_authentication::Password", tags = "2")]
+        pub password: ::core::option::Option<basic_authentication::Password>,
+    }
+    /// Nested message and enum types in `BasicAuthentication`.
+    pub mod basic_authentication {
+        /// The password to authenticate as.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Password {
+            /// The password SecretManager secret version to authenticate as.
+            #[prost(string, tag = "2")]
+            PasswordSecretVersion(::prost::alloc::string::String),
+        }
+    }
+    /// Bearer token authentication with a token.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BearerTokenAuthentication {
+        /// The token to authenticate as.
+        #[prost(oneof = "bearer_token_authentication::Token", tags = "1")]
+        pub token: ::core::option::Option<bearer_token_authentication::Token>,
+    }
+    /// Nested message and enum types in `BearerTokenAuthentication`.
+    pub mod bearer_token_authentication {
+        /// The token to authenticate as.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Token {
+            /// Optional. The token SecretManager secret version to authenticate as.
+            #[prost(string, tag = "1")]
+            TokenSecretVersion(::prost::alloc::string::String),
+        }
+    }
+    /// The authentication mechanism to use for requests to the HTTP service
+    /// provider.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Authentication {
+        /// Optional. Basic authentication with username and password.
+        #[prost(message, tag = "1")]
+        BasicAuthentication(BasicAuthentication),
+        /// Optional. Bearer token authentication with a token.
+        #[prost(message, tag = "2")]
+        BearerTokenAuthentication(BearerTokenAuthentication),
+    }
+}
 /// Configuration for connections to github.com.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitHubConfig {
@@ -251,6 +343,8 @@ pub mod git_hub_config {
         DeveloperConnect = 1,
         /// The Firebase GitHub Application.
         Firebase = 2,
+        /// The Gemini Code Assist Application.
+        GeminiCodeAssist = 3,
     }
     impl GitHubApp {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -262,6 +356,7 @@ pub mod git_hub_config {
                 Self::Unspecified => "GIT_HUB_APP_UNSPECIFIED",
                 Self::DeveloperConnect => "DEVELOPER_CONNECT",
                 Self::Firebase => "FIREBASE",
+                Self::GeminiCodeAssist => "GEMINI_CODE_ASSIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -270,6 +365,7 @@ pub mod git_hub_config {
                 "GIT_HUB_APP_UNSPECIFIED" => Some(Self::Unspecified),
                 "DEVELOPER_CONNECT" => Some(Self::DeveloperConnect),
                 "FIREBASE" => Some(Self::Firebase),
+                "GEMINI_CODE_ASSIST" => Some(Self::GeminiCodeAssist),
                 _ => None,
             }
         }
@@ -288,11 +384,15 @@ pub struct GitHubEnterpriseConfig {
     #[prost(string, tag = "3")]
     pub app_slug: ::prost::alloc::string::String,
     /// Optional. SecretManager resource containing the private key of the GitHub
-    /// App, formatted as `projects/*/secrets/*/versions/*`.
+    /// App, formatted as `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location).
     #[prost(string, tag = "4")]
     pub private_key_secret_version: ::prost::alloc::string::String,
     /// Optional. SecretManager resource containing the webhook secret of the
-    /// GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+    /// GitHub App, formatted as `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location).
     #[prost(string, tag = "5")]
     pub webhook_secret_secret_version: ::prost::alloc::string::String,
     /// Optional. ID of the installation of the GitHub App.
@@ -315,6 +415,10 @@ pub struct GitHubEnterpriseConfig {
     /// Optional. SSL certificate to use for requests to GitHub Enterprise.
     #[prost(string, tag = "14")]
     pub ssl_ca_certificate: ::prost::alloc::string::String,
+    /// Optional. Immutable. GitHub Enterprise organization in which the GitHub App
+    /// is created.
+    #[prost(string, tag = "15")]
+    pub organization: ::prost::alloc::string::String,
 }
 /// ServiceDirectoryConfig represents Service Directory configuration for a
 /// connection.
@@ -331,7 +435,9 @@ pub struct ServiceDirectoryConfig {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OAuthCredential {
     /// Required. A SecretManager resource containing the OAuth token that
-    /// authorizes the connection. Format: `projects/*/secrets/*/versions/*`.
+    /// authorizes the connection. Format: `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location).
     #[prost(string, tag = "1")]
     pub oauth_token_secret_version: ::prost::alloc::string::String,
     /// Output only. The username associated with this token.
@@ -342,8 +448,9 @@ pub struct OAuthCredential {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitLabConfig {
     /// Required. Immutable. SecretManager resource containing the webhook secret
-    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
-    /// is used to validate webhooks.
+    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location). This is used to validate webhooks.
     #[prost(string, tag = "1")]
     pub webhook_secret_secret_version: ::prost::alloc::string::String,
     /// Required. A GitLab personal access token with the minimum `read_api` scope
@@ -365,7 +472,9 @@ pub struct GitLabConfig {
 pub struct UserCredential {
     /// Required. A SecretManager resource containing the user token that
     /// authorizes the Developer Connect connection. Format:
-    /// `projects/*/secrets/*/versions/*`.
+    /// `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location).
     #[prost(string, tag = "1")]
     pub user_token_secret_version: ::prost::alloc::string::String,
     /// Output only. The username associated with this token.
@@ -379,8 +488,9 @@ pub struct GitLabEnterpriseConfig {
     #[prost(string, tag = "1")]
     pub host_uri: ::prost::alloc::string::String,
     /// Required. Immutable. SecretManager resource containing the webhook secret
-    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
-    /// is used to validate webhooks.
+    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location). This is used to validate webhooks.
     #[prost(string, tag = "2")]
     pub webhook_secret_secret_version: ::prost::alloc::string::String,
     /// Required. A GitLab personal access token with the minimum `read_api` scope
@@ -419,7 +529,9 @@ pub struct BitbucketDataCenterConfig {
     pub host_uri: ::prost::alloc::string::String,
     /// Required. Immutable. SecretManager resource containing the webhook secret
     /// used to verify webhook events, formatted as
-    /// `projects/*/secrets/*/versions/*`. This is used to validate webhooks.
+    /// `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location). This is used to validate webhooks.
     #[prost(string, tag = "2")]
     pub webhook_secret_secret_version: ::prost::alloc::string::String,
     /// Required. An http access token with the minimum `Repository read` access.
@@ -456,8 +568,9 @@ pub struct BitbucketCloudConfig {
     pub workspace: ::prost::alloc::string::String,
     /// Required. Immutable. SecretManager resource containing the webhook secret
     /// used to verify webhook events, formatted as
-    /// `projects/*/secrets/*/versions/*`. This is used to validate and create
-    /// webhooks.
+    /// `projects/*/secrets/*/versions/*` or
+    /// `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+    /// supported in that location). This is used to validate and create webhooks.
     #[prost(string, tag = "2")]
     pub webhook_secret_secret_version: ::prost::alloc::string::String,
     /// Required. An access token with the minimum `repository` access.
@@ -471,6 +584,14 @@ pub struct BitbucketCloudConfig {
     /// system account to generate these credentials.
     #[prost(message, optional, tag = "4")]
     pub authorizer_credential: ::core::option::Option<UserCredential>,
+}
+/// Configuration for connections to Secure Source Manager instance
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SecureSourceManagerInstanceConfig {
+    /// Required. Immutable. Secure Source Manager instance resource, formatted as
+    /// `projects/*/locations/*/instances/*`
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Connections
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -853,6 +974,106 @@ pub struct FetchAccessTokenResponse {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The error resulted from exchanging OAuth tokens from the service provider.
     #[prost(message, optional, tag = "4")]
+    pub exchange_error: ::core::option::Option<ExchangeError>,
+}
+/// Message for starting an OAuth flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartOAuthRequest {
+    /// Required. The resource name of the AccountConnector in the format
+    /// `projects/*/locations/*/accountConnectors/*`.
+    #[prost(string, tag = "1")]
+    pub account_connector: ::prost::alloc::string::String,
+}
+/// Message for responding to starting an OAuth flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartOAuthResponse {
+    /// The ticket to be used for post processing the callback from the service
+    /// provider.
+    #[prost(string, tag = "1")]
+    pub ticket: ::prost::alloc::string::String,
+    /// Please refer to <https://datatracker.ietf.org/doc/html/rfc7636#section-4.1>
+    #[prost(string, tag = "2")]
+    pub code_challenge: ::prost::alloc::string::String,
+    /// Please refer to <https://datatracker.ietf.org/doc/html/rfc7636#section-4.2>
+    #[prost(string, tag = "3")]
+    pub code_challenge_method: ::prost::alloc::string::String,
+    /// The client ID to the OAuth App of the service provider.
+    #[prost(string, tag = "4")]
+    pub client_id: ::prost::alloc::string::String,
+    /// The list of scopes requested by the application.
+    #[prost(string, repeated, tag = "5")]
+    pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The authorization server URL to the OAuth flow of the service provider.
+    #[prost(string, tag = "6")]
+    pub auth_uri: ::prost::alloc::string::String,
+    /// The ID of the service provider.
+    #[prost(oneof = "start_o_auth_response::Id", tags = "7")]
+    pub id: ::core::option::Option<start_o_auth_response::Id>,
+}
+/// Nested message and enum types in `StartOAuthResponse`.
+pub mod start_o_auth_response {
+    /// The ID of the service provider.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Id {
+        /// The ID of the system provider.
+        #[prost(enumeration = "super::SystemProvider", tag = "7")]
+        SystemProviderId(i32),
+    }
+}
+/// Message for finishing an OAuth flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FinishOAuthRequest {
+    /// Required. The resource name of the AccountConnector in the format
+    /// `projects/*/locations/*/accountConnectors/*`.
+    #[prost(string, tag = "1")]
+    pub account_connector: ::prost::alloc::string::String,
+    /// The params returned by OAuth flow redirect.
+    #[prost(oneof = "finish_o_auth_request::Params", tags = "2, 3")]
+    pub params: ::core::option::Option<finish_o_auth_request::Params>,
+}
+/// Nested message and enum types in `FinishOAuthRequest`.
+pub mod finish_o_auth_request {
+    /// The params returned by non-Google OAuth 2.0 flow redirect.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OAuthParams {
+        /// Required. The code to be used for getting the token from SCM provider.
+        #[prost(string, tag = "1")]
+        pub code: ::prost::alloc::string::String,
+        /// Required. The ticket to be used for post processing the callback from SCM
+        /// provider.
+        #[prost(string, tag = "2")]
+        pub ticket: ::prost::alloc::string::String,
+    }
+    /// The params returned by Google OAuth flow redirects.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GoogleOAuthParams {
+        /// Required. The scopes returned by Google OAuth flow.
+        #[prost(string, repeated, tag = "1")]
+        pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The version info returned by Google OAuth flow.
+        #[prost(string, tag = "2")]
+        pub version_info: ::prost::alloc::string::String,
+        /// Required. The ticket to be used for post processing the callback from
+        /// Google OAuth flow.
+        #[prost(string, tag = "3")]
+        pub ticket: ::prost::alloc::string::String,
+    }
+    /// The params returned by OAuth flow redirect.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Params {
+        /// The params returned by non-Google OAuth 2.0 flow redirect.
+        #[prost(message, tag = "2")]
+        OauthParams(OAuthParams),
+        /// The params returned by Google OAuth flow redirects.
+        #[prost(message, tag = "3")]
+        GoogleOauthParams(GoogleOAuthParams),
+    }
+}
+/// Message for responding to finishing an OAuth flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FinishOAuthResponse {
+    /// The error resulted from exchanging OAuth tokens from the service provider.
+    #[prost(message, optional, tag = "1")]
     pub exchange_error: ::core::option::Option<ExchangeError>,
 }
 /// Message for representing an error from exchanging OAuth tokens.
@@ -1254,7 +1475,7 @@ pub mod account_connector {
     /// The AccountConnector config.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AccountConnectorConfig {
-        /// Provider OAuth config.
+        /// Optional. Provider OAuth config.
         #[prost(message, tag = "5")]
         ProviderOauthConfig(super::ProviderOAuthConfig),
     }
@@ -1299,7 +1520,7 @@ pub mod provider_o_auth_config {
     /// provided.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OauthProviderId {
-        /// Immutable. Developer Connect provided OAuth.
+        /// Optional. Immutable. Developer Connect provided OAuth.
         #[prost(enumeration = "super::SystemProvider", tag = "1")]
         SystemProviderId(i32),
     }
@@ -1615,8 +1836,9 @@ pub mod developer_connect_client {
         /// Creates a GitRepositoryLink. Upon linking a Git Repository, Developer
         /// Connect will configure the Git Repository to send webhook events to
         /// Developer Connect. Connections that use Firebase GitHub Application will
-        /// have events forwarded to the Firebase service. All other Connections will
-        /// have events forwarded to Cloud Build.
+        /// have events forwarded to the Firebase service. Connections that use Gemini
+        /// Code Assist will have events forwarded to Gemini Code Assist service. All
+        /// other Connections will have events forwarded to Cloud Build.
         pub async fn create_git_repository_link(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGitRepositoryLinkRequest>,
@@ -2187,11 +2409,71 @@ pub mod developer_connect_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Starts OAuth flow for an account connector.
+        pub async fn start_o_auth(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartOAuthRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::StartOAuthResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/StartOAuth",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "StartOAuth",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Finishes OAuth flow for an account connector.
+        pub async fn finish_o_auth(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FinishOAuthRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FinishOAuthResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/FinishOAuth",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "FinishOAuth",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// The InsightsConfig resource is the core configuration object to capture
 /// events from your Software Development Lifecycle. It acts as the central hub
-/// for managing how Developer connect understands your application, its runtime
+/// for managing how Developer Connect understands your application, its runtime
 /// environments, and the artifacts deployed within them.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightsConfig {
@@ -2200,10 +2482,10 @@ pub struct InsightsConfig {
     /// projects/{project}/locations/{location}/insightsConfigs/{insightsConfig}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. \[Output only\] Create timestamp
+    /// Output only. Create timestamp.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. \[Output only\] Update timestamp
+    /// Output only. Update timestamp.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The runtime configurations where the application is deployed.
@@ -2243,7 +2525,7 @@ pub struct InsightsConfig {
     #[prost(message, repeated, tag = "11")]
     pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// The context of the InsightsConfig.
-    #[prost(oneof = "insights_config::InsightsConfigContext", tags = "4")]
+    #[prost(oneof = "insights_config::InsightsConfigContext", tags = "4, 12")]
     pub insights_config_context: ::core::option::Option<
         insights_config::InsightsConfigContext,
     >,
@@ -2305,7 +2587,18 @@ pub mod insights_config {
         /// projects/{project}/locations/{location}/applications/{application}
         #[prost(string, tag = "4")]
         AppHubApplication(::prost::alloc::string::String),
+        /// Optional. The projects to track with the InsightsConfig.
+        #[prost(message, tag = "12")]
+        Projects(super::Projects),
     }
+}
+/// Projects represents the projects to track with the InsightsConfig.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Projects {
+    /// Optional. The project IDs.
+    /// Format: {project}
+    #[prost(string, repeated, tag = "1")]
+    pub project_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// RuntimeConfig represents the runtimes where the application is
 /// deployed.
@@ -2320,10 +2613,10 @@ pub struct RuntimeConfig {
     #[prost(enumeration = "runtime_config::State", tag = "2")]
     pub state: i32,
     /// The type of the runtime.
-    #[prost(oneof = "runtime_config::Runtime", tags = "3")]
+    #[prost(oneof = "runtime_config::Runtime", tags = "3, 5")]
     pub runtime: ::core::option::Option<runtime_config::Runtime>,
     /// Where the runtime is derived from.
-    #[prost(oneof = "runtime_config::DerivedFrom", tags = "4")]
+    #[prost(oneof = "runtime_config::DerivedFrom", tags = "4, 6")]
     pub derived_from: ::core::option::Option<runtime_config::DerivedFrom>,
 }
 /// Nested message and enum types in `RuntimeConfig`.
@@ -2378,6 +2671,9 @@ pub mod runtime_config {
         /// Output only. Google Kubernetes Engine runtime.
         #[prost(message, tag = "3")]
         GkeWorkload(super::GkeWorkload),
+        /// Output only. Cloud Run runtime.
+        #[prost(message, tag = "5")]
+        GoogleCloudRun(super::GoogleCloudRun),
     }
     /// Where the runtime is derived from.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -2385,6 +2681,9 @@ pub mod runtime_config {
         /// Output only. App Hub Workload.
         #[prost(message, tag = "4")]
         AppHubWorkload(super::AppHubWorkload),
+        /// Output only. App Hub Service.
+        #[prost(message, tag = "6")]
+        AppHubService(super::AppHubService),
     }
 }
 /// GKEWorkload represents the Google Kubernetes Engine runtime.
@@ -2401,6 +2700,15 @@ pub struct GkeWorkload {
     #[prost(string, tag = "2")]
     pub deployment: ::prost::alloc::string::String,
 }
+/// GoogleCloudRun represents the Cloud Run runtime.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudRun {
+    /// Required. Immutable. The name of the Cloud Run service.
+    /// Format:
+    /// `projects/{project}/locations/{location}/services/{service}`.
+    #[prost(string, tag = "1")]
+    pub service_uri: ::prost::alloc::string::String,
+}
 /// AppHubWorkload represents the App Hub Workload.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppHubWorkload {
@@ -2413,6 +2721,21 @@ pub struct AppHubWorkload {
     #[prost(string, tag = "2")]
     pub criticality: ::prost::alloc::string::String,
     /// Output only. The environment of the App Hub Workload.
+    #[prost(string, tag = "3")]
+    pub environment: ::prost::alloc::string::String,
+}
+/// AppHubService represents the App Hub Service.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AppHubService {
+    /// Required. Output only. Immutable. The name of the App Hub Service.
+    /// Format:
+    /// `projects/{project}/locations/{location}/applications/{application}/services/{service}`.
+    #[prost(string, tag = "1")]
+    pub apphub_service: ::prost::alloc::string::String,
+    /// Output only. The criticality of the App Hub Service.
+    #[prost(string, tag = "2")]
+    pub criticality: ::prost::alloc::string::String,
+    /// Output only. The environment of the App Hub Service.
     #[prost(string, tag = "3")]
     pub environment: ::prost::alloc::string::String,
 }
@@ -2439,7 +2762,7 @@ pub mod artifact_config {
     /// The storage location of the artifact.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ArtifactStorage {
-        /// Optional. Set if the artifact is stored in Artifact regsitry.
+        /// Optional. Set if the artifact is stored in Artifact registry.
         #[prost(message, tag = "2")]
         GoogleArtifactRegistry(super::GoogleArtifactRegistry),
     }
@@ -2467,6 +2790,174 @@ pub struct GoogleArtifactRegistry {
     /// Required. Immutable. The name of the artifact registry package.
     #[prost(string, tag = "2")]
     pub artifact_registry_package: ::prost::alloc::string::String,
+}
+/// The DeploymentEvent resource represents the deployment of the artifact within
+/// the InsightsConfig resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeploymentEvent {
+    /// Identifier. The name of the DeploymentEvent. This name is provided by
+    /// Developer Connect insights. Format:
+    /// projects/{project}/locations/{location}/insightsConfigs/{insights_config}/deploymentEvents/{uuid}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The create time of the DeploymentEvent.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update time of the DeploymentEvent.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The runtime configurations where the DeploymentEvent happened.
+    #[prost(message, optional, tag = "8")]
+    pub runtime_config: ::core::option::Option<RuntimeConfig>,
+    /// Output only. The runtime assigned URI of the DeploymentEvent.
+    /// For GKE, this is the fully qualified replica set uri.
+    /// e.g.
+    /// container.googleapis.com/projects/{project}/locations/{location}/clusters/{cluster}/k8s/namespaces/{namespace}/apps/replicasets/{replica-set-id}
+    /// For Cloud Run, this is the revision name.
+    #[prost(string, tag = "14")]
+    pub runtime_deployment_uri: ::prost::alloc::string::String,
+    /// Output only. The state of the DeploymentEvent.
+    #[prost(enumeration = "deployment_event::State", tag = "11")]
+    pub state: i32,
+    /// Output only. The artifact deployments of the DeploymentEvent. Each artifact
+    /// deployment contains the artifact uri and the runtime configuration uri. For
+    /// GKE, this would be all the containers images that are deployed in the pod.
+    #[prost(message, repeated, tag = "9")]
+    pub artifact_deployments: ::prost::alloc::vec::Vec<ArtifactDeployment>,
+    /// Output only. The time at which the DeploymentEvent was deployed.
+    /// This would be the min of all ArtifactDeployment deploy_times.
+    #[prost(message, optional, tag = "10")]
+    pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the DeploymentEvent was undeployed, all
+    /// artifacts are considered undeployed once this time is set. This would be
+    /// the max of all ArtifactDeployment undeploy_times. If any ArtifactDeployment
+    /// is still active (i.e. does not have an undeploy_time), this field will be
+    /// empty.
+    #[prost(message, optional, tag = "12")]
+    pub undeploy_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `DeploymentEvent`.
+pub mod deployment_event {
+    /// The state of the DeploymentEvent.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// No state specified.
+        Unspecified = 0,
+        /// The deployment is active in the runtime.
+        Active = 1,
+        /// The deployment is not in the runtime.
+        Inactive = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "STATE_ACTIVE",
+                Self::Inactive => "STATE_INACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATE_ACTIVE" => Some(Self::Active),
+                "STATE_INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for getting a DeploymentEvent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDeploymentEventRequest {
+    /// Required. The name of the deployment event to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/insightsConfigs/{insights_config}/deploymentEvents/{uuid}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for requesting list of DeploymentEvents.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDeploymentEventsRequest {
+    /// Required. The parent insights config that owns this collection of
+    /// deployment events. Format:
+    /// projects/{project}/locations/{location}/insightsConfigs/{insights_config}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of deployment events to return. The service
+    /// may return fewer than this value. If unspecified, at most 50 deployment
+    /// events will be returned. The maximum value is 1000; values above 1000 will
+    /// be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListDeploymentEvents`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListDeploymentEvents`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression that matches a subset of the DeploymentEvents.
+    /// <https://google.aip.dev/160.>
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response to listing DeploymentEvents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeploymentEventsResponse {
+    /// The list of DeploymentEvents.
+    #[prost(message, repeated, tag = "1")]
+    pub deployment_events: ::prost::alloc::vec::Vec<DeploymentEvent>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The ArtifactDeployment resource represents the deployment of the artifact
+/// within the InsightsConfig resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ArtifactDeployment {
+    /// Output only. Unique identifier of `ArtifactDeployment`.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. The artifact that is deployed.
+    #[prost(string, tag = "2")]
+    pub artifact_reference: ::prost::alloc::string::String,
+    /// Output only. The artifact alias in the deployment spec, with Tag/SHA.
+    /// e.g. us-docker.pkg.dev/my-project/my-repo/image:1.0.0
+    #[prost(string, tag = "10")]
+    pub artifact_alias: ::prost::alloc::string::String,
+    /// Output only. The source commits at which this artifact was built. Extracted
+    /// from provenance.
+    #[prost(string, repeated, tag = "6")]
+    pub source_commit_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The time at which the deployment was deployed.
+    #[prost(message, optional, tag = "4")]
+    pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the deployment was undeployed, all artifacts
+    /// are considered undeployed once this time is set.
+    #[prost(message, optional, tag = "5")]
+    pub undeploy_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The summary of container status of the artifact deployment.
+    /// Format as `ContainerStatusState-Reason : restartCount`
+    /// e.g. "Waiting-ImagePullBackOff : 3"
+    #[prost(string, tag = "7")]
+    pub container_status_summary: ::prost::alloc::string::String,
 }
 /// Request for creating an InsightsConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2604,7 +3095,7 @@ pub mod insights_config_service_client {
     ///
     /// The InsightsConfig resource is the core configuration object to capture
     /// events from your Software Development Lifecycle. It acts as the central hub
-    /// for managing how Developer connect understands your application, its runtime
+    /// for managing how Developer Connect understands your application, its runtime
     /// environments, and the artifacts deployed within them.
     /// A user can create an InsightsConfig, list previously-requested
     /// InsightsConfigs or get InsightsConfigs by their ID to determine the status of
@@ -2806,7 +3297,7 @@ pub mod insights_config_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Delete a single Insight.
+        /// Deletes a single Insight.
         pub async fn delete_insights_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInsightsConfigRequest>,
@@ -2832,6 +3323,66 @@ pub mod insights_config_service_client {
                     GrpcMethod::new(
                         "google.cloud.developerconnect.v1.InsightsConfigService",
                         "DeleteInsightsConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a single Deployment Event.
+        pub async fn get_deployment_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDeploymentEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DeploymentEvent>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.developerconnect.v1.InsightsConfigService/GetDeploymentEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "GetDeploymentEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Deployment Events in a given insights config.
+        pub async fn list_deployment_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDeploymentEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDeploymentEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.developerconnect.v1.InsightsConfigService/ListDeploymentEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "ListDeploymentEvents",
                     ),
                 );
             self.inner.unary(req, path, codec).await

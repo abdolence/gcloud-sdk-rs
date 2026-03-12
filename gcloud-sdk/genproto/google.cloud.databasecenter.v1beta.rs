@@ -61,7 +61,7 @@ pub struct MaintenanceInfo {
     pub deny_maintenance_schedules: ::prost::alloc::vec::Vec<
         ResourceMaintenanceDenySchedule,
     >,
-    /// Optional. Current Maintenance version of the database resource. Example:
+    /// Output only. Current Maintenance version of the database resource. Example:
     /// "MYSQL_8_0_41.R20250531.01_15"
     #[prost(string, tag = "3")]
     pub maintenance_version: ::prost::alloc::string::String,
@@ -341,23 +341,23 @@ pub enum ProductType {
     /// PRODUCT_TYPE_UNSPECIFIED means product type is not known or that the user
     /// didn't provide this field in the request.
     Unspecified = 0,
-    /// Cloud SQL product area in GCP
+    /// Cloud SQL product area in Google Cloud
     CloudSql = 1,
-    /// AlloyDB product area in GCP
+    /// AlloyDB product area in Google Cloud
     Alloydb = 2,
-    /// Spanner product area in GCP
+    /// Spanner product area in Google Cloud
     Spanner = 3,
-    /// Bigtable product area in GCP
+    /// Bigtable product area in Google Cloud
     Bigtable = 6,
-    /// Memorystore product area in GCP
+    /// Memorystore product area in Google Cloud
     Memorystore = 7,
-    /// Firestore product area in GCP
+    /// Firestore product area in Google Cloud
     Firestore = 8,
     /// Compute Engine self managed databases
     ComputeEngine = 9,
-    /// Oracle product area in GCP
+    /// Oracle product area in Google Cloud
     OracleOnGcp = 10,
-    /// BigQuery product area in GCP
+    /// BigQuery product area in Google Cloud
     Bigquery = 11,
     /// Other refers to rest of other product type. This is to be when product type
     /// is known, but it is not present in this enum.
@@ -628,8 +628,8 @@ pub struct SubResource {
     /// OPTIONAL
     #[prost(message, optional, tag = "3")]
     pub product: ::core::option::Option<Product>,
-    /// Specifies where the resource is created. For GCP, it is the full name of
-    /// the project.
+    /// Specifies where the resource is created. For Google Cloud resources, it is
+    /// the full name of the project.
     #[prost(string, tag = "4")]
     pub container: ::prost::alloc::string::String,
 }
@@ -1031,15 +1031,15 @@ pub enum SignalType {
     /// Represents if the last backup of a resource is older than some threshold
     /// value.
     LastBackupOld = 7,
-    /// Represents if a resource violates CIS GCP Foundation 2.0.
+    /// Represents if a resource violates CIS Google Cloud Platform Foundation 2.0.
     ViolatesCisGcpFoundation20 = 8,
-    /// Represents if a resource violates CIS GCP Foundation 1.3.
+    /// Represents if a resource violates CIS Google Cloud Platform Foundation 1.3.
     ViolatesCisGcpFoundation13 = 9,
-    /// Represents if a resource violates CIS GCP Foundation 1.2.
+    /// Represents if a resource violates CIS Google Cloud Platform Foundation 1.2.
     ViolatesCisGcpFoundation12 = 10,
-    /// Represents if a resource violates CIS GCP Foundation 1.1.
+    /// Represents if a resource violates CIS Google Cloud Platform Foundation 1.1.
     ViolatesCisGcpFoundation11 = 11,
-    /// Represents if a resource violates CIS GCP Foundation 1.0.
+    /// Represents if a resource violates CIS Google Cloud Platform Foundation 1.0.
     ViolatesCisGcpFoundation10 = 12,
     /// Represents if a resource violates CIS Controls 8.0.
     ViolatesCisControlsV80 = 76,
@@ -1712,12 +1712,11 @@ pub struct QueryDatabaseResourceGroupsRequest {
     /// expression, parentheses must be appropriately used to group the
     /// combinations.
     ///
-    /// Example: location="us-east1"
-    /// Example: container="projects/123" OR container="projects/456"
-    /// Example: (container="projects/123" OR
-    /// container="projects/456") AND location="us-east1"
-    /// Example: full_resource_name=<sub>"test"
-    /// Example: full_resource_name=</sub>"test.\*master"
+    /// Example: `location="us-east1"`
+    /// Example: `container="projects/123" OR container="projects/456"`
+    /// Example: `(container="projects/123" OR            container="projects/456") AND location="us-east1"`
+    /// Example: `full_resource_name=~"test"`
+    /// Example: `full_resource_name=~"test.*master"`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Groups of signal types that are requested.
@@ -1762,12 +1761,13 @@ pub struct QueryDatabaseResourceGroupsRequest {
     /// order. It only supports a single field at a time.
     ///
     /// For example:
-    /// order_by = "full_resource_name" sorts response in ascending order
-    /// order_by = "full_resource_name DESC" sorts response in descending order
-    /// order_by = "issue_count DESC" sorts response in descending order of
+    /// `order_by = "full_resource_name"` sorts response in ascending order
+    /// `order_by = "full_resource_name DESC"` sorts response in descending order
+    /// `order_by = "issue_count DESC"` sorts response in descending order of
     /// count of all issues associated with a resource.
     ///
-    /// More explicitly, order_by = "full_resource_name, product" is not supported.
+    /// More explicitly, `order_by = "full_resource_name, product"` is not
+    /// supported.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
     /// Optional. If unspecified, at most 50 resource groups will be returned.
@@ -1815,7 +1815,6 @@ pub struct DatabaseResourceGroup {
 }
 /// DatabaseResource represents every individually configured database unit
 /// representing compute and/or storage.
-/// NextId: 20
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseResource {
     /// List of children associated with a database group.
@@ -1833,16 +1832,17 @@ pub struct DatabaseResource {
     /// `//alloydb.googleapis.com/projects/project-number/locations/us-central1/clusters/c1/instances/i1`
     #[prost(string, tag = "3")]
     pub full_resource_name: ::prost::alloc::string::String,
-    /// Specifies where the resource is created. For GCP, it is the full name of
-    /// the project.
+    /// Specifies where the resource is created. For Google Cloud resources, it is
+    /// the full name of the project.
     #[prost(string, tag = "4")]
     pub container: ::prost::alloc::string::String,
     /// The product this resource represents.
     #[prost(message, optional, tag = "5")]
     pub product: ::core::option::Option<Product>,
     /// The location of the resources. It supports returning only regional
-    /// locations in GCP. These are of the form: "us-central1", "us-east1", etc.
-    /// See <https://cloud.google.com/about/locations> for a list of such regions.
+    /// locations in Google Cloud. These are of the form: "us-central1",
+    /// "us-east1", etc. See <https://cloud.google.com/about/locations> for a list of
+    /// such regions.
     #[prost(string, tag = "6")]
     pub location: ::prost::alloc::string::String,
     /// Labels applied on the resource. The requirements for labels assigned to
@@ -1929,10 +1929,9 @@ pub struct AggregateIssueStatsRequest {
     /// expression, parentheses must be appropriately used to group the
     /// combinations.
     ///
-    /// Example: location="us-east1"
-    /// Example: container="projects/123" OR container="projects/456"
-    /// Example: (container="projects/123" OR
-    /// container="projects/456") AND location="us-east1"
+    /// Example: `location="us-east1"`
+    /// Example: `container="projects/123" OR container="projects/456"`
+    /// Example: `(container="projects/123" OR            container="projects/456") AND location="us-east1"`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Lists of signal types that are issues.
@@ -2052,10 +2051,9 @@ pub struct AggregateFleetRequest {
     /// expression, parentheses must be appropriately used to group the
     /// combinations.
     ///
-    /// Example: location="us-east1"
-    /// Example: container="projects/123" OR container="projects/456"
-    /// Example: (container="projects/123" OR
-    /// container="projects/456") AND location="us-east1"
+    /// Example: `location="us-east1"`
+    /// Example: `container="projects/123" OR container="projects/456"`
+    /// Example: `(container="projects/123" OR            container="projects/456") AND location="us-east1"`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. A field that statistics are grouped by.
@@ -2089,9 +2087,10 @@ pub struct AggregateFleetRequest {
     ///   descending order. Add "ASC" after the field name to indicate ascending
     ///   order. It supports ordering using multiple fields.
     ///   For example:
-    ///   order_by = "resource_groups_count" sorts response in ascending order
-    ///   order_by = "resource_groups_count DESC" sorts response in descending order
-    ///   order_by = "product.type, product.version DESC, location" orders by type
+    ///   `order_by = "resource_groups_count"` sorts response in ascending order
+    ///   `order_by = "resource_groups_count DESC"` sorts response in descending
+    ///   order
+    ///   `order_by = "product.type, product.version DESC, location"` orders by type
     ///   in ascending order, version in descending order and location in ascending
     ///   order
     #[prost(string, tag = "4")]
@@ -2112,7 +2111,8 @@ pub struct AggregateFleetRequest {
     #[prost(message, optional, tag = "7")]
     pub baseline_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
-/// The response message to aggregate a fleet by some group by fields.
+/// The response message to aggregate a fleet by some group by
+/// fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregateFleetResponse {
     /// Represents a row grouped by the fields in the input.
@@ -2166,8 +2166,8 @@ pub mod dimension {
     /// Followings are the dimensions to be used to aggregate the fleet.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Dimension {
-        /// Specifies where the resource is created. For GCP, it is the full name of
-        /// the project.
+        /// Specifies where the resource is created. For Google Cloud resources, it
+        /// is the full name of the project.
         #[prost(string, tag = "2")]
         Container(::prost::alloc::string::String),
         /// Type to identify a product
@@ -2180,7 +2180,7 @@ pub mod dimension {
         #[prost(string, tag = "5")]
         ProductVersion(::prost::alloc::string::String),
         /// The location of the resources. It supports returning only regional
-        /// locations in GCP.
+        /// locations in Google Cloud.
         #[prost(string, tag = "6")]
         Location(::prost::alloc::string::String),
         /// The type of resource defined according to the pattern:
@@ -2240,6 +2240,92 @@ pub struct BackupDrConfig {
     #[prost(bool, optional, tag = "1")]
     pub backupdr_managed: ::core::option::Option<bool>,
 }
+/// QueryIssuesRequest is the request to get a list of issues.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryIssuesRequest {
+    /// Required. Parent can be a project, a folder, or an organization. The list
+    /// is limited to the one attached to resources within the `scope` that a user
+    /// has access to.
+    ///
+    /// The allowed values are:
+    ///
+    /// * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+    /// * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+    /// * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+    /// * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional.
+    /// Supported fields are:
+    /// 'product',
+    /// `location`,
+    /// `issue_severity`,
+    /// 'tags',
+    /// 'labels',
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Filters based on signal and product. The filter list will be ORed
+    /// across pairs and ANDed within a signal and products pair.
+    #[prost(message, repeated, tag = "3")]
+    pub signal_products_filters: ::prost::alloc::vec::Vec<SignalProductsFilters>,
+    /// Optional. Following fields are sortable:
+    /// SignalType
+    /// Product
+    /// Location
+    /// IssueSeverity
+    ///
+    /// The default order is ascending. Add "DESC" after the field name to indicate
+    /// descending order. Add "ASC" after the field name to indicate ascending
+    /// order. It only supports a single field at a time.
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. If unspecified, at most 50 issues will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `QueryIssues` call.
+    /// Provide this to retrieve the subsequent page.
+    /// All parameters except page size should match the parameters used in the
+    /// call that provided the page token.
+    #[prost(string, tag = "6")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// SignalProductsFilters represents a signal and list of supported products.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignalProductsFilters {
+    /// Optional. The type of signal.
+    #[prost(enumeration = "SignalType", tag = "1")]
+    pub signal_type: i32,
+    /// Optional. Product type of the resource. The version of the product will be
+    /// ignored in filtering.
+    #[prost(message, repeated, tag = "2")]
+    pub products: ::prost::alloc::vec::Vec<Product>,
+}
+/// QueryIssuesResponse is the response containing a list of issues.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryIssuesResponse {
+    /// List of issues and resource details.
+    #[prost(message, repeated, tag = "1")]
+    pub resource_issues: ::prost::alloc::vec::Vec<DatabaseResourceIssue>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. List of unreachable regions from where data could not be
+    /// retrieved.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// DatabaseResource and Issue associated with it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseResourceIssue {
+    /// Signal associated with the issue.
+    #[prost(message, optional, tag = "1")]
+    pub signal: ::core::option::Option<Signal>,
+    /// Resource associated with the issue.
+    #[prost(message, optional, tag = "2")]
+    pub resource: ::core::option::Option<DatabaseResource>,
+}
 /// Tag is a key value pair attached to a resource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Tag {
@@ -2273,8 +2359,8 @@ pub struct ResourceDetails {
     /// Full resource name of the resource.
     #[prost(string, tag = "1")]
     pub full_resource_name: ::prost::alloc::string::String,
-    /// Specifies where the resource is created. For GCP, it is the full name of
-    /// the project.
+    /// Specifies where the resource is created. For Google Cloud resources, it is
+    /// the full name of the project.
     #[prost(string, tag = "2")]
     pub container: ::prost::alloc::string::String,
     /// Product type of the resource.
@@ -2661,6 +2747,37 @@ pub mod database_center_client {
                     GrpcMethod::new(
                         "google.cloud.databasecenter.v1beta.DatabaseCenter",
                         "AggregateIssueStats",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// QueryIssues provides a list of issues and recommendations
+        /// that a user has access to and that are within the requested scope.
+        pub async fn query_issues(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryIssuesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryIssuesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryIssues",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                        "QueryIssues",
                     ),
                 );
             self.inner.unary(req, path, codec).await

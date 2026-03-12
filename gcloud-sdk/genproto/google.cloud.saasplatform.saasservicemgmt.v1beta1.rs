@@ -300,6 +300,10 @@ pub mod unit_operation_condition {
         Succeeded = 4,
         /// Condition type is cancelled.
         Cancelled = 5,
+        /// Indicates if AppHub app has been created.
+        AppCreated = 6,
+        /// Indicates if services and workloads have been registered with AppHub.
+        AppComponentsRegistered = 7,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -313,6 +317,8 @@ pub mod unit_operation_condition {
                 Self::Running => "TYPE_RUNNING",
                 Self::Succeeded => "TYPE_SUCCEEDED",
                 Self::Cancelled => "TYPE_CANCELLED",
+                Self::AppCreated => "TYPE_APP_CREATED",
+                Self::AppComponentsRegistered => "TYPE_APP_COMPONENTS_REGISTERED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -323,6 +329,8 @@ pub mod unit_operation_condition {
                 "TYPE_RUNNING" => Some(Self::Running),
                 "TYPE_SUCCEEDED" => Some(Self::Succeeded),
                 "TYPE_CANCELLED" => Some(Self::Cancelled),
+                "TYPE_APP_CREATED" => Some(Self::AppCreated),
+                "TYPE_APP_COMPONENTS_REGISTERED" => Some(Self::AppComponentsRegistered),
                 _ => None,
             }
         }

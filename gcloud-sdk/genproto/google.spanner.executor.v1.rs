@@ -37,7 +37,7 @@ pub struct SpannerAction {
     /// per SpannerAction.
     #[prost(
         oneof = "spanner_action::Action",
-        tags = "10, 11, 20, 21, 22, 23, 24, 25, 27, 30, 40, 41, 42, 43, 44, 50, 51"
+        tags = "10, 11, 20, 21, 22, 23, 24, 25, 27, 30, 40, 41, 42, 43, 44, 50, 51, 52"
     )]
     pub action: ::core::option::Option<spanner_action::Action>,
 }
@@ -99,6 +99,9 @@ pub mod spanner_action {
         /// Query cancellation action for testing the cancellation of a query.
         #[prost(message, tag = "51")]
         QueryCancellation(super::QueryCancellationAction),
+        /// Action to adapt a message.
+        #[prost(message, tag = "52")]
+        AdaptMessage(super::AdaptMessageAction),
     }
 }
 /// A single read request.
@@ -156,6 +159,11 @@ pub struct DmlAction {
     /// if the Executor supports autocommit.
     #[prost(bool, optional, tag = "2")]
     pub autocommit_if_supported: ::core::option::Option<bool>,
+    /// Whether to set this DML statement as the last statement in the
+    /// transaction. The transaction should be committed after processing this DML
+    /// statement.
+    #[prost(bool, optional, tag = "3")]
+    pub last_statement: ::core::option::Option<bool>,
 }
 /// Batch of DML statements invoked using batched execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -163,6 +171,11 @@ pub struct BatchDmlAction {
     /// DML statements.
     #[prost(message, repeated, tag = "1")]
     pub updates: ::prost::alloc::vec::Vec<QueryAction>,
+    /// Whether to set this request with the last statement option in the
+    /// transaction. The transaction should be committed after processing this
+    /// request.
+    #[prost(bool, optional, tag = "2")]
+    pub last_statements: ::core::option::Option<bool>,
 }
 /// Value represents a single value that can be read or written to/from
 /// Spanner.
@@ -434,7 +447,8 @@ pub struct StartTransactionAction {
     /// testing.
     #[prost(string, tag = "3")]
     pub transaction_seed: ::prost::alloc::string::String,
-    /// Execution options (e.g., whether transaction is opaque, optimistic).
+    /// Execution options (e.g., whether transaction is opaque, optimistic,
+    /// excluded from change streams).
     #[prost(message, optional, tag = "4")]
     pub execution_options: ::core::option::Option<TransactionExecutionOptions>,
 }
@@ -509,12 +523,31 @@ pub struct ColumnMetadata {
     #[prost(message, optional, tag = "2")]
     pub r#type: ::core::option::Option<super::super::v1::Type>,
 }
-/// Options for executing the transaction.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransactionExecutionOptions {
     /// Whether optimistic concurrency should be used to execute this transaction.
     #[prost(bool, tag = "1")]
     pub optimistic: bool,
+    /// Whether traffic from this transaction will be excluded from tracking change
+    /// streams with allow_txn_exclusion=true.
+    #[prost(bool, tag = "2")]
+    pub exclude_from_change_streams: bool,
+    /// Whether serializable isolation with optimistic mode concurrency should be
+    /// used to execute this transaction.
+    #[prost(bool, tag = "3")]
+    pub serializable_optimistic: bool,
+    /// Whether snapshot isolation with optimistic mode concurrency should be used
+    /// to execute this transaction.
+    #[prost(bool, tag = "4")]
+    pub snapshot_isolation_optimistic: bool,
+    /// Whether snapshot isolation with pessimistic mode concurrency should be used
+    /// to execute this transaction.
+    #[prost(bool, tag = "5")]
+    pub snapshot_isolation_pessimistic: bool,
+    /// Whether to exclude mutations of this transaction from the allowed tracking
+    /// change streams.
+    #[prost(bool, tag = "6")]
+    pub exclude_txn_from_change_streams: bool,
 }
 /// FinishTransactionAction defines an action of finishing a transaction.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -577,7 +610,7 @@ pub struct AdminAction {
     /// Exactly one of the actions below will be performed in AdminAction.
     #[prost(
         oneof = "admin_action::Action",
-        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 27, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28"
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 27, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29"
     )]
     pub action: ::core::option::Option<admin_action::Action>,
 }
@@ -670,6 +703,9 @@ pub mod admin_action {
         /// Action that changes quorum of a Cloud Spanner database.
         #[prost(message, tag = "28")]
         ChangeQuorumCloudDatabase(super::ChangeQuorumCloudDatabaseAction),
+        /// Action that adds splits to a Cloud Spanner database.
+        #[prost(message, tag = "29")]
+        AddSplitPoints(super::AddSplitPointsAction),
     }
 }
 /// Action that creates a user instance config.
@@ -775,6 +811,12 @@ pub struct CreateCloudInstanceAction {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The edition of the instance.
+    #[prost(
+        enumeration = "super::super::admin::instance::v1::instance::Edition",
+        tag = "8"
+    )]
+    pub edition: i32,
 }
 /// Action that updates a Cloud Spanner instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -810,6 +852,12 @@ pub struct UpdateCloudInstanceAction {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The edition of the instance.
+    #[prost(
+        enumeration = "super::super::admin::instance::v1::instance::Edition",
+        tag = "8"
+    )]
+    pub edition: i32,
 }
 /// Action that deletes a Cloud Spanner instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -911,6 +959,33 @@ pub struct ChangeQuorumCloudDatabaseAction {
     #[prost(string, repeated, tag = "2")]
     pub serving_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// A single Adapt message request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptMessageAction {
+    /// The fully qualified uri of the database to send AdaptMessage to.
+    #[prost(string, tag = "1")]
+    pub database_uri: ::prost::alloc::string::String,
+    /// The protocol to use for the request.
+    #[prost(string, tag = "2")]
+    pub protocol: ::prost::alloc::string::String,
+    /// The payload of the request.
+    #[prost(bytes = "vec", tag = "3")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+    /// Attachments to be sent with the request.
+    #[prost(map = "string, string", tag = "4")]
+    pub attachments: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The query to be sent with the request.
+    #[prost(string, tag = "5")]
+    pub query: ::prost::alloc::string::String,
+    /// If true, the action will send a Prepare request first and then an
+    /// Execute request right after to execute the query. This is only supported
+    /// for Cloud Client path.
+    #[prost(bool, tag = "6")]
+    pub prepare_then_execute: bool,
+}
 /// Action that lists Cloud Spanner databases.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudDatabasesAction {
@@ -930,7 +1005,7 @@ pub struct ListCloudDatabasesAction {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Action that lists Cloud Spanner databases.
+/// Action that lists Cloud Spanner instances.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudInstancesAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
@@ -1208,6 +1283,24 @@ pub struct CancelOperationAction {
     #[prost(string, tag = "1")]
     pub operation: ::prost::alloc::string::String,
 }
+/// Action that adds a split point to a Cloud Spanner database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddSplitPointsAction {
+    /// Cloud project ID, e.g. "spanner-cloud-systest".
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Cloud instance ID (not path), e.g. "test-instance".
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Cloud database ID (not full path), e.g. "db0".
+    #[prost(string, tag = "3")]
+    pub database_id: ::prost::alloc::string::String,
+    /// The split points to add.
+    #[prost(message, repeated, tag = "4")]
+    pub split_points: ::prost::alloc::vec::Vec<
+        super::super::admin::database::v1::SplitPoints,
+    >,
+}
 /// Starts a batch read-only transaction in executor. Successful outcomes of this
 /// action will contain batch_txn_id--the identificator that can be used to start
 /// the same transaction in other Executors to parallelize partition processing.
@@ -1421,6 +1514,10 @@ pub struct SpannerActionOutcome {
     /// Change stream records returned by a change stream query.
     #[prost(message, repeated, tag = "10")]
     pub change_stream_records: ::prost::alloc::vec::Vec<ChangeStreamRecord>,
+    /// If not zero, it indicates the read timestamp to use for validating
+    /// the SnapshotIsolation transaction.
+    #[prost(int64, optional, tag = "11")]
+    pub snapshot_isolation_txn_read_timestamp: ::core::option::Option<i64>,
 }
 /// AdminResult contains admin action results, for database/backup/operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
