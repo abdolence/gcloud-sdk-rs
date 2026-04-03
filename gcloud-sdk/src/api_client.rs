@@ -257,7 +257,7 @@ impl GoogleEnvironment {
             .domain_name(domain_name)
     }
 
-    #[cfg(feature = "tls-webpki-roots")]
+    #[cfg(all(feature = "tls-webpki-roots", not(feature = "tls-roots")))]
     fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
             .with_webpki_roots()
