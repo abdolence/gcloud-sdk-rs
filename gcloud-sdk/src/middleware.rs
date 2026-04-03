@@ -159,16 +159,6 @@ impl GoogleAuthMiddlewareLayer {
         }
     }
 
-    pub fn with_user_agent(mut self, user_agent: String) -> Self {
-        self.user_agent = user_agent;
-        self
-    }
-
-    pub fn with_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
-        self.x_goog_api_client = x_goog_api_client;
-        self
-    }
-
     pub fn amend_user_agent(mut self, user_agent: String) -> Self {
         self.user_agent = format!("{} {}", self.user_agent, user_agent);
         self
