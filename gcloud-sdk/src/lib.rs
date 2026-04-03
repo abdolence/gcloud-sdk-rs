@@ -59,7 +59,7 @@ pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, Toke
 mod api_client;
 pub use api_client::*;
 
-mod middleware;
+pub mod middleware;
 
 pub mod proto_ext;
 

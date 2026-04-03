@@ -69,6 +69,16 @@ where
     pub fn get(&self) -> C {
         self.builder.create_client(self.service.clone())
     }
+
+    pub fn amend_user_agent(mut self, user_agent: String) -> Self {
+        self.service.append_user_agent(user_agent);
+        self
+    }
+
+    pub fn amend_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
+        self.service.append_x_goog_api_client(x_goog_api_client);
+        self
+    }
 }
 
 #[derive(Clone)]
