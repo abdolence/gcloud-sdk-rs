@@ -3,12 +3,12 @@
 /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.SearchDocumentChunks\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchDocumentChunksRequest {
-    /// Required. The raw query string provided by the user, such as "How to create
-    /// a Cloud Storage bucket?".
+    /// Required. Provides the raw query string provided by the user, such as "How
+    /// to create a Cloud Storage bucket?".
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
-    /// Optional. The maximum number of results to return. The service may return
-    /// fewer than this value.
+    /// Optional. Specifies the maximum number of results to return. The service
+    /// may return fewer than this value.
     ///
     /// If unspecified, at most 5 results will be returned.
     ///
@@ -16,8 +16,8 @@ pub struct SearchDocumentChunksRequest {
     /// error.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous `SearchDocumentChunks`
-    /// call. Provide this to retrieve the subsequent page.
+    /// Optional. Contains a page token, received from a previous
+    /// `SearchDocumentChunks` call. Provide this to retrieve the subsequent page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -25,7 +25,7 @@ pub struct SearchDocumentChunksRequest {
 /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.SearchDocumentChunks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDocumentChunksResponse {
-    /// The search results for the given query. Each
+    /// Contains the search results for the given query. Each
     /// \[DocumentChunk\]\[google.developers.knowledge.v1alpha.DocumentChunk\] in this
     /// list contains a snippet of content relevant to the search query. Use the
     /// \[DocumentChunk.parent\]\[google.developers.knowledge.v1alpha.DocumentChunk.parent\]
@@ -36,8 +36,8 @@ pub struct SearchDocumentChunksResponse {
     /// to retrieve the full document content.
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<DocumentChunk>,
-    /// Optional. A token that can be sent as `page_token` to retrieve the next
-    /// page. If this field is omitted, there are no subsequent pages.
+    /// Optional. Provides a token that can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -45,7 +45,7 @@ pub struct SearchDocumentChunksResponse {
 /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.GetDocument\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDocumentRequest {
-    /// Required. The name of the document to retrieve.
+    /// Required. Specifies the name of the document to retrieve.
     /// Format: `documents/{uri_without_scheme}`
     /// Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`
     #[prost(string, tag = "1")]
@@ -55,9 +55,9 @@ pub struct GetDocumentRequest {
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.BatchGetDocuments\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetDocumentsRequest {
-    /// Required. The names of the documents to retrieve. A maximum of 20 documents
-    /// can be retrieved in a batch. The documents are returned in the same order
-    /// as the `names` in the request.
+    /// Required. Specifies the names of the documents to retrieve. A maximum of 20
+    /// documents can be retrieved in a batch. The documents are returned in the
+    /// same order as the `names` in the request.
     ///
     /// Format: `documents/{uri_without_scheme}`
     /// Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`
@@ -68,30 +68,34 @@ pub struct BatchGetDocumentsRequest {
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.BatchGetDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsResponse {
-    /// Documents requested.
+    /// Contains the documents requested.
     #[prost(message, repeated, tag = "1")]
     pub documents: ::prost::alloc::vec::Vec<Document>,
 }
 /// A Document represents a piece of content from the Developer Knowledge corpus.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Document {
-    /// Identifier. The resource name of the document.
+    /// Identifier. Contains the resource name of the document.
     /// Format: `documents/{uri_without_scheme}`
     /// Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The URI of the content, such as
+    /// Output only. Provides the URI of the content, such as
     /// `docs.cloud.google.com/storage/docs/creating-buckets`.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// Output only. The full content of the document in Markdown format.
+    /// Output only. Contains the full content of the document in Markdown format.
     #[prost(string, tag = "3")]
     pub content: ::prost::alloc::string::String,
-    /// Output only. A description of the document.
+    /// Output only. Provides a description of the document.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
+    /// Output only. Provides the title of the document.
+    #[prost(string, tag = "6")]
+    pub title: ::prost::alloc::string::String,
 }
-/// A DocumentChunk represents a piece of content from a Document in the
+/// A DocumentChunk represents a piece of content from a
+/// \[Document\]\[google.developers.knowledge.v1alpha.Document\] in the
 /// DeveloperKnowledge corpus. To fetch the entire document content, pass the
 /// `parent` to
 /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.GetDocument\]
@@ -99,17 +103,17 @@ pub struct Document {
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.BatchGetDocuments\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DocumentChunk {
-    /// Output only. The resource name of the document this chunk is from.
+    /// Output only. Contains the resource name of the document this chunk is from.
     /// Format: `documents/{uri_without_scheme}`
     /// Example: `documents/docs.cloud.google.com/storage/docs/creating-buckets`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Output only. The ID of this chunk within the document. The chunk ID is
-    /// unique within a document, but not globally unique across documents. The
-    /// chunk ID is not stable and may change over time.
+    /// Output only. Specifies the ID of this chunk within the document. The chunk
+    /// ID is unique within a document, but not globally unique across documents.
+    /// The chunk ID is not stable and may change over time.
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    /// Output only. The content of the document chunk.
+    /// Output only. Contains the content of the document chunk.
     #[prost(string, tag = "3")]
     pub content: ::prost::alloc::string::String,
 }
@@ -221,8 +225,10 @@ pub mod developer_knowledge_client {
             self
         }
         /// Searches for developer knowledge across Google's developer documentation.
-        /// This method returns document chunks based on the user's query. There can be
-        /// many chunks of the same Document.  To retrieve full documents, use
+        /// Returns \[DocumentChunk\]\[google.developers.knowledge.v1alpha.DocumentChunk\]s
+        /// based on the user's query. There may be many chunks from the same
+        /// \[Document\]\[google.developers.knowledge.v1alpha.Document\].  To retrieve full
+        /// documents, use
         /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.GetDocument\]
         /// or
         /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.BatchGetDocuments\]

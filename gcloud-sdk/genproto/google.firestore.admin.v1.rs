@@ -1267,12 +1267,14 @@ pub mod field {
     /// The TTL (time-to-live) configuration for documents that have this `Field`
     /// set.
     ///
-    /// Storing a timestamp value into a TTL-enabled field will be treated as
-    /// the document's absolute expiration time. For Enterprise edition databases,
-    /// the timestamp value may also be stored in an array value in the
-    /// TTL-enabled field.
+    /// A timestamp stored in a TTL-enabled field will be used to determine the
+    /// expiration time of the document. The expiration time is the sum
+    /// of the timestamp value and the `expiration_offset`.
     ///
-    /// Timestamp values in the past indicate that the document is eligible for
+    /// For Enterprise edition databases, the timestamp value may alternatively be
+    /// stored in an array value in the TTL-enabled field.
+    ///
+    /// An expiration time in the past indicates that the document is eligible for
     /// immediate expiration. Using any other data type or leaving the field absent
     /// will disable expiration for the individual document.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1280,6 +1282,16 @@ pub mod field {
         /// Output only. The state of the TTL configuration.
         #[prost(enumeration = "ttl_config::State", tag = "1")]
         pub state: i32,
+        /// Optional. The offset, relative to the timestamp value from the
+        /// TTL-enabled field, used to determine the document's expiration time.
+        ///
+        /// `expiration_offset.seconds` must be between 0 and 2,147,483,647
+        /// inclusive. Values more precise than seconds are rejected.
+        ///
+        /// If unset, defaults to 0, in which case the expiration time is the same
+        /// as the timestamp value from the TTL-enabled field.
+        #[prost(message, optional, tag = "3")]
+        pub expiration_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Nested message and enum types in `TtlConfig`.
     pub mod ttl_config {
@@ -1485,6 +1497,10 @@ pub mod field_operation_metadata {
         /// Specifies how the TTL configuration is changing.
         #[prost(enumeration = "ttl_config_delta::ChangeType", tag = "1")]
         pub change_type: i32,
+        /// The offset, relative to the timestamp value in the TTL-enabled field,
+        /// used determine the document's expiration time.
+        #[prost(message, optional, tag = "3")]
+        pub expiration_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Nested message and enum types in `TtlConfigDelta`.
     pub mod ttl_config_delta {

@@ -2037,6 +2037,10 @@ pub struct Subscription {
     /// subscription, this field is used to configure it.
     #[prost(message, optional, tag = "22")]
     pub cloud_storage_config: ::core::option::Option<CloudStorageConfig>,
+    /// Optional. If delivery to Bigtable is used with this subscription, this
+    /// field is used to configure it.
+    #[prost(message, optional, tag = "27")]
+    pub bigtable_config: ::core::option::Option<BigtableConfig>,
     /// Optional. The approximate amount of time (on a best-effort basis) Pub/Sub
     /// waits for the subscriber to acknowledge receipt before resending the
     /// message. In the interval after the message is delivered and before it is
@@ -2529,6 +2533,130 @@ pub mod big_query_config {
                 "ACTIVE" => Some(Self::Active),
                 "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 "NOT_FOUND" => Some(Self::NotFound),
+                "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
+                "IN_TRANSIT_LOCATION_RESTRICTION" => {
+                    Some(Self::InTransitLocationRestriction)
+                }
+                "VERTEX_AI_LOCATION_RESTRICTION" => {
+                    Some(Self::VertexAiLocationRestriction)
+                }
+                _ => None,
+            }
+        }
+    }
+}
+/// Configuration for a Bigtable subscription. The Pub/Sub message will be
+/// written to a Bigtable row as follows:
+///
+/// * row key: subscription name and message ID delimited by #.
+/// * columns: message bytes written to a single column family "data" with an
+///   empty-string column qualifier.
+/// * cell timestamp: the message publish timestamp.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigtableConfig {
+    /// Optional. The unique name of the table to write messages to.
+    ///
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/tables/<table>`.
+    #[prost(string, tag = "1")]
+    pub table: ::prost::alloc::string::String,
+    /// Optional. The app profile to use for the Bigtable writes. If not specified,
+    /// the "default" application profile will be used. The app profile must use
+    /// single-cluster routing.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    /// Optional. The service account to use to write to Bigtable. The subscription
+    /// creator or updater that specifies this field must have
+    /// `iam.serviceAccounts.actAs` permission on the service account. If not
+    /// specified, the Pub/Sub [service
+    /// agent](<https://cloud.google.com/iam/docs/service-agents>),
+    /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+    #[prost(string, tag = "3")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// Optional. When true, write the subscription name, message_id, publish_time,
+    /// attributes, and ordering_key to additional columns in the table under the
+    /// pubsub_metadata column family. The subscription name, message_id, and
+    /// publish_time fields are put in their own columns while all other message
+    /// properties (other than data) are written to a JSON object in the attributes
+    /// column.
+    #[prost(bool, tag = "5")]
+    pub write_metadata: bool,
+    /// Output only. An output-only field that indicates whether or not the
+    /// subscription can receive messages.
+    #[prost(enumeration = "bigtable_config::State", tag = "4")]
+    pub state: i32,
+}
+/// Nested message and enum types in `BigtableConfig`.
+pub mod bigtable_config {
+    /// Possible states for a Bigtable subscription.
+    /// Note: more states could be added in the future. Please code accordingly.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The subscription can actively send messages to Bigtable.
+        Active = 1,
+        /// Cannot write to Bigtable because the instance, table, or app profile
+        /// does not exist.
+        NotFound = 2,
+        /// Cannot write to Bigtable because the app profile is not configured for
+        /// single-cluster routing.
+        AppProfileMisconfigured = 3,
+        /// Cannot write to Bigtable because of permission denied errors.
+        /// This can happen if:
+        ///
+        /// * The Pub/Sub service agent has not been granted the
+        ///   [appropriate Bigtable IAM permission
+        ///   bigtable.tables.mutateRows]({$universe.dns_names.final_documentation_domain}/bigtable/docs/access-control#permissions)
+        /// * The bigtable.googleapis.com API is not enabled for the project
+        ///   ([instructions]({$universe.dns_names.final_documentation_domain}/service-usage/docs/enable-disable))
+        PermissionDenied = 4,
+        /// Cannot write to Bigtable because of a missing column family ("data") or
+        /// if there is no structured row key for the subscription name + message ID.
+        SchemaMismatch = 5,
+        /// Cannot write to the destination because enforce_in_transit is set to true
+        /// and the destination locations are not in the allowed regions.
+        InTransitLocationRestriction = 6,
+        /// Cannot write to Bigtable because the table is not in the same location as
+        /// where Vertex AI models used in `message_transform`s are deployed.
+        VertexAiLocationRestriction = 7,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::NotFound => "NOT_FOUND",
+                Self::AppProfileMisconfigured => "APP_PROFILE_MISCONFIGURED",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::SchemaMismatch => "SCHEMA_MISMATCH",
+                Self::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
+                Self::VertexAiLocationRestriction => "VERTEX_AI_LOCATION_RESTRICTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "NOT_FOUND" => Some(Self::NotFound),
+                "APP_PROFILE_MISCONFIGURED" => Some(Self::AppProfileMisconfigured),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
                 "IN_TRANSIT_LOCATION_RESTRICTION" => {
                     Some(Self::InTransitLocationRestriction)

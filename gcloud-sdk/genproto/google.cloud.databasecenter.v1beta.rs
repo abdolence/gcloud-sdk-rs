@@ -1251,6 +1251,8 @@ pub enum SignalType {
     RecommendedMaintenancePolicies = 101,
     /// Resource version is in extended support.
     ExtendedSupport = 102,
+    /// Represents a database version nearing end of life.
+    VersionNearingEndOfLife = 104,
 }
 impl SignalType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1422,6 +1424,7 @@ impl SignalType {
                 "SIGNAL_TYPE_RECOMMENDED_MAINTENANCE_POLICIES"
             }
             Self::ExtendedSupport => "SIGNAL_TYPE_EXTENDED_SUPPORT",
+            Self::VersionNearingEndOfLife => "SIGNAL_TYPE_VERSION_NEARING_END_OF_LIFE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1620,6 +1623,9 @@ impl SignalType {
                 Some(Self::RecommendedMaintenancePolicies)
             }
             "SIGNAL_TYPE_EXTENDED_SUPPORT" => Some(Self::ExtendedSupport),
+            "SIGNAL_TYPE_VERSION_NEARING_END_OF_LIFE" => {
+                Some(Self::VersionNearingEndOfLife)
+            }
             _ => None,
         }
     }
@@ -2421,8 +2427,7 @@ impl ResourceCategory {
         }
     }
 }
-/// Proto representing the edition of the instance.
-/// NextId: 4.
+/// Represents the edition of a database resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Edition {
@@ -2473,6 +2478,12 @@ pub enum SubResourceType {
     ReadReplica = 3,
     /// A resource acting as an external primary.
     ExternalPrimary = 5,
+    /// A resource acting as a read pool.
+    ReadPool = 6,
+    /// Represents a reservation resource.
+    Reservation = 7,
+    /// Represents a dataset resource.
+    Dataset = 8,
     /// For the rest of the categories.
     Other = 4,
 }
@@ -2488,6 +2499,9 @@ impl SubResourceType {
             Self::Secondary => "SUB_RESOURCE_TYPE_SECONDARY",
             Self::ReadReplica => "SUB_RESOURCE_TYPE_READ_REPLICA",
             Self::ExternalPrimary => "SUB_RESOURCE_TYPE_EXTERNAL_PRIMARY",
+            Self::ReadPool => "SUB_RESOURCE_TYPE_READ_POOL",
+            Self::Reservation => "SUB_RESOURCE_TYPE_RESERVATION",
+            Self::Dataset => "SUB_RESOURCE_TYPE_DATASET",
             Self::Other => "SUB_RESOURCE_TYPE_OTHER",
         }
     }
@@ -2499,6 +2513,9 @@ impl SubResourceType {
             "SUB_RESOURCE_TYPE_SECONDARY" => Some(Self::Secondary),
             "SUB_RESOURCE_TYPE_READ_REPLICA" => Some(Self::ReadReplica),
             "SUB_RESOURCE_TYPE_EXTERNAL_PRIMARY" => Some(Self::ExternalPrimary),
+            "SUB_RESOURCE_TYPE_READ_POOL" => Some(Self::ReadPool),
+            "SUB_RESOURCE_TYPE_RESERVATION" => Some(Self::Reservation),
+            "SUB_RESOURCE_TYPE_DATASET" => Some(Self::Dataset),
             "SUB_RESOURCE_TYPE_OTHER" => Some(Self::Other),
             _ => None,
         }

@@ -1027,6 +1027,952 @@ pub mod agent_coaching_instruction {
         }
     }
 }
+/// Request message of CreateTool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateToolRequest {
+    /// Required. The project/location to create tool for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The tool to create.
+    #[prost(message, optional, tag = "2")]
+    pub tool: ::core::option::Option<Tool>,
+    /// Optional. The ID to use for the tool, which will become the final
+    /// component of the tool's resource name.
+    ///
+    /// The tool ID must be compliant with the regression formula
+    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
+    /// If the field is not provide, an Id will be auto-generated.
+    /// If the field is provided, the caller is responsible for
+    ///
+    /// 1. the uniqueness of the ID, otherwise the request will be rejected.
+    /// 1. the consistency for whether to use custom ID or not under a project to
+    ///    better ensure uniqueness.
+    #[prost(string, tag = "3")]
+    pub tool_id: ::prost::alloc::string::String,
+}
+/// Request message of GetTool.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetToolRequest {
+    /// Required. The tool resource name to retrieve. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message of ListTools.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListToolsRequest {
+    /// Required. The project/location to list tools for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of conversation models to return in a single page.
+    /// Default to 10.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response of ListTools.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListToolsResponse {
+    /// List of tools retrieved.
+    #[prost(message, repeated, tag = "1")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request of DeleteTool.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteToolRequest {
+    /// Required. The tool resource name to delete. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request of UpdateTool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateToolRequest {
+    /// Required. The tool to update.
+    /// The name field of tool is to identify the tool to
+    /// update.
+    #[prost(message, optional, tag = "1")]
+    pub tool: ::core::option::Option<Tool>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Represents a tool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tool {
+    /// Output only. Identifier. The resource name of the tool. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. A human readable short name of the tool, which should be unique
+    /// within the project. It should only contain letters, numbers, and
+    /// underscores, and it will be used by LLM to identify the tool.
+    #[prost(string, tag = "2")]
+    pub tool_key: ::prost::alloc::string::String,
+    /// Optional. A human readable short name of the tool, to be shown on the UI.
+    #[prost(string, tag = "19")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. A human readable description of the tool.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Confirmation requirement for the actions. Each key is an action
+    /// name in the action_schemas. If an action's confirmation requirement is
+    /// unspecified (either the key is not present, or its value is
+    /// CONFIRMATION_REQUIREMENT_UNSPECIFIED), the requirement is inferred from the
+    /// action's method_type - confirmation is not required if and only if
+    /// method_type is GET.
+    #[prost(map = "string, enumeration(tool::ConfirmationRequirement)", tag = "17")]
+    pub action_confirmation_requirement: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        i32,
+    >,
+    /// Output only. Creation time of this tool.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of this tool.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A read only boolean field reflecting Zone Separation
+    /// status of the tool. If the field is absent, it means the status is unknown.
+    #[prost(bool, optional, tag = "14")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. A read only boolean field reflecting Zone Isolation status
+    /// of the tool. If the field is absent, it means the status is unknown.
+    #[prost(bool, optional, tag = "15")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Specification of the Tool.
+    #[prost(oneof = "tool::Specification", tags = "4, 13, 18, 20")]
+    pub specification: ::core::option::Option<tool::Specification>,
+}
+/// Nested message and enum types in `Tool`.
+pub mod tool {
+    /// An ExtensionTool is a way to use Vertex Extensions as a tool.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ExtensionTool {
+        /// Required. The full name of the referenced vertex extension.
+        /// Format:
+        /// `projects/{project}/locations/{location}/extensions/{extension}`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// A Function tool describes the functions to be invoked on the client side.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FunctionTool {
+        /// Optional. The JSON schema is encapsulated in a
+        /// \[google.protobuf.Struct\]\[google.protobuf.Struct\] to describe the input of
+        /// the function. This input is a JSON object that contains the function's
+        /// parameters as properties of the object.
+        #[prost(message, optional, tag = "1")]
+        pub input_schema: ::core::option::Option<::prost_types::Struct>,
+        /// Optional. The JSON schema is encapsulated in a
+        /// \[google.protobuf.Struct\]\[google.protobuf.Struct\] to describe the output
+        /// of the function. This output is a JSON object that contains the
+        /// function's parameters as properties of the object.
+        #[prost(message, optional, tag = "2")]
+        pub output_schema: ::core::option::Option<::prost_types::Struct>,
+        /// Optional. The method type of the function. If not specified, the default
+        /// value is GET.
+        #[prost(enumeration = "MethodType", tag = "4")]
+        pub method_type: i32,
+    }
+    /// An OpenAPI tool is a way to provide the Tool specifications in the Open API
+    /// schema format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OpenApiTool {
+        /// Optional. Authentication information required by the API.
+        #[prost(message, optional, tag = "2")]
+        pub authentication: ::core::option::Option<Authentication>,
+        /// Optional. TLS configuration for the HTTPS verification.
+        #[prost(message, optional, tag = "3")]
+        pub tls_config: ::core::option::Option<TlsConfig>,
+        /// Optional. Service Directory configuration.
+        #[prost(message, optional, tag = "4")]
+        pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+        /// Schema representation.
+        #[prost(oneof = "open_api_tool::Schema", tags = "1")]
+        pub schema: ::core::option::Option<open_api_tool::Schema>,
+    }
+    /// Nested message and enum types in `OpenApiTool`.
+    pub mod open_api_tool {
+        /// Schema representation.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Schema {
+            /// Required. The OpenAPI schema specified as a text.
+            #[prost(string, tag = "1")]
+            TextSchema(::prost::alloc::string::String),
+        }
+    }
+    /// A ConnectorTool enabling using Integration Connectors Connections as tools.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConnectorTool {
+        /// Required. The full resource name of the referenced Integration Connectors
+        /// Connection. Format: 'projects/*/locations/*/connections/\*'
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. Actions for the tool to use.
+        #[prost(message, repeated, tag = "2")]
+        pub actions: ::prost::alloc::vec::Vec<connector_tool::Action>,
+    }
+    /// Nested message and enum types in `ConnectorTool`.
+    pub mod connector_tool {
+        /// Configuration of a Connection operation for the tool to use.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Action {
+            /// Optional. Entity fields to use as inputs for the operation.
+            /// If no fields are specified, all fields of the Entity will be used.
+            #[prost(string, repeated, tag = "2")]
+            pub input_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. Entity fields to return from the operation.
+            /// If no fields are specified, all fields of the Entity will be returned.
+            #[prost(string, repeated, tag = "3")]
+            pub output_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Required. Specification for an action to configure for the tool to use.
+            #[prost(oneof = "action::ActionSpec", tags = "4, 5")]
+            pub action_spec: ::core::option::Option<action::ActionSpec>,
+        }
+        /// Nested message and enum types in `Action`.
+        pub mod action {
+            /// Entity CRUD operation specification.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct EntityOperation {
+                /// Required. ID of the entity.
+                #[prost(string, tag = "1")]
+                pub entity_id: ::prost::alloc::string::String,
+                /// Required. Operation to perform on the entity.
+                #[prost(enumeration = "entity_operation::OperationType", tag = "2")]
+                pub operation: i32,
+            }
+            /// Nested message and enum types in `EntityOperation`.
+            pub mod entity_operation {
+                /// The operation to perform on the entity.
+                #[derive(
+                    Clone,
+                    Copy,
+                    Debug,
+                    PartialEq,
+                    Eq,
+                    Hash,
+                    PartialOrd,
+                    Ord,
+                    ::prost::Enumeration
+                )]
+                #[repr(i32)]
+                pub enum OperationType {
+                    /// Operation type unspecified. Invalid, ConnectorTool create/update
+                    /// will fail.
+                    Unspecified = 0,
+                    /// List operation.
+                    List = 1,
+                    /// Get operation.
+                    Get = 2,
+                    /// Create operation.
+                    Create = 3,
+                    /// Update operation.
+                    Update = 4,
+                    /// Delete operation.
+                    Delete = 5,
+                }
+                impl OperationType {
+                    /// String value of the enum field names used in the ProtoBuf definition.
+                    ///
+                    /// The values are not transformed in any way and thus are considered stable
+                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                    pub fn as_str_name(&self) -> &'static str {
+                        match self {
+                            Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                            Self::List => "LIST",
+                            Self::Get => "GET",
+                            Self::Create => "CREATE",
+                            Self::Update => "UPDATE",
+                            Self::Delete => "DELETE",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "LIST" => Some(Self::List),
+                            "GET" => Some(Self::Get),
+                            "CREATE" => Some(Self::Create),
+                            "UPDATE" => Some(Self::Update),
+                            "DELETE" => Some(Self::Delete),
+                            _ => None,
+                        }
+                    }
+                }
+            }
+            /// Required. Specification for an action to configure for the tool to use.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum ActionSpec {
+                /// ID of a Connection action for the tool to use.
+                #[prost(string, tag = "4")]
+                ConnectionActionId(::prost::alloc::string::String),
+                /// Entity operation configuration for the tool to use.
+                #[prost(message, tag = "5")]
+                EntityOperation(EntityOperation),
+            }
+        }
+    }
+    /// Authentication information required for API calls
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Authentication {
+        /// The auth configuration.
+        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4")]
+        pub auth_config: ::core::option::Option<authentication::AuthConfig>,
+    }
+    /// Nested message and enum types in `Authentication`.
+    pub mod authentication {
+        /// Config for authentication with API key.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ApiKeyConfig {
+            /// Required. The parameter name or the header name of the API key.
+            /// E.g., If the API request is "<https://example.com/act?X-Api-Key=<API>
+            /// KEY>", "X-Api-Key" would be the parameter name.
+            #[prost(string, tag = "1")]
+            pub key_name: ::prost::alloc::string::String,
+            /// Optional. The API key. If the `secret_version_for_api_key` field is
+            /// set, this field will be ignored.
+            #[prost(string, tag = "2")]
+            pub api_key: ::prost::alloc::string::String,
+            /// Optional. The name of the SecretManager secret version resource storing
+            /// the API key. If this field is set, the `api_key` field will be ignored.
+            /// Format: `projects/{project}/secrets/{secret}/versions/{version}`
+            #[prost(string, tag = "4")]
+            pub secret_version_for_api_key: ::prost::alloc::string::String,
+            /// Required. Key location in the request.
+            #[prost(enumeration = "RequestLocation", tag = "3")]
+            pub request_location: i32,
+        }
+        /// Config for authentication with OAuth.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct OAuthConfig {
+            /// Required. OAuth grant types.
+            #[prost(enumeration = "o_auth_config::OauthGrantType", tag = "1")]
+            pub oauth_grant_type: i32,
+            /// Required. The client ID from the OAuth provider.
+            #[prost(string, tag = "2")]
+            pub client_id: ::prost::alloc::string::String,
+            /// Optional. The client secret from the OAuth provider. If the
+            /// `secret_version_for_client_secret` field is set, this field will be
+            /// ignored.
+            #[prost(string, tag = "3")]
+            pub client_secret: ::prost::alloc::string::String,
+            /// Optional. The name of the SecretManager secret version resource storing
+            /// the client secret. If this field is set, the `client_secret` field will
+            /// be ignored. Format:
+            /// `projects/{project}/secrets/{secret}/versions/{version}`
+            #[prost(string, tag = "6")]
+            pub secret_version_for_client_secret: ::prost::alloc::string::String,
+            /// Required. The token endpoint in the OAuth provider to exchange for an
+            /// access token.
+            #[prost(string, tag = "4")]
+            pub token_endpoint: ::prost::alloc::string::String,
+            /// Optional. The OAuth scopes to grant.
+            #[prost(string, repeated, tag = "5")]
+            pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Nested message and enum types in `OAuthConfig`.
+        pub mod o_auth_config {
+            /// OAuth grant types. Only [client credential
+            /// grant](<https://oauth.net/2/grant-types/client-credentials>) is
+            /// supported.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum OauthGrantType {
+                /// Default value. This value is unused.
+                Unspecified = 0,
+                /// Represents the [client credential
+                /// flow](<https://oauth.net/2/grant-types/client-credentials>).
+                ClientCredential = 1,
+            }
+            impl OauthGrantType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "OAUTH_GRANT_TYPE_UNSPECIFIED",
+                        Self::ClientCredential => "CLIENT_CREDENTIAL",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "OAUTH_GRANT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "CLIENT_CREDENTIAL" => Some(Self::ClientCredential),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// Config for auth using [Dialogflow service
+        /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ServiceAgentAuthConfig {
+            /// Optional. Indicate the auth token type generated from the [Diglogflow
+            /// service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            /// The generated token is sent in the Authorization header.
+            #[prost(
+                enumeration = "service_agent_auth_config::ServiceAgentAuth",
+                tag = "1"
+            )]
+            pub service_agent_auth: i32,
+        }
+        /// Nested message and enum types in `ServiceAgentAuthConfig`.
+        pub mod service_agent_auth_config {
+            /// Indicate the auth token type generated from the [Diaglogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ServiceAgentAuth {
+                /// Service agent auth type unspecified. Default to ID_TOKEN.
+                Unspecified = 0,
+                /// Use [ID
+                /// token](<https://cloud.google.com/docs/authentication/token-types#id>)
+                /// generated from service agent. This can be used to access Cloud
+                /// Function and Cloud Run after you grant Invoker role to
+                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+                IdToken = 1,
+                /// Use [access
+                /// token](<https://cloud.google.com/docs/authentication/token-types#access>)
+                /// generated from service agent. This can be used to access other Google
+                /// Cloud APIs after you grant required roles to
+                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+                AccessToken = 2,
+            }
+            impl ServiceAgentAuth {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "SERVICE_AGENT_AUTH_UNSPECIFIED",
+                        Self::IdToken => "ID_TOKEN",
+                        Self::AccessToken => "ACCESS_TOKEN",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "SERVICE_AGENT_AUTH_UNSPECIFIED" => Some(Self::Unspecified),
+                        "ID_TOKEN" => Some(Self::IdToken),
+                        "ACCESS_TOKEN" => Some(Self::AccessToken),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// Config for authentication using bearer token.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct BearerTokenConfig {
+            /// Optional. The text token appended to the text `Bearer` to the request
+            /// Authorization header.
+            /// [Session parameters
+            /// reference](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>)
+            /// can be used to pass the token dynamically, e.g.
+            /// `$session.params.parameter-id`.
+            #[prost(string, tag = "1")]
+            pub token: ::prost::alloc::string::String,
+            /// Optional. The name of the SecretManager secret version resource storing
+            /// the Bearer token. If this field is set, the `token` field will be
+            /// ignored. Format:
+            /// `projects/{project}/secrets/{secret}/versions/{version}`
+            #[prost(string, tag = "2")]
+            pub secret_version_for_token: ::prost::alloc::string::String,
+        }
+        /// The location of the API key in the request.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum RequestLocation {
+            /// Default value. This value is unused.
+            Unspecified = 0,
+            /// Represents the key in http header.
+            Header = 1,
+            /// Represents the key in query string.
+            QueryString = 2,
+        }
+        impl RequestLocation {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "REQUEST_LOCATION_UNSPECIFIED",
+                    Self::Header => "HEADER",
+                    Self::QueryString => "QUERY_STRING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REQUEST_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "HEADER" => Some(Self::Header),
+                    "QUERY_STRING" => Some(Self::QueryString),
+                    _ => None,
+                }
+            }
+        }
+        /// The auth configuration.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum AuthConfig {
+            /// Config for API key auth.
+            #[prost(message, tag = "1")]
+            ApiKeyConfig(ApiKeyConfig),
+            /// Config for OAuth.
+            #[prost(message, tag = "2")]
+            OauthConfig(OAuthConfig),
+            /// Config for [Diglogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>)
+            /// auth.
+            #[prost(message, tag = "3")]
+            ServiceAgentAuthConfig(ServiceAgentAuthConfig),
+            /// Config for bearer token auth.
+            #[prost(message, tag = "4")]
+            BearerTokenConfig(BearerTokenConfig),
+        }
+    }
+    /// The TLS configuration.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TlsConfig {
+        /// Required. Specifies a list of allowed custom CA certificates for HTTPS
+        /// verification.
+        #[prost(message, repeated, tag = "1")]
+        pub ca_certs: ::prost::alloc::vec::Vec<tls_config::CaCert>,
+    }
+    /// Nested message and enum types in `TLSConfig`.
+    pub mod tls_config {
+        /// The CA certificate.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct CaCert {
+            /// Required. The name of the allowed custom CA certificates. This
+            /// can be used to disambiguate the custom CA certificates.
+            #[prost(string, tag = "1")]
+            pub display_name: ::prost::alloc::string::String,
+            /// Required. The allowed custom CA certificates (in DER format) for
+            /// HTTPS verification. This overrides the default SSL trust store. If this
+            /// is empty or unspecified, Dialogflow will use Google's default trust
+            /// store to verify certificates. N.B. Make sure the HTTPS server
+            /// certificates are signed with "subject alt name". For instance a
+            /// certificate can be self-signed using the following command,
+            ///
+            /// ```text,
+            ///    openssl x509 -req -days 200 -in example.com.csr \
+            ///      -signkey example.com.key \
+            ///      -out example.com.crt \
+            ///      -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+            /// ```
+            #[prost(bytes = "vec", tag = "2")]
+            pub cert: ::prost::alloc::vec::Vec<u8>,
+        }
+    }
+    /// Configuration for tools using Service Directory.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ServiceDirectoryConfig {
+        /// Required. The name of [Service
+        /// Directory](<https://cloud.google.com/service-directory>) service.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
+        /// `LocationID` of the service directory must be the same as the location
+        /// of the tool.
+        #[prost(string, tag = "1")]
+        pub service: ::prost::alloc::string::String,
+    }
+    /// Types of confirmation requirement.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConfirmationRequirement {
+        /// Unspecified. Whether the action requires confirmation is inferred from
+        /// method_type.
+        Unspecified = 0,
+        /// Conformation is required.
+        Required = 1,
+        /// Conformation is not required.
+        NotRequired = 2,
+    }
+    impl ConfirmationRequirement {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONFIRMATION_REQUIREMENT_UNSPECIFIED",
+                Self::Required => "REQUIRED",
+                Self::NotRequired => "NOT_REQUIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFIRMATION_REQUIREMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUIRED" => Some(Self::Required),
+                "NOT_REQUIRED" => Some(Self::NotRequired),
+                _ => None,
+            }
+        }
+    }
+    /// The method type of the tool.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MethodType {
+        /// Unspecified.
+        Unspecified = 0,
+        /// GET method.
+        Get = 1,
+        /// POST method.
+        Post = 2,
+        /// PUT method.
+        Put = 3,
+        /// DELETE method.
+        Delete = 4,
+        /// PATCH method.
+        Patch = 5,
+    }
+    impl MethodType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "METHOD_TYPE_UNSPECIFIED",
+                Self::Get => "GET",
+                Self::Post => "POST",
+                Self::Put => "PUT",
+                Self::Delete => "DELETE",
+                Self::Patch => "PATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METHOD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GET" => Some(Self::Get),
+                "POST" => Some(Self::Post),
+                "PUT" => Some(Self::Put),
+                "DELETE" => Some(Self::Delete),
+                "PATCH" => Some(Self::Patch),
+                _ => None,
+            }
+        }
+    }
+    /// Specification of the Tool.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Specification {
+        /// Vertex extension tool specification.
+        #[deprecated]
+        #[prost(message, tag = "4")]
+        ExtensionSpec(ExtensionTool),
+        /// Client side executed function specification.
+        #[prost(message, tag = "13")]
+        FunctionSpec(FunctionTool),
+        /// Integration connectors tool specification.
+        #[prost(message, tag = "18")]
+        ConnectorSpec(ConnectorTool),
+        /// OpenAPI tool.
+        #[prost(message, tag = "20")]
+        OpenApiSpec(OpenApiTool),
+    }
+}
+/// Generated client implementations.
+pub mod tools_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Tool Service for LLM powered Agent Assist. Tools can be used to interact with
+    /// remote APIs (e.g. fetching orders) to retrieve additional information as
+    /// input to LLM.
+    #[derive(Debug, Clone)]
+    pub struct ToolsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ToolsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ToolsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ToolsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ToolsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a tool.
+        pub async fn create_tool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateToolRequest>,
+        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Tools/CreateTool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "CreateTool"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a tool.
+        pub async fn get_tool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetToolRequest>,
+        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Tools/GetTool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "GetTool"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists tools.
+        pub async fn list_tools(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListToolsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListToolsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Tools/ListTools",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "ListTools"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a tool.
+        pub async fn delete_tool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteToolRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Tools/DeleteTool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "DeleteTool"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a tool.
+        pub async fn update_tool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateToolRequest>,
+        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Tools/UpdateTool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "UpdateTool"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Spec of CES app that the generator can choose from.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CesAppSpec {
+    /// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app  ID>`.
+    #[prost(string, tag = "1")]
+    pub ces_app: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the app requires human confirmation.
+    #[prost(enumeration = "tool::ConfirmationRequirement", tag = "2")]
+    pub confirmation_requirement: i32,
+}
+/// Spec of CES tool that the generator can choose from.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CesToolSpec {
+    /// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app  ID>/tools/<tool ID>`.
+    #[prost(string, tag = "1")]
+    pub ces_tool: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the tool requires human confirmation.
+    #[prost(enumeration = "tool::ConfirmationRequirement", tag = "2")]
+    pub confirmation_requirement: i32,
+}
 /// Represents a call of a specific tool's action with the specified inputs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolCall {
@@ -1052,7 +1998,7 @@ pub struct ToolCall {
     #[prost(enumeration = "tool_call::State", tag = "7")]
     pub state: i32,
     /// Specifies the source of this tool call.
-    #[prost(oneof = "tool_call::Source", tags = "1")]
+    #[prost(oneof = "tool_call::Source", tags = "1, 11, 12, 8")]
     pub source: ::core::option::Option<tool_call::Source>,
 }
 /// Nested message and enum types in `ToolCall`.
@@ -1108,6 +2054,21 @@ pub mod tool_call {
         /// `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.
         #[prost(string, tag = "1")]
         Tool(::prost::alloc::string::String),
+        /// Optional. CES tool name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.
+        #[prost(string, tag = "11")]
+        CesTool(::prost::alloc::string::String),
+        /// Optional. CES toolset name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.
+        #[prost(string, tag = "12")]
+        CesToolset(::prost::alloc::string::String),
+        /// Optional. CES app name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.
+        #[prost(string, tag = "8")]
+        CesApp(::prost::alloc::string::String),
     }
 }
 /// The result of calling a tool's action.
@@ -1123,7 +2084,7 @@ pub struct ToolCallResult {
     #[prost(string, tag = "9")]
     pub answer_record: ::prost::alloc::string::String,
     /// Specifies the source of this tool call.
-    #[prost(oneof = "tool_call_result::Source", tags = "1")]
+    #[prost(oneof = "tool_call_result::Source", tags = "1, 13, 12, 11")]
     pub source: ::core::option::Option<tool_call_result::Source>,
     /// The tool call's result.
     #[prost(oneof = "tool_call_result::Result", tags = "3, 5, 6")]
@@ -1146,6 +2107,21 @@ pub mod tool_call_result {
         /// `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.
         #[prost(string, tag = "1")]
         Tool(::prost::alloc::string::String),
+        /// Optional. CES toolset name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.
+        #[prost(string, tag = "13")]
+        CesToolset(::prost::alloc::string::String),
+        /// Optional. CES tool name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.
+        #[prost(string, tag = "12")]
+        CesTool(::prost::alloc::string::String),
+        /// Optional. CES app name for this call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.
+        #[prost(string, tag = "11")]
+        CesApp(::prost::alloc::string::String),
     }
     /// The tool call's result.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -1161,6 +2137,22 @@ pub mod tool_call_result {
         #[prost(string, tag = "6")]
         Content(::prost::alloc::string::String),
     }
+}
+/// A tool that is created from a toolset.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ToolsetTool {
+    /// Required. The name of the toolset to retrieve the schema for.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
+    #[prost(string, tag = "1")]
+    pub toolset: ::prost::alloc::string::String,
+    /// Optional. The operationId field of the OpenAPI endpoint. The operationId
+    /// must be present in the toolset's definition.
+    #[prost(string, tag = "2")]
+    pub operation_id: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the tool requires human confirmation.
+    #[prost(enumeration = "tool::ConfirmationRequirement", tag = "3")]
+    pub confirmation_requirement: i32,
 }
 /// Request message of CreateGenerator.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1563,6 +2555,15 @@ pub struct Generator {
     /// AI Coach feature.
     #[prost(message, optional, tag = "23")]
     pub suggestion_deduping_config: ::core::option::Option<SuggestionDedupingConfig>,
+    /// Optional. List of CES toolset specs that the generator can choose from.
+    #[prost(message, repeated, tag = "27")]
+    pub toolset_tools: ::prost::alloc::vec::Vec<ToolsetTool>,
+    /// Optional. List of CES tool specs that the generator can choose from.
+    #[prost(message, repeated, tag = "28")]
+    pub ces_tool_specs: ::prost::alloc::vec::Vec<CesToolSpec>,
+    /// Optional. List of CES app specs that the generator can choose from.
+    #[prost(message, repeated, tag = "29")]
+    pub ces_app_specs: ::prost::alloc::vec::Vec<CesAppSpec>,
     /// Required. Input context of the generator.
     #[prost(oneof = "generator::Context", tags = "11, 12, 13")]
     pub context: ::core::option::Option<generator::Context>,
@@ -7597,6 +8598,11 @@ pub struct StreamingAnalyzeContentRequest {
     /// return partial responses.
     #[prost(bool, tag = "12")]
     pub enable_partial_automated_agent_reply: bool,
+    /// Optional. If multiple uttereances are detected in the audio stream, process
+    /// them individually instead of stitching them together to form a single
+    /// utterance.
+    #[prost(bool, tag = "18")]
+    pub output_multiple_utterances: bool,
     /// If true, `StreamingAnalyzeContentResponse.debugging_info` will get
     /// populated.
     #[prost(bool, tag = "19")]
@@ -8354,6 +9360,393 @@ pub struct SuggestKnowledgeAssistResponse {
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
+/// Debug information related to ingested context reference.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestedContextReferenceDebugInfo {
+    /// Indicates if the project is allowlisted to use ingested context
+    /// reference.
+    #[prost(bool, tag = "1")]
+    pub project_not_allowlisted: bool,
+    /// The status of context_reference retrieval from database.
+    #[prost(bool, tag = "2")]
+    pub context_reference_retrieved: bool,
+    /// Parameters ingested from the context reference.
+    #[prost(message, repeated, tag = "3")]
+    pub ingested_parameters_debug_info: ::prost::alloc::vec::Vec<
+        ingested_context_reference_debug_info::IngestedParameterDebugInfo,
+    >,
+}
+/// Nested message and enum types in `IngestedContextReferenceDebugInfo`.
+pub mod ingested_context_reference_debug_info {
+    /// Debug information related to ingested parameters from context reference.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IngestedParameterDebugInfo {
+        /// The name of the parameter in the context reference.
+        #[prost(string, tag = "1")]
+        pub parameter: ::prost::alloc::string::String,
+        /// The ingestion status for this specific parameter.
+        #[prost(
+            enumeration = "ingested_parameter_debug_info::IngestionStatus",
+            tag = "2"
+        )]
+        pub ingestion_status: i32,
+    }
+    /// Nested message and enum types in `IngestedParameterDebugInfo`.
+    pub mod ingested_parameter_debug_info {
+        /// Enum representing the various states of parameter ingestion.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum IngestionStatus {
+            /// Default value, indicates that the ingestion status is not specified.
+            Unspecified = 0,
+            /// Indicates that the parameter was successfully ingested.
+            Succeeded = 1,
+            /// Indicates that the parameter was not available for ingestion.
+            ContextNotAvailable = 2,
+            /// Indicates that there was a failure parsing the parameter content.
+            ParseFailed = 3,
+            /// Indicates that the context reference had an unexpected number of
+            /// content entries as Context reference should only have one entry.
+            InvalidEntry = 4,
+            /// Indicates that the context reference content was not in the expected
+            /// format (e.g., JSON).
+            InvalidFormat = 5,
+            /// Indicates that the context reference language does not match the
+            /// conversation language.
+            LanguageMismatch = 6,
+        }
+        impl IngestionStatus {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "INGESTION_STATUS_UNSPECIFIED",
+                    Self::Succeeded => "INGESTION_STATUS_SUCCEEDED",
+                    Self::ContextNotAvailable => "INGESTION_STATUS_CONTEXT_NOT_AVAILABLE",
+                    Self::ParseFailed => "INGESTION_STATUS_PARSE_FAILED",
+                    Self::InvalidEntry => "INGESTION_STATUS_INVALID_ENTRY",
+                    Self::InvalidFormat => "INGESTION_STATUS_INVALID_FORMAT",
+                    Self::LanguageMismatch => "INGESTION_STATUS_LANGUAGE_MISMATCH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "INGESTION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INGESTION_STATUS_SUCCEEDED" => Some(Self::Succeeded),
+                    "INGESTION_STATUS_CONTEXT_NOT_AVAILABLE" => {
+                        Some(Self::ContextNotAvailable)
+                    }
+                    "INGESTION_STATUS_PARSE_FAILED" => Some(Self::ParseFailed),
+                    "INGESTION_STATUS_INVALID_ENTRY" => Some(Self::InvalidEntry),
+                    "INGESTION_STATUS_INVALID_FORMAT" => Some(Self::InvalidFormat),
+                    "INGESTION_STATUS_LANGUAGE_MISMATCH" => Some(Self::LanguageMismatch),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Message to represent the latency of the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceLatency {
+    /// A list of internal service latencies.
+    #[prost(message, repeated, tag = "1")]
+    pub internal_service_latencies: ::prost::alloc::vec::Vec<
+        service_latency::InternalServiceLatency,
+    >,
+}
+/// Nested message and enum types in `ServiceLatency`.
+pub mod service_latency {
+    /// Message to represent the latency of an internal service.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InternalServiceLatency {
+        /// The name of the internal service.
+        #[prost(string, tag = "1")]
+        pub step: ::prost::alloc::string::String,
+        /// The latency of the internal service in milliseconds.
+        #[prost(float, tag = "2")]
+        pub latency_ms: f32,
+        /// The start time of the internal service.
+        #[prost(message, optional, tag = "3")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The completion time of the internal service.
+        #[prost(message, optional, tag = "4")]
+        pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+}
+/// Debug information related to Knowledge Assist feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KnowledgeAssistDebugInfo {
+    /// Reason for query generation.
+    #[prost(
+        enumeration = "knowledge_assist_debug_info::QueryGenerationFailureReason",
+        tag = "1"
+    )]
+    pub query_generation_failure_reason: i32,
+    /// Reason for query categorization.
+    #[prost(
+        enumeration = "knowledge_assist_debug_info::QueryCategorizationFailureReason",
+        tag = "2"
+    )]
+    pub query_categorization_failure_reason: i32,
+    /// Response reason from datastore which indicates data serving status or
+    /// answer quality degradation.
+    #[prost(enumeration = "DatastoreResponseReason", tag = "3")]
+    pub datastore_response_reason: i32,
+    /// Configured behaviors for Knowedge Assist.
+    #[prost(message, optional, tag = "4")]
+    pub knowledge_assist_behavior: ::core::option::Option<
+        knowledge_assist_debug_info::KnowledgeAssistBehavior,
+    >,
+    /// Information about parameters ingested for search knowledge.
+    #[prost(message, optional, tag = "5")]
+    pub ingested_context_reference_debug_info: ::core::option::Option<
+        IngestedContextReferenceDebugInfo,
+    >,
+    /// The latency of the service.
+    #[prost(message, optional, tag = "6")]
+    pub service_latency: ::core::option::Option<ServiceLatency>,
+}
+/// Nested message and enum types in `KnowledgeAssistDebugInfo`.
+pub mod knowledge_assist_debug_info {
+    /// Configured behaviors for Knowedge Assist.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct KnowledgeAssistBehavior {
+        /// Whether data store agent rewriter was turned off for the request.
+        #[prost(bool, tag = "1")]
+        pub answer_generation_rewriter_on: bool,
+        /// Whether end_user_metadata is included in the data store agent call.
+        #[prost(bool, tag = "2")]
+        pub end_user_metadata_included: bool,
+        /// Whether customers configured to return query only in the
+        /// conversation profile.
+        #[prost(bool, tag = "4")]
+        pub return_query_only: bool,
+        /// Whether customers configured to use pubsub to deliver.
+        #[prost(bool, tag = "5")]
+        pub use_pubsub_delivery: bool,
+        /// Whether customers configured to disable the synchronous delivery of
+        /// Knowedge Assist response.
+        #[prost(bool, tag = "6")]
+        pub disable_sync_delivery: bool,
+        /// Whether previously suggested queries are included in the query generation
+        /// process.
+        #[prost(bool, tag = "7")]
+        pub previous_queries_included: bool,
+        /// Translated message is included in query generation process.
+        #[prost(bool, tag = "8")]
+        pub use_translated_message: bool,
+        /// Safety filter is adjusted by user.
+        #[prost(bool, tag = "9")]
+        pub use_custom_safety_filter_level: bool,
+        /// Conversation transcript has mixed languages.
+        #[prost(bool, tag = "10")]
+        pub conversation_transcript_has_mixed_languages: bool,
+        /// Whether the agent language from the translation generator mismatches the
+        /// end-user language.
+        #[prost(bool, tag = "11")]
+        pub query_generation_agent_language_mismatch: bool,
+        /// Whether the end-user language from the translation generator mismatches
+        /// the end-user language.
+        #[prost(bool, tag = "12")]
+        pub query_generation_end_user_language_mismatch: bool,
+        /// This field indicates whether third party connectors are enabled for the
+        /// project
+        #[prost(bool, tag = "13")]
+        pub third_party_connector_allowed: bool,
+        /// Indicates that the query generation model generated multiple queries.
+        #[prost(bool, tag = "14")]
+        pub multiple_queries_generated: bool,
+        /// Indicates that the generated query contains search context.
+        #[prost(bool, tag = "15")]
+        pub query_contained_search_context: bool,
+        /// Indicates that invalid items were skipped when parsing the LLM response.
+        #[prost(bool, tag = "16")]
+        pub invalid_items_query_suggestion_skipped: bool,
+        /// True if the primary suggested query was redacted and replaced by an
+        /// additional query.
+        #[prost(bool, tag = "17")]
+        pub primary_query_redacted_and_replaced: bool,
+        /// The number of search contexts appended to the query.
+        #[prost(int32, tag = "18")]
+        pub appended_search_context_count: i32,
+    }
+    /// Reason for query generation failure.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QueryGenerationFailureReason {
+        /// Default value.
+        Unspecified = 0,
+        /// Query generation is blocked due to out of quota.
+        QueryGenerationOutOfQuota = 1,
+        /// Call to Knowedge Assist query generation model fails.
+        QueryGenerationFailed = 2,
+        /// Query generation model decides that there is no new topic change or
+        /// there has been similar queries generated in the previous turns.
+        QueryGenerationNoQueryGenerated = 3,
+        /// Knowedge Assist generated query is blocked by RAI (Responsible AI).
+        QueryGenerationRaiFailed = 4,
+        /// Query generation is blocked by Knowledge Assist conversation profile
+        /// level / agent id level filtering.
+        NotInAllowlist = 5,
+        /// The generated query is blocked due to redaction.
+        QueryGenerationQueryRedacted = 6,
+        /// Query generation failed due to LLM response parse failure.
+        QueryGenerationLlmResponseParseFailed = 10,
+        /// The conversation has no messages.
+        QueryGenerationEmptyConversation = 11,
+        /// The last message in the conversation is empty.
+        QueryGenerationEmptyLastMessage = 12,
+        /// The trigger event condition is not met.
+        /// This occurs in the following scenarios:
+        ///
+        /// 1. The trigger_event is CUSTOMER_MESSAGE or UNSPECIFIED, but the last
+        ///    message is not from the customer.
+        /// 1. The trigger_event is AGENT_MESSAGE, but the last message is not from
+        ///    the agent.
+        QueryGenerationTriggeringEventConditionNotMet = 13,
+    }
+    impl QueryGenerationFailureReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUERY_GENERATION_FAILURE_REASON_UNSPECIFIED",
+                Self::QueryGenerationOutOfQuota => "QUERY_GENERATION_OUT_OF_QUOTA",
+                Self::QueryGenerationFailed => "QUERY_GENERATION_FAILED",
+                Self::QueryGenerationNoQueryGenerated => {
+                    "QUERY_GENERATION_NO_QUERY_GENERATED"
+                }
+                Self::QueryGenerationRaiFailed => "QUERY_GENERATION_RAI_FAILED",
+                Self::NotInAllowlist => "NOT_IN_ALLOWLIST",
+                Self::QueryGenerationQueryRedacted => "QUERY_GENERATION_QUERY_REDACTED",
+                Self::QueryGenerationLlmResponseParseFailed => {
+                    "QUERY_GENERATION_LLM_RESPONSE_PARSE_FAILED"
+                }
+                Self::QueryGenerationEmptyConversation => {
+                    "QUERY_GENERATION_EMPTY_CONVERSATION"
+                }
+                Self::QueryGenerationEmptyLastMessage => {
+                    "QUERY_GENERATION_EMPTY_LAST_MESSAGE"
+                }
+                Self::QueryGenerationTriggeringEventConditionNotMet => {
+                    "QUERY_GENERATION_TRIGGERING_EVENT_CONDITION_NOT_MET"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_GENERATION_FAILURE_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUERY_GENERATION_OUT_OF_QUOTA" => Some(Self::QueryGenerationOutOfQuota),
+                "QUERY_GENERATION_FAILED" => Some(Self::QueryGenerationFailed),
+                "QUERY_GENERATION_NO_QUERY_GENERATED" => {
+                    Some(Self::QueryGenerationNoQueryGenerated)
+                }
+                "QUERY_GENERATION_RAI_FAILED" => Some(Self::QueryGenerationRaiFailed),
+                "NOT_IN_ALLOWLIST" => Some(Self::NotInAllowlist),
+                "QUERY_GENERATION_QUERY_REDACTED" => {
+                    Some(Self::QueryGenerationQueryRedacted)
+                }
+                "QUERY_GENERATION_LLM_RESPONSE_PARSE_FAILED" => {
+                    Some(Self::QueryGenerationLlmResponseParseFailed)
+                }
+                "QUERY_GENERATION_EMPTY_CONVERSATION" => {
+                    Some(Self::QueryGenerationEmptyConversation)
+                }
+                "QUERY_GENERATION_EMPTY_LAST_MESSAGE" => {
+                    Some(Self::QueryGenerationEmptyLastMessage)
+                }
+                "QUERY_GENERATION_TRIGGERING_EVENT_CONDITION_NOT_MET" => {
+                    Some(Self::QueryGenerationTriggeringEventConditionNotMet)
+                }
+                _ => None,
+            }
+        }
+    }
+    /// Reason for query categorization failure.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QueryCategorizationFailureReason {
+        /// Default value.
+        Unspecified = 0,
+        /// Vertex AI Search config supplied for query categorization is invalid.
+        QueryCategorizationInvalidConfig = 1,
+        /// Vertex AI Search result does not contain a query categorization result.
+        QueryCategorizationResultNotFound = 2,
+        /// Vertex AI Search call fails.
+        QueryCategorizationFailed = 3,
+    }
+    impl QueryCategorizationFailureReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUERY_CATEGORIZATION_FAILURE_REASON_UNSPECIFIED",
+                Self::QueryCategorizationInvalidConfig => {
+                    "QUERY_CATEGORIZATION_INVALID_CONFIG"
+                }
+                Self::QueryCategorizationResultNotFound => {
+                    "QUERY_CATEGORIZATION_RESULT_NOT_FOUND"
+                }
+                Self::QueryCategorizationFailed => "QUERY_CATEGORIZATION_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_CATEGORIZATION_FAILURE_REASON_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "QUERY_CATEGORIZATION_INVALID_CONFIG" => {
+                    Some(Self::QueryCategorizationInvalidConfig)
+                }
+                "QUERY_CATEGORIZATION_RESULT_NOT_FOUND" => {
+                    Some(Self::QueryCategorizationResultNotFound)
+                }
+                "QUERY_CATEGORIZATION_FAILED" => Some(Self::QueryCategorizationFailed),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents a Knowledge Assist answer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KnowledgeAssistAnswer {
@@ -8371,6 +9764,9 @@ pub struct KnowledgeAssistAnswer {
     /// Format: `projects/<Project ID>/locations/<location ID>/answer  Records/<Answer Record ID>`.
     #[prost(string, tag = "3")]
     pub answer_record: ::prost::alloc::string::String,
+    /// Debug information related to Knowledge Assist feature.
+    #[prost(message, optional, tag = "7")]
+    pub knowledge_assist_debug_info: ::core::option::Option<KnowledgeAssistDebugInfo>,
 }
 /// Nested message and enum types in `KnowledgeAssistAnswer`.
 pub mod knowledge_assist_answer {
@@ -8437,6 +9833,72 @@ pub mod knowledge_assist_answer {
             /// Populated if the prediction was Generative.
             #[prost(message, tag = "4")]
             GenerativeSource(GenerativeSource),
+        }
+    }
+}
+/// Response reason from datastore which indicates data serving status or
+/// answer quality degradation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DatastoreResponseReason {
+    /// Default value.
+    Unspecified = 0,
+    /// No specific response reason from datastore.
+    None = 1,
+    /// Search is blocked due to out of quota.
+    SearchOutOfQuota = 2,
+    /// Search returns empty results.
+    SearchEmptyResults = 3,
+    /// Generative AI is disabled.
+    AnswerGenerationGenAiDisabled = 4,
+    /// Answer generation is blocked due to out of quota.
+    AnswerGenerationOutOfQuota = 5,
+    /// Answer generation encounters an error.
+    AnswerGenerationError = 6,
+    /// Answer generation does not have enough information to generate answer.
+    AnswerGenerationNotEnoughInfo = 7,
+    /// Answer generation is blocked by RAI (Responsible AI) failure.
+    AnswerGenerationRaiFailed = 8,
+    /// Answer generation is not grounded on reliable sources.
+    AnswerGenerationNotGrounded = 9,
+}
+impl DatastoreResponseReason {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DATASTORE_RESPONSE_REASON_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::SearchOutOfQuota => "SEARCH_OUT_OF_QUOTA",
+            Self::SearchEmptyResults => "SEARCH_EMPTY_RESULTS",
+            Self::AnswerGenerationGenAiDisabled => "ANSWER_GENERATION_GEN_AI_DISABLED",
+            Self::AnswerGenerationOutOfQuota => "ANSWER_GENERATION_OUT_OF_QUOTA",
+            Self::AnswerGenerationError => "ANSWER_GENERATION_ERROR",
+            Self::AnswerGenerationNotEnoughInfo => "ANSWER_GENERATION_NOT_ENOUGH_INFO",
+            Self::AnswerGenerationRaiFailed => "ANSWER_GENERATION_RAI_FAILED",
+            Self::AnswerGenerationNotGrounded => "ANSWER_GENERATION_NOT_GROUNDED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATASTORE_RESPONSE_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "NONE" => Some(Self::None),
+            "SEARCH_OUT_OF_QUOTA" => Some(Self::SearchOutOfQuota),
+            "SEARCH_EMPTY_RESULTS" => Some(Self::SearchEmptyResults),
+            "ANSWER_GENERATION_GEN_AI_DISABLED" => {
+                Some(Self::AnswerGenerationGenAiDisabled)
+            }
+            "ANSWER_GENERATION_OUT_OF_QUOTA" => Some(Self::AnswerGenerationOutOfQuota),
+            "ANSWER_GENERATION_ERROR" => Some(Self::AnswerGenerationError),
+            "ANSWER_GENERATION_NOT_ENOUGH_INFO" => {
+                Some(Self::AnswerGenerationNotEnoughInfo)
+            }
+            "ANSWER_GENERATION_RAI_FAILED" => Some(Self::AnswerGenerationRaiFailed),
+            "ANSWER_GENERATION_NOT_GROUNDED" => Some(Self::AnswerGenerationNotGrounded),
+            _ => None,
         }
     }
 }
@@ -10081,6 +11543,30 @@ pub mod human_agent_assistant_config {
         /// \[ConversationEvent.new_message_payload.SentimentAnalysisResult\]\[google.cloud.dialogflow.v2.ConversationEvent.new_message_payload\].
         #[prost(bool, tag = "3")]
         pub enable_sentiment_analysis: bool,
+        /// Optional. Enables sentiment analysis for audio input and conversation
+        /// messages. If unspecified, defaults to false. If this flag is set to true,
+        /// other 'enable_sentiment_analysis' fields will be ignored.
+        ///
+        /// Sentiment analysis inspects user input and identifies the prevailing
+        /// subjective opinion, especially to determine a user's attitude as
+        /// positive, negative, or neutral.
+        /// <https://cloud.google.com/natural-language/docs/basics#sentiment_analysis>
+        /// For
+        /// \[Participants.StreamingAnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent\]
+        /// method, result will be in
+        /// \[StreamingAnalyzeContentResponse.message.SentimentAnalysisResult\]\[google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.message\].
+        /// For
+        /// \[Participants.AnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.AnalyzeContent\]
+        /// method, result will be in
+        /// \[AnalyzeContentResponse.message.SentimentAnalysisResult\]\[google.cloud.dialogflow.v2.AnalyzeContentResponse.message\]
+        /// For
+        /// \[Conversations.ListMessages\]\[google.cloud.dialogflow.v2.Conversations.ListMessages\]
+        /// method, result will be in
+        /// \[ListMessagesResponse.messages.SentimentAnalysisResult\]\[google.cloud.dialogflow.v2.ListMessagesResponse.messages\]
+        /// If Pub/Sub notification is configured, result will be in
+        /// \[ConversationEvent.new_message_payload.SentimentAnalysisResult\]\[google.cloud.dialogflow.v2.ConversationEvent.new_message_payload\].
+        #[prost(bool, tag = "5")]
+        pub enable_sentiment_analysis_v3: bool,
     }
 }
 /// Defines the hand off to a live agent, typically on which external agent
@@ -10752,11 +12238,23 @@ pub struct Conversation {
     pub telephony_connection_info: ::core::option::Option<
         conversation::TelephonyConnectionInfo,
     >,
+    /// Optional. Output only. The initial conversation profile to be used to
+    /// configure this conversation, which is a copy of the conversation profile
+    /// config read at conversation creation time.
+    #[prost(message, optional, tag = "15")]
+    pub initial_conversation_profile: ::core::option::Option<ConversationProfile>,
     /// Output only. The context reference updates provided by external systems.
     #[prost(map = "string, message", tag = "17")]
     pub ingested_context_references: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         conversation::ContextReference,
+    >,
+    /// Output only. A map with generator name as key and generator context as
+    /// value.
+    #[prost(map = "string, message", tag = "18")]
+    pub initial_generator_contexts: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        conversation::GeneratorContext,
     >,
 }
 /// Nested message and enum types in `Conversation`.
@@ -10930,6 +12428,77 @@ pub mod conversation {
                     "UPDATE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                     "APPEND" => Some(Self::Append),
                     "OVERWRITE" => Some(Self::Overwrite),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Represents the context of a generator.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GeneratorContext {
+        /// Output only. The type of the generator.
+        #[prost(enumeration = "generator_context::GeneratorType", tag = "1")]
+        pub generator_type: i32,
+    }
+    /// Nested message and enum types in `GeneratorContext`.
+    pub mod generator_context {
+        /// The available generator types.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum GeneratorType {
+            /// Unspecified generator type.
+            Unspecified = 0,
+            /// Free form generator type.
+            FreeForm = 1,
+            /// Agent coaching generator type.
+            AgentCoaching = 2,
+            /// Summarization generator type.
+            Summarization = 3,
+            /// Translation generator type.
+            Translation = 4,
+            /// Agent feedback generator type.
+            AgentFeedback = 5,
+            /// Customer message generation generator type.
+            CustomerMessageGeneration = 6,
+        }
+        impl GeneratorType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "GENERATOR_TYPE_UNSPECIFIED",
+                    Self::FreeForm => "FREE_FORM",
+                    Self::AgentCoaching => "AGENT_COACHING",
+                    Self::Summarization => "SUMMARIZATION",
+                    Self::Translation => "TRANSLATION",
+                    Self::AgentFeedback => "AGENT_FEEDBACK",
+                    Self::CustomerMessageGeneration => "CUSTOMER_MESSAGE_GENERATION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "GENERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "FREE_FORM" => Some(Self::FreeForm),
+                    "AGENT_COACHING" => Some(Self::AgentCoaching),
+                    "SUMMARIZATION" => Some(Self::Summarization),
+                    "TRANSLATION" => Some(Self::Translation),
+                    "AGENT_FEEDBACK" => Some(Self::AgentFeedback),
+                    "CUSTOMER_MESSAGE_GENERATION" => {
+                        Some(Self::CustomerMessageGeneration)
+                    }
                     _ => None,
                 }
             }
@@ -11250,6 +12819,10 @@ pub mod suggest_conversation_summary_response {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
+        /// Same as text_sections, but in an order that is consistent with the order
+        /// of the sections in the generator.
+        #[prost(message, repeated, tag = "6")]
+        pub sorted_text_sections: ::prost::alloc::vec::Vec<summary::SummarySection>,
         /// The name of the answer record. Format:
         /// "projects/<Project ID>/answerRecords/<Answer Record ID>"
         #[prost(string, tag = "3")]
@@ -11258,6 +12831,19 @@ pub mod suggest_conversation_summary_response {
         /// a baseline model was not used to generate this summary.
         #[prost(string, tag = "5")]
         pub baseline_model_version: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `Summary`.
+    pub mod summary {
+        /// A component of the generated summary.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SummarySection {
+            /// Output only. Name of the section.
+            #[prost(string, tag = "1")]
+            pub section: ::prost::alloc::string::String,
+            /// Output only. Summary text for the section.
+            #[prost(string, tag = "2")]
+            pub summary: ::prost::alloc::string::String,
+        }
     }
 }
 /// The request message for
@@ -11796,6 +13382,45 @@ pub mod search_knowledge_request {
         }
     }
 }
+/// Debug information related to SearchKnowledge feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchKnowledgeDebugInfo {
+    /// Response reason from datastore which indicates data serving status or
+    /// answer quality degradation.
+    #[prost(enumeration = "DatastoreResponseReason", tag = "1")]
+    pub datastore_response_reason: i32,
+    /// Configured behaviors for SearchKnowledge.
+    #[prost(message, optional, tag = "2")]
+    pub search_knowledge_behavior: ::core::option::Option<
+        search_knowledge_debug_info::SearchKnowledgeBehavior,
+    >,
+    /// Information about parameters ingested for search knowledge.
+    #[prost(message, optional, tag = "3")]
+    pub ingested_context_reference_debug_info: ::core::option::Option<
+        IngestedContextReferenceDebugInfo,
+    >,
+    /// The latency of the service.
+    #[prost(message, optional, tag = "4")]
+    pub service_latency: ::core::option::Option<ServiceLatency>,
+}
+/// Nested message and enum types in `SearchKnowledgeDebugInfo`.
+pub mod search_knowledge_debug_info {
+    /// Configured behaviors for SearchKnowledge.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SearchKnowledgeBehavior {
+        /// Whether data store agent rewriter was turned on for the request.
+        #[prost(bool, tag = "1")]
+        pub answer_generation_rewriter_on: bool,
+        /// Whether end_user_metadata is included in the data store agent call.
+        #[prost(bool, tag = "2")]
+        pub end_user_metadata_included: bool,
+        /// This field indicates whether third party connectors are enabled for the
+        /// project. Note that this field only indicates if the project is
+        /// allowlisted for connectors.
+        #[prost(bool, tag = "4")]
+        pub third_party_connector_allowed: bool,
+    }
+}
 /// The response message for
 /// \[Conversations.SearchKnowledge\]\[google.cloud.dialogflow.v2.Conversations.SearchKnowledge\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11807,6 +13432,9 @@ pub struct SearchKnowledgeResponse {
     /// The rewritten query used to search knowledge.
     #[prost(string, tag = "3")]
     pub rewritten_query: ::prost::alloc::string::String,
+    /// Debug info for SearchKnowledge.
+    #[prost(message, optional, tag = "4")]
+    pub search_knowledge_debug_info: ::core::option::Option<SearchKnowledgeDebugInfo>,
 }
 /// Represents a SearchKnowledge answer.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17697,932 +19325,6 @@ pub mod sip_trunks_client {
                         "google.cloud.dialogflow.v2.SipTrunks",
                         "UpdateSipTrunk",
                     ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Request message of CreateTool.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateToolRequest {
-    /// Required. The project/location to create tool for. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The tool to create.
-    #[prost(message, optional, tag = "2")]
-    pub tool: ::core::option::Option<Tool>,
-    /// Optional. The ID to use for the tool, which will become the final
-    /// component of the tool's resource name.
-    ///
-    /// The tool ID must be compliant with the regression formula
-    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
-    /// If the field is not provide, an Id will be auto-generated.
-    /// If the field is provided, the caller is responsible for
-    ///
-    /// 1. the uniqueness of the ID, otherwise the request will be rejected.
-    /// 1. the consistency for whether to use custom ID or not under a project to
-    ///    better ensure uniqueness.
-    #[prost(string, tag = "3")]
-    pub tool_id: ::prost::alloc::string::String,
-}
-/// Request message of GetTool.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetToolRequest {
-    /// Required. The tool resource name to retrieve. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message of ListTools.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListToolsRequest {
-    /// Required. The project/location to list tools for. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of conversation models to return in a single page.
-    /// Default to 10.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous list request.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response of ListTools.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListToolsResponse {
-    /// List of tools retrieved.
-    #[prost(message, repeated, tag = "1")]
-    pub tools: ::prost::alloc::vec::Vec<Tool>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request of DeleteTool.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteToolRequest {
-    /// Required. The tool resource name to delete. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request of UpdateTool.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateToolRequest {
-    /// Required. The tool to update.
-    /// The name field of tool is to identify the tool to
-    /// update.
-    #[prost(message, optional, tag = "1")]
-    pub tool: ::core::option::Option<Tool>,
-    /// Optional. The list of fields to update.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Represents a tool.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Tool {
-    /// Output only. Identifier. The resource name of the tool. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/tools/<Tool ID>`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. A human readable short name of the tool, which should be unique
-    /// within the project. It should only contain letters, numbers, and
-    /// underscores, and it will be used by LLM to identify the tool.
-    #[prost(string, tag = "2")]
-    pub tool_key: ::prost::alloc::string::String,
-    /// Optional. A human readable short name of the tool, to be shown on the UI.
-    #[prost(string, tag = "19")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. A human readable description of the tool.
-    #[prost(string, tag = "3")]
-    pub description: ::prost::alloc::string::String,
-    /// Optional. Confirmation requirement for the actions. Each key is an action
-    /// name in the action_schemas. If an action's confirmation requirement is
-    /// unspecified (either the key is not present, or its value is
-    /// CONFIRMATION_REQUIREMENT_UNSPECIFIED), the requirement is inferred from the
-    /// action's method_type - confirmation is not required if and only if
-    /// method_type is GET.
-    #[prost(map = "string, enumeration(tool::ConfirmationRequirement)", tag = "17")]
-    pub action_confirmation_requirement: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        i32,
-    >,
-    /// Output only. Creation time of this tool.
-    #[prost(message, optional, tag = "5")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Update time of this tool.
-    #[prost(message, optional, tag = "6")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. A read only boolean field reflecting Zone Separation
-    /// status of the tool. If the field is absent, it means the status is unknown.
-    #[prost(bool, optional, tag = "14")]
-    pub satisfies_pzs: ::core::option::Option<bool>,
-    /// Output only. A read only boolean field reflecting Zone Isolation status
-    /// of the tool. If the field is absent, it means the status is unknown.
-    #[prost(bool, optional, tag = "15")]
-    pub satisfies_pzi: ::core::option::Option<bool>,
-    /// Specification of the Tool.
-    #[prost(oneof = "tool::Specification", tags = "4, 13, 18, 20")]
-    pub specification: ::core::option::Option<tool::Specification>,
-}
-/// Nested message and enum types in `Tool`.
-pub mod tool {
-    /// An ExtensionTool is a way to use Vertex Extensions as a tool.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct ExtensionTool {
-        /// Required. The full name of the referenced vertex extension.
-        /// Format:
-        /// `projects/{project}/locations/{location}/extensions/{extension}`
-        #[prost(string, tag = "1")]
-        pub name: ::prost::alloc::string::String,
-    }
-    /// A Function tool describes the functions to be invoked on the client side.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FunctionTool {
-        /// Optional. The JSON schema is encapsulated in a
-        /// \[google.protobuf.Struct\]\[google.protobuf.Struct\] to describe the input of
-        /// the function. This input is a JSON object that contains the function's
-        /// parameters as properties of the object.
-        #[prost(message, optional, tag = "1")]
-        pub input_schema: ::core::option::Option<::prost_types::Struct>,
-        /// Optional. The JSON schema is encapsulated in a
-        /// \[google.protobuf.Struct\]\[google.protobuf.Struct\] to describe the output
-        /// of the function. This output is a JSON object that contains the
-        /// function's parameters as properties of the object.
-        #[prost(message, optional, tag = "2")]
-        pub output_schema: ::core::option::Option<::prost_types::Struct>,
-        /// Optional. The method type of the function. If not specified, the default
-        /// value is GET.
-        #[prost(enumeration = "MethodType", tag = "4")]
-        pub method_type: i32,
-    }
-    /// An OpenAPI tool is a way to provide the Tool specifications in the Open API
-    /// schema format.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct OpenApiTool {
-        /// Optional. Authentication information required by the API.
-        #[prost(message, optional, tag = "2")]
-        pub authentication: ::core::option::Option<Authentication>,
-        /// Optional. TLS configuration for the HTTPS verification.
-        #[prost(message, optional, tag = "3")]
-        pub tls_config: ::core::option::Option<TlsConfig>,
-        /// Optional. Service Directory configuration.
-        #[prost(message, optional, tag = "4")]
-        pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
-        /// Schema representation.
-        #[prost(oneof = "open_api_tool::Schema", tags = "1")]
-        pub schema: ::core::option::Option<open_api_tool::Schema>,
-    }
-    /// Nested message and enum types in `OpenApiTool`.
-    pub mod open_api_tool {
-        /// Schema representation.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-        pub enum Schema {
-            /// Required. The OpenAPI schema specified as a text.
-            #[prost(string, tag = "1")]
-            TextSchema(::prost::alloc::string::String),
-        }
-    }
-    /// A ConnectorTool enabling using Integration Connectors Connections as tools.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConnectorTool {
-        /// Required. The full resource name of the referenced Integration Connectors
-        /// Connection. Format: 'projects/*/locations/*/connections/\*'
-        #[prost(string, tag = "1")]
-        pub name: ::prost::alloc::string::String,
-        /// Required. Actions for the tool to use.
-        #[prost(message, repeated, tag = "2")]
-        pub actions: ::prost::alloc::vec::Vec<connector_tool::Action>,
-    }
-    /// Nested message and enum types in `ConnectorTool`.
-    pub mod connector_tool {
-        /// Configuration of a Connection operation for the tool to use.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct Action {
-            /// Optional. Entity fields to use as inputs for the operation.
-            /// If no fields are specified, all fields of the Entity will be used.
-            #[prost(string, repeated, tag = "2")]
-            pub input_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Optional. Entity fields to return from the operation.
-            /// If no fields are specified, all fields of the Entity will be returned.
-            #[prost(string, repeated, tag = "3")]
-            pub output_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Required. Specification for an action to configure for the tool to use.
-            #[prost(oneof = "action::ActionSpec", tags = "4, 5")]
-            pub action_spec: ::core::option::Option<action::ActionSpec>,
-        }
-        /// Nested message and enum types in `Action`.
-        pub mod action {
-            /// Entity CRUD operation specification.
-            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-            pub struct EntityOperation {
-                /// Required. ID of the entity.
-                #[prost(string, tag = "1")]
-                pub entity_id: ::prost::alloc::string::String,
-                /// Required. Operation to perform on the entity.
-                #[prost(enumeration = "entity_operation::OperationType", tag = "2")]
-                pub operation: i32,
-            }
-            /// Nested message and enum types in `EntityOperation`.
-            pub mod entity_operation {
-                /// The operation to perform on the entity.
-                #[derive(
-                    Clone,
-                    Copy,
-                    Debug,
-                    PartialEq,
-                    Eq,
-                    Hash,
-                    PartialOrd,
-                    Ord,
-                    ::prost::Enumeration
-                )]
-                #[repr(i32)]
-                pub enum OperationType {
-                    /// Operation type unspecified. Invalid, ConnectorTool create/update
-                    /// will fail.
-                    Unspecified = 0,
-                    /// List operation.
-                    List = 1,
-                    /// Get operation.
-                    Get = 2,
-                    /// Create operation.
-                    Create = 3,
-                    /// Update operation.
-                    Update = 4,
-                    /// Delete operation.
-                    Delete = 5,
-                }
-                impl OperationType {
-                    /// String value of the enum field names used in the ProtoBuf definition.
-                    ///
-                    /// The values are not transformed in any way and thus are considered stable
-                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-                    pub fn as_str_name(&self) -> &'static str {
-                        match self {
-                            Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-                            Self::List => "LIST",
-                            Self::Get => "GET",
-                            Self::Create => "CREATE",
-                            Self::Update => "UPDATE",
-                            Self::Delete => "DELETE",
-                        }
-                    }
-                    /// Creates an enum from field names used in the ProtoBuf definition.
-                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                        match value {
-                            "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                            "LIST" => Some(Self::List),
-                            "GET" => Some(Self::Get),
-                            "CREATE" => Some(Self::Create),
-                            "UPDATE" => Some(Self::Update),
-                            "DELETE" => Some(Self::Delete),
-                            _ => None,
-                        }
-                    }
-                }
-            }
-            /// Required. Specification for an action to configure for the tool to use.
-            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-            pub enum ActionSpec {
-                /// ID of a Connection action for the tool to use.
-                #[prost(string, tag = "4")]
-                ConnectionActionId(::prost::alloc::string::String),
-                /// Entity operation configuration for the tool to use.
-                #[prost(message, tag = "5")]
-                EntityOperation(EntityOperation),
-            }
-        }
-    }
-    /// Authentication information required for API calls
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct Authentication {
-        /// The auth configuration.
-        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4")]
-        pub auth_config: ::core::option::Option<authentication::AuthConfig>,
-    }
-    /// Nested message and enum types in `Authentication`.
-    pub mod authentication {
-        /// Config for authentication with API key.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct ApiKeyConfig {
-            /// Required. The parameter name or the header name of the API key.
-            /// E.g., If the API request is "<https://example.com/act?X-Api-Key=<API>
-            /// KEY>", "X-Api-Key" would be the parameter name.
-            #[prost(string, tag = "1")]
-            pub key_name: ::prost::alloc::string::String,
-            /// Optional. The API key. If the `secret_version_for_api_key` field is
-            /// set, this field will be ignored.
-            #[prost(string, tag = "2")]
-            pub api_key: ::prost::alloc::string::String,
-            /// Optional. The name of the SecretManager secret version resource storing
-            /// the API key. If this field is set, the `api_key` field will be ignored.
-            /// Format: `projects/{project}/secrets/{secret}/versions/{version}`
-            #[prost(string, tag = "4")]
-            pub secret_version_for_api_key: ::prost::alloc::string::String,
-            /// Required. Key location in the request.
-            #[prost(enumeration = "RequestLocation", tag = "3")]
-            pub request_location: i32,
-        }
-        /// Config for authentication with OAuth.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct OAuthConfig {
-            /// Required. OAuth grant types.
-            #[prost(enumeration = "o_auth_config::OauthGrantType", tag = "1")]
-            pub oauth_grant_type: i32,
-            /// Required. The client ID from the OAuth provider.
-            #[prost(string, tag = "2")]
-            pub client_id: ::prost::alloc::string::String,
-            /// Optional. The client secret from the OAuth provider. If the
-            /// `secret_version_for_client_secret` field is set, this field will be
-            /// ignored.
-            #[prost(string, tag = "3")]
-            pub client_secret: ::prost::alloc::string::String,
-            /// Optional. The name of the SecretManager secret version resource storing
-            /// the client secret. If this field is set, the `client_secret` field will
-            /// be ignored. Format:
-            /// `projects/{project}/secrets/{secret}/versions/{version}`
-            #[prost(string, tag = "6")]
-            pub secret_version_for_client_secret: ::prost::alloc::string::String,
-            /// Required. The token endpoint in the OAuth provider to exchange for an
-            /// access token.
-            #[prost(string, tag = "4")]
-            pub token_endpoint: ::prost::alloc::string::String,
-            /// Optional. The OAuth scopes to grant.
-            #[prost(string, repeated, tag = "5")]
-            pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        }
-        /// Nested message and enum types in `OAuthConfig`.
-        pub mod o_auth_config {
-            /// OAuth grant types. Only [client credential
-            /// grant](<https://oauth.net/2/grant-types/client-credentials>) is
-            /// supported.
-            #[derive(
-                Clone,
-                Copy,
-                Debug,
-                PartialEq,
-                Eq,
-                Hash,
-                PartialOrd,
-                Ord,
-                ::prost::Enumeration
-            )]
-            #[repr(i32)]
-            pub enum OauthGrantType {
-                /// Default value. This value is unused.
-                Unspecified = 0,
-                /// Represents the [client credential
-                /// flow](<https://oauth.net/2/grant-types/client-credentials>).
-                ClientCredential = 1,
-            }
-            impl OauthGrantType {
-                /// String value of the enum field names used in the ProtoBuf definition.
-                ///
-                /// The values are not transformed in any way and thus are considered stable
-                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-                pub fn as_str_name(&self) -> &'static str {
-                    match self {
-                        Self::Unspecified => "OAUTH_GRANT_TYPE_UNSPECIFIED",
-                        Self::ClientCredential => "CLIENT_CREDENTIAL",
-                    }
-                }
-                /// Creates an enum from field names used in the ProtoBuf definition.
-                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                    match value {
-                        "OAUTH_GRANT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                        "CLIENT_CREDENTIAL" => Some(Self::ClientCredential),
-                        _ => None,
-                    }
-                }
-            }
-        }
-        /// Config for auth using [Dialogflow service
-        /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct ServiceAgentAuthConfig {
-            /// Optional. Indicate the auth token type generated from the [Diglogflow
-            /// service
-            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
-            /// The generated token is sent in the Authorization header.
-            #[prost(
-                enumeration = "service_agent_auth_config::ServiceAgentAuth",
-                tag = "1"
-            )]
-            pub service_agent_auth: i32,
-        }
-        /// Nested message and enum types in `ServiceAgentAuthConfig`.
-        pub mod service_agent_auth_config {
-            /// Indicate the auth token type generated from the [Diaglogflow service
-            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
-            #[derive(
-                Clone,
-                Copy,
-                Debug,
-                PartialEq,
-                Eq,
-                Hash,
-                PartialOrd,
-                Ord,
-                ::prost::Enumeration
-            )]
-            #[repr(i32)]
-            pub enum ServiceAgentAuth {
-                /// Service agent auth type unspecified. Default to ID_TOKEN.
-                Unspecified = 0,
-                /// Use [ID
-                /// token](<https://cloud.google.com/docs/authentication/token-types#id>)
-                /// generated from service agent. This can be used to access Cloud
-                /// Function and Cloud Run after you grant Invoker role to
-                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
-                IdToken = 1,
-                /// Use [access
-                /// token](<https://cloud.google.com/docs/authentication/token-types#access>)
-                /// generated from service agent. This can be used to access other Google
-                /// Cloud APIs after you grant required roles to
-                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
-                AccessToken = 2,
-            }
-            impl ServiceAgentAuth {
-                /// String value of the enum field names used in the ProtoBuf definition.
-                ///
-                /// The values are not transformed in any way and thus are considered stable
-                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-                pub fn as_str_name(&self) -> &'static str {
-                    match self {
-                        Self::Unspecified => "SERVICE_AGENT_AUTH_UNSPECIFIED",
-                        Self::IdToken => "ID_TOKEN",
-                        Self::AccessToken => "ACCESS_TOKEN",
-                    }
-                }
-                /// Creates an enum from field names used in the ProtoBuf definition.
-                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                    match value {
-                        "SERVICE_AGENT_AUTH_UNSPECIFIED" => Some(Self::Unspecified),
-                        "ID_TOKEN" => Some(Self::IdToken),
-                        "ACCESS_TOKEN" => Some(Self::AccessToken),
-                        _ => None,
-                    }
-                }
-            }
-        }
-        /// Config for authentication using bearer token.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct BearerTokenConfig {
-            /// Optional. The text token appended to the text `Bearer` to the request
-            /// Authorization header.
-            /// [Session parameters
-            /// reference](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>)
-            /// can be used to pass the token dynamically, e.g.
-            /// `$session.params.parameter-id`.
-            #[prost(string, tag = "1")]
-            pub token: ::prost::alloc::string::String,
-            /// Optional. The name of the SecretManager secret version resource storing
-            /// the Bearer token. If this field is set, the `token` field will be
-            /// ignored. Format:
-            /// `projects/{project}/secrets/{secret}/versions/{version}`
-            #[prost(string, tag = "2")]
-            pub secret_version_for_token: ::prost::alloc::string::String,
-        }
-        /// The location of the API key in the request.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum RequestLocation {
-            /// Default value. This value is unused.
-            Unspecified = 0,
-            /// Represents the key in http header.
-            Header = 1,
-            /// Represents the key in query string.
-            QueryString = 2,
-        }
-        impl RequestLocation {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    Self::Unspecified => "REQUEST_LOCATION_UNSPECIFIED",
-                    Self::Header => "HEADER",
-                    Self::QueryString => "QUERY_STRING",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "REQUEST_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
-                    "HEADER" => Some(Self::Header),
-                    "QUERY_STRING" => Some(Self::QueryString),
-                    _ => None,
-                }
-            }
-        }
-        /// The auth configuration.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-        pub enum AuthConfig {
-            /// Config for API key auth.
-            #[prost(message, tag = "1")]
-            ApiKeyConfig(ApiKeyConfig),
-            /// Config for OAuth.
-            #[prost(message, tag = "2")]
-            OauthConfig(OAuthConfig),
-            /// Config for [Diglogflow service
-            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>)
-            /// auth.
-            #[prost(message, tag = "3")]
-            ServiceAgentAuthConfig(ServiceAgentAuthConfig),
-            /// Config for bearer token auth.
-            #[prost(message, tag = "4")]
-            BearerTokenConfig(BearerTokenConfig),
-        }
-    }
-    /// The TLS configuration.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TlsConfig {
-        /// Required. Specifies a list of allowed custom CA certificates for HTTPS
-        /// verification.
-        #[prost(message, repeated, tag = "1")]
-        pub ca_certs: ::prost::alloc::vec::Vec<tls_config::CaCert>,
-    }
-    /// Nested message and enum types in `TLSConfig`.
-    pub mod tls_config {
-        /// The CA certificate.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct CaCert {
-            /// Required. The name of the allowed custom CA certificates. This
-            /// can be used to disambiguate the custom CA certificates.
-            #[prost(string, tag = "1")]
-            pub display_name: ::prost::alloc::string::String,
-            /// Required. The allowed custom CA certificates (in DER format) for
-            /// HTTPS verification. This overrides the default SSL trust store. If this
-            /// is empty or unspecified, Dialogflow will use Google's default trust
-            /// store to verify certificates. N.B. Make sure the HTTPS server
-            /// certificates are signed with "subject alt name". For instance a
-            /// certificate can be self-signed using the following command,
-            ///
-            /// ```text,
-            ///    openssl x509 -req -days 200 -in example.com.csr \
-            ///      -signkey example.com.key \
-            ///      -out example.com.crt \
-            ///      -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
-            /// ```
-            #[prost(bytes = "vec", tag = "2")]
-            pub cert: ::prost::alloc::vec::Vec<u8>,
-        }
-    }
-    /// Configuration for tools using Service Directory.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct ServiceDirectoryConfig {
-        /// Required. The name of [Service
-        /// Directory](<https://cloud.google.com/service-directory>) service.
-        /// Format:
-        /// `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
-        /// `LocationID` of the service directory must be the same as the location
-        /// of the tool.
-        #[prost(string, tag = "1")]
-        pub service: ::prost::alloc::string::String,
-    }
-    /// Types of confirmation requirement.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ConfirmationRequirement {
-        /// Unspecified. Whether the action requires confirmation is inferred from
-        /// method_type.
-        Unspecified = 0,
-        /// Conformation is required.
-        Required = 1,
-        /// Conformation is not required.
-        NotRequired = 2,
-    }
-    impl ConfirmationRequirement {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "CONFIRMATION_REQUIREMENT_UNSPECIFIED",
-                Self::Required => "REQUIRED",
-                Self::NotRequired => "NOT_REQUIRED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "CONFIRMATION_REQUIREMENT_UNSPECIFIED" => Some(Self::Unspecified),
-                "REQUIRED" => Some(Self::Required),
-                "NOT_REQUIRED" => Some(Self::NotRequired),
-                _ => None,
-            }
-        }
-    }
-    /// The method type of the tool.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum MethodType {
-        /// Unspecified.
-        Unspecified = 0,
-        /// GET method.
-        Get = 1,
-        /// POST method.
-        Post = 2,
-        /// PUT method.
-        Put = 3,
-        /// DELETE method.
-        Delete = 4,
-        /// PATCH method.
-        Patch = 5,
-    }
-    impl MethodType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "METHOD_TYPE_UNSPECIFIED",
-                Self::Get => "GET",
-                Self::Post => "POST",
-                Self::Put => "PUT",
-                Self::Delete => "DELETE",
-                Self::Patch => "PATCH",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "METHOD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "GET" => Some(Self::Get),
-                "POST" => Some(Self::Post),
-                "PUT" => Some(Self::Put),
-                "DELETE" => Some(Self::Delete),
-                "PATCH" => Some(Self::Patch),
-                _ => None,
-            }
-        }
-    }
-    /// Specification of the Tool.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Specification {
-        /// Vertex extension tool specification.
-        #[deprecated]
-        #[prost(message, tag = "4")]
-        ExtensionSpec(ExtensionTool),
-        /// Client side executed function specification.
-        #[prost(message, tag = "13")]
-        FunctionSpec(FunctionTool),
-        /// Integration connectors tool specification.
-        #[prost(message, tag = "18")]
-        ConnectorSpec(ConnectorTool),
-        /// OpenAPI tool.
-        #[prost(message, tag = "20")]
-        OpenApiSpec(OpenApiTool),
-    }
-}
-/// Generated client implementations.
-pub mod tools_client {
-    #![allow(
-        unused_variables,
-        dead_code,
-        missing_docs,
-        clippy::wildcard_imports,
-        clippy::let_unit_value,
-    )]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// Tool Service for LLM powered Agent Assist. Tools can be used to interact with
-    /// remote APIs (e.g. fetching orders) to retrieve additional information as
-    /// input to LLM.
-    #[derive(Debug, Clone)]
-    pub struct ToolsClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl ToolsClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> ToolsClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::Body>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> ToolsClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::Body>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::Body>,
-            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
-        {
-            ToolsClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Creates a tool.
-        pub async fn create_tool(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateToolRequest>,
-        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.Tools/CreateTool",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "CreateTool"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves a tool.
-        pub async fn get_tool(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetToolRequest>,
-        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.Tools/GetTool",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "GetTool"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists tools.
-        pub async fn list_tools(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListToolsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListToolsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.Tools/ListTools",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "ListTools"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a tool.
-        pub async fn delete_tool(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteToolRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.Tools/DeleteTool",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "DeleteTool"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a tool.
-        pub async fn update_tool(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateToolRequest>,
-        ) -> std::result::Result<tonic::Response<super::Tool>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.Tools/UpdateTool",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.cloud.dialogflow.v2.Tools", "UpdateTool"),
                 );
             self.inner.unary(req, path, codec).await
         }

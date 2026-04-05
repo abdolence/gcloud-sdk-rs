@@ -607,6 +607,17 @@ pub struct BigQueryExport {
     #[prost(string, tag = "8")]
     pub principal: ::prost::alloc::string::String,
 }
+/// Contains details about a chokepoint, which is a resource or resource group
+/// where high-risk attack paths converge, based on \[attack path simulations\]
+/// (<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations>).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Chokepoint {
+    /// List of resource names of findings associated with this chokepoint.
+    /// For example, organizations/123/sources/456/findings/789.
+    /// This list will have at most 100 findings.
+    #[prost(string, repeated, tag = "1")]
+    pub related_findings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Fields related to Google Cloud Armor findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudArmor {
@@ -701,7 +712,7 @@ pub struct Attack {
 }
 /// The [data profile](<https://cloud.google.com/dlp/docs/data-profiles>)
 /// associated with the finding.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudDlpDataProfile {
     /// Name of the data profile, for example,
     /// `projects/123/locations/europe/tableProfiles/8383929`.
@@ -710,6 +721,11 @@ pub struct CloudDlpDataProfile {
     /// The resource hierarchy level at which the data profile was generated.
     #[prost(enumeration = "cloud_dlp_data_profile::ParentType", tag = "2")]
     pub parent_type: i32,
+    /// Type of information detected by SDP.
+    /// Info type includes name, version and sensitivity of the detected
+    /// information type.
+    #[prost(message, repeated, tag = "3")]
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
 }
 /// Nested message and enum types in `CloudDlpDataProfile`.
 pub mod cloud_dlp_data_profile {
@@ -752,6 +768,95 @@ pub mod cloud_dlp_data_profile {
                 "PARENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ORGANIZATION" => Some(Self::Organization),
                 "PROJECT" => Some(Self::Project),
+                _ => None,
+            }
+        }
+    }
+}
+/// Type of information detected by the API.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InfoType {
+    /// Name of the information type. Either a name of your choosing when
+    /// creating a CustomInfoType, or one of the names listed
+    /// at
+    /// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>
+    /// when specifying a built-in type.  When sending Cloud DLP results to Data
+    /// Catalog, infoType names should conform to the pattern
+    /// `\[A-Za-z0-9$_-\]{1,64}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional version name for this InfoType.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional custom sensitivity for this InfoType.
+    /// This only applies to data profiling.
+    #[prost(message, optional, tag = "3")]
+    pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+}
+/// Score is calculated from of all elements in the data profile.
+/// A higher level means the data is more sensitive.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SensitivityScore {
+    /// The sensitivity score applied to the resource.
+    #[prost(enumeration = "sensitivity_score::SensitivityScoreLevel", tag = "1")]
+    pub score: i32,
+}
+/// Nested message and enum types in `SensitivityScore`.
+pub mod sensitivity_score {
+    /// Various sensitivity score levels for resources.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SensitivityScoreLevel {
+        /// Unused.
+        Unspecified = 0,
+        /// No sensitive information detected. The resource isn't publicly
+        /// accessible.
+        SensitivityLow = 10,
+        /// Unable to determine sensitivity.
+        SensitivityUnknown = 12,
+        /// Medium risk. Contains personally identifiable information (PII),
+        /// potentially sensitive data, or fields with free-text data that are at a
+        /// higher risk of having intermittent sensitive data. Consider limiting
+        /// access.
+        SensitivityModerate = 20,
+        /// High risk. Sensitive personally identifiable information (SPII) can be
+        /// present. Exfiltration of data can lead to user data loss.
+        /// Re-identification of users might be possible. Consider limiting usage and
+        /// or removing SPII.
+        SensitivityHigh = 30,
+    }
+    impl SensitivityScoreLevel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SENSITIVITY_SCORE_LEVEL_UNSPECIFIED",
+                Self::SensitivityLow => "SENSITIVITY_LOW",
+                Self::SensitivityUnknown => "SENSITIVITY_UNKNOWN",
+                Self::SensitivityModerate => "SENSITIVITY_MODERATE",
+                Self::SensitivityHigh => "SENSITIVITY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SENSITIVITY_SCORE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "SENSITIVITY_LOW" => Some(Self::SensitivityLow),
+                "SENSITIVITY_UNKNOWN" => Some(Self::SensitivityUnknown),
+                "SENSITIVITY_MODERATE" => Some(Self::SensitivityModerate),
+                "SENSITIVITY_HIGH" => Some(Self::SensitivityHigh),
                 _ => None,
             }
         }
@@ -1416,6 +1521,55 @@ pub struct ExfilResource {
     #[prost(string, repeated, tag = "2")]
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Details about the externally exposed resource associated with the finding.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExternalExposure {
+    /// Private IP address of the exposed endpoint.
+    #[prost(string, tag = "1")]
+    pub private_ip_address: ::prost::alloc::string::String,
+    /// Port number associated with private IP address.
+    #[prost(string, tag = "2")]
+    pub private_port: ::prost::alloc::string::String,
+    /// The name and version of the service, for example, "Jupyter
+    /// Notebook 6.14.0".
+    #[prost(string, tag = "3")]
+    pub exposed_service: ::prost::alloc::string::String,
+    /// Public IP address of the exposed endpoint.
+    #[prost(string, tag = "4")]
+    pub public_ip_address: ::prost::alloc::string::String,
+    /// Public port number of the exposed endpoint.
+    #[prost(string, tag = "5")]
+    pub public_port: ::prost::alloc::string::String,
+    /// The resource which is running the exposed service, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/zones/{zone}/instances/{instance}.”
+    #[prost(string, tag = "6")]
+    pub exposed_endpoint: ::prost::alloc::string::String,
+    /// The full resource name of the load balancer firewall policy, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/firewallPolicies/{policy-name}".
+    #[prost(string, tag = "7")]
+    pub load_balancer_firewall_policy: ::prost::alloc::string::String,
+    /// The full resource name of the firewall policy of the exposed service, for
+    /// example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/firewallPolicies/{policy-name}".
+    #[prost(string, tag = "8")]
+    pub service_firewall_policy: ::prost::alloc::string::String,
+    /// The full resource name of the forwarding rule, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/forwardingRules/{forwarding-rule-name}".
+    #[prost(string, tag = "9")]
+    pub forwarding_rule: ::prost::alloc::string::String,
+    /// The full resource name of load balancer backend service, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/backendServices/{name}".
+    #[prost(string, tag = "10")]
+    pub backend_service: ::prost::alloc::string::String,
+    /// The full resource name of the instance group, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/instanceGroups/{name}".
+    #[prost(string, tag = "11")]
+    pub instance_group: ::prost::alloc::string::String,
+    /// The full resource name of the network endpoint group, for example,
+    /// "//compute.googleapis.com/projects/{project-id}/global/networkEndpointGroups/{name}".
+    #[prost(string, tag = "12")]
+    pub network_endpoint_group: ::prost::alloc::string::String,
+}
 /// Representation of third party SIEM/SOAR fields within SCC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalSystem {
@@ -1563,6 +1717,8 @@ pub mod group_membership {
         Unspecified = 0,
         /// Group represents a toxic combination.
         ToxicCombination = 1,
+        /// Group represents a chokepoint.
+        Chokepoint = 3,
     }
     impl GroupType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1573,6 +1729,7 @@ pub mod group_membership {
             match self {
                 Self::Unspecified => "GROUP_TYPE_UNSPECIFIED",
                 Self::ToxicCombination => "GROUP_TYPE_TOXIC_COMBINATION",
+                Self::Chokepoint => "GROUP_TYPE_CHOKEPOINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1580,6 +1737,7 @@ pub mod group_membership {
             match value {
                 "GROUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "GROUP_TYPE_TOXIC_COMBINATION" => Some(Self::ToxicCombination),
+                "GROUP_TYPE_CHOKEPOINT" => Some(Self::Chokepoint),
                 _ => None,
             }
         }
@@ -3542,6 +3700,15 @@ pub struct Finding {
     /// This field cannot be updated. Its value is ignored in all update requests.
     #[prost(message, repeated, tag = "65")]
     pub group_memberships: ::prost::alloc::vec::Vec<GroupMembership>,
+    /// Contains details about a chokepoint, which is a resource or resource group
+    /// where high-risk attack paths converge, based on \[attack path simulations\]
+    /// (<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations>).
+    /// This field cannot be updated. Its value is ignored in all update requests.
+    #[prost(message, optional, tag = "77")]
+    pub chokepoint: ::core::option::Option<Chokepoint>,
+    /// External exposure associated with the finding.
+    #[prost(message, optional, tag = "84")]
+    pub external_exposure: ::core::option::Option<ExternalExposure>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3806,6 +3973,15 @@ pub mod finding {
         /// independently. A group of such issues is referred to as a toxic
         /// combination.
         ToxicCombination = 7,
+        /// Describes a potential security risk to data assets that contain sensitive
+        /// data.
+        SensitiveDataRisk = 8,
+        /// Describes a resource or resource group where high risk attack paths
+        /// converge, based on attack path simulations (APS).
+        Chokepoint = 9,
+        /// Describes a potential security risk due to the resource being exposed to
+        /// the internet.
+        ExternalExposure = 10,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3822,6 +3998,9 @@ pub mod finding {
                 Self::SccError => "SCC_ERROR",
                 Self::PostureViolation => "POSTURE_VIOLATION",
                 Self::ToxicCombination => "TOXIC_COMBINATION",
+                Self::SensitiveDataRisk => "SENSITIVE_DATA_RISK",
+                Self::Chokepoint => "CHOKEPOINT",
+                Self::ExternalExposure => "EXTERNAL_EXPOSURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3835,6 +4014,9 @@ pub mod finding {
                 "SCC_ERROR" => Some(Self::SccError),
                 "POSTURE_VIOLATION" => Some(Self::PostureViolation),
                 "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
+                "SENSITIVE_DATA_RISK" => Some(Self::SensitiveDataRisk),
+                "CHOKEPOINT" => Some(Self::Chokepoint),
+                "EXTERNAL_EXPOSURE" => Some(Self::ExternalExposure),
                 _ => None,
             }
         }

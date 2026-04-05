@@ -375,6 +375,17 @@ pub struct Cluster {
     /// Output only. Encryption information of the data at rest of the cluster.
     #[prost(message, optional, tag = "43")]
     pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// Optional. Server CA mode for the cluster.
+    #[prost(enumeration = "ServerCaMode", optional, tag = "53")]
+    pub server_ca_mode: ::core::option::Option<i32>,
+    /// Optional. Customer-managed CA pool for the cluster. Only applicable for
+    /// BYOCA i.e. if server_ca_mode is SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA.
+    /// Format: "projects/{project}/locations/{region}/caPools/{ca_pool}".
+    #[prost(string, optional, tag = "54")]
+    pub server_ca_pool: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Input only. Rotate the server certificates.
+    #[prost(bool, optional, tag = "55")]
+    pub rotate_server_certificate: ::core::option::Option<bool>,
     /// The source to import from.
     #[prost(oneof = "cluster::ImportSources", tags = "34, 35")]
     pub import_sources: ::core::option::Option<cluster::ImportSources>,
@@ -1067,6 +1078,60 @@ pub struct PscAutoConnection {
     #[prost(enumeration = "ConnectionType", tag = "9")]
     pub connection_type: i32,
 }
+/// Shared regional certificate authority
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SharedRegionalCertificateAuthority {
+    /// Identifier. Unique name of the resource in this scope including project and
+    /// location using the form:
+    /// `projects/{project}/locations/{location}/sharedRegionalCertificateAuthority`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Server ca information.
+    #[prost(oneof = "shared_regional_certificate_authority::ServerCa", tags = "2")]
+    pub server_ca: ::core::option::Option<
+        shared_regional_certificate_authority::ServerCa,
+    >,
+}
+/// Nested message and enum types in `SharedRegionalCertificateAuthority`.
+pub mod shared_regional_certificate_authority {
+    /// CA certificate chains for redis managed server authentication.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RegionalManagedCertificateAuthority {
+        /// The PEM encoded CA certificate chains for redis managed
+        /// server authentication
+        #[prost(message, repeated, tag = "1")]
+        pub ca_certs: ::prost::alloc::vec::Vec<
+            regional_managed_certificate_authority::RegionalCertChain,
+        >,
+    }
+    /// Nested message and enum types in `RegionalManagedCertificateAuthority`.
+    pub mod regional_managed_certificate_authority {
+        /// The certificates that form the CA chain, from leaf to root order.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct RegionalCertChain {
+            /// The certificates that form the CA chain, from leaf to root order.
+            #[prost(string, repeated, tag = "1")]
+            pub certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+    }
+    /// Server ca information.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ServerCa {
+        /// CA certificate chains for redis managed server authentication.
+        #[prost(message, tag = "2")]
+        ManagedServerCa(RegionalManagedCertificateAuthority),
+    }
+}
+/// Request for
+/// \[GetSharedRegionalCertificateAuthority\]\[CloudRedis.GetSharedRegionalCertificateAuthority\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetSharedRegionalCertificateAuthorityRequest {
+    /// Required. Regional certificate authority resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/sharedRegionalCertificateAuthority`
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Pre-defined metadata fields.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
@@ -1726,6 +1791,49 @@ impl TransitEncryptionMode {
         }
     }
 }
+/// Server CA mode for the cluster.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ServerCaMode {
+    /// Server CA mode not specified.
+    Unspecified = 0,
+    /// Each cluster has its own Google managed CA.
+    GoogleManagedPerInstanceCa = 1,
+    /// The cluster uses Google managed shared CA in the region.
+    GoogleManagedSharedCa = 2,
+    /// The cluster uses customer managed CA from CAS.
+    CustomerManagedCasCa = 3,
+}
+impl ServerCaMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SERVER_CA_MODE_UNSPECIFIED",
+            Self::GoogleManagedPerInstanceCa => {
+                "SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA"
+            }
+            Self::GoogleManagedSharedCa => "SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA",
+            Self::CustomerManagedCasCa => "SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SERVER_CA_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA" => {
+                Some(Self::GoogleManagedPerInstanceCa)
+            }
+            "SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA" => {
+                Some(Self::GoogleManagedSharedCa)
+            }
+            "SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA" => Some(Self::CustomerManagedCasCa),
+            _ => None,
+        }
+    }
+}
 /// Type of a PSC connection, for cluster access purpose.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2066,6 +2174,39 @@ pub mod cloud_redis_cluster_client {
                     GrpcMethod::new(
                         "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "GetClusterCertificateAuthority",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of regional certificate authority information for Redis
+        /// cluster.
+        pub async fn get_shared_regional_certificate_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetSharedRegionalCertificateAuthorityRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SharedRegionalCertificateAuthority>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetSharedRegionalCertificateAuthority",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "GetSharedRegionalCertificateAuthority",
                     ),
                 );
             self.inner.unary(req, path, codec).await

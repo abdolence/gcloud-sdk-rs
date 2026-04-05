@@ -3189,16 +3189,23 @@ pub mod table {
         }
     }
     /// Defines an automated backup policy for a table
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AutomatedBackupPolicy {
-        /// Required. How long the automated backups should be retained. The only
-        /// supported value at this time is 3 days.
+        /// Required. How long the automated backups should be retained. Values must
+        /// be at least 3 days and at most 90 days.
         #[prost(message, optional, tag = "1")]
         pub retention_period: ::core::option::Option<::prost_types::Duration>,
-        /// Required. How frequently automated backups should occur. The only
-        /// supported value at this time is 24 hours.
+        /// How frequently automated backups should occur. The only supported value
+        /// at this time is 24 hours. An undefined frequency is treated as 24 hours.
         #[prost(message, optional, tag = "2")]
         pub frequency: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. A list of Cloud Bigtable zones where automated backups are
+        /// allowed to be created. If empty, automated backups will be created in all
+        /// zones of the instance. Locations are in the format
+        /// `projects/{project}/locations/{zone}`.
+        /// This field can only set for tables in Enterprise Plus instances.
+        #[prost(string, repeated, tag = "3")]
+        pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Possible timestamp granularities to use when keeping multiple versions
     /// of data in a table.
@@ -3297,7 +3304,7 @@ pub mod table {
             }
         }
     }
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AutomatedBackupConfig {
         /// If specified, automated backups are enabled for this table.
         /// Otherwise, automated backups are disabled.

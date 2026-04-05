@@ -1,11 +1,13 @@
 use std::{fs, path::PathBuf};
+use crate::gen::Proto;
 
 mod gen;
 
 fn main() {
     let proto_root = PathBuf::from("gcloud-protos-generator/proto/googleapis");
     let proto_includes = PathBuf::from("gcloud-protos-generator/protobuf");
-    let protos = gen::find_proto(proto_root.clone());
+    let all_protos = gen::find_proto(proto_root.clone());
+    let protos = filter_unwanted_protos(all_protos);
 
     let out_dir = PathBuf::from("gcloud-sdk/genproto");
     let _ = fs::remove_dir_all(out_dir.as_path());
@@ -34,7 +36,7 @@ fn main() {
         .build_server(false)
         .out_dir(out_dir)
         .compile_with_config(config, &gen::proto_path(&protos), &includes)
-        .unwrap();
+        .expect(format!("Failed to compile protos: {:?}", protos.len()).as_str());
 
     let mut out_path = PathBuf::from("gcloud-sdk/src/google_apis.rs");
     let root = gen::from_protos(protos);
@@ -46,4 +48,15 @@ fn main() {
     fs::write(out_path.clone(), formatted).unwrap();
 
     out_path.pop();
+}
+
+fn filter_unwanted_protos(protos: Vec<Proto>) -> Vec<Proto> {
+    protos.into_iter().filter(|proto| {
+        let path = proto.path.to_str().unwrap();
+        !path.contains("google/ads/") &&
+        !path.contains("google/cloud/compute/v1beta/") &&
+        !path.contains("google/cloud/gkehub/") &&
+        !path.contains("google/shopping") &&
+        !path.contains("preview/google/")
+    }).collect()
 }

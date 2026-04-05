@@ -842,6 +842,10 @@ pub struct Place {
     /// The business status for the place.
     #[prost(enumeration = "place::BusinessStatus", tag = "25")]
     pub business_status: i32,
+    /// The date this place will open in the future. This field is only
+    /// populated if the business status is FUTURE_OPENING.
+    #[prost(message, optional, tag = "95")]
+    pub opening_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Price level of the place.
     #[prost(enumeration = "PriceLevel", tag = "26")]
     pub price_level: i32,
@@ -1542,6 +1546,8 @@ pub mod place {
         ClosedTemporarily = 2,
         /// The establishment is permanently closed.
         ClosedPermanently = 3,
+        /// The establishment will open in the future.
+        FutureOpening = 4,
     }
     impl BusinessStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1554,6 +1560,7 @@ pub mod place {
                 Self::Operational => "OPERATIONAL",
                 Self::ClosedTemporarily => "CLOSED_TEMPORARILY",
                 Self::ClosedPermanently => "CLOSED_PERMANENTLY",
+                Self::FutureOpening => "FUTURE_OPENING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1563,6 +1570,7 @@ pub mod place {
                 "OPERATIONAL" => Some(Self::Operational),
                 "CLOSED_TEMPORARILY" => Some(Self::ClosedTemporarily),
                 "CLOSED_PERMANENTLY" => Some(Self::ClosedPermanently),
+                "FUTURE_OPENING" => Some(Self::FutureOpening),
                 _ => None,
             }
         }
@@ -1948,6 +1956,10 @@ pub struct SearchNearbyRequest {
     /// Optional. Parameters that affect the routing to the search results.
     #[prost(message, optional, tag = "10")]
     pub routing_parameters: ::core::option::Option<RoutingParameters>,
+    /// Optional. If true, include businesses that are not yet open but will open
+    /// in the future.
+    #[prost(bool, tag = "15")]
+    pub include_future_opening_businesses: bool,
 }
 /// Nested message and enum types in `SearchNearbyRequest`.
 pub mod search_nearby_request {
@@ -2117,6 +2129,10 @@ pub struct SearchTextRequest {
     /// location related fields for these businesses.
     #[prost(bool, tag = "20")]
     pub include_pure_service_area_businesses: bool,
+    /// Optional. If true, include businesses that are not yet open but will open
+    /// in the future.
+    #[prost(bool, tag = "21")]
+    pub include_future_opening_businesses: bool,
 }
 /// Nested message and enum types in `SearchTextRequest`.
 pub mod search_text_request {
@@ -2488,6 +2504,10 @@ pub struct AutocompletePlacesRequest {
     /// location related fields for these businesses.
     #[prost(bool, tag = "12")]
     pub include_pure_service_area_businesses: bool,
+    /// Optional. If true, include businesses that are not yet open but will open
+    /// in the future.
+    #[prost(bool, tag = "13")]
+    pub include_future_opening_businesses: bool,
 }
 /// Nested message and enum types in `AutocompletePlacesRequest`.
 pub mod autocomplete_places_request {

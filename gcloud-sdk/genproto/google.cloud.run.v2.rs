@@ -5315,7 +5315,8 @@ pub struct WorkerPool {
     /// enabled for the parent project of this worker pool.
     #[prost(bool, tag = "28")]
     pub threat_detection_enabled: bool,
-    /// Not supported, and ignored by Cloud Run.
+    /// Deprecated: Not supported, and ignored by Cloud Run.
+    #[deprecated]
     #[prost(string, repeated, tag = "37")]
     pub custom_audiences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Reserved for future use.

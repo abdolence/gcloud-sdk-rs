@@ -4684,11 +4684,13 @@ pub mod search_request {
     /// A struct to define data stores to filter on in a search call and
     /// configurations for those data stores. Otherwise, an `INVALID_ARGUMENT`
     /// error is returned.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataStoreSpec {
         /// Required. Full resource name of
         /// \[DataStore\]\[google.cloud.discoveryengine.v1beta.DataStore\], such as
         /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+        /// The path must include the project number, project id is not supported for
+        /// this field.
         #[prost(string, tag = "1")]
         pub data_store: ::prost::alloc::string::String,
         /// Optional. Filter specification to filter documents in the data store
@@ -4696,6 +4698,11 @@ pub mod search_request {
         /// [Filtering](<https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>)
         #[prost(string, tag = "5")]
         pub filter: ::prost::alloc::string::String,
+        /// Optional. Boost specification to boost certain documents.
+        /// For more information on boosting, see
+        /// [Boosting](<https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>)
+        #[prost(message, optional, tag = "6")]
+        pub boost_spec: ::core::option::Option<BoostSpec>,
     }
     /// A facet specification to perform faceted search.
     #[derive(Clone, PartialEq, ::prost::Message)]

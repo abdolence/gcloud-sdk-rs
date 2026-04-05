@@ -6794,6 +6794,12 @@ pub struct RagChunk {
     /// If populated, represents where the chunk starts and ends in the document.
     #[prost(message, optional, tag = "2")]
     pub page_span: ::core::option::Option<rag_chunk::PageSpan>,
+    /// The ID of the file that the chunk belongs to.
+    #[prost(string, tag = "3")]
+    pub file_id: ::prost::alloc::string::String,
+    /// The ID of the chunk.
+    #[prost(string, tag = "4")]
+    pub chunk_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RagChunk`.
 pub mod rag_chunk {
@@ -7018,9 +7024,11 @@ pub struct UploadRagFileConfig {
     pub rag_file_transformation_config: ::core::option::Option<
         RagFileTransformationConfig,
     >,
-    /// Specifies the metadata config for RagFiles.
+    /// Optional. Specifies the metadata config for RagFiles.
     /// Including paths for metadata schema and metadata.
     /// Alteratively, inline metadata schema and metadata can be provided.
+    /// Deprecated: Not in use.
+    #[deprecated]
     #[prost(message, optional, tag = "4")]
     pub rag_file_metadata_config: ::core::option::Option<RagFileMetadataConfig>,
     /// Optional. Specifies the parsing config for RagFiles.
@@ -7046,6 +7054,8 @@ pub struct ImportRagFilesConfig {
     pub rag_file_parsing_config: ::core::option::Option<RagFileParsingConfig>,
     /// Specifies the metadata config for RagFiles.
     /// Including paths for metadata schema and metadata.
+    /// Deprecated: Not in use.
+    #[deprecated]
     #[prost(message, optional, tag = "17")]
     pub rag_file_metadata_config: ::core::option::Option<RagFileMetadataConfig>,
     /// Optional. The max number of queries per minute that this job is allowed to
@@ -7266,6 +7276,295 @@ pub struct RagEngineConfig {
     /// The config of the RagManagedDb used by RagEngine.
     #[prost(message, optional, tag = "2")]
     pub rag_managed_db_config: ::core::option::Option<RagManagedDbConfig>,
+}
+/// The schema of the user specified metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagDataSchema {
+    /// Identifier. Resource name of the data schema in the form of:
+    /// `projects/{project_number}/locations/{location}/ragCorpora/{rag_corpus}/ragDataSchemas/{rag_data_schema}`
+    /// where the {rag_data_schema} part should be the same as the `key` field
+    /// below.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The key of this data schema. This key should be matching the key
+    /// of user specified metadata and unique inside corpus. This value can be up
+    /// to 63 characters, and valid characters are /\[a-z\]\[0-9\]-/. The first
+    /// character must be a letter, the last could be a letter or a number.
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// The schema details mapping to the key.
+    #[prost(message, optional, tag = "3")]
+    pub schema_details: ::core::option::Option<RagMetadataSchemaDetails>,
+}
+/// Data schema details indicates the data type and the data struct corresponding
+/// to the key of user specified metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagMetadataSchemaDetails {
+    /// Type of the metadata.
+    #[prost(enumeration = "rag_metadata_schema_details::DataType", optional, tag = "1")]
+    pub r#type: ::core::option::Option<i32>,
+    /// Config for List data type.
+    #[prost(message, optional, boxed, tag = "2")]
+    pub list_config: ::core::option::Option<
+        ::prost::alloc::boxed::Box<rag_metadata_schema_details::ListConfig>,
+    >,
+    /// The granularity associated with this RagMetadataSchema.
+    #[prost(
+        enumeration = "rag_metadata_schema_details::Granularity",
+        optional,
+        tag = "3"
+    )]
+    pub granularity: ::core::option::Option<i32>,
+    /// The search strategy for the metadata value of the `key`.
+    #[prost(message, optional, tag = "4")]
+    pub search_strategy: ::core::option::Option<
+        rag_metadata_schema_details::SearchStrategy,
+    >,
+}
+/// Nested message and enum types in `RagMetadataSchemaDetails`.
+pub mod rag_metadata_schema_details {
+    /// Config for List data type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ListConfig {
+        /// The value's data type in the list.
+        #[prost(message, optional, boxed, tag = "1")]
+        pub value_schema: ::core::option::Option<
+            ::prost::alloc::boxed::Box<super::RagMetadataSchemaDetails>,
+        >,
+    }
+    /// The search strategy for the metadata value of the `key`.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SearchStrategy {
+        /// The search strategy type to be applied on the metadata key.
+        #[prost(
+            enumeration = "search_strategy::SearchStrategyType",
+            optional,
+            tag = "1"
+        )]
+        pub search_strategy_type: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `SearchStrategy`.
+    pub mod search_strategy {
+        /// The types of search strategies to be applied on the metadata key.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SearchStrategyType {
+            /// Unspecified search strategy type.
+            Unspecified = 0,
+            /// metadata values of the `key` above will not be searchable.
+            NoSearch = 1,
+            /// When searching with `key`, the value must be exactly as the metadata
+            /// value that has been ingested.
+            ExactSearch = 2,
+        }
+        impl SearchStrategyType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SEARCH_STRATEGY_TYPE_UNSPECIFIED",
+                    Self::NoSearch => "NO_SEARCH",
+                    Self::ExactSearch => "EXACT_SEARCH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SEARCH_STRATEGY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NO_SEARCH" => Some(Self::NoSearch),
+                    "EXACT_SEARCH" => Some(Self::ExactSearch),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Data type of the metadata.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataType {
+        /// Unspecified type.
+        Unspecified = 0,
+        /// Integer type.
+        Integer = 1,
+        /// Float type.
+        Float = 2,
+        /// String type.
+        String = 3,
+        /// Supported formats:
+        /// %Y-%m-%dT%H:%M:%E*S%E*z (absl::RFC3339_full)
+        /// %Y-%m-%dT%H:%M:%E*S
+        /// %Y-%m-%dT%H:%M%E*z
+        /// %Y-%m-%dT%H:%M
+        /// %Y-%m-%dT%H%E*z
+        /// %Y-%m-%dT%H
+        /// %Y-%m-%d%E*z
+        /// %Y-%m-%d
+        /// %Y-%m
+        /// %Y
+        Datetime = 4,
+        /// Boolean type.
+        Boolean = 5,
+        /// List type.
+        ///
+        /// * Each element in the list must be of the exact same data schema;
+        ///   otherwise, they are invalid arguments.
+        /// * Elements cannot be another list (no list of list).
+        List = 6,
+    }
+    impl DataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                Self::Integer => "INTEGER",
+                Self::Float => "FLOAT",
+                Self::String => "STRING",
+                Self::Datetime => "DATETIME",
+                Self::Boolean => "BOOLEAN",
+                Self::List => "LIST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTEGER" => Some(Self::Integer),
+                "FLOAT" => Some(Self::Float),
+                "STRING" => Some(Self::String),
+                "DATETIME" => Some(Self::Datetime),
+                "BOOLEAN" => Some(Self::Boolean),
+                "LIST" => Some(Self::List),
+                _ => None,
+            }
+        }
+    }
+    /// The granularity of metadata under this DataSchema.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Granularity {
+        /// Unspecified granularity.
+        Unspecified = 0,
+        /// RagFile-level granularity.
+        FileLevel = 1,
+    }
+    impl Granularity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GRANULARITY_UNSPECIFIED",
+                Self::FileLevel => "GRANULARITY_FILE_LEVEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "GRANULARITY_FILE_LEVEL" => Some(Self::FileLevel),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata for RagFile provided by users.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagMetadata {
+    /// Identifier. Resource name of the RagMetadata.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}/ragMetadata/{rag_metadata}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// User provided metadata.
+    #[prost(message, optional, tag = "2")]
+    pub user_specified_metadata: ::core::option::Option<UserSpecifiedMetadata>,
+}
+/// Metadata provided by users.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserSpecifiedMetadata {
+    /// Required. Key of the metadata. The key must be set with type by
+    /// CreateRagDataSchema.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Value of the metadata. The value must be able to convert
+    /// to the type according to the data schema.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::core::option::Option<MetadataValue>,
+}
+/// Value of Metadata, including all types available in data schema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetadataValue {
+    /// The value of the metadata.
+    #[prost(oneof = "metadata_value::Value", tags = "1, 2, 3, 4, 5, 6")]
+    pub value: ::core::option::Option<metadata_value::Value>,
+}
+/// Nested message and enum types in `MetadataValue`.
+pub mod metadata_value {
+    /// The value of the metadata.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// Value of int type metadata.
+        #[prost(int64, tag = "1")]
+        IntValue(i64),
+        /// Value of float type metadata.
+        #[prost(float, tag = "2")]
+        FloatValue(f32),
+        /// Value of string type metadata.
+        #[prost(string, tag = "3")]
+        StrValue(::prost::alloc::string::String),
+        /// Value of date time type metadata.
+        #[prost(string, tag = "4")]
+        DatetimeValue(::prost::alloc::string::String),
+        /// Value of boolean type metadata.
+        #[prost(bool, tag = "5")]
+        BoolValue(bool),
+        /// Value of list type metadata.
+        #[prost(message, tag = "6")]
+        ListValue(super::MetadataList),
+    }
+}
+/// List representation in metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetadataList {
+    /// The values of `LIST` data type metadata.
+    #[prost(message, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<MetadataValue>,
 }
 /// The base structured datatype containing multi-part content of a message.
 ///
@@ -32751,6 +33050,15 @@ pub struct CreateMemoryRequest {
     /// Required. The Memory to be created.
     #[prost(message, optional, tag = "2")]
     pub memory: ::core::option::Option<Memory>,
+    /// Optional. The user defined ID to use for memory, which will become the
+    /// final component of the memory resource name. If not provided, Vertex AI
+    /// will generate a value for this ID.
+    ///
+    /// This value may be up to 63 characters, and valid characters are
+    /// `\[a-z0-9-\]`. The first character must be a letter, and the last character
+    /// must be a letter or number.
+    #[prost(string, tag = "3")]
+    pub memory_id: ::prost::alloc::string::String,
 }
 /// Details of
 /// \[MemoryBankService.CreateMemory\]\[google.cloud.aiplatform.v1beta1.MemoryBankService.CreateMemory\]
@@ -46002,30 +46310,73 @@ pub struct EmbedContentRequest {
     /// `projects/{project}/locations/{location}/publishers/*/models/*`
     #[prost(string, optional, tag = "1")]
     pub model: ::core::option::Option<::prost::alloc::string::String>,
-    /// Required. Input content to be embedded. Required.
+    /// Required. Input content to be embedded.
     #[prost(message, optional, tag = "2")]
     pub content: ::core::option::Option<Content>,
-    /// Optional. An optional title for the text.
+    /// Optional. Deprecated: Please use EmbedContentConfig.title instead.
+    /// The title for the text.
+    #[deprecated]
     #[prost(string, optional, tag = "4")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. The task type of the embedding.
+    /// Optional. Deprecated: Please use EmbedContentConfig.task_type instead.
+    /// The task type of the embedding.
+    #[deprecated]
     #[prost(
         enumeration = "embed_content_request::EmbeddingTaskType",
         optional,
         tag = "5"
     )]
     pub task_type: ::core::option::Option<i32>,
-    /// Optional. Optional reduced dimension for the output embedding. If set,
-    /// excessive values in the output embedding are truncated from the end.
+    /// Optional. Deprecated: Please use EmbedContentConfig.output_dimensionality
+    /// instead. Reduced dimension for the output embedding. If set, excessive
+    /// values in the output embedding are truncated from the end.
+    #[deprecated]
     #[prost(int32, optional, tag = "6")]
     pub output_dimensionality: ::core::option::Option<i32>,
-    /// Optional. Whether to silently truncate the input content if it's longer
+    /// Optional. Deprecated: Please use EmbedContentConfig.auto_truncate instead.
+    /// Whether to silently truncate the input content if it's longer
     /// than the maximum sequence length.
+    #[deprecated]
     #[prost(bool, optional, tag = "7")]
     pub auto_truncate: ::core::option::Option<bool>,
+    /// Optional. Configuration for the EmbedContent request.
+    #[prost(message, optional, tag = "8")]
+    pub embed_content_config: ::core::option::Option<
+        embed_content_request::EmbedContentConfig,
+    >,
 }
 /// Nested message and enum types in `EmbedContentRequest`.
 pub mod embed_content_request {
+    /// Configurations for the EmbedContent API.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EmbedContentConfig {
+        /// Optional. The title for the text.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(string, optional, tag = "1")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. The task type of the embedding.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(enumeration = "EmbeddingTaskType", optional, tag = "2")]
+        pub task_type: ::core::option::Option<i32>,
+        /// Optional. Whether to silently truncate the input content if it's longer
+        /// than the maximum sequence length.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(bool, optional, tag = "3")]
+        pub auto_truncate: ::core::option::Option<bool>,
+        /// Optional. Reduced dimension for the output embedding. If set, excessive
+        /// values in the output embedding are truncated from the end.
+        #[prost(int32, optional, tag = "4")]
+        pub output_dimensionality: ::core::option::Option<i32>,
+        /// Optional. Whether to enable OCR for document content.
+        #[prost(bool, optional, tag = "5")]
+        pub document_ocr: ::core::option::Option<bool>,
+        /// Optional. Whether to extract audio from video content.
+        #[prost(bool, optional, tag = "6")]
+        pub audio_track_extraction: ::core::option::Option<bool>,
+    }
     /// Represents a downstream task the embeddings will be used for.
     #[derive(
         Clone,
@@ -46101,7 +46452,7 @@ pub struct EmbedContentResponse {
     /// The embedding generated from the input content.
     #[prost(message, optional, tag = "1")]
     pub embedding: ::core::option::Option<embed_content_response::Embedding>,
-    /// Metadata about the response(s).
+    /// Usage metadata about the response(s).
     #[prost(message, optional, tag = "2")]
     pub usage_metadata: ::core::option::Option<UsageMetadata>,
     /// Whether the input content was truncated before generating the embedding.
@@ -46765,7 +47116,7 @@ pub struct ReasoningEngineSpec {
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
-    #[prost(oneof = "reasoning_engine_spec::DeploymentSource", tags = "11")]
+    #[prost(oneof = "reasoning_engine_spec::DeploymentSource", tags = "11, 15")]
     pub deployment_source: ::core::option::Option<
         reasoning_engine_spec::DeploymentSource,
     >,
@@ -46948,6 +47299,15 @@ pub mod reasoning_engine_spec {
             ImageSpec(ImageSpec),
         }
     }
+    /// Specification for deploying from a container image.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ContainerSpec {
+        /// Required. The Artifact Registry Docker image URI (e.g.,
+        /// us-central1-docker.pkg.dev/my-project/my-repo/my-image:tag) of the
+        /// container image that is to be run on each worker replica.
+        #[prost(string, tag = "1")]
+        pub image_uri: ::prost::alloc::string::String,
+    }
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
@@ -46956,6 +47316,9 @@ pub mod reasoning_engine_spec {
         /// Deploy from source code files with a defined entrypoint.
         #[prost(message, tag = "11")]
         SourceCodeSpec(SourceCodeSpec),
+        /// Deploy from a container image with a defined entrypoint and commands.
+        #[prost(message, tag = "15")]
+        ContainerSpec(ContainerSpec),
     }
 }
 /// ReasoningEngine provides a customizable runtime for models to determine
@@ -48397,6 +48760,9 @@ pub struct SessionEvent {
     /// Optional. Metadata relating to this event.
     #[prost(message, optional, tag = "11")]
     pub event_metadata: ::core::option::Option<EventMetadata>,
+    /// Optional. Weakly typed raw event data in proto struct format.
+    #[prost(message, optional, tag = "12")]
+    pub raw_event: ::core::option::Option<::prost_types::Struct>,
 }
 /// Metadata relating to a LLM response event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -48488,6 +48854,15 @@ pub struct CreateSessionRequest {
     /// Required. The session to create.
     #[prost(message, optional, tag = "2")]
     pub session: ::core::option::Option<Session>,
+    /// Optional. The user defined ID to use for session, which will become the
+    /// final component of the session resource name. If not provided, Vertex AI
+    /// will generate a value for this ID.
+    ///
+    /// This value may be up to 63 characters, and valid characters are
+    /// `\[a-z0-9-\]`. The first character must be a letter, and the last character
+    /// must be a letter or number.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
 }
 /// Metadata associated with the
 /// \[SessionService.CreateSession\]\[google.cloud.aiplatform.v1beta1.SessionService.CreateSession\]
@@ -51701,6 +52076,261 @@ pub struct UpdateRagEngineConfigOperationMetadata {
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
+/// Runtime operation information for
+/// \[VertexRagDataService.BatchCreateRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagDataSchemas\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagDataSchemasOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Runtime operation information for
+/// \[VertexRagDataService.BatchCreateRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagMetadata\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagMetadataOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Response message for
+/// \[VertexRagDataService.BatchCreateRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagDataSchemas\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagDataSchemasResponse {
+    /// RagDataSchemas created.
+    #[prost(message, repeated, tag = "1")]
+    pub rag_data_schemas: ::prost::alloc::vec::Vec<RagDataSchema>,
+}
+/// Response message for
+/// \[VertexRagDataService.BatchCreateRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagMetadata\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagMetadataResponse {
+    /// RagMetadata created.
+    #[prost(message, repeated, tag = "1")]
+    pub rag_metadata: ::prost::alloc::vec::Vec<RagMetadata>,
+}
+/// Request message for
+/// \[VertexRagDataService.CreateRagDataSchema\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.CreateRagDataSchema\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRagDataSchemaRequest {
+    /// Required. The resource name of the RagCorpus to create the RagDataSchema
+    /// in. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The RagDataSchema to create.
+    #[prost(message, optional, tag = "2")]
+    pub rag_data_schema: ::core::option::Option<RagDataSchema>,
+    /// Optional. The ID to use for the RagDataSchema, which will become the final
+    /// component of the RagDataSchema's resource name if the user chooses to
+    /// specify. Otherwise, RagDataSchema id will be generated by system.
+    ///
+    /// This value should be up to 63 characters, and valid characters
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
+    /// a letter or a number.
+    #[prost(string, optional, tag = "3")]
+    pub rag_data_schema_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VertexRagDataService.BatchCreateRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagDataSchemas\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagDataSchemasRequest {
+    /// Required. The resource name of the RagCorpus to create the RagDataSchemas
+    /// in. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request messages for
+    /// \[VertexRagDataService.CreateRagDataSchema\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.CreateRagDataSchema\].
+    /// A maximum of 500 schemas can be created in a batch.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<CreateRagDataSchemaRequest>,
+}
+/// Request message for
+/// \[VertexRagDataService.GetRagDataSchema\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.GetRagDataSchema\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRagDataSchemaRequest {
+    /// Required. The name of the RagDataSchema resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragDataSchemas/{rag_data_schema}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VertexRagDataService.ListRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagDataSchemas\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRagDataSchemasRequest {
+    /// Required. The resource name of the RagCorpus from which to list the
+    /// RagDataSchemas. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list page size. The maximum value is 100. If not
+    /// specified, a default value of 100 will be used.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// \[ListRagDataSchemasResponse.next_page_token\]\[google.cloud.aiplatform.v1beta1.ListRagDataSchemasResponse.next_page_token\]
+    /// of the previous
+    /// \[VertexRagDataService.ListRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagDataSchemas\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VertexRagDataService.ListRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagDataSchemas\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRagDataSchemasResponse {
+    /// List of RagDataSchemas in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub rag_data_schemas: ::prost::alloc::vec::Vec<RagDataSchema>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListRagDataSchemasRequest.page_token\]\[google.cloud.aiplatform.v1beta1.ListRagDataSchemasRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VertexRagDataService.BatchDeleteRagDataSchemas\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchDeleteRagDataSchemas\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchDeleteRagDataSchemasRequest {
+    /// Required. The resource name of the RagCorpus from which to delete the
+    /// RagDataSchemas. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The RagDataSchemas to delete.
+    /// A maximum of 500 schemas can be deleted in a batch.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragDataSchemas/{rag_data_schema}`
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VertexRagDataService.DeleteRagDataSchema\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.DeleteRagDataSchema\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRagDataSchemaRequest {
+    /// Required. The name of the RagDataSchema resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragDataSchemas/{rag_data_schema}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateRagMetadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRagMetadataRequest {
+    /// Required. The parent resource where this metadata will be created.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The metadata to create.
+    #[prost(message, optional, tag = "2")]
+    pub rag_metadata: ::core::option::Option<RagMetadata>,
+    /// Optional. The ID to use for the metadata, which will become the final
+    /// component of the metadata's resource name if the user chooses to specify.
+    /// Otherwise, metadata id will be generated by system.
+    ///
+    /// This value should be up to 63 characters, and valid characters
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
+    /// a letter or a number.
+    #[prost(string, optional, tag = "3")]
+    pub rag_metadata_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VertexRagDataService.BatchCreateRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchCreateRagMetadata\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateRagMetadataRequest {
+    /// Required. The parent resource where the RagMetadata will be created.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request messages for
+    /// \[VertexRagDataService.CreateRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.CreateRagMetadata\].
+    /// A maximum of 500 rag file metadata can be created in a batch.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<CreateRagMetadataRequest>,
+}
+/// Request message for
+/// \[VertexRagDataService.UpdateRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.UpdateRagMetadata\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRagMetadataRequest {
+    /// Required. The RagMetadata which replaces the resource on the server.
+    #[prost(message, optional, tag = "1")]
+    pub rag_metadata: ::core::option::Option<RagMetadata>,
+}
+/// Request message for
+/// \[VertexRagDataService.GetRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.GetRagMetadata\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRagMetadataRequest {
+    /// Required. The name of the RagMetadata resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}/ragMetadata/{rag_metadata}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VertexRagDataService.ListRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagMetadata\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRagMetadataRequest {
+    /// Required. The resource name of the RagFile from which to list the
+    /// RagMetadata. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list page size. The maximum value is 100. If not
+    /// specified, a default value of 100 will be used.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// \[ListRagMetadataResponse.next_page_token\]\[google.cloud.aiplatform.v1beta1.ListRagMetadataResponse.next_page_token\]
+    /// of the previous
+    /// \[VertexRagDataService.ListRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagMetadata\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VertexRagDataService.ListRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.ListRagMetadata\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRagMetadataResponse {
+    /// List of RagMetadata in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub rag_metadata: ::prost::alloc::vec::Vec<RagMetadata>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListRagMetadataRequest.page_token\]\[google.cloud.aiplatform.v1beta1.ListRagMetadataRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VertexRagDataService.DeleteRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.DeleteRagMetadata\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRagMetadataRequest {
+    /// Required. The name of the RagMetadata resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}/ragMetadata/{rag_metadata}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VertexRagDataService.BatchDeleteRagMetadata\]\[google.cloud.aiplatform.v1beta1.VertexRagDataService.BatchDeleteRagMetadata\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchDeleteRagMetadataRequest {
+    /// Required. The resource name of the RagFile from which to delete the
+    /// RagMetadata. Format:
+    /// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The RagMetadata to delete.
+    /// A maximum of 500 rag metadata can be deleted in a batch.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Generated client implementations.
 pub mod vertex_rag_data_service_client {
     #![allow(
@@ -52147,6 +52777,375 @@ pub mod vertex_rag_data_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a RagDataSchema.
+        pub async fn create_rag_data_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRagDataSchemaRequest>,
+        ) -> std::result::Result<tonic::Response<super::RagDataSchema>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/CreateRagDataSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "CreateRagDataSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch Create one or more RagDataSchemas
+        pub async fn batch_create_rag_data_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateRagDataSchemasRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/BatchCreateRagDataSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "BatchCreateRagDataSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a RagDataSchema.
+        pub async fn get_rag_data_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRagDataSchemaRequest>,
+        ) -> std::result::Result<tonic::Response<super::RagDataSchema>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/GetRagDataSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "GetRagDataSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists RagDataSchemas in a Location.
+        pub async fn list_rag_data_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRagDataSchemasRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRagDataSchemasResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/ListRagDataSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "ListRagDataSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a RagDataSchema.
+        pub async fn delete_rag_data_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRagDataSchemaRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/DeleteRagDataSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "DeleteRagDataSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch Deletes one or more RagDataSchemas
+        pub async fn batch_delete_rag_data_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteRagDataSchemasRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/BatchDeleteRagDataSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "BatchDeleteRagDataSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a RagMetadata.
+        pub async fn create_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRagMetadataRequest>,
+        ) -> std::result::Result<tonic::Response<super::RagMetadata>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/CreateRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "CreateRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch Create one or more RagMetadatas
+        pub async fn batch_create_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateRagMetadataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/BatchCreateRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "BatchCreateRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a RagMetadata.
+        pub async fn update_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRagMetadataRequest>,
+        ) -> std::result::Result<tonic::Response<super::RagMetadata>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/UpdateRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "UpdateRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a RagMetadata.
+        pub async fn get_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRagMetadataRequest>,
+        ) -> std::result::Result<tonic::Response<super::RagMetadata>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/GetRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "GetRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists RagMetadata in a RagFile.
+        pub async fn list_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRagMetadataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRagMetadataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/ListRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "ListRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a RagMetadata.
+        pub async fn delete_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRagMetadataRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/DeleteRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "DeleteRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch Deletes one or more RagMetadata.
+        pub async fn batch_delete_rag_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteRagMetadataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagDataService/BatchDeleteRagMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagDataService",
+                        "BatchDeleteRagMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// A query to retrieve relevant contexts.
@@ -52452,6 +53451,67 @@ pub struct Claim {
     #[prost(float, optional, tag = "4")]
     pub score: ::core::option::Option<f32>,
 }
+/// Agentic Retrieval Ask API for RAG.
+/// Request message for
+/// \[VertexRagService.AskContexts\]\[google.cloud.aiplatform.v1beta1.VertexRagService.AskContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AskContextsRequest {
+    /// Required. The resource name of the Location from which to retrieve
+    /// RagContexts. The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Single RAG retrieve query.
+    #[prost(message, optional, tag = "2")]
+    pub query: ::core::option::Option<RagQuery>,
+    /// Optional. The tools to use for AskContexts.
+    #[prost(message, repeated, tag = "3")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+}
+/// Response message for
+/// \[VertexRagService.AskContexts\]\[google.cloud.aiplatform.v1beta1.VertexRagService.AskContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AskContextsResponse {
+    /// The Retrieval Response.
+    #[prost(string, tag = "1")]
+    pub response: ::prost::alloc::string::String,
+    /// The contexts of the query.
+    #[prost(message, optional, tag = "2")]
+    pub contexts: ::core::option::Option<RagContexts>,
+}
+/// Request message for
+/// \[VertexRagService.AsyncRetrieveContexts\]\[google.cloud.aiplatform.v1beta1.VertexRagService.AsyncRetrieveContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsRequest {
+    /// Required. The resource name of the Location from which to retrieve
+    /// RagContexts. The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Single RAG retrieve query.
+    #[prost(message, optional, tag = "2")]
+    pub query: ::core::option::Option<RagQuery>,
+    /// Optional. The tools to use for AskContexts.
+    #[prost(message, repeated, tag = "3")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+}
+/// Response message for
+/// \[VertexRagService.AsyncRetrieveContexts\]\[google.cloud.aiplatform.v1beta1.VertexRagService.AsyncRetrieveContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsResponse {
+    /// The contexts of the query.
+    #[prost(message, optional, tag = "1")]
+    pub contexts: ::core::option::Option<RagContexts>,
+}
+/// Metadata for AsyncRetrieveContextsOperation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Generated client implementations.
 pub mod vertex_rag_service_client {
     #![allow(
@@ -52633,6 +53693,66 @@ pub mod vertex_rag_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.VertexRagService",
                         "CorroborateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Agentic Retrieval Ask API for RAG.
+        pub async fn ask_contexts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AskContextsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AskContextsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagService/AskContexts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagService",
+                        "AskContexts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Asynchronous API to retrieves relevant contexts for a query.
+        pub async fn async_retrieve_contexts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AsyncRetrieveContextsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagService/AsyncRetrieveContexts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagService",
+                        "AsyncRetrieveContexts",
                     ),
                 );
             self.inner.unary(req, path, codec).await

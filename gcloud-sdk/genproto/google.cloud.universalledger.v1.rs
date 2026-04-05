@@ -143,35 +143,35 @@ pub struct CurrencyValue {
 pub struct StringList {
     /// Optional. The string values.
     #[prost(string, repeated, tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A list of int64s.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Int64List {
     /// Optional. The int64 values.
     #[prost(int64, repeated, packed = "false", tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<i64>,
+    pub values: ::prost::alloc::vec::Vec<i64>,
 }
 /// A list of account IDs.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountIdList {
     /// Optional. The account ID values.
     #[prost(string, repeated, tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A list of booleans.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoolList {
     /// Optional. The boolean values.
     #[prost(bool, repeated, packed = "false", tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<bool>,
+    pub values: ::prost::alloc::vec::Vec<bool>,
 }
 /// A list of dictionaries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DictList {
     /// Optional. The DictValue values.
     #[prost(message, repeated, tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<DictValue>,
+    pub values: ::prost::alloc::vec::Vec<DictValue>,
 }
 /// Indices map key to value. For example, `keys\[0\]` key maps to `values\[0\]`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -327,11 +327,13 @@ pub struct CreateAccount {
     /// signature of the transactions emanating from the created account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "6")]
     pub key_format: i32,
     /// Optional. The list of roles to grant to this account.
@@ -588,11 +590,13 @@ pub struct CreateTokenManager {
     /// signature of the transactions emanating from the token manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -617,11 +621,13 @@ pub struct CreateAccountManager {
     /// manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
     /// Optional. Deprecated: use `default_token_manager_id` instead.
@@ -655,11 +661,13 @@ pub struct CreateClearinghouse {
     /// signature of the transactions emanating from the clearinghouse's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "6")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -668,7 +676,8 @@ pub struct CreateClearinghouse {
     /// created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
-    /// The settlement mode for this clearinghouse. Required.
+    /// Required. The settlement mode for this clearinghouse. Required.
+    /// Considered public information.
     #[prost(enumeration = "SettlementMode", tag = "5")]
     pub settlement_mode: i32,
 }
@@ -687,11 +696,13 @@ pub struct TransferPlatformOperator {
     /// platform operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "3")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -720,11 +731,13 @@ pub struct CreateCurrencyOperator {
     /// operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "4")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -733,8 +746,9 @@ pub struct CreateCurrencyOperator {
     /// created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
-    /// The fiat currency associated with this operator, represented as a
+    /// Required. The fiat currency associated with this operator, represented as a
     /// 3-capital-letter ISO 4217 code.
+    /// Considered public information.
     #[prost(string, tag = "3")]
     pub currency: ::prost::alloc::string::String,
 }
@@ -753,11 +767,13 @@ pub struct TransferCurrencyOperator {
     /// currency operator's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -787,7 +803,7 @@ pub struct CreateContract {
     /// Serialised biter_bytecode.Contract bytes.
     #[prost(bytes = "vec", tag = "1")]
     pub contract_bytes: ::prost::alloc::vec::Vec<u8>,
-    /// Arguments for the `__init__` method.
+    /// Optional. Immutable. Arguments for the `__init__` method.
     #[prost(map = "string, message", tag = "2")]
     pub arguments: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -830,7 +846,7 @@ pub struct InvokeContractMethod {
     /// Name of the method to run.
     #[prost(string, tag = "2")]
     pub method_name: ::prost::alloc::string::String,
-    /// Arguments for the method.
+    /// Optional. Immutable. Arguments for the method.
     #[prost(map = "string, message", tag = "3")]
     pub arguments: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
     /// The amount to be paid.
@@ -863,6 +879,7 @@ pub struct CreateContractTokenManager {
     /// token manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -874,6 +891,7 @@ pub struct CreateContractTokenManager {
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "3")]
     pub key_format: i32,
 }
@@ -894,6 +912,7 @@ pub struct TransferContractTokenManager {
     /// contract token manager's account.
     ///
     /// The format of the public key is defined by the `key_format` field.
+    /// Considered public information.
     #[prost(bytes = "vec", tag = "1")]
     pub public_key: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Immutable. An opaque comment field that is not interpreted by the
@@ -905,6 +924,7 @@ pub struct TransferContractTokenManager {
     /// Optional. Immutable. The key format of the public key. If not
     /// specified, defaults to a binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "3")]
     pub key_format: i32,
 }
@@ -1332,15 +1352,19 @@ pub struct ClientTransaction {
     #[prost(bool, tag = "7")]
     pub chained_unit: bool,
     /// The client transaction-specific message.
-    #[prost(oneof = "client_transaction::Kind", tags = "5, 6, 8")]
+    #[prost(
+        oneof = "client_transaction::Kind",
+        tags = "5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 8"
+    )]
     pub kind: ::core::option::Option<client_transaction::Kind>,
 }
 /// Nested message and enum types in `ClientTransaction`.
 pub mod client_transaction {
     /// The client transaction-specific message.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
-        /// Optional. A client transaction-specific message. Should be any one of:
+        /// Optional. Deprecated: use one of the message specific fields instead.
+        /// A client transaction-specific message. Should be any one of:
         ///
         /// <!--
         /// clang-format off
@@ -1373,6 +1397,7 @@ pub mod client_transaction {
         /// <!--
         /// clang-format on
         /// -->
+        #[deprecated]
         #[prost(message, tag = "5")]
         App(::prost_types::Any),
         /// Optional. An operational transaction message. Note this can only be sent
@@ -1389,6 +1414,84 @@ pub mod client_transaction {
         /// -->
         #[prost(message, tag = "6")]
         Operational(::prost_types::Any),
+        /// Optional. Message for transferring the platform operator role to a new
+        /// account.
+        #[prost(message, tag = "13")]
+        TransferPlatformOperatorTransaction(super::TransferPlatformOperator),
+        /// Optional. Message for creating a new currency operator.
+        #[prost(message, tag = "14")]
+        CreateCurrencyOperatorTransaction(super::CreateCurrencyOperator),
+        /// Optional. Message for transferring the currency operator role to a new
+        /// account.
+        #[prost(message, tag = "15")]
+        TransferCurrencyOperatorTransaction(super::TransferCurrencyOperator),
+        /// Optional. Message for creating a new clearinghouse.
+        #[prost(message, tag = "16")]
+        CreateClearinghouseTransaction(super::CreateClearinghouse),
+        /// Optional. Message for creating a new account manager.
+        #[prost(message, tag = "17")]
+        CreateAccountManagerTransaction(super::CreateAccountManager),
+        /// Optional. Message for creating a new token manager associated to the
+        /// currency of the operator sending the request.
+        #[prost(message, tag = "18")]
+        CreateTokenManagerTransaction(super::CreateTokenManager),
+        /// Optional. Notifies the network that the target account has deposited
+        /// reserve funds and increases its token issuance limit.
+        #[prost(message, tag = "19")]
+        IncreaseTokenIssuanceLimitTransaction(super::IncreaseTokenIssuanceLimit),
+        /// Optional. Notifies the network that the target account wishes to withdraw
+        /// reserve funds and decreases its token issuance limit.
+        #[prost(message, tag = "20")]
+        DecreaseTokenIssuanceLimitTransaction(super::DecreaseTokenIssuanceLimit),
+        /// Optional. Message for initiating a settlement operation.
+        #[prost(message, tag = "21")]
+        SettlementRequestTransaction(super::SettlementRequest),
+        /// Optional. Message for minting currency tokens and transferring them to an
+        /// account.
+        #[prost(message, tag = "22")]
+        MintTransaction(super::Mint),
+        /// Optional. Message for burning currency tokens from an account.
+        #[prost(message, tag = "23")]
+        BurnTransaction(super::Burn),
+        /// Optional. Message for creating a new user account.
+        #[prost(message, tag = "24")]
+        CreateAccountTransaction(super::CreateAccount),
+        /// Optional. Message for deactivating a user account.
+        #[prost(message, tag = "25")]
+        DeactivateAccountTransaction(super::DeactivateAccount),
+        /// Optional. Message for activating a user account.
+        #[prost(message, tag = "26")]
+        ActivateAccountTransaction(super::ActivateAccount),
+        /// Optional. Message for adding roles to an account.
+        #[prost(message, tag = "27")]
+        AddRolesTransaction(super::AddRoles),
+        /// Optional. Message for removing roles from an account.
+        #[prost(message, tag = "28")]
+        RemoveRolesTransaction(super::RemoveRoles),
+        /// Optional. Message for changing the account manager of an account.
+        #[prost(message, tag = "29")]
+        ChangeAccountManagerTransaction(super::ChangeAccountManager),
+        /// Optional. Message for transferring tokens from one user account to
+        /// another.
+        #[prost(message, tag = "30")]
+        TransferTransaction(super::Transfer),
+        /// Optional. Message for creating a new contract on the ledger.
+        #[prost(message, tag = "31")]
+        CreateContractTransaction(super::CreateContract),
+        /// Optional. Message for granting permissions to a contract.
+        #[prost(message, tag = "32")]
+        GrantContractPermissionsTransaction(super::GrantContractPermissions),
+        /// Optional. Message for invoking the execution of a contract method.
+        #[prost(message, tag = "33")]
+        InvokeContractMethodTransaction(super::InvokeContractMethod),
+        /// Optional. Message for creating a new token manager associated to the
+        /// currency of the operator sending the request.
+        #[prost(message, tag = "34")]
+        CreateContractTokenManagerTransaction(super::CreateContractTokenManager),
+        /// Optional. Message for transferring the token manager role for a currency
+        /// from one account to another.
+        #[prost(message, tag = "35")]
+        TransferContractTokenManagerTransaction(super::TransferContractTokenManager),
         /// Optional. Message for a transaction chain including multiple transaction
         /// units to execute in sequence.
         #[prost(message, tag = "8")]

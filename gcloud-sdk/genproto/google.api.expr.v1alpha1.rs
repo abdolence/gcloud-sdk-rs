@@ -14,12 +14,12 @@ pub struct ParsedExpr {
 /// Expressions are abstractly represented as a collection of identifiers,
 /// select statements, function calls, literals, and comprehensions. All
 /// operators with the exception of the '.' operator are modelled as function
-/// calls. This makes it easy to represent new operators into the existing AST.
+/// calls. This makes it easy to represent new operators in the existing AST.
 ///
 /// All references within expressions must resolve to a
 /// \[Decl\]\[google.api.expr.v1alpha1.Decl\] provided at type-check for an
 /// expression to be valid. A reference may either be a bare identifier `name` or
-/// a qualified identifier `google.api.name`. References may either refer to a
+/// a qualified identifier `google.api.name`. References may refer to either a
 /// value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
@@ -30,7 +30,7 @@ pub struct ParsedExpr {
 pub struct Expr {
     /// Required. An id assigned to this node by the parser which is unique in a
     /// given expression tree. This is used to associate type information and other
-    /// attributes to a node in the parse tree.
+    /// attributes with a node in the parse tree.
     #[prost(int64, tag = "2")]
     pub id: i64,
     /// Required. Variants of expressions.
@@ -76,7 +76,7 @@ pub mod expr {
     /// For example, `value == 10`, `size(map_value)`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Call {
-        /// The target of an method call-style expression. For example, `x` in
+        /// The target of a method call-style expression. For example, `x` in
         /// `x.f()`.
         #[prost(message, optional, boxed, tag = "1")]
         pub target: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
@@ -89,7 +89,7 @@ pub mod expr {
     }
     /// A list creation expression.
     ///
-    /// Lists may either be homogenous, e.g. `\[1, 2, 3\]`, or heterogeneous, e.g.
+    /// Lists may either be homogeneous, e.g. `\[1, 2, 3\]`, or heterogeneous, e.g.
     /// `dyn(\[1, 'hello', 2.0\])`
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateList {
@@ -112,7 +112,7 @@ pub mod expr {
     /// `types.MyType{field_id: 'value'}`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateStruct {
-        /// The type name of the message to be created, empty when creating map
+        /// The type name of the message to be created; empty when creating map
         /// literals.
         #[prost(string, tag = "1")]
         pub message_name: ::prost::alloc::string::String,
@@ -127,7 +127,7 @@ pub mod expr {
         pub struct Entry {
             /// Required. An id assigned to this node by the parser which is unique
             /// in a given expression tree. This is used to associate type
-            /// information and other attributes to the node.
+            /// information and other attributes with the node.
             #[prost(int64, tag = "1")]
             pub id: i64,
             /// Required. The value assigned to the key.
@@ -181,7 +181,9 @@ pub mod expr {
     ///
     /// The `has(m.x)` macro tests whether the property `x` is present in struct
     /// `m`. The semantics of this macro depend on the type of `m`. For proto2
-    /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the  macro tests whether the property is set to its default. For map and struct  types, the macro tests whether the property `x`is defined on`m\`.
+    /// messages `has(m.x)` is defined as 'defined, but not set'. For proto3, the
+    /// macro tests whether the property is set to its default. For map and struct
+    /// types, the macro tests whether the property `x` is defined on `m`.
     ///
     /// Comprehensions for the standard environment macros evaluation can be best
     /// visualized as the following pseudocode:
@@ -199,7 +201,7 @@ pub mod expr {
     ///
     /// Comprehensions for the optional V2 macros which support map-to-map
     /// translation differ slightly from the standard environment macros in that
-    /// they expose both the key or index in addition to the value for each list
+    /// they expose the key or index in addition to the value for each list
     /// or map entry:
     ///
     /// ```text,
@@ -215,13 +217,12 @@ pub mod expr {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Comprehension {
         /// The name of the first iteration variable.
-        /// When the iter_range is a list, this variable is the list element.
-        /// When the iter_range is a map, this variable is the map entry key.
+        /// For the single iteration variable macros, when iter_range is a list, this
+        /// variable is the list element and when the iter_range is a map, this
+        /// variable is the map key.
         #[prost(string, tag = "1")]
         pub iter_var: ::prost::alloc::string::String,
-        /// The name of the second iteration variable, empty if not set.
-        /// When the iter_range is a list, this variable is the integer index.
-        /// When the iter_range is a map, this variable is the map entry value.
+        /// The name of the second iteration variable; empty if not set.
         /// This field is only set for comprehension v2 macros.
         #[prost(string, tag = "8")]
         pub iter_var2: ::prost::alloc::string::String,
@@ -283,7 +284,7 @@ pub mod expr {
 ///
 /// Named 'Constant' here for backwards compatibility.
 ///
-/// This is similar as the primitives supported in the well-known type
+/// This is similar to the primitives supported in the well-known type
 /// `google.protobuf.Value`, but richer so it can represent CEL's full range of
 /// primitives.
 ///
@@ -327,13 +328,13 @@ pub mod constant {
         BytesValue(::prost::alloc::vec::Vec<u8>),
         /// protobuf.Duration value.
         ///
-        /// Deprecated: duration is no longer considered a builtin cel type.
+        /// Deprecated: duration is no longer considered a builtin CEL type.
         #[deprecated]
         #[prost(message, tag = "8")]
         DurationValue(::prost_types::Duration),
         /// protobuf.Timestamp value.
         ///
-        /// Deprecated: timestamp is no longer considered a builtin cel type.
+        /// Deprecated: timestamp is no longer considered a builtin CEL type.
         #[deprecated]
         #[prost(message, tag = "9")]
         TimestampValue(::prost_types::Timestamp),
@@ -357,7 +358,7 @@ pub struct SourceInfo {
     ///
     /// The line number of a given position is the index `i` where for a given
     /// `id` the `line_offsets\[i\] < id_positions\[id\] < line_offsets\[i+1\]`. The
-    /// column may be derivd from `id_positions\[id\] - line_offsets\[i\]`.
+    /// column may be derived from `id_positions\[id\] - line_offsets\[i\]`.
     #[prost(int32, repeated, tag = "3")]
     pub line_offsets: ::prost::alloc::vec::Vec<i32>,
     /// A map from the parse node id (e.g. `Expr.id`) to the code point offset
@@ -395,7 +396,7 @@ pub mod source_info {
         /// If set, the listed components must understand the extension for the
         /// expression to evaluate correctly.
         ///
-        /// This field has set semantics, repeated values should be deduplicated.
+        /// This field has set semantics; repeated values should be deduplicated.
         #[prost(enumeration = "extension::Component", repeated, tag = "2")]
         pub affected_components: ::prost::alloc::vec::Vec<i32>,
         /// Version info. May be skipped if it isn't meaningful for the extension.
@@ -471,7 +472,7 @@ pub mod source_info {
 /// A specific position in source.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourcePosition {
-    /// The soucre location name (e.g. file name).
+    /// The source location name (e.g. file name).
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
     /// The UTF-8 code unit offset.
@@ -807,6 +808,21 @@ pub mod decl {
         /// Required. List of function overloads, must contain at least one overload.
         #[prost(message, repeated, tag = "1")]
         pub overloads: ::prost::alloc::vec::Vec<function_decl::Overload>,
+        /// Documentation string for the function that indicates the general purpose
+        /// of the function and its behavior.
+        ///
+        /// Documentation strings for the function should be general purpose with
+        /// specific examples provided in the overload doc string.
+        ///
+        /// Examples:
+        ///
+        /// ```text
+        /// The 'in' operator tests whether an item exists in a collection.
+        ///
+        /// The 'substring' function returns a substring of a target string.
+        /// ```
+        #[prost(string, tag = "2")]
+        pub doc: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `FunctionDecl`.
     pub mod function_decl {
@@ -860,7 +876,25 @@ pub mod decl {
             /// expected type of the target receiver.
             #[prost(bool, tag = "5")]
             pub is_instance_function: bool,
-            /// Documentation string for the overload.
+            /// Examples for the overload and its expected return value, separated by
+            /// newlines.
+            ///
+            /// Prefer using CEL literals in examples as they are easily consumed by
+            /// humans and simple to validate with machines. The example should contain
+            /// an expression with a literal return value in comments inline. If the
+            /// expression example is too complex or would need an example for a
+            /// variable that cannot be expressed in CEL, document the input and return
+            /// in a comment preceding the example.
+            ///
+            /// Examples:
+            ///
+            /// ```text
+            /// 1 in \[1, 2, 3\] // true
+            /// 'key' in {'key1: 1, 'key2': 2} // false
+            /// // Test whether one or more keys exist within a map.
+            /// // returns true if list_of_keys contains 'key2' or 'key3'
+            /// list_of_keys.exists(key, key in {'key3': 1, 'key2': 2})
+            /// ```
             #[prost(string, tag = "6")]
             pub doc: ::prost::alloc::string::String,
         }
@@ -979,7 +1013,7 @@ pub struct ListValue {
 pub struct MapValue {
     /// The set of map entries.
     ///
-    /// CEL has fewer restrictions on keys, so a protobuf map represenation
+    /// CEL has fewer restrictions on keys, so a protobuf map representation
     /// cannot be used.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<map_value::Entry>,
@@ -1002,7 +1036,7 @@ pub mod map_value {
 }
 /// The state of an evaluation.
 ///
-/// Can represent an inital, partial, or completed state of evaluation.
+/// Can represent an initial, partial, or completed state of evaluation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvalState {
     /// The unique values referenced in this message.
@@ -1017,10 +1051,10 @@ pub struct EvalState {
 }
 /// Nested message and enum types in `EvalState`.
 pub mod eval_state {
-    /// A single evalution result.
+    /// A single evaluation result.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Result {
-        /// The id of the expression this result if for.
+        /// The id of the expression this result is for.
         #[prost(int64, tag = "1")]
         pub expr: i64,
         /// The index in `values` of the resulting value.
@@ -1043,14 +1077,14 @@ pub mod expr_value {
         /// A concrete value.
         #[prost(message, tag = "1")]
         Value(super::Value),
-        /// The set of errors in the critical path of evalution.
+        /// The set of errors in the critical path of evaluation.
         ///
         /// Only errors in the critical path are included. For example,
         /// `(<error1> || true) && <error2>` will only result in `<error2>`,
         /// while `<error1> || <error2>` will result in both `<error1>` and
         /// `<error2>`.
         ///
-        /// Errors cause by the presence of other errors are not included in the
+        /// Errors caused by the presence of other errors are not included in the
         /// set. For example `<error1>.foo`, `foo(<error1>)`, and `<error1> + 1` will
         /// only result in `<error1>`.
         ///
@@ -1077,7 +1111,7 @@ pub mod expr_value {
         /// <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
         /// ```
         ///
-        /// Unknown takes precidence over Error in cases where a `Value` can short
+        /// Unknown takes precedence over Error in cases where a `Value` can short
         /// circuit the result:
         ///
         /// ```text
@@ -1085,7 +1119,7 @@ pub mod expr_value {
         /// <error> && <unknown> -> <unknown>
         /// ```
         ///
-        /// Errors take precidence in all other cases:
+        /// Errors take precedence in all other cases:
         ///
         /// ```text
         /// <unknown> + <error> -> <error>

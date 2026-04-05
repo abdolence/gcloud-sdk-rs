@@ -249,6 +249,7 @@ pub struct Backup {
     #[prost(enumeration = "backup::Type", tag = "5")]
     pub backup_type: i32,
     /// Volume full name of this backup belongs to.
+    /// Either source_volume or ontap_source should be provided.
     /// Format:
     /// `projects/{projects_id}/locations/{location}/volumes/{volume_id}`
     #[prost(string, tag = "6")]
@@ -1174,8 +1175,6 @@ pub enum StoragePoolType {
     File = 1,
     /// Storage pool type is unified.
     Unified = 2,
-    /// Storage pool type is unified large capacity.
-    UnifiedLargeCapacity = 3,
 }
 impl StoragePoolType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1187,7 +1186,6 @@ impl StoragePoolType {
             Self::Unspecified => "STORAGE_POOL_TYPE_UNSPECIFIED",
             Self::File => "FILE",
             Self::Unified => "UNIFIED",
-            Self::UnifiedLargeCapacity => "UNIFIED_LARGE_CAPACITY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1196,7 +1194,6 @@ impl StoragePoolType {
             "STORAGE_POOL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "FILE" => Some(Self::File),
             "UNIFIED" => Some(Self::Unified),
-            "UNIFIED_LARGE_CAPACITY" => Some(Self::UnifiedLargeCapacity),
             _ => None,
         }
     }
@@ -1753,6 +1750,106 @@ pub mod kms_config {
         }
     }
 }
+/// Request message for `ExecuteOntapPost` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapPostRequest {
+    /// Required. The raw `JSON` body of the request.
+    /// The body should be in the format of the ONTAP resource.
+    /// For example:
+    ///
+    /// ```text,
+    /// {
+    ///   "body": {
+    ///     "field1": "value1",
+    ///     "field2": "value2",
+    ///   }
+    /// }
+    /// ```
+    #[prost(message, optional, tag = "2")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+    /// Required. The resource path of the ONTAP resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/storagePools/{storage_pool_id}/ontap/{ontap_resource_path}`.
+    /// For example:
+    /// `projects/123456789/locations/us-central1/storagePools/my-storage-pool/ontap/api/storage/volumes`.
+    #[prost(string, tag = "3")]
+    pub ontap_path: ::prost::alloc::string::String,
+}
+/// Response message for `ExecuteOntapPost` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapPostResponse {
+    /// The raw `JSON` body of the response.
+    #[prost(message, optional, tag = "1")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+}
+/// Request message for `ExecuteOntapGet` API.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecuteOntapGetRequest {
+    /// Required. The resource path of the ONTAP resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/storagePools/{storage_pool_id}/ontap/{ontap_resource_path}`.
+    /// For example:
+    /// `projects/123456789/locations/us-central1/storagePools/my-storage-pool/ontap/api/storage/volumes`.
+    #[prost(string, tag = "1")]
+    pub ontap_path: ::prost::alloc::string::String,
+}
+/// Response message for `ExecuteOntapGet` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapGetResponse {
+    /// The raw `JSON` body of the response.
+    #[prost(message, optional, tag = "1")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+}
+/// Request message for `ExecuteOntapDelete` API.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecuteOntapDeleteRequest {
+    /// Required. The resource path of the ONTAP resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/storagePools/{storage_pool_id}/ontap/{ontap_resource_path}`.
+    /// For example:
+    /// `projects/123456789/locations/us-central1/storagePools/my-storage-pool/ontap/api/storage/volumes`.
+    #[prost(string, tag = "2")]
+    pub ontap_path: ::prost::alloc::string::String,
+}
+/// Response message for `ExecuteOntapDelete` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapDeleteResponse {
+    /// The raw `JSON` body of the response.
+    #[prost(message, optional, tag = "1")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+}
+/// Request message for `ExecuteOntapPatch` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapPatchRequest {
+    /// Required. The raw `JSON` body of the request.
+    /// The body should be in the format of the ONTAP resource.
+    /// For example:
+    ///
+    /// ```text,
+    /// {
+    ///   "body": {
+    ///     "field1": "value1",
+    ///     "field2": "value2",
+    ///   }
+    /// }
+    /// ```
+    #[prost(message, optional, tag = "2")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+    /// Required. The resource path of the ONTAP resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/storagePools/{storage_pool_id}/ontap/{ontap_resource_path}`.
+    /// For example:
+    /// `projects/123456789/locations/us-central1/storagePools/my-storage-pool/ontap/api/storage/volumes`.
+    #[prost(string, tag = "3")]
+    pub ontap_path: ::prost::alloc::string::String,
+}
+/// Response message for `ExecuteOntapPatch` API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteOntapPatchResponse {
+    /// The raw `JSON` body of the response.
+    #[prost(message, optional, tag = "1")]
+    pub body: ::core::option::Option<::prost_types::Struct>,
+}
 /// ListQuotaRulesRequest for listing quota rules.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaRulesRequest {
@@ -2221,9 +2318,31 @@ pub struct Volume {
     /// Currently, only one block device is permitted per Volume.
     #[prost(message, repeated, tag = "45")]
     pub block_devices: ::prost::alloc::vec::Vec<BlockDevice>,
+    /// Output only. If this volume is a clone, this field contains details about
+    /// the clone.
+    #[prost(message, optional, tag = "47")]
+    pub clone_details: ::core::option::Option<volume::CloneDetails>,
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
+    /// Details about a clone volume.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CloneDetails {
+        /// Output only. Specifies the full resource name of the source snapshot from
+        /// which this volume was cloned. Format:
+        /// projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+        #[prost(string, tag = "1")]
+        pub source_snapshot: ::prost::alloc::string::String,
+        /// Output only. Full name of the source volume resource.
+        /// Format:
+        /// projects/{project}/locations/{location}/volumes/{volume}
+        #[prost(string, tag = "2")]
+        pub source_volume: ::prost::alloc::string::String,
+        /// Output only. Shared space in GiB. Determined at volume creation time
+        /// based on size of source snapshot.
+        #[prost(int64, tag = "3")]
+        pub shared_space_gib: i64,
+    }
     /// The volume states
     #[derive(
         Clone,
@@ -2539,8 +2658,10 @@ pub mod restore_parameters {
         #[prost(string, tag = "1")]
         SourceSnapshot(::prost::alloc::string::String),
         /// Full name of the backup resource.
-        /// Format:
+        /// Format for standard backup:
         /// projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+        /// Format for BackupDR backup:
+        /// projects/{project}/locations/{location}/backupVaults/{backup_vault}/dataSources/{data_source}/backups/{backup}
         #[prost(string, tag = "2")]
         SourceBackup(::prost::alloc::string::String),
     }
@@ -2979,6 +3100,30 @@ pub struct RestoreBackupFilesRequest {
 /// RestoreBackupFilesResponse is the result of RestoreBackupFilesRequest.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestoreBackupFilesResponse {}
+/// EstablishVolumePeeringRequest establishes cluster and svm peerings between
+/// the source and destination clusters.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EstablishVolumePeeringRequest {
+    /// Required. The volume resource name, in the format
+    /// `projects/{project_id}/locations/{location}/volumes/{volume_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Name of the user's local source cluster to be peered with the
+    /// destination cluster.
+    #[prost(string, tag = "2")]
+    pub peer_cluster_name: ::prost::alloc::string::String,
+    /// Required. Name of the user's local source vserver svm to be peered with the
+    /// destination vserver svm.
+    #[prost(string, tag = "3")]
+    pub peer_svm_name: ::prost::alloc::string::String,
+    /// Optional. List of IPv4 ip addresses to be used for peering.
+    #[prost(string, repeated, tag = "4")]
+    pub peer_ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. Name of the user's local source volume to be peered with the
+    /// destination volume.
+    #[prost(string, tag = "5")]
+    pub peer_volume_name: ::prost::alloc::string::String,
+}
 /// Protocols is an enum of all the supported network protocols for a volume.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4158,11 +4303,15 @@ pub struct StoragePool {
     pub hot_tier_size_used_gib: i64,
     /// Optional. Type of the storage pool. This field is used to control whether
     /// the pool supports `FILE` based volumes only or `UNIFIED` (both `FILE` and
-    /// `BLOCK`) volumes or `UNIFIED_LARGE_CAPACITY` (both `FILE` and `BLOCK`)
-    /// volumes with large capacity. If not specified during creation, it defaults
-    /// to `FILE`.
+    /// `BLOCK`) volumes. If not specified during creation, it defaults to `FILE`.
     #[prost(enumeration = "StoragePoolType", optional, tag = "35")]
     pub r#type: ::core::option::Option<i32>,
+    /// Optional. Mode of the storage pool. This field is used to control whether
+    /// the user can perform the ONTAP operations on the storage pool using the
+    /// GCNV ONTAP Mode APIs. If not specified during creation, it defaults to
+    /// `DEFAULT`.
+    #[prost(enumeration = "Mode", optional, tag = "36")]
+    pub mode: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {
@@ -4240,6 +4389,40 @@ pub struct ValidateDirectoryServiceRequest {
     /// Type of directory service policy attached to the storage pool.
     #[prost(enumeration = "DirectoryServiceType", tag = "2")]
     pub directory_service_type: i32,
+}
+/// `Mode` of the storage pool or volume. This field is used to control whether
+/// the resource is managed by the GCNV APIs or the GCNV ONTAP Mode APIs.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Mode {
+    /// The `Mode` is not specified.
+    Unspecified = 0,
+    /// The resource is managed by the GCNV APIs.
+    Default = 1,
+    /// The resource is managed by the GCNV ONTAP Mode APIs.
+    Ontap = 2,
+}
+impl Mode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MODE_UNSPECIFIED",
+            Self::Default => "DEFAULT",
+            Self::Ontap => "ONTAP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEFAULT" => Some(Self::Default),
+            "ONTAP" => Some(Self::Ontap),
+            _ => None,
+        }
+    }
 }
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4710,6 +4893,37 @@ pub mod net_app_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.netapp.v1.NetApp", "RevertVolume"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Establish volume peering. This is used to establish cluster and svm
+        /// peerings between the GCNV and OnPrem clusters.
+        pub async fn establish_volume_peering(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EstablishVolumePeeringRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/EstablishVolumePeering",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.netapp.v1.NetApp",
+                        "EstablishVolumePeering",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }
@@ -6152,6 +6366,121 @@ pub mod net_app_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.netapp.v1.NetApp", "DeleteHostGroup"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// `ExecuteOntapPost` dispatches the ONTAP `POST` request to the
+        /// `StoragePool` cluster.
+        pub async fn execute_ontap_post(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecuteOntapPostRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExecuteOntapPostResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapPost",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "ExecuteOntapPost"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// `ExecuteOntapGet` dispatches the ONTAP `GET` request to the
+        /// `StoragePool` cluster.
+        pub async fn execute_ontap_get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecuteOntapGetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExecuteOntapGetResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapGet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "ExecuteOntapGet"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// `ExecuteOntapDelete` dispatches the ONTAP `DELETE` request to the
+        /// `StoragePool` cluster.
+        pub async fn execute_ontap_delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecuteOntapDeleteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExecuteOntapDeleteResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapDelete",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.netapp.v1.NetApp",
+                        "ExecuteOntapDelete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// `ExecuteOntapPatch` dispatches the ONTAP `PATCH` request to the
+        /// `StoragePool` cluster.
+        pub async fn execute_ontap_patch(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecuteOntapPatchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExecuteOntapPatchResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ExecuteOntapPatch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "ExecuteOntapPatch"),
                 );
             self.inner.unary(req, path, codec).await
         }

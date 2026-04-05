@@ -224,6 +224,12 @@ pub mod attribute_context {
         /// Derived from the HTTP request `Authorization` header or equivalent.
         #[prost(message, optional, tag = "13")]
         pub auth: ::core::option::Option<Auth>,
+        /// The values from Origin header from the HTTP request, such as
+        /// "<https://console.cloud.google.com".> Modern browsers can only have one
+        /// origin. Special browsers and/or HTTP clients may require multiple
+        /// origins.
+        #[prost(string, tag = "14")]
+        pub origin: ::prost::alloc::string::String,
     }
     /// This message defines attributes for a typical network response. It
     /// generally models semantics of an HTTP response.

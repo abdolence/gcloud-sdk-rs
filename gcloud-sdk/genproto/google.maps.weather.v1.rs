@@ -959,6 +959,182 @@ pub struct ForecastHour {
     #[prost(message, optional, tag = "19")]
     pub ice_thickness: ::core::option::Option<IceThickness>,
 }
+/// Contains high resolution forecast data for precipitation events.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrecipitationEvent {
+    /// The localized title for the nowcast prediction event.
+    #[prost(string, tag = "1")]
+    pub title: ::prost::alloc::string::String,
+    /// The localized subtitle for the nowcast prediction event.
+    #[prost(string, tag = "2")]
+    pub subtitle: ::prost::alloc::string::String,
+    /// The timeframe relevant to the event and the textual representations (title
+    /// and sub title).
+    #[prost(message, optional, tag = "3")]
+    pub time_frame: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// The precipitation intervals in minutes resolution.
+    #[prost(message, repeated, tag = "4")]
+    pub intervals: ::prost::alloc::vec::Vec<PrecipitationsInterval>,
+}
+/// Represents a single interval of high resolution Precipitations forecast data.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PrecipitationsInterval {
+    /// The timeframe of the precipitation interval.
+    #[prost(message, optional, tag = "1")]
+    pub time_frame: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// The type of precipitation associated with the precipitation event.
+    #[prost(
+        enumeration = "precipitations_interval::PrecipitationIntervalType",
+        tag = "2"
+    )]
+    pub r#type: i32,
+    /// The chance of `precipitation_type` for the interval.
+    ///
+    /// Values are in percentages ranging from 0 to 100.
+    #[prost(int32, tag = "3")]
+    pub probability: i32,
+    /// Quantitative precipitation forecast for the precipitation interval.
+    ///
+    /// Values are in either inches or millimeters.
+    #[prost(message, optional, tag = "4")]
+    pub qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
+    /// Snow quantitative precipitation forecast for the precipitation interval.
+    ///
+    /// Values are in either inches or millimeters.
+    #[prost(message, optional, tag = "5")]
+    pub snow_qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
+    /// Precipitation intensity of the interval.
+    #[prost(
+        enumeration = "precipitations_interval::IntervalPrecipitationIntensity",
+        tag = "6"
+    )]
+    pub intensity: i32,
+}
+/// Nested message and enum types in `PrecipitationsInterval`.
+pub mod precipitations_interval {
+    /// The type of precipitation associated with the precipitation event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PrecipitationIntervalType {
+        /// Unspecified precipitation interval type.
+        Unspecified = 0,
+        /// No precipitation.
+        NoPrecipitation = 1,
+        /// Snow precipitation.
+        Snow = 2,
+        /// Rain precipitation.
+        Rain = 3,
+        /// Light rain precipitation.
+        LightRain = 4,
+        /// Heavy rain precipitation.
+        HeavyRain = 5,
+        /// Both rain and snow precipitations.
+        RainAndSnow = 6,
+        /// Sleet precipitation.
+        Sleet = 7,
+        /// Freezing rain precipitation.
+        FreezingRain = 8,
+        /// Hail precipitation.
+        Hail = 9,
+    }
+    impl PrecipitationIntervalType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PRECIPITATION_INTERVAL_TYPE_UNSPECIFIED",
+                Self::NoPrecipitation => "NO_PRECIPITATION",
+                Self::Snow => "SNOW",
+                Self::Rain => "RAIN",
+                Self::LightRain => "LIGHT_RAIN",
+                Self::HeavyRain => "HEAVY_RAIN",
+                Self::RainAndSnow => "RAIN_AND_SNOW",
+                Self::Sleet => "SLEET",
+                Self::FreezingRain => "FREEZING_RAIN",
+                Self::Hail => "HAIL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRECIPITATION_INTERVAL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_PRECIPITATION" => Some(Self::NoPrecipitation),
+                "SNOW" => Some(Self::Snow),
+                "RAIN" => Some(Self::Rain),
+                "LIGHT_RAIN" => Some(Self::LightRain),
+                "HEAVY_RAIN" => Some(Self::HeavyRain),
+                "RAIN_AND_SNOW" => Some(Self::RainAndSnow),
+                "SLEET" => Some(Self::Sleet),
+                "FREEZING_RAIN" => Some(Self::FreezingRain),
+                "HAIL" => Some(Self::Hail),
+                _ => None,
+            }
+        }
+    }
+    /// Precipitation intensity of the interval.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IntervalPrecipitationIntensity {
+        /// Unknown precipitation intensity.
+        Unspecified = 0,
+        /// No precipitation.
+        NoIntensity = 1,
+        /// Light precipitation.
+        Light = 2,
+        /// Moderate precipitation.
+        Moderate = 3,
+        /// Heavy precipitation.
+        Heavy = 4,
+    }
+    impl IntervalPrecipitationIntensity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INTERVAL_PRECIPITATION_INTENSITY_UNSPECIFIED",
+                Self::NoIntensity => "NO_INTENSITY",
+                Self::Light => "LIGHT",
+                Self::Moderate => "MODERATE",
+                Self::Heavy => "HEAVY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTERVAL_PRECIPITATION_INTENSITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_INTENSITY" => Some(Self::NoIntensity),
+                "LIGHT" => Some(Self::Light),
+                "MODERATE" => Some(Self::Moderate),
+                "HEAVY" => Some(Self::Heavy),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents an hourly history record at a given location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistoryHour {
@@ -1034,6 +1210,44 @@ pub struct HistoryHour {
     /// The historical ice thickness.
     #[prost(message, optional, tag = "19")]
     pub ice_thickness: ::core::option::Option<IceThickness>,
+}
+/// The type of the weather map. Defines the weather event that the
+/// map will graphically represent.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MapType {
+    /// The default value. The server ignores it if it is passed as a parameter.
+    Unspecified = 0,
+    /// Global precipitation current map.
+    GlobalPrecipitationCurrent = 1,
+    /// US precipitation current map.
+    UsPrecipitationCurrent = 2,
+    /// EU precipitation current map.
+    EuPrecipitationCurrent = 3,
+}
+impl MapType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MAP_TYPE_UNSPECIFIED",
+            Self::GlobalPrecipitationCurrent => "GLOBAL_PRECIPITATION_CURRENT",
+            Self::UsPrecipitationCurrent => "US_PRECIPITATION_CURRENT",
+            Self::EuPrecipitationCurrent => "EU_PRECIPITATION_CURRENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MAP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GLOBAL_PRECIPITATION_CURRENT" => Some(Self::GlobalPrecipitationCurrent),
+            "US_PRECIPITATION_CURRENT" => Some(Self::UsPrecipitationCurrent),
+            "EU_PRECIPITATION_CURRENT" => Some(Self::EuPrecipitationCurrent),
+            _ => None,
+        }
+    }
 }
 /// The type of the weather event.
 /// (-- Next available tag: 64 --)
@@ -2116,6 +2330,86 @@ pub struct LookupPublicAlertsResponse {
     #[prost(string, tag = "3")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request for the LookupForecastMinutes RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupForecastMinutesRequest {
+    /// The location to get the minutely forecast for.
+    #[prost(message, optional, tag = "1")]
+    pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// Optional. The units system to use for the returned weather conditions. If
+    /// not provided, the returned weather conditions will be in the metric system
+    /// (default = METRIC).
+    #[prost(enumeration = "UnitsSystem", tag = "2")]
+    pub units_system: i32,
+    /// Optional. Allows the client to choose the language for the response. If
+    /// data cannot be provided for that language, the API uses the closest match.
+    /// Allowed values rely on the IETF BCP-47 standard. The default value is "en".
+    #[prost(string, optional, tag = "3")]
+    pub language_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The maximum number of forecast records to return per page.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous request. It is used to
+    /// retrieve the subsequent page.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the LookupForecastMinutes RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupForecastMinutesResponse {
+    /// The minute-level prediction events.
+    #[prost(message, repeated, tag = "1")]
+    pub events: ::prost::alloc::vec::Vec<PrecipitationEvent>,
+    /// The overall timeframe for the predictions.
+    #[prost(message, optional, tag = "2")]
+    pub overall_prediction_timeframe: ::core::option::Option<
+        super::super::super::r#type::Interval,
+    >,
+    /// The time zone at the requested location.
+    #[prost(message, optional, tag = "3")]
+    pub time_zone: ::core::option::Option<super::super::super::r#type::TimeZone>,
+    /// The token to retrieve the next page.
+    #[prost(string, tag = "4")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// (-- Request for the LookupMapTile RPC. --)
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LookupMapTileRequest {
+    /// The type of the weather map. Defines the weather event that the
+    /// map will graphically represent.
+    ///
+    /// ```text
+    /// Allowed values:
+    /// - GLOBAL_PRECIPITATION_CURRENT - Global precipitation current map.
+    /// - US_PRECIPITATION_CURRENT - US precipitation current map.
+    /// - EU_PRECIPITATION_CURRENT - EU precipitation current map.
+    /// ```
+    #[prost(enumeration = "MapType", tag = "2")]
+    pub map_type: i32,
+    /// The map's zoom level. Defines how large or small the contents
+    /// of a map appear in a map view.
+    ///
+    /// Zoom level 0 is the entire world in a single tile.
+    /// Zoom level 1 is the entire world in 4 tiles.
+    /// Zoom level 2 is the entire world in 16 tiles.
+    /// Zoom level 16 is the entire world in 65,536 tiles.
+    ///
+    /// Allowed values: 0-16
+    /// (-- api-linter: core::0203::required-and-optional=disabled
+    /// aip.dev/not-precedent: this field needs to keep presence. --)
+    #[prost(int32, tag = "3")]
+    pub zoom: i32,
+    /// Defines the east-west point in the requested tile.
+    /// (-- api-linter: core::0203::required-and-optional=disabled
+    /// aip.dev/not-precedent: this field needs to keep presence. --)
+    #[prost(int32, tag = "4")]
+    pub x: i32,
+    /// Defines the north-south point in the requested tile.
+    /// (-- api-linter: core::0203::required-and-optional=disabled
+    /// aip.dev/not-precedent: this field needs to keep presence. --)
+    #[prost(int32, tag = "5")]
+    pub y: i32,
+}
 /// Generated client implementations.
 pub mod weather_client {
     #![allow(
@@ -2357,6 +2651,36 @@ pub mod weather_client {
                     GrpcMethod::new(
                         "google.maps.weather.v1.Weather",
                         "LookupPublicAlerts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns minute-level precipitation nowcast events for up to 6 hours.
+        pub async fn lookup_forecast_minutes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupForecastMinutesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LookupForecastMinutesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.weather.v1.Weather/LookupForecastMinutes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.weather.v1.Weather",
+                        "LookupForecastMinutes",
                     ),
                 );
             self.inner.unary(req, path, codec).await

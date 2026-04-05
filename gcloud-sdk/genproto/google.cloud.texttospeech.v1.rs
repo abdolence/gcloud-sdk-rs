@@ -39,18 +39,154 @@ pub struct Voice {
     pub natural_sample_rate_hertz: i32,
 }
 /// Used for advanced voice options.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdvancedVoiceOptions {
     /// Only for Journey voices. If false, the synthesis is context aware
     /// and has a higher latency.
     #[prost(bool, optional, tag = "1")]
     pub low_latency_journey_synthesis: ::core::option::Option<bool>,
-    /// Optional. Input only. If true, relaxes safety filters for Gemini TTS. Only
-    /// supported for accounts linked to Invoiced (Offline) Cloud billing accounts.
-    /// Otherwise, will return result
-    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\].
+    /// Optional. Input only. Deprecated, use safety_settings instead.
+    /// If true, relaxes safety filters for Gemini TTS.
+    #[deprecated]
     #[prost(bool, tag = "8")]
     pub relax_safety_filters: bool,
+    /// Optional. Input only. This applies to Gemini TTS only. If set, the category
+    /// specified in the safety setting will be blocked if the harm probability is
+    /// above the threshold. Otherwise, the safety filter will be disabled by
+    /// default.
+    #[prost(message, optional, tag = "9")]
+    pub safety_settings: ::core::option::Option<advanced_voice_options::SafetySettings>,
+    /// Optional. If true, textnorm will be applied to text input. This feature is
+    /// enabled by default. Only applies for Gemini TTS.
+    #[prost(bool, optional, tag = "2")]
+    pub enable_textnorm: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `AdvancedVoiceOptions`.
+pub mod advanced_voice_options {
+    /// Safety setting for a single harm category.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SafetySetting {
+        /// The harm category to apply the safety setting to.
+        #[prost(enumeration = "HarmCategory", tag = "1")]
+        pub category: i32,
+        /// The harm block threshold for the safety setting.
+        #[prost(enumeration = "HarmBlockThreshold", tag = "2")]
+        pub threshold: i32,
+    }
+    /// Safety settings for the request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SafetySettings {
+        /// The safety settings for the request.
+        #[prost(message, repeated, tag = "1")]
+        pub settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    }
+    /// Harm categories that will block the content.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmCategory {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Content that promotes violence or incites hatred against individuals or
+        /// groups based on certain attributes.
+        HateSpeech = 1,
+        /// Content that promotes, facilitates, or enables dangerous activities.
+        DangerousContent = 2,
+        /// Abusive, threatening, or content intended to bully, torment, or ridicule.
+        Harassment = 3,
+        /// Content that contains sexually explicit material.
+        SexuallyExplicit = 4,
+    }
+    impl HarmCategory {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_CATEGORY_UNSPECIFIED",
+                Self::HateSpeech => "HARM_CATEGORY_HATE_SPEECH",
+                Self::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
+                Self::Harassment => "HARM_CATEGORY_HARASSMENT",
+                Self::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "HARM_CATEGORY_HATE_SPEECH" => Some(Self::HateSpeech),
+                "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
+                "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
+                "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
+                _ => None,
+            }
+        }
+    }
+    /// Harm block thresholds for the safety settings.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockThreshold {
+        /// The harm block threshold is unspecified.
+        Unspecified = 0,
+        /// Block content with a low harm probability or higher.
+        BlockLowAndAbove = 1,
+        /// Block content with a medium harm probability or higher.
+        BlockMediumAndAbove = 2,
+        /// Block content with a high harm probability.
+        BlockOnlyHigh = 3,
+        /// Do not block any content, regardless of its harm probability.
+        BlockNone = 4,
+        /// Turn off the safety filter entirely.
+        Off = 5,
+    }
+    impl HarmBlockThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                Self::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
+                Self::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
+                Self::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
+                Self::BlockNone => "BLOCK_NONE",
+                Self::Off => "OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
+                "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
+                "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
+                "BLOCK_NONE" => Some(Self::BlockNone),
+                "OFF" => Some(Self::Off),
+                _ => None,
+            }
+        }
+    }
 }
 /// The top-level message sent by the client for the `SynthesizeSpeech` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -64,7 +200,7 @@ pub struct SynthesizeSpeechRequest {
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::core::option::Option<AudioConfig>,
-    /// Advanced voice options.
+    /// Optional. Advanced voice options.
     #[prost(message, optional, tag = "8")]
     pub advanced_voice_options: ::core::option::Option<AdvancedVoiceOptions>,
 }
@@ -250,8 +386,8 @@ pub mod synthesis_input {
         /// The raw text to be synthesized.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
-        /// Markup for HD voices specifically. This field may not be used with any
-        /// other voices.
+        /// Markup for Chirp 3: HD voices specifically. This field may not be used
+        /// with any other voices.
         #[prost(string, tag = "5")]
         Markup(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
@@ -478,6 +614,9 @@ pub struct StreamingSynthesizeConfig {
     /// be inside a phoneme tag.
     #[prost(message, optional, tag = "5")]
     pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
+    /// Optional. Advanced voice options.
+    #[prost(message, optional, tag = "7")]
+    pub advanced_voice_options: ::core::option::Option<AdvancedVoiceOptions>,
 }
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -497,8 +636,8 @@ pub mod streaming_synthesis_input {
         /// in the output audio.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
-        /// Markup for HD voices specifically. This field may not be used with any
-        /// other voices.
+        /// Markup for Chirp 3: HD voices specifically. This field may not be used
+        /// with any other voices.
         #[prost(string, tag = "5")]
         Markup(::prost::alloc::string::String),
         /// Multi-speaker markup for Gemini TTS. This field may not
