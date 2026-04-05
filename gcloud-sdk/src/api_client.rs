@@ -43,18 +43,46 @@ where
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
+        Self::with_token_source_and_headers(
+            builder,
+            google_api_url,
+            cloud_resource_prefix,
+            token_source_type,
+            token_scopes,
+            hyper::HeaderMap::new(),
+        )
+        .await
+    }
+
+    pub async fn with_token_source_and_headers<S: AsRef<str>>(
+        builder: B,
+        google_api_url: S,
+        cloud_resource_prefix: Option<String>,
+        token_source_type: TokenSourceType,
+        token_scopes: Vec<String>,
+        additional_headers: hyper::HeaderMap,
+    ) -> crate::error::Result<Self> {
         debug!(
             "Creating a new Google API client for {}. Scopes: {:?}",
             google_api_url.as_ref(),
             token_scopes
         );
 
-        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
-
         let token_generator =
             GoogleAuthTokenGenerator::new(token_source_type, token_scopes).await?;
 
-        let middleware = GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix);
+        let mut middleware = GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix);
+        middleware.set_additional_headers(additional_headers);
+
+        Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
+    }
+
+    pub async fn with_token_source_and_middleware<S: AsRef<str>>(
+        builder: B,
+        google_api_url: S,
+        middleware: GoogleAuthMiddlewareLayer,
+    ) -> crate::error::Result<Self> {
+        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
 
         let service: GoogleAuthMiddlewareService<Channel> =
             ServiceBuilder::new().layer(middleware).service(channel);
@@ -116,6 +144,22 @@ where
         .await
     }
 
+    pub async fn from_function_with_headers<S: AsRef<str>>(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: S,
+        cloud_resource_prefix_meta: Option<String>,
+        headers: hyper::HeaderMap,
+    ) -> crate::error::Result<Self> {
+        Self::from_function_with_scopes_and_headers(
+            builder_fn,
+            google_api_url,
+            cloud_resource_prefix_meta,
+            GCP_DEFAULT_SCOPES.clone(),
+            headers,
+        )
+        .await
+    }
+
     pub async fn from_function_with_scopes<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
@@ -128,6 +172,24 @@ where
             cloud_resource_prefix_meta,
             token_scopes,
             TokenSourceType::Default,
+        )
+        .await
+    }
+
+    pub async fn from_function_with_scopes_and_headers<S: AsRef<str>>(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: S,
+        cloud_resource_prefix_meta: Option<String>,
+        token_scopes: Vec<String>,
+        headers: hyper::HeaderMap,
+    ) -> crate::error::Result<Self> {
+        Self::from_function_with_token_source_and_headers(
+            builder_fn,
+            google_api_url,
+            cloud_resource_prefix_meta,
+            token_scopes,
+            TokenSourceType::Default,
+            headers,
         )
         .await
     }
@@ -150,6 +212,39 @@ where
             token_scopes,
         )
         .await
+    }
+
+    pub async fn from_function_with_token_source_and_headers<S: AsRef<str>>(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: S,
+        cloud_resource_prefix_meta: Option<String>,
+        token_scopes: Vec<String>,
+        token_source_type: TokenSourceType,
+        headers: hyper::HeaderMap,
+    ) -> crate::error::Result<Self> {
+        let builder: GoogleApiClientBuilderFunction<C> =
+            GoogleApiClientBuilderFunction { f: builder_fn };
+
+        Self::with_token_source_and_headers(
+            builder,
+            google_api_url,
+            cloud_resource_prefix_meta,
+            token_source_type,
+            token_scopes,
+            headers,
+        )
+        .await
+    }
+
+    pub async fn from_function_with_middleware<S: AsRef<str>>(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: S,
+        middleware: GoogleAuthMiddlewareLayer,
+    ) -> crate::error::Result<Self> {
+        let builder: GoogleApiClientBuilderFunction<C> =
+            GoogleApiClientBuilderFunction { f: builder_fn };
+
+        Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
     }
 }
 
