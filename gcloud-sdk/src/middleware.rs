@@ -107,7 +107,7 @@ where
                 headers.insert(hyper::header::USER_AGENT, user_agent.parse()?);
                 headers.insert("x-goog-api-client", x_goog_api_client.parse()?);
 
-                for (maybe_k,v) in additional_headers.into_iter() {
+                for (maybe_k, v) in additional_headers.into_iter() {
                     if let Some(k) = maybe_k {
                         headers.insert(k, v);
                     }
@@ -267,7 +267,8 @@ mod tests {
 
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service = GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+        let mut service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
 
         let req = Request::builder()
             .uri("http://example.com")
@@ -279,7 +280,10 @@ mod tests {
         let captured_req = rx.recv().await.unwrap();
         let expected_default = format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION"));
         assert_eq!(
-            captured_req.headers().get(hyper::header::USER_AGENT).unwrap(),
+            captured_req
+                .headers()
+                .get(hyper::header::USER_AGENT)
+                .unwrap(),
             expected_default.as_str()
         );
         assert_eq!(
@@ -322,7 +326,10 @@ mod tests {
         let expected_client = format!("gcloud-sdk-rs/{} extra-client", env!("CARGO_PKG_VERSION"));
 
         assert_eq!(
-            captured_req.headers().get(hyper::header::USER_AGENT).unwrap(),
+            captured_req
+                .headers()
+                .get(hyper::header::USER_AGENT)
+                .unwrap(),
             expected_ua.as_str()
         );
         assert_eq!(
@@ -337,17 +344,16 @@ mod tests {
             TokenSourceType::ExternalSource(Box::new(DummySource)),
             vec![],
         )
-            .await
-            .unwrap();
+        .await
+        .unwrap();
 
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service = GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+        let mut service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
         let mut test_headers = hyper::HeaderMap::new();
         test_headers.insert("x-test-header", "test-value".parse().unwrap());
-        service.set_additional_headers(
-            test_headers
-        );
+        service.set_additional_headers(test_headers);
 
         let req = Request::builder()
             .uri("http://example.com")

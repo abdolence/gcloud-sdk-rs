@@ -1,5 +1,5 @@
-use std::{fs, path::PathBuf};
 use crate::gen::Proto;
+use std::{fs, path::PathBuf};
 
 mod gen;
 
@@ -51,12 +51,15 @@ fn main() {
 }
 
 fn filter_unwanted_protos(protos: Vec<Proto>) -> Vec<Proto> {
-    protos.into_iter().filter(|proto| {
-        let path = proto.path.to_str().unwrap();
-        !path.contains("google/ads/") &&
-        !path.contains("google/cloud/compute/v1beta/") &&
-        !path.contains("google/cloud/gkehub/") &&
-        !path.contains("google/shopping") &&
-        !path.contains("preview/google/")
-    }).collect()
+    protos
+        .into_iter()
+        .filter(|proto| {
+            let path = proto.path.to_str().unwrap();
+            !path.contains("google/ads/")
+                && !path.contains("google/cloud/compute/v1beta/")
+                && !path.contains("google/cloud/gkehub/")
+                && !path.contains("google/shopping")
+                && !path.contains("preview/google/")
+        })
+        .collect()
 }

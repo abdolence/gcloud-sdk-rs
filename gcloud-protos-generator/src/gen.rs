@@ -296,9 +296,10 @@ fn proto_rec(root: PathBuf, path: PathBuf, map: &mut HashMap<PathBuf, Proto>) ->
     let mut package = None;
     let mut imports = Vec::new();
 
-    for line in fs::read_to_string(path.as_path()).expect(
-        &format!("Unable to read file: {:?}", path.as_path())
-    ).lines() {
+    for line in fs::read_to_string(path.as_path())
+        .expect(&format!("Unable to read file: {:?}", path.as_path()))
+        .lines()
+    {
         if let Some(pkg) = parse_package(line) {
             package = Some(pkg);
         } else if let Some(import) = parse_import(line) {
