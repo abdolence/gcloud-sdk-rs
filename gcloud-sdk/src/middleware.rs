@@ -19,6 +19,7 @@ where
     cloud_resource_prefix: Option<String>,
     user_agent: String,
     x_goog_api_client: String,
+    additional_headers: hyper::header::HeaderMap,
 }
 
 impl<T> GoogleAuthMiddlewareService<T>
@@ -36,6 +37,7 @@ where
             cloud_resource_prefix,
             user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
             x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
+            additional_headers: hyper::header::HeaderMap::new(),
         }
     }
 
@@ -53,6 +55,10 @@ where
 
     pub fn append_x_goog_api_client(&mut self, x_goog_api_client: String) {
         self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
+    }
+
+    pub fn set_additional_headers(&mut self, additional_headers: hyper::HeaderMap) {
+        self.additional_headers = additional_headers;
     }
 }
 
@@ -82,6 +88,7 @@ where
         let cloud_resource_prefix = self.cloud_resource_prefix.clone();
         let user_agent = self.user_agent.clone();
         let x_goog_api_client = self.x_goog_api_client.clone();
+        let additional_headers = self.additional_headers.clone();
 
         if let Some(mut google_service) = self.google_service.take() {
             self.google_service = Some(google_service.clone());
@@ -99,6 +106,12 @@ where
                 }
                 headers.insert(hyper::header::USER_AGENT, user_agent.parse()?);
                 headers.insert("x-goog-api-client", x_goog_api_client.parse()?);
+
+                for (maybe_k,v) in additional_headers.into_iter() {
+                    if let Some(k) = maybe_k {
+                        headers.insert(k, v);
+                    }
+                }
 
                 let req_uri_str = req.uri().to_string();
                 google_service
@@ -140,10 +153,11 @@ where
 }
 
 pub struct GoogleAuthMiddlewareLayer {
-    token_generator: Arc<GoogleAuthTokenGenerator>,
-    cloud_resource_prefix: Option<String>,
-    user_agent: String,
-    x_goog_api_client: String,
+    pub token_generator: Arc<GoogleAuthTokenGenerator>,
+    pub cloud_resource_prefix: Option<String>,
+    pub user_agent: String,
+    pub x_goog_api_client: String,
+    pub additional_headers: hyper::header::HeaderMap,
 }
 
 impl GoogleAuthMiddlewareLayer {
@@ -156,6 +170,7 @@ impl GoogleAuthMiddlewareLayer {
             cloud_resource_prefix,
             user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
             x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
+            additional_headers: hyper::header::HeaderMap::new(),
         }
     }
 
@@ -167,6 +182,10 @@ impl GoogleAuthMiddlewareLayer {
     pub fn amend_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
         self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
         self
+    }
+
+    pub fn set_additional_headers(&mut self, additional_headers: hyper::HeaderMap) {
+        self.additional_headers = additional_headers;
     }
 }
 
@@ -184,6 +203,7 @@ where
         );
         middleware_service.set_user_agent(self.user_agent.clone());
         middleware_service.set_x_goog_api_client(self.x_goog_api_client.clone());
+        middleware_service.set_additional_headers(self.additional_headers.clone());
         middleware_service
     }
 }
@@ -308,6 +328,38 @@ mod tests {
         assert_eq!(
             captured_req.headers().get("x-goog-api-client").unwrap(),
             expected_client.as_str()
+        );
+    }
+
+    #[tokio::test]
+    async fn test_additional_headers() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+            .await
+            .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service = GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+        let mut test_headers = hyper::HeaderMap::new();
+        test_headers.insert("x-test-header", "test-value".parse().unwrap());
+        service.set_additional_headers(
+            test_headers
+        );
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        assert_eq!(
+            captured_req.headers().get("x-test-header").unwrap(),
+            "test-value"
         );
     }
 }
