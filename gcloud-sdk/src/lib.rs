@@ -77,3 +77,4 @@ pub use prost;
 pub use prost_types;
 pub use secret_vault_value::SecretValue;
 pub use tonic;
+pub use hyper::HeaderMap;
