@@ -775,6 +775,9 @@ pub struct Cluster {
     /// to change.
     #[prost(string, tag = "46")]
     pub service_account_email: ::prost::alloc::string::String,
+    /// Optional. Configuration for Dataplex integration.
+    #[prost(message, optional, tag = "47")]
+    pub dataplex_config: ::core::option::Option<cluster::DataplexConfig>,
     /// In case of an imported cluster, this field contains information about the
     /// source this cluster was imported from.
     #[prost(oneof = "cluster::Source", tags = "15, 16, 42")]
@@ -852,6 +855,15 @@ pub mod cluster {
         /// grace end time of the cluster.
         #[prost(message, optional, tag = "4")]
         pub grace_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Configuration for Dataplex integration.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DataplexConfig {
+        /// Dataplex is enabled by default for resources such as clusters and
+        /// instances. This flag controls the integration of AlloyDB PG
+        /// resources (like databases, schemas, and tables) with Dataplex."
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
     }
     /// Cluster State
     #[derive(

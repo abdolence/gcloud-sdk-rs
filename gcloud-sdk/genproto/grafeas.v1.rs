@@ -95,6 +95,10 @@ pub struct FileLocation {
     /// information from the origin layer of the package).
     #[prost(message, optional, tag = "2")]
     pub layer_details: ::core::option::Option<LayerDetails>,
+    /// Line number in the file where the package was found.
+    /// Optional field that only applies to source repository scanning.
+    #[prost(int32, tag = "3")]
+    pub line_number: i32,
 }
 /// BaseImage describes a base image of a container image.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

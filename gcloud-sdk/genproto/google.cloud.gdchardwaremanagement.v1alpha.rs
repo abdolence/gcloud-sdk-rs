@@ -962,6 +962,8 @@ pub mod zone {
         CustomerFactoryTurnupChecksStarted = 8,
         /// The Zone is ready for site turnup.
         ReadyForSiteTurnup = 6,
+        /// The Zone is offline.
+        Offline = 9,
         /// The Zone failed in factory turnup checks.
         CustomerFactoryTurnupChecksFailed = 7,
         /// The Zone is available to use.
@@ -986,6 +988,7 @@ pub mod zone {
                     "CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED"
                 }
                 Self::ReadyForSiteTurnup => "READY_FOR_SITE_TURNUP",
+                Self::Offline => "OFFLINE",
                 Self::CustomerFactoryTurnupChecksFailed => {
                     "CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED"
                 }
@@ -1006,6 +1009,7 @@ pub mod zone {
                     Some(Self::CustomerFactoryTurnupChecksStarted)
                 }
                 "READY_FOR_SITE_TURNUP" => Some(Self::ReadyForSiteTurnup),
+                "OFFLINE" => Some(Self::Offline),
                 "CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED" => {
                     Some(Self::CustomerFactoryTurnupChecksFailed)
                 }

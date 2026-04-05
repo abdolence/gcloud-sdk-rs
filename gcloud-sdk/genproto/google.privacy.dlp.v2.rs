@@ -121,12 +121,13 @@ pub struct CustomInfoType {
     #[prost(enumeration = "Likelihood", tag = "6")]
     pub likelihood: i32,
     /// Set of detection rules to apply to all findings of this CustomInfoType.
-    /// Rules are applied in order that they are specified. Not supported for the
-    /// `surrogate_type` CustomInfoType.
+    /// Rules are applied in the order that they are specified. Only supported
+    /// for the `dictionary`, `regex`, and `stored_type` CustomInfoTypes.
     #[prost(message, repeated, tag = "7")]
     pub detection_rules: ::prost::alloc::vec::Vec<custom_info_type::DetectionRule>,
     /// If set to EXCLUSION_TYPE_EXCLUDE this infoType will not cause a finding
-    /// to be returned. It still can be used for rules matching.
+    /// to be returned. It still can be used for rules matching. Only supported
+    /// for the `dictionary`, `regex`, and `stored_type` CustomInfoTypes.
     #[prost(enumeration = "custom_info_type::ExclusionType", tag = "8")]
     pub exclusion_type: i32,
     /// Sensitivity for this CustomInfoType. If this CustomInfoType extends an
@@ -137,7 +138,7 @@ pub struct CustomInfoType {
     #[prost(message, optional, tag = "9")]
     pub sensitivity_score: ::core::option::Option<SensitivityScore>,
     /// Type of custom detector.
-    #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5")]
+    #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5, 10")]
     pub r#type: ::core::option::Option<custom_info_type::Type>,
 }
 /// Nested message and enum types in `CustomInfoType`.
@@ -217,6 +218,18 @@ pub mod custom_info_type {
     /// not support the use of `detection_rules`.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SurrogateType {}
+    /// Configuration for a custom infoType that detects key-value pairs in the
+    /// metadata matching the specified regular expressions.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MetadataKeyValueExpression {
+        /// The regular expression for the key. Key should be
+        /// non-empty.
+        #[prost(string, tag = "1")]
+        pub key_regex: ::prost::alloc::string::String,
+        /// The regular expression for the value. Value should be non-empty.
+        #[prost(string, tag = "2")]
+        pub value_regex: ::prost::alloc::string::String,
+    }
     /// Deprecated; use `InspectionRuleSet` instead. Rule for modifying a
     /// `CustomInfoType` to alter behavior under certain circumstances, depending
     /// on the specific details of the rule. Not supported for the `surrogate_type`
@@ -359,10 +372,12 @@ pub mod custom_info_type {
         /// support reversing.
         #[prost(message, tag = "4")]
         SurrogateType(SurrogateType),
-        /// Load an existing `StoredInfoType` resource for use in
-        /// `InspectDataSource`. Not currently supported in `InspectContent`.
+        /// Loads an existing `StoredInfoType` resource.
         #[prost(message, tag = "5")]
         StoredType(super::StoredType),
+        /// Key-value pair to detect in the metadata.
+        #[prost(message, tag = "10")]
+        MetadataKeyValueExpression(MetadataKeyValueExpression),
     }
 }
 /// General identifier of a data field in a storage service.
@@ -1183,6 +1198,31 @@ pub struct ExcludeByHotword {
     #[prost(message, optional, tag = "2")]
     pub proximity: ::core::option::Option<custom_info_type::detection_rule::Proximity>,
 }
+/// The rule to exclude image findings based on spatial relationships with
+/// other image findings. For example, exclude an image finding if it overlaps
+/// with another image finding.
+/// This rule is silently ignored if the content being inspected is not an image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExcludeByImageFindings {
+    /// A list of image-supported infoTypes—excluding [document
+    /// infoTypes](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
+    /// be used as context for the exclusion rule. A finding is excluded if
+    /// its bounding box has the specified spatial relationship (defined by
+    /// `image_containment_type`) with a finding of an infoType in this list.
+    ///
+    /// For example, if `InspectionRuleSet.info_types` includes
+    /// `OBJECT_TYPE/PERSON` and this `exclusion_rule` specifies `info_types` as
+    /// `OBJECT_TYPE/PERSON/PASSPORT` with `image_containment_type` set to
+    /// `encloses`, then `OBJECT_TYPE/PERSON` findings will be excluded if they
+    /// are fully contained within the bounding box of an
+    /// `OBJECT_TYPE/PERSON/PASSPORT` finding.
+    #[prost(message, repeated, tag = "1")]
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
+    /// Specifies the required spatial relationship between the bounding boxes
+    /// of the target finding and the context infoType findings.
+    #[prost(message, optional, tag = "2")]
+    pub image_containment_type: ::core::option::Option<ImageContainmentType>,
+}
 /// The rule that specifies conditions when findings of infoTypes specified in
 /// `InspectionRuleSet` are removed from results.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1191,7 +1231,7 @@ pub struct ExclusionRule {
     #[prost(enumeration = "MatchingType", tag = "4")]
     pub matching_type: i32,
     /// Exclusion rule types.
-    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3, 5")]
+    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3, 5, 6")]
     pub r#type: ::core::option::Option<exclusion_rule::Type>,
 }
 /// Nested message and enum types in `ExclusionRule`.
@@ -1212,6 +1252,101 @@ pub mod exclusion_rule {
         /// tabular data, the context includes the column name.
         #[prost(message, tag = "5")]
         ExcludeByHotword(super::ExcludeByHotword),
+        /// Exclude findings based on image containment rules. For example, exclude
+        /// an image finding if it overlaps with another image finding.
+        #[prost(message, tag = "6")]
+        ExcludeByImageFindings(super::ExcludeByImageFindings),
+    }
+}
+/// AdjustmentRule condition for matching infoTypes.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdjustByMatchingInfoTypes {
+    /// Sensitive Data Protection adjusts the likelihood of a finding if that
+    /// finding also matches one of these infoTypes.
+    ///
+    /// For example, you can create a rule to adjust the likelihood of a
+    /// `PHONE_NUMBER` finding if the string is found within a document that is
+    /// classified as `DOCUMENT_TYPE/HR/RESUME`. To configure this, set
+    /// `PHONE_NUMBER` in `InspectionRuleSet.info_types`. Add an `adjustment_rule`
+    /// with an `adjust_by_matching_info_types.info_types` that contains
+    /// `DOCUMENT_TYPE/HR/RESUME`. In this case, the likelihood of the
+    /// `PHONE_NUMBER` finding is adjusted, but the likelihood of the
+    /// `DOCUMENT_TYPE/HR/RESUME` finding is not.
+    #[prost(message, repeated, tag = "1")]
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
+    /// Required. Minimum likelihood of the
+    /// `adjust_by_matching_info_types.info_types` finding. If the likelihood is
+    /// lower than this value, Sensitive Data Protection doesn't adjust the
+    /// likelihood of the `InspectionRuleSet.info_types` finding.
+    #[prost(enumeration = "Likelihood", tag = "2")]
+    pub min_likelihood: i32,
+    /// How the adjustment rule is applied.
+    ///
+    /// Only `MATCHING_TYPE_PARTIAL_MATCH` is supported:
+    ///
+    /// * Partial match: adjusts the findings of infoTypes specified in the
+    ///   inspection rule when they have a nonempty intersection with a finding of an
+    ///   infoType specified in this adjustment rule.
+    #[prost(enumeration = "MatchingType", tag = "3")]
+    pub matching_type: i32,
+}
+/// AdjustmentRule condition for image findings.
+/// This rule is silently ignored if the content being inspected is not an image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdjustByImageFindings {
+    /// A list of image-supported infoTypes—excluding [document
+    /// infoTypes](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
+    /// be used as context for the adjustment rule. Sensitive Data Protection
+    /// adjusts the likelihood of an image finding if its bounding box has the
+    /// specified spatial relationship (defined by `image_containment_type`) with a
+    /// finding of an infoType in this list.
+    ///
+    /// For example, you can create a rule to adjust the likelihood of a
+    /// `US_PASSPORT` finding if it is enclosed by a finding of
+    /// `OBJECT_TYPE/PERSON/PASSPORT`. To configure this, set `US_PASSPORT` in
+    /// `InspectionRuleSet.info_types`. Add an `adjustment_rule` with an
+    /// `adjust_by_image_findings.info_types` that contains
+    /// `OBJECT_TYPE/PERSON/PASSPORT` and `image_containment_type` set
+    /// to `encloses`. In this case, the likelihood of the `US_PASSPORT` finding is
+    /// adjusted, but the likelihood of the `OBJECT_TYPE/PERSON/PASSPORT`
+    /// finding is not.
+    #[prost(message, repeated, tag = "1")]
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
+    /// Required. Minimum likelihood of the
+    /// `adjust_by_image_findings.info_types` finding. If the likelihood is
+    /// lower than this value, Sensitive Data Protection doesn't adjust the
+    /// likelihood of the `InspectionRuleSet.info_types` finding.
+    #[prost(enumeration = "Likelihood", tag = "2")]
+    pub min_likelihood: i32,
+    /// Specifies the required spatial relationship between the bounding boxes
+    /// of the target finding and the context infoType findings.
+    #[prost(message, optional, tag = "3")]
+    pub image_containment_type: ::core::option::Option<ImageContainmentType>,
+}
+/// Rule that specifies conditions when a certain infoType's finding details
+/// should be adjusted.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdjustmentRule {
+    /// Likelihood adjustment to apply to the infoType.
+    #[prost(message, optional, tag = "2")]
+    pub likelihood_adjustment: ::core::option::Option<
+        custom_info_type::detection_rule::LikelihoodAdjustment,
+    >,
+    /// Condition under which the adjustment rule is applied.
+    #[prost(oneof = "adjustment_rule::Conditions", tags = "1, 3")]
+    pub conditions: ::core::option::Option<adjustment_rule::Conditions>,
+}
+/// Nested message and enum types in `AdjustmentRule`.
+pub mod adjustment_rule {
+    /// Condition under which the adjustment rule is applied.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Conditions {
+        /// Set of infoTypes for which findings would affect this rule.
+        #[prost(message, tag = "1")]
+        AdjustByMatchingInfoTypes(super::AdjustByMatchingInfoTypes),
+        /// AdjustmentRule condition for image findings.
+        #[prost(message, tag = "3")]
+        AdjustByImageFindings(super::AdjustByImageFindings),
     }
 }
 /// A single inspection rule to be applied to infoTypes, specified in
@@ -1219,7 +1354,7 @@ pub mod exclusion_rule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectionRule {
     /// Inspection rule types.
-    #[prost(oneof = "inspection_rule::Type", tags = "1, 2")]
+    #[prost(oneof = "inspection_rule::Type", tags = "1, 2, 3")]
     pub r#type: ::core::option::Option<inspection_rule::Type>,
 }
 /// Nested message and enum types in `InspectionRule`.
@@ -1233,6 +1368,9 @@ pub mod inspection_rule {
         /// Exclusion rule.
         #[prost(message, tag = "2")]
         ExclusionRule(super::ExclusionRule),
+        /// Adjustment rule.
+        #[prost(message, tag = "3")]
+        AdjustmentRule(super::AdjustmentRule),
     }
 }
 /// Rule set for modifying a set of infoTypes to alter behavior under certain
@@ -1318,7 +1456,8 @@ pub struct InspectConfig {
     pub content_options: ::prost::alloc::vec::Vec<i32>,
     /// Set of rules to apply to the findings for this InspectConfig.
     /// Exclusion rules, contained in the set are executed in the end, other
-    /// rules are executed in the order they are specified for each info type.
+    /// rules are executed in the order they are specified for each info type. Not
+    /// supported for the `metadata_key_value_expression` CustomInfoType.
     #[prost(message, repeated, tag = "10")]
     pub rule_set: ::prost::alloc::vec::Vec<InspectionRuleSet>,
 }
@@ -1731,7 +1870,7 @@ pub struct MetadataLocation {
     pub r#type: i32,
     /// Label of the piece of metadata containing the finding, for example -
     /// latitude, author, caption.
-    #[prost(oneof = "metadata_location::Label", tags = "3")]
+    #[prost(oneof = "metadata_location::Label", tags = "3, 4")]
     pub label: ::core::option::Option<metadata_location::Label>,
 }
 /// Nested message and enum types in `MetadataLocation`.
@@ -1743,12 +1882,27 @@ pub mod metadata_location {
         /// Storage metadata.
         #[prost(message, tag = "3")]
         StorageLabel(super::StorageMetadataLabel),
+        /// Metadata key that contains the finding.
+        #[prost(message, tag = "4")]
+        KeyValueMetadataLabel(super::KeyValueMetadataLabel),
     }
 }
 /// Storage metadata label to indicate which metadata entry contains findings.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageMetadataLabel {
     /// Label name.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+}
+/// The metadata key that contains a finding.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct KeyValueMetadataLabel {
+    /// The metadata key. The format depends on the source of the metadata.
+    ///
+    /// Example:
+    ///
+    /// * `MSIP_Label_122709e3-8f6b-4860-985f-7f722a94f61e_Enabled` (a Microsoft
+    ///   Purview Information Protection key example)
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
 }
@@ -2192,6 +2346,7 @@ pub struct OutputStorageConfig {
     #[prost(enumeration = "output_storage_config::OutputSchema", tag = "3")]
     pub output_schema: i32,
     /// Output storage types.
+    /// \*
     #[prost(oneof = "output_storage_config::Type", tags = "1, 5")]
     pub r#type: ::core::option::Option<output_storage_config::Type>,
 }
@@ -2255,6 +2410,7 @@ pub mod output_storage_config {
         }
     }
     /// Output storage types.
+    /// \*
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// Store findings in an existing table or a new table in an existing
@@ -2554,6 +2710,59 @@ pub struct InfoTypeDescription {
     /// field "LOCATION", "LOCATION_COORDINATES", and "STREET_ADDRESS".
     #[prost(string, repeated, tag = "12")]
     pub specific_info_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The launch status of the infoType.
+    #[prost(enumeration = "info_type_description::InfoTypeLaunchStatus", tag = "13")]
+    pub launch_status: i32,
+}
+/// Nested message and enum types in `InfoTypeDescription`.
+pub mod info_type_description {
+    /// The launch status of an infoType.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum InfoTypeLaunchStatus {
+        /// Unspecified.
+        Unspecified = 0,
+        /// InfoType is generally available.
+        GeneralAvailability = 1,
+        /// InfoType is in public preview.
+        PublicPreview = 2,
+        /// InfoType is in private preview.
+        PrivatePreview = 3,
+    }
+    impl InfoTypeLaunchStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INFO_TYPE_LAUNCH_STATUS_UNSPECIFIED",
+                Self::GeneralAvailability => "GENERAL_AVAILABILITY",
+                Self::PublicPreview => "PUBLIC_PREVIEW",
+                Self::PrivatePreview => "PRIVATE_PREVIEW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INFO_TYPE_LAUNCH_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "GENERAL_AVAILABILITY" => Some(Self::GeneralAvailability),
+                "PUBLIC_PREVIEW" => Some(Self::PublicPreview),
+                "PRIVATE_PREVIEW" => Some(Self::PrivatePreview),
+                _ => None,
+            }
+        }
+    }
 }
 /// Classification of infoTypes to organize them according to geographic
 /// location, industry, and data type.
@@ -8849,6 +9058,43 @@ pub struct HybridFindingDetails {
 /// Quota exceeded errors will be thrown once quota has been met.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HybridInspectResponse {}
+/// Specifies the relationship between bounding boxes for image findings.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImageContainmentType {
+    /// The type of relationship to check between the target finding and the
+    /// context finding.
+    #[prost(oneof = "image_containment_type::Type", tags = "1, 2, 3")]
+    pub r#type: ::core::option::Option<image_containment_type::Type>,
+}
+/// Nested message and enum types in `ImageContainmentType`.
+pub mod image_containment_type {
+    /// The type of relationship to check between the target finding and the
+    /// context finding.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Type {
+        /// The context finding's bounding box must fully contain the target
+        /// finding's bounding box.
+        #[prost(message, tag = "1")]
+        Encloses(super::Encloses),
+        /// The context finding's bounding box must be fully inside the target
+        /// finding's bounding box.
+        #[prost(message, tag = "2")]
+        FullyInside(super::FullyInside),
+        /// The context finding's bounding box and the target finding's bounding box
+        /// must have a non-zero intersection.
+        #[prost(message, tag = "3")]
+        Overlaps(super::Overlap),
+    }
+}
+/// Defines a condition for overlapping bounding boxes.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Overlap {}
+/// Defines a condition where one bounding box encloses another.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Encloses {}
+/// Defines a condition where one bounding box is fully inside another.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FullyInside {}
 /// Request to list the profiles generated for a given organization or project.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProjectDataProfilesRequest {
@@ -10736,7 +10982,7 @@ pub mod domain {
         }
     }
     /// The signal used to determine the category.
-    /// This list may increase over time.
+    /// New values may be added in the future.
     #[derive(
         Clone,
         Copy,
@@ -10754,8 +11000,12 @@ pub mod domain {
         Unspecified = 0,
         /// One or more machine learning models are present.
         Model = 1,
-        /// A table appears to be a text embedding.
+        /// A table appears to contain text embeddings.
         TextEmbedding = 2,
+        /// A table appears to contain embeddings of any type (for example, text,
+        /// image, multimodal). The `TEXT_EMBEDDING` signal might also be present if
+        /// the table contains text embeddings.
+        Embedding = 7,
         /// The [Cloud SQL Vertex
         /// AI](<https://cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>)
         /// plugin is installed on the database.
@@ -10780,6 +11030,7 @@ pub mod domain {
                 Self::Unspecified => "SIGNAL_UNSPECIFIED",
                 Self::Model => "MODEL",
                 Self::TextEmbedding => "TEXT_EMBEDDING",
+                Self::Embedding => "EMBEDDING",
                 Self::VertexPlugin => "VERTEX_PLUGIN",
                 Self::VectorPlugin => "VECTOR_PLUGIN",
                 Self::SourceCode => "SOURCE_CODE",
@@ -10792,6 +11043,7 @@ pub mod domain {
                 "SIGNAL_UNSPECIFIED" => Some(Self::Unspecified),
                 "MODEL" => Some(Self::Model),
                 "TEXT_EMBEDDING" => Some(Self::TextEmbedding),
+                "EMBEDDING" => Some(Self::Embedding),
                 "VERTEX_PLUGIN" => Some(Self::VertexPlugin),
                 "VECTOR_PLUGIN" => Some(Self::VectorPlugin),
                 "SOURCE_CODE" => Some(Self::SourceCode),
@@ -11271,6 +11523,17 @@ pub enum MatchingType {
     /// * Regex: finding doesn't match the regex
     /// * Exclude infoType: no intersection with affecting infoTypes findings
     InverseMatch = 3,
+    /// Rule-specific match.
+    ///
+    /// The matching logic is based on the specific rule being used. This is
+    /// required for rules where the matching behavior is not a simple string
+    /// comparison (e.g., image containment). This matching type can only be
+    /// used with the `ExcludeByImageFindings` rule.
+    ///
+    /// * Exclude by image findings: The matching logic is defined within
+    ///   `ExcludeByImageFindings` based on spatial relationships between bounding
+    ///   boxes.
+    RuleSpecific = 4,
 }
 impl MatchingType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -11283,6 +11546,7 @@ impl MatchingType {
             Self::FullMatch => "MATCHING_TYPE_FULL_MATCH",
             Self::PartialMatch => "MATCHING_TYPE_PARTIAL_MATCH",
             Self::InverseMatch => "MATCHING_TYPE_INVERSE_MATCH",
+            Self::RuleSpecific => "MATCHING_TYPE_RULE_SPECIFIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11292,6 +11556,7 @@ impl MatchingType {
             "MATCHING_TYPE_FULL_MATCH" => Some(Self::FullMatch),
             "MATCHING_TYPE_PARTIAL_MATCH" => Some(Self::PartialMatch),
             "MATCHING_TYPE_INVERSE_MATCH" => Some(Self::InverseMatch),
+            "MATCHING_TYPE_RULE_SPECIFIC" => Some(Self::RuleSpecific),
             _ => None,
         }
     }
@@ -11337,6 +11602,8 @@ pub enum MetadataType {
     MetadatatypeUnspecified = 0,
     /// General file metadata provided by Cloud Storage.
     StorageMetadata = 2,
+    /// Metadata extracted from the files.
+    ContentMetadata = 3,
 }
 impl MetadataType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -11347,6 +11614,7 @@ impl MetadataType {
         match self {
             Self::MetadatatypeUnspecified => "METADATATYPE_UNSPECIFIED",
             Self::StorageMetadata => "STORAGE_METADATA",
+            Self::ContentMetadata => "CONTENT_METADATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11354,6 +11622,7 @@ impl MetadataType {
         match value {
             "METADATATYPE_UNSPECIFIED" => Some(Self::MetadatatypeUnspecified),
             "STORAGE_METADATA" => Some(Self::StorageMetadata),
+            "CONTENT_METADATA" => Some(Self::ContentMetadata),
             _ => None,
         }
     }

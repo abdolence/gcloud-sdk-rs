@@ -257,6 +257,18 @@ pub struct OAuthSettings {
     /// since access behavior is managed by IAM policies.
     #[prost(message, optional, tag = "2")]
     pub login_hint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. OAuth 2.0 client ID used in the OAuth flow.
+    /// This allows for client sharing. The risks of client sharing
+    /// are outlined here:
+    /// <https://cloud.google.com/iap/docs/sharing-oauth-clients#risks.>
+    #[prost(message, optional, tag = "3")]
+    pub client_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Input only. OAuth secret paired with client ID.
+    #[prost(message, optional, tag = "4")]
+    pub client_secret: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. OAuth secret SHA256 paired with client ID.
+    #[prost(message, optional, tag = "6")]
+    pub client_secret_sha256: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. List of client ids allowed to use IAP programmatically.
     #[prost(string, repeated, tag = "5")]
     pub programmatic_clients: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,

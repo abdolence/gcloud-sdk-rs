@@ -131,6 +131,12 @@ pub struct Document {
     /// Document chunked based on chunking config.
     #[prost(message, optional, tag = "18")]
     pub chunked_document: ::core::option::Option<document::ChunkedDocument>,
+    /// Optional. The blob assets in this document. This is used to store the
+    /// content of the inline blobs in this document, for example, image bytes,
+    /// such that it can be referenced by other fields in the document via asset
+    /// id.
+    #[prost(message, repeated, tag = "19")]
+    pub blob_assets: ::prost::alloc::vec::Vec<document::BlobAsset>,
     /// The entity validation output for the document. This is the validation
     /// output for `document.entities` field.
     #[prost(message, optional, tag = "21")]
@@ -145,7 +151,7 @@ pub struct Document {
     /// The entity revision ID that `document.entities` field is based on.
     /// If this field is set and `entities_revisions` is not empty, the entities in
     /// `document.entities` field are the entities in the entity revision with this
-    /// ID and `document.entity_validation_output` field is the
+    /// id and `document.entity_validation_output` field is the
     /// `entity_validation_output` field in this entity revision.
     #[prost(string, tag = "23")]
     pub entities_revision_id: ::prost::alloc::string::String,
@@ -268,7 +274,7 @@ pub mod document {
         /// A list of visually detected tokens on the page.
         #[prost(message, repeated, tag = "8")]
         pub tokens: ::prost::alloc::vec::Vec<page::Token>,
-        /// A list of detected non-text visual elements e.g. checkbox,
+        /// A list of detected non-text visual elements, for example, checkbox,
         /// signature etc. on the page.
         #[prost(message, repeated, tag = "9")]
         pub visual_elements: ::prost::alloc::vec::Vec<page::VisualElement>,
@@ -354,9 +360,9 @@ pub mod document {
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current
             /// \[Layout\]\[google.cloud.documentai.v1.Document.Page.Layout\] within
-            /// context of the object this layout is for. e.g. confidence can be for a
-            /// single token, a table, a visual element, etc. depending on context.
-            /// Range `\[0, 1\]`.
+            /// context of the object this layout is for. For example, confidence can
+            /// be for a single token, a table, a visual element, etc. depending on
+            /// context. Range `\[0, 1\]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
             /// The bounding polygon for the
@@ -625,8 +631,8 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
-        /// Detected non-text visual elements e.g. checkbox, signature etc. on the
-        /// page.
+        /// Detected non-text visual elements, for example, checkbox, signature etc.
+        /// on the page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
             /// \[Layout\]\[google.cloud.documentai.v1.Document.Page.Layout\] for
@@ -696,7 +702,7 @@ pub mod document {
         pub struct FormField {
             /// \[Layout\]\[google.cloud.documentai.v1.Document.Page.Layout\] for the
             /// \[FormField\]\[google.cloud.documentai.v1.Document.Page.FormField\] name.
-            /// e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.
+            /// For example, `Address`, `Email`, `Grand total`, `Phone number`, etc.
             #[prost(message, optional, tag = "1")]
             pub field_name: ::core::option::Option<Layout>,
             /// \[Layout\]\[google.cloud.documentai.v1.Document.Page.Layout\] for the
@@ -801,10 +807,10 @@ pub mod document {
         /// \[Document.text\]\[google.cloud.documentai.v1.Document.text\].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
-        /// Required. Entity type from a schema e.g. `Address`.
+        /// Required. Entity type from a schema, for example, `Address`.
         #[prost(string, tag = "2")]
         pub r#type: ::prost::alloc::string::String,
-        /// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
+        /// Optional. Text value of the entity, for example, `1600 Amphitheatre  Pkwy`.
         #[prost(string, tag = "3")]
         pub mention_text: ::prost::alloc::string::String,
         /// Optional. Deprecated.  Use `id` field instead.
@@ -822,9 +828,9 @@ pub mod document {
         #[prost(string, tag = "7")]
         pub id: ::prost::alloc::string::String,
         /// Optional. Normalized entity value. Absent if the extracted value could
-        /// not be converted or the type (e.g. address) is not supported for certain
-        /// parsers. This field is also only populated for certain supported document
-        /// types.
+        /// not be converted or the type (for example, address) is not supported for
+        /// certain parsers. This field is also only populated for certain supported
+        /// document types.
         #[prost(message, optional, tag = "9")]
         pub normalized_value: ::core::option::Option<entity::NormalizedValue>,
         /// Optional. Entities can be nested to form a hierarchical data structure
@@ -910,6 +916,8 @@ pub mod document {
                 /// Float value.
                 #[prost(float, tag = "8")]
                 FloatValue(f32),
+                /// A signature - a graphical representation of a person's name,
+                /// often used to sign a document.
                 #[prost(bool, tag = "10")]
                 SignatureValue(bool),
             }
@@ -1280,7 +1288,7 @@ pub mod document {
         /// Human Review information of the document.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HumanReview {
-            /// Human review state. e.g. `requested`, `succeeded`, `rejected`.
+            /// Human review state. For example, `requested`, `succeeded`, `rejected`.
             #[prost(string, tag = "1")]
             pub state: ::prost::alloc::string::String,
             /// A message providing more details about the current state of processing.
@@ -1320,6 +1328,13 @@ pub mod document {
         #[prost(message, repeated, tag = "3")]
         pub provenance: ::prost::alloc::vec::Vec<Provenance>,
     }
+    /// Represents the annotation of a block or a chunk.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Annotations {
+        /// The description of the content with this annotation.
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+    }
     /// Represents the parsed layout of a document as a collection of blocks that
     /// the document is divided into.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1343,7 +1358,7 @@ pub mod document {
             /// Identifies the bounding box for the block.
             #[prost(message, optional, tag = "6")]
             pub bounding_box: ::core::option::Option<super::super::BoundingPoly>,
-            #[prost(oneof = "document_layout_block::Block", tags = "2, 3, 4")]
+            #[prost(oneof = "document_layout_block::Block", tags = "2, 3, 4, 7")]
             pub block: ::core::option::Option<document_layout_block::Block>,
         }
         /// Nested message and enum types in `DocumentLayoutBlock`.
@@ -1373,6 +1388,9 @@ pub mod document {
                 /// Repeated blocks support further hierarchies and nested blocks.
                 #[prost(message, repeated, tag = "3")]
                 pub blocks: ::prost::alloc::vec::Vec<super::DocumentLayoutBlock>,
+                /// Annotation of the text block.
+                #[prost(message, optional, tag = "4")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
             }
             /// Represents a table type block.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1386,6 +1404,9 @@ pub mod document {
                 /// Table caption/title.
                 #[prost(string, tag = "3")]
                 pub caption: ::prost::alloc::string::String,
+                /// Annotation of the table block.
+                #[prost(message, optional, tag = "4")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
             }
             /// Represents a row in a table.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1427,6 +1448,47 @@ pub mod document {
                 #[prost(message, repeated, tag = "1")]
                 pub blocks: ::prost::alloc::vec::Vec<super::DocumentLayoutBlock>,
             }
+            /// Represents an image type block.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct LayoutImageBlock {
+                /// Mime type of the image. An IANA published \[media type (MIME type)\]
+                /// (<https://www.iana.org/assignments/media-types/media-types.xhtml>).
+                #[prost(string, tag = "1")]
+                pub mime_type: ::prost::alloc::string::String,
+                /// Text extracted from the image using OCR or alt text describing the
+                /// image.
+                #[prost(string, tag = "2")]
+                pub image_text: ::prost::alloc::string::String,
+                /// Annotation of the image block.
+                #[prost(message, optional, tag = "3")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+                /// Source of the image.
+                #[prost(oneof = "layout_image_block::ImageSource", tags = "4, 5, 6")]
+                pub image_source: ::core::option::Option<
+                    layout_image_block::ImageSource,
+                >,
+            }
+            /// Nested message and enum types in `LayoutImageBlock`.
+            pub mod layout_image_block {
+                /// Source of the image.
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+                pub enum ImageSource {
+                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// content in the blob_assets field.
+                    #[prost(string, tag = "4")]
+                    BlobAssetId(::prost::alloc::string::String),
+                    /// Optional. Google Cloud Storage uri of the image.
+                    #[prost(string, tag = "5")]
+                    GcsUri(::prost::alloc::string::String),
+                    /// Optional. Data uri of the image.
+                    /// It is composed of four parts: a prefix (data:), a MIME type
+                    /// indicating the type of data, an optional base64 token if
+                    /// non-textual, and the data itself:
+                    /// data:\[<mediatype>\]\[;base64\],<data>
+                    #[prost(string, tag = "6")]
+                    DataUri(::prost::alloc::string::String),
+                }
+            }
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Block {
                 /// Block consisting of text content.
@@ -1438,6 +1500,9 @@ pub mod document {
                 /// Block consisting of list content/structure.
                 #[prost(message, tag = "4")]
                 ListBlock(LayoutListBlock),
+                /// Block consisting of image content.
+                #[prost(message, tag = "7")]
+                ImageBlock(LayoutImageBlock),
             }
         }
     }
@@ -1473,6 +1538,9 @@ pub mod document {
             /// Page footers associated with the chunk.
             #[prost(message, repeated, tag = "6")]
             pub page_footers: ::prost::alloc::vec::Vec<chunk::ChunkPageFooter>,
+            /// Chunk fields inside this chunk.
+            #[prost(message, repeated, tag = "7")]
+            pub chunk_fields: ::prost::alloc::vec::Vec<chunk::ChunkField>,
         }
         /// Nested message and enum types in `Chunk`.
         pub mod chunk {
@@ -1506,7 +1574,83 @@ pub mod document {
                 #[prost(message, optional, tag = "2")]
                 pub page_span: ::core::option::Option<ChunkPageSpan>,
             }
+            /// The image chunk field in the chunk.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct ImageChunkField {
+                /// Annotation of the image chunk field.
+                #[prost(message, optional, tag = "4")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+                /// Source of the image.
+                #[prost(oneof = "image_chunk_field::ImageSource", tags = "1, 2, 3")]
+                pub image_source: ::core::option::Option<image_chunk_field::ImageSource>,
+            }
+            /// Nested message and enum types in `ImageChunkField`.
+            pub mod image_chunk_field {
+                /// Source of the image.
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+                pub enum ImageSource {
+                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// content in the blob_assets field.
+                    #[prost(string, tag = "1")]
+                    BlobAssetId(::prost::alloc::string::String),
+                    /// Optional. Google Cloud Storage uri of the image.
+                    #[prost(string, tag = "2")]
+                    GcsUri(::prost::alloc::string::String),
+                    /// Optional. Data uri of the image.
+                    /// It is composed of four parts: a prefix (data:), a MIME type
+                    /// indicating the type of data, an optional base64 token if
+                    /// non-textual, and the data itself:
+                    /// data:\[<mediatype>\]\[;base64\],<data>
+                    #[prost(string, tag = "3")]
+                    DataUri(::prost::alloc::string::String),
+                }
+            }
+            /// The table chunk field in the chunk.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct TableChunkField {
+                /// Annotation of the table chunk field.
+                #[prost(message, optional, tag = "1")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+            }
+            /// The chunk field in the chunk. A chunk field could be one of the various
+            /// types (for example, image, table) supported.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct ChunkField {
+                /// The type of the chunk field.
+                #[prost(oneof = "chunk_field::FieldType", tags = "1, 2")]
+                pub field_type: ::core::option::Option<chunk_field::FieldType>,
+            }
+            /// Nested message and enum types in `ChunkField`.
+            pub mod chunk_field {
+                /// The type of the chunk field.
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+                pub enum FieldType {
+                    /// The image chunk field in the chunk.
+                    #[prost(message, tag = "1")]
+                    ImageChunkField(super::ImageChunkField),
+                    /// The table chunk field in the chunk.
+                    #[prost(message, tag = "2")]
+                    TableChunkField(super::TableChunkField),
+                }
+            }
         }
+    }
+    /// Represents a blob asset. It's used to store the content of the inline blob
+    /// in this document, for example, image bytes, such that it can be referenced
+    /// by other fields in the document via asset ID.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BlobAsset {
+        /// Optional. The id of the blob asset.
+        #[prost(string, tag = "1")]
+        pub asset_id: ::prost::alloc::string::String,
+        /// Optional. The content of the blob asset, for example, image bytes.
+        #[prost(bytes = "vec", tag = "2")]
+        pub content: ::prost::alloc::vec::Vec<u8>,
+        /// The mime type of the blob asset.
+        /// An IANA published [media type (MIME
+        /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>).
+        #[prost(string, tag = "3")]
+        pub mime_type: ::prost::alloc::string::String,
     }
     /// The output of the validation given the document and the validation rules.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2780,6 +2924,12 @@ pub mod process_options {
         /// response.
         #[prost(bool, tag = "3")]
         pub return_bounding_boxes: bool,
+        /// Optional. Whether to include image annotations in layout parser response.
+        #[prost(bool, tag = "4")]
+        pub enable_image_annotation: bool,
+        /// Optional. Whether to include table annotations in layout parser response.
+        #[prost(bool, tag = "6")]
+        pub enable_table_annotation: bool,
     }
     /// Nested message and enum types in `LayoutConfig`.
     pub mod layout_config {

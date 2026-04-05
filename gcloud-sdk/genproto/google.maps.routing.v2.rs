@@ -575,6 +575,7 @@ pub struct SpeedReadingInterval {
     /// The ending index of this interval in the polyline.
     #[prost(int32, optional, tag = "2")]
     pub end_polyline_point_index: ::core::option::Option<i32>,
+    /// The type of speed in this interval.
     #[prost(oneof = "speed_reading_interval::SpeedType", tags = "3")]
     pub speed_type: ::core::option::Option<speed_reading_interval::SpeedType>,
 }
@@ -596,11 +597,11 @@ pub mod speed_reading_interval {
     pub enum Speed {
         /// Default value. This value is unused.
         Unspecified = 0,
-        /// Normal speed, no slowdown is detected.
+        /// Normal speed, no traffic delays.
         Normal = 1,
-        /// Slowdown detected, but no traffic jam formed.
+        /// Slowdown detected, medium amount of traffic.
         Slow = 2,
-        /// Traffic jam detected.
+        /// Traffic delays.
         TrafficJam = 3,
     }
     impl Speed {
@@ -627,6 +628,7 @@ pub mod speed_reading_interval {
             }
         }
     }
+    /// The type of speed in this interval.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SpeedType {
         /// Traffic speed in this interval.
@@ -895,8 +897,8 @@ pub struct Route {
     #[prost(message, optional, tag = "11")]
     pub localized_values: ::core::option::Option<route::RouteLocalizedValues>,
     /// An opaque token that can be passed to [Navigation
-    /// SDK](<https://developers.google.com/maps/documentation/navigation>) to
-    /// reconstruct the route during navigation, and, in the event of rerouting,
+    /// SDK](<https://developers.google.com/maps/documentation/mobility/driver-sdk/navigation>)
+    /// to reconstruct the route during navigation, and, in the event of rerouting,
     /// honor the original intention when the route was created. Treat this token
     /// as an opaque blob.  Don't compare its value across requests as its value
     /// may change even if the service returns the exact same route.
@@ -947,16 +949,21 @@ pub mod route {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteTravelAdvisory {
     /// Contains information about tolls on the route. This field is only populated
-    /// if tolls are expected on the route. If this field is set, but the
-    /// `estimatedPrice` subfield is not populated, then the route contains tolls,
-    /// but the estimated price is unknown. If this field is not set, then there
-    /// are no tolls expected on the route.
+    /// if tolls are expected on the route and `TOLLS` is included in the request's
+    /// \[ComputeRoutesRequest.extra_computations\]\[google.maps.routing.v2.ComputeRoutesRequest.extra_computations\].
+    /// If this field is set, but the `estimatedPrice` subfield is not populated,
+    /// then the route contains tolls, but the estimated price is unknown. If
+    /// `toll_info` is not set, then there are no tolls expected on the route.
     #[prost(message, optional, tag = "2")]
     pub toll_info: ::core::option::Option<TollInfo>,
-    /// Speed reading intervals detailing traffic density. Applicable in case of
-    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
-    /// The intervals cover the entire polyline of the route without overlap.
-    /// The start point of a specified interval is the same as the end point of the
+    /// Speed reading intervals indicating traffic density. This field is only
+    /// populated for requests when the request has a `TRAFFIC_AWARE` or
+    /// `TRAFFIC_AWARE_OPTIMAL`
+    /// \[ComputeRoutesRequest.routing_preference\]\[google.maps.routing.v2.ComputeRoutesRequest.routing_preference\]
+    /// value, and `TRAFFIC_ON_POLYLINE` is included in the
+    /// \[ComputeRoutesRequest.extra_computations\]\[google.maps.routing.v2.ComputeRoutesRequest.extra_computations\].
+    /// The intervals cover the entire polyline of the route without overlap. The
+    /// start point of a specified interval is the same as the end point of the
     /// preceding interval.
     ///
     /// Example:
@@ -968,6 +975,9 @@ pub struct RouteTravelAdvisory {
     #[prost(message, repeated, tag = "3")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
     /// The predicted fuel consumption in microliters.
+    /// This field is only populated when `FUEL_CONSUMPTION` is included in the
+    /// request's
+    /// \[ComputeRoutesRequest.extra_computations\]\[google.maps.routing.v2.ComputeRoutesRequest.extra_computations\].
     #[prost(int64, tag = "5")]
     pub fuel_consumption_microliters: i64,
     /// Returned route may have restrictions that are not suitable for requested
@@ -986,14 +996,20 @@ pub struct RouteTravelAdvisory {
 pub struct RouteLegTravelAdvisory {
     /// Contains information about tolls on the specific `RouteLeg`.
     /// This field is only populated if we expect there are tolls on the
-    /// `RouteLeg`. If this field is set but the estimated_price subfield is not
+    /// `RouteLeg` and `TOLLS` is included in the request's
+    /// \[ComputeRoutesRequest.extra_computations\]\[google.maps.routing.v2.ComputeRoutesRequest.extra_computations\].
+    /// If this field is set but the estimated_price subfield is not
     /// populated, we expect that road contains tolls but we do not know an
-    /// estimated price. If this field does not exist, then there is no toll on the
-    /// `RouteLeg`.
+    /// estimated price. If `toll_info` does not exist, then there is no toll on
+    /// the `RouteLeg`.
     #[prost(message, optional, tag = "1")]
     pub toll_info: ::core::option::Option<TollInfo>,
-    /// Speed reading intervals detailing traffic density. Applicable in case of
-    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
+    /// Speed reading intervals indicating traffic density. This field is only
+    /// populated for requests when the request has a `TRAFFIC_AWARE` or
+    /// `TRAFFIC_AWARE_OPTIMAL`
+    /// \[ComputeRoutesRequest.routing_preference\]\[google.maps.routing.v2.ComputeRoutesRequest.routing_preference\]
+    /// value, and `TRAFFIC_ON_POLYLINE` is included in the
+    /// \[ComputeRoutesRequest.extra_computations\]\[google.maps.routing.v2.ComputeRoutesRequest.extra_computations\].
     /// The intervals cover the entire polyline of the `RouteLeg` without overlap.
     /// The start point of a specified interval is the same as the end point of the
     /// preceding interval.
@@ -1861,10 +1877,14 @@ impl RoutingPreference {
         }
     }
 }
-/// Specifies the assumptions to use when calculating time in traffic. This
-/// setting affects the value returned in the `duration` field in the
-/// response, which contains the predicted time in traffic based on historical
-/// averages.
+/// This field specifies one of the following assumptions to use when calculating
+/// travel time in traffic conditions, shown in the enums below. Depending on the
+/// enum chosen, the `duration` field of the TrafficModel response will vary. The
+/// value contains the predicted time to destination in traffic, based on
+/// historical averages. `TrafficModel` is only available for requests that have
+/// set \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\] to
+/// `TRAFFIC_AWARE_OPTIMAL` and
+/// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] to `DRIVE`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TrafficModel {
@@ -2093,7 +2113,7 @@ pub struct Waypoint {
     #[prost(bool, tag = "5")]
     pub side_of_road: bool,
     /// Different ways to represent a location.
-    #[prost(oneof = "waypoint::LocationType", tags = "1, 2, 7")]
+    #[prost(oneof = "waypoint::LocationType", tags = "1, 2, 7, 8")]
     pub location_type: ::core::option::Option<waypoint::LocationType>,
 }
 /// Nested message and enum types in `Waypoint`.
@@ -2112,6 +2132,11 @@ pub mod waypoint {
         /// See <https://plus.codes> for details.
         #[prost(string, tag = "7")]
         Address(::prost::alloc::string::String),
+        /// A token that identifies a
+        /// [`NavigationPoint`](<https://developers.google.com/maps/documentation/geocoding/reference/rest/v4alpha/geocode.destinations/searchDestinations#navigationpoint>),
+        /// obtained from the `SearchDestinations` method of the Geocoding API.
+        #[prost(string, tag = "8")]
+        NavigationPointToken(::prost::alloc::string::String),
     }
 }
 /// ComputeRoutes request message.
@@ -2153,8 +2178,8 @@ pub struct ComputeRoutesRequest {
     #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The arrival time.
-    /// NOTE: Can only be set when
-    /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] is set to
+    /// NOTE: This field is ignored when requests specify a
+    /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] other than
     /// `TRANSIT`. You can specify either `departure_time` or `arrival_time`, but
     /// not both. Transit trips are available for up to 7 days in the past or 100
     /// days in the future.
@@ -2480,6 +2505,7 @@ pub struct ComputeRouteMatrixRequest {
     /// traffic. This setting affects the value returned in the duration field in
     /// the \[RouteMatrixElement\]\[google.maps.routing.v2.RouteMatrixElement\] which
     /// contains the predicted time in traffic based on historical averages.
+    /// `TrafficModel` is only available for requests that have set
     /// \[RoutingPreference\]\[google.maps.routing.v2.RoutingPreference\] to
     /// `TRAFFIC_AWARE_OPTIMAL` and
     /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] to `DRIVE`.

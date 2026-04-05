@@ -61,7 +61,7 @@ impl Package {
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct Proto {
-    path: PathBuf,
+    pub path: PathBuf,
     package: Package,
     imports: Vec<Proto>,
 }
@@ -261,7 +261,7 @@ fn find_proto_rec(
     let mut ret = Vec::new();
 
     let cur = fs::read_dir(dir.as_ref())
-        .unwrap()
+        .expect(&format!("Unable to read dir: {:?}", dir.as_ref()))
         .map(Result::unwrap)
         .map(|dir| dir.path())
         .map(|path| (path.metadata().unwrap(), path))
@@ -296,7 +296,9 @@ fn proto_rec(root: PathBuf, path: PathBuf, map: &mut HashMap<PathBuf, Proto>) ->
     let mut package = None;
     let mut imports = Vec::new();
 
-    for line in fs::read_to_string(path.as_path()).unwrap().lines() {
+    for line in fs::read_to_string(path.as_path()).expect(
+        &format!("Unable to read file: {:?}", path.as_path())
+    ).lines() {
         if let Some(pkg) = parse_package(line) {
             package = Some(pkg);
         } else if let Some(import) = parse_import(line) {

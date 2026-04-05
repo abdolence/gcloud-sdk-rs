@@ -696,6 +696,43 @@ pub struct ListBackupPlanRevisionsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// AlloyDBClusterDataSourceProperties represents the properties of a
+/// AlloyDB cluster resource that are stored in the DataSource.
+/// .
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AlloyDbClusterDataSourceProperties {
+    /// Output only. Name of the AlloyDB cluster backed up by the datasource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// AlloyDbClusterBackupProperties represents AlloyDB cluster
+/// backup properties.
+/// .
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AlloyDbClusterBackupProperties {
+    /// An optional text description for the backup.
+    #[prost(string, optional, tag = "1")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Storage usage of this particular backup
+    #[prost(int64, tag = "2")]
+    pub stored_bytes: i64,
+    /// Output only. The chain id of this backup. Backups belonging to the same
+    /// chain are sharing the same chain id. This property is calculated and
+    /// maintained by BackupDR.
+    #[prost(string, tag = "3")]
+    pub chain_id: ::prost::alloc::string::String,
+    /// Output only. The PostgreSQL major version of the AlloyDB cluster when the
+    /// backup was taken.
+    #[prost(string, tag = "4")]
+    pub database_version: ::prost::alloc::string::String,
+}
+/// Properties for an AlloyDB cluster backup plan association.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AlloyDbClusterBackupPlanAssociationProperties {
+    /// Output only. The cluster UID of the AlloyDB cluster.
+    #[prost(string, tag = "1")]
+    pub cluster_uid: ::prost::alloc::string::String,
+}
 /// CloudSqlInstanceDataSourceProperties represents the properties of a
 /// Cloud SQL resource that are stored in the DataSource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -884,7 +921,7 @@ pub struct BackupPlanAssociation {
     #[prost(string, tag = "12")]
     pub backup_plan_revision_name: ::prost::alloc::string::String,
     /// Properties of the protected GCP resource.
-    #[prost(oneof = "backup_plan_association::ResourceProperties", tags = "10")]
+    #[prost(oneof = "backup_plan_association::ResourceProperties", tags = "10, 15")]
     pub resource_properties: ::core::option::Option<
         backup_plan_association::ResourceProperties,
     >,
@@ -947,12 +984,17 @@ pub mod backup_plan_association {
         }
     }
     /// Properties of the protected GCP resource.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceProperties {
         /// Output only. Cloud SQL instance's backup plan association properties.
         #[prost(message, tag = "10")]
         CloudSqlInstanceBackupPlanAssociationProperties(
             super::CloudSqlInstanceBackupPlanAssociationProperties,
+        ),
+        /// Output only. AlloyDB cluster's backup plan association properties.
+        #[prost(message, tag = "15")]
+        AlloydbClusterBackupPlanAssociationProperties(
+            super::AlloyDbClusterBackupPlanAssociationProperties,
         ),
     }
 }
@@ -1248,36 +1290,6 @@ pub struct TriggerBackupRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-}
-/// AlloyDBClusterDataSourceProperties represents the properties of a
-/// AlloyDB cluster resource that are stored in the DataSource.
-/// .
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct AlloyDbClusterDataSourceProperties {
-    /// Output only. Name of the AlloyDB cluster backed up by the datasource.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// AlloyDbClusterBackupProperties represents AlloyDB cluster
-/// backup properties.
-/// .
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct AlloyDbClusterBackupProperties {
-    /// An optional text description for the backup.
-    #[prost(string, optional, tag = "1")]
-    pub description: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. Storage usage of this particular backup
-    #[prost(int64, tag = "2")]
-    pub stored_bytes: i64,
-    /// Output only. The chain id of this backup. Backups belonging to the same
-    /// chain are sharing the same chain id. This property is calculated and
-    /// maintained by BackupDR.
-    #[prost(string, tag = "3")]
-    pub chain_id: ::prost::alloc::string::String,
-    /// Output only. The PostgreSQL major version of the AlloyDB cluster when the
-    /// backup was taken.
-    #[prost(string, tag = "4")]
-    pub database_version: ::prost::alloc::string::String,
 }
 /// BackupApplianceBackupProperties represents BackupDR backup appliance's
 /// properties.

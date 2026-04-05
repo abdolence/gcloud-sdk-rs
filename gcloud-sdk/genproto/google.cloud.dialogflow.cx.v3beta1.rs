@@ -5577,6 +5577,9 @@ pub struct Intent {
     /// scope, content, result etc. Maximum character limit: 140 characters.
     #[prost(string, tag = "8")]
     pub description: ::prost::alloc::string::String,
+    /// Optional. Matching DTMF pattern for the intent.
+    #[prost(string, tag = "16")]
+    pub dtmf_pattern: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Intent`.
 pub mod intent {
@@ -6404,6 +6407,79 @@ pub mod intents_client {
             self.inner.unary(req, path, codec).await
         }
     }
+}
+/// The trace block tracks a sequence of actions taken by the agent in a flow or
+/// a playbook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TraceBlock {
+    /// The actions performed by the agent and the user during this session.
+    #[prost(message, repeated, tag = "3")]
+    pub actions: ::prost::alloc::vec::Vec<Action>,
+    /// Output only. Timestamp of the start of the trace block.
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp of the end of the trace block.
+    #[prost(message, optional, tag = "5")]
+    pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A list of input parameters of the trace block.
+    #[prost(message, optional, tag = "9")]
+    pub input_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. A list of output parameters of the trace block.
+    #[prost(message, optional, tag = "6")]
+    pub output_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Output only. The end state of the trace block.
+    #[prost(enumeration = "OutputState", tag = "7")]
+    pub end_state: i32,
+    /// Metadata of the trace.
+    #[prost(oneof = "trace_block::TraceMetadata", tags = "1, 2, 8")]
+    pub trace_metadata: ::core::option::Option<trace_block::TraceMetadata>,
+}
+/// Nested message and enum types in `TraceBlock`.
+pub mod trace_block {
+    /// Metadata of the trace.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TraceMetadata {
+        /// Metadata of the playbook trace.
+        #[prost(message, tag = "1")]
+        PlaybookTraceMetadata(super::PlaybookTraceMetadata),
+        /// Metadata of the flow trace.
+        #[prost(message, tag = "2")]
+        FlowTraceMetadata(super::FlowTraceMetadata),
+        /// Metadata of the speech-to-text and speech-to-text processing.
+        #[prost(message, tag = "8")]
+        SpeechProcessingMetadata(super::SpeechProcessingMetadata),
+    }
+}
+/// Metadata of the speech-to-text and text-to-speech processing.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpeechProcessingMetadata {
+    /// Output only. The display name of the speech processing.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Metadata of the playbook trace.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookTraceMetadata {
+    /// Required. The unique identifier of the playbook.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+    #[prost(string, tag = "1")]
+    pub playbook: ::prost::alloc::string::String,
+    /// Output only. The display name of the playbook.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Metadata of the flow trace.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FlowTraceMetadata {
+    /// Required. The unique identifier of the flow.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+    #[prost(string, tag = "1")]
+    pub flow: ::prost::alloc::string::String,
+    /// Output only. The display name of the flow.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
 }
 /// Action performed by end user or Dialogflow agent in the conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9882,6 +9958,12 @@ pub struct QueryResult {
     pub data_store_connection_signals: ::core::option::Option<
         DataStoreConnectionSignals,
     >,
+    /// Optional. Contains the sequence of trace blocks from the current
+    /// conversation turn. Trace blocks are ordered chronologically and contain
+    /// detailed traces of runtime behavior such as tool calls, LLM calls, flow and
+    /// playbook invocations, agent utterances and user utterances.
+    #[prost(message, repeated, tag = "37")]
+    pub trace_blocks: ::prost::alloc::vec::Vec<TraceBlock>,
     /// The original conversational query.
     #[prost(oneof = "query_result::Query", tags = "1, 11, 12, 14, 23")]
     pub query: ::core::option::Option<query_result::Query>,

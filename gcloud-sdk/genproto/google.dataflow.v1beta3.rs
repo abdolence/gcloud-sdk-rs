@@ -45,7 +45,7 @@ pub struct Environment {
     /// specified in order for the job to have workers.
     #[prost(message, repeated, tag = "4")]
     pub worker_pools: ::prost::alloc::vec::Vec<WorkerPool>,
-    /// A description of the process that generated the request.
+    /// Optional. A description of the process that generated the request.
     #[prost(message, optional, tag = "5")]
     pub user_agent: ::core::option::Option<::prost_types::Struct>,
     /// A structure describing which components and their versions of the service
@@ -110,6 +110,9 @@ pub struct Environment {
     /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
     #[prost(enumeration = "StreamingMode", tag = "19")]
     pub streaming_mode: i32,
+    /// Optional. True when any worker pool that uses public IPs is present.
+    #[prost(bool, tag = "20")]
+    pub use_public_ips: bool,
 }
 /// The packages that must be installed in order for a worker to run the
 /// steps of the Cloud Dataflow job that will be assigned to its worker
@@ -133,6 +136,12 @@ pub struct Package {
     /// bucket.storage.googleapis.com/
     #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
+    /// Optional. The hex-encoded SHA256 checksum of the package.
+    /// If the checksum is provided, the worker will verify the checksum of the
+    /// package before using it. If the checksum does not match, the worker will
+    /// fail to start.
+    #[prost(string, tag = "3")]
+    pub sha256: ::prost::alloc::string::String,
 }
 /// Describes the data disk used by a workflow job.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -378,6 +387,12 @@ pub struct WorkerPool {
     /// attempt to choose a reasonable default.
     #[prost(string, tag = "16")]
     pub disk_type: ::prost::alloc::string::String,
+    /// Optional. IOPS provisioned for the root disk for VMs.
+    #[prost(int64, tag = "23")]
+    pub disk_provisioned_iops: i64,
+    /// Optional. Throughput provisioned for the root disk for VMs.
+    #[prost(int64, tag = "24")]
+    pub disk_provisioned_throughput_mibps: i64,
     /// Fully qualified source image for disks.
     #[prost(string, tag = "8")]
     pub disk_source_image: ::prost::alloc::string::String,
@@ -1329,6 +1344,9 @@ pub struct Job {
     /// Output only. Resources used by the Dataflow Service to run the job.
     #[prost(message, optional, tag = "28")]
     pub service_resources: ::core::option::Option<ServiceResources>,
+    /// Output only. Indicates whether the job can be paused.
+    #[prost(bool, tag = "29")]
+    pub pausable: bool,
 }
 /// Resources used by the Dataflow Service to run the job.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1341,7 +1359,7 @@ pub struct ServiceResources {
 /// Additional job parameters that can only be updated during runtime using the
 /// projects.jobs.update method. These fields have no effect when specified
 /// during job creation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeUpdatableParams {
     /// The maximum number of workers to cap autoscaling at. This field is
     /// currently only supported for Streaming Engine jobs.
@@ -1359,6 +1377,16 @@ pub struct RuntimeUpdatableParams {
     /// pipeline](<https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline>).
     #[prost(double, optional, tag = "3")]
     pub worker_utilization_hint: ::core::option::Option<f64>,
+    /// Optional. Deprecated: Use `autoscaling_tier` instead.
+    /// The backlog threshold duration in seconds for autoscaling. Value must be
+    /// non-negative.
+    #[deprecated]
+    #[prost(message, optional, tag = "4")]
+    pub acceptable_backlog_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The backlog threshold tier for autoscaling. Value must be one of
+    /// "low-latency", "medium-latency", or "high-latency".
+    #[prost(string, optional, tag = "5")]
+    pub autoscaling_tier: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Metadata for a Datastore connector used by the job.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2249,6 +2277,10 @@ pub enum JobState {
     /// Currently, this is an opt-in feature, please reach out to Cloud support
     /// team if you are interested.
     ResourceCleaningUp = 12,
+    /// `JOB_STATE_PAUSING` is not implemented yet.
+    Pausing = 13,
+    /// `JOB_STATE_PAUSED` is not implemented yet.
+    Paused = 14,
 }
 impl JobState {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2270,6 +2302,8 @@ impl JobState {
             Self::Cancelling => "JOB_STATE_CANCELLING",
             Self::Queued => "JOB_STATE_QUEUED",
             Self::ResourceCleaningUp => "JOB_STATE_RESOURCE_CLEANING_UP",
+            Self::Pausing => "JOB_STATE_PAUSING",
+            Self::Paused => "JOB_STATE_PAUSED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2288,6 +2322,8 @@ impl JobState {
             "JOB_STATE_CANCELLING" => Some(Self::Cancelling),
             "JOB_STATE_QUEUED" => Some(Self::Queued),
             "JOB_STATE_RESOURCE_CLEANING_UP" => Some(Self::ResourceCleaningUp),
+            "JOB_STATE_PAUSING" => Some(Self::Pausing),
+            "JOB_STATE_PAUSED" => Some(Self::Paused),
             _ => None,
         }
     }
@@ -2350,8 +2386,8 @@ pub mod jobs_v1_beta3_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Provides a method to create and modify Google Cloud Dataflow jobs.
-    /// A Job is a multi-stage computation graph run by the Cloud Dataflow service.
+    /// Provides a method to create and modify Dataflow jobs.
+    /// A Job is a multi-stage computation graph run by the Dataflow service.
     #[derive(Debug, Clone)]
     pub struct JobsV1Beta3Client<T> {
         inner: tonic::client::Grpc<T>,
@@ -2432,7 +2468,7 @@ pub mod jobs_v1_beta3_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a Cloud Dataflow job.
+        /// Creates a Dataflow job.
         ///
         /// To create a job, we recommend using `projects.locations.jobs.create` with a
         /// \[regional endpoint\]
@@ -2913,8 +2949,7 @@ pub mod messages_v1_beta3_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The Dataflow Messages API is used for monitoring the progress of
-    /// Dataflow jobs.
+    /// The Dataflow Messages API is used to monitor the progress of Dataflow jobs.
     #[derive(Debug, Clone)]
     pub struct MessagesV1Beta3Client<T> {
         inner: tonic::client::Grpc<T>,
@@ -3057,7 +3092,6 @@ pub struct MetricStructuredName {
     >,
 }
 /// Describes the state of a metric.
-/// Next ID: 14
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricUpdate {
     /// Name of the metric.
@@ -3103,6 +3137,12 @@ pub struct MetricUpdate {
     /// possible value type is a BoundedTrieNode.
     #[prost(message, optional, tag = "13")]
     pub trie: ::core::option::Option<::prost_types::Value>,
+    /// Worker-computed aggregate value for the "Trie" aggregation kind.  The only
+    /// possible value type is a BoundedTrieNode.
+    /// Introduced this field to avoid breaking older SDKs when Dataflow service
+    /// starts to populate the `bounded_trie` field.
+    #[prost(message, optional, tag = "14")]
+    pub bounded_trie: ::core::option::Option<::prost_types::Value>,
     /// A struct value describing properties of a distribution of numeric values.
     #[prost(message, optional, tag = "11")]
     pub distribution: ::core::option::Option<::prost_types::Value>,
@@ -3518,8 +3558,7 @@ pub mod metrics_v1_beta3_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The Dataflow Metrics API lets you monitor the progress of Dataflow
-    /// jobs.
+    /// The Dataflow Metrics API lets you monitor the progress of Dataflow jobs.
     #[derive(Debug, Clone)]
     pub struct MetricsV1Beta3Client<T> {
         inner: tonic::client::Grpc<T>,
@@ -4149,6 +4188,11 @@ pub struct FlexTemplateRuntimeEnvironment {
     /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
     #[prost(enumeration = "StreamingMode", optional, tag = "26")]
     pub streaming_mode: ::core::option::Option<i32>,
+    /// Optional. Additional pipeline option flags for the job.
+    #[prost(string, repeated, tag = "27")]
+    pub additional_pipeline_options: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// A request to launch a Cloud Dataflow job from a FlexTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4268,6 +4312,11 @@ pub struct RuntimeEnvironment {
     /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
     #[prost(enumeration = "StreamingMode", optional, tag = "19")]
     pub streaming_mode: ::core::option::Option<i32>,
+    /// Optional. Additional pipeline option flags for the job.
+    #[prost(string, repeated, tag = "20")]
+    pub additional_pipeline_options: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// ParameterMetadataEnumOption specifies the option shown in the enum form.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4401,6 +4450,8 @@ pub mod sdk_info {
         Python = 2,
         /// Go.
         Go = 3,
+        /// YAML.
+        Yaml = 4,
     }
     impl Language {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4413,6 +4464,7 @@ pub mod sdk_info {
                 Self::Java => "JAVA",
                 Self::Python => "PYTHON",
                 Self::Go => "GO",
+                Self::Yaml => "YAML",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4422,6 +4474,7 @@ pub mod sdk_info {
                 "JAVA" => Some(Self::Java),
                 "PYTHON" => Some(Self::Python),
                 "GO" => Some(Self::Go),
+                "YAML" => Some(Self::Yaml),
                 _ => None,
             }
         }

@@ -6622,6 +6622,9 @@ pub struct Intent {
     /// scope, content, result etc. Maximum character limit: 140 characters.
     #[prost(string, tag = "8")]
     pub description: ::prost::alloc::string::String,
+    /// Optional. Matching DTMF pattern for the intent.
+    #[prost(string, tag = "16")]
+    pub dtmf_pattern: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Intent`.
 pub mod intent {
@@ -7872,6 +7875,275 @@ pub mod session_entity_types_client {
         }
     }
 }
+/// The trace block tracks a sequence of actions taken by the agent in a flow or
+/// a playbook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TraceBlock {
+    /// The actions performed by the agent and the user during this session.
+    #[prost(message, repeated, tag = "3")]
+    pub actions: ::prost::alloc::vec::Vec<Action>,
+    /// Output only. Timestamp of the start of the trace block.
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp of the end of the trace block.
+    #[prost(message, optional, tag = "5")]
+    pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A list of input parameters of the trace block.
+    #[prost(message, optional, tag = "9")]
+    pub input_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. A list of output parameters of the trace block.
+    #[prost(message, optional, tag = "6")]
+    pub output_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Output only. The end state of the trace block.
+    #[prost(enumeration = "OutputState", tag = "7")]
+    pub end_state: i32,
+    /// Metadata of the trace.
+    #[prost(oneof = "trace_block::TraceMetadata", tags = "1, 2, 8")]
+    pub trace_metadata: ::core::option::Option<trace_block::TraceMetadata>,
+}
+/// Nested message and enum types in `TraceBlock`.
+pub mod trace_block {
+    /// Metadata of the trace.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TraceMetadata {
+        /// Metadata of the playbook trace.
+        #[prost(message, tag = "1")]
+        PlaybookTraceMetadata(super::PlaybookTraceMetadata),
+        /// Metadata of the flow trace.
+        #[prost(message, tag = "2")]
+        FlowTraceMetadata(super::FlowTraceMetadata),
+        /// Metadata of the speech-to-text and speech-to-text processing.
+        #[prost(message, tag = "8")]
+        SpeechProcessingMetadata(super::SpeechProcessingMetadata),
+    }
+}
+/// Metadata of the speech-to-text and text-to-speech processing.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpeechProcessingMetadata {
+    /// Output only. The display name of the speech processing.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Metadata of the playbook trace.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookTraceMetadata {
+    /// Required. The unique identifier of the playbook.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+    #[prost(string, tag = "1")]
+    pub playbook: ::prost::alloc::string::String,
+    /// Output only. The display name of the playbook.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Metadata of the flow trace.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FlowTraceMetadata {
+    /// Required. The unique identifier of the flow.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+    #[prost(string, tag = "1")]
+    pub flow: ::prost::alloc::string::String,
+    /// Output only. The display name of the flow.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Input of the playbook.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookInput {
+    /// Optional. Summary string of the preceding conversation for the child
+    /// playbook invocation.
+    #[prost(string, tag = "1")]
+    pub preceding_conversation_summary: ::prost::alloc::string::String,
+}
+/// Output of the playbook.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookOutput {
+    /// Optional. Summary string of the execution result of the child playbook.
+    #[prost(string, tag = "1")]
+    pub execution_summary: ::prost::alloc::string::String,
+}
+/// Action performed by end user or Dialogflow agent in the conversation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Action {
+    /// Action details.
+    #[prost(oneof = "action::Action", tags = "1, 2, 3, 4, 5, 12, 13")]
+    pub action: ::core::option::Option<action::Action>,
+}
+/// Nested message and enum types in `Action`.
+pub mod action {
+    /// Action details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Action {
+        /// Optional. Agent obtained a message from the customer.
+        #[prost(message, tag = "1")]
+        UserUtterance(super::UserUtterance),
+        /// Optional. Action performed by the agent as a message.
+        #[prost(message, tag = "2")]
+        AgentUtterance(super::AgentUtterance),
+        /// Optional. Action performed on behalf of the agent by calling a plugin
+        /// tool.
+        #[prost(message, tag = "3")]
+        ToolUse(super::ToolUse),
+        /// Optional. Action performed on behalf of the agent by invoking a child
+        /// playbook.
+        #[prost(message, tag = "4")]
+        PlaybookInvocation(super::PlaybookInvocation),
+        /// Optional. Action performed on behalf of the agent by invoking a CX flow.
+        #[prost(message, tag = "5")]
+        FlowInvocation(super::FlowInvocation),
+        /// Optional. Action performed on behalf of the agent by transitioning to a
+        /// target playbook.
+        #[prost(message, tag = "12")]
+        PlaybookTransition(super::PlaybookTransition),
+        /// Optional. Action performed on behalf of the agent by transitioning to a
+        /// target CX flow.
+        #[prost(message, tag = "13")]
+        FlowTransition(super::FlowTransition),
+    }
+}
+/// UserUtterance represents one message sent by the customer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserUtterance {
+    /// Required. Message content in text.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+}
+/// AgentUtterance represents one message sent by the agent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentUtterance {
+    /// Required. Message content in text.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+}
+/// Stores metadata of the invocation of an action supported by a tool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolUse {
+    /// Required. The \[tool\]\[google.cloud.dialogflow.cx.v3.Tool\] that should be
+    /// used. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+    #[prost(string, tag = "1")]
+    pub tool: ::prost::alloc::string::String,
+    /// Output only. The display name of the tool.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Name of the action to be called during the tool use.
+    #[prost(string, tag = "2")]
+    pub action: ::prost::alloc::string::String,
+    /// Optional. A list of input parameters for the action.
+    #[prost(message, optional, tag = "5")]
+    pub input_action_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. A list of output parameters generated by the action.
+    #[prost(message, optional, tag = "6")]
+    pub output_action_parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// Stores metadata of the invocation of a child playbook.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookInvocation {
+    /// Required. The unique identifier of the playbook.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+    #[prost(string, tag = "1")]
+    pub playbook: ::prost::alloc::string::String,
+    /// Output only. The display name of the playbook.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Input of the child playbook invocation.
+    #[prost(message, optional, tag = "2")]
+    pub playbook_input: ::core::option::Option<PlaybookInput>,
+    /// Optional. Output of the child playbook invocation.
+    #[prost(message, optional, tag = "3")]
+    pub playbook_output: ::core::option::Option<PlaybookOutput>,
+    /// Required. Playbook invocation's output state.
+    #[prost(enumeration = "OutputState", tag = "4")]
+    pub playbook_state: i32,
+}
+/// Stores metadata of the invocation of a CX flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FlowInvocation {
+    /// Required. The unique identifier of the flow.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+    #[prost(string, tag = "1")]
+    pub flow: ::prost::alloc::string::String,
+    /// Output only. The display name of the flow.
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Flow invocation's output state.
+    #[prost(enumeration = "OutputState", tag = "4")]
+    pub flow_state: i32,
+}
+/// Stores metadata of the transition to another target playbook. Playbook
+/// transition actions exit the caller playbook and enter the target playbook.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PlaybookTransition {
+    /// Required. The unique identifier of the playbook.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+    #[prost(string, tag = "1")]
+    pub playbook: ::prost::alloc::string::String,
+    /// Output only. The display name of the playbook.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Stores metadata of the transition to a target CX flow. Flow transition
+/// actions exit the caller playbook and enter the child flow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FlowTransition {
+    /// Required. The unique identifier of the flow.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<Agentflows/<FlowID>`.
+    #[prost(string, tag = "1")]
+    pub flow: ::prost::alloc::string::String,
+    /// Output only. The display name of the flow.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Output state.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum OutputState {
+    /// Unspecified output.
+    Unspecified = 0,
+    /// Succeeded.
+    Ok = 1,
+    /// Cancelled.
+    Cancelled = 2,
+    /// Failed.
+    Failed = 3,
+    /// Escalated.
+    Escalated = 4,
+    /// Pending.
+    Pending = 5,
+}
+impl OutputState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "OUTPUT_STATE_UNSPECIFIED",
+            Self::Ok => "OUTPUT_STATE_OK",
+            Self::Cancelled => "OUTPUT_STATE_CANCELLED",
+            Self::Failed => "OUTPUT_STATE_FAILED",
+            Self::Escalated => "OUTPUT_STATE_ESCALATED",
+            Self::Pending => "OUTPUT_STATE_PENDING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OUTPUT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "OUTPUT_STATE_OK" => Some(Self::Ok),
+            "OUTPUT_STATE_CANCELLED" => Some(Self::Cancelled),
+            "OUTPUT_STATE_FAILED" => Some(Self::Failed),
+            "OUTPUT_STATE_ESCALATED" => Some(Self::Escalated),
+            "OUTPUT_STATE_PENDING" => Some(Self::Pending),
+            _ => None,
+        }
+    }
+}
 /// Stores information about feedback provided by users about a response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnswerFeedback {
@@ -9012,6 +9284,12 @@ pub struct QueryResult {
     pub data_store_connection_signals: ::core::option::Option<
         DataStoreConnectionSignals,
     >,
+    /// Optional. Contains the sequence of trace blocks from the current
+    /// conversation turn. Trace blocks are ordered chronologically and contain
+    /// detailed traces of runtime behavior such as tool calls, LLM calls, flow and
+    /// playbook invocations, agent utterances and user utterances.
+    #[prost(message, repeated, tag = "37")]
+    pub trace_blocks: ::prost::alloc::vec::Vec<TraceBlock>,
     /// The original conversational query.
     #[prost(oneof = "query_result::Query", tags = "1, 11, 12, 14, 23")]
     pub query: ::core::option::Option<query_result::Query>,
@@ -13397,202 +13675,6 @@ pub mod environments_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Input of the playbook.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct PlaybookInput {
-    /// Optional. Summary string of the preceding conversation for the child
-    /// playbook invocation.
-    #[prost(string, tag = "1")]
-    pub preceding_conversation_summary: ::prost::alloc::string::String,
-}
-/// Output of the playbook.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct PlaybookOutput {
-    /// Optional. Summary string of the execution result of the child playbook.
-    #[prost(string, tag = "1")]
-    pub execution_summary: ::prost::alloc::string::String,
-}
-/// Action performed by end user or Dialogflow agent in the conversation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Action {
-    /// Action details.
-    #[prost(oneof = "action::Action", tags = "1, 2, 3, 4, 5, 12, 13")]
-    pub action: ::core::option::Option<action::Action>,
-}
-/// Nested message and enum types in `Action`.
-pub mod action {
-    /// Action details.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Action {
-        /// Optional. Agent obtained a message from the customer.
-        #[prost(message, tag = "1")]
-        UserUtterance(super::UserUtterance),
-        /// Optional. Action performed by the agent as a message.
-        #[prost(message, tag = "2")]
-        AgentUtterance(super::AgentUtterance),
-        /// Optional. Action performed on behalf of the agent by calling a plugin
-        /// tool.
-        #[prost(message, tag = "3")]
-        ToolUse(super::ToolUse),
-        /// Optional. Action performed on behalf of the agent by invoking a child
-        /// playbook.
-        #[prost(message, tag = "4")]
-        PlaybookInvocation(super::PlaybookInvocation),
-        /// Optional. Action performed on behalf of the agent by invoking a CX flow.
-        #[prost(message, tag = "5")]
-        FlowInvocation(super::FlowInvocation),
-        /// Optional. Action performed on behalf of the agent by transitioning to a
-        /// target playbook.
-        #[prost(message, tag = "12")]
-        PlaybookTransition(super::PlaybookTransition),
-        /// Optional. Action performed on behalf of the agent by transitioning to a
-        /// target CX flow.
-        #[prost(message, tag = "13")]
-        FlowTransition(super::FlowTransition),
-    }
-}
-/// UserUtterance represents one message sent by the customer.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct UserUtterance {
-    /// Required. Message content in text.
-    #[prost(string, tag = "1")]
-    pub text: ::prost::alloc::string::String,
-}
-/// AgentUtterance represents one message sent by the agent.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct AgentUtterance {
-    /// Required. Message content in text.
-    #[prost(string, tag = "1")]
-    pub text: ::prost::alloc::string::String,
-}
-/// Stores metadata of the invocation of an action supported by a tool.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToolUse {
-    /// Required. The \[tool\]\[google.cloud.dialogflow.cx.v3.Tool\] that should be
-    /// used. Format:
-    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
-    #[prost(string, tag = "1")]
-    pub tool: ::prost::alloc::string::String,
-    /// Output only. The display name of the tool.
-    #[prost(string, tag = "8")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. Name of the action to be called during the tool use.
-    #[prost(string, tag = "2")]
-    pub action: ::prost::alloc::string::String,
-    /// Optional. A list of input parameters for the action.
-    #[prost(message, optional, tag = "5")]
-    pub input_action_parameters: ::core::option::Option<::prost_types::Struct>,
-    /// Optional. A list of output parameters generated by the action.
-    #[prost(message, optional, tag = "6")]
-    pub output_action_parameters: ::core::option::Option<::prost_types::Struct>,
-}
-/// Stores metadata of the invocation of a child playbook.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct PlaybookInvocation {
-    /// Required. The unique identifier of the playbook.
-    /// Format:
-    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
-    #[prost(string, tag = "1")]
-    pub playbook: ::prost::alloc::string::String,
-    /// Output only. The display name of the playbook.
-    #[prost(string, tag = "5")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. Input of the child playbook invocation.
-    #[prost(message, optional, tag = "2")]
-    pub playbook_input: ::core::option::Option<PlaybookInput>,
-    /// Optional. Output of the child playbook invocation.
-    #[prost(message, optional, tag = "3")]
-    pub playbook_output: ::core::option::Option<PlaybookOutput>,
-    /// Required. Playbook invocation's output state.
-    #[prost(enumeration = "OutputState", tag = "4")]
-    pub playbook_state: i32,
-}
-/// Stores metadata of the invocation of a CX flow.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FlowInvocation {
-    /// Required. The unique identifier of the flow.
-    /// Format:
-    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
-    #[prost(string, tag = "1")]
-    pub flow: ::prost::alloc::string::String,
-    /// Output only. The display name of the flow.
-    #[prost(string, tag = "7")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Required. Flow invocation's output state.
-    #[prost(enumeration = "OutputState", tag = "4")]
-    pub flow_state: i32,
-}
-/// Stores metadata of the transition to another target playbook. Playbook
-/// transition actions exit the caller playbook and enter the target playbook.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct PlaybookTransition {
-    /// Required. The unique identifier of the playbook.
-    /// Format:
-    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
-    #[prost(string, tag = "1")]
-    pub playbook: ::prost::alloc::string::String,
-    /// Output only. The display name of the playbook.
-    #[prost(string, tag = "3")]
-    pub display_name: ::prost::alloc::string::String,
-}
-/// Stores metadata of the transition to a target CX flow. Flow transition
-/// actions exit the caller playbook and enter the child flow.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FlowTransition {
-    /// Required. The unique identifier of the flow.
-    /// Format:
-    /// `projects/<ProjectID>/locations/<LocationID>/agents/<Agentflows/<FlowID>`.
-    #[prost(string, tag = "1")]
-    pub flow: ::prost::alloc::string::String,
-    /// Output only. The display name of the flow.
-    #[prost(string, tag = "3")]
-    pub display_name: ::prost::alloc::string::String,
-}
-/// Output state.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum OutputState {
-    /// Unspecified output.
-    Unspecified = 0,
-    /// Succeeded.
-    Ok = 1,
-    /// Cancelled.
-    Cancelled = 2,
-    /// Failed.
-    Failed = 3,
-    /// Escalated.
-    Escalated = 4,
-    /// Pending.
-    Pending = 5,
-}
-impl OutputState {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "OUTPUT_STATE_UNSPECIFIED",
-            Self::Ok => "OUTPUT_STATE_OK",
-            Self::Cancelled => "OUTPUT_STATE_CANCELLED",
-            Self::Failed => "OUTPUT_STATE_FAILED",
-            Self::Escalated => "OUTPUT_STATE_ESCALATED",
-            Self::Pending => "OUTPUT_STATE_PENDING",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "OUTPUT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
-            "OUTPUT_STATE_OK" => Some(Self::Ok),
-            "OUTPUT_STATE_CANCELLED" => Some(Self::Cancelled),
-            "OUTPUT_STATE_FAILED" => Some(Self::Failed),
-            "OUTPUT_STATE_ESCALATED" => Some(Self::Escalated),
-            "OUTPUT_STATE_PENDING" => Some(Self::Pending),
-            _ => None,
         }
     }
 }

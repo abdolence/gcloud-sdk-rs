@@ -4238,7 +4238,7 @@ pub mod train_processor_version_request {
         }
     }
     /// Options to control foundation model tuning of the processor.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FoundationModelTuningOptions {
         /// Optional. The number of steps to run for model tuning. Valid values are
         /// between 1 and 400. If not provided, recommended steps will be used.
@@ -4249,8 +4249,15 @@ pub mod train_processor_version_request {
         /// will be used.
         #[prost(float, tag = "3")]
         pub learning_rate_multiplier: f32,
+        /// Optional. Resource name of a previously fine tuned version id to copy the
+        /// overwritten configs from. The base_processor_version should be newer than
+        /// the base processor version used to fine tune this provided processor
+        /// version. Format:
+        /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`.
+        #[prost(string, tag = "5")]
+        pub previous_fine_tuned_processor_version_name: ::prost::alloc::string::String,
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProcessorFlags {
         /// Options to control Custom Document Extraction (CDE) Processor.
         #[prost(message, tag = "5")]

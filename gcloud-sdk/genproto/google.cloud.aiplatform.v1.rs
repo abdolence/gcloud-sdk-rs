@@ -5035,6 +5035,13 @@ pub mod function_calling_config {
         /// Model will not predict any function calls. Model behavior is same as when
         /// not passing any function declarations.
         None = 3,
+        /// Model is constrained to predict either function calls or natural language
+        /// response.
+        /// If \[allowed_function_names\]\[FunctionCallingConfig.allowed_function_names\]
+        /// are set, the predicted function calls will be limited to any one of
+        /// `allowed_function_names`, else the predicted function calls will be any
+        /// one of the provided \[FunctionDeclaration\].
+        Validated = 5,
     }
     impl Mode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5047,6 +5054,7 @@ pub mod function_calling_config {
                 Self::Auto => "AUTO",
                 Self::Any => "ANY",
                 Self::None => "NONE",
+                Self::Validated => "VALIDATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5056,6 +5064,7 @@ pub mod function_calling_config {
                 "AUTO" => Some(Self::Auto),
                 "ANY" => Some(Self::Any),
                 "NONE" => Some(Self::None),
+                "VALIDATED" => Some(Self::Validated),
                 _ => None,
             }
         }
@@ -12512,9 +12521,169 @@ pub mod evaluate_instances_request {
         MetricxInput(super::MetricxInput),
     }
 }
+/// The metric used for running evaluations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metric {
+    /// Optional. The aggregation metrics to use.
+    #[prost(
+        enumeration = "metric::AggregationMetric",
+        repeated,
+        packed = "false",
+        tag = "1"
+    )]
+    pub aggregation_metrics: ::prost::alloc::vec::Vec<i32>,
+    /// The spec for the metric.
+    /// It would be either a pre-defined metric, or a inline metric spec.
+    #[prost(oneof = "metric::MetricSpec", tags = "8, 9, 10, 2, 3, 4, 5, 6")]
+    pub metric_spec: ::core::option::Option<metric::MetricSpec>,
+}
+/// Nested message and enum types in `Metric`.
+pub mod metric {
+    /// The per-metric statistics on evaluation results supported by
+    /// `EvaluationService.EvaluateDataset`.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AggregationMetric {
+        /// Unspecified aggregation metric.
+        Unspecified = 0,
+        /// Average aggregation metric. Not supported for Pairwise metric.
+        Average = 1,
+        /// Mode aggregation metric.
+        Mode = 2,
+        /// Standard deviation aggregation metric. Not supported for pairwise metric.
+        StandardDeviation = 3,
+        /// Variance aggregation metric. Not supported for pairwise metric.
+        Variance = 4,
+        /// Minimum aggregation metric. Not supported for pairwise metric.
+        Minimum = 5,
+        /// Maximum aggregation metric. Not supported for pairwise metric.
+        Maximum = 6,
+        /// Median aggregation metric. Not supported for pairwise metric.
+        Median = 7,
+        /// 90th percentile aggregation metric. Not supported for pairwise metric.
+        PercentileP90 = 8,
+        /// 95th percentile aggregation metric. Not supported for pairwise metric.
+        PercentileP95 = 9,
+        /// 99th percentile aggregation metric. Not supported for pairwise metric.
+        PercentileP99 = 10,
+    }
+    impl AggregationMetric {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AGGREGATION_METRIC_UNSPECIFIED",
+                Self::Average => "AVERAGE",
+                Self::Mode => "MODE",
+                Self::StandardDeviation => "STANDARD_DEVIATION",
+                Self::Variance => "VARIANCE",
+                Self::Minimum => "MINIMUM",
+                Self::Maximum => "MAXIMUM",
+                Self::Median => "MEDIAN",
+                Self::PercentileP90 => "PERCENTILE_P90",
+                Self::PercentileP95 => "PERCENTILE_P95",
+                Self::PercentileP99 => "PERCENTILE_P99",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AGGREGATION_METRIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "AVERAGE" => Some(Self::Average),
+                "MODE" => Some(Self::Mode),
+                "STANDARD_DEVIATION" => Some(Self::StandardDeviation),
+                "VARIANCE" => Some(Self::Variance),
+                "MINIMUM" => Some(Self::Minimum),
+                "MAXIMUM" => Some(Self::Maximum),
+                "MEDIAN" => Some(Self::Median),
+                "PERCENTILE_P90" => Some(Self::PercentileP90),
+                "PERCENTILE_P95" => Some(Self::PercentileP95),
+                "PERCENTILE_P99" => Some(Self::PercentileP99),
+                _ => None,
+            }
+        }
+    }
+    /// The spec for the metric.
+    /// It would be either a pre-defined metric, or a inline metric spec.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MetricSpec {
+        /// The spec for a pre-defined metric.
+        #[prost(message, tag = "8")]
+        PredefinedMetricSpec(super::PredefinedMetricSpec),
+        /// Spec for a computation based metric.
+        #[prost(message, tag = "9")]
+        ComputationBasedMetricSpec(super::ComputationBasedMetricSpec),
+        /// Spec for an LLM based metric.
+        #[prost(message, tag = "10")]
+        LlmBasedMetricSpec(super::LlmBasedMetricSpec),
+        /// Spec for pointwise metric.
+        #[prost(message, tag = "2")]
+        PointwiseMetricSpec(super::PointwiseMetricSpec),
+        /// Spec for pairwise metric.
+        #[prost(message, tag = "3")]
+        PairwiseMetricSpec(super::PairwiseMetricSpec),
+        /// Spec for exact match metric.
+        #[prost(message, tag = "4")]
+        ExactMatchSpec(super::ExactMatchSpec),
+        /// Spec for bleu metric.
+        #[prost(message, tag = "5")]
+        BleuSpec(super::BleuSpec),
+        /// Spec for rouge metric.
+        #[prost(message, tag = "6")]
+        RougeSpec(super::RougeSpec),
+    }
+}
+/// The configs for autorater. This is applicable to both EvaluateInstances and
+/// EvaluateDataset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoraterConfig {
+    /// Optional. Number of samples for each instance in the dataset.
+    /// If not specified, the default is 4. Minimum value is 1, maximum value
+    /// is 32.
+    #[prost(int32, optional, tag = "1")]
+    pub sampling_count: ::core::option::Option<i32>,
+    /// Optional. Default is true. Whether to flip the candidate and baseline
+    /// responses. This is only applicable to the pairwise metric. If enabled, also
+    /// provide PairwiseMetricSpec.candidate_response_field_name and
+    /// PairwiseMetricSpec.baseline_response_field_name. When rendering
+    /// PairwiseMetricSpec.metric_prompt_template, the candidate and baseline
+    /// fields will be flipped for half of the samples to reduce bias.
+    #[prost(bool, optional, tag = "2")]
+    pub flip_enabled: ::core::option::Option<bool>,
+    /// Optional. The fully qualified name of the publisher model or tuned
+    /// autorater endpoint to use.
+    ///
+    /// Publisher model format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    ///
+    /// Tuned model endpoint format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "3")]
+    pub autorater_model: ::prost::alloc::string::String,
+    /// Optional. Configuration options for model generation and outputs.
+    #[prost(message, optional, tag = "4")]
+    pub generation_config: ::core::option::Option<GenerationConfig>,
+}
 /// Response message for EvaluationService.EvaluateInstances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateInstancesResponse {
+    /// Metric results for each instance.
+    /// The order of the metric results is guaranteed to be the same as the order
+    /// of the instances in the request.
+    #[prost(message, repeated, tag = "43")]
+    pub metric_results: ::prost::alloc::vec::Vec<MetricResult>,
     /// Evaluation results will be served in the same order as presented in
     /// EvaluationRequest.instances.
     #[prost(
@@ -12616,6 +12785,240 @@ pub mod evaluate_instances_response {
         /// Result for Metricx metric.
         #[prost(message, tag = "30")]
         MetricxResult(super::MetricxResult),
+    }
+}
+/// Result for a single metric on a single instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricResult {
+    /// Output only. The score for the metric.
+    /// Please refer to each metric's documentation for the meaning of the score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. The explanation for the metric result.
+    #[prost(string, optional, tag = "3")]
+    pub explanation: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The error status for the metric result.
+    #[prost(message, optional, tag = "4")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// Config for evaluation output.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OutputConfig {
+    /// The destination for evaluation output.
+    #[prost(oneof = "output_config::Destination", tags = "1")]
+    pub destination: ::core::option::Option<output_config::Destination>,
+}
+/// Nested message and enum types in `OutputConfig`.
+pub mod output_config {
+    /// The destination for evaluation output.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Destination {
+        /// Cloud storage destination for evaluation output.
+        #[prost(message, tag = "1")]
+        GcsDestination(super::GcsDestination),
+    }
+}
+/// The dataset used for evaluation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EvaluationDataset {
+    /// The source of the dataset.
+    #[prost(oneof = "evaluation_dataset::Source", tags = "1, 2")]
+    pub source: ::core::option::Option<evaluation_dataset::Source>,
+}
+/// Nested message and enum types in `EvaluationDataset`.
+pub mod evaluation_dataset {
+    /// The source of the dataset.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Cloud storage source holds the dataset. Currently only one Cloud Storage
+        /// file path is supported.
+        #[prost(message, tag = "1")]
+        GcsSource(super::GcsSource),
+        /// BigQuery source holds the dataset.
+        #[prost(message, tag = "2")]
+        BigquerySource(super::BigQuerySource),
+    }
+}
+/// The results from an evaluation run performed by the EvaluationService.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateDatasetResponse {
+    /// Output only. Aggregation statistics derived from results of
+    /// EvaluationService.
+    #[prost(message, optional, tag = "1")]
+    pub aggregation_output: ::core::option::Option<AggregationOutput>,
+    /// Output only. Output info for EvaluationService.
+    #[prost(message, optional, tag = "3")]
+    pub output_info: ::core::option::Option<OutputInfo>,
+}
+/// Describes the info for output of EvaluationService.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OutputInfo {
+    /// The output location into which evaluation output is written.
+    #[prost(oneof = "output_info::OutputLocation", tags = "1")]
+    pub output_location: ::core::option::Option<output_info::OutputLocation>,
+}
+/// Nested message and enum types in `OutputInfo`.
+pub mod output_info {
+    /// The output location into which evaluation output is written.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum OutputLocation {
+        /// Output only. The full path of the Cloud Storage directory created, into
+        /// which the evaluation results and aggregation results are written.
+        #[prost(string, tag = "1")]
+        GcsOutputDirectory(::prost::alloc::string::String),
+    }
+}
+/// The aggregation result for the entire dataset and all metrics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationOutput {
+    /// The dataset used for evaluation & aggregation.
+    #[prost(message, optional, tag = "1")]
+    pub dataset: ::core::option::Option<EvaluationDataset>,
+    /// One AggregationResult per metric.
+    #[prost(message, repeated, tag = "2")]
+    pub aggregation_results: ::prost::alloc::vec::Vec<AggregationResult>,
+}
+/// The aggregation result for a single metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationResult {
+    /// Aggregation metric.
+    #[prost(enumeration = "metric::AggregationMetric", tag = "4")]
+    pub aggregation_metric: i32,
+    /// The aggregation result.
+    #[prost(oneof = "aggregation_result::AggregationResult", tags = "5, 6, 7, 8, 9")]
+    pub aggregation_result: ::core::option::Option<
+        aggregation_result::AggregationResult,
+    >,
+}
+/// Nested message and enum types in `AggregationResult`.
+pub mod aggregation_result {
+    /// The aggregation result.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AggregationResult {
+        /// Result for pointwise metric.
+        #[prost(message, tag = "5")]
+        PointwiseMetricResult(super::PointwiseMetricResult),
+        /// Result for pairwise metric.
+        #[prost(message, tag = "6")]
+        PairwiseMetricResult(super::PairwiseMetricResult),
+        /// Results for exact match metric.
+        #[prost(message, tag = "7")]
+        ExactMatchMetricValue(super::ExactMatchMetricValue),
+        /// Results for bleu metric.
+        #[prost(message, tag = "8")]
+        BleuMetricValue(super::BleuMetricValue),
+        /// Results for rouge metric.
+        #[prost(message, tag = "9")]
+        RougeMetricValue(super::RougeMetricValue),
+    }
+}
+/// The spec for a pre-defined metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredefinedMetricSpec {
+    /// Required. The name of a pre-defined metric, such as
+    /// "instruction_following_v1" or "text_quality_v1".
+    #[prost(string, tag = "1")]
+    pub metric_spec_name: ::prost::alloc::string::String,
+    /// Optional. The parameters needed to run the pre-defined metric.
+    #[prost(message, optional, tag = "2")]
+    pub metric_spec_parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// Specification for a computation based metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputationBasedMetricSpec {
+    /// Required. The type of the computation based metric.
+    #[prost(
+        enumeration = "computation_based_metric_spec::ComputationBasedMetricType",
+        optional,
+        tag = "1"
+    )]
+    pub r#type: ::core::option::Option<i32>,
+    /// Optional. A map of parameters for the metric, e.g. {"rouge_type":
+    /// "rougeL"}.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// Nested message and enum types in `ComputationBasedMetricSpec`.
+pub mod computation_based_metric_spec {
+    /// Types of computation based metrics.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ComputationBasedMetricType {
+        /// Unspecified computation based metric type.
+        Unspecified = 0,
+        /// Exact match metric.
+        ExactMatch = 1,
+        /// BLEU metric.
+        Bleu = 2,
+        /// ROUGE metric.
+        Rouge = 3,
+    }
+    impl ComputationBasedMetricType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPUTATION_BASED_METRIC_TYPE_UNSPECIFIED",
+                Self::ExactMatch => "EXACT_MATCH",
+                Self::Bleu => "BLEU",
+                Self::Rouge => "ROUGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPUTATION_BASED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT_MATCH" => Some(Self::ExactMatch),
+                "BLEU" => Some(Self::Bleu),
+                "ROUGE" => Some(Self::Rouge),
+                _ => None,
+            }
+        }
+    }
+}
+/// Specification for an LLM based metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LlmBasedMetricSpec {
+    /// Required. Template for the prompt sent to the judge model.
+    #[prost(string, optional, tag = "1")]
+    pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. System instructions for the judge model.
+    #[prost(string, optional, tag = "2")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Optional configuration for the judge LLM (Autorater).
+    #[prost(message, optional, tag = "3")]
+    pub judge_autorater_config: ::core::option::Option<AutoraterConfig>,
+    /// Optional. Optional additional configuration for the metric.
+    #[prost(message, optional, tag = "7")]
+    pub additional_config: ::core::option::Option<::prost_types::Struct>,
+    /// Source of the rubrics to be used for evaluation.
+    #[prost(oneof = "llm_based_metric_spec::RubricsSource", tags = "4, 6")]
+    pub rubrics_source: ::core::option::Option<llm_based_metric_spec::RubricsSource>,
+}
+/// Nested message and enum types in `LLMBasedMetricSpec`.
+pub mod llm_based_metric_spec {
+    /// Source of the rubrics to be used for evaluation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RubricsSource {
+        /// Use a pre-defined group of rubrics associated with the input.
+        /// Refers to a key in the rubric_groups map of EvaluationInstance.
+        #[prost(string, tag = "4")]
+        RubricGroupKey(::prost::alloc::string::String),
+        /// Dynamically generate rubrics using a predefined spec.
+        #[prost(message, tag = "6")]
+        PredefinedRubricGenerationSpec(super::PredefinedMetricSpec),
     }
 }
 /// Input for exact match metric.
@@ -13395,7 +13798,7 @@ pub struct QuestionAnsweringCorrectnessResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for pointwise metric.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricInput {
     /// Required. Spec for pointwise metric.
     #[prost(message, optional, tag = "1")]
@@ -13406,22 +13809,27 @@ pub struct PointwiseMetricInput {
 }
 /// Pointwise metric instance. Usually one instance corresponds to one row in an
 /// evaluation dataset.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricInstance {
     /// Instance for pointwise metric.
-    #[prost(oneof = "pointwise_metric_instance::Instance", tags = "1")]
+    #[prost(oneof = "pointwise_metric_instance::Instance", tags = "1, 2")]
     pub instance: ::core::option::Option<pointwise_metric_instance::Instance>,
 }
 /// Nested message and enum types in `PointwiseMetricInstance`.
 pub mod pointwise_metric_instance {
     /// Instance for pointwise metric.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Instance {
         /// Instance specified as a json string. String key-value pairs are expected
         /// in the json_instance to render
         /// PointwiseMetricSpec.instance_prompt_template.
         #[prost(string, tag = "1")]
         JsonInstance(::prost::alloc::string::String),
+        /// Key-value contents for the mutlimodality input, including text, image,
+        /// video, audio, and pdf, etc. The key is placeholder in metric prompt
+        /// template, and the value is the multimodal content.
+        #[prost(message, tag = "2")]
+        ContentMapInstance(super::ContentMap),
     }
 }
 /// Spec for pointwise metric.
@@ -13430,6 +13838,38 @@ pub struct PointwiseMetricSpec {
     /// Required. Metric prompt template for pointwise metric.
     #[prost(string, optional, tag = "1")]
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. System instructions for pointwise metric.
+    #[prost(string, optional, tag = "2")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. CustomOutputFormatConfig allows customization of metric output.
+    /// By default, metrics return a score and explanation.
+    /// When this config is set, the default output is replaced with either:
+    ///
+    /// * The raw output string.
+    /// * A parsed output based on a user-defined schema.
+    ///   If a custom format is chosen, the `score` and `explanation` fields in the
+    ///   corresponding metric result will be empty.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output_format_config: ::core::option::Option<CustomOutputFormatConfig>,
+}
+/// Spec for custom output format configuration.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomOutputFormatConfig {
+    /// Custom output format configuration.
+    #[prost(oneof = "custom_output_format_config::CustomOutputFormatConfig", tags = "1")]
+    pub custom_output_format_config: ::core::option::Option<
+        custom_output_format_config::CustomOutputFormatConfig,
+    >,
+}
+/// Nested message and enum types in `CustomOutputFormatConfig`.
+pub mod custom_output_format_config {
+    /// Custom output format configuration.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum CustomOutputFormatConfig {
+        /// Optional. Whether to return raw output.
+        #[prost(bool, tag = "1")]
+        ReturnRawOutput(bool),
+    }
 }
 /// Spec for pointwise metric result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13440,9 +13880,36 @@ pub struct PointwiseMetricResult {
     /// Output only. Explanation for pointwise metric score.
     #[prost(string, tag = "2")]
     pub explanation: ::prost::alloc::string::String,
+    /// Output only. Spec for custom output.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output: ::core::option::Option<CustomOutput>,
+}
+/// Spec for custom output.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomOutput {
+    /// Custom output.
+    #[prost(oneof = "custom_output::CustomOutput", tags = "1")]
+    pub custom_output: ::core::option::Option<custom_output::CustomOutput>,
+}
+/// Nested message and enum types in `CustomOutput`.
+pub mod custom_output {
+    /// Custom output.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum CustomOutput {
+        /// Output only. List of raw output strings.
+        #[prost(message, tag = "1")]
+        RawOutputs(super::RawOutput),
+    }
+}
+/// Raw output.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RawOutput {
+    /// Output only. Raw output string.
+    #[prost(string, repeated, tag = "1")]
+    pub raw_output: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Input for pairwise metric.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricInput {
     /// Required. Spec for pairwise metric.
     #[prost(message, optional, tag = "1")]
@@ -13453,22 +13920,27 @@ pub struct PairwiseMetricInput {
 }
 /// Pairwise metric instance. Usually one instance corresponds to one row in an
 /// evaluation dataset.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricInstance {
     /// Instance for pairwise metric.
-    #[prost(oneof = "pairwise_metric_instance::Instance", tags = "1")]
+    #[prost(oneof = "pairwise_metric_instance::Instance", tags = "1, 2")]
     pub instance: ::core::option::Option<pairwise_metric_instance::Instance>,
 }
 /// Nested message and enum types in `PairwiseMetricInstance`.
 pub mod pairwise_metric_instance {
     /// Instance for pairwise metric.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Instance {
         /// Instance specified as a json string. String key-value pairs are expected
         /// in the json_instance to render
         /// PairwiseMetricSpec.instance_prompt_template.
         #[prost(string, tag = "1")]
         JsonInstance(::prost::alloc::string::String),
+        /// Key-value contents for the mutlimodality input, including text, image,
+        /// video, audio, and pdf, etc. The key is placeholder in metric prompt
+        /// template, and the value is the multimodal content.
+        #[prost(message, tag = "2")]
+        ContentMapInstance(super::ContentMap),
     }
 }
 /// Spec for pairwise metric.
@@ -13477,6 +13949,22 @@ pub struct PairwiseMetricSpec {
     /// Required. Metric prompt template for pairwise metric.
     #[prost(string, optional, tag = "1")]
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The field name of the candidate response.
+    #[prost(string, tag = "2")]
+    pub candidate_response_field_name: ::prost::alloc::string::String,
+    /// Optional. The field name of the baseline response.
+    #[prost(string, tag = "3")]
+    pub baseline_response_field_name: ::prost::alloc::string::String,
+    /// Optional. System instructions for pairwise metric.
+    #[prost(string, optional, tag = "4")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. CustomOutputFormatConfig allows customization of metric output.
+    /// When this config is set, the default output is replaced with
+    /// the raw output string.
+    /// If a custom format is chosen, the `pairwise_choice` and `explanation`
+    /// fields in the corresponding metric result will be empty.
+    #[prost(message, optional, tag = "5")]
+    pub custom_output_format_config: ::core::option::Option<CustomOutputFormatConfig>,
 }
 /// Spec for pairwise metric result.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -13487,6 +13975,9 @@ pub struct PairwiseMetricResult {
     /// Output only. Explanation for pairwise metric score.
     #[prost(string, tag = "2")]
     pub explanation: ::prost::alloc::string::String,
+    /// Output only. Spec for custom output.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output: ::core::option::Option<CustomOutput>,
 }
 /// Input for tool call valid metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13833,6 +14324,26 @@ pub struct MetricxResult {
     /// Output only. MetricX score. Range depends on version.
     #[prost(float, optional, tag = "1")]
     pub score: ::core::option::Option<f32>,
+}
+/// Map of placeholder in metric prompt template to contents of model input.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentMap {
+    /// Optional. Map of placeholder to contents.
+    #[prost(map = "string, message", tag = "1")]
+    pub values: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        content_map::Contents,
+    >,
+}
+/// Nested message and enum types in `ContentMap`.
+pub mod content_map {
+    /// Repeated Content type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Contents {
+        /// Optional. Repeated contents.
+        #[prost(message, repeated, tag = "1")]
+        pub contents: ::prost::alloc::vec::Vec<super::Content>,
+    }
 }
 /// Pairwise prediction autorater preference.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -20431,6 +20942,9 @@ pub struct TuningJob {
     /// permission on this service account.
     #[prost(string, tag = "22")]
     pub service_account: ::prost::alloc::string::String,
+    /// Output only. Evaluation runs for the Tuning Job.
+    #[prost(message, repeated, tag = "32")]
+    pub evaluate_dataset_runs: ::prost::alloc::vec::Vec<EvaluateDatasetRun>,
     #[prost(oneof = "tuning_job::SourceModel", tags = "4, 31")]
     pub source_model: ::core::option::Option<tuning_job::SourceModel>,
     #[prost(oneof = "tuning_job::TuningSpec", tags = "5")]
@@ -20697,6 +21211,9 @@ pub struct SupervisedTuningSpec {
     /// checkpoints for SFT. Default is false.
     #[prost(bool, tag = "6")]
     pub export_last_checkpoint_only: bool,
+    /// Optional. Evaluation Config for Tuning Job.
+    #[prost(message, optional, tag = "5")]
+    pub evaluation_config: ::core::option::Option<EvaluationConfig>,
 }
 /// TunedModel Reference for legacy model migration.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -20722,6 +21239,46 @@ pub mod tuned_model_ref {
         #[prost(string, tag = "3")]
         PipelineJob(::prost::alloc::string::String),
     }
+}
+/// Evaluation Config for Tuning Job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluationConfig {
+    /// Required. The metrics used for evaluation.
+    #[prost(message, repeated, tag = "1")]
+    pub metrics: ::prost::alloc::vec::Vec<Metric>,
+    /// Required. Config for evaluation output.
+    #[prost(message, optional, tag = "2")]
+    pub output_config: ::core::option::Option<OutputConfig>,
+    /// Optional. Autorater config for evaluation.
+    #[prost(message, optional, tag = "3")]
+    pub autorater_config: ::core::option::Option<AutoraterConfig>,
+    /// Optional. Configuration options for inference generation and outputs.
+    /// If not set, default generation parameters are used.
+    #[prost(message, optional, tag = "5")]
+    pub inference_generation_config: ::core::option::Option<GenerationConfig>,
+}
+/// Evaluate Dataset Run Result for Tuning Job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateDatasetRun {
+    /// Output only. Deprecated: The updated architecture uses evaluation_run
+    /// instead.
+    #[deprecated]
+    #[prost(string, tag = "1")]
+    pub operation_name: ::prost::alloc::string::String,
+    /// Output only. The resource name of the evaluation run. Format:
+    /// `projects/{project}/locations/{location}/evaluationRuns/{evaluation_run_id}`.
+    #[prost(string, tag = "5")]
+    pub evaluation_run: ::prost::alloc::string::String,
+    /// Output only. The checkpoint id used in the evaluation run. Only populated
+    /// when evaluating checkpoints.
+    #[prost(string, tag = "2")]
+    pub checkpoint_id: ::prost::alloc::string::String,
+    /// Output only. Results for EvaluationService.
+    #[prost(message, optional, tag = "3")]
+    pub evaluate_dataset_response: ::core::option::Option<EvaluateDatasetResponse>,
+    /// Output only. The error of the evaluation run if any.
+    #[prost(message, optional, tag = "4")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// TunedModelCheckpoint for the Tuned Model of a Tuning Job.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -27847,30 +28404,73 @@ pub struct EmbedContentRequest {
     /// `projects/{project}/locations/{location}/publishers/*/models/*`
     #[prost(string, optional, tag = "1")]
     pub model: ::core::option::Option<::prost::alloc::string::String>,
-    /// Required. Input content to be embedded. Required.
+    /// Required. Input content to be embedded.
     #[prost(message, optional, tag = "2")]
     pub content: ::core::option::Option<Content>,
-    /// Optional. An optional title for the text.
+    /// Optional. Deprecated: Please use EmbedContentConfig.title instead.
+    /// The title for the text.
+    #[deprecated]
     #[prost(string, optional, tag = "4")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. The task type of the embedding.
+    /// Optional. Deprecated: Please use EmbedContentConfig.task_type instead.
+    /// The task type of the embedding.
+    #[deprecated]
     #[prost(
         enumeration = "embed_content_request::EmbeddingTaskType",
         optional,
         tag = "5"
     )]
     pub task_type: ::core::option::Option<i32>,
-    /// Optional. Optional reduced dimension for the output embedding. If set,
-    /// excessive values in the output embedding are truncated from the end.
+    /// Optional. Deprecated: Please use EmbedContentConfig.output_dimensionality
+    /// instead. Reduced dimension for the output embedding. If set, excessive
+    /// values in the output embedding are truncated from the end.
+    #[deprecated]
     #[prost(int32, optional, tag = "6")]
     pub output_dimensionality: ::core::option::Option<i32>,
-    /// Optional. Whether to silently truncate the input content if it's longer
+    /// Optional. Deprecated: Please use EmbedContentConfig.auto_truncate instead.
+    /// Whether to silently truncate the input content if it's longer
     /// than the maximum sequence length.
+    #[deprecated]
     #[prost(bool, optional, tag = "7")]
     pub auto_truncate: ::core::option::Option<bool>,
+    /// Optional. Configuration for the EmbedContent request.
+    #[prost(message, optional, tag = "8")]
+    pub embed_content_config: ::core::option::Option<
+        embed_content_request::EmbedContentConfig,
+    >,
 }
 /// Nested message and enum types in `EmbedContentRequest`.
 pub mod embed_content_request {
+    /// Configurations for the EmbedContent API.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EmbedContentConfig {
+        /// Optional. The title for the text.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(string, optional, tag = "1")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. The task type of the embedding.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(enumeration = "EmbeddingTaskType", optional, tag = "2")]
+        pub task_type: ::core::option::Option<i32>,
+        /// Optional. Whether to silently truncate the input content if it's longer
+        /// than the maximum sequence length.
+        ///
+        /// Only applicable to text-only embedding models.
+        #[prost(bool, optional, tag = "3")]
+        pub auto_truncate: ::core::option::Option<bool>,
+        /// Optional. Reduced dimension for the output embedding. If set, excessive
+        /// values in the output embedding are truncated from the end.
+        #[prost(int32, optional, tag = "4")]
+        pub output_dimensionality: ::core::option::Option<i32>,
+        /// Optional. Whether to enable OCR for document content.
+        #[prost(bool, optional, tag = "5")]
+        pub document_ocr: ::core::option::Option<bool>,
+        /// Optional. Whether to extract audio from video content.
+        #[prost(bool, optional, tag = "6")]
+        pub audio_track_extraction: ::core::option::Option<bool>,
+    }
     /// Represents a downstream task the embeddings will be used for.
     #[derive(
         Clone,
@@ -27946,7 +28546,7 @@ pub struct EmbedContentResponse {
     /// The embedding generated from the input content.
     #[prost(message, optional, tag = "1")]
     pub embedding: ::core::option::Option<embed_content_response::Embedding>,
-    /// Metadata about the response(s).
+    /// Usage metadata about the response(s).
     #[prost(message, optional, tag = "2")]
     pub usage_metadata: ::core::option::Option<UsageMetadata>,
     /// Whether the input content was truncated before generating the embedding.
@@ -38391,7 +38991,7 @@ pub struct ReasoningEngineSpec {
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
-    #[prost(oneof = "reasoning_engine_spec::DeploymentSource", tags = "11")]
+    #[prost(oneof = "reasoning_engine_spec::DeploymentSource", tags = "11, 15")]
     pub deployment_source: ::core::option::Option<
         reasoning_engine_spec::DeploymentSource,
     >,
@@ -38573,6 +39173,15 @@ pub mod reasoning_engine_spec {
             ImageSpec(ImageSpec),
         }
     }
+    /// Specification for deploying from a container image.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ContainerSpec {
+        /// Required. The Artifact Registry Docker image URI (e.g.,
+        /// us-central1-docker.pkg.dev/my-project/my-repo/my-image:tag) of the
+        /// container image that is to be run on each worker replica.
+        #[prost(string, tag = "1")]
+        pub image_uri: ::prost::alloc::string::String,
+    }
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
@@ -38581,6 +39190,9 @@ pub mod reasoning_engine_spec {
         /// Deploy from source code files with a defined entrypoint.
         #[prost(message, tag = "11")]
         SourceCodeSpec(SourceCodeSpec),
+        /// Deploy from a container image with a defined entrypoint and commands.
+        #[prost(message, tag = "15")]
+        ContainerSpec(ContainerSpec),
     }
 }
 /// ReasoningEngine provides a customizable runtime for models to determine
@@ -39911,6 +40523,9 @@ pub struct SessionEvent {
     /// Optional. Metadata relating to this event.
     #[prost(message, optional, tag = "11")]
     pub event_metadata: ::core::option::Option<EventMetadata>,
+    /// Optional. Weakly typed raw event data in proto struct format.
+    #[prost(message, optional, tag = "12")]
+    pub raw_event: ::core::option::Option<::prost_types::Struct>,
 }
 /// Metadata relating to a LLM response event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -40002,6 +40617,15 @@ pub struct CreateSessionRequest {
     /// Required. The session to create.
     #[prost(message, optional, tag = "2")]
     pub session: ::core::option::Option<Session>,
+    /// Optional. The user defined ID to use for session, which will become the
+    /// final component of the session resource name. If not provided, Vertex AI
+    /// will generate a value for this ID.
+    ///
+    /// This value may be up to 63 characters, and valid characters are
+    /// `\[a-z0-9-\]`. The first character must be a letter, and the last character
+    /// must be a letter or number.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
 }
 /// Metadata associated with the
 /// \[SessionService.CreateSession\]\[google.cloud.aiplatform.v1.SessionService.CreateSession\]
@@ -43924,6 +44548,67 @@ pub struct Claim {
     #[prost(float, optional, tag = "4")]
     pub score: ::core::option::Option<f32>,
 }
+/// Agentic Retrieval Ask API for RAG.
+/// Request message for
+/// \[VertexRagService.AskContexts\]\[google.cloud.aiplatform.v1.VertexRagService.AskContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AskContextsRequest {
+    /// Required. The resource name of the Location from which to retrieve
+    /// RagContexts. The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Single RAG retrieve query.
+    #[prost(message, optional, tag = "2")]
+    pub query: ::core::option::Option<RagQuery>,
+    /// Optional. The tools to use for AskContexts.
+    #[prost(message, repeated, tag = "3")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+}
+/// Response message for
+/// \[VertexRagService.AskContexts\]\[google.cloud.aiplatform.v1.VertexRagService.AskContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AskContextsResponse {
+    /// The Retrieval Response.
+    #[prost(string, tag = "1")]
+    pub response: ::prost::alloc::string::String,
+    /// The contexts of the query.
+    #[prost(message, optional, tag = "2")]
+    pub contexts: ::core::option::Option<RagContexts>,
+}
+/// Request message for
+/// \[VertexRagService.AsyncRetrieveContexts\]\[google.cloud.aiplatform.v1.VertexRagService.AsyncRetrieveContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsRequest {
+    /// Required. The resource name of the Location from which to retrieve
+    /// RagContexts. The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Single RAG retrieve query.
+    #[prost(message, optional, tag = "2")]
+    pub query: ::core::option::Option<RagQuery>,
+    /// Optional. The tools to use for AskContexts.
+    #[prost(message, repeated, tag = "3")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+}
+/// Response message for
+/// \[VertexRagService.AsyncRetrieveContexts\]\[google.cloud.aiplatform.v1.VertexRagService.AsyncRetrieveContexts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsResponse {
+    /// The contexts of the query.
+    #[prost(message, optional, tag = "1")]
+    pub contexts: ::core::option::Option<RagContexts>,
+}
+/// Metadata for AsyncRetrieveContextsOperation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncRetrieveContextsOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Generated client implementations.
 pub mod vertex_rag_service_client {
     #![allow(
@@ -44105,6 +44790,66 @@ pub mod vertex_rag_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.VertexRagService",
                         "CorroborateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Agentic Retrieval Ask API for RAG.
+        pub async fn ask_contexts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AskContextsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AskContextsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.VertexRagService/AskContexts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.VertexRagService",
+                        "AskContexts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Asynchronous API to retrieves relevant contexts for a query.
+        pub async fn async_retrieve_contexts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AsyncRetrieveContextsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.VertexRagService/AsyncRetrieveContexts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.VertexRagService",
+                        "AsyncRetrieveContexts",
                     ),
                 );
             self.inner.unary(req, path, codec).await

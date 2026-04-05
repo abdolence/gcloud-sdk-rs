@@ -246,11 +246,14 @@ pub mod tls_config {
         /// is empty or unspecified, CES will use Google's default trust
         /// store to verify certificates. N.B. Make sure the HTTPS server
         /// certificates are signed with "subject alt name". For instance a
-        /// certificate can be self-signed using the following command,
-        /// openssl x509 -req -days 200 -in example.com.csr
-        /// -signkey example.com.key
-        /// -out example.com.crt
-        /// -extfile \<(printf "\nsubjectAltName='DNS:www.example.com'")
+        /// certificate can be self-signed using the following command:
+        ///
+        /// ```text,
+        ///    openssl x509 -req -days 200 -in example.com.csr \
+        ///      -signkey example.com.key \
+        ///      -out example.com.crt \
+        ///      -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+        /// ```
         #[prost(bytes = "vec", tag = "2")]
         pub cert: ::prost::alloc::vec::Vec<u8>,
     }
@@ -423,6 +426,8 @@ pub mod channel_profile {
             VoiceOnly = 2,
             /// Widget supports only chat input.
             ChatOnly = 3,
+            /// Widget supports chat, voice, and video input.
+            ChatVoiceAndVideo = 4,
         }
         impl Modality {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -435,6 +440,7 @@ pub mod channel_profile {
                     Self::ChatAndVoice => "CHAT_AND_VOICE",
                     Self::VoiceOnly => "VOICE_ONLY",
                     Self::ChatOnly => "CHAT_ONLY",
+                    Self::ChatVoiceAndVideo => "CHAT_VOICE_AND_VIDEO",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -444,6 +450,7 @@ pub mod channel_profile {
                     "CHAT_AND_VOICE" => Some(Self::ChatAndVoice),
                     "VOICE_ONLY" => Some(Self::VoiceOnly),
                     "CHAT_ONLY" => Some(Self::ChatOnly),
+                    "CHAT_VOICE_AND_VIDEO" => Some(Self::ChatVoiceAndVideo),
                     _ => None,
                 }
             }
@@ -520,6 +527,8 @@ pub mod channel_profile {
         ContactCenterAsAService = 6,
         /// Five9 channel.
         Five9 = 7,
+        /// Third party contact center integration channel.
+        ContactCenterIntegration = 8,
     }
     impl ChannelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -535,6 +544,7 @@ pub mod channel_profile {
                 Self::GoogleTelephonyPlatform => "GOOGLE_TELEPHONY_PLATFORM",
                 Self::ContactCenterAsAService => "CONTACT_CENTER_AS_A_SERVICE",
                 Self::Five9 => "FIVE9",
+                Self::ContactCenterIntegration => "CONTACT_CENTER_INTEGRATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -547,6 +557,7 @@ pub mod channel_profile {
                 "GOOGLE_TELEPHONY_PLATFORM" => Some(Self::GoogleTelephonyPlatform),
                 "CONTACT_CENTER_AS_A_SERVICE" => Some(Self::ContactCenterAsAService),
                 "FIVE9" => Some(Self::Five9),
+                "CONTACT_CENTER_INTEGRATION" => Some(Self::ContactCenterIntegration),
                 _ => None,
             }
         }
@@ -799,14 +810,14 @@ pub struct BigQueryExportSettings {
     /// Optional. Indicates whether the BigQuery export is enabled.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Optional. The project ID of the BigQuery dataset to export the data to.
+    /// Optional. The **project ID** of the BigQuery dataset to export the data to.
     ///
     /// Note: If the BigQuery dataset is in a different project from the app,
     /// you should grant `roles/bigquery.admin` role to the CES service agent
     /// `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
-    /// Optional. The BigQuery dataset to export the data to.
+    /// Optional. The BigQuery **dataset ID** to export the data to.
     #[prost(string, tag = "3")]
     pub dataset: ::prost::alloc::string::String,
 }
@@ -1002,6 +1013,9 @@ pub struct App {
     /// Optional. Logging settings of the app.
     #[prost(message, optional, tag = "8")]
     pub logging_settings: ::core::option::Option<LoggingSettings>,
+    /// Optional. Error handling settings of the app.
+    #[prost(message, optional, tag = "34")]
+    pub error_handling_settings: ::core::option::Option<ErrorHandlingSettings>,
     /// Optional. The default LLM model settings for the app.
     /// Individual resources (e.g. agents, guardrails) can override these
     /// configurations as needed.
@@ -1161,8 +1175,11 @@ pub struct LanguageSettings {
     /// pre-built instructions to improve handling of multilingual input.
     #[prost(bool, tag = "3")]
     pub enable_multilingual_support: bool,
-    /// Optional. The action to perform when an agent receives input in an
-    /// unsupported language.
+    /// Optional. Deprecated: This feature is no longer supported. Use
+    /// `enable_multilingual_support` instead to improve handling of multilingual
+    /// input.
+    /// The action to perform when an agent receives input in an unsupported
+    /// language.
     ///
     /// This can be a predefined action or a custom tool call.
     /// Valid values are:
@@ -1172,6 +1189,7 @@ pub struct LanguageSettings {
     ///   an \[EndSession\]\[google.cloud.ces.v1.EndSession\] signal with corresponding
     ///   \[metadata\]\[google.cloud.ces.v1.EndSession.metadata\] to terminate the
     ///   conversation.
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub fallback_action: ::prost::alloc::string::String,
 }
@@ -1390,6 +1408,65 @@ pub struct LoggingSettings {
     /// for the LLM analysis pipeline for the app.
     #[prost(message, optional, tag = "7")]
     pub metric_analysis_settings: ::core::option::Option<MetricAnalysisSettings>,
+}
+/// Settings to describe how errors should be handled in the app.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ErrorHandlingSettings {
+    /// Optional. The strategy to use for error handling.
+    #[prost(enumeration = "error_handling_settings::ErrorHandlingStrategy", tag = "1")]
+    pub error_handling_strategy: i32,
+}
+/// Nested message and enum types in `ErrorHandlingSettings`.
+pub mod error_handling_settings {
+    /// Defines the strategy for handling errors.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ErrorHandlingStrategy {
+        /// Unspecified error handling strategy.
+        Unspecified = 0,
+        /// No specific handling is enabled.
+        None = 1,
+        /// A fallback message will be returned to the user in case of
+        /// system errors (e.g. LLM errors).
+        FallbackResponse = 2,
+        /// An \[EndSession\]\[google.cloud.ces.v1.EndSession\] signal will be emitted in
+        /// case of system errors (e.g. LLM errors).
+        EndSession = 3,
+    }
+    impl ErrorHandlingStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ERROR_HANDLING_STRATEGY_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::FallbackResponse => "FALLBACK_RESPONSE",
+                Self::EndSession => "END_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_HANDLING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "FALLBACK_RESPONSE" => Some(Self::FallbackResponse),
+                "END_SESSION" => Some(Self::EndSession),
+                _ => None,
+            }
+        }
+    }
 }
 /// Threshold settings for metrics in an Evaluation.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1859,7 +1936,7 @@ pub struct Message {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Chunk {
     /// Chunk data.
-    #[prost(oneof = "chunk::Data", tags = "1, 9, 11, 5, 2, 3, 4, 8, 10")]
+    #[prost(oneof = "chunk::Data", tags = "1, 9, 7, 11, 5, 2, 3, 4, 8, 10")]
     pub data: ::core::option::Option<chunk::Data>,
 }
 /// Nested message and enum types in `Chunk`.
@@ -1873,6 +1950,9 @@ pub mod chunk {
         /// Optional. Transcript associated with the audio.
         #[prost(string, tag = "9")]
         Transcript(::prost::alloc::string::String),
+        /// Optional. Blob data.
+        #[prost(message, tag = "7")]
+        Blob(super::Blob),
         /// Optional. Custom payload data.
         #[prost(message, tag = "11")]
         Payload(::prost_types::Struct),
@@ -2447,6 +2527,20 @@ pub mod guardrail {
         #[prost(message, tag = "14")]
         CodeCallback(CodeCallback),
     }
+}
+/// Represents a tool that allows the agent to call another agent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentTool {
+    /// Required. The name of the agent tool.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Description of the tool's purpose.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The resource name of the root agent that is the entry point of
+    /// the tool. Format: `projects/{project}/locations/{location}/agents/{agent}`
+    #[prost(string, tag = "3")]
+    pub root_agent: ::prost::alloc::string::String,
 }
 /// Represents a client-side function that the agent can invoke. When the
 /// tool is chosen by the agent, control is handed off to the client.
@@ -3601,6 +3695,16 @@ pub struct McpTool {
     /// service names within a perimeter.
     #[prost(message, optional, tag = "8")]
     pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// Optional. The custom headers to send in the request to the MCP server. The
+    /// values must be in the format `$context.variables.<name_of_variable>` and
+    /// can be set in the session variables. See
+    /// <https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection>
+    /// for more details.
+    #[prost(map = "string, string", tag = "9")]
+    pub custom_headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A remote API tool defined by an OpenAPI schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3682,12 +3786,93 @@ pub struct WidgetTool {
     /// will be CUSTOMIZED.
     #[prost(enumeration = "widget_tool::WidgetType", tag = "3")]
     pub widget_type: i32,
+    /// Optional. Configuration for rendering the widget.
+    #[prost(message, optional, tag = "5")]
+    pub ui_config: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The mapping that defines how data from a source tool is mapped to
+    /// the widget's input parameters.
+    #[prost(message, optional, tag = "6")]
+    pub data_mapping: ::core::option::Option<widget_tool::DataMapping>,
     /// The input of the widget tool.
     #[prost(oneof = "widget_tool::Input", tags = "4")]
     pub input: ::core::option::Option<widget_tool::Input>,
 }
 /// Nested message and enum types in `WidgetTool`.
 pub mod widget_tool {
+    /// Configuration for mapping data from a source tool to the widget's input
+    /// parameters.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataMapping {
+        /// Optional. The resource name of the tool that provides the data for the
+        /// widget (e.g., a search tool or a custom function). Format:
+        /// `projects/{project}/locations/{location}/agents/{agent}/tools/{tool}`
+        #[prost(string, tag = "1")]
+        pub source_tool_name: ::prost::alloc::string::String,
+        /// Optional. A map of widget input parameter fields to the corresponding
+        /// output fields of the source tool.
+        #[prost(map = "string, string", tag = "2")]
+        pub field_mappings: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. Configuration for a Python function used to transform the
+        /// source tool's output into the widget's input format.
+        #[prost(message, optional, tag = "5")]
+        pub python_function: ::core::option::Option<super::PythonFunction>,
+        /// Optional. The mode of the data mapping.
+        #[prost(enumeration = "data_mapping::Mode", tag = "4")]
+        pub mode: i32,
+        /// Deprecated: Use `python_function` instead.
+        #[deprecated]
+        #[prost(string, tag = "3")]
+        pub python_script: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `DataMapping`.
+    pub mod data_mapping {
+        /// The strategy used to map data from the source tool to the widget.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Mode {
+            /// Unspecified mode.
+            Unspecified = 0,
+            /// Use the `field_mappings` map for data transformation.
+            FieldMapping = 1,
+            /// Use the `python_script` for data transformation.
+            PythonScript = 2,
+        }
+        impl Mode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "MODE_UNSPECIFIED",
+                    Self::FieldMapping => "FIELD_MAPPING",
+                    Self::PythonScript => "PYTHON_SCRIPT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "FIELD_MAPPING" => Some(Self::FieldMapping),
+                    "PYTHON_SCRIPT" => Some(Self::PythonScript),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// All available widget types.
     /// New values may be added to this enum in the future.
     #[derive(
@@ -3725,6 +3910,10 @@ pub mod widget_tool {
         OrderSummary = 9,
         /// Appointment details widget.
         AppointmentDetails = 10,
+        /// Appointment scheduler widget.
+        AppointmentScheduler = 11,
+        /// Contact form widget.
+        ContactForm = 12,
     }
     impl WidgetType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3744,6 +3933,8 @@ pub mod widget_tool {
                 Self::OverallSatisfaction => "OVERALL_SATISFACTION",
                 Self::OrderSummary => "ORDER_SUMMARY",
                 Self::AppointmentDetails => "APPOINTMENT_DETAILS",
+                Self::AppointmentScheduler => "APPOINTMENT_SCHEDULER",
+                Self::ContactForm => "CONTACT_FORM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3760,6 +3951,8 @@ pub mod widget_tool {
                 "OVERALL_SATISFACTION" => Some(Self::OverallSatisfaction),
                 "ORDER_SUMMARY" => Some(Self::OrderSummary),
                 "APPOINTMENT_DETAILS" => Some(Self::AppointmentDetails),
+                "APPOINTMENT_SCHEDULER" => Some(Self::AppointmentScheduler),
+                "CONTACT_FORM" => Some(Self::ContactForm),
                 _ => None,
             }
         }
@@ -3776,16 +3969,15 @@ pub mod widget_tool {
 /// goals.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
-    /// Identifier. The unique identifier of the tool.
-    /// Format:
+    /// Identifier. The resource name of the tool. Format:
     ///
-    /// * `projects/{project}/locations/{location}/apps/{app}/tools/{tool}` for
+    /// * `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
+    ///   for standalone tools.
+    /// * `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}`
+    ///   for tools retrieved from a toolset.
     ///
-    /// ## standalone tools.
-    ///
-    /// `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}`
-    /// for tools retrieved from a toolset. These tools are dynamic and
-    /// output-only, they cannot be referenced directly where a tool is expected.
+    /// These tools are dynamic and output-only; they cannot be referenced directly
+    /// where a tool is expected.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The display name of the tool, derived based on the tool's
@@ -3815,7 +4007,7 @@ pub struct Tool {
     #[prost(message, optional, tag = "20")]
     pub tool_fake_config: ::core::option::Option<ToolFakeConfig>,
     /// The type of the tool.
-    #[prost(oneof = "tool::ToolType", tags = "2, 3, 5, 8, 10, 11, 16, 17, 18, 24")]
+    #[prost(oneof = "tool::ToolType", tags = "2, 3, 5, 8, 10, 11, 16, 17, 18, 23, 24")]
     pub tool_type: ::core::option::Option<tool::ToolType>,
 }
 /// Nested message and enum types in `Tool`.
@@ -3851,6 +4043,9 @@ pub mod tool {
         /// Optional. The system tool.
         #[prost(message, tag = "18")]
         SystemTool(super::SystemTool),
+        /// Optional. The agent tool.
+        #[prost(message, tag = "23")]
+        AgentTool(super::AgentTool),
         /// Optional. The widget tool.
         #[prost(message, tag = "24")]
         WidgetTool(super::WidgetTool),
@@ -3906,6 +4101,16 @@ pub struct McpToolset {
     /// that the client should trust.
     #[prost(message, optional, tag = "4")]
     pub tls_config: ::core::option::Option<TlsConfig>,
+    /// Optional. The custom headers to send in the request to the MCP server. The
+    /// values must be in the format `$context.variables.<name_of_variable>` and
+    /// can be set in the session variables. See
+    /// <https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection>
+    /// for more details.
+    #[prost(map = "string, string", tag = "5")]
+    pub custom_headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A toolset that contains a list of tools that are defined by an OpenAPI
 /// schema.
@@ -4325,15 +4530,17 @@ pub mod conversation {
 pub struct Deployment {
     /// Identifier. The resource name of the deployment.
     /// Format:
-    /// projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}
+    /// `projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Display name of the deployment.
     #[prost(string, tag = "8")]
     pub display_name: ::prost::alloc::string::String,
-    /// Required. The resource name of the app version to deploy.
+    /// Optional. The resource name of the app version to deploy.
     /// Format:
-    /// projects/{project}/locations/{location}/apps/{app}/versions/{version}
+    /// `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+    /// Use `projects/{project}/locations/{location}/apps/{app}/versions/-` to use
+    /// the draft app.
     #[prost(string, tag = "2")]
     pub app_version: ::prost::alloc::string::String,
     /// Required. The channel profile used in the deployment.
@@ -4460,6 +4667,11 @@ pub struct ExportAppRequest {
     /// exported app archive will be written directly to the specified GCS object.
     #[prost(string, tag = "3")]
     pub gcs_uri: ::prost::alloc::string::String,
+    /// Optional. The resource name of the app version to export.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apps/{app}/versions/{version}`.
+    #[prost(string, tag = "4")]
+    pub app_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ExportAppRequest`.
 pub mod export_app_request {
@@ -7032,6 +7244,90 @@ pub struct WebSearchQuery {
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
 }
+/// Project/Location level security settings for CES.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SecuritySettings {
+    /// Identifier. The unique identifier of the security settings.
+    /// Format: `projects/{project}/locations/{location}/securitySettings`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Endpoint control related settings.
+    #[prost(message, optional, tag = "2")]
+    pub endpoint_control_policy: ::core::option::Option<EndpointControlPolicy>,
+    /// Output only. Create time of the security settings.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last update time of the security settings.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Etag of the security settings.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Defines project/location level endpoint control policy.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EndpointControlPolicy {
+    /// Optional. The scope in which this policy's allowed_origins list is
+    /// enforced.
+    #[prost(enumeration = "endpoint_control_policy::EnforcementScope", tag = "1")]
+    pub enforcement_scope: i32,
+    /// Optional. The allowed HTTP(s) origins that tools in the App are able to
+    /// directly call. The enforcement depends on the value of
+    /// enforcement_scope and the VPC-SC status of the project.
+    /// If a port number is not provided, all ports will be allowed. Otherwise,
+    /// the port number must match exactly. For example, "<https://example.com">
+    /// will match "<https://example.com:443"> and any other port.
+    /// "<https://example.com:443"> will only match "<https://example.com:443".>
+    #[prost(string, repeated, tag = "2")]
+    pub allowed_origins: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `EndpointControlPolicy`.
+pub mod endpoint_control_policy {
+    /// Defines the scope in which this policy's allowed_origins list is
+    /// enforced.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EnforcementScope {
+        /// Unspecified. This policy will be treated as VPCSC_ONLY.
+        Unspecified = 0,
+        /// This policy applies only when VPC-SC is active.
+        VpcscOnly = 1,
+        /// This policy ALWAYS applies, regardless of VPC-SC status.
+        Always = 2,
+    }
+    impl EnforcementScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENFORCEMENT_SCOPE_UNSPECIFIED",
+                Self::VpcscOnly => "VPCSC_ONLY",
+                Self::Always => "ALWAYS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENFORCEMENT_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VPCSC_ONLY" => Some(Self::VpcscOnly),
+                "ALWAYS" => Some(Self::Always),
+                _ => None,
+            }
+        }
+    }
+}
 /// InputAudioConfig configures how the CES agent should interpret the incoming
 /// audio data.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -7082,7 +7378,7 @@ pub struct SessionConfig {
     /// Optional. The entry agent to handle the session. If not specified, the
     /// session will be handled by the \[root
     /// agent\]\[google.cloud.ces.v1.App.root_agent\] of the app. Format:
-    /// `projects/{project}/locations/{location}/agents/{agent}`
+    /// `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
     #[prost(string, tag = "12")]
     pub entry_agent: ::prost::alloc::string::String,
     /// Optional. The deployment of the app to use for the session.
@@ -7098,6 +7394,11 @@ pub struct SessionConfig {
     /// "America/Los_Angeles".
     #[prost(string, tag = "11")]
     pub time_zone: ::prost::alloc::string::String,
+    /// Optional. Whether to use tool fakes for the session.
+    /// If this field is set, the agent will attempt use tool fakes instead of
+    /// calling the real tools.
+    #[prost(bool, tag = "14")]
+    pub use_tool_fakes: bool,
     /// Optional.
     /// [QueryParameters](<https://cloud.google.com/dialogflow/cx/docs/reference/rpc/google.cloud.dialogflow.cx.v3#queryparameters>)
     /// to send to the remote
@@ -7107,6 +7408,14 @@ pub struct SessionConfig {
     pub remote_dialogflow_query_parameters: ::core::option::Option<
         session_config::RemoteDialogflowQueryParameters,
     >,
+    /// Optional. Whether to enable streaming text outputs from the model.
+    /// By default, text outputs from the model are collected before sending to the
+    /// client.
+    /// NOTE: This is only supported for text (non-voice) sessions via
+    /// \[StreamRunSession\]\[google.cloud.ces.v1.SessionService.StreamRunSession\] or
+    /// \[BidiRunSession\]\[google.cloud.ces.v1.SessionService.BidiRunSession\].
+    #[prost(bool, tag = "18")]
+    pub enable_text_streaming: bool,
 }
 /// Nested message and enum types in `SessionConfig`.
 pub mod session_config {
@@ -7182,12 +7491,14 @@ pub struct Event {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionInput {
     /// Optional. A flag to indicate if the current message is a fragment of a
-    /// larger input in the bidi streaming session. When `true`, the agent will
-    /// defer processing until a subsequent message with `will_continue` set to
-    /// `false` is received.
+    /// larger input in the bidi streaming session.
     ///
-    /// Note: This flag has no effect on audio and DTMF inputs, which are always
-    /// processed in real-time.
+    /// When set to `true`, the agent defers processing until it receives a
+    /// subsequent message where `will_continue` is `false`, or until the system
+    /// detects an endpoint in the audio input.
+    ///
+    /// NOTE: This field does not apply to audio and DTMF inputs, as they are
+    /// always processed automatically based on the endpointing signal.
     #[prost(bool, tag = "8")]
     pub will_continue: bool,
     /// The type of the input.
@@ -7385,7 +7696,7 @@ pub mod bidi_session_server_message {
         /// Optional. Realtime speech recognition result for the audio input.
         #[prost(message, tag = "2")]
         RecognitionResult(super::RecognitionResult),
-        /// Optional. Interruption signal detected from the audio input.
+        /// Optional. Indicates the agent's audio response has been interrupted.
         #[prost(message, tag = "3")]
         InterruptionSignal(super::InterruptionSignal),
         /// Optional. Indicates that the session has ended.
@@ -7526,8 +7837,7 @@ pub mod session_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Initiates a single turn interaction with the CES agent within a
-        /// session.
+        /// Initiates a single-turn interaction with the CES agent within a session.
         pub async fn run_session(
             &mut self,
             request: impl tonic::IntoRequest<super::RunSessionRequest>,
@@ -7553,6 +7863,44 @@ pub mod session_service_client {
                     GrpcMethod::new("google.cloud.ces.v1.SessionService", "RunSession"),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Initiates a single-turn interaction with the CES agent. Uses server-side
+        /// streaming to deliver incremental results and partial responses as they are
+        /// generated.
+        ///
+        /// By default, complete responses (e.g., messages from callbacks or full LLM
+        /// responses) are sent to the client as soon as they are available. To enable
+        /// streaming individual text chunks directly from the model, set
+        /// \[enable_text_streaming\]\[google.cloud.ces.v1.SessionConfig.enable_text_streaming\]
+        /// to true.
+        pub async fn stream_run_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::RunSessionResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.ces.v1.SessionService/StreamRunSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.ces.v1.SessionService",
+                        "StreamRunSession",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Establishes a bidirectional streaming connection with the CES agent.
         /// The agent processes continuous multimodal inputs (e.g., text, audio) and
@@ -7667,6 +8015,11 @@ pub struct ExecuteToolRequest {
     /// or a tool from a toolset.
     #[prost(oneof = "execute_tool_request::ToolIdentifier", tags = "1, 3")]
     pub tool_identifier: ::core::option::Option<execute_tool_request::ToolIdentifier>,
+    /// Additional context to be provided for the tool execution
+    #[prost(oneof = "execute_tool_request::ToolExecutionContext", tags = "5, 6")]
+    pub tool_execution_context: ::core::option::Option<
+        execute_tool_request::ToolExecutionContext,
+    >,
 }
 /// Nested message and enum types in `ExecuteToolRequest`.
 pub mod execute_tool_request {
@@ -7684,17 +8037,32 @@ pub mod execute_tool_request {
         #[prost(message, tag = "3")]
         ToolsetTool(super::ToolsetTool),
     }
+    /// Additional context to be provided for the tool execution
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ToolExecutionContext {
+        /// Optional. The variables that are available for the tool execution.
+        #[prost(message, tag = "5")]
+        Variables(::prost_types::Struct),
+        /// Optional. The
+        /// \[ToolCallContext\](<https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/python#environment>
+        /// for details) to be passed to the Python tool.
+        #[prost(message, tag = "6")]
+        Context(::prost_types::Struct),
+    }
 }
 /// Response message for
 /// \[ToolService.ExecuteTool\]\[google.cloud.ces.v1.ToolService.ExecuteTool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteToolResponse {
-    /// Required. The tool execution result in JSON object format.
+    /// The tool execution result in JSON object format.
     /// Use "output" key to specify tool response and "error" key to specify
     /// error details (if any). If "output" and "error" keys are not specified,
     /// then whole "response" is treated as tool execution result.
     #[prost(message, optional, tag = "2")]
     pub response: ::core::option::Option<::prost_types::Struct>,
+    /// The variable values at the end of the tool execution.
+    #[prost(message, optional, tag = "4")]
+    pub variables: ::core::option::Option<::prost_types::Struct>,
     /// The identifier of the tool that got executed.
     #[prost(oneof = "execute_tool_response::ToolIdentifier", tags = "1, 3")]
     pub tool_identifier: ::core::option::Option<execute_tool_response::ToolIdentifier>,
@@ -7750,10 +8118,10 @@ pub mod retrieve_tool_schema_request {
 /// \[ToolService.RetrieveToolSchema\]\[google.cloud.ces.v1.ToolService.RetrieveToolSchema\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveToolSchemaResponse {
-    /// Required. The schema of the tool input parameters.
+    /// The schema of the tool input parameters.
     #[prost(message, optional, tag = "3")]
     pub input_schema: ::core::option::Option<Schema>,
-    /// Required. The schema of the tool output parameters.
+    /// The schema of the tool output parameters.
     #[prost(message, optional, tag = "4")]
     pub output_schema: ::core::option::Option<Schema>,
     /// The identifier of the tool that the schema is for.
@@ -7794,7 +8162,7 @@ pub struct RetrieveToolsRequest {
 /// \[ToolService.RetrieveTools\]\[google.cloud.ces.v1.ToolService.RetrieveTools\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveToolsResponse {
-    /// Required. The list of tools that are included in the specified toolset.
+    /// The list of tools that are included in the specified toolset.
     #[prost(message, repeated, tag = "1")]
     pub tools: ::prost::alloc::vec::Vec<Tool>,
 }
@@ -7994,6 +8362,9 @@ pub struct GenerateChatTokenRequest {
     /// Optional. The reCAPTCHA token generated by the client-side chat widget.
     #[prost(string, tag = "3")]
     pub recaptcha_token: ::prost::alloc::string::String,
+    /// Optional. Indicates if live handoff is enabled for the session.
+    #[prost(bool, tag = "4")]
+    pub live_handoff_enabled: bool,
 }
 /// Response message for
 /// \[WidgetService.GenerateChatToken\]\[google.cloud.ces.v1.WidgetService.GenerateChatToken\].

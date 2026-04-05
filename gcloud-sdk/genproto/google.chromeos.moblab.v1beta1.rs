@@ -284,6 +284,393 @@ pub mod cloud_build {
         }
     }
 }
+/// A session to run on-demand tests.
+/// -- NEXT_TAG: 7 --
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Session {
+    /// Identifier. The resource name of the session.
+    /// Format: sessions/{session}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The ID of the Satlab that the request comes from.
+    #[prost(string, tag = "2")]
+    pub satlab_id: ::prost::alloc::string::String,
+    /// Required. Input only. The dimensions of the device(s) to run tests on.
+    #[prost(map = "string, string", tag = "3")]
+    pub dimensions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Input only. The timeout settings for the test run.
+    #[prost(message, optional, tag = "4")]
+    pub timeout: ::core::option::Option<Timeout>,
+    /// Optional. Input only. The number of shards to use for the test run.
+    #[prost(int32, tag = "5")]
+    pub shard_count: i32,
+    /// The test to run.
+    #[prost(oneof = "session::Test", tags = "6")]
+    pub test: ::core::option::Option<session::Test>,
+}
+/// Nested message and enum types in `Session`.
+pub mod session {
+    /// The test to run.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Test {
+        /// Input only. A Tradefed-based test.
+        #[prost(message, tag = "6")]
+        TradefedTest(super::TradefedTest),
+    }
+}
+/// Timeout settings for the test run.
+/// -- NEXT_TAG: 4 --
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Timeout {
+    /// Optional. Max execution time of a job.
+    #[prost(message, optional, tag = "1")]
+    pub job_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Max execution time of a single test.
+    #[prost(message, optional, tag = "2")]
+    pub test_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Timeout for starting the job and waiting for allocating the first
+    /// device.
+    #[prost(message, optional, tag = "3")]
+    pub start_timeout: ::core::option::Option<::prost_types::Duration>,
+}
+/// Configuration for a Tradefed-based test.
+/// -- NEXT_TAG: 2 --
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TradefedTest {
+    /// Required. The command to run the Tradefed test.
+    #[prost(string, tag = "1")]
+    pub command: ::prost::alloc::string::String,
+}
+/// Summary information for an entire test effort
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TestEffort {
+    /// Identifier. The resource name of the test effort.
+    /// Format: testEfforts/{test_effort}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The ID of the test effort.
+    #[prost(string, tag = "2")]
+    pub test_effort_id: ::prost::alloc::string::String,
+    /// Optional. The satlab ID that the test effort comes from.
+    #[prost(string, tag = "3")]
+    pub satlab_id: ::prost::alloc::string::String,
+    /// Required. The pools of the test effort.
+    #[prost(message, repeated, tag = "5")]
+    pub pools: ::prost::alloc::vec::Vec<test_effort::Pool>,
+    /// Required. Test plan reference.
+    #[prost(string, tag = "6")]
+    pub test_plan: ::prost::alloc::string::String,
+    /// Output only. Overall result of the test effort.
+    #[prost(enumeration = "test_effort::State", tag = "8")]
+    pub state: i32,
+    /// Output only. The time when the test effort was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Testhaus link.
+    #[prost(string, tag = "10")]
+    pub testhaus_url: ::prost::alloc::string::String,
+    /// Optional. The firmware configuration of the test effort.
+    #[prost(message, repeated, tag = "11")]
+    pub firmware_configs: ::prost::alloc::vec::Vec<test_effort::FirmwareConfig>,
+    /// The test target of the test effort.
+    #[prost(oneof = "test_effort::TestTarget", tags = "4")]
+    pub test_target: ::core::option::Option<test_effort::TestTarget>,
+    /// Specifies the Operating System build targets to test against.
+    #[prost(oneof = "test_effort::Os", tags = "7")]
+    pub os: ::core::option::Option<test_effort::Os>,
+}
+/// Nested message and enum types in `TestEffort`.
+pub mod test_effort {
+    /// The board and model of the test effort.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BoardModel {
+        /// Required. The board name.
+        #[prost(string, tag = "1")]
+        pub board: ::prost::alloc::string::String,
+        /// Required. The model name.
+        #[prost(string, tag = "2")]
+        pub model: ::prost::alloc::string::String,
+    }
+    /// The pool of the test effort.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Pool {
+        /// Required. The label of the pool.
+        #[prost(string, tag = "1")]
+        pub label: ::prost::alloc::string::String,
+        /// Required. The category of pool to schedule tests against.
+        #[prost(enumeration = "pool::PoolType", tag = "2")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `Pool`.
+    pub mod pool {
+        /// The category of pool to schedule tests against.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum PoolType {
+            /// Not used. Exists to distinguish between an unset value and DEFAULT.
+            Unspecified = 0,
+            /// Pools used when scheduling tests without any special exceptions
+            DefaultPool = 1,
+            /// Pools to use when scheduling FAFT PD tests.
+            FaftPd = 2,
+            /// Pools to schedule tests with extremely long runtimes (3+ hours)
+            ExtendedDuration = 3,
+        }
+        impl PoolType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "POOL_TYPE_UNSPECIFIED",
+                    Self::DefaultPool => "DEFAULT_POOL",
+                    Self::FaftPd => "FAFT_PD",
+                    Self::ExtendedDuration => "EXTENDED_DURATION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "POOL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DEFAULT_POOL" => Some(Self::DefaultPool),
+                    "FAFT_PD" => Some(Self::FaftPd),
+                    "EXTENDED_DURATION" => Some(Self::ExtendedDuration),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Represents the Android build target.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AndroidBuildTarget {
+        /// Required. Represents the name of a configured branch in the Android Build
+        /// system
+        #[prost(string, tag = "1")]
+        pub branch: ::prost::alloc::string::String,
+        /// Required. Specifies the release configuration of the build target.
+        #[prost(string, tag = "2")]
+        pub release_config: ::prost::alloc::string::String,
+        /// Required. Specifies the build variant for the target.
+        #[prost(string, tag = "3")]
+        pub build_variant: ::prost::alloc::string::String,
+        /// Required. The build ID of the test effort.
+        #[prost(string, tag = "4")]
+        pub build_id: ::prost::alloc::string::String,
+        /// Optional. Product name of the build target.
+        #[prost(string, tag = "5")]
+        pub product: ::prost::alloc::string::String,
+    }
+    /// The version of the firmware test effort.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct FirmwareTestEffortVersion {
+        /// Required. The major version of the firmware test effort.
+        #[prost(int32, tag = "1")]
+        pub major_version: i32,
+        /// Required. The minor version of the firmware test effort.
+        #[prost(int32, tag = "2")]
+        pub minor_version: i32,
+        /// Required. The patch number of the firmware test effort.
+        #[prost(int32, tag = "3")]
+        pub patch_number: i32,
+        /// Optional. The URI of the firmware.
+        #[prost(string, tag = "4")]
+        pub uri: ::prost::alloc::string::String,
+    }
+    /// The version of the GSC test effort.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GscTestEffortVersion {
+        /// Required. The major version of the GSC test effort
+        #[prost(int32, tag = "1")]
+        pub major_version: i32,
+        /// Required. The minor version of the GSC test effort.
+        #[prost(int32, tag = "2")]
+        pub minor_version: i32,
+        /// Required. The epoch of the GSC test effort.
+        #[prost(int32, tag = "3")]
+        pub generation: i32,
+        /// Optional. The URI of the GSC.
+        #[prost(string, tag = "4")]
+        pub uri: ::prost::alloc::string::String,
+    }
+    /// The target of the firmware.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct FirmwareTarget {
+        /// The firmware content.
+        #[prost(oneof = "firmware_target::Fw", tags = "1, 2, 3, 4")]
+        pub fw: ::core::option::Option<firmware_target::Fw>,
+    }
+    /// Nested message and enum types in `FirmwareTarget`.
+    pub mod firmware_target {
+        /// The firmware content.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Fw {
+            /// The EC firmware version.
+            #[prost(message, tag = "1")]
+            Ec(super::FirmwareTestEffortVersion),
+            /// The AP firmware version.
+            #[prost(message, tag = "2")]
+            Ap(super::FirmwareTestEffortVersion),
+            /// The GSC firmware version.
+            #[prost(message, tag = "3")]
+            Gsc(super::GscTestEffortVersion),
+            /// The FPMCU firmware version.
+            #[prost(message, tag = "4")]
+            Fpmcu(super::FirmwareTestEffortVersion),
+        }
+    }
+    /// The configuration of the firmware.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct FirmwareConfig {
+        /// Required. The firmware target.
+        #[prost(message, optional, tag = "1")]
+        pub firmware_target: ::core::option::Option<FirmwareTarget>,
+        /// Required. The firmware types.
+        #[prost(enumeration = "FirmwareType", repeated, packed = "false", tag = "2")]
+        pub firmware_types: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// The possible states of a test effort.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// No test effort state is specified.
+        Unspecified = 0,
+        /// The test effort is created.
+        Created = 1,
+        /// The test effort has incomplete results.
+        Incomplete = 2,
+        /// The test effort has failed.
+        Failed = 3,
+        /// The test effort has unreported results.
+        Unreported = 4,
+        /// The test effort is not applicable.
+        NotApplicable = 5,
+        /// The test effort has passed.
+        Succeeded = 6,
+        /// The test effort is requested to be cancelled.
+        CancelRequested = 7,
+        /// The test effort is cancelled.
+        Cancelled = 8,
+        /// The cancelling the test effort failed.
+        CancelFailed = 9,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::Incomplete => "INCOMPLETE",
+                Self::Failed => "FAILED",
+                Self::Unreported => "UNREPORTED",
+                Self::NotApplicable => "NOT_APPLICABLE",
+                Self::Succeeded => "SUCCEEDED",
+                Self::CancelRequested => "CANCEL_REQUESTED",
+                Self::Cancelled => "CANCELLED",
+                Self::CancelFailed => "CANCEL_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATED" => Some(Self::Created),
+                "INCOMPLETE" => Some(Self::Incomplete),
+                "FAILED" => Some(Self::Failed),
+                "UNREPORTED" => Some(Self::Unreported),
+                "NOT_APPLICABLE" => Some(Self::NotApplicable),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCEL_REQUESTED" => Some(Self::CancelRequested),
+                "CANCELLED" => Some(Self::Cancelled),
+                "CANCEL_FAILED" => Some(Self::CancelFailed),
+                _ => None,
+            }
+        }
+    }
+    /// The firmware type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FirmwareType {
+        /// No firmware type is specified.
+        Unspecified = 0,
+        /// The read only firmware type.
+        ReadOnly = 1,
+        /// The read write firmware type.
+        ReadWrite = 2,
+    }
+    impl FirmwareType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FIRMWARE_TYPE_UNSPECIFIED",
+                Self::ReadOnly => "READ_ONLY",
+                Self::ReadWrite => "READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIRMWARE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
+    }
+    /// The test target of the test effort.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TestTarget {
+        /// The board and model of the test effort.
+        #[prost(message, tag = "4")]
+        BoardModel(BoardModel),
+    }
+    /// Specifies the Operating System build targets to test against.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Os {
+        /// Test against an Android build.
+        #[prost(message, tag = "7")]
+        Android(AndroidBuildTarget),
+    }
+}
 /// Request message for finding the most stable build.
 /// -- NEXT_TAG: 3 --
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -798,6 +1185,288 @@ pub mod build_service_client {
                     GrpcMethod::new(
                         "google.chromeos.moblab.v1beta1.BuildService",
                         "FindMostStableBuild",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for creating a session.
+/// -- NEXT_TAG: 3 --
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionRequest {
+    /// Required. The session to create.
+    #[prost(message, optional, tag = "1")]
+    pub session: ::core::option::Option<Session>,
+    /// Optional. The ID to use for the session, which will become the final
+    /// component of the session's resource name.
+    #[prost(string, tag = "2")]
+    pub session_id: ::prost::alloc::string::String,
+}
+/// Request message for listing test efforts.
+/// Test efforts are queried in reverse chronological order.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListTestEffortsRequest {
+    /// Optional. The maximum number of test efforts to return. The service may
+    /// return fewer than this value.
+    /// If unspecified, at most 50 test efforts will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListTestEfforts` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter string to restrict the results.
+    /// The following fields are supported:
+    ///
+    /// * satlab_id
+    ///   For example: "satlab_id=12345"
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for listing test efforts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTestEffortsResponse {
+    /// The list of test efforts.
+    #[prost(message, repeated, tag = "1")]
+    pub test_efforts: ::prost::alloc::vec::Vec<TestEffort>,
+    /// Token to retrieve the next page of test efforts. If this field
+    /// is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Total number of test efforts.
+    #[prost(int32, tag = "3")]
+    pub total_size: i32,
+}
+/// Request message for cancelling a test effort.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelTestEffortRequest {
+    /// Required. The resource name of the test effort to cancel.
+    /// Format: testEfforts/{test_effort}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for cancelling a test effort.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelTestEffortResponse {
+    /// The cancelled test effort.
+    #[prost(message, optional, tag = "1")]
+    pub test_effort: ::core::option::Option<TestEffort>,
+}
+/// Request message for creating a test effort.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTestEffortRequest {
+    /// Required. The test effort to create.
+    #[prost(message, optional, tag = "1")]
+    pub test_effort: ::core::option::Option<TestEffort>,
+    /// Optional. The ID to use for the test effort, which will become the final
+    /// component of the test effort's resource name.
+    #[prost(string, tag = "2")]
+    pub test_effort_id: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod test_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Manages test services for Satlab/Moblab.
+    #[derive(Debug, Clone)]
+    pub struct TestServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl TestServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> TestServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TestServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            TestServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a session to run on-demand tests.
+        pub async fn create_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.TestService/CreateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chromeos.moblab.v1beta1.TestService",
+                        "CreateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists test efforts.
+        pub async fn list_test_efforts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTestEffortsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTestEffortsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.TestService/ListTestEfforts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chromeos.moblab.v1beta1.TestService",
+                        "ListTestEfforts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels a test effort.
+        pub async fn cancel_test_effort(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelTestEffortRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CancelTestEffortResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.TestService/CancelTestEffort",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chromeos.moblab.v1beta1.TestService",
+                        "CancelTestEffort",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a test effort.
+        pub async fn create_test_effort(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTestEffortRequest>,
+        ) -> std::result::Result<tonic::Response<super::TestEffort>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.TestService/CreateTestEffort",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chromeos.moblab.v1beta1.TestService",
+                        "CreateTestEffort",
                     ),
                 );
             self.inner.unary(req, path, codec).await

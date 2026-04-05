@@ -54,7 +54,7 @@ pub struct Value {
     /// Must have a value set.
     #[prost(
         oneof = "value::ValueType",
-        tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6, 19, 20, 21"
+        tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6, 19, 22, 20, 21"
     )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
@@ -122,6 +122,13 @@ pub mod value {
         /// * Not allowed to be used when writing documents.
         #[prost(string, tag = "19")]
         FieldReferenceValue(::prost::alloc::string::String),
+        /// Pointer to a variable defined elsewhere in a pipeline.
+        ///
+        /// Unlike `field_reference_value` which references a field within a
+        /// document, this refers to a variable, defined in a separate namespace than
+        /// the fields of a document.
+        #[prost(string, tag = "22")]
+        VariableReferenceValue(::prost::alloc::string::String),
         /// A value that represents an unevaluated expression.
         ///
         /// **Requires:**

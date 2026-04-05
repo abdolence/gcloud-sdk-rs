@@ -13,6 +13,19 @@ pub struct Repository {
     /// Identifier. The repository's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the containing folder of the repository.
+    /// The field is immutable and it can be modified via a MoveRepository
+    /// operation.
+    /// Format: `projects/*/locations/*/folders/*`. or
+    /// `projects/*/locations/*/teamFolders/*`.
+    #[prost(string, optional, tag = "16")]
+    pub containing_folder: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The resource name of the TeamFolder that this Repository is
+    /// associated with. This should take the format:
+    /// projects/{project}/locations/{location}/teamFolders/{teamFolder}. If this
+    /// is not set, the Repository is not associated with a TeamFolder.
+    #[prost(string, optional, tag = "18")]
+    pub team_folder_name: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The timestamp of when the repository was created.
     #[prost(message, optional, tag = "13")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -172,6 +185,14 @@ pub mod repository {
         pub table_prefix: ::prost::alloc::string::String,
     }
 }
+/// Metadata used to identify if a resource is user scoped.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PrivateResourceMetadata {
+    /// Output only. If true, this resource is user-scoped, meaning it is either a
+    /// workspace or sourced from a workspace.
+    #[prost(bool, tag = "1")]
+    pub user_scoped: bool,
+}
 /// `ListRepositories` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRepositoriesRequest {
@@ -215,6 +236,21 @@ pub struct ListRepositoriesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// `MoveRepository` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveRepositoryRequest {
+    /// Required. The full resource name of the repository to move.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the Folder, TeamFolder, or root location to move the
+    /// repository to. Can be in the format of: "" to move into the root User
+    /// folder, `projects/*/locations/*/folders/*`,
+    /// `projects/*/locations/*/teamFolders/*`
+    #[prost(string, optional, tag = "2")]
+    pub destination_containing_folder: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
 /// `GetRepository` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRepositoryRequest {
@@ -254,9 +290,13 @@ pub struct DeleteRepositoryRequest {
     /// Required. The repository's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. If set to true, any child resources of this repository will also
-    /// be deleted. (Otherwise, the request will only succeed if the repository has
-    /// no child resources.)
+    /// Optional. If set to true, child resources of this repository (compilation
+    /// results and workflow invocations) will also be deleted. Otherwise, the
+    /// request will only succeed if the repository has no child resources.
+    ///
+    /// **Note:** *This flag doesn't support deletion of workspaces, release
+    /// configs or workflow configs. If any of such resources exists in the
+    /// repository, the request will fail.*.
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
@@ -482,6 +522,8 @@ pub mod compute_repository_access_token_status_response {
         Invalid = 2,
         /// The token was used successfully to authenticate against the Git remote.
         Valid = 3,
+        /// The token is not accessible due to permission issues.
+        PermissionDenied = 4,
     }
     impl TokenStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -494,6 +536,7 @@ pub mod compute_repository_access_token_status_response {
                 Self::NotFound => "NOT_FOUND",
                 Self::Invalid => "INVALID",
                 Self::Valid => "VALID",
+                Self::PermissionDenied => "PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -503,6 +546,7 @@ pub mod compute_repository_access_token_status_response {
                 "NOT_FOUND" => Some(Self::NotFound),
                 "INVALID" => Some(Self::Invalid),
                 "VALID" => Some(Self::Valid),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 _ => None,
             }
         }
@@ -540,6 +584,14 @@ pub struct Workspace {
     /// format of this field is a JSON string.
     #[prost(string, optional, tag = "5")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. If set to true, workspaces will not be moved if its linked
+    /// Repository is moved. Instead, it will be deleted.
+    #[prost(bool, optional, tag = "6")]
+    pub disable_moves: ::core::option::Option<bool>,
+    /// Output only. Metadata indicating whether this resource is user-scoped. For
+    /// `Workspace` resources, the `user_scoped` field is always `true`.
+    #[prost(message, optional, tag = "8")]
+    pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
 }
 /// `ListWorkspaces` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -840,6 +892,12 @@ pub struct QueryDirectoryContentsRequest {
     /// call that provided the page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Specifies the metadata to return for each directory entry.
+    /// If unspecified, the default is `DIRECTORY_CONTENTS_VIEW_BASIC`.
+    /// Currently the `DIRECTORY_CONTENTS_VIEW_METADATA` view is not supported by
+    /// CMEK-protected workspaces.
+    #[prost(enumeration = "DirectoryContentsView", tag = "5")]
+    pub view: i32,
 }
 /// `QueryDirectoryContents` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -855,6 +913,9 @@ pub struct QueryDirectoryContentsResponse {
 /// Represents a single entry in a directory.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DirectoryEntry {
+    /// Entry with metadata.
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<FilesystemEntryMetadata>,
     /// The entry's contents.
     #[prost(oneof = "directory_entry::Entry", tags = "1, 2")]
     pub entry: ::core::option::Option<directory_entry::Entry>,
@@ -871,6 +932,17 @@ pub mod directory_entry {
         #[prost(string, tag = "2")]
         Directory(::prost::alloc::string::String),
     }
+}
+/// Represents metadata for a single entry in a filesystem.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FilesystemEntryMetadata {
+    /// Output only. Provides the size of the entry in bytes. For directories, this
+    /// will be 0.
+    #[prost(int64, tag = "1")]
+    pub size_bytes: i64,
+    /// Output only. Represents the time of the last modification of the entry.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Configuration containing file search request parameters.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1259,6 +1331,11 @@ pub struct CompilationResult {
     /// format of this field is a JSON string.
     #[prost(string, optional, tag = "11")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Metadata indicating whether this resource is user-scoped.
+    /// `CompilationResult` resource is `user_scoped` only if it is sourced
+    /// from a workspace.
+    #[prost(message, optional, tag = "12")]
+    pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
     /// The source of the compilation result.
     #[prost(oneof = "compilation_result::Source", tags = "2, 3, 7")]
     pub source: ::core::option::Option<compilation_result::Source>,
@@ -1567,6 +1644,24 @@ pub mod compilation_result_action {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
+        /// Optional. The connection specifying the credentials to be used to read
+        /// and write to external storage, such as Cloud Storage. The connection can
+        /// have the form `{project}.{location}.{connection_id}` or
+        /// `projects/{project}/locations/{location}/connections/{connection_id}`,
+        /// or be set to DEFAULT.
+        #[prost(string, tag = "15")]
+        pub connection: ::prost::alloc::string::String,
+        /// Optional. The table format for the BigQuery table.
+        #[prost(enumeration = "relation::TableFormat", tag = "16")]
+        pub table_format: i32,
+        /// Optional. The file format for the BigQuery table.
+        #[prost(enumeration = "relation::FileFormat", tag = "17")]
+        pub file_format: i32,
+        /// Optional. The fully qualified location prefix of the external folder
+        /// where table data is stored. The URI should be in the format
+        /// `gs://bucket/path_to_table/`.
+        #[prost(string, tag = "18")]
+        pub storage_uri: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Relation`.
     pub mod relation {
@@ -1653,6 +1748,84 @@ pub mod compilation_result_action {
                     "VIEW" => Some(Self::View),
                     "INCREMENTAL_TABLE" => Some(Self::IncrementalTable),
                     "MATERIALIZED_VIEW" => Some(Self::MaterializedView),
+                    _ => None,
+                }
+            }
+        }
+        /// Supported table formats for BigQuery tables.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TableFormat {
+            /// Default value.
+            Unspecified = 0,
+            /// Apache Iceberg format.
+            Iceberg = 1,
+        }
+        impl TableFormat {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TABLE_FORMAT_UNSPECIFIED",
+                    Self::Iceberg => "ICEBERG",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TABLE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ICEBERG" => Some(Self::Iceberg),
+                    _ => None,
+                }
+            }
+        }
+        /// Supported file formats for BigQuery tables.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum FileFormat {
+            /// Default value.
+            Unspecified = 0,
+            /// Apache Parquet format.
+            Parquet = 1,
+        }
+        impl FileFormat {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "FILE_FORMAT_UNSPECIFIED",
+                    Self::Parquet => "PARQUET",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PARQUET" => Some(Self::Parquet),
                     _ => None,
                 }
             }
@@ -1987,6 +2160,61 @@ pub struct InvocationConfig {
     /// Optional. The service account to run workflow invocations under.
     #[prost(string, tag = "6")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. Specifies the priority for query execution in BigQuery.
+    /// More information can be found at
+    /// <https://cloud.google.com/bigquery/docs/running-queries#queries.>
+    #[prost(enumeration = "invocation_config::QueryPriority", optional, tag = "9")]
+    pub query_priority: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `InvocationConfig`.
+pub mod invocation_config {
+    /// Types of priority for query execution in BigQuery.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QueryPriority {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Query will be executed in BigQuery with interactive priority.
+        /// More information can be found at
+        /// <https://cloud.google.com/bigquery/docs/running-queries#queries.>
+        Interactive = 1,
+        /// Query will be executed in BigQuery with batch priority.
+        /// More information can be found at
+        /// <https://cloud.google.com/bigquery/docs/running-queries#batchqueries.>
+        Batch = 2,
+    }
+    impl QueryPriority {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUERY_PRIORITY_UNSPECIFIED",
+                Self::Interactive => "INTERACTIVE",
+                Self::Batch => "BATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERACTIVE" => Some(Self::Interactive),
+                "BATCH" => Some(Self::Batch),
+                _ => None,
+            }
+        }
+    }
 }
 /// `ListWorkflowConfigs` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2091,6 +2319,11 @@ pub struct WorkflowInvocation {
     /// format of this field is a JSON string.
     #[prost(string, optional, tag = "9")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Metadata indicating whether this resource is user-scoped.
+    /// `WorkflowInvocation` resource is `user_scoped` only if it is sourced
+    /// from a compilation result and the compilation result is user-scoped.
+    #[prost(message, optional, tag = "10")]
+    pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
     /// The source of the compilation result to use for this invocation.
     #[prost(oneof = "workflow_invocation::CompilationSource", tags = "2, 6")]
     pub compilation_source: ::core::option::Option<
@@ -2517,6 +2750,11 @@ pub struct Config {
     /// when a repository is created.
     #[prost(string, tag = "2")]
     pub default_kms_key_name: ::prost::alloc::string::String,
+    /// Output only. All the metadata information that is used internally to serve
+    /// the resource. For example: timestamps, flags, status fields, etc. The
+    /// format of this field is a JSON string.
+    #[prost(string, optional, tag = "7")]
+    pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// `GetConfig` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2534,6 +2772,746 @@ pub struct UpdateConfigRequest {
     /// Optional. Specifies the fields to be updated in the config.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Represents a Dataform Folder. This is a resource that is used to organize
+/// Files and other Folders and provide hierarchical access controls.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Folder {
+    /// Identifier. The Folder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The Folder's user-friendly name.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The containing Folder resource name. This should take
+    /// the format: projects/{project}/locations/{location}/folders/{folder},
+    /// projects/{project}/locations/{location}/teamFolders/{teamFolder}, or just
+    /// projects/{project}/locations/{location} if this is a root Folder. This
+    /// field can only be updated through MoveFolder.
+    #[prost(string, tag = "3")]
+    pub containing_folder: ::prost::alloc::string::String,
+    /// Output only. The resource name of the TeamFolder that this Folder is
+    /// associated with. This should take the format:
+    /// projects/{project}/locations/{location}/teamFolders/{teamFolder}. If this
+    /// is not set, the Folder is not associated with a TeamFolder and is a
+    /// UserFolder.
+    #[prost(string, tag = "4")]
+    pub team_folder_name: ::prost::alloc::string::String,
+    /// Output only. The timestamp of when the Folder was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp of when the Folder was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. All the metadata information that is used internally to serve
+    /// the resource. For example: timestamps, flags, status fields, etc. The
+    /// format of this field is a JSON string.
+    #[prost(string, optional, tag = "7")]
+    pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The IAM principal identifier of the creator of the Folder.
+    #[prost(string, optional, tag = "8")]
+    pub creator_iam_principal: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// `CreateFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateFolderRequest {
+    /// Required. The location in which to create the Folder. Must be in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Folder to create.
+    #[prost(message, optional, tag = "2")]
+    pub folder: ::core::option::Option<Folder>,
+}
+/// `MoveFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveFolderRequest {
+    /// Required. The full resource name of the Folder to move.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the Folder, TeamFolder, or root location to move the
+    /// Folder to. Can be in the format of: "" to move into the root User folder,
+    /// `projects/*/locations/*/folders/*`, `projects/*/locations/*/teamFolders/*`
+    #[prost(string, optional, tag = "2")]
+    pub destination_containing_folder: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
+/// `GetFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFolderRequest {
+    /// Required. The Folder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// `UpdateFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateFolderRequest {
+    /// Optional. Specifies the fields to be updated in the Folder. If left unset,
+    /// all fields that can be updated, will be updated. A few fields cannot be
+    /// updated and will be ignored if specified in the update_mask (e.g.
+    /// parent_name, team_folder_name).
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The updated Folder.
+    #[prost(message, optional, tag = "2")]
+    pub folder: ::core::option::Option<Folder>,
+}
+/// `DeleteFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFolderRequest {
+    /// Required. The Folder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// `DeleteFolderTree` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFolderTreeRequest {
+    /// Required. The Folder's name.
+    /// Format: projects/{project}/locations/{location}/folders/{folder}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If `false` (default): The operation will fail if any
+    /// Repository within the folder hierarchy has associated Release Configs or
+    /// Workflow Configs.
+    ///
+    /// If `true`: The operation will attempt to delete everything, including any
+    /// Release Configs and Workflow Configs linked to Repositories within the
+    /// folder hierarchy. This permanently removes schedules and resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// `DeleteTeamFolderTree` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteTeamFolderTreeRequest {
+    /// Required. The TeamFolder's name.
+    /// Format: projects/{project}/locations/{location}/teamFolders/{team_folder}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If `false` (default): The operation will fail if any
+    /// Repository within the folder hierarchy has associated Release Configs or
+    /// Workflow Configs.
+    ///
+    /// If `true`: The operation will attempt to delete everything, including any
+    /// Release Configs and Workflow Configs linked to Repositories within the
+    /// folder hierarchy. This permanently removes schedules and resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Contains metadata about the progress of the DeleteFolderTree Long-running
+/// operations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFolderTreeMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Resource name of the target of the operation.
+    /// Format: projects/{project}/locations/{location}/folders/{folder} or
+    /// projects/{project}/locations/{location}/teamFolders/{team_folder}
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. The state of the operation.
+    #[prost(enumeration = "delete_folder_tree_metadata::State", tag = "4")]
+    pub state: i32,
+    /// Output only. Percent complete of the operation \[0, 100\].
+    #[prost(int32, tag = "5")]
+    pub percent_complete: i32,
+}
+/// Nested message and enum types in `DeleteFolderTreeMetadata`.
+pub mod delete_folder_tree_metadata {
+    /// Different states of the DeleteFolderTree operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The operation was initialized and recorded by the server, but not yet
+        /// started.
+        Initialized = 1,
+        /// The operation is in progress.
+        InProgress = 2,
+        /// The operation has completed successfully.
+        Succeeded = 3,
+        /// The operation has failed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initialized => "INITIALIZED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZED" => Some(Self::Initialized),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// `QueryFolderContents` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryFolderContentsRequest {
+    /// Required. Name of the folder whose contents to list.
+    /// Format: projects/*/locations/*/folders/\*
+    #[prost(string, tag = "1")]
+    pub folder: ::prost::alloc::string::String,
+    /// Optional. Maximum number of paths to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `QueryFolderContents` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `QueryFolderContents`, with the exception of `page_size`, must match the
+    /// call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Field to additionally sort results by.
+    /// Will order Folders before Repositories, and then by `order_by` in ascending
+    /// order. Supported keywords: display_name (default), create_time,
+    /// last_modified_time.
+    /// Examples:
+    ///
+    /// * `orderBy="display_name"`
+    /// * `orderBy="display_name desc"`
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Optional filtering for the returned list. Filtering is currently
+    /// only supported on the `display_name` field.
+    ///
+    /// Example:
+    ///
+    /// * `filter="display_name="MyFolder""`
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// `QueryFolderContents` response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryFolderContentsResponse {
+    /// List of entries in the folder.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<
+        query_folder_contents_response::FolderContentsEntry,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `QueryFolderContentsResponse`.
+pub mod query_folder_contents_response {
+    /// Represents a single content entry.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FolderContentsEntry {
+        /// The content entry.
+        #[prost(oneof = "folder_contents_entry::Entry", tags = "1, 2")]
+        pub entry: ::core::option::Option<folder_contents_entry::Entry>,
+    }
+    /// Nested message and enum types in `FolderContentsEntry`.
+    pub mod folder_contents_entry {
+        /// The content entry.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Entry {
+            /// A subfolder.
+            #[prost(message, tag = "1")]
+            Folder(super::super::Folder),
+            /// A repository.
+            #[prost(message, tag = "2")]
+            Repository(super::super::Repository),
+        }
+    }
+}
+/// `QueryUserRootContents` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryUserRootContentsRequest {
+    /// Required. Location of the user root folder whose contents to list.
+    /// Format: projects/*/locations/*
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Optional. Maximum number of paths to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `QueryUserRootContents` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `QueryUserRootFolderContents`, with the exception of `page_size`, must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Field to additionally sort results by.
+    /// Will order Folders before Repositories, and then by `order_by` in ascending
+    /// order. Supported keywords: display_name (default), created_at,
+    /// last_modified_at. Examples:
+    ///
+    /// * `orderBy="display_name"`
+    /// * `orderBy="display_name desc"`
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Optional filtering for the returned list. Filtering is currently
+    /// only supported on the `display_name` field.
+    ///
+    /// Example:
+    ///
+    /// * `filter="display_name="MyFolder""`
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// `QueryUserRootContents` response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryUserRootContentsResponse {
+    /// List of entries in the folder.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<
+        query_user_root_contents_response::RootContentsEntry,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `QueryUserRootContentsResponse`.
+pub mod query_user_root_contents_response {
+    /// Represents a single content entry.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RootContentsEntry {
+        /// The content entry.
+        #[prost(oneof = "root_contents_entry::Entry", tags = "1, 2")]
+        pub entry: ::core::option::Option<root_contents_entry::Entry>,
+    }
+    /// Nested message and enum types in `RootContentsEntry`.
+    pub mod root_contents_entry {
+        /// The content entry.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Entry {
+            /// A subfolder.
+            #[prost(message, tag = "1")]
+            Folder(super::super::Folder),
+            /// A repository.
+            #[prost(message, tag = "2")]
+            Repository(super::super::Repository),
+        }
+    }
+}
+/// Represents a Dataform TeamFolder. This is a resource that sits at the project
+/// level and is used to organize Repositories and Folders with hierarchical
+/// access controls. They provide a team context and stricter access controls.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TeamFolder {
+    /// Identifier. The TeamFolder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The TeamFolder's user-friendly name.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The timestamp of when the TeamFolder was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp of when the TeamFolder was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. All the metadata information that is used internally to serve
+    /// the resource. For example: timestamps, flags, status fields, etc. The
+    /// format of this field is a JSON string.
+    #[prost(string, optional, tag = "5")]
+    pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The IAM principal identifier of the creator of the TeamFolder.
+    #[prost(string, optional, tag = "6")]
+    pub creator_iam_principal: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// `CreateTeamFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateTeamFolderRequest {
+    /// Required. The location in which to create the TeamFolder. Must be in the
+    /// format `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The TeamFolder to create.
+    #[prost(message, optional, tag = "2")]
+    pub team_folder: ::core::option::Option<TeamFolder>,
+}
+/// `GetTeamFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetTeamFolderRequest {
+    /// Required. The TeamFolder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// `UpdateTeamFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateTeamFolderRequest {
+    /// Optional. Specifies the fields to be updated in the Folder. If left unset,
+    /// all fields will be updated.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The updated TeamFolder.
+    #[prost(message, optional, tag = "2")]
+    pub team_folder: ::core::option::Option<TeamFolder>,
+}
+/// `DeleteTeamFolder` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteTeamFolderRequest {
+    /// Required. The TeamFolder's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// `QueryTeamFolderContents` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryTeamFolderContentsRequest {
+    /// Required. Name of the team_folder whose contents to list.
+    /// Format: `projects/*/locations/*/teamFolders/*`.
+    #[prost(string, tag = "1")]
+    pub team_folder: ::prost::alloc::string::String,
+    /// Optional. Maximum number of paths to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `QueryTeamFolderContents`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `QueryTeamFolderContents`, with the exception of `page_size`, must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Field to additionally sort results by.
+    /// Will order Folders before Repositories, and then by `order_by` in ascending
+    /// order. Supported keywords: `display_name` (default), `create_time`,
+    /// last_modified_time.
+    /// Examples:
+    ///
+    /// * `orderBy="display_name"`
+    /// * `orderBy="display_name desc"`
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Optional filtering for the returned list. Filtering is currently
+    /// only supported on the `display_name` field.
+    ///
+    /// Example:
+    ///
+    /// * `filter="display_name="MyFolder""`
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// `QueryTeamFolderContents` response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryTeamFolderContentsResponse {
+    /// List of entries in the TeamFolder.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<
+        query_team_folder_contents_response::TeamFolderContentsEntry,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `QueryTeamFolderContentsResponse`.
+pub mod query_team_folder_contents_response {
+    /// Represents a single content entry.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TeamFolderContentsEntry {
+        /// The content entry.
+        #[prost(oneof = "team_folder_contents_entry::Entry", tags = "1, 2")]
+        pub entry: ::core::option::Option<team_folder_contents_entry::Entry>,
+    }
+    /// Nested message and enum types in `TeamFolderContentsEntry`.
+    pub mod team_folder_contents_entry {
+        /// The content entry.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Entry {
+            /// A subfolder.
+            #[prost(message, tag = "1")]
+            Folder(super::super::Folder),
+            /// A repository.
+            #[prost(message, tag = "2")]
+            Repository(super::super::Repository),
+        }
+    }
+}
+/// `SearchTeamFolders` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SearchTeamFoldersRequest {
+    /// Required. Location in which to query TeamFolders.
+    /// Format: `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Optional. Maximum number of TeamFolders to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick an
+    /// appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `SearchTeamFolders` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `SearchTeamFolders`, with the exception of `page_size`, must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Field to additionally sort results by.
+    /// Supported keywords: `display_name` (default), `create_time`,
+    /// `last_modified_time`. Examples:
+    ///
+    /// * `orderBy="display_name"`
+    /// * `orderBy="display_name desc"`
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Optional filtering for the returned list. Filtering is currently
+    /// only supported on the `display_name` field.
+    ///
+    /// Example:
+    ///
+    /// * `filter="display_name="MyFolder""`
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// `SearchTeamFolders` response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchTeamFoldersResponse {
+    /// List of TeamFolders that match the search query.
+    #[prost(message, repeated, tag = "1")]
+    pub results: ::prost::alloc::vec::Vec<
+        search_team_folders_response::TeamFolderSearchResult,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SearchTeamFoldersResponse`.
+pub mod search_team_folders_response {
+    /// Represents a single content entry.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TeamFolderSearchResult {
+        /// The content entry.
+        #[prost(oneof = "team_folder_search_result::Entry", tags = "2")]
+        pub entry: ::core::option::Option<team_folder_search_result::Entry>,
+    }
+    /// Nested message and enum types in `TeamFolderSearchResult`.
+    pub mod team_folder_search_result {
+        /// The content entry.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Entry {
+            /// A TeamFolder resource that is in the project / location.
+            #[prost(message, tag = "2")]
+            TeamFolder(super::super::TeamFolder),
+        }
+    }
+}
+/// Contains metadata about the progress of the MoveFolder Long-running
+/// operations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveFolderMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// The state of the move.
+    #[prost(enumeration = "move_folder_metadata::State", tag = "4")]
+    pub state: i32,
+    /// Percent complete of the move \[0, 100\].
+    #[prost(int32, tag = "5")]
+    pub percent_complete: i32,
+}
+/// Nested message and enum types in `MoveFolderMetadata`.
+pub mod move_folder_metadata {
+    /// Different states of the move.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The move was initialized and recorded by the server, but not yet started.
+        Initialized = 1,
+        /// The move is in progress.
+        InProgress = 2,
+        /// The move has completed successfully.
+        Success = 3,
+        /// The move has failed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initialized => "INITIALIZED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Success => "SUCCESS",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZED" => Some(Self::Initialized),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCESS" => Some(Self::Success),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Contains metadata about the progress of the MoveRepository Long-running
+/// operations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveRepositoryMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// The state of the move.
+    #[prost(enumeration = "move_repository_metadata::State", tag = "4")]
+    pub state: i32,
+    /// Percent complete of the move \[0, 100\].
+    #[prost(int32, tag = "5")]
+    pub percent_complete: i32,
+}
+/// Nested message and enum types in `MoveRepositoryMetadata`.
+pub mod move_repository_metadata {
+    /// Different states of the move.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The move was initialized and recorded by the server, but not yet started.
+        Initialized = 1,
+        /// The move is in progress.
+        InProgress = 2,
+        /// The move has completed successfully.
+        Success = 3,
+        /// The move has failed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initialized => "INITIALIZED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Success => "SUCCESS",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZED" => Some(Self::Initialized),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCESS" => Some(Self::Success),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents the level of detail to return for directory contents.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DirectoryContentsView {
+    /// The default / unset value. Defaults to DIRECTORY_CONTENTS_VIEW_BASIC.
+    Unspecified = 0,
+    /// Includes only the file or directory name. This is the default behavior.
+    Basic = 1,
+    /// Includes all metadata for each file or directory. Currently not supported
+    /// by CMEK-protected workspaces.
+    Metadata = 2,
+}
+impl DirectoryContentsView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DIRECTORY_CONTENTS_VIEW_UNSPECIFIED",
+            Self::Basic => "DIRECTORY_CONTENTS_VIEW_BASIC",
+            Self::Metadata => "DIRECTORY_CONTENTS_VIEW_METADATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DIRECTORY_CONTENTS_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "DIRECTORY_CONTENTS_VIEW_BASIC" => Some(Self::Basic),
+            "DIRECTORY_CONTENTS_VIEW_METADATA" => Some(Self::Metadata),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod dataform_client {
@@ -2627,6 +3605,419 @@ pub mod dataform_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
+        }
+        /// Fetches a single TeamFolder.
+        pub async fn get_team_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTeamFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::TeamFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/GetTeamFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "GetTeamFolder"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new TeamFolder in a given project and location.
+        pub async fn create_team_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTeamFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::TeamFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/CreateTeamFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "CreateTeamFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single TeamFolder.
+        pub async fn update_team_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTeamFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::TeamFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/UpdateTeamFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "UpdateTeamFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single TeamFolder.
+        pub async fn delete_team_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTeamFolderRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/DeleteTeamFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "DeleteTeamFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a TeamFolder with its contents (Folders, Repositories, Workspaces,
+        /// ReleaseConfigs, and WorkflowConfigs).
+        pub async fn delete_team_folder_tree(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTeamFolderTreeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/DeleteTeamFolderTree",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "DeleteTeamFolderTree",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the contents of a given TeamFolder.
+        pub async fn query_team_folder_contents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryTeamFolderContentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryTeamFolderContentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/QueryTeamFolderContents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "QueryTeamFolderContents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns all TeamFolders in a given location that the caller has access to
+        /// and match the provided filter.
+        pub async fn search_team_folders(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchTeamFoldersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchTeamFoldersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/SearchTeamFolders",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "SearchTeamFolders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches a single Folder.
+        pub async fn get_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/GetFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "GetFolder"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Folder in a given project and location.
+        pub async fn create_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/CreateFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "CreateFolder"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single Folder.
+        pub async fn update_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/UpdateFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "UpdateFolder"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single Folder.
+        pub async fn delete_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFolderRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/DeleteFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "DeleteFolder"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Folder with its contents (Folders, Repositories, Workspaces,
+        /// ReleaseConfigs, and WorkflowConfigs).
+        pub async fn delete_folder_tree(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFolderTreeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/DeleteFolderTree",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "DeleteFolderTree",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the contents of a given Folder.
+        pub async fn query_folder_contents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryFolderContentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryFolderContentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/QueryFolderContents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "QueryFolderContents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the contents of a caller's root folder in a given location.
+        /// The root folder contains all resources that are created by the user and not
+        /// contained in any other folder.
+        pub async fn query_user_root_contents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryUserRootContentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryUserRootContentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/QueryUserRootContents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "QueryUserRootContents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Moves a Folder to a new Folder, TeamFolder, or the root location.
+        pub async fn move_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MoveFolderRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/MoveFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "MoveFolder"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Repositories in a given project and location.
         ///
@@ -2767,6 +4158,36 @@ pub mod dataform_client {
                     GrpcMethod::new(
                         "google.cloud.dataform.v1.Dataform",
                         "DeleteRepository",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Moves a Repository to a new location.
+        pub async fn move_repository(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MoveRepositoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/MoveRepository",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "MoveRepository",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4189,6 +5610,109 @@ pub mod dataform_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.dataform.v1.Dataform", "UpdateConfig"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the access control policy for a resource.
+        /// Returns an empty policy if the resource exists and does not have a policy
+        /// set.
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/GetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets the access control policy on the specified resource. Replaces any
+        /// existing policy.
+        ///
+        /// Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/SetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataform.v1.Dataform", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns permissions that a caller has on the specified resource.
+        /// If the resource does not exist, this will return an empty set of
+        /// permissions, not a `NOT_FOUND` error.
+        ///
+        /// Note: This operation is designed to be used for building permission-aware
+        /// UIs and command-line tools, not for authorization checking. This operation
+        /// may "fail open" without warning.
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::TestIamPermissionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1.Dataform/TestIamPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1.Dataform",
+                        "TestIamPermissions",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

@@ -3879,6 +3879,369 @@ pub struct CardWithId {
     #[prost(message, optional, tag = "2")]
     pub card: ::core::option::Option<super::super::apps::card::v1::Card>,
 }
+/// Represents a [section](<https://support.google.com/chat/answer/16059854>) in
+/// Google Chat. Sections help users organize their spaces. There are two types
+/// of sections:
+///
+/// 1. **System Sections:** These are predefined sections managed by Google
+///    Chat.
+///    Their resource names are fixed, and they cannot be created, deleted, or
+///    have their `display_name` modified. Examples include:
+///
+///    * `users/{user}/sections/default-direct-messages`
+///    * `users/{user}/sections/default-spaces`
+///    * `users/{user}/sections/default-apps`
+/// 1. **Custom Sections:** These are sections created and managed by the user.
+///    Creating a custom section using `CreateSection` **requires** a
+///    `display_name`. Custom sections can be updated using `UpdateSection` and
+///    deleted using `DeleteSection`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Section {
+    /// Identifier. Resource name of the section.
+    ///
+    /// For system sections, the section ID is a constant string:
+    ///
+    /// * DEFAULT_DIRECT_MESSAGES: `users/{user}/sections/default-direct-messages`
+    /// * DEFAULT_SPACES: `users/{user}/sections/default-spaces`
+    /// * DEFAULT_APPS: `users/{user}/sections/default-apps`
+    ///
+    /// Format: `users/{user}/sections/{section}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The section's display name. Only populated for sections of type
+    /// `CUSTOM_SECTION`. Supports up to 80 characters. Required when creating a
+    /// `CUSTOM_SECTION`.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The order of the section in relation to other sections.
+    /// Sections with a lower `sort_order` value appear before sections with a
+    /// higher value.
+    #[prost(int32, tag = "3")]
+    pub sort_order: i32,
+    /// Required. The type of the section.
+    #[prost(enumeration = "section::SectionType", tag = "4")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `Section`.
+pub mod section {
+    /// Section types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SectionType {
+        /// Unspecified section type.
+        Unspecified = 0,
+        /// Custom section.
+        CustomSection = 1,
+        /// Default section containing
+        /// [DIRECT_MESSAGE](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces#spacetype>)
+        /// between two human users or
+        /// [GROUP_CHAT](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces#spacetype>)
+        /// spaces that don't belong to any custom section.
+        DefaultDirectMessages = 2,
+        /// Default spaces that don't belong to any custom section.
+        DefaultSpaces = 3,
+        /// Default section containing a user's installed apps.
+        DefaultApps = 6,
+    }
+    impl SectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SECTION_TYPE_UNSPECIFIED",
+                Self::CustomSection => "CUSTOM_SECTION",
+                Self::DefaultDirectMessages => "DEFAULT_DIRECT_MESSAGES",
+                Self::DefaultSpaces => "DEFAULT_SPACES",
+                Self::DefaultApps => "DEFAULT_APPS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOM_SECTION" => Some(Self::CustomSection),
+                "DEFAULT_DIRECT_MESSAGES" => Some(Self::DefaultDirectMessages),
+                "DEFAULT_SPACES" => Some(Self::DefaultSpaces),
+                "DEFAULT_APPS" => Some(Self::DefaultApps),
+                _ => None,
+            }
+        }
+    }
+}
+/// A user's defined section item. This is used to represent section items, such
+/// as spaces, grouped under a section.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SectionItem {
+    /// Identifier. The resource name of the section item.
+    ///
+    /// Format: `users/{user}/sections/{section}/items/{item}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The section item.
+    #[prost(oneof = "section_item::Item", tags = "2")]
+    pub item: ::core::option::Option<section_item::Item>,
+}
+/// Nested message and enum types in `SectionItem`.
+pub mod section_item {
+    /// Required. The section item.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Item {
+        /// Optional. The space resource name.
+        ///
+        /// Format: `spaces/{space}`
+        #[prost(string, tag = "2")]
+        Space(::prost::alloc::string::String),
+    }
+}
+/// Request message for creating a section.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateSectionRequest {
+    /// Required. The parent resource name where the section is created.
+    ///
+    /// Format: `users/{user}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The section to create.
+    #[prost(message, optional, tag = "2")]
+    pub section: ::core::option::Option<Section>,
+}
+/// Request message for deleting a section.
+/// [Developer Preview](<https://developers.google.com/workspace/preview>).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteSectionRequest {
+    /// Required. The name of the section to delete.
+    ///
+    /// Format: `users/{user}/sections/{section}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for updating a section.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateSectionRequest {
+    /// Required. The section to update.
+    #[prost(message, optional, tag = "1")]
+    pub section: ::core::option::Option<Section>,
+    /// Required. The mask to specify which fields to update.
+    ///
+    /// Currently supported field paths:
+    ///
+    /// * `display_name`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for listing sections.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListSectionsRequest {
+    /// Required. The parent, which is the user resource name that owns this
+    /// collection of sections. Only supports listing sections for the calling
+    /// user. To refer to the calling user, set one of the following:
+    ///
+    /// * The `me` alias. For example, `users/me`.
+    ///
+    /// * Their Workspace email address. For example, `users/user@example.com`.
+    ///
+    /// * Their user id. For example, `users/123456789`.
+    ///
+    /// Format: `users/{user}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of sections to return. The service may return
+    /// fewer than this value.
+    ///
+    /// If unspecified, at most 10 sections will be returned.
+    ///
+    /// The maximum value is 100. If you use a value more than 100, it's
+    /// automatically changed to 100.
+    ///
+    /// Negative values return an `INVALID_ARGUMENT` error.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous list sections call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided should match the call that
+    /// provided the page token. Passing different values to the other parameters
+    /// might lead to unexpected results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing sections.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSectionsResponse {
+    /// The sections from the specified user.
+    #[prost(message, repeated, tag = "1")]
+    pub sections: ::prost::alloc::vec::Vec<Section>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for positioning a section.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PositionSectionRequest {
+    /// Required. The resource name of the section to position.
+    ///
+    /// Format: `users/{user}/sections/{section}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The new position of the section.
+    #[prost(oneof = "position_section_request::PositionOneOf", tags = "2, 3")]
+    pub position: ::core::option::Option<position_section_request::PositionOneOf>,
+}
+/// Nested message and enum types in `PositionSectionRequest`.
+pub mod position_section_request {
+    /// The position of the section.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Position {
+        /// Unspecified position.
+        Unspecified = 0,
+        /// Start of the list of sections.
+        Start = 1,
+        /// End of the list of sections.
+        End = 2,
+    }
+    impl Position {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POSITION_UNSPECIFIED",
+                Self::Start => "START",
+                Self::End => "END",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POSITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "START" => Some(Self::Start),
+                "END" => Some(Self::End),
+                _ => None,
+            }
+        }
+    }
+    /// Required. The new position of the section.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum PositionOneOf {
+        /// Optional. The absolute position of the section in the list of sections.
+        /// The position must be greater than 0. If the position is greater than the
+        /// number of sections, the section will be appended to the end of the list.
+        /// This operation inserts the section at the given position and shifts the
+        /// original section at that position, and those below it, to the next
+        /// position.
+        #[prost(int32, tag = "2")]
+        SortOrder(i32),
+        /// Optional. The relative position of the section in the list of sections.
+        #[prost(enumeration = "Position", tag = "3")]
+        RelativePosition(i32),
+    }
+}
+/// Response message for positioning a section.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PositionSectionResponse {
+    /// The updated section.
+    #[prost(message, optional, tag = "1")]
+    pub section: ::core::option::Option<Section>,
+}
+/// Request message for listing section items.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListSectionItemsRequest {
+    /// Required. The parent, which is the section resource name that owns this
+    /// collection of section items. Only supports listing section items for the
+    /// calling user.
+    ///
+    /// When you're filtering by space, use the wildcard `-` to search across all
+    /// sections. For example, `users/{user}/sections/-`.
+    ///
+    /// Format: `users/{user}/sections/{section}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of section items to return. The service may
+    /// return fewer than this value.
+    ///
+    /// If unspecified, at most 10 section items will be returned.
+    ///
+    /// The maximum value is 100. If you use a value more than 100, it's
+    /// automatically changed to 100.
+    ///
+    /// Negative values return an `INVALID_ARGUMENT` error.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous list section items call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided should match the call that
+    /// provided the page token. Passing different values to the other parameters
+    /// might lead to unexpected results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A query filter.
+    ///
+    /// Currently only supports filtering by space.
+    ///
+    /// For example, `space = spaces/{space}`.
+    ///
+    /// Invalid queries are rejected with an `INVALID_ARGUMENT` error.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for listing section items.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSectionItemsResponse {
+    /// The section items from the specified section.
+    #[prost(message, repeated, tag = "1")]
+    pub section_items: ::prost::alloc::vec::Vec<SectionItem>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for moving a section item across sections.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveSectionItemRequest {
+    /// Required. The resource name of the section item to move.
+    ///
+    /// Format: `users/{user}/sections/{section}/items/{item}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The resource name of the section to move the section item to.
+    ///
+    /// Format: `users/{user}/sections/{section}`
+    #[prost(string, tag = "2")]
+    pub target_section: ::prost::alloc::string::String,
+}
+/// Response message for moving a section item.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MoveSectionItemResponse {
+    /// The updated section item.
+    #[prost(message, optional, tag = "1")]
+    pub section_item: ::core::option::Option<SectionItem>,
+}
 /// Event payload for a new membership.
 ///
 /// Event type: `google.workspace.chat.membership.v1.created`.
@@ -4816,8 +5179,7 @@ pub mod chat_service_client {
         /// * [App
         ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         ///  with [administrator
-        ///  approval](https://support.google.com/a?p=chat-app-auth) in
-        ///  [Developer Preview](https://developers.google.com/workspace/preview)
+        ///  approval](https://support.google.com/a?p=chat-app-auth)
         ///  with the authorization scope:
         ///
         ///  * `https://www.googleapis.com/auth/chat.app.messages.readonly`. When
@@ -4980,8 +5342,7 @@ pub mod chat_service_client {
         ///    that invoke the Chat app.
         ///  * `https://www.googleapis.com/auth/chat.app.messages.readonly`
         ///    with [administrator
-        ///    approval](https://support.google.com/a?p=chat-app-auth) (available in
-        ///    [Developer Preview](https://developers.google.com/workspace/preview)).
+        ///    approval](https://support.google.com/a?p=chat-app-auth).
         ///    When using this authentication scope,
         ///    this method returns details about a public message in a space.
         /// * [User
@@ -6219,13 +6580,14 @@ pub mod chat_service_client {
         /// * [App
         ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         ///  with [administrator
-        ///  approval](https://support.google.com/a?p=chat-app-auth) in
-        ///  [Developer Preview](https://developers.google.com/workspace/preview)
+        ///  approval](https://support.google.com/a?p=chat-app-auth)
         ///  with one of the following authorization scopes:
         ///
         ///  * `https://www.googleapis.com/auth/chat.app.spaces`
+        ///  * `https://www.googleapis.com/auth/chat.app.spaces.readonly`
         ///  * `https://www.googleapis.com/auth/chat.app.messages.readonly`
         ///  * `https://www.googleapis.com/auth/chat.app.memberships`
+        ///  * `https://www.googleapis.com/auth/chat.app.memberships.readonly`
         /// * [User
         ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
         ///  with one of the following authorization scopes:
@@ -6283,13 +6645,14 @@ pub mod chat_service_client {
         /// * [App
         ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         ///  with [administrator
-        ///  approval](https://support.google.com/a?p=chat-app-auth) in
-        ///  [Developer Preview](https://developers.google.com/workspace/preview)
+        ///  approval](https://support.google.com/a?p=chat-app-auth)
         ///  with one of the following authorization scopes:
         ///
         ///  * `https://www.googleapis.com/auth/chat.app.spaces`
+        ///  * `https://www.googleapis.com/auth/chat.app.spaces.readonly`
         ///  * `https://www.googleapis.com/auth/chat.app.messages.readonly`
         ///  * `https://www.googleapis.com/auth/chat.app.memberships`
+        ///  * `https://www.googleapis.com/auth/chat.app.memberships.readonly`
         /// * [User
         ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
         ///  with one of the following authorization scopes:
@@ -6410,6 +6773,251 @@ pub mod chat_service_client {
                         "google.chat.v1.ChatService",
                         "UpdateSpaceNotificationSetting",
                     ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a section in Google Chat. Sections help users group conversations
+        /// and customize the list of spaces displayed in Chat navigation panel. Only
+        /// sections of type `CUSTOM_SECTION` can be created. For details, see [Create
+        /// and organize sections in Google
+        /// Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        pub async fn create_section(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Section>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/CreateSection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "CreateSection"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a section of type `CUSTOM_SECTION`.
+        ///
+        /// If the section contains items, such as spaces, the items are moved to
+        /// Google Chat's default sections and are not deleted.
+        ///
+        /// For details, see [Create and organize sections in Google
+        /// Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        pub async fn delete_section(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSectionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/DeleteSection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "DeleteSection"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a section. Only sections of type `CUSTOM_SECTION` can be updated.
+        /// For details, see [Create and organize sections in Google
+        /// Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        pub async fn update_section(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Section>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/UpdateSection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "UpdateSection"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists sections available to the Chat user. Sections help users group their
+        /// conversations and customize the list of spaces displayed in Chat
+        /// navigation panel. For details, see [Create and organize sections in Google
+        /// Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        /// * `https://www.googleapis.com/auth/chat.users.sections.readonly`
+        pub async fn list_sections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/ListSections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "ListSections"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Changes the sort order of a section. For details, see [Create and organize
+        /// sections in Google Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        pub async fn position_section(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PositionSectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PositionSectionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/PositionSection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "PositionSection"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists items in a section.
+        ///
+        /// Only spaces can be section items. For details, see [Create and organize
+        /// sections in Google Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        /// * `https://www.googleapis.com/auth/chat.users.sections.readonly`
+        pub async fn list_section_items(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSectionItemsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSectionItemsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/ListSectionItems",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "ListSectionItems"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Moves an item from one section to another. For example, if a section
+        /// contains spaces, this method can be used to move a space to a different
+        /// section. For details, see [Create and organize sections in Google
+        /// Chat](https://support.google.com/chat/answer/16059854).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.sections`
+        pub async fn move_section_item(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MoveSectionItemRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::MoveSectionItemResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/MoveSectionItem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "MoveSectionItem"),
                 );
             self.inner.unary(req, path, codec).await
         }

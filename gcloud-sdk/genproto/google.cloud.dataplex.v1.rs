@@ -2617,139 +2617,6 @@ pub struct CancelJobRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Create environment request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateEnvironmentRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Environment identifier.
-    ///
-    /// * Must contain only lowercase letters, numbers and hyphens.
-    /// * Must start with a letter.
-    /// * Must be between 1-63 characters.
-    /// * Must end with a number or a letter.
-    /// * Must be unique within the lake.
-    #[prost(string, tag = "2")]
-    pub environment_id: ::prost::alloc::string::String,
-    /// Required. Environment resource.
-    #[prost(message, optional, tag = "3")]
-    pub environment: ::core::option::Option<Environment>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update environment request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateEnvironmentRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub environment: ::core::option::Option<Environment>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete environment request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteEnvironmentRequest {
-    /// Required. The resource name of the environment:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List environments request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListEnvironmentsRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of environments to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 environments will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListEnvironments` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `ListEnvironments` must match the call that provided
-    /// the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List environments response.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListEnvironmentsResponse {
-    /// Environments under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub environments: ::prost::alloc::vec::Vec<Environment>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Get environment request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetEnvironmentRequest {
-    /// Required. The resource name of the environment:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List sessions request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListSessionsRequest {
-    /// Required. The resource name of the parent environment:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of sessions to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 sessions will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListSessions` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListSessions` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request. The following `mode` filter is supported to
-    /// return only the sessions belonging to the requester when the mode is USER
-    /// and return sessions of all the users when the mode is ADMIN. When no filter
-    /// is sent default to USER mode. NOTE: When the mode is ADMIN, the requester
-    /// should have `dataplex.environments.listAllSessions` permission to list all
-    /// sessions, in absence of the permission, the request fails.
-    ///
-    /// mode = ADMIN | USER
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// List sessions response.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListSessionsResponse {
-    /// Sessions under a given environment.
-    #[prost(message, repeated, tag = "1")]
-    pub sessions: ::prost::alloc::vec::Vec<Session>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
 /// Generated client implementations.
 pub mod dataplex_service_client {
     #![allow(
@@ -3634,184 +3501,6 @@ pub mod dataplex_service_client {
                     GrpcMethod::new(
                         "google.cloud.dataplex.v1.DataplexService",
                         "CancelJob",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Create an environment resource.
-        pub async fn create_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update the environment resource.
-        pub async fn update_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Delete the environment resource. All the child resources must have been
-        /// deleted before environment deletion can be initiated.
-        pub async fn delete_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists environments under the given lake.
-        pub async fn list_environments(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListEnvironmentsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListEnvironments",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get environment resource.
-        pub async fn get_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists session resources in an environment.
-        pub async fn list_sessions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListSessionsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListSessions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListSessions",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -5779,6 +5468,35 @@ pub struct LookupEntryRequest {
     #[prost(string, tag = "5")]
     pub entry: ::prost::alloc::string::String,
 }
+/// Lookup Context using permissions in the source system.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupContextRequest {
+    /// Required. The project to which the request should be attributed in the
+    /// following form: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The entry names to lookup context for. The request should have
+    /// max 10 of those.
+    ///
+    /// ## Examples:
+    ///
+    /// projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+    #[prost(string, repeated, tag = "2")]
+    pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Allows to configure the context.
+    #[prost(map = "string, string", tag = "4")]
+    pub options: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Lookup Context response.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LookupContextResponse {
+    /// LLM generated context for the resources.
+    #[prost(string, tag = "1")]
+    pub context: ::prost::alloc::string::String,
+}
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchEntriesRequest {
     /// Required. The project to which the request should be attributed in the
@@ -6593,8 +6311,14 @@ pub struct EntryLink {
     /// Output only. The time when the Entry Link was last updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Specifies the Entries referenced in the Entry Link. There should
-    /// be exactly two entry references.
+    /// Optional. The aspects that are attached to the entry link.
+    /// The format of the aspect key has to be the following:
+    /// `{project_id_or_number}.{location_id}.{aspect_type_id}`
+    /// Currently, only a single aspect of a Dataplex-owned Aspect Type is allowed.
+    #[prost(map = "string, message", tag = "6")]
+    pub aspects: ::std::collections::HashMap<::prost::alloc::string::String, Aspect>,
+    /// Required. Immutable. Specifies the Entries referenced in the Entry Link.
+    /// There should be exactly two entry references.
     #[prost(message, repeated, tag = "10")]
     pub entry_references: ::prost::alloc::vec::Vec<entry_link::EntryReference>,
 }
@@ -6685,6 +6409,25 @@ pub struct CreateEntryLinkRequest {
     #[prost(message, optional, tag = "3")]
     pub entry_link: ::core::option::Option<EntryLink>,
 }
+/// Request message for UpdateEntryLink method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEntryLinkRequest {
+    /// Required. Entry Link resource.
+    #[prost(message, optional, tag = "1")]
+    pub entry_link: ::core::option::Option<EntryLink>,
+    /// Optional. If set to true and the entry link doesn't exist, the service will
+    /// create it.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
+    /// Optional. The map keys of the Aspects which the service should modify.
+    /// It should be the aspect type reference in the format
+    /// `{project_id_or_number}.{location_id}.{aspect_type_id}`.
+    ///
+    /// If this field is left empty, the service treats it as specifying
+    /// exactly those Aspects present in the request.
+    #[prost(string, repeated, tag = "5")]
+    pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Request message for DeleteEntryLink.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntryLinkRequest {
@@ -6693,6 +6436,96 @@ pub struct DeleteEntryLinkRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for LookupEntryLinks.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LookupEntryLinksRequest {
+    /// Required. The project to which the request should be attributed to
+    /// Format: `projects/{project_id_or_number}/locations/{location_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The resource name of the referred Entry.
+    /// Format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`.
+    /// Entry Links which references this entry will be returned in the response.
+    #[prost(string, tag = "2")]
+    pub entry: ::prost::alloc::string::String,
+    /// Mode of entry reference.
+    #[prost(enumeration = "lookup_entry_links_request::EntryMode", tag = "3")]
+    pub entry_mode: i32,
+    /// Entry link types to filter the response by. If empty, all entry link types
+    /// will be returned. At most 10 entry link types can be specified.
+    #[prost(string, repeated, tag = "4")]
+    pub entry_link_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Maximum number of EntryLinks to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 EntryLinks will be returned.
+    /// The maximum value is 10; values above 10 will be coerced to 10.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// Page token received from a previous `LookupEntryLinks` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters that
+    /// are provided to the `LookupEntryLinks` request must match the call that
+    /// provided the page token.
+    #[prost(string, tag = "6")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `LookupEntryLinksRequest`.
+pub mod lookup_entry_links_request {
+    /// Mode of entry reference.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EntryMode {
+        /// Unspecified entry mode. Returns both directional and non-directional
+        /// entry links which references the entry.
+        Unspecified = 0,
+        /// Returns all directed entry links which references the entry as source.
+        Source = 1,
+        /// Return all directed entry links which references the entry as target.
+        Target = 2,
+    }
+    impl EntryMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENTRY_MODE_UNSPECIFIED",
+                Self::Source => "SOURCE",
+                Self::Target => "TARGET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTRY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SOURCE" => Some(Self::Source),
+                "TARGET" => Some(Self::Target),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message for LookupEntryLinks.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupEntryLinksResponse {
+    /// List of entry links that reference the specified entry.
+    #[prost(message, repeated, tag = "1")]
+    pub entry_links: ::prost::alloc::vec::Vec<EntryLink>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request message for GetEntryLink.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntryLinkRequest {
@@ -6700,6 +6533,258 @@ pub struct GetEntryLinkRequest {
     /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// MetadataFeed contains information related to the metadata feed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetadataFeed {
+    /// Identifier. The resource name of the metadata feed, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}/metadataFeeds/{metadata_feed_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. A system-generated, globally unique ID for the metadata job.
+    /// If the metadata job is deleted and then re-created with the same name, this
+    /// ID is different.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Required. The scope of the metadata feed.
+    /// Only the in scope changes are published.
+    #[prost(message, optional, tag = "3")]
+    pub scope: ::core::option::Option<metadata_feed::Scope>,
+    /// Optional. The filters of the metadata feed.
+    /// Only the changes that match the filters are published.
+    #[prost(message, optional, tag = "4")]
+    pub filters: ::core::option::Option<metadata_feed::Filters>,
+    /// Output only. The time when the feed was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the feed was updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined labels.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The endpoint defines the where the metadata feed messages are
+    /// published.
+    #[prost(oneof = "metadata_feed::Endpoint", tags = "100")]
+    pub endpoint: ::core::option::Option<metadata_feed::Endpoint>,
+}
+/// Nested message and enum types in `MetadataFeed`.
+pub mod metadata_feed {
+    /// Scope defines the scope of the metadata feed.
+    /// Scopes are exclusive. Only one of the scopes can be specified.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Scope {
+        /// Optional. Whether the metadata feed is at the organization-level.
+        ///
+        /// * If `true`, all changes happened to the entries in the same
+        ///   organization as the feed are published.
+        /// * If `false`, you must specify a list of projects or a list of entry
+        ///   groups whose entries you want to listen to.
+        ///
+        /// The default is `false`.
+        #[prost(bool, tag = "1")]
+        pub organization_level: bool,
+        /// Optional. The projects whose entries you want to listen to.
+        /// Must be in the same organization as the feed.
+        /// Must be in the format: `projects/{project_id_or_number}`.
+        #[prost(string, repeated, tag = "2")]
+        pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The entry groups whose entries you want to listen to.
+        /// Must be in the format:
+        /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
+        #[prost(string, repeated, tag = "3")]
+        pub entry_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Filters defines the type of changes that you want to listen to.
+    /// You can have multiple entry type filters and multiple aspect type filters.
+    /// All of the entry type filters are OR'ed together.
+    /// All of the aspect type filters are OR'ed together.
+    /// All of the entry type filters and aspect type filters are AND'ed together.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Filters {
+        /// Optional. The entry types that you want to listen to, specified as
+        /// relative resource names in the format
+        /// `projects/{project_id_or_number}/locations/{location}/entryTypes/{entry_type_id}`.
+        /// Only entries that belong to the specified entry types are published.
+        #[prost(string, repeated, tag = "1")]
+        pub entry_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The aspect types that you want to listen to. Depending on how
+        /// the aspect is attached to the entry, in the format:
+        /// `projects/{project_id_or_number}/locations/{location}/aspectTypes/{aspect_type_id}`.
+        #[prost(string, repeated, tag = "2")]
+        pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The type of change that you want to listen to.
+        /// If not specified, all changes are published.
+        #[prost(
+            enumeration = "filters::ChangeType",
+            repeated,
+            packed = "false",
+            tag = "3"
+        )]
+        pub change_types: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Nested message and enum types in `Filters`.
+    pub mod filters {
+        /// The type of change that you want to listen to.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ChangeType {
+            /// Unspecified change type. Defaults to UNSPECIFIED.
+            Unspecified = 0,
+            /// The change is a create event.
+            Create = 1,
+            /// The change is an update event.
+            Update = 2,
+            /// The change is a delete event.
+            Delete = 3,
+        }
+        impl ChangeType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                    Self::Create => "CREATE",
+                    Self::Update => "UPDATE",
+                    Self::Delete => "DELETE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATE" => Some(Self::Create),
+                    "UPDATE" => Some(Self::Update),
+                    "DELETE" => Some(Self::Delete),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The endpoint defines the where the metadata feed messages are
+    /// published.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Endpoint {
+        /// Optional. The pubsub topic that you want the metadata feed messages to
+        /// publish to. Please grant Dataplex service account the permission to
+        /// publish messages to the topic. The service account is:
+        /// service-{PROJECT_NUMBER}@gcp-sa-dataplex.iam.gserviceaccount.com.
+        #[prost(string, tag = "100")]
+        PubsubTopic(::prost::alloc::string::String),
+    }
+}
+/// Request message for CreateMetadataFeed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateMetadataFeedRequest {
+    /// Required. The resource name of the parent location, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The metadata job resource.
+    #[prost(message, optional, tag = "2")]
+    pub metadata_feed: ::core::option::Option<MetadataFeed>,
+    /// Optional. The metadata job ID. If not provided, a unique ID is generated
+    /// with the prefix `metadata-job-`.
+    #[prost(string, tag = "3")]
+    pub metadata_feed_id: ::prost::alloc::string::String,
+    /// Optional. The service validates the request without performing any
+    /// mutations. The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Request message for GetMetadataFeed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetMetadataFeedRequest {
+    /// Required. The resource name of the metadata feed, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListMetadataFeedsRequest.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMetadataFeedsRequest {
+    /// Required. The resource name of the parent location, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of metadata feeds to return. The service
+    /// might return fewer feeds than this value. If unspecified, at most 10 feeds
+    /// are returned. The maximum value is 1,000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token received from a previous `ListMetadataFeeds` call.
+    /// Provide this token to retrieve the subsequent page of results. When
+    /// paginating, all other parameters that are provided to the
+    /// `ListMetadataFeeds` request must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request. Filters are case-sensitive.
+    /// The service supports the following formats:
+    ///
+    /// * `labels.key1 = "value1"`
+    /// * `labels:key1`
+    /// * `name = "value"`
+    ///
+    /// You can combine filters with `AND`, `OR`, and `NOT` operators.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The field to sort the results by, either `name` or `create_time`.
+    /// If not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for ListMetadataFeeds.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMetadataFeedsResponse {
+    /// List of metadata feeds under the specified parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub metadata_feeds: ::prost::alloc::vec::Vec<MetadataFeed>,
+    /// A token to retrieve the next page of results. If there are no more results
+    /// in the list, the value is empty.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that the service couldn't reach.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for DeleteMetadataFeed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteMetadataFeedRequest {
+    /// Required. The resource name of the metadata feed, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}/MetadataFeeds/{metadata_feed_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateMetadataFeed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateMetadataFeedRequest {
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub metadata_feed: ::core::option::Option<MetadataFeed>,
+    /// Optional. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
 }
 /// View for controlling which parts of an entry are to be returned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6715,6 +6800,8 @@ pub enum EntryView {
     /// Returns aspects matching custom fields in GetEntryRequest. If the number of
     /// aspects exceeds 100, the first 100 will be returned.
     Custom = 3,
+    /// Returns all aspects. If the number of aspects exceeds 100, the first
+    /// 100 will be returned.
     All = 4,
 }
 impl EntryView {
@@ -7400,11 +7487,6 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists Entries within an EntryGroup.
-        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
-        /// Metastore metadata that is stored in Dataplex Universal Catalog is
-        /// changing. For more information, see [Changes to metadata stored in
-        /// Dataplex Universal
-        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn list_entries(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntriesRequest>,
@@ -7435,11 +7517,6 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets an Entry.
-        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
-        /// Metastore metadata that is stored in Dataplex Universal Catalog is
-        /// changing. For more information, see [Changes to metadata stored in
-        /// Dataplex Universal
-        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn get_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntryRequest>,
@@ -7467,11 +7544,6 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Looks up an entry by name using the permission on the source system.
-        /// Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc
-        /// Metastore metadata that is stored in Dataplex Universal Catalog is
-        /// changing. For more information, see [Changes to metadata stored in
-        /// Dataplex Universal
-        /// Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
         pub async fn lookup_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEntryRequest>,
@@ -7675,6 +7747,33 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates an Entry Link.
+        pub async fn update_entry_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEntryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateEntryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes an Entry Link.
         pub async fn delete_entry_link(
             &mut self,
@@ -7702,6 +7801,66 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Looks up Entry Links referencing the specified Entry.
+        pub async fn lookup_entry_links(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupEntryLinksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LookupEntryLinksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/LookupEntryLinks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "LookupEntryLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up LLM Context for the specified resources.
+        pub async fn lookup_context(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupContextRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LookupContextResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/LookupContext",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "LookupContext",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets an Entry Link.
         pub async fn get_entry_link(
             &mut self,
@@ -7725,6 +7884,153 @@ pub mod catalog_service_client {
                     GrpcMethod::new(
                         "google.cloud.dataplex.v1.CatalogService",
                         "GetEntryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a MetadataFeed.
+        pub async fn create_metadata_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateMetadataFeedRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateMetadataFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateMetadataFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a MetadataFeed.
+        pub async fn get_metadata_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMetadataFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::MetadataFeed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetMetadataFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetMetadataFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve a list of MetadataFeeds.
+        pub async fn list_metadata_feeds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMetadataFeedsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMetadataFeedsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ListMetadataFeeds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ListMetadataFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a MetadataFeed.
+        pub async fn delete_metadata_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteMetadataFeedRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteMetadataFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteMetadataFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a MetadataFeed.
+        pub async fn update_metadata_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateMetadataFeedRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateMetadataFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateMetadataFeed",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -8219,144 +8525,6 @@ pub mod cmek_service_client {
         }
     }
 }
-/// Create content request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateContentRequest {
-    /// Required. The resource name of the parent lake:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Content resource.
-    #[prost(message, optional, tag = "2")]
-    pub content: ::core::option::Option<Content>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Update content request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateContentRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub content: ::core::option::Option<Content>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete content request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteContentRequest {
-    /// Required. The resource name of the content:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List content request. Returns the BASIC Content view.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListContentRequest {
-    /// Required. The resource name of the parent lake:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of content to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 content will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListContent` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListContent` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request. Filters are case-sensitive.
-    /// The following formats are supported:
-    ///
-    /// labels.key1 = "value1"
-    /// labels:key1
-    /// type = "NOTEBOOK"
-    /// type = "SQL_SCRIPT"
-    ///
-    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// List content response.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListContentResponse {
-    /// Content under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub content: ::prost::alloc::vec::Vec<Content>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Get content request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetContentRequest {
-    /// Required. The resource name of the content:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. Specify content view to make a partial request.
-    #[prost(enumeration = "get_content_request::ContentView", tag = "2")]
-    pub view: i32,
-}
-/// Nested message and enum types in `GetContentRequest`.
-pub mod get_content_request {
-    /// Specifies whether the request should return the full or the partial
-    /// representation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ContentView {
-        /// Content view not specified. Defaults to BASIC.
-        /// The API will default to the BASIC view.
-        Unspecified = 0,
-        /// Will not return the `data_text` field.
-        Basic = 1,
-        /// Returns the complete proto.
-        Full = 2,
-    }
-    impl ContentView {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "CONTENT_VIEW_UNSPECIFIED",
-                Self::Basic => "BASIC",
-                Self::Full => "FULL",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "CONTENT_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
-                "BASIC" => Some(Self::Basic),
-                "FULL" => Some(Self::Full),
-                _ => None,
-            }
-        }
-    }
-}
 /// Generated client implementations.
 pub mod content_service_client {
     #![allow(
@@ -8449,260 +8617,6 @@ pub mod content_service_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
-        }
-        /// Create a content.
-        pub async fn create_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/CreateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "CreateContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update a content. Only supports full resource update.
-        pub async fn update_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/UpdateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "UpdateContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Delete a content.
-        pub async fn delete_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteContentRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/DeleteContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "DeleteContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get a content resource.
-        pub async fn get_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/GetContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "GetContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets the access control policy for a contentitem resource. A `NOT_FOUND`
-        /// error is returned if the resource does not exist. An empty policy is
-        /// returned if the resource exists but does not have a policy set on it.
-        ///
-        /// Caller must have Google IAM `dataplex.content.getIamPolicy` permission
-        /// on the resource.
-        pub async fn get_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::GetIamPolicyRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::iam::v1::Policy>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "GetIamPolicy",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Sets the access control policy on the specified contentitem resource.
-        /// Replaces any existing policy.
-        ///
-        /// Caller must have Google IAM `dataplex.content.setIamPolicy` permission
-        /// on the resource.
-        pub async fn set_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::SetIamPolicyRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::iam::v1::Policy>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "SetIamPolicy",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Returns the caller's permissions on a resource.
-        /// If the resource does not exist, an empty set of
-        /// permissions is returned (a `NOT_FOUND` error is not returned).
-        ///
-        /// A caller is not required to have Google IAM permission to make this
-        /// request.
-        ///
-        /// Note: This operation is designed to be used for building permission-aware
-        /// UIs and command-line tools, not for authorization checking. This operation
-        /// may "fail open" without warning.
-        pub async fn test_iam_permissions(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::TestIamPermissionsRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<
-                super::super::super::super::iam::v1::TestIamPermissionsResponse,
-            >,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "TestIamPermissions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// List content.
-        pub async fn list_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListContentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListContentResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/ListContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "ListContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -8942,8 +8856,75 @@ pub mod data_discovery_result {
     }
 }
 /// DataDocumentation scan related spec.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DataDocumentationSpec {}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataDocumentationSpec {
+    /// Optional. Whether to publish result to Dataplex Catalog.
+    #[prost(bool, tag = "2")]
+    pub catalog_publishing_enabled: bool,
+    /// Optional. Specifies which components of the data documentation to generate.
+    /// Any component that is required to generate the specified components will
+    /// also be generated. If no generation scope is specified, all available
+    /// documentation components will be generated.
+    #[prost(
+        enumeration = "data_documentation_spec::GenerationScope",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
+    pub generation_scopes: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `DataDocumentationSpec`.
+pub mod data_documentation_spec {
+    /// The data documentation generation scope. This field contains the possible
+    /// components of a data documentation scan which can be selectively generated.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GenerationScope {
+        /// Unspecified generation scope. If no generation scope is specified, all
+        /// available documentation components will be generated.
+        Unspecified = 0,
+        /// All the possible results will be generated.
+        All = 1,
+        /// Table and column descriptions will be generated.
+        TableAndColumnDescriptions = 2,
+        /// SQL queries will be generated.
+        SqlQueries = 3,
+    }
+    impl GenerationScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GENERATION_SCOPE_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::TableAndColumnDescriptions => "TABLE_AND_COLUMN_DESCRIPTIONS",
+                Self::SqlQueries => "SQL_QUERIES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GENERATION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "TABLE_AND_COLUMN_DESCRIPTIONS" => Some(Self::TableAndColumnDescriptions),
+                "SQL_QUERIES" => Some(Self::SqlQueries),
+                _ => None,
+            }
+        }
+    }
+}
 /// The output of a DataDocumentation scan.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataDocumentationResult {
@@ -9010,11 +8991,858 @@ pub mod data_documentation_result {
         TableResult(TableResult),
     }
 }
+/// A data product is a curated collection of data assets, packaged to address
+/// specific use cases. It's a way to manage and share data in a more organized,
+/// product-like manner.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProduct {
+    /// Identifier. Resource name of the data product.
+    /// Format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated unique ID for the data product.
+    /// This ID will be different if the data product is deleted and re-created
+    /// with the same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Required. User-friendly display name of the data product.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The time at which the data product was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the data product was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the data product.
+    ///
+    /// Example:
+    ///
+    /// ```text,
+    /// {
+    ///   "environment": "production",
+    ///   "billing": "marketing-department"
+    /// }
+    /// ```
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Description of the data product.
+    #[prost(string, tag = "8")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Base64 encoded image representing the data product. Max
+    /// Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API
+    /// only performs validation on size of the encoded data. Note: For byte
+    /// fields, the content of the fields are base64-encoded (which increases the
+    /// size of the data by 33-36%) when using JSON on the wire.
+    #[prost(bytes = "vec", tag = "10")]
+    pub icon: ::prost::alloc::vec::Vec<u8>,
+    /// Required. Emails of the data product owners.
+    #[prost(string, repeated, tag = "11")]
+    pub owner_emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Number of data assets associated with this data product.
+    #[prost(int32, tag = "13")]
+    pub asset_count: i32,
+    /// Optional. Data product access groups by access group id as key.
+    /// If data product is used only for packaging data assets, then access groups
+    /// may be empty. However, if a data product is used for sharing data assets,
+    /// then at least one access group must be specified.
+    ///
+    /// Example:
+    ///
+    /// ```text,
+    /// {
+    ///   "analyst": {
+    ///     "id": "analyst",
+    ///     "displayName": "Analyst",
+    ///     "description": "Access group for analysts",
+    ///     "principal": {
+    ///       "googleGroup": "analysts@example.com"
+    ///     }
+    ///   }
+    /// }
+    /// ```
+    #[prost(map = "string, message", tag = "14")]
+    pub access_groups: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        data_product::AccessGroup,
+    >,
+}
+/// Nested message and enum types in `DataProduct`.
+pub mod data_product {
+    /// Represents the principal entity associated with an access group, as per
+    /// <https://cloud.google.com/iam/docs/principals-overview.>
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Principal {
+        /// The type of the principal entity.
+        #[prost(oneof = "principal::Type", tags = "1")]
+        pub r#type: ::core::option::Option<principal::Type>,
+    }
+    /// Nested message and enum types in `Principal`.
+    pub mod principal {
+        /// The type of the principal entity.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Type {
+            /// Optional. Email of the Google Group, as per
+            /// <https://cloud.google.com/iam/docs/principals-overview#google-group.>
+            #[prost(string, tag = "1")]
+            GoogleGroup(::prost::alloc::string::String),
+        }
+    }
+    /// Custom user defined access groups at the data product level. These are used
+    /// for granting different levels of access (IAM roles) on the individual data
+    /// product's data assets.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccessGroup {
+        /// Required. Unique identifier of the access group within the data product.
+        /// User defined. Eg. "analyst", "developer", etc.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// Required. User friendly display name of the access group.
+        /// Eg. "Analyst", "Developer", etc.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Optional. Description of the access group.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+        /// Required. The principal entity associated with this access group.
+        #[prost(message, optional, tag = "4")]
+        pub principal: ::core::option::Option<Principal>,
+    }
+}
+/// Represents a data asset resource that can be packaged and shared via a data
+/// product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataAsset {
+    /// Identifier. Resource name of the data asset.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}/dataAssets/{data_asset_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the data asset.
+    /// This ID will be different if the data asset is deleted and re-created
+    /// with the same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time at which the data asset was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the data asset was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the data asset.
+    ///
+    /// Example:
+    ///
+    /// ```text,
+    /// {
+    ///   "environment": "production",
+    ///   "billing": "marketing-department"
+    /// }
+    /// ```
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. Immutable. Full resource name of the cloud resource represented
+    /// by the data asset. This must follow
+    /// <https://cloud.google.com/iam/docs/full-resource-names.> Example:
+    /// `//bigquery.googleapis.com/projects/my_project_123/datasets/dataset_456/tables/table_789`
+    /// Only BigQuery tables and datasets are currently supported.
+    /// Data asset creator must have getIamPolicy and setIamPolicy permissions on
+    /// the resource. Data asset creator must also have resource specific get
+    /// permission, for instance, bigquery.tables.get for BigQuery tables.
+    #[prost(string, tag = "7")]
+    pub resource: ::prost::alloc::string::String,
+    /// Optional. Access groups configurations for this data asset.
+    ///
+    /// The key is `DataProduct.AccessGroup.id` and the value is
+    /// `AccessGroupConfig`.
+    ///
+    /// Example:
+    ///
+    /// ```text,
+    /// {
+    ///    "analyst": {
+    ///      "iamRoles": \["roles/bigquery.dataViewer"\]
+    ///    }
+    /// }
+    /// ```
+    ///
+    /// Currently, at most one IAM role is allowed per access group. For providing
+    /// multiple predefined IAM roles, wrap them in a custom IAM role as per
+    /// <https://cloud.google.com/iam/docs/creating-custom-roles.>
+    #[prost(map = "string, message", tag = "9")]
+    pub access_group_configs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        data_asset::AccessGroupConfig,
+    >,
+}
+/// Nested message and enum types in `DataAsset`.
+pub mod data_asset {
+    /// Configuration for access group inherited from the parent data product.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccessGroupConfig {
+        /// Optional. IAM roles granted on the resource to this access group. Role
+        /// name follows <https://cloud.google.com/iam/docs/reference/rest/v1/roles.>
+        ///
+        /// Example: `\[ "roles/bigquery.dataViewer" \]`
+        #[prost(string, repeated, tag = "1")]
+        pub iam_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+}
+/// Request message for creating a data product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataProductRequest {
+    /// Required. The parent resource where this data product will be created.
+    /// Format: projects/{project_id_or_number}/locations/{location_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID of the data product to create.
+    ///
+    /// The ID must conform to RFC-1034 and contain only lower-case letters (a-z),
+    /// numbers (0-9), or hyphens, with the first character a letter, the last a
+    /// letter or a number, and a 63 character maximum. Characters outside of
+    /// ASCII are not permitted.
+    /// Valid format regex: `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`
+    /// If not provided, a system generated ID will be used.
+    #[prost(string, tag = "2")]
+    pub data_product_id: ::prost::alloc::string::String,
+    /// Required. The data product to create.
+    #[prost(message, optional, tag = "3")]
+    pub data_product: ::core::option::Option<DataProduct>,
+    /// Optional. Validates the request without actually creating the data product.
+    /// Default: false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Request message for deleting a data product.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDataProductRequest {
+    /// Required. The name of the data product to delete.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag of the data product.
+    ///
+    /// If an etag is provided and does not match the current etag of the data
+    /// product, then the deletion will be blocked and an ABORTED error will be
+    /// returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. Validates the request without actually deleting the data product.
+    /// Default: false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Request message for getting a data product.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDataProductRequest {
+    /// Required. The name of the data product to retrieve.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for listing data products.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDataProductsRequest {
+    /// Required. The parent, which has this collection of data products.
+    ///
+    /// Format: `projects/{project_id_or_number}/locations/{location_id}`.
+    ///
+    /// Supports listing across all locations with the wildcard `-` (hyphen)
+    /// character. Example: `projects/{project_id_or_number}/locations/-`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Filter expression that filters data products listed in the
+    /// response.
+    ///
+    /// Example of using this filter is: `display_name="my-data-product"`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of data products to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 data products will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListDataProducts` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListDataProducts` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Order by expression that orders data products listed in the
+    /// response.
+    ///
+    /// Supported Order by fields are: `name` or `create_time`.
+    ///
+    /// If not specified, the ordering is undefined.
+    ///
+    /// Ordering by `create_time` is not supported when listing resources across
+    /// locations (i.e. when request contains `/locations/-`).
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for listing data products.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataProductsResponse {
+    /// The data products for the requested filter criteria.
+    #[prost(message, repeated, tag = "1")]
+    pub data_products: ::prost::alloc::vec::Vec<DataProduct>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is empty, then there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that the service couldn't reach.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for updating a data product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataProductRequest {
+    /// Required. The data product to update.
+    /// The data product's `name` field is used to identify the data product to
+    /// update.
+    #[prost(message, optional, tag = "1")]
+    pub data_product: ::core::option::Option<DataProduct>,
+    /// Optional. The list of fields to update.
+    /// If this is empty or not set, then all the fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Validates the request without actually updating the data product.
+    /// Default: false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Request message for creating a data asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataAssetRequest {
+    /// Required. The parent resource where this data asset will be created.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID of the data asset to create.
+    ///
+    /// The ID must conform to RFC-1034 and contain only lower-case letters (a-z),
+    /// numbers (0-9), or hyphens, with the first character a letter, the last a
+    /// letter or a number, and a 63 character maximum. Characters outside of
+    /// ASCII are not permitted.
+    /// Valid format regex: `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`
+    /// If not provided, a system generated ID will be used.
+    #[prost(string, tag = "2")]
+    pub data_asset_id: ::prost::alloc::string::String,
+    /// Required. The data asset to create.
+    #[prost(message, optional, tag = "3")]
+    pub data_asset: ::core::option::Option<DataAsset>,
+    /// Optional. Validates the request without actually creating the data asset.
+    /// Defaults to false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Request message for updating a data asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataAssetRequest {
+    /// Required. The data asset to update.
+    /// The data asset's `name` field is used to identify the data asset to update.
+    #[prost(message, optional, tag = "1")]
+    pub data_asset: ::core::option::Option<DataAsset>,
+    /// Optional. The list of fields to update.
+    /// If this is empty or not set, then all the fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Validates the request without actually updating the data asset.
+    /// Defaults to false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Request message for deleting a data asset.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteDataAssetRequest {
+    /// Required. The name of the data asset to delete.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}/dataAssets/{data_asset_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag of the data asset.
+    /// If this is provided, it must match the server's etag.
+    /// If the etag is provided and does not match the server-computed etag,
+    /// the request must fail with a ABORTED error code.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. Validates the request without actually deleting the data asset.
+    /// Defaults to false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Request message for getting a data asset.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetDataAssetRequest {
+    /// Required. The name of the data asset to retrieve.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}/dataAssets/{data_asset_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for listing data assets.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListDataAssetsRequest {
+    /// Required. The parent, which has this collection of data assets.
+    /// Format:
+    /// projects/{project_id_or_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Filter expression that filters data assets listed in the
+    /// response.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by expression that orders data assets listed in the
+    /// response.
+    ///
+    /// Supported `order_by` fields are: `name` or `create_time`.
+    ///
+    /// If not specified, the ordering is undefined.
+    #[prost(string, tag = "3")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. The maximum number of data assets to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 data assets will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListDataAssets` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListDataAssets` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing data assets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataAssetsResponse {
+    /// The data assets for the requested filter criteria.
+    #[prost(message, repeated, tag = "1")]
+    pub data_assets: ::prost::alloc::vec::Vec<DataAsset>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is empty, then there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod data_product_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// `DataProductService` provides APIs for managing data products and
+    /// the underlying data assets.
+    #[derive(Debug, Clone)]
+    pub struct DataProductServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataProductServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataProductServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataProductServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            DataProductServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a data product.
+        pub async fn create_data_product(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataProductRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/CreateDataProduct",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "CreateDataProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a data product. The deletion will fail if the data product is not
+        /// empty (i.e. contains at least one data asset).
+        pub async fn delete_data_product(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataProductRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/DeleteDataProduct",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "DeleteDataProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a data product.
+        pub async fn get_data_product(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataProductRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataProduct>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/GetDataProduct",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "GetDataProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists data products for a given project.
+        pub async fn list_data_products(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataProductsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataProductsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/ListDataProducts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "ListDataProducts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a data product.
+        pub async fn update_data_product(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataProductRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/UpdateDataProduct",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "UpdateDataProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a data asset.
+        pub async fn create_data_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/CreateDataAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "CreateDataAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a data asset.
+        pub async fn update_data_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/UpdateDataAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "UpdateDataAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a data asset.
+        pub async fn delete_data_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/DeleteDataAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "DeleteDataAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a data asset.
+        pub async fn get_data_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataAssetRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataAsset>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/GetDataAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "GetDataAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists data assets for a given data product.
+        pub async fn list_data_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataAssetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataAssetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/ListDataAssets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "ListDataAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// The status of publishing the data scan result as Dataplex Universal Catalog
-/// metadata.
+/// metadata. Multiple DataScan log events may exist, each with different
+/// publishing information depending on the type of publishing triggered.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataScanCatalogPublishingStatus {
-    /// Output only. Execution state for catalog publishing.
+    /// Output only. Execution state for publishing.
     #[prost(enumeration = "data_scan_catalog_publishing_status::State", tag = "1")]
     pub state: i32,
 }
@@ -9036,10 +9864,12 @@ pub mod data_scan_catalog_publishing_status {
     pub enum State {
         /// The publishing state is unspecified.
         Unspecified = 0,
-        /// Publish to catalog completed successfully.
+        /// Publishing to catalog completed successfully.
         Succeeded = 1,
         /// Publish to catalog failed.
         Failed = 2,
+        /// Publishing to catalog was skipped.
+        Skipped = 3,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -9051,6 +9881,7 @@ pub mod data_scan_catalog_publishing_status {
                 Self::Unspecified => "STATE_UNSPECIFIED",
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
+                Self::Skipped => "SKIPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9059,6 +9890,7 @@ pub mod data_scan_catalog_publishing_status {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
+                "SKIPPED" => Some(Self::Skipped),
                 _ => None,
             }
         }
@@ -9070,7 +9902,7 @@ pub struct Trigger {
     /// DataScan scheduling and trigger settings.
     ///
     /// If not specified, the default is `onDemand`.
-    #[prost(oneof = "trigger::Mode", tags = "100, 101")]
+    #[prost(oneof = "trigger::Mode", tags = "100, 101, 102")]
     pub mode: ::core::option::Option<trigger::Mode>,
 }
 /// Nested message and enum types in `Trigger`.
@@ -9096,6 +9928,17 @@ pub mod trigger {
         #[prost(string, tag = "1")]
         pub cron: ::prost::alloc::string::String,
     }
+    /// The scan runs once using create API.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OneTime {
+        /// Optional. Time to live for OneTime scans.
+        /// default value is 24 hours, minimum value is 0 seconds, and maximum value
+        /// is 365 days. The time is calculated from the data scan job completion
+        /// time. If value is set as 0 seconds, the scan will be immediately deleted
+        /// upon job completion, regardless of whether the job succeeded or failed.
+        #[prost(message, optional, tag = "1")]
+        pub ttl_after_scan_completion: ::core::option::Option<::prost_types::Duration>,
+    }
     /// DataScan scheduling and trigger settings.
     ///
     /// If not specified, the default is `onDemand`.
@@ -9107,6 +9950,10 @@ pub mod trigger {
         /// The scan is scheduled to run periodically.
         #[prost(message, tag = "101")]
         Schedule(Schedule),
+        /// The scan runs once, and does not create an associated ScanJob child
+        /// resource.
+        #[prost(message, tag = "102")]
+        OneTime(OneTime),
     }
 }
 /// The data source for DataScan.
@@ -9829,6 +10676,39 @@ pub struct DataQualityRuleResult {
     /// This field is only valid for SQL assertion rules.
     #[prost(int64, tag = "11")]
     pub assertion_row_count: i64,
+    /// Output only. Contains the results of all debug queries for this rule.
+    /// The number of result sets will correspond to the number of
+    /// \[debug_queries\]\[google.cloud.dataplex.v1.DataQualityRule.debug_queries\].
+    #[prost(message, repeated, tag = "13")]
+    pub debug_queries_result_sets: ::prost::alloc::vec::Vec<
+        data_quality_rule_result::DebugQueryResultSet,
+    >,
+}
+/// Nested message and enum types in `DataQualityRuleResult`.
+pub mod data_quality_rule_result {
+    /// Contains a single result from the debug query.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DebugQueryResult {
+        /// Specifies the name of the result. Available if provided with an explicit
+        /// alias using `\[AS\] alias`.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Indicates the data type of the result. For more information, see
+        /// [BigQuery data
+        /// types](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>).
+        #[prost(string, tag = "2")]
+        pub r#type: ::prost::alloc::string::String,
+        /// Represents the value of the result as a string.
+        #[prost(string, tag = "3")]
+        pub value: ::prost::alloc::string::String,
+    }
+    /// Contains all results from a debug query.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DebugQueryResultSet {
+        /// Output only. Contains all results. Up to 10 results can be returned.
+        #[prost(message, repeated, tag = "1")]
+        pub results: ::prost::alloc::vec::Vec<DebugQueryResult>,
+    }
 }
 /// DataQualityDimensionResult provides a more detailed, per-dimension view of
 /// the results.
@@ -9875,7 +10755,7 @@ pub struct DataQualityRule {
     /// * UniquenessExpectation
     #[prost(bool, tag = "501")]
     pub ignore_null: bool,
-    /// Required. The dimension a rule belongs to. Results are also aggregated at
+    /// Optional. The dimension a rule belongs to. Results are also aggregated at
     /// the dimension level. Custom dimension name is supported with all uppercase
     /// letters and maximum length of 30 characters.
     #[prost(string, tag = "502")]
@@ -9906,6 +10786,11 @@ pub struct DataQualityRule {
     /// Default is false.
     #[prost(bool, tag = "506")]
     pub suspended: bool,
+    /// Optional. Specifies the debug queries for this rule.
+    /// Currently, only one query is supported, but this may be expanded in the
+    /// future.
+    #[prost(message, repeated, tag = "510")]
+    pub debug_queries: ::prost::alloc::vec::Vec<data_quality_rule::DebugQuery>,
     /// The rule-specific configuration.
     #[prost(
         oneof = "data_quality_rule::RuleType",
@@ -10087,6 +10972,36 @@ pub mod data_quality_rule {
     pub struct SqlAssertion {
         /// Optional. The SQL statement.
         #[prost(string, tag = "1")]
+        pub sql_statement: ::prost::alloc::string::String,
+    }
+    /// Specifies a SQL statement that is evaluated to return up to 10 scalar
+    /// values that are used to debug rules. If the rule fails, the values can help
+    /// diagnose the cause of the failure.
+    ///
+    /// The SQL statement must use [GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>),
+    /// and must not contain any semicolons.
+    ///
+    /// You can use the data reference parameter `${data()}` to reference the
+    /// source table with all of its precondition filters applied. Examples of
+    /// precondition filters include row filters, incremental data filters, and
+    /// sampling. For more information, see [Data reference
+    /// parameter](<https://cloud.google.com/dataplex/docs/auto-data-quality-overview#data-reference-parameter>).
+    ///
+    /// You can also name results with an explicit alias using `\[AS\] alias`. For
+    /// more information, see [BigQuery explicit
+    /// aliases](<https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#explicit_alias_syntax>).
+    ///
+    /// Example: `SELECT MIN(col1) AS min_col1, MAX(col1) AS max_col1 FROM  ${data()}`
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DebugQuery {
+        /// Optional. Specifies the description of the debug query.
+        ///
+        /// * The maximum length is 1,024 characters.
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+        /// Required. Specifies the SQL statement to be executed.
+        #[prost(string, tag = "2")]
         pub sql_statement: ::prost::alloc::string::String,
     }
     /// The rule-specific configuration.
@@ -13419,6 +14334,8 @@ pub mod data_scan_event {
         OnDemand = 1,
         /// Data scan triggers as per schedule.
         Schedule = 2,
+        /// Data scan is run one time on creation.
+        OneTime = 3,
     }
     impl Trigger {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -13430,6 +14347,7 @@ pub mod data_scan_event {
                 Self::Unspecified => "TRIGGER_UNSPECIFIED",
                 Self::OnDemand => "ON_DEMAND",
                 Self::Schedule => "SCHEDULE",
+                Self::OneTime => "ONE_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13438,6 +14356,7 @@ pub mod data_scan_event {
                 "TRIGGER_UNSPECIFIED" => Some(Self::Unspecified),
                 "ON_DEMAND" => Some(Self::OnDemand),
                 "SCHEDULE" => Some(Self::Schedule),
+                "ONE_TIME" => Some(Self::OneTime),
                 _ => None,
             }
         }
