@@ -15,4 +15,5 @@ members = [
     "examples/artifact-registry-client",
     "examples/servicecontrol-client",
     "examples/cloudresourcemanager-client",
+    "examples/bigquery-storage-read-client",
 ]

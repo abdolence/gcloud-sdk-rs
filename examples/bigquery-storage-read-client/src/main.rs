@@ -94,7 +94,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             "https://bigquerystorage.googleapis.com",
             None,
         )
-        .await?;
+        .await?
+        .amend_user_agent("gcloud-sdk-rs-example/0.1.0".to_string());
 
     let read_session = ReadSession {
         data_format: DataFormat::Arrow as i32,

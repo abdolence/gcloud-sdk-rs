@@ -17,6 +17,8 @@ where
     google_service: Option<T>,
     token_generator: Arc<GoogleAuthTokenGenerator>,
     cloud_resource_prefix: Option<String>,
+    user_agent: String,
+    x_goog_api_client: String,
 }
 
 impl<T> GoogleAuthMiddlewareService<T>
@@ -32,7 +34,25 @@ where
             google_service: Some(service),
             token_generator,
             cloud_resource_prefix,
+            user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
+            x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
         }
+    }
+
+    pub fn set_user_agent(&mut self, user_agent: String) {
+        self.user_agent = user_agent;
+    }
+
+    pub fn set_x_goog_api_client(&mut self, x_goog_api_client: String) {
+        self.x_goog_api_client = x_goog_api_client;
+    }
+
+    pub fn append_user_agent(&mut self, user_agent: String) {
+        self.user_agent = format!("{} {}", self.user_agent, user_agent);
+    }
+
+    pub fn append_x_goog_api_client(&mut self, x_goog_api_client: String) {
+        self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
     }
 }
 
@@ -60,6 +80,8 @@ where
     fn call(&mut self, mut req: hyper::Request<RequestBody>) -> Self::Future {
         let generator = self.token_generator.clone();
         let cloud_resource_prefix = self.cloud_resource_prefix.clone();
+        let user_agent = self.user_agent.clone();
+        let x_goog_api_client = self.x_goog_api_client.clone();
 
         if let Some(mut google_service) = self.google_service.take() {
             self.google_service = Some(google_service.clone());
@@ -75,6 +97,9 @@ where
                         cloud_resource_prefix_value.parse()?,
                     );
                 }
+                headers.insert(hyper::header::USER_AGENT, user_agent.parse()?);
+                headers.insert("x-goog-api-client", x_goog_api_client.parse()?);
+
                 let req_uri_str = req.uri().to_string();
                 google_service
                     .call(req)
@@ -117,6 +142,8 @@ where
 pub struct GoogleAuthMiddlewareLayer {
     token_generator: Arc<GoogleAuthTokenGenerator>,
     cloud_resource_prefix: Option<String>,
+    user_agent: String,
+    x_goog_api_client: String,
 }
 
 impl GoogleAuthMiddlewareLayer {
@@ -127,7 +154,19 @@ impl GoogleAuthMiddlewareLayer {
         GoogleAuthMiddlewareLayer {
             token_generator: Arc::new(token_generator),
             cloud_resource_prefix,
+            user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
+            x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
         }
+    }
+
+    pub fn amend_user_agent(mut self, user_agent: String) -> Self {
+        self.user_agent = format!("{} {}", self.user_agent, user_agent);
+        self
+    }
+
+    pub fn amend_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
+        self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
+        self
     }
 }
 
@@ -138,10 +177,137 @@ where
     type Service = GoogleAuthMiddlewareService<S>;
 
     fn layer(&self, service: S) -> GoogleAuthMiddlewareService<S> {
-        GoogleAuthMiddlewareService::new(
+        let mut middleware_service = GoogleAuthMiddlewareService::new(
             service,
             self.token_generator.clone(),
             self.cloud_resource_prefix.clone(),
+        );
+        middleware_service.set_user_agent(self.user_agent.clone());
+        middleware_service.set_x_goog_api_client(self.x_goog_api_client.clone());
+        middleware_service
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::token_source::{Source, Token, TokenSourceType};
+    use async_trait::async_trait;
+    use hyper::{Request, Response};
+    use secret_vault_value::SecretValue;
+    use std::convert::Infallible;
+
+    struct DummySource;
+
+    #[async_trait]
+    impl Source for DummySource {
+        async fn token(&self) -> crate::error::Result<Token> {
+            Ok(Token {
+                token_type: "Bearer".to_string(),
+                token: SecretValue::from("dummy-token"),
+                expiry: Utc::now() + chrono::Duration::hours(1),
+            })
+        }
+    }
+
+    #[derive(Clone)]
+    struct DummyService {
+        tx: Arc<tokio::sync::mpsc::Sender<Request<String>>>,
+    }
+
+    impl Service<Request<String>> for DummyService {
+        type Response = Response<String>;
+        type Error = Infallible;
+        type Future = Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + Send>>;
+
+        fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+            Poll::Ready(Ok(()))
+        }
+
+        fn call(&mut self, req: Request<String>) -> Self::Future {
+            let tx = self.tx.clone();
+            Box::pin(async move {
+                tx.send(req).await.unwrap();
+                Ok(Response::builder()
+                    .status(200)
+                    .body("".to_string())
+                    .unwrap())
+            })
+        }
+    }
+
+    #[tokio::test]
+    async fn test_headers_presence() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
         )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service = GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        let expected_default = format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION"));
+        assert_eq!(
+            captured_req.headers().get(hyper::header::USER_AGENT).unwrap(),
+            expected_default.as_str()
+        );
+        assert_eq!(
+            captured_req.headers().get("x-goog-api-client").unwrap(),
+            expected_default.as_str()
+        );
+        assert_eq!(
+            captured_req.headers().get("authorization").unwrap(),
+            "Bearer dummy-token"
+        );
+    }
+
+    #[tokio::test]
+    async fn test_headers_amend() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+
+        let layer = GoogleAuthMiddlewareLayer::new(token_generator, None)
+            .amend_user_agent("extra-ua".to_string())
+            .amend_x_goog_api_client("extra-client".to_string());
+
+        let mut service = layer.layer(dummy_service);
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        let expected_ua = format!("gcloud-sdk-rs/{} extra-ua", env!("CARGO_PKG_VERSION"));
+        let expected_client = format!("gcloud-sdk-rs/{} extra-client", env!("CARGO_PKG_VERSION"));
+
+        assert_eq!(
+            captured_req.headers().get(hyper::header::USER_AGENT).unwrap(),
+            expected_ua.as_str()
+        );
+        assert_eq!(
+            captured_req.headers().get("x-goog-api-client").unwrap(),
+            expected_client.as_str()
+        );
     }
 }
