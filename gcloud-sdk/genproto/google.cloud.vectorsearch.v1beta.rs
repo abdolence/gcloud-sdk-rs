@@ -310,11 +310,13 @@ pub struct VectorSearch {
     /// DOT_PRODUCT will be used as the default.
     #[prost(enumeration = "DistanceMetric", tag = "11")]
     pub distance_metric: i32,
+    /// Specifies the type of vector to use for the query.
     #[prost(oneof = "vector_search::VectorType", tags = "1, 2")]
     pub vector_type: ::core::option::Option<vector_search::VectorType>,
 }
 /// Nested message and enum types in `VectorSearch`.
 pub mod vector_search {
+    /// Specifies the type of vector to use for the query.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VectorType {
         /// A dense vector for the query.
@@ -1245,6 +1247,18 @@ pub mod data_object_service_client {
         }
     }
 }
+/// Represents a customer-managed encryption key specification that can be
+/// applied to a Vector Search collection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// Required. Resource name of the Cloud KMS key used to protect the resource.
+    ///
+    /// The Cloud KMS key must be in the same region as the resource. It must have
+    /// the format
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    #[prost(string, tag = "1")]
+    pub crypto_key_name: ::prost::alloc::string::String,
+}
 /// Message describing Collection object
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Collection {
@@ -1284,8 +1298,15 @@ pub struct Collection {
     /// Optional. JSON Schema for data.
     /// Field names must contain only alphanumeric characters,
     /// underscores, and hyphens.
+    /// The schema must be compliant with
+    /// [JSON Schema Draft 7](<https://json-schema.org/draft-07/schema>).
     #[prost(message, optional, tag = "10")]
     pub data_schema: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Immutable. Specifies the customer-managed encryption key spec for
+    /// a Collection. If set, this Collection and all sub-resources of this
+    /// Collection will be secured by this key.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Message describing a vector field.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1553,6 +1574,46 @@ pub struct CreateIndexRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Message for updating an Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub index: ::core::option::Option<Index>,
+    /// Optional. Specifies the fields to be overwritten in the Index resource by
+    /// the update. The fields specified in the update_mask are relative to the
+    /// resource, not the full request. A field will be overwritten if it is in the
+    /// mask. If the user does not provide a mask then all fields present in the
+    /// request with non-empty values will be overwritten.
+    ///
+    /// The following fields support update:
+    ///
+    /// * `display_name`
+    /// * `description`
+    /// * `labels`
+    /// * `dedicated_infrastructure.autoscaling_spec.min_replica_count`
+    /// * `dedicated_infrastructure.autoscaling_spec.max_replica_count`
+    ///
+    /// If `*` is provided in the `update_mask`, full replacement of mutable fields
+    /// will be performed.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Message for deleting an Index.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexRequest {
@@ -1752,8 +1813,11 @@ pub mod export_data_objects_request {
         pub enum Format {
             /// Unspecified format.
             Unspecified = 0,
-            /// The exported Data Objects will be in JSON format.
+            /// Deprecated: Exports Data Objects in `JSON` format. Use `JSONL` instead.
+            #[deprecated]
             Json = 1,
+            /// Exports Data Objects in `JSONL` format.
+            Jsonl = 2,
         }
         impl Format {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1763,14 +1827,17 @@ pub mod export_data_objects_request {
             pub fn as_str_name(&self) -> &'static str {
                 match self {
                     Self::Unspecified => "FORMAT_UNSPECIFIED",
+                    #[allow(deprecated)]
                     Self::Json => "JSON",
+                    Self::Jsonl => "JSONL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
             pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
                 match value {
                     "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
-                    "JSON" => Some(Self::Json),
+                    "JSON" => Some(#[allow(deprecated)] Self::Json),
+                    "JSONL" => Some(Self::Jsonl),
                     _ => None,
                 }
             }
@@ -1815,12 +1882,15 @@ pub mod dedicated_infrastructure {
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AutoscalingSpec {
         /// Optional. The minimum number of replicas. If not set or set to `0`,
-        /// defaults to `2`. Must be >= `2` and \<= `1000`.
+        /// defaults to `2`. Must be >= `1` and \<= `1000`.
         #[prost(int32, tag = "1")]
         pub min_replica_count: i32,
-        /// Optional. The maximum number of replicas. If not set or set to `0`,
-        /// defaults to the greater of `min_replica_count` and `5`. Must be >=
+        /// Optional. The maximum number of replicas.  Must be >=
         /// `min_replica_count` and \<= `1000`.
+        /// For the v1beta version, if not set or set to `0`, defaults to
+        /// the greater of `min_replica_count` and `5`.
+        /// For all other versions, if not set or set to `0`, defaults to
+        /// the greater of `min_replica_count` and `2`.
         #[prost(int32, tag = "2")]
         pub max_replica_count: i32,
     }
@@ -2247,6 +2317,36 @@ pub mod vector_search_service_client {
                     GrpcMethod::new(
                         "google.cloud.vectorsearch.v1beta.VectorSearchService",
                         "CreateIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single Index.
+        pub async fn update_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vectorsearch.v1beta.VectorSearchService/UpdateIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vectorsearch.v1beta.VectorSearchService",
+                        "UpdateIndex",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -69,6 +69,10 @@ pub struct Instance {
     /// The type of the instance. Defaults to `PRODUCTION`.
     #[prost(enumeration = "instance::Type", tag = "4")]
     pub r#type: i32,
+    /// Optional. The edition of the instance. See
+    /// \[Edition\]\[google.bigtable.admin.v2.Instance.Edition\] for details.
+    #[prost(enumeration = "instance::Edition", tag = "14")]
+    pub edition: i32,
     /// Labels are a flexible and lightweight mechanism for organizing cloud
     /// resources into groups that reflect a customer's organizational needs and
     /// deployment strategies. They can be used to filter resources and aggregate
@@ -202,6 +206,60 @@ pub mod instance {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "PRODUCTION" => Some(Self::Production),
                 "DEVELOPMENT" => Some(Self::Development),
+                _ => None,
+            }
+        }
+    }
+    /// Possible editions of an instance.
+    ///
+    /// An edition is a specific tier of Cloud Bigtable. Each edition is tailored
+    /// to different customer needs. Higher tiers offer more features and better
+    /// performance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Edition {
+        /// The edition is unspecified. This is treated as `ENTERPRISE`.
+        Unspecified = 0,
+        /// The Enterprise edition. This is the default offering that is designed to
+        /// meet the needs of most enterprise workloads.
+        Enterprise = 1,
+        /// The Enterprise Plus edition. This is a premium tier that is designed for
+        /// demanding, multi-tenant workloads requiring the highest levels of
+        /// performance, scale, and global availability.
+        ///
+        /// The nodes in the Enterprise Plus tier come at a higher cost than the
+        /// Enterprise tier. Any Enterprise Plus features must be disabled before
+        /// downgrading to Enterprise.
+        EnterprisePlus = 2,
+    }
+    impl Edition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EDITION_UNSPECIFIED",
+                Self::Enterprise => "ENTERPRISE",
+                Self::EnterprisePlus => "ENTERPRISE_PLUS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
                 _ => None,
             }
         }

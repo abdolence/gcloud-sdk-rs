@@ -146,6 +146,31 @@ pub struct Metric {
     #[prost(bool, tag = "3")]
     pub invisible: bool,
 }
+/// Defines an individual comparison. Most requests will include multiple
+/// comparisons so that the report compares between the comparisons.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Comparison {
+    /// Each comparison produces separate rows in the response. In the response,
+    /// this comparison is identified by this name. If name is unspecified, we will
+    /// use the saved comparisons display name.
+    #[prost(string, optional, tag = "1")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(oneof = "comparison::OneComparison", tags = "2, 3")]
+    pub one_comparison: ::core::option::Option<comparison::OneComparison>,
+}
+/// Nested message and enum types in `Comparison`.
+pub mod comparison {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneComparison {
+        /// A basic comparison.
+        #[prost(message, tag = "2")]
+        DimensionFilter(super::FilterExpression),
+        /// A saved comparison identified by the comparison's resource name.
+        /// For example, 'comparisons/1234'.
+        #[prost(string, tag = "3")]
+        Comparison(::prost::alloc::string::String),
+    }
+}
 /// To express dimension or metric filters. The fields in the same
 /// FilterExpression need to be either all dimensions or all metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -724,16 +749,19 @@ pub struct ResponseMetaData {
     /// Interests](<https://support.google.com/analytics/answer/2799357>).
     #[prost(bool, optional, tag = "8")]
     pub subject_to_thresholding: ::core::option::Option<bool>,
-    /// If this report's results are
+    /// If this report results is
     /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
     /// describes the percentage of events used in this report. One
     /// `samplingMetadatas` is populated for each date range. Each
-    /// `samplingMetadatas` corresponds to a date range in the order that date
-    /// ranges were specified in the request.
+    /// `samplingMetadatas` corresponds to a date range in order that date ranges
+    /// were specified in the request.
     ///
     /// However if the results are not sampled, this field will not be defined.
     #[prost(message, repeated, tag = "9")]
     pub sampling_metadatas: ::prost::alloc::vec::Vec<SamplingMetadata>,
+    /// Identifies the type of data in the report.
+    #[prost(enumeration = "Section", tag = "10")]
+    pub section: i32,
 }
 /// Nested message and enum types in `ResponseMetaData`.
 pub mod response_meta_data {
@@ -1725,8 +1753,8 @@ pub struct FunnelResponseMetadata {
     /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
     /// describes what percentage of events were used in this funnel report. One
     /// `samplingMetadatas` is populated for each date range. Each
-    /// `samplingMetadatas` corresponds to a date range in the order that date
-    /// ranges were specified in the request.
+    /// `samplingMetadatas` corresponds to a date range in order that date ranges
+    /// were specified in the request.
     ///
     /// However if the results are not sampled, this field will not be defined.
     #[prost(message, repeated, tag = "1")]
@@ -1754,6 +1782,282 @@ pub struct SamplingMetadata {
     /// funnel report, compute `samplesReadCount/samplingSpaceSize`.
     #[prost(int64, tag = "2")]
     pub sampling_space_size: i64,
+}
+/// Controls conversion reporting.
+///
+/// <aside class="caution">
+///    This feature may not be available to your Google Analytics property. The
+///    Google Analytics team is actively working to expand this feature to more
+///    properties. Please reach out to your
+///    <a href="<https://support.google.com/analytics/gethelp">support> team</a> if
+///    you have questions about the eligibility of your property.
+/// </aside>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConversionSpec {
+    /// The conversion action IDs to include in the report. If empty, all
+    /// conversions are included. Valid conversion action IDs can be retrieved from
+    /// the `conversion_action` field within the `conversions` list in the
+    /// response of the `GetMetadata` method. For example,
+    /// 'conversionActions/1234'.
+    #[prost(string, repeated, tag = "1")]
+    pub conversion_actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The attribution model to use in the Conversion Report. If unspecified,
+    /// `DATA_DRIVEN` is used.
+    #[prost(enumeration = "conversion_spec::AttributionModel", tag = "2")]
+    pub attribution_model: i32,
+}
+/// Nested message and enum types in `ConversionSpec`.
+pub mod conversion_spec {
+    /// Attribution model to use in the Conversion Report
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AttributionModel {
+        /// Unspecified attribution model.
+        Unspecified = 0,
+        /// Attribution was based on the paid and organic data driven model
+        DataDriven = 1,
+        /// Attribution was based on the paid and organic last click model
+        LastClick = 2,
+    }
+    impl AttributionModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ATTRIBUTION_MODEL_UNSPECIFIED",
+                Self::DataDriven => "DATA_DRIVEN",
+                Self::LastClick => "LAST_CLICK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTRIBUTION_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_DRIVEN" => Some(Self::DataDriven),
+                "LAST_CLICK" => Some(Self::LastClick),
+                _ => None,
+            }
+        }
+    }
+}
+/// Explains a dimension.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DimensionMetadata {
+    /// This dimension's name. Usable in [Dimension](#Dimension)'s `name`. For
+    /// example, `eventName`.
+    #[prost(string, tag = "1")]
+    pub api_name: ::prost::alloc::string::String,
+    /// This dimension's name within the Google Analytics user interface. For
+    /// example, `Event name`.
+    #[prost(string, tag = "2")]
+    pub ui_name: ::prost::alloc::string::String,
+    /// Description of how this dimension is used and calculated.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Still usable but deprecated names for this dimension. If populated, this
+    /// dimension is available by either `apiName` or one of `deprecatedApiNames`
+    /// for a period of time. After the deprecation period, the dimension will be
+    /// available only by `apiName`.
+    #[prost(string, repeated, tag = "4")]
+    pub deprecated_api_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// True if the dimension is custom to this property. This includes user,
+    /// event, & item scoped custom dimensions; to learn more about custom
+    /// dimensions, see <https://support.google.com/analytics/answer/14240153.> This
+    /// also include custom channel groups; to learn more about custom channel
+    /// groups, see <https://support.google.com/analytics/answer/13051316.>
+    #[prost(bool, tag = "5")]
+    pub custom_definition: bool,
+    /// The display name of the category that this dimension belongs to. Similar
+    /// dimensions and metrics are categorized together.
+    #[prost(string, tag = "6")]
+    pub category: ::prost::alloc::string::String,
+    /// Specifies the Google Analytics sections this dimension applies to.
+    #[prost(enumeration = "Section", repeated, tag = "7")]
+    pub sections: ::prost::alloc::vec::Vec<i32>,
+}
+/// Explains a metric.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MetricMetadata {
+    /// A metric name. Usable in [Metric](#Metric)'s `name`. For example,
+    /// `eventCount`.
+    #[prost(string, tag = "1")]
+    pub api_name: ::prost::alloc::string::String,
+    /// This metric's name within the Google Analytics user interface. For example,
+    /// `Event count`.
+    #[prost(string, tag = "2")]
+    pub ui_name: ::prost::alloc::string::String,
+    /// Description of how this metric is used and calculated.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Still usable but deprecated names for this metric. If populated, this
+    /// metric is available by either `apiName` or one of `deprecatedApiNames`
+    /// for a period of time. After the deprecation period, the metric will be
+    /// available only by `apiName`.
+    #[prost(string, repeated, tag = "4")]
+    pub deprecated_api_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The type of this metric.
+    #[prost(enumeration = "MetricType", tag = "5")]
+    pub r#type: i32,
+    /// The mathematical expression for this derived metric. Can be used in
+    /// [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
+    /// are not expressions, and for non-expressions, this field is empty.
+    #[prost(string, tag = "6")]
+    pub expression: ::prost::alloc::string::String,
+    /// True if the metric is a custom metric for this property.
+    #[prost(bool, tag = "7")]
+    pub custom_definition: bool,
+    /// If reasons are specified, your access is blocked to this metric for this
+    /// property. API requests from you to this property for this metric will
+    /// succeed; however, the report will contain only zeros for this metric. API
+    /// requests with metric filters on blocked metrics will fail. If reasons are
+    /// empty, you have access to this metric.
+    ///
+    /// To learn more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[prost(enumeration = "metric_metadata::BlockedReason", repeated, tag = "8")]
+    pub blocked_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// The display name of the category that this metrics belongs to. Similar
+    /// dimensions and metrics are categorized together.
+    #[prost(string, tag = "9")]
+    pub category: ::prost::alloc::string::String,
+    /// Specifies the Google Analytics sections this metric applies to.
+    #[prost(enumeration = "Section", repeated, tag = "10")]
+    pub sections: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `MetricMetadata`.
+pub mod metric_metadata {
+    /// Justifications for why this metric is blocked.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BlockedReason {
+        /// Will never be specified in API response.
+        Unspecified = 0,
+        /// If present, your access is blocked to revenue related metrics for this
+        /// property, and this metric is revenue related.
+        NoRevenueMetrics = 1,
+        /// If present, your access is blocked to cost related metrics for this
+        /// property, and this metric is cost related.
+        NoCostMetrics = 2,
+    }
+    impl BlockedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
+                Self::NoRevenueMetrics => "NO_REVENUE_METRICS",
+                Self::NoCostMetrics => "NO_COST_METRICS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_REVENUE_METRICS" => Some(Self::NoRevenueMetrics),
+                "NO_COST_METRICS" => Some(Self::NoCostMetrics),
+                _ => None,
+            }
+        }
+    }
+}
+/// The metadata for a single comparison.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ComparisonMetadata {
+    /// This comparison's resource name. Usable in [Comparison](#Comparison)'s
+    /// `comparison` field. For example, 'comparisons/1234'.
+    #[prost(string, tag = "1")]
+    pub api_name: ::prost::alloc::string::String,
+    /// This comparison's name within the Google Analytics user interface.
+    #[prost(string, tag = "2")]
+    pub ui_name: ::prost::alloc::string::String,
+    /// This comparison's description.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
+/// The metadata for a single conversion.
+///
+/// <aside class="caution">
+///    This feature may not be available to your Google Analytics property. The
+///    Google Analytics team is actively working to expand this feature to more
+///    properties. Please reach out to your
+///    <a href="<https://support.google.com/analytics/gethelp">support> team</a> if
+///    you have questions about the eligibility of your property.
+/// </aside>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConversionMetadata {
+    /// The unique identifier of the conversion action. This ID is used to specify
+    /// which conversions to include in a report by populating the
+    /// `conversion_actions` field in the `ConversionsSpec` of a report request.
+    /// For example, 'conversionActions/1234'.
+    #[prost(string, tag = "1")]
+    pub conversion_action: ::prost::alloc::string::String,
+    /// This conversion's name within the Google Analytics user interface.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Identifies if the report data is from the standard report data or
+/// conversion data
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Section {
+    /// Should never be specified.
+    Unspecified = 0,
+    /// The report data is from the standard report data. Google Analytics reports
+    /// include acquisition, engagement, and user behavior reports. Reports use
+    /// dimensions like session source & landing page; reports use metrics like
+    /// sessions, views, and engagement time.
+    Report = 1,
+    /// The report data is from the conversion data. The Google Analytics
+    /// Advertising section reports on conversion performance. Advertising reports
+    /// use dimensions like source & medium; advertising reports use metrics like
+    /// all conversions and ads cost.
+    Advertising = 2,
+}
+impl Section {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SECTION_UNSPECIFIED",
+            Self::Report => "SECTION_REPORT",
+            Self::Advertising => "SECTION_ADVERTISING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SECTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "SECTION_REPORT" => Some(Self::Report),
+            "SECTION_ADVERTISING" => Some(Self::Advertising),
+            _ => None,
+        }
+    }
 }
 /// Scoping specifies which events are considered when evaluating if a user
 /// meets a criteria.
@@ -2601,66 +2905,6 @@ pub struct QueryAudienceListResponse {
     #[prost(int32, optional, tag = "3")]
     pub row_count: ::core::option::Option<i32>,
 }
-/// A request to export users in an audience list to a Google Sheet.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct SheetExportAudienceListRequest {
-    /// Required. The name of the audience list to retrieve users from.
-    /// Format: `properties/{property}/audienceLists/{audience_list}`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. The row count of the start row. The first row is counted as row
-    /// 0.
-    ///
-    /// When paging, the first request does not specify offset; or equivalently,
-    /// sets offset to 0; the first request returns the first `limit` of rows. The
-    /// second request sets offset to the `limit` of the first request; the second
-    /// request returns the second `limit` of rows.
-    ///
-    /// To learn more about this pagination parameter, see
-    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int64, tag = "2")]
-    pub offset: i64,
-    /// Optional. The number of rows to return. If unspecified, 10,000 rows are
-    /// returned. The API returns a maximum of 250,000 rows per request, no matter
-    /// how many you ask for. `limit` must be positive.
-    ///
-    /// The API can also return fewer rows than the requested `limit`, if there
-    /// aren't as many dimension values as the `limit`.
-    ///
-    /// To learn more about this pagination parameter, see
-    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int64, tag = "3")]
-    pub limit: i64,
-}
-/// The created Google Sheet with the list of users in an audience list.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SheetExportAudienceListResponse {
-    /// A uri for you to visit in your browser to view the Google Sheet.
-    #[prost(string, optional, tag = "1")]
-    pub spreadsheet_uri: ::core::option::Option<::prost::alloc::string::String>,
-    /// An ID that identifies the created Google Sheet resource.
-    #[prost(string, optional, tag = "2")]
-    pub spreadsheet_id: ::core::option::Option<::prost::alloc::string::String>,
-    /// The total number of rows in the AudienceList result. `rowCount` is
-    /// independent of the number of rows returned in the response, the `limit`
-    /// request parameter, and the `offset` request parameter. For example if a
-    /// query returns 175 rows and includes `limit` of 50 in the API request, the
-    /// response will contain `rowCount` of 175 but only 50 rows.
-    ///
-    /// To learn more about this pagination parameter, see
-    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int32, optional, tag = "3")]
-    pub row_count: ::core::option::Option<i32>,
-    /// Configuration data about AudienceList being exported. Returned to help
-    /// interpret the AudienceList in the Google Sheet of this response.
-    ///
-    /// For example, the AudienceList may have more rows than are present in the
-    /// Google Sheet, and in that case, you may want to send an additional sheet
-    /// export request with a different `offset` value to retrieve the next page of
-    /// rows in an additional Google Sheet.
-    #[prost(message, optional, tag = "4")]
-    pub audience_list: ::core::option::Option<AudienceList>,
-}
 /// Dimension value attributes for the audience user row.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceRow {
@@ -3175,6 +3419,201 @@ pub struct ListReportTasksResponse {
     #[prost(string, optional, tag = "2")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// The request to generate a report.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunReportRequest {
+    /// Required. A Google Analytics property identifier whose events are tracked.
+    /// Specified in the URL path and not the body. To learn more, see [where to
+    /// find your Property
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
+    /// Within a batch request, this property should either be unspecified or
+    /// consistent with the batch-level property.
+    ///
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// Optional. The dimensions requested and displayed.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
+    /// Optional. The metrics requested and displayed.
+    #[prost(message, repeated, tag = "3")]
+    pub metrics: ::prost::alloc::vec::Vec<Metric>,
+    /// Optional. Date ranges of data to read. If multiple date ranges are
+    /// requested, each response row will contain a zero based date range index. If
+    /// two date ranges overlap, the event data for the overlapping days is
+    /// included in the response rows for both date ranges. In a cohort request,
+    /// this `dateRanges` must be unspecified.
+    #[prost(message, repeated, tag = "4")]
+    pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
+    /// Optional. Dimension filters let you ask for only specific dimension values
+    /// in the report. To learn more, see [Fundamentals of Dimension
+    /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+    /// for examples. Metrics cannot be used in this filter.
+    #[prost(message, optional, tag = "5")]
+    pub dimension_filter: ::core::option::Option<FilterExpression>,
+    /// Optional. The filter clause of metrics. Applied after aggregating the
+    /// report's rows, similar to SQL having-clause. Dimensions cannot be used in
+    /// this filter.
+    #[prost(message, optional, tag = "6")]
+    pub metric_filter: ::core::option::Option<FilterExpression>,
+    /// Optional. The row count of the start row. The first row is counted as row
+    /// 0.
+    ///
+    /// When paging, the first request does not specify offset; or equivalently,
+    /// sets offset to 0; the first request returns the first `limit` of rows. The
+    /// second request sets offset to the `limit` of the first request; the second
+    /// request returns the second `limit` of rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "7")]
+    pub offset: i64,
+    /// Optional. The maximum number of rows to return. If unspecified, 10,000 rows
+    /// are returned. The API returns a maximum of 250,000 rows per request, no
+    /// matter how many you ask for. `limit` must be positive.
+    ///
+    /// The API can also return fewer rows than the requested `limit`, if there
+    /// aren't as many dimension values as the `limit`. For instance, there are
+    /// fewer than 300 possible values for the dimension `country`, so when
+    /// reporting on only `country`, you can't get more than 300 rows, even if you
+    /// set `limit` to a higher value.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "8")]
+    pub limit: i64,
+    /// Optional. Aggregation of metrics. Aggregated metric values will be shown in
+    /// rows where the dimension_values are set to "RESERVED\_(MetricAggregation)".
+    /// Aggregates including both comparisons and multiple date ranges will
+    /// be aggregated based on the date ranges.
+    #[prost(enumeration = "MetricAggregation", repeated, packed = "false", tag = "9")]
+    pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Specifies how rows are ordered in the response.
+    /// Requests including both comparisons and multiple date ranges will
+    /// have order bys applied on the comparisons.
+    #[prost(message, repeated, tag = "10")]
+    pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
+    /// Optional. A currency code in ISO4217 format, such as "AED", "USD", "JPY".
+    /// If the field is empty, the report uses the property's default currency.
+    #[prost(string, tag = "11")]
+    pub currency_code: ::prost::alloc::string::String,
+    /// Optional. Cohort group associated with this request. If there is a cohort
+    /// group in the request the 'cohort' dimension must be present.
+    #[prost(message, optional, tag = "12")]
+    pub cohort_spec: ::core::option::Option<CohortSpec>,
+    /// Optional. If false or unspecified, each row with all metrics equal to 0
+    /// will not be returned. If true, these rows will be returned if they are not
+    /// separately removed by a filter.
+    ///
+    /// Regardless of this `keep_empty_rows` setting, only data recorded by the
+    /// Google Analytics property can be displayed in a report.
+    ///
+    /// For example if a property never logs a `purchase` event, then a query for
+    /// the `eventName` dimension and  `eventCount` metric will not have a row
+    /// eventName: "purchase" and eventCount: 0.
+    #[prost(bool, tag = "13")]
+    pub keep_empty_rows: bool,
+    /// Optional. Toggles whether to return the current state of this Google
+    /// Analytics property's quota. Quota is returned in
+    /// [PropertyQuota](#PropertyQuota).
+    #[prost(bool, tag = "14")]
+    pub return_property_quota: bool,
+    /// Optional. The configuration of comparisons requested and displayed. The
+    /// request only requires a comparisons field in order to receive a comparison
+    /// column in the response.
+    #[prost(message, repeated, tag = "15")]
+    pub comparisons: ::prost::alloc::vec::Vec<Comparison>,
+    /// Optional. Controls conversion reporting. This field is optional. If this
+    /// field is set or any conversion metrics are requested, the report will be a
+    /// conversion report.
+    #[prost(message, optional, tag = "16")]
+    pub conversion_spec: ::core::option::Option<ConversionSpec>,
+}
+/// The response report table corresponding to a request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunReportResponse {
+    /// Describes dimension columns. The number of DimensionHeaders and ordering of
+    /// DimensionHeaders matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_headers: ::prost::alloc::vec::Vec<DimensionHeader>,
+    /// Describes metric columns. The number of MetricHeaders and ordering of
+    /// MetricHeaders matches the metrics present in rows.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_headers: ::prost::alloc::vec::Vec<MetricHeader>,
+    /// Rows of dimension value combinations and metric values in the report.
+    #[prost(message, repeated, tag = "3")]
+    pub rows: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the totaled values of metrics.
+    #[prost(message, repeated, tag = "4")]
+    pub totals: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the maximum values of metrics.
+    #[prost(message, repeated, tag = "5")]
+    pub maximums: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the minimum values of metrics.
+    #[prost(message, repeated, tag = "6")]
+    pub minimums: ::prost::alloc::vec::Vec<Row>,
+    /// The total number of rows in the query result, regardless of the number of
+    /// rows returned in the response. For example if a query returns 175 rows and
+    /// includes limit = 50 in the API request, the response will contain row_count
+    /// = 175 but only 50 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int32, tag = "7")]
+    pub row_count: i32,
+    /// Metadata for the report.
+    #[prost(message, optional, tag = "8")]
+    pub metadata: ::core::option::Option<ResponseMetaData>,
+    /// This Analytics Property's quota state including this request.
+    #[prost(message, optional, tag = "9")]
+    pub property_quota: ::core::option::Option<PropertyQuota>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#runReport". Useful to distinguish between
+    /// response types in JSON.
+    #[prost(string, tag = "10")]
+    pub kind: ::prost::alloc::string::String,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, optional, tag = "11")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request for a property's dimension and metric metadata.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetMetadataRequest {
+    /// Required. The resource name of the metadata to retrieve. This name field is
+    /// specified in the URL path and not URL parameters. Property is a numeric
+    /// Google Analytics property identifier. To learn more, see [where to find
+    /// your Property
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
+    ///
+    /// Example: properties/1234/metadata
+    ///
+    /// Set the Property ID to 0 for dimensions and metrics common to all
+    /// properties. In this special mode, this method will not return custom
+    /// dimensions and metrics.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The dimensions, metrics and comparisons currently accepted in reporting
+/// methods.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// Resource name of this metadata.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+    /// The dimension descriptions.
+    #[prost(message, repeated, tag = "1")]
+    pub dimensions: ::prost::alloc::vec::Vec<DimensionMetadata>,
+    /// The metric descriptions.
+    #[prost(message, repeated, tag = "2")]
+    pub metrics: ::prost::alloc::vec::Vec<MetricMetadata>,
+    /// The comparison descriptions.
+    #[prost(message, repeated, tag = "4")]
+    pub comparisons: ::prost::alloc::vec::Vec<ComparisonMetadata>,
+    /// The conversion descriptions.
+    #[prost(message, repeated, tag = "5")]
+    pub conversions: ::prost::alloc::vec::Vec<ConversionMetadata>,
+}
 /// Generated client implementations.
 pub mod alpha_analytics_data_client {
     #![allow(
@@ -3408,54 +3847,6 @@ pub mod alpha_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "QueryAudienceList",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Exports an audience list of users to a Google Sheet. After creating an
-        /// audience, the users are not immediately available for listing. First, a
-        /// request to `CreateAudienceList` is necessary to create an audience list of
-        /// users, and then second, this method is used to export those users in the
-        /// audience list to a Google Sheet.
-        ///
-        /// See [Creating an Audience
-        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
-        /// for an introduction to Audience Lists with examples.
-        ///
-        /// Audiences in Google Analytics 4 allow you to segment your users in the ways
-        /// that are important to your business. To learn more, see
-        /// https://support.google.com/analytics/answer/9267572.
-        ///
-        /// This method is introduced at alpha stability with the intention of
-        /// gathering feedback on syntax and capabilities before entering beta. To give
-        /// your feedback on this API, complete the
-        /// [Google Analytics Audience Export API
-        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
-        pub async fn sheet_export_audience_list(
-            &mut self,
-            request: impl tonic::IntoRequest<super::SheetExportAudienceListRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::SheetExportAudienceListResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
-                        "SheetExportAudienceList",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3828,6 +4219,78 @@ pub mod alpha_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "ListReportTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a customized report of your Google Analytics event data. Reports
+        /// contain statistics derived from data collected by the Google Analytics
+        /// tracking code. The data returned from the API is as a table with columns
+        /// for the requested dimensions and metrics. Metrics are individual
+        /// measurements of user activity on your property, such as active users or
+        /// event count. Dimensions break down metrics across some common criteria,
+        /// such as country or event name.
+        pub async fn run_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunReportRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RunReportResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunReport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "RunReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns metadata for dimensions and metrics available in reporting methods.
+        /// Used to explore the dimensions and metrics. In this method, a Google
+        /// Analytics property identifier is specified in the request, and
+        /// the metadata response includes Custom dimensions and metrics as well as
+        /// Universal metadata.
+        ///
+        /// For example if a custom metric with parameter name `levels_unlocked` is
+        /// registered to a property, the Metadata response will contain
+        /// `customEvent:levels_unlocked`. Universal metadata are dimensions and
+        /// metrics applicable to any property such as `country` and `totalUsers`.
+        pub async fn get_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMetadataRequest>,
+        ) -> std::result::Result<tonic::Response<super::Metadata>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "GetMetadata",
                     ),
                 );
             self.inner.unary(req, path, codec).await

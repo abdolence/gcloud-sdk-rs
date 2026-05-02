@@ -240,6 +240,9 @@ pub struct AdaptiveMtTranslateRequest {
     /// Required. The content of the input in string format.
     #[prost(string, repeated, tag = "3")]
     pub content: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The format of the source text.
+    #[prost(string, tag = "4")]
+    pub mime_type: ::prost::alloc::string::String,
     /// Configuration for caller provided reference sentences.
     #[prost(message, optional, tag = "6")]
     pub reference_sentence_config: ::core::option::Option<

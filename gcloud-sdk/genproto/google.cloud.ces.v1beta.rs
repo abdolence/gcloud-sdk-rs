@@ -1521,14 +1521,55 @@ pub struct LoggingSettings {
     pub metric_analysis_settings: ::core::option::Option<MetricAnalysisSettings>,
 }
 /// Settings to describe how errors should be handled in the app.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorHandlingSettings {
     /// Optional. The strategy to use for error handling.
     #[prost(enumeration = "error_handling_settings::ErrorHandlingStrategy", tag = "1")]
     pub error_handling_strategy: i32,
+    /// Optional. Configuration for handling fallback responses.
+    #[prost(message, optional, tag = "2")]
+    pub fallback_response_config: ::core::option::Option<
+        error_handling_settings::FallbackResponseConfig,
+    >,
+    /// Optional. Configuration for ending the session in case of system errors
+    /// (e.g. LLM errors).
+    #[prost(message, optional, tag = "3")]
+    pub end_session_config: ::core::option::Option<
+        error_handling_settings::EndSessionConfig,
+    >,
 }
 /// Nested message and enum types in `ErrorHandlingSettings`.
 pub mod error_handling_settings {
+    /// Configuration for handling fallback responses.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FallbackResponseConfig {
+        /// Optional. The fallback messages in case of system errors (e.g. LLM
+        /// errors), mapped by [supported language
+        /// code](<https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/reference/language>).
+        #[prost(map = "string, string", tag = "1")]
+        pub custom_fallback_messages: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. The maximum number of fallback attempts to make before the
+        /// agent emitting \[EndSession\]\[google.cloud.ces.v1beta.EndSession\] Signal.
+        #[prost(int32, tag = "2")]
+        pub max_fallback_attempts: i32,
+    }
+    /// Configuration for ending the session in case of system errors (e.g. LLM
+    /// errors).
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EndSessionConfig {
+        /// Optional. Whether to escalate the session in
+        /// \[EndSession\]\[google.cloud.ces.v1beta.EndSession\]. If session is
+        /// escalated, \[metadata in
+        /// EndSession\]\[google.cloud.ces.v1beta.EndSession.metadata\] will contain
+        /// `session_escalated = true`. See
+        /// <https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/deploy/google-telephony-platform#transfer_a_call_to_a_human_agent>
+        /// for details.
+        #[prost(bool, optional, tag = "1")]
+        pub escalate_session: ::core::option::Option<bool>,
+    }
     /// Defines the strategy for handling errors.
     #[derive(
         Clone,
@@ -1908,6 +1949,10 @@ pub struct ConversationLoggingSettings {
     /// Optional. Whether to disable conversation logging for the sessions.
     #[prost(bool, tag = "1")]
     pub disable_conversation_logging: bool,
+    /// Optional. Controls the retention window for the conversation.
+    /// If not set, the conversation will be retained for 365 days.
+    #[prost(message, optional, tag = "2")]
+    pub retention_window: ::core::option::Option<::prost_types::Duration>,
 }
 /// Settings to describe the Cloud Logging behaviors for the app.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4808,6 +4853,44 @@ pub struct Deployment {
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
 }
+/// A mocked tool call.
+///
+/// Expresses the target tool + a pattern to match against that tool's
+/// args / inputs. If the pattern matches, then the mock response will be
+/// returned.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MockedToolCall {
+    /// Optional. Deprecated. Use tool_identifier instead.
+    #[deprecated]
+    #[prost(string, tag = "1")]
+    pub tool: ::prost::alloc::string::String,
+    /// Required. A pattern to match against the args / inputs of all dispatched
+    /// tool calls. If the tool call inputs match this pattern, then mock output
+    /// will be returned.
+    #[prost(message, optional, tag = "2")]
+    pub expected_args_pattern: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The mock response / output to return if the tool call args /
+    /// inputs match the pattern.
+    #[prost(message, optional, tag = "3")]
+    pub mock_response: ::core::option::Option<::prost_types::Struct>,
+    /// The identifier of the tool to mock.
+    #[prost(oneof = "mocked_tool_call::ToolIdentifier", tags = "4, 5")]
+    pub tool_identifier: ::core::option::Option<mocked_tool_call::ToolIdentifier>,
+}
+/// Nested message and enum types in `MockedToolCall`.
+pub mod mocked_tool_call {
+    /// The identifier of the tool to mock.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ToolIdentifier {
+        /// Optional. The name of the tool to mock.
+        /// Format: `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
+        #[prost(string, tag = "4")]
+        ToolId(::prost::alloc::string::String),
+        /// Optional. The toolset to mock.
+        #[prost(message, tag = "5")]
+        Toolset(super::ToolsetTool),
+    }
+}
 /// Search suggestions from \[Google Search
 /// Tool\]\[google.cloud.ces.v1beta.GoogleSearchTool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4832,6 +4915,64 @@ pub struct WebSearchQuery {
     /// The URI to the Google Search results page for the query.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
+}
+/// Mock tool calls configuration for the session.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MockConfig {
+    /// Optional. All tool calls to mock for the duration of the session.
+    #[prost(message, repeated, tag = "1")]
+    pub mocked_tool_calls: ::prost::alloc::vec::Vec<MockedToolCall>,
+    /// Required. Beavhior for tool calls that don't match any args patterns in
+    /// mocked_tool_calls.
+    #[prost(enumeration = "mock_config::UnmatchedToolCallBehavior", tag = "2")]
+    pub unmatched_tool_call_behavior: i32,
+}
+/// Nested message and enum types in `MockConfig`.
+pub mod mock_config {
+    /// What to do when a tool call doesn't match any mocked tool calls.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UnmatchedToolCallBehavior {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Throw an error for any tool calls that don't match a mock expected input
+        /// pattern.
+        Fail = 1,
+        /// For unmatched tool calls, pass the tool call through to real tool.
+        PassThrough = 2,
+    }
+    impl UnmatchedToolCallBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED",
+                Self::Fail => "FAIL",
+                Self::PassThrough => "PASS_THROUGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "FAIL" => Some(Self::Fail),
+                "PASS_THROUGH" => Some(Self::PassThrough),
+                _ => None,
+            }
+        }
+    }
 }
 /// InputAudioConfig configures how the CES agent should interpret the incoming
 /// audio data.
@@ -6561,6 +6702,8 @@ pub mod evaluation_result {
         /// Evaluation/Expectation failed. In the case of an evaluation, this means
         /// that at least one expectation was not met.
         Fail = 2,
+        /// Evaluation/Expectation was skipped.
+        Skipped = 3,
     }
     impl Outcome {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6572,6 +6715,7 @@ pub mod evaluation_result {
                 Self::Unspecified => "OUTCOME_UNSPECIFIED",
                 Self::Pass => "PASS",
                 Self::Fail => "FAIL",
+                Self::Skipped => "SKIPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6580,6 +6724,7 @@ pub mod evaluation_result {
                 "OUTCOME_UNSPECIFIED" => Some(Self::Unspecified),
                 "PASS" => Some(Self::Pass),
                 "FAIL" => Some(Self::Fail),
+                "SKIPPED" => Some(Self::Skipped),
                 _ => None,
             }
         }
@@ -10868,13 +11013,28 @@ pub struct ImportEvaluationsResponse {
     /// The list of evaluations that were imported into the app.
     #[prost(message, repeated, tag = "1")]
     pub evaluations: ::prost::alloc::vec::Vec<Evaluation>,
+    /// The list of evaluation results that were imported into the app.
+    #[prost(message, repeated, tag = "4")]
+    pub evaluation_results: ::prost::alloc::vec::Vec<EvaluationResult>,
+    /// The list of evaluation runs that were imported into the app.
+    #[prost(message, repeated, tag = "5")]
+    pub evaluation_runs: ::prost::alloc::vec::Vec<EvaluationRun>,
     /// Optional. A list of error messages associated with evaluations that failed
     /// to be imported.
     #[prost(string, repeated, tag = "2")]
     pub error_messages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The number of evaluations that were not imported due to errors.
+    /// The number of evaluations that either failed to import entirely or
+    /// completed import with one or more errors.
     #[prost(int32, tag = "3")]
     pub import_failure_count: i32,
+    /// The number of evaluation results that either failed to import entirely or
+    /// completed import with one or more errors.
+    #[prost(int32, tag = "6")]
+    pub evaluation_result_import_failure_count: i32,
+    /// The number of evaluation runs that either failed to import entirely or
+    /// completed import with one or more errors.
+    #[prost(int32, tag = "7")]
+    pub evaluation_run_import_failure_count: i32,
 }
 /// Represents the metadata of the long-running operation for
 /// \[EvaluationService.ImportEvaluations\]\[google.cloud.ces.v1beta.EvaluationService.ImportEvaluations\].
@@ -11466,6 +11626,173 @@ pub struct ListEvaluationExpectationsResponse {
     /// subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Options for exporting CES evaluation resources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportOptions {
+    /// Optional. The format to export the evaluation results in. Defaults to JSON
+    /// if not specified.
+    #[prost(enumeration = "export_options::ExportFormat", tag = "1")]
+    pub export_format: i32,
+    /// Optional. The Google Cloud Storage URI to write the exported Evaluation
+    /// Results to.
+    #[prost(string, tag = "2")]
+    pub gcs_uri: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ExportOptions`.
+pub mod export_options {
+    /// The format to export the items in. Defaults to JSON if not
+    /// specified.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExportFormat {
+        /// Unspecified format.
+        Unspecified = 0,
+        /// JSON format.
+        Json = 1,
+        /// YAML format.
+        Yaml = 2,
+    }
+    impl ExportFormat {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EXPORT_FORMAT_UNSPECIFIED",
+                Self::Json => "JSON",
+                Self::Yaml => "YAML",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPORT_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "JSON" => Some(Self::Json),
+                "YAML" => Some(Self::Yaml),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for
+/// \[EvaluationService.ExportEvaluations\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluations\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationsRequest {
+    /// Required. The resource name of the app to export evaluations from.
+    /// Format: `projects/{project}/locations/{location}/apps/{app}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource names of the evaluations to export.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The export options for the evaluations.
+    #[prost(message, optional, tag = "3")]
+    pub export_options: ::core::option::Option<ExportOptions>,
+    /// Optional. Includes evaluation results in the export. At least one of
+    /// include_evaluation_results or include_evaluations must be set.
+    #[prost(bool, tag = "4")]
+    pub include_evaluation_results: bool,
+    /// Optional. Includes evaluations in the export. At least one of
+    /// include_evaluation_results or include_evaluations must be set.
+    #[prost(bool, tag = "5")]
+    pub include_evaluations: bool,
+}
+/// Response message for
+/// \[EvaluationService.ExportEvaluations\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluations\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportEvaluationsResponse {
+    /// Output only. A map of evaluation resource names that could not be exported,
+    /// to the reason why they failed.
+    #[prost(map = "string, string", tag = "3")]
+    pub failed_evaluations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The exported evaluations.
+    #[prost(oneof = "export_evaluations_response::Evaluations", tags = "1, 2")]
+    pub evaluations: ::core::option::Option<export_evaluations_response::Evaluations>,
+}
+/// Nested message and enum types in `ExportEvaluationsResponse`.
+pub mod export_evaluations_response {
+    /// The exported evaluations.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Evaluations {
+        /// The content of the exported Evaluations. This will be populated if
+        /// gcs_uri was not specified in the request.
+        #[prost(bytes, tag = "1")]
+        EvaluationsContent(::prost::alloc::vec::Vec<u8>),
+        /// The Google Cloud Storage URI folder where the exported evaluations were
+        /// written. This will be populated if gcs_uri was specified in the request.
+        #[prost(string, tag = "2")]
+        EvaluationsUri(::prost::alloc::string::String),
+    }
+}
+/// Response message for
+/// \[EvaluationService.ExportEvaluationResults\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationResultsResponse {
+    /// The exported evaluation results.
+    #[prost(
+        oneof = "export_evaluation_results_response::EvaluationResults",
+        tags = "1, 2"
+    )]
+    pub evaluation_results: ::core::option::Option<
+        export_evaluation_results_response::EvaluationResults,
+    >,
+}
+/// Nested message and enum types in `ExportEvaluationResultsResponse`.
+pub mod export_evaluation_results_response {
+    /// The exported evaluation results.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum EvaluationResults {
+        /// The content of the exported Evaluation Results. This will be populated if
+        /// gcs_uri was not specified in the request.
+        #[prost(bytes, tag = "1")]
+        EvaluationResultsContent(::prost::alloc::vec::Vec<u8>),
+        /// The Google Cloud Storage URI folder where the exported Evaluation Results
+        /// were written. This will be populated if gcs_uri was specified in the
+        /// request.
+        #[prost(string, tag = "2")]
+        EvaluationResultsUri(::prost::alloc::string::String),
+    }
+}
+/// Response message for
+/// \[EvaluationService.ExportEvaluationRuns\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationRunsResponse {
+    /// The exported evaluation runs.
+    #[prost(oneof = "export_evaluation_runs_response::EvaluationRuns", tags = "1, 2")]
+    pub evaluation_runs: ::core::option::Option<
+        export_evaluation_runs_response::EvaluationRuns,
+    >,
+}
+/// Nested message and enum types in `ExportEvaluationRunsResponse`.
+pub mod export_evaluation_runs_response {
+    /// The exported evaluation runs.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum EvaluationRuns {
+        /// The content of the exported Evaluation Runs. This will be populated if
+        /// gcs_uri was not specified in the request.
+        #[prost(bytes, tag = "1")]
+        EvaluationRunsContent(::prost::alloc::vec::Vec<u8>),
+        /// The Google Cloud Storage URI folder where the exported Evaluation Runs
+        /// were written. This will be populated if gcs_uri was specified in the
+        /// request.
+        #[prost(string, tag = "2")]
+        EvaluationRunsUri(::prost::alloc::string::String),
+    }
 }
 /// Generated client implementations.
 pub mod evaluation_service_client {
@@ -12465,6 +12792,36 @@ pub mod evaluation_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports evaluations.
+        pub async fn export_evaluations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportEvaluationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.ces.v1beta.EvaluationService",
+                        "ExportEvaluations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Represents an Omnichannel resource.
@@ -12626,6 +12983,11 @@ pub struct ExecuteToolRequest {
     /// format.
     #[prost(message, optional, tag = "2")]
     pub args: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Mock configuration for the tool execution.
+    /// If this field is set, tools that call other tools will be
+    /// mocked based on the provided patterns and responses.
+    #[prost(message, optional, tag = "7")]
+    pub mock_config: ::core::option::Option<MockConfig>,
     /// The identifier of the tool to execute. It could be either a persisted tool
     /// or a tool from a toolset.
     #[prost(oneof = "execute_tool_request::ToolIdentifier", tags = "1, 3")]

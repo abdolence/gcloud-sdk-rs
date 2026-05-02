@@ -1663,6 +1663,9 @@ pub mod byte_content_item {
 /// Type of content to inspect.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentItem {
+    /// User provided metadata for the content.
+    #[prost(message, optional, tag = "6")]
+    pub content_metadata: ::core::option::Option<ContentMetadata>,
     /// Data of the item either in the byte array or UTF-8 string form, or table.
     #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5")]
     pub data_item: ::core::option::Option<content_item::DataItem>,
@@ -1685,6 +1688,13 @@ pub mod content_item {
         ByteItem(super::ByteContentItem),
     }
 }
+/// Metadata on content to be scanned.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentMetadata {
+    /// User provided key-value pairs of content metadata.
+    #[prost(message, repeated, tag = "2")]
+    pub properties: ::prost::alloc::vec::Vec<KeyValueMetadataProperty>,
+}
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
 /// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
 /// to learn more.
@@ -1706,6 +1716,16 @@ pub mod table {
         #[prost(message, repeated, tag = "1")]
         pub values: ::prost::alloc::vec::Vec<super::Value>,
     }
+}
+/// A key-value pair in the Metadata.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct KeyValueMetadataProperty {
+    /// The key of the property.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// The value of the property.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
 }
 /// All the findings for a single scanned item.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11604,6 +11624,8 @@ pub enum MetadataType {
     StorageMetadata = 2,
     /// Metadata extracted from the files.
     ContentMetadata = 3,
+    /// Metadata provided by the client.
+    ClientProvidedMetadata = 4,
 }
 impl MetadataType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -11615,6 +11637,7 @@ impl MetadataType {
             Self::MetadatatypeUnspecified => "METADATATYPE_UNSPECIFIED",
             Self::StorageMetadata => "STORAGE_METADATA",
             Self::ContentMetadata => "CONTENT_METADATA",
+            Self::ClientProvidedMetadata => "CLIENT_PROVIDED_METADATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11623,6 +11646,7 @@ impl MetadataType {
             "METADATATYPE_UNSPECIFIED" => Some(Self::MetadatatypeUnspecified),
             "STORAGE_METADATA" => Some(Self::StorageMetadata),
             "CONTENT_METADATA" => Some(Self::ContentMetadata),
+            "CLIENT_PROVIDED_METADATA" => Some(Self::ClientProvidedMetadata),
             _ => None,
         }
     }

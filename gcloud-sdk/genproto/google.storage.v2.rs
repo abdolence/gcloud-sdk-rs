@@ -813,6 +813,9 @@ pub mod write_object_request {
 /// \[WriteObject\]\[google.storage.v2.Storage.WriteObject\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectResponse {
+    /// If persisted_size is set, contains checksums of persisted data.
+    #[prost(message, optional, tag = "3")]
+    pub persisted_data_checksums: ::core::option::Option<ObjectChecksums>,
     /// The response sets one of the following.
     #[prost(oneof = "write_object_response::WriteStatus", tags = "1, 2")]
     pub write_status: ::core::option::Option<write_object_response::WriteStatus>,
@@ -890,9 +893,9 @@ pub struct BidiWriteObjectRequest {
     #[prost(int64, tag = "3")]
     pub write_offset: i64,
     /// Optional. Checksums for the complete object. If the checksums computed by
-    /// the service don't match the specified checksums the call fails. Might only
-    /// be provided in the first request or the last request (with finish_write
-    /// set).
+    /// the service don't match the specified checksums the call fails. May be
+    /// provided in the last request (with finish_write set). For non-appendable
+    /// objects only, may also be provided in the first request.
     #[prost(message, optional, tag = "6")]
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
     /// Optional. For each `BidiWriteObjectRequest` where `state_lookup` is `true`
@@ -961,6 +964,9 @@ pub mod bidi_write_object_request {
 /// Response message for BidiWriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidiWriteObjectResponse {
+    /// If persisted_size is set, contains checksums of persisted data.
+    #[prost(message, optional, tag = "4")]
+    pub persisted_data_checksums: ::core::option::Option<ObjectChecksums>,
     /// An optional write handle that is returned periodically in response
     /// messages. Clients should save it for later use in establishing a new stream
     /// if a connection is interrupted.
@@ -1076,6 +1082,9 @@ pub struct QueryWriteStatusRequest {
 /// \[QueryWriteStatus\]\[google.storage.v2.Storage.QueryWriteStatus\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
+    /// If persisted_size is set, contains checksums of persisted data.
+    #[prost(message, optional, tag = "3")]
+    pub persisted_data_checksums: ::core::option::Option<ObjectChecksums>,
     /// The response sets one of the following.
     #[prost(oneof = "query_write_status_response::WriteStatus", tags = "1, 2")]
     pub write_status: ::core::option::Option<query_write_status_response::WriteStatus>,

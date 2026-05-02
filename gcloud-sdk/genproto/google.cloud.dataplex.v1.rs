@@ -8929,12 +8929,26 @@ pub mod data_documentation_spec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataDocumentationResult {
     /// The result of the data documentation scan.
-    #[prost(oneof = "data_documentation_result::Result", tags = "8")]
+    #[prost(oneof = "data_documentation_result::Result", tags = "7, 8")]
     pub result: ::core::option::Option<data_documentation_result::Result>,
 }
 /// Nested message and enum types in `DataDocumentationResult`.
 pub mod data_documentation_result {
-    /// Generated metadata about the table.
+    /// Insights for a dataset resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DatasetResult {
+        /// Output only. Generated Dataset description.
+        #[prost(string, tag = "1")]
+        pub overview: ::prost::alloc::string::String,
+        /// Output only. Relationships suggesting how tables in the dataset are
+        /// related to each other, based on their schema.
+        #[prost(message, repeated, tag = "3")]
+        pub schema_relationships: ::prost::alloc::vec::Vec<SchemaRelationship>,
+        /// Output only. Sample SQL queries for the dataset.
+        #[prost(message, repeated, tag = "4")]
+        pub queries: ::prost::alloc::vec::Vec<Query>,
+    }
+    /// Insights for a table resource.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableResult {
         /// Output only. The service-qualified full resource name of the cloud
@@ -8952,6 +8966,139 @@ pub mod data_documentation_result {
         /// Output only. Sample SQL queries for the table.
         #[prost(message, repeated, tag = "4")]
         pub queries: ::prost::alloc::vec::Vec<Query>,
+    }
+    /// Details of the relationship between the schema of two resources.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SchemaRelationship {
+        /// Output only. An ordered list of fields for the join from the first table.
+        /// The size of this list must be the same as `right_schema_paths`.
+        /// Each field at index i in this list must correspond to a field at the same
+        /// index in the `right_schema_paths` list.
+        #[prost(message, optional, tag = "1")]
+        pub left_schema_paths: ::core::option::Option<schema_relationship::SchemaPaths>,
+        /// Output only. An ordered list of fields for the join from the second
+        /// table. The size of this list must be the same as `left_schema_paths`.
+        /// Each field at index i in this list must correspond to a field at the same
+        /// index in the `left_schema_paths` list.
+        #[prost(message, optional, tag = "2")]
+        pub right_schema_paths: ::core::option::Option<schema_relationship::SchemaPaths>,
+        /// Output only. Sources which generated the schema relation edge.
+        #[prost(
+            enumeration = "schema_relationship::Source",
+            repeated,
+            packed = "false",
+            tag = "4"
+        )]
+        pub sources: ::prost::alloc::vec::Vec<i32>,
+        /// Output only. The type of relationship between the schema paths.
+        #[prost(enumeration = "schema_relationship::Type", tag = "6")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `SchemaRelationship`.
+    pub mod schema_relationship {
+        /// Represents an ordered set of paths within a table's schema.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SchemaPaths {
+            /// Output only. The service-qualified full resource name of the table
+            /// Ex:
+            /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            #[prost(string, tag = "1")]
+            pub table_fqn: ::prost::alloc::string::String,
+            /// Output only. An ordered set of Paths to fields within the schema of the
+            /// table. For fields nested within a top level field of type record, use
+            /// '.' to separate field names. Examples: Top level field - `top_level`
+            /// Nested field - `top_level.child.sub_field`
+            #[prost(string, repeated, tag = "2")]
+            pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Source which generated the schema relation edge.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Source {
+            /// The source of the schema relationship is unspecified.
+            Unspecified = 0,
+            /// The source of the schema relationship is agent.
+            Agent = 4,
+            /// The source of the schema relationship is query history from the source
+            /// system.
+            QueryHistory = 5,
+            /// The source of the schema relationship is table constraints added in
+            /// the source system.
+            TableConstraints = 6,
+        }
+        impl Source {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SOURCE_UNSPECIFIED",
+                    Self::Agent => "AGENT",
+                    Self::QueryHistory => "QUERY_HISTORY",
+                    Self::TableConstraints => "TABLE_CONSTRAINTS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AGENT" => Some(Self::Agent),
+                    "QUERY_HISTORY" => Some(Self::QueryHistory),
+                    "TABLE_CONSTRAINTS" => Some(Self::TableConstraints),
+                    _ => None,
+                }
+            }
+        }
+        /// The type of relationship.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// The type of the schema relationship is unspecified.
+            Unspecified = 0,
+            /// Indicates a join relationship between the schema fields.
+            SchemaJoin = 1,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::SchemaJoin => "SCHEMA_JOIN",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SCHEMA_JOIN" => Some(Self::SchemaJoin),
+                    _ => None,
+                }
+            }
+        }
     }
     /// A sample SQL query in data documentation.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -8986,7 +9133,10 @@ pub mod data_documentation_result {
     /// The result of the data documentation scan.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
-        /// Output only. Table result for insights.
+        /// Output only. Insights for a Dataset resource.
+        #[prost(message, tag = "7")]
+        DatasetResult(DatasetResult),
+        /// Output only. Insights for a Table resource.
         #[prost(message, tag = "8")]
         TableResult(TableResult),
     }

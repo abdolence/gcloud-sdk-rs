@@ -270,11 +270,13 @@ pub struct VectorSearch {
     /// DOT_PRODUCT will be used as the default.
     #[prost(enumeration = "DistanceMetric", tag = "11")]
     pub distance_metric: i32,
+    /// Specifies the type of vector to use for the query.
     #[prost(oneof = "vector_search::VectorType", tags = "1, 2")]
     pub vector_type: ::core::option::Option<vector_search::VectorType>,
 }
 /// Nested message and enum types in `VectorSearch`.
 pub mod vector_search {
+    /// Specifies the type of vector to use for the query.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VectorType {
         /// A dense vector for the query.
@@ -1172,6 +1174,18 @@ pub mod data_object_service_client {
         }
     }
 }
+/// Represents a customer-managed encryption key specification that can be
+/// applied to a Vector Search collection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// Required. Resource name of the Cloud KMS key used to protect the resource.
+    ///
+    /// The Cloud KMS key must be in the same region as the resource. It must have
+    /// the format
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    #[prost(string, tag = "1")]
+    pub crypto_key_name: ::prost::alloc::string::String,
+}
 /// Message describing Collection object
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Collection {
@@ -1207,8 +1221,15 @@ pub struct Collection {
     /// Optional. JSON Schema for data.
     /// Field names must contain only alphanumeric characters,
     /// underscores, and hyphens.
+    /// The schema must be compliant with
+    /// [JSON Schema Draft 7](<https://json-schema.org/draft-07/schema>).
     #[prost(message, optional, tag = "10")]
     pub data_schema: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Immutable. Specifies the customer-managed encryption key spec for
+    /// a Collection. If set, this Collection and all sub-resources of this
+    /// Collection will be secured by this key.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Message describing a vector field.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1474,6 +1495,46 @@ pub struct CreateIndexRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Message for updating an Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub index: ::core::option::Option<Index>,
+    /// Optional. Specifies the fields to be overwritten in the Index resource by
+    /// the update. The fields specified in the update_mask are relative to the
+    /// resource, not the full request. A field will be overwritten if it is in the
+    /// mask. If the user does not provide a mask then all fields present in the
+    /// request with non-empty values will be overwritten.
+    ///
+    /// The following fields support update:
+    ///
+    /// * `display_name`
+    /// * `description`
+    /// * `labels`
+    /// * `dedicated_infrastructure.autoscaling_spec.min_replica_count`
+    /// * `dedicated_infrastructure.autoscaling_spec.max_replica_count`
+    ///
+    /// If `*` is provided in the `update_mask`, full replacement of mutable fields
+    /// will be performed.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an Index.
@@ -2173,6 +2234,36 @@ pub mod vector_search_service_client {
                     GrpcMethod::new(
                         "google.cloud.vectorsearch.v1.VectorSearchService",
                         "CreateIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single Index.
+        pub async fn update_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vectorsearch.v1.VectorSearchService/UpdateIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vectorsearch.v1.VectorSearchService",
+                        "UpdateIndex",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -8,6 +8,11 @@ pub struct Backup {
     /// Output only. The unique resource name of the Backup.
     ///
     /// Format is `projects/{project}/locations/{location}/backups/{backup}`.
+    ///
+    /// The location in the name will be the Standard Managed Multi-Region (SMMR)
+    /// location (e.g. `us`) if the backup was created with an SMMR location, or
+    /// the Google Managed Multi-Region (GMMR) location (e.g. `nam5`) if the backup
+    /// was created with a GMMR location.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Name of the Firestore database that the backup is from.
@@ -788,13 +793,18 @@ pub struct Index {
     /// for the indexed field(s) are unique across documents.
     #[prost(bool, tag = "10")]
     pub unique: bool,
+    /// Optional. Options for search indexes that are at the index definition
+    /// level. This field is only currently supported for indexes with
+    /// MONGODB_COMPATIBLE_API ApiScope.
+    #[prost(message, optional, tag = "9")]
+    pub search_index_options: ::core::option::Option<index::SearchIndexOptions>,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
     /// A field in an index.
     /// The field_path describes which field is indexed, the value_mode describes
     /// how the field value is indexed.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexField {
         /// Can be **name**.
         /// For single field indexes, this must match the name of the field or may
@@ -802,7 +812,7 @@ pub mod index {
         #[prost(string, tag = "1")]
         pub field_path: ::prost::alloc::string::String,
         /// How the field value is indexed.
-        #[prost(oneof = "index_field::ValueMode", tags = "2, 3, 4")]
+        #[prost(oneof = "index_field::ValueMode", tags = "2, 3, 4, 5")]
         pub value_mode: ::core::option::Option<index_field::ValueMode>,
     }
     /// Nested message and enum types in `IndexField`.
@@ -832,6 +842,129 @@ pub mod index {
                 /// Indicates the vector index is a flat index.
                 #[prost(message, tag = "2")]
                 Flat(FlatIndex),
+            }
+        }
+        /// The configuration for how to index a field for search.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SearchConfig {
+            /// Optional. The specification for building a text search index for a
+            /// field.
+            #[prost(message, optional, tag = "1")]
+            pub text_spec: ::core::option::Option<search_config::SearchTextSpec>,
+            /// Optional. The specification for building a geo search index for a
+            /// field.
+            #[prost(message, optional, tag = "2")]
+            pub geo_spec: ::core::option::Option<search_config::SearchGeoSpec>,
+        }
+        /// Nested message and enum types in `SearchConfig`.
+        pub mod search_config {
+            /// Specification of how the field should be indexed for search text
+            /// indexes.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct SearchTextIndexSpec {
+                /// Required. How to index the text field value.
+                #[prost(enumeration = "TextIndexType", tag = "1")]
+                pub index_type: i32,
+                /// Required. How to match the text field value.
+                #[prost(enumeration = "TextMatchType", tag = "2")]
+                pub match_type: i32,
+            }
+            /// The specification for how to build a text search index for a field.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct SearchTextSpec {
+                /// Required. Specifications for how the field should be indexed.
+                /// Repeated so that the field can be indexed in multiple ways.
+                #[prost(message, repeated, tag = "1")]
+                pub index_specs: ::prost::alloc::vec::Vec<SearchTextIndexSpec>,
+            }
+            /// The specification for how to build a geo search index for a field.
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct SearchGeoSpec {
+                /// Optional. Disables geoJSON indexing for the field. By default,
+                /// geoJSON points are indexed.
+                #[prost(bool, tag = "1")]
+                pub geo_json_indexing_disabled: bool,
+            }
+            /// Ways to index the text field value.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum TextIndexType {
+                /// The index type is unspecified. Not a valid option.
+                Unspecified = 0,
+                /// Field values are tokenized. This is the only way currently supported
+                /// for MONGODB_COMPATIBLE_API.
+                Tokenized = 1,
+            }
+            impl TextIndexType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "TEXT_INDEX_TYPE_UNSPECIFIED",
+                        Self::Tokenized => "TOKENIZED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "TEXT_INDEX_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "TOKENIZED" => Some(Self::Tokenized),
+                        _ => None,
+                    }
+                }
+            }
+            /// Types of text matches that are supported for the
+            /// field.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum TextMatchType {
+                /// The match type is unspecified. Not a valid option.
+                Unspecified = 0,
+                /// Match on any indexed field. This is the only way currently supported
+                /// for MONGODB_COMPATIBLE_API.
+                MatchGlobally = 1,
+            }
+            impl TextMatchType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "TEXT_MATCH_TYPE_UNSPECIFIED",
+                        Self::MatchGlobally => "MATCH_GLOBALLY",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "TEXT_MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "MATCH_GLOBALLY" => Some(Self::MatchGlobally),
+                        _ => None,
+                    }
+                }
             }
         }
         /// The supported orderings.
@@ -917,7 +1050,7 @@ pub mod index {
             }
         }
         /// How the field value is indexed.
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
             /// comparing using =, !=, \<, \<=, >, >=.
@@ -930,7 +1063,32 @@ pub mod index {
             /// operations on vector.
             #[prost(message, tag = "4")]
             VectorConfig(VectorConfig),
+            /// Indicates that this field supports search operations. This field
+            /// is only currently supported for indexes with MONGODB_COMPATIBLE_API
+            /// ApiScope.
+            #[prost(message, tag = "5")]
+            SearchConfig(SearchConfig),
         }
+    }
+    /// Options for search indexes at the definition level.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SearchIndexOptions {
+        /// Optional. The language to use for text search indexes. Used as the
+        /// default language if not overridden at the document level by specifying
+        /// the `text_language_override_field`. The language is specified as a BCP 47
+        /// language code.
+        /// For indexes with MONGODB_COMPATIBLE_API ApiScope: If unspecified, the
+        /// default language is English.
+        /// For indexes with `ANY_API` ApiScope: If unspecified, the default behavior
+        /// is autodetect.
+        #[prost(string, tag = "1")]
+        pub text_language: ::prost::alloc::string::String,
+        /// Optional. The field in the document that specifies which language to use
+        /// for that specific document. For indexes with MONGODB_COMPATIBLE_API
+        /// ApiScope: if unspecified, the language is taken from the "language" field
+        /// if it exists or from `text_language` if it does not.
+        #[prost(string, tag = "2")]
+        pub text_language_override_field_path: ::prost::alloc::string::String,
     }
     /// Query Scope defines the scope at which a query is run. This is specified on
     /// a StructuredQuery's `from` field.
