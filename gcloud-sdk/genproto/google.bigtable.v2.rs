@@ -814,6 +814,16 @@ pub mod value_range {
         EndValueOpen(::prost::alloc::vec::Vec<u8>),
     }
 }
+/// Restricts the output to cells whose values match the given bitmask.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ValueBitmask {
+    /// Required. Mask applied to the value.
+    /// Evaluated as: `(value & mask) == mask`
+    /// The mask length must exactly match the value length, otherwise the cell is
+    /// not considered a match.
+    #[prost(bytes = "vec", tag = "1")]
+    pub mask: ::prost::alloc::vec::Vec<u8>,
+}
 /// Takes a row as input and produces an alternate view of the row based on
 /// specified rules. For example, a RowFilter might trim down a row to include
 /// just the cells from columns matching a given regular expression, or might
@@ -853,7 +863,7 @@ pub struct RowFilter {
     /// RowFilter returns all cells in the input row.
     #[prost(
         oneof = "row_filter::Filter",
-        tags = "1, 2, 3, 16, 17, 18, 4, 14, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 19"
+        tags = "1, 2, 3, 16, 17, 18, 4, 14, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 19, 20"
     )]
     pub filter: ::core::option::Option<row_filter::Filter>,
 }
@@ -1099,6 +1109,11 @@ pub mod row_filter {
         /// the future.
         #[prost(string, tag = "19")]
         ApplyLabelTransformer(::prost::alloc::string::String),
+        /// Matches only cells with values that satisfy the condition `(value & mask)  == mask`.
+        /// The mask length must exactly match the value length, otherwise the cell
+        /// is not considered a match.
+        #[prost(message, tag = "20")]
+        ValueBitmaskFilter(super::ValueBitmask),
     }
 }
 /// Specifies a particular change to be made to the contents of a row.
@@ -1575,6 +1590,1011 @@ pub mod request_stats {
         /// view, see package google.bigtable.v2.
         #[prost(message, tag = "1")]
         FullReadStatsView(super::FullReadStatsView),
+    }
+}
+/// Feature flags supported or enabled by a client.
+/// This is intended to be sent as part of request metadata to assure the server
+/// that certain behaviors are safe to enable. This proto is meant to be
+/// serialized and websafe-base64 encoded under the `bigtable-features` metadata
+/// key. The value will remain constant for the lifetime of a client and due to
+/// HTTP2's HPACK compression, the request overhead will be tiny.
+/// This is an internal implementation detail and should not be used by end users
+/// directly.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FeatureFlags {
+    /// Notify the server that the client supports reverse scans. The server will
+    /// reject ReadRowsRequests with the reverse bit set when this is absent.
+    #[prost(bool, tag = "1")]
+    pub reverse_scans: bool,
+    /// Notify the server that the client enables batch write flow control by
+    /// requesting RateLimitInfo from MutateRowsResponse. Due to technical reasons,
+    /// this disables partial retries.
+    #[prost(bool, tag = "3")]
+    pub mutate_rows_rate_limit: bool,
+    /// Notify the server that the client enables batch write flow control by
+    /// requesting RateLimitInfo from MutateRowsResponse. With partial retries
+    /// enabled.
+    #[prost(bool, tag = "5")]
+    pub mutate_rows_rate_limit2: bool,
+    /// Notify the server that the client supports the last_scanned_row field
+    /// in ReadRowsResponse for long-running scans.
+    #[prost(bool, tag = "4")]
+    pub last_scanned_row_responses: bool,
+    /// Notify the server that the client supports using encoded routing cookie
+    /// strings to retry requests with.
+    #[prost(bool, tag = "6")]
+    pub routing_cookie: bool,
+    /// Notify the server that the client supports using retry info back off
+    /// durations to retry requests with.
+    #[prost(bool, tag = "7")]
+    pub retry_info: bool,
+    /// Notify the server that the client has client side metrics enabled.
+    #[prost(bool, tag = "8")]
+    pub client_side_metrics_enabled: bool,
+    /// Notify the server that the client using Traffic Director endpoint.
+    #[prost(bool, tag = "9")]
+    pub traffic_director_enabled: bool,
+    /// Notify the server that the client explicitly opted in for Direct Access.
+    #[prost(bool, tag = "10")]
+    pub direct_access_requested: bool,
+    /// If the client can support using BigtablePeerInfo.
+    #[prost(bool, tag = "11")]
+    pub peer_info: bool,
+    /// Indicates whether the client supports the Bigtable Sessions API.
+    #[prost(bool, tag = "12")]
+    pub sessions_compatible: bool,
+    /// Internal flag to force sessions for internal projects.
+    #[prost(bool, tag = "13")]
+    pub sessions_required: bool,
+}
+/// See GetClientConfiguration() RPC in bigtable.proto. Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetClientConfigurationRequest {
+    /// Required. The unique name of the instance for which the client will target
+    /// with Data API requests.
+    ///
+    /// Values are of the form `projects/<project>/instances/<instance>`
+    #[prost(string, tag = "1")]
+    pub instance_name: ::prost::alloc::string::String,
+    /// Optional. The name of the AppProfile which will be used by the client when
+    /// sending requests in the Data API.
+    ///
+    /// If not specified, the `default` application profile will be used.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+}
+/// Configuration for how to balance vRPCs over sessions. Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LoadBalancingOptions {
+    #[prost(oneof = "load_balancing_options::LoadBalancingStrategy", tags = "1, 2, 4")]
+    pub load_balancing_strategy: ::core::option::Option<
+        load_balancing_options::LoadBalancingStrategy,
+    >,
+}
+/// Nested message and enum types in `LoadBalancingOptions`.
+pub mod load_balancing_options {
+    /// Balances vRPCs over backends, preferring to send new vRPCs to AFEs with the
+    /// least number of active vRPCs.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LeastInFlight {
+        /// Of all connected AFEs, the size of the random subset to run the algorithm
+        /// on. Zero implies all connected AFEs.
+        #[prost(int64, tag = "1")]
+        pub random_subset_size: i64,
+    }
+    /// Balances vRPCs over backends, by maintaining a moving average of each AFE's
+    /// round-trip time, weighted by the number of outstanding vRPCs, and
+    /// distribute traffic to AFEs where that cost function is smallest.
+    ///
+    /// See:
+    /// <https://linkerd.io/2016/03/16/beyond-round-robin-load-balancing-for-latency>
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PeakEwma {
+        /// Of all connected AFEs, the size of the random subset to compare costs
+        /// over. Zero implies all connected AFEs.
+        #[prost(int64, tag = "1")]
+        pub random_subset_size: i64,
+    }
+    /// Balances vRPCs over backends, by randomly selecting a backend.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Random {}
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum LoadBalancingStrategy {
+        #[prost(message, tag = "1")]
+        LeastInFlight(LeastInFlight),
+        #[prost(message, tag = "2")]
+        PeakEwma(PeakEwma),
+        #[prost(message, tag = "4")]
+        Random(Random),
+    }
+}
+/// Configuration for the Session API. Internal usage only.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SessionClientConfiguration {
+    /// What share of requests should operate on a session, \[0, 1\]. The rest
+    /// should operate on the old-style API.
+    #[prost(float, tag = "1")]
+    pub session_load: f32,
+    #[deprecated]
+    #[prost(message, optional, tag = "2")]
+    pub load_balancing_options: ::core::option::Option<LoadBalancingOptions>,
+    /// Configuration for the channel pool.
+    #[prost(message, optional, tag = "3")]
+    pub channel_configuration: ::core::option::Option<
+        session_client_configuration::ChannelPoolConfiguration,
+    >,
+    /// Configuration for the session pools.
+    #[prost(message, optional, tag = "4")]
+    pub session_pool_configuration: ::core::option::Option<
+        session_client_configuration::SessionPoolConfiguration,
+    >,
+}
+/// Nested message and enum types in `SessionClientConfiguration`.
+pub mod session_client_configuration {
+    /// Configuration for the channel pool.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ChannelPoolConfiguration {
+        /// The minimum number of distcint servers to connect to in the channel pool.
+        /// The client will ensure that the channel pool will have at least this many
+        /// distinct servers, but may have multiple channels connected to the same
+        /// server (e.g. the client may have M channels on N machines, where M > N).
+        #[prost(int32, tag = "1")]
+        pub min_server_count: i32,
+        /// The maximum number of distinct servers to connect to in the channel pool.
+        /// The client will ensure that the channel pool will have at most this many
+        /// distinct servers.
+        #[prost(int32, tag = "2")]
+        pub max_server_count: i32,
+        /// Soft maximum for how many sessions are allowed per server. Normally, the
+        /// client will ensure that it does not host more than this count of sessions
+        /// per server, unless there are other limits encountered (e.g. the connected
+        /// servers is already at max_servers).
+        #[prost(int32, tag = "3")]
+        pub per_server_session_count: i32,
+        /// The fallback mode of the channel pool.
+        #[prost(oneof = "channel_pool_configuration::Mode", tags = "4, 5, 6")]
+        pub mode: ::core::option::Option<channel_pool_configuration::Mode>,
+    }
+    /// Nested message and enum types in `ChannelPoolConfiguration`.
+    pub mod channel_pool_configuration {
+        /// A channel mode which allows DirectAccess with a fallback to CloudPath if
+        /// DirectAccess is unavailable.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct DirectAccessWithFallback {
+            /// The threshold for errors on DirectAccess to trigger CloudPath fallback.
+            /// The error rate is calculated based on a count of vRPCs with errors
+            /// divided by a total count of vRPCs, over a rolling window of the past
+            /// check_interval. If this ratio exceeds this threshold, the fallback to
+            /// CloudPath is triggered. \[0, 1\].
+            #[prost(float, tag = "1")]
+            pub error_rate_threshold: f32,
+            /// The interval to check the error rate over.
+            #[prost(message, optional, tag = "2")]
+            pub check_interval: ::core::option::Option<::prost_types::Duration>,
+        }
+        /// A channel mode which only allows DirectAccess.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DirectAccessOnly {}
+        /// A channel mode which only allows CloudPath.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct CloudPathOnly {}
+        /// The fallback mode of the channel pool.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Mode {
+            /// DirectAccess with a fallback to CloudPath.
+            #[prost(message, tag = "4")]
+            DirectAccessWithFallback(DirectAccessWithFallback),
+            /// DirectAccess only.
+            #[prost(message, tag = "5")]
+            DirectAccessOnly(DirectAccessOnly),
+            /// CloudPath only.
+            #[prost(message, tag = "6")]
+            CloudPathOnly(CloudPathOnly),
+        }
+    }
+    /// Configuration for the session pools. Session pools are tied to a scope
+    /// like a table, an app profile, and a permission.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SessionPoolConfiguration {
+        /// Fraction of idle sessions to keep in order to manage an increase in
+        /// requests-in-flight. For example, a headroom of 0.5 will keep enough
+        /// sessions to deal with a 50% increase in QPS.
+        #[prost(float, tag = "1")]
+        pub headroom: f32,
+        /// The minimum number of sessions for a given scope.
+        #[prost(int32, tag = "2")]
+        pub min_session_count: i32,
+        /// The maximum number of sessions for a given scope.
+        #[prost(int32, tag = "3")]
+        pub max_session_count: i32,
+        /// Number of vRPCs that can be queued per starting session.
+        #[prost(int32, tag = "4")]
+        pub new_session_queue_length: i32,
+        /// How many concurrent session establishments are allowed. The client will
+        /// hold onto a count against this budget whenever it is establishing a new
+        /// session, and release that count once the session is successfully
+        /// established or failed to establish.
+        #[prost(int32, tag = "5")]
+        pub new_session_creation_budget: i32,
+        /// How long to penalize the creation budget for a failed session creation
+        /// attempt.
+        #[prost(message, optional, tag = "6")]
+        pub new_session_creation_penalty: ::core::option::Option<
+            ::prost_types::Duration,
+        >,
+        /// A threshold for cancelling all pending vRPCs based on how many
+        /// consecutive session establishment errors have been observed. The client
+        /// will eagerly cancel queued vRPCs after this threshold is met to avoid
+        /// them waiting their entire deadlines before terminating (while waiting for
+        /// any session to establish to actually send the vRPC).
+        #[prost(int32, tag = "8")]
+        pub consecutive_session_failure_threshold: i32,
+        /// How to balance vRPC load over connections to AFEs.
+        /// Set only if session_load > 0.
+        #[prost(message, optional, tag = "9")]
+        pub load_balancing_options: ::core::option::Option<super::LoadBalancingOptions>,
+    }
+}
+/// Server provided instructions for enabling finer grained observability on
+/// the client to help diagnose customer issues. Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TelemetryConfiguration {
+    /// Selector for the debug counters that should be uploaded.
+    #[prost(enumeration = "telemetry_configuration::Level", tag = "1")]
+    pub debug_tag_level: i32,
+}
+/// Nested message and enum types in `TelemetryConfiguration`.
+pub mod telemetry_configuration {
+    /// The level of detail of telemetry to be sent from the client.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Level {
+        /// Server did not specify a level. Should disable all debug tag counters.
+        Unspecified = 0,
+        /// Enables all debug tag counter levels.
+        Debug = 1,
+        /// Eables all debug tag counters except for DEBUG.
+        Info = 2,
+        /// Enables all debug tag counters except for DEBUG and INFO.
+        Warn = 3,
+        /// Enables only error debug tag counters.
+        Error = 4,
+    }
+    impl Level {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LEVEL_UNSPECIFIED",
+                Self::Debug => "DEBUG",
+                Self::Info => "INFO",
+                Self::Warn => "WARN",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEBUG" => Some(Self::Debug),
+                "INFO" => Some(Self::Info),
+                "WARN" => Some(Self::Warn),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
+/// Configuration for the Session API. Internal usage only.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ClientConfiguration {
+    /// The configuration for Bigtable Sessions.
+    #[prost(message, optional, tag = "2")]
+    pub session_configuration: ::core::option::Option<SessionClientConfiguration>,
+    /// Configuration for telemetry.
+    #[prost(message, optional, tag = "6")]
+    pub telemetry_configuration: ::core::option::Option<TelemetryConfiguration>,
+    /// How often the client should refresh this configuration.
+    #[prost(oneof = "client_configuration::Polling", tags = "3, 4, 5")]
+    pub polling: ::core::option::Option<client_configuration::Polling>,
+}
+/// Nested message and enum types in `ClientConfiguration`.
+pub mod client_configuration {
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PollingConfiguration {
+        /// A duration describing the time between GetClientConfiguration RPCs.
+        /// Only strictly positive values are permissible.
+        #[prost(message, optional, tag = "1")]
+        pub polling_interval: ::core::option::Option<::prost_types::Duration>,
+        /// How long the client should consider the configuration it receives from
+        /// GetClientConfiguration valid for. Once this duration has passed, the
+        /// client should consider the configuration invalid and must either:
+        ///
+        /// * Get a new configuration from GetClientConfiguration
+        /// * Or if it cannot, use a sane default configuration
+        ///
+        /// This duration will be at least as long as the polling interval.
+        #[prost(message, optional, tag = "2")]
+        pub validity_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Number of times the client should retry a failed
+        /// GetClientConfiguration RPC per polling interval before giving up.
+        #[prost(int32, tag = "6")]
+        pub max_rpc_retry_count: i32,
+    }
+    /// How often the client should refresh this configuration.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Polling {
+        /// If the client should cease to check for new configurations, e.g. a
+        /// backstop to prevent excessive GetClientConfiguration RPCs.
+        #[prost(bool, tag = "3")]
+        StopPolling(bool),
+        /// Deprecated, prerfer polling_configuration.
+        ///
+        /// A duration describing the time between GetClientConfiguration RPCs.
+        /// Only strictly positive values are permissible.
+        #[deprecated]
+        #[prost(message, tag = "4")]
+        PollingInterval(::prost_types::Duration),
+        /// If the client should continue to check for new configurations.
+        #[prost(message, tag = "5")]
+        PollingConfiguration(PollingConfiguration),
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionRequest {
+    #[prost(oneof = "session_request::Payload", tags = "1, 2, 3")]
+    pub payload: ::core::option::Option<session_request::Payload>,
+}
+/// Nested message and enum types in `SessionRequest`.
+pub mod session_request {
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        OpenSession(super::OpenSessionRequest),
+        #[prost(message, tag = "2")]
+        CloseSession(super::CloseSessionRequest),
+        #[prost(message, tag = "3")]
+        VirtualRpc(super::VirtualRpcRequest),
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionResponse {
+    #[prost(oneof = "session_response::Payload", tags = "1, 2, 3, 4, 5, 6, 7")]
+    pub payload: ::core::option::Option<session_response::Payload>,
+}
+/// Nested message and enum types in `SessionResponse`.
+pub mod session_response {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        OpenSession(super::OpenSessionResponse),
+        /// A vRPC can result in either a successful result or an error.
+        /// Error results are separate to allow for multiple vRPC responses,
+        /// e.g. for streaming calls like scans (post-V1). See Flow Control.
+        #[prost(message, tag = "2")]
+        VirtualRpc(super::VirtualRpcResponse),
+        #[prost(message, tag = "3")]
+        Error(super::ErrorResponse),
+        #[prost(message, tag = "4")]
+        SessionParameters(super::SessionParametersResponse),
+        #[prost(message, tag = "5")]
+        Heartbeat(super::HeartbeatResponse),
+        #[prost(message, tag = "6")]
+        GoAway(super::GoAwayResponse),
+        #[prost(message, tag = "7")]
+        SessionRefreshConfig(super::SessionRefreshConfig),
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenSessionRequest {
+    /// A version indicator from the client stating its understanding of the
+    /// protocol. This is to disambiguate client behavior amidst changes in
+    /// semantic usage of the API, e.g. if the structure remains the same but
+    /// behavior changes.
+    #[prost(int64, tag = "1")]
+    pub protocol_version: i64,
+    /// Client settings, including a record of
+    #[prost(message, optional, tag = "2")]
+    pub flags: ::core::option::Option<FeatureFlags>,
+    /// Used for serverside observability.
+    #[prost(int64, tag = "3")]
+    pub consecutive_failed_connection_attempts: i64,
+    /// How the request should be routed (if presented as part of a GOAWAY
+    /// from a previous session). Post V1.
+    #[prost(bytes = "vec", tag = "4")]
+    pub routing_cookie: ::prost::alloc::vec::Vec<u8>,
+    /// Can be Open{Table,AuthorizedView,MaterializedView}Request,
+    /// (or in post-V1, PrepareSqlQueryRequest)
+    #[prost(bytes = "vec", tag = "5")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+}
+/// Information about the connected backends from a session client's
+/// perspective. This information may be used to make choices about session
+/// re-establishment en-masse for sessions with the same backend identifiers.
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BackendIdentifier {
+    /// An opaque identifier for the Google Frontend which serviced this request.
+    /// Only set when not using DirectAccess.
+    #[prost(int64, tag = "1")]
+    pub google_frontend_id: i64,
+    /// An opaque identifier for the application frontend which serviced this
+    /// request.
+    #[prost(int64, tag = "2")]
+    pub application_frontend_id: i64,
+    /// The zone of the application frontend that served this request.
+    #[prost(string, tag = "3")]
+    pub application_frontend_zone: ::prost::alloc::string::String,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenSessionResponse {
+    /// Information on the backend(s) that are hosting this session.
+    #[prost(message, optional, tag = "2")]
+    pub backend: ::core::option::Option<BackendIdentifier>,
+    /// Can be Open{Table,AuthorizedView,MaterializedView}Response,
+    /// (or in post-V1, PrepareSqlQueryResponse)
+    #[prost(bytes = "vec", tag = "1")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CloseSessionRequest {
+    #[prost(enumeration = "close_session_request::CloseSessionReason", tag = "1")]
+    pub reason: i32,
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `CloseSessionRequest`.
+pub mod close_session_request {
+    /// Client-generated reason for terminating the session, including a
+    /// plain-text description of why.
+    /// 'reason' may be used for metrics, while both may be logged (server-side).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CloseSessionReason {
+        Unset = 0,
+        Goaway = 1,
+        Error = 2,
+        User = 3,
+        Downsize = 4,
+        MissedHeartbeat = 5,
+    }
+    impl CloseSessionReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unset => "CLOSE_SESSION_REASON_UNSET",
+                Self::Goaway => "CLOSE_SESSION_REASON_GOAWAY",
+                Self::Error => "CLOSE_SESSION_REASON_ERROR",
+                Self::User => "CLOSE_SESSION_REASON_USER",
+                Self::Downsize => "CLOSE_SESSION_REASON_DOWNSIZE",
+                Self::MissedHeartbeat => "CLOSE_SESSION_REASON_MISSED_HEARTBEAT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOSE_SESSION_REASON_UNSET" => Some(Self::Unset),
+                "CLOSE_SESSION_REASON_GOAWAY" => Some(Self::Goaway),
+                "CLOSE_SESSION_REASON_ERROR" => Some(Self::Error),
+                "CLOSE_SESSION_REASON_USER" => Some(Self::User),
+                "CLOSE_SESSION_REASON_DOWNSIZE" => Some(Self::Downsize),
+                "CLOSE_SESSION_REASON_MISSED_HEARTBEAT" => Some(Self::MissedHeartbeat),
+                _ => None,
+            }
+        }
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenTableRequest {
+    #[prost(string, tag = "1")]
+    pub table_name: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    #[prost(enumeration = "open_table_request::Permission", tag = "3")]
+    pub permission: i32,
+}
+/// Nested message and enum types in `OpenTableRequest`.
+pub mod open_table_request {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Permission {
+        Unset = 0,
+        Read = 1,
+        Write = 2,
+        ReadWrite = 3,
+    }
+    impl Permission {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unset => "PERMISSION_UNSET",
+                Self::Read => "PERMISSION_READ",
+                Self::Write => "PERMISSION_WRITE",
+                Self::ReadWrite => "PERMISSION_READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERMISSION_UNSET" => Some(Self::Unset),
+                "PERMISSION_READ" => Some(Self::Read),
+                "PERMISSION_WRITE" => Some(Self::Write),
+                "PERMISSION_READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
+    }
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenTableResponse {}
+/// Open sessions for an AuthorizedView. Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenAuthorizedViewRequest {
+    /// The Authorized view name to read and write from. Values are of the form
+    /// `projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>`.
+    #[prost(string, tag = "1")]
+    pub authorized_view_name: ::prost::alloc::string::String,
+    /// The app profile id to use for the authorized view sessions.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    /// Permission for the session.
+    #[prost(enumeration = "open_authorized_view_request::Permission", tag = "3")]
+    pub permission: i32,
+}
+/// Nested message and enum types in `OpenAuthorizedViewRequest`.
+pub mod open_authorized_view_request {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Permission {
+        Unset = 0,
+        Read = 1,
+        Write = 2,
+        ReadWrite = 3,
+    }
+    impl Permission {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unset => "PERMISSION_UNSET",
+                Self::Read => "PERMISSION_READ",
+                Self::Write => "PERMISSION_WRITE",
+                Self::ReadWrite => "PERMISSION_READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERMISSION_UNSET" => Some(Self::Unset),
+                "PERMISSION_READ" => Some(Self::Read),
+                "PERMISSION_WRITE" => Some(Self::Write),
+                "PERMISSION_READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
+    }
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenAuthorizedViewResponse {}
+/// Open sessions for a MaterializedView. Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenMaterializedViewRequest {
+    /// The Materialized view name to read and write from. Values are of the form
+    /// `projects/<project>/instances/<instance>/materializedViews/<materialized_view>`.
+    #[prost(string, tag = "1")]
+    pub materialized_view_name: ::prost::alloc::string::String,
+    /// The app profile id to use for the materialized view sessions.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    /// Permission for the session.
+    #[prost(enumeration = "open_materialized_view_request::Permission", tag = "3")]
+    pub permission: i32,
+}
+/// Nested message and enum types in `OpenMaterializedViewRequest`.
+pub mod open_materialized_view_request {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Permission {
+        Unset = 0,
+        Read = 1,
+    }
+    impl Permission {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unset => "PERMISSION_UNSET",
+                Self::Read => "PERMISSION_READ",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERMISSION_UNSET" => Some(Self::Unset),
+                "PERMISSION_READ" => Some(Self::Read),
+                _ => None,
+            }
+        }
+    }
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenMaterializedViewResponse {}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VirtualRpcRequest {
+    /// Client chosen, monotonically increasing identifier for the request.
+    /// Must be unique within a session.
+    #[prost(int64, tag = "1")]
+    pub rpc_id: i64,
+    /// Attempt deadline.
+    ///
+    /// Note, this may not be needed for V1, TBD (e.g. operation vs attempt
+    /// deadline).
+    #[prost(message, optional, tag = "2")]
+    pub deadline: ::core::option::Option<::prost_types::Duration>,
+    /// vRPC metadata.
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<virtual_rpc_request::Metadata>,
+    /// Could be TableRequest (or in post-V1, SqlRequest)
+    #[prost(bytes = "vec", tag = "4")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+}
+/// Nested message and enum types in `VirtualRpcRequest`.
+pub mod virtual_rpc_request {
+    /// Container for all vRPC Metadata.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Metadata {
+        /// Track retry attempts for this vRPC at the AFE.
+        #[prost(int64, tag = "1")]
+        pub attempt_number: i64,
+        /// Track the client's known start time for the attempt. This is likely not
+        /// easily compared with the server's time due to clock skew.
+        #[prost(message, optional, tag = "2")]
+        pub attempt_start: ::core::option::Option<::prost_types::Timestamp>,
+        /// Link OpenTelemetry traces (e.g. Tapper). This can be used to link
+        /// attempts together for the same logical operation (e.g. in logs / traces).
+        ///
+        /// Note, this may not be needed for V1, TBD.
+        #[prost(string, tag = "3")]
+        pub traceparent: ::prost::alloc::string::String,
+    }
+}
+/// Information on which Cluster served a vRPC, e.g. for Client-Side metrics.
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClusterInformation {
+    #[prost(string, tag = "1")]
+    pub cluster_id: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub zone_id: ::prost::alloc::string::String,
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionRequestStats {
+    /// Backend (critical section) latency for the request.
+    #[prost(message, optional, tag = "1")]
+    pub backend_latency: ::core::option::Option<::prost_types::Duration>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VirtualRpcResponse {
+    /// Which vRPC this response is for.
+    #[prost(int64, tag = "1")]
+    pub rpc_id: i64,
+    #[prost(message, optional, tag = "2")]
+    pub cluster_info: ::core::option::Option<ClusterInformation>,
+    #[prost(message, optional, tag = "4")]
+    pub stats: ::core::option::Option<SessionRequestStats>,
+    /// Could be TableResponse (or in post-V1, SqlResponse)
+    #[prost(bytes = "vec", tag = "3")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorResponse {
+    /// Which vRPC this response is for.
+    #[prost(int64, tag = "1")]
+    pub rpc_id: i64,
+    #[prost(message, optional, tag = "2")]
+    pub cluster_info: ::core::option::Option<ClusterInformation>,
+    /// The error from the vRPC and any retry information to consider.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::core::option::Option<super::super::rpc::Status>,
+    #[prost(message, optional, tag = "4")]
+    pub retry_info: ::core::option::Option<super::super::rpc::RetryInfo>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableRequest {
+    /// Note in V1 we target only pure point operations.
+    #[prost(oneof = "table_request::Payload", tags = "1, 2")]
+    pub payload: ::core::option::Option<table_request::Payload>,
+}
+/// Nested message and enum types in `TableRequest`.
+pub mod table_request {
+    /// Note in V1 we target only pure point operations.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowRequest),
+        #[prost(message, tag = "2")]
+        MutateRow(super::SessionMutateRowRequest),
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableResponse {
+    #[prost(oneof = "table_response::Payload", tags = "1, 2")]
+    pub payload: ::core::option::Option<table_response::Payload>,
+}
+/// Nested message and enum types in `TableResponse`.
+pub mod table_response {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowResponse),
+        #[prost(message, tag = "2")]
+        MutateRow(super::SessionMutateRowResponse),
+    }
+}
+/// A request wrapper for operations on an authorized view. Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthorizedViewRequest {
+    /// Note in V1 we target only pure point operations.
+    #[prost(oneof = "authorized_view_request::Payload", tags = "1, 2")]
+    pub payload: ::core::option::Option<authorized_view_request::Payload>,
+}
+/// Nested message and enum types in `AuthorizedViewRequest`.
+pub mod authorized_view_request {
+    /// Note in V1 we target only pure point operations.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowRequest),
+        #[prost(message, tag = "2")]
+        MutateRow(super::SessionMutateRowRequest),
+    }
+}
+/// A response wrapper for operations on an authorized view. Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthorizedViewResponse {
+    /// Note in V1 we target only pure point operations.
+    #[prost(oneof = "authorized_view_response::Payload", tags = "1, 2")]
+    pub payload: ::core::option::Option<authorized_view_response::Payload>,
+}
+/// Nested message and enum types in `AuthorizedViewResponse`.
+pub mod authorized_view_response {
+    /// Note in V1 we target only pure point operations.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowResponse),
+        #[prost(message, tag = "2")]
+        MutateRow(super::SessionMutateRowResponse),
+    }
+}
+/// A request wrapper for operations on a materialized view. Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaterializedViewRequest {
+    /// Note in V1 we target only pure point operations.
+    #[prost(oneof = "materialized_view_request::Payload", tags = "1")]
+    pub payload: ::core::option::Option<materialized_view_request::Payload>,
+}
+/// Nested message and enum types in `MaterializedViewRequest`.
+pub mod materialized_view_request {
+    /// Note in V1 we target only pure point operations.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowRequest),
+    }
+}
+/// A response wrapper for operations on a materialized view. Internal usage
+/// only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaterializedViewResponse {
+    /// Note in V1 we target only pure point operations.
+    #[prost(oneof = "materialized_view_response::Payload", tags = "1")]
+    pub payload: ::core::option::Option<materialized_view_response::Payload>,
+}
+/// Nested message and enum types in `MaterializedViewResponse`.
+pub mod materialized_view_response {
+    /// Note in V1 we target only pure point operations.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        #[prost(message, tag = "1")]
+        ReadRow(super::SessionReadRowResponse),
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadRowRequest {
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, optional, tag = "2")]
+    pub filter: ::core::option::Option<RowFilter>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadRowResponse {
+    #[prost(message, optional, tag = "1")]
+    pub row: ::core::option::Option<Row>,
+    #[prost(message, optional, tag = "2")]
+    pub stats: ::core::option::Option<RequestStats>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionMutateRowRequest {
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, repeated, tag = "2")]
+    pub mutations: ::prost::alloc::vec::Vec<Mutation>,
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionMutateRowResponse {}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionParametersResponse {
+    /// Maximum time between messages that the AFE will send to the client. The
+    /// client may use this information to determine its control-flow in relation
+    /// to pruning black-holed or otherwise non-responsive sessions. Must be set
+    /// and positive.
+    ///
+    /// See also Heartbeats.
+    #[prost(message, optional, tag = "1")]
+    pub keep_alive: ::core::option::Option<::prost_types::Duration>,
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HeartbeatResponse {}
+/// Internal usage only.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoAwayResponse {
+    /// Server-generated reason for GOAWAY, including a plain-text description of
+    /// why. 'reason' may be used for CSM, while both may be logged.
+    #[prost(string, tag = "1")]
+    pub reason: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// The last vRPC which was admitted by the AFE. The client may expect the
+    /// result from the vRPC on the stream before disconnecting, and should
+    /// retry vRPCs beyond this boundary.
+    #[prost(int64, tag = "3")]
+    pub last_rpc_id_admitted: i64,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionRefreshConfig {
+    /// An optimized Open request that the session may use on a retry when
+    /// establishing this session again. This can be sent from the AFE to
+    /// avoid certain work e.g. encoding a query plan for BTQL.
+    #[prost(message, optional, tag = "1")]
+    pub optimized_open_request: ::core::option::Option<OpenSessionRequest>,
+    /// Output only. Any additional metadata to include when reconnecting.
+    #[prost(message, repeated, tag = "2")]
+    pub metadata: ::prost::alloc::vec::Vec<session_refresh_config::Metadata>,
+}
+/// Nested message and enum types in `SessionRefreshConfig`.
+pub mod session_refresh_config {
+    /// Any additional metadata to include when reconnecting. Not a `map<>` type as
+    /// this can be a multimap.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Metadata {
+        /// Output only. The key for the metadata entry.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Output only. The value for the metadata entry.
+        #[prost(bytes = "vec", tag = "2")]
+        pub value: ::prost::alloc::vec::Vec<u8>,
+    }
+}
+/// Supported session types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SessionType {
+    Unset = 0,
+    Table = 1,
+    AuthorizedView = 2,
+    MaterializedView = 3,
+    /// For internal protocol testing only.
+    Test = 9999,
+}
+impl SessionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unset => "SESSION_TYPE_UNSET",
+            Self::Table => "SESSION_TYPE_TABLE",
+            Self::AuthorizedView => "SESSION_TYPE_AUTHORIZED_VIEW",
+            Self::MaterializedView => "SESSION_TYPE_MATERIALIZED_VIEW",
+            Self::Test => "SESSION_TYPE_TEST",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SESSION_TYPE_UNSET" => Some(Self::Unset),
+            "SESSION_TYPE_TABLE" => Some(Self::Table),
+            "SESSION_TYPE_AUTHORIZED_VIEW" => Some(Self::AuthorizedView),
+            "SESSION_TYPE_MATERIALIZED_VIEW" => Some(Self::MaterializedView),
+            "SESSION_TYPE_TEST" => Some(Self::Test),
+            _ => None,
+        }
     }
 }
 /// Request message for Bigtable.ReadRows.
@@ -2966,56 +3986,127 @@ pub mod bigtable_client {
                 .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "ExecuteQuery"));
             self.inner.server_streaming(req, path, codec).await
         }
+        /// This RPC is only intended to be used by the official Cloud Bigtable client
+        /// libraries to implement the Bigtable Session based protocol. It is subject
+        /// to change without notice.
+        pub async fn get_client_configuration(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetClientConfigurationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ClientConfiguration>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/GetClientConfiguration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.v2.Bigtable",
+                        "GetClientConfiguration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// This RPC is only intended to be used by the official Cloud Bigtable client
+        /// libraries to implement the Bigtable Session based protocol. It is subject
+        /// to change without notice.
+        pub async fn open_table(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<Message = super::SessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::SessionResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/OpenTable",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "OpenTable"));
+            self.inner.streaming(req, path, codec).await
+        }
+        /// This RPC is only intended to be used by the official Cloud Bigtable client
+        /// libraries to implement the Bigtable Session based protocol. It is subject
+        /// to change without notice.
+        pub async fn open_authorized_view(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<Message = super::SessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::SessionResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/OpenAuthorizedView",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.bigtable.v2.Bigtable", "OpenAuthorizedView"),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// This RPC is only intended to be used by the official Cloud Bigtable client
+        /// libraries to implement the Bigtable Session based protocol. It is subject
+        /// to change without notice.
+        pub async fn open_materialized_view(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<Message = super::SessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::SessionResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/OpenMaterializedView",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.v2.Bigtable",
+                        "OpenMaterializedView",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
     }
-}
-/// Feature flags supported or enabled by a client.
-/// This is intended to be sent as part of request metadata to assure the server
-/// that certain behaviors are safe to enable. This proto is meant to be
-/// serialized and websafe-base64 encoded under the `bigtable-features` metadata
-/// key. The value will remain constant for the lifetime of a client and due to
-/// HTTP2's HPACK compression, the request overhead will be tiny.
-/// This is an internal implementation detail and should not be used by end users
-/// directly.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FeatureFlags {
-    /// Notify the server that the client supports reverse scans. The server will
-    /// reject ReadRowsRequests with the reverse bit set when this is absent.
-    #[prost(bool, tag = "1")]
-    pub reverse_scans: bool,
-    /// Notify the server that the client enables batch write flow control by
-    /// requesting RateLimitInfo from MutateRowsResponse. Due to technical reasons,
-    /// this disables partial retries.
-    #[prost(bool, tag = "3")]
-    pub mutate_rows_rate_limit: bool,
-    /// Notify the server that the client enables batch write flow control by
-    /// requesting RateLimitInfo from MutateRowsResponse. With partial retries
-    /// enabled.
-    #[prost(bool, tag = "5")]
-    pub mutate_rows_rate_limit2: bool,
-    /// Notify the server that the client supports the last_scanned_row field
-    /// in ReadRowsResponse for long-running scans.
-    #[prost(bool, tag = "4")]
-    pub last_scanned_row_responses: bool,
-    /// Notify the server that the client supports using encoded routing cookie
-    /// strings to retry requests with.
-    #[prost(bool, tag = "6")]
-    pub routing_cookie: bool,
-    /// Notify the server that the client supports using retry info back off
-    /// durations to retry requests with.
-    #[prost(bool, tag = "7")]
-    pub retry_info: bool,
-    /// Notify the server that the client has client side metrics enabled.
-    #[prost(bool, tag = "8")]
-    pub client_side_metrics_enabled: bool,
-    /// Notify the server that the client using Traffic Director endpoint.
-    #[prost(bool, tag = "9")]
-    pub traffic_director_enabled: bool,
-    /// Notify the server that the client explicitly opted in for Direct Access.
-    #[prost(bool, tag = "10")]
-    pub direct_access_requested: bool,
-    /// If the client can support using BigtablePeerInfo.
-    #[prost(bool, tag = "11")]
-    pub peer_info: bool,
 }
 /// PeerInfo contains information about the peer that the client is
 /// connecting to.
@@ -3029,11 +4120,16 @@ pub struct PeerInfo {
     /// request.
     #[prost(int64, tag = "2")]
     pub application_frontend_id: i64,
+    /// The Cloud region of the application frontend that served this request.
+    #[prost(string, tag = "6")]
+    pub application_frontend_region: ::prost::alloc::string::String,
     /// The Cloud zone of the application frontend that served this request.
+    #[deprecated]
     #[prost(string, tag = "3")]
     pub application_frontend_zone: ::prost::alloc::string::String,
     /// The subzone of the application frontend that served this request, e.g. an
-    /// identifier for where within the zone the application frontend is.
+    /// identifier for where within a zone (within the reported region) the
+    /// application frontend is.
     #[prost(string, tag = "4")]
     pub application_frontend_subzone: ::prost::alloc::string::String,
     #[prost(enumeration = "peer_info::TransportType", tag = "5")]

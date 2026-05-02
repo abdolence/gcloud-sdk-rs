@@ -1639,7 +1639,7 @@ pub struct AiInference {
     /// endpoints. The resource creator or updater that specifies this field must
     /// have `iam.serviceAccounts.actAs` permission on the service account. If not
     /// specified, the Pub/Sub [service
-    /// agent]({$universe.dns_names.final_documentation_domain}/iam/docs/service-agents),
+    /// agent](<https://cloud.google.com/iam/docs/service-agents>),
     /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
     #[prost(string, tag = "3")]
     pub service_account_email: ::prost::alloc::string::String,

@@ -2342,6 +2342,9 @@ pub struct ClusterConfig {
     /// Optional. The cluster tier.
     #[prost(enumeration = "cluster_config::ClusterTier", tag = "29")]
     pub cluster_tier: i32,
+    /// Optional. The cluster engine.
+    #[prost(enumeration = "cluster_config::Engine", tag = "30")]
+    pub engine: i32,
     /// Optional. A Cloud Storage bucket used to stage job
     /// dependencies, config files, and job driver console output.
     /// If you do not specify a staging bucket, Cloud
@@ -2519,6 +2522,49 @@ pub mod cluster_config {
                 "CLUSTER_TIER_UNSPECIFIED" => Some(Self::Unspecified),
                 "CLUSTER_TIER_STANDARD" => Some(Self::Standard),
                 "CLUSTER_TIER_PREMIUM" => Some(Self::Premium),
+                _ => None,
+            }
+        }
+    }
+    /// The cluster engine.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Engine {
+        /// The engine is not specified. Works the same as ENGINE_DEFAULT.
+        Unspecified = 0,
+        /// The cluster is a default engine cluster.
+        Default = 1,
+        /// The cluster is a lightning engine cluster.
+        Lightning = 2,
+    }
+    impl Engine {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENGINE_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+                Self::Lightning => "LIGHTNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEFAULT" => Some(Self::Default),
+                "LIGHTNING" => Some(Self::Lightning),
                 _ => None,
             }
         }
@@ -3614,6 +3660,13 @@ pub struct LifecycleConfig {
     /// [Duration](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
     #[prost(message, optional, tag = "1")]
     pub idle_delete_ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The duration to keep the cluster started while idling (when no
+    /// jobs are running). Passing this threshold will cause the cluster to be
+    /// stopped. Minimum value is 5 minutes; maximum value is 14 days (see JSON
+    /// representation of
+    /// [Duration](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
+    #[prost(message, optional, tag = "5")]
+    pub idle_stop_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The time when cluster became idle (most recent job finished)
     /// and became eligible for deletion due to idleness (see JSON representation
     /// of
@@ -3624,6 +3677,10 @@ pub struct LifecycleConfig {
     /// the cluster maximum age.
     #[prost(oneof = "lifecycle_config::Ttl", tags = "2, 3")]
     pub ttl: ::core::option::Option<lifecycle_config::Ttl>,
+    /// Either the exact time the cluster should be stopped at or
+    /// the cluster maximum age.
+    #[prost(oneof = "lifecycle_config::StopTtl", tags = "6, 7")]
+    pub stop_ttl: ::core::option::Option<lifecycle_config::StopTtl>,
 }
 /// Nested message and enum types in `LifecycleConfig`.
 pub mod lifecycle_config {
@@ -3642,6 +3699,23 @@ pub mod lifecycle_config {
         /// [Duration](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
         #[prost(message, tag = "3")]
         AutoDeleteTtl(::prost_types::Duration),
+    }
+    /// Either the exact time the cluster should be stopped at or
+    /// the cluster maximum age.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum StopTtl {
+        /// Optional. The time when cluster will be auto-stopped (see JSON
+        /// representation of
+        /// [Timestamp](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
+        #[prost(message, tag = "6")]
+        AutoStopTime(::prost_types::Timestamp),
+        /// Optional. The lifetime duration of the cluster. The cluster will be
+        /// auto-stopped at the end of this period, calculated from the time of
+        /// submission of the create or update cluster request. Minimum value is 10
+        /// minutes; maximum value is 14 days (see JSON representation of
+        /// [Duration](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
+        #[prost(message, tag = "7")]
+        AutoStopTtl(::prost_types::Duration),
     }
 }
 /// Specifies a Metastore configuration.

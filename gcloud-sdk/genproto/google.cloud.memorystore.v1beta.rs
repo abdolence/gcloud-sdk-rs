@@ -316,6 +316,18 @@ pub mod instance {
         HighmemXlarge = 3,
         /// Standard small.
         StandardSmall = 4,
+        /// Custom micro.
+        CustomMicro = 5,
+        /// Custom mini.
+        CustomMini = 6,
+        /// High cpu medium.
+        HighcpuMedium = 7,
+        /// Standard large.
+        StandardLarge = 8,
+        /// High memory 2xlarge.
+        Highmem2xlarge = 9,
+        /// Custom pico.
+        CustomPico = 10,
     }
     impl NodeType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -329,6 +341,12 @@ pub mod instance {
                 Self::HighmemMedium => "HIGHMEM_MEDIUM",
                 Self::HighmemXlarge => "HIGHMEM_XLARGE",
                 Self::StandardSmall => "STANDARD_SMALL",
+                Self::CustomMicro => "CUSTOM_MICRO",
+                Self::CustomMini => "CUSTOM_MINI",
+                Self::HighcpuMedium => "HIGHCPU_MEDIUM",
+                Self::StandardLarge => "STANDARD_LARGE",
+                Self::Highmem2xlarge => "HIGHMEM_2XLARGE",
+                Self::CustomPico => "CUSTOM_PICO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -339,6 +357,12 @@ pub mod instance {
                 "HIGHMEM_MEDIUM" => Some(Self::HighmemMedium),
                 "HIGHMEM_XLARGE" => Some(Self::HighmemXlarge),
                 "STANDARD_SMALL" => Some(Self::StandardSmall),
+                "CUSTOM_MICRO" => Some(Self::CustomMicro),
+                "CUSTOM_MINI" => Some(Self::CustomMini),
+                "HIGHCPU_MEDIUM" => Some(Self::HighcpuMedium),
+                "STANDARD_LARGE" => Some(Self::StandardLarge),
+                "HIGHMEM_2XLARGE" => Some(Self::Highmem2xlarge),
+                "CUSTOM_PICO" => Some(Self::CustomPico),
                 _ => None,
             }
         }

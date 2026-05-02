@@ -477,14 +477,14 @@ pub struct Tenant {
     /// Optional. Immutable. A reference to the consumer resource this SaaS Tenant
     /// is representing.
     ///
-    /// The relationship with a consumer resource can be used by SaaS Runtime for
-    /// retrieving consumer-defined settings and policies such as maintenance
-    /// policies (using Unified Maintenance Policy API).
+    /// The relationship with a consumer resource can be used by App Lifecycle
+    /// Manager for retrieving consumer-defined settings and policies such as
+    /// maintenance policies (using Unified Maintenance Policy API).
     #[prost(string, tag = "2")]
     pub consumer_resource: ::prost::alloc::string::String,
     /// Required. Immutable. A reference to the Saas that defines the product
-    /// (managed service) that the producer wants to manage with SaaS Runtime. Part
-    /// of the SaaS Runtime common data model.
+    /// (managed service) that the producer wants to manage with App Lifecycle
+    /// Manager. Part of the App Lifecycle Manager common data model.
     #[prost(string, tag = "3")]
     pub saas: ::prost::alloc::string::String,
     /// Optional. The labels on the resource, which can be used for categorization.
@@ -559,8 +559,9 @@ pub struct UnitKind {
     #[prost(message, repeated, tag = "6")]
     pub output_variable_mappings: ::prost::alloc::vec::Vec<VariableMapping>,
     /// Required. Immutable. A reference to the Saas that defines the product
-    /// (managed service) that the producer wants to manage with SaaS Runtime. Part
-    /// of the SaaS Runtime common data model. Immutable once set.
+    /// (managed service) that the producer wants to manage with App Lifecycle
+    /// Manager. Part of the App Lifecycle Manager common data model. Immutable
+    /// once set.
     #[prost(string, tag = "8")]
     pub saas: ::prost::alloc::string::String,
     /// Optional. The labels on the resource, which can be used for categorization.
@@ -1232,8 +1233,8 @@ pub struct ToMapping {
     /// Required. Name of the inputVariable on the dependency
     #[prost(string, tag = "2")]
     pub input_variable: ::prost::alloc::string::String,
-    /// Optional. Tells SaaS Runtime if this mapping should be used during lookup
-    /// or not
+    /// Optional. Tells App Lifecycle Manager if this mapping should be used during
+    /// lookup or not
     #[prost(bool, tag = "3")]
     pub ignore_for_lookup: bool,
 }

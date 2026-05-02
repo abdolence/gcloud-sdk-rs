@@ -811,7 +811,9 @@ pub struct RouteInfo {
     pub uri: ::prost::alloc::string::String,
     /// Region of the route. DYNAMIC, PEERING_DYNAMIC, POLICY_BASED and ADVERTISED
     /// routes only. If set for POLICY_BASED route, this is a region of VLAN
-    /// attachments for Cloud Interconnect the route applies to.
+    /// attachments for Cloud Interconnect the route applies to. If set to "all"
+    /// for POLICY_BASED route, the route applies to VLAN attachments of Cloud
+    /// Interconnect in all regions.
     #[prost(string, tag = "19")]
     pub region: ::prost::alloc::string::String,
     /// Destination IP range of the route.

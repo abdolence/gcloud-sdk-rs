@@ -613,13 +613,28 @@ pub struct Counters {
     /// Output only. Number of objects completed.
     #[prost(int64, tag = "2")]
     pub succeeded_object_count: i64,
-    /// Output only. Number of objects failed.
+    /// Output only. The number of objects that failed due to user errors or
+    /// service errors.
     #[prost(int64, tag = "3")]
     pub failed_object_count: i64,
     /// Output only. Number of bytes found from source. This field is only
     /// populated for jobs with a prefix list object configuration.
     #[prost(int64, optional, tag = "4")]
     pub total_bytes_found: ::core::option::Option<i64>,
+    /// Output only. Number of object custom contexts created. This field is only
+    /// populated for jobs with the UpdateObjectCustomContext transformation.
+    #[prost(int64, optional, tag = "5")]
+    pub object_custom_contexts_created: ::core::option::Option<i64>,
+    /// Output only. Number of object custom contexts deleted. This field is only
+    /// populated for jobs with the UpdateObjectCustomContext transformation.
+    #[prost(int64, optional, tag = "6")]
+    pub object_custom_contexts_deleted: ::core::option::Option<i64>,
+    /// Output only. Number of object custom contexts updated. This counter tracks
+    /// custom contexts where the key already existed, but the payload was
+    /// modified. This field is only populated for jobs with the
+    /// UpdateObjectCustomContext transformation.
+    #[prost(int64, optional, tag = "7")]
+    pub object_custom_contexts_updated: ::core::option::Option<i64>,
 }
 /// Specifies the Cloud Logging behavior.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

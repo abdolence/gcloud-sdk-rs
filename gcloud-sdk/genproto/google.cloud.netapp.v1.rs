@@ -1198,6 +1198,41 @@ impl StoragePoolType {
         }
     }
 }
+/// Defines the scale-type of a UNIFIED Storage Pool.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ScaleType {
+    /// Unspecified scale type.
+    Unspecified = 0,
+    /// Represents standard capacity and performance scale-type.
+    /// Suitable for general purpose workloads.
+    Default = 1,
+    /// Represents higher capacity and performance scale-type.
+    /// Suitable for more demanding workloads.
+    Scaleout = 2,
+}
+impl ScaleType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SCALE_TYPE_UNSPECIFIED",
+            Self::Default => "SCALE_TYPE_DEFAULT",
+            Self::Scaleout => "SCALE_TYPE_SCALEOUT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCALE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SCALE_TYPE_DEFAULT" => Some(Self::Default),
+            "SCALE_TYPE_SCALEOUT" => Some(Self::Scaleout),
+            _ => None,
+        }
+    }
+}
 /// Schedule for Hybrid Replication.
 /// New enum values may be added in future to support different frequency of
 /// replication.
@@ -2278,7 +2313,9 @@ pub struct Volume {
     #[prost(enumeration = "RestrictedAction", repeated, packed = "false", tag = "31")]
     pub restricted_actions: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Flag indicating if the volume will be a large capacity volume or
-    /// a regular volume.
+    /// a regular volume. This field is used for legacy FILE pools. For Unified
+    /// pools, use the `large_capacity_config` field instead. This field and
+    /// `large_capacity_config` are mutually exclusive.
     #[prost(bool, tag = "32")]
     pub large_capacity: bool,
     /// Optional. Flag indicating if the volume will have an IP address per node
@@ -2318,6 +2355,13 @@ pub struct Volume {
     /// Currently, only one block device is permitted per Volume.
     #[prost(message, repeated, tag = "45")]
     pub block_devices: ::prost::alloc::vec::Vec<BlockDevice>,
+    /// Optional. Large capacity config for the volume.
+    /// Enables and configures large capacity for volumes in Unified pools with
+    /// File protocols. Not applicable for Block protocols in Unified pools.
+    /// This field and the legacy `large_capacity` boolean field
+    /// are mutually exclusive.
+    #[prost(message, optional, tag = "46")]
+    pub large_capacity_config: ::core::option::Option<LargeCapacityConfig>,
     /// Output only. If this volume is a clone, this field contains details about
     /// the clone.
     #[prost(message, optional, tag = "47")]
@@ -2416,6 +2460,16 @@ pub mod volume {
             }
         }
     }
+}
+/// Configuration for a Large Capacity Volume. A Large Capacity Volume
+/// supports sizes ranging from 4.8 TiB to 20 PiB, it is composed of multiple
+/// internal constituents, and must be created in a large capacity pool.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LargeCapacityConfig {
+    /// Optional. The number of internal constituents (e.g., FlexVols) for this
+    /// large volume. The minimum number of constituents is 2.
+    #[prost(int32, tag = "1")]
+    pub constituent_count: i32,
 }
 /// Defines the export policy for the volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4312,6 +4366,10 @@ pub struct StoragePool {
     /// `DEFAULT`.
     #[prost(enumeration = "Mode", optional, tag = "36")]
     pub mode: ::core::option::Option<i32>,
+    /// Optional. The scale type of the storage pool. Defaults to
+    /// `SCALE_TYPE_DEFAULT` if not specified.
+    #[prost(enumeration = "ScaleType", tag = "38")]
+    pub scale_type: i32,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {

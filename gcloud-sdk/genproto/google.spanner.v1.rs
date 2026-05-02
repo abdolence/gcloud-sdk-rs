@@ -1150,6 +1150,12 @@ pub struct CommitResponse {
     /// future.
     #[prost(message, optional, tag = "6")]
     pub cache_update: ::core::option::Option<CacheUpdate>,
+    /// The isolation level used for the read-write transaction.
+    #[prost(enumeration = "transaction_options::IsolationLevel", tag = "7")]
+    pub isolation_level: i32,
+    /// The read lock mode used for the read-write transaction.
+    #[prost(enumeration = "transaction_options::read_write::ReadLockMode", tag = "8")]
+    pub read_lock_mode: i32,
     /// You must examine and retry the commit if the following is populated.
     #[prost(oneof = "commit_response::MultiplexedSessionRetry", tags = "4")]
     pub multiplexed_session_retry: ::core::option::Option<

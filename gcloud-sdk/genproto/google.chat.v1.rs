@@ -2773,6 +2773,67 @@ pub struct FindDirectMessageRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// A request to get group chat spaces based on user resources.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FindGroupChatsRequest {
+    /// Optional. Resource names of all human users in group chat with the calling
+    /// user. Chat apps can't be included in the request.
+    ///
+    /// The maximum number of users that can be specified in a single request is
+    /// `49`.
+    ///
+    /// Format: `users/{user}`, where `{user}` is either the `id` for the
+    /// [person](<https://developers.google.com/people/api/rest/v1/people>) from the
+    /// People API, or the `id` for the
+    /// [user](<https://developers.google.com/admin-sdk/directory/reference/rest/v1/users>)
+    /// in the Directory API. For example, to find all group chats with the calling
+    /// user and two other users, with People API profile IDs `123456789` and
+    /// `987654321`, you can use `users/123456789` and `users/987654321`.
+    /// You can also use the email as an alias for `{user}`. For example,
+    /// `users/example@gmail.com` where `example@gmail.com` is the email of the
+    /// Google Chat user.
+    #[prost(string, repeated, tag = "5")]
+    pub users: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The maximum number of spaces to return. The service might return
+    /// fewer than this value.
+    ///
+    /// If unspecified, at most 10 spaces are returned.
+    ///
+    /// The maximum value is 30. If you use a value more than 30, it's
+    /// automatically changed to 30.
+    ///
+    /// Negative values return an `INVALID_ARGUMENT` error.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous call to find group chats.
+    /// Provide this parameter to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided should match the call that
+    /// provided the token. Passing different values may lead to unexpected
+    /// results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Requested space view type. If unset, defaults to
+    /// `SPACE_VIEW_RESOURCE_NAME_ONLY`. Requests that specify
+    /// `SPACE_VIEW_EXPANDED` must include scopes that allow reading space data,
+    /// for example,
+    /// <https://www.googleapis.com/auth/chat.spaces> or
+    /// <https://www.googleapis.com/auth/chat.spaces.readonly.>
+    #[prost(enumeration = "SpaceView", tag = "4")]
+    pub space_view: i32,
+}
+/// A response containing group chat spaces with exactly the calling user and the
+/// requested users.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindGroupChatsResponse {
+    /// List of spaces in the requested (or first) page.
+    #[prost(message, repeated, tag = "1")]
+    pub spaces: ::prost::alloc::vec::Vec<Space>,
+    /// A token that you can send as `pageToken` to retrieve the next page of
+    /// results. If empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// A request to update a single space.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSpaceRequest {
@@ -3039,6 +3100,48 @@ pub struct CompleteImportSpaceResponse {
     /// The import mode space.
     #[prost(message, optional, tag = "1")]
     pub space: ::core::option::Option<Space>,
+}
+/// A view that specifies which fields should be populated on the
+/// [`Space`](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>)
+/// resource.
+/// To ensure compatibility with future releases, we recommend that your code
+/// account for additional values.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SpaceView {
+    /// The default / unset value.
+    Unspecified = 0,
+    /// Populates only the Space resource name.
+    ResourceNameOnly = 3,
+    /// Populates Space resource fields.  Note: the `permissionSettings` field
+    /// will not be populated.
+    /// Requests that specify SPACE_VIEW_EXPANDED must include scopes that allow
+    /// reading space data, for example,
+    /// <https://www.googleapis.com/auth/chat.spaces> or
+    /// <https://www.googleapis.com/auth/chat.spaces.readonly.>
+    Expanded = 4,
+}
+impl SpaceView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SPACE_VIEW_UNSPECIFIED",
+            Self::ResourceNameOnly => "SPACE_VIEW_RESOURCE_NAME_ONLY",
+            Self::Expanded => "SPACE_VIEW_EXPANDED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SPACE_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "SPACE_VIEW_RESOURCE_NAME_ONLY" => Some(Self::ResourceNameOnly),
+            "SPACE_VIEW_EXPANDED" => Some(Self::Expanded),
+            _ => None,
+        }
+    }
 }
 /// A message in a Google Chat space.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6014,6 +6117,50 @@ pub mod chat_service_client {
                 .insert(
                     GrpcMethod::new("google.chat.v1.ChatService", "FindDirectMessage"),
                 );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns all spaces with `spaceType == GROUP_CHAT`, whose
+        /// human memberships contain exactly the calling user, and the users specified
+        /// in `FindGroupChatsRequest.users`. Only members that have joined the
+        /// conversation are supported. For an example, see [Find group
+        /// chats](https://developers.google.com/workspace/chat/find-group-chats).
+        ///
+        /// If the calling user blocks, or is blocked by, some users, and no spaces
+        /// with the entire specified set of users are found, this method returns
+        /// spaces that don't include the blocked or blocking users.
+        ///
+        /// The specified set of users must contain only human (non-app) memberships.
+        /// A request that contains non-human users doesn't return any spaces.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.memberships.readonly`
+        /// * `https://www.googleapis.com/auth/chat.memberships`
+        pub async fn find_group_chats(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FindGroupChatsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FindGroupChatsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/FindGroupChats",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "FindGroupChats"));
             self.inner.unary(req, path, codec).await
         }
         /// Creates a membership for the calling Chat app, a user, or a Google Group.

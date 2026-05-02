@@ -379,7 +379,7 @@ pub mod foreign_type_info {
 }
 /// Data policy option. For more information, see
 /// [Mask data by applying data policies to a
-/// column](<https://cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column/>).
+/// column](<https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column>).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataPolicyOption {
     /// Data policy resource name in the form of
@@ -525,6 +525,10 @@ pub struct TableFieldSchema {
     /// If the type is FOREIGN, this field is required.
     #[prost(string, tag = "23")]
     pub foreign_type_definition: ::prost::alloc::string::String,
+    /// Optional. Definition of how values are generated for the field.
+    /// Only valid for top-level schema fields (not nested fields).
+    #[prost(message, optional, tag = "28")]
+    pub generated_column: ::core::option::Option<table_field_schema::GeneratedColumn>,
 }
 /// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
@@ -543,6 +547,91 @@ pub mod table_field_schema {
         /// \[TableFieldSchema.type\]\[google.cloud.bigquery.v2.TableFieldSchema.type\].
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
+    }
+    /// Definition of the expression used to generate the field.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GeneratedExpressionInfo {
+        /// Optional. The generation expression (e.g. AI.EMBED(...)) used to
+        /// generated the field.
+        #[prost(string, optional, tag = "1")]
+        pub generation_expression: ::core::option::Option<
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. Whether the column generation is done asynchronously.
+        #[prost(bool, optional, tag = "2")]
+        pub asynchronous: ::core::option::Option<bool>,
+        /// Optional. Whether the generated column is stored in the table.
+        #[prost(bool, optional, tag = "3")]
+        pub stored: ::core::option::Option<bool>,
+    }
+    /// Optional. Definition of how values are generated for the field.
+    /// Only valid for top-level schema fields (not nested fields).
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GeneratedColumn {
+        /// Optional. Dictates when system generated values are used to populate the
+        /// field.
+        #[prost(enumeration = "generated_column::GeneratedMode", optional, tag = "1")]
+        pub generated_mode: ::core::option::Option<i32>,
+        /// Captures the metadata for the generated column. Could be either an
+        /// identity column or a generated column.
+        #[prost(oneof = "generated_column::Definition", tags = "3")]
+        pub definition: ::core::option::Option<generated_column::Definition>,
+    }
+    /// Nested message and enum types in `GeneratedColumn`.
+    pub mod generated_column {
+        /// Dictates when system generated values are used to populate the field.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum GeneratedMode {
+            /// Unspecified GeneratedMode will default to GENERATED_ALWAYS.
+            Unspecified = 0,
+            /// Field can only have system generated values. Users cannot manually
+            /// insert values into the field.
+            GeneratedAlways = 1,
+            /// Use system generated values only if the user does not explicitly
+            /// provide a value.
+            GeneratedByDefault = 2,
+        }
+        impl GeneratedMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "GENERATED_MODE_UNSPECIFIED",
+                    Self::GeneratedAlways => "GENERATED_ALWAYS",
+                    Self::GeneratedByDefault => "GENERATED_BY_DEFAULT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "GENERATED_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GENERATED_ALWAYS" => Some(Self::GeneratedAlways),
+                    "GENERATED_BY_DEFAULT" => Some(Self::GeneratedByDefault),
+                    _ => None,
+                }
+            }
+        }
+        /// Captures the metadata for the generated column. Could be either an
+        /// identity column or a generated column.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Definition {
+            /// Definition of the expression used to generate the field.
+            #[prost(message, tag = "3")]
+            GeneratedExpressionInfo(super::GeneratedExpressionInfo),
+        }
     }
     /// Rounding mode options that can be used when storing NUMERIC
     /// or BIGNUMERIC values.
@@ -849,9 +938,17 @@ pub struct Dataset {
     /// * DEFAULT - only accessible by owner and authorized accounts,
     /// * PUBLIC - accessible by everyone,
     /// * LINKED - linked dataset,
-    /// * EXTERNAL - dataset with definition in external metadata catalog.
+    /// * EXTERNAL - dataset with definition in external metadata catalog,
+    /// * BIGLAKE_ICEBERG - a Biglake dataset accessible through the Iceberg API,
+    /// * BIGLAKE_HIVE - a Biglake dataset accessible through the Hive API.
     #[prost(string, tag = "18")]
     pub r#type: ::prost::alloc::string::String,
+    /// Output only. The origin of the dataset, one of:
+    ///
+    /// * (Unset) - Native BigQuery Dataset
+    /// * BIGLAKE - Dataset is backed by a namespace stored natively in Biglake
+    #[prost(string, optional, tag = "40")]
+    pub catalog_source: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The source dataset reference when the dataset is of type LINKED.
     /// For all other dataset types it is not set. This field cannot be updated
     /// once it is set. Any attempt to update this field using Update and Patch API
@@ -1350,6 +1447,23 @@ pub struct ListFormatDataset {
     /// The geographic location where the dataset resides.
     #[prost(string, tag = "6")]
     pub location: ::prost::alloc::string::String,
+    /// Output only. Same as `type` in `Dataset`.
+    /// The type of the dataset, one of:
+    ///
+    /// * DEFAULT - only accessible by owner and authorized accounts,
+    /// * PUBLIC - accessible by everyone,
+    /// * LINKED - linked dataset,
+    /// * EXTERNAL - dataset with definition in external metadata catalog,
+    /// * BIGLAKE_ICEBERG - a Biglake dataset accessible through the Iceberg API,
+    /// * BIGLAKE_HIVE - a Biglake dataset accessible through the Hive API.
+    #[prost(string, tag = "7")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Output only. The origin of the dataset, one of:
+    ///
+    /// * (Unset) - Native BigQuery Dataset.
+    /// * BIGLAKE - Dataset is backed by a namespace stored natively in Biglake.
+    #[prost(string, optional, tag = "12")]
+    pub catalog_source: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. Reference to a read-only external dataset defined in data
     /// catalogs outside of BigQuery. Filled out when the dataset type is EXTERNAL.
     #[prost(message, optional, tag = "11")]
@@ -2490,9 +2604,9 @@ pub struct ExternalDataConfiguration {
     /// of TIMESTAMP types that are allowed to the destination table for
     /// autodetection mode.
     ///
-    /// Available for the formats: CSV.
+    /// Available for the formats: CSV, PARQUET, and AVRO.
     ///
-    /// For the CSV Format, Possible values include:
+    /// Possible values include:
     /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
     /// columns
     /// \[6, 12\]: timestamp(6) for all auto detected TIMESTAMP columns that have
@@ -2600,6 +2714,67 @@ pub mod external_data_configuration {
             }
         }
     }
+}
+/// Provides error statistics for a GenAi function call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenAiFunctionErrorStats {
+    /// A list of unique errors at function level (up to 5, truncated to 100
+    /// chars).
+    #[prost(string, repeated, tag = "3")]
+    pub errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Number of failed rows processed by the function
+    #[prost(int64, tag = "5")]
+    pub num_failed_rows: i64,
+}
+/// Provides cost optimization statistics for a GenAi function call.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenAiFunctionCostOptimizationStats {
+    /// Number of rows inferred via cost optimized workflow.
+    #[prost(int64, optional, tag = "1")]
+    pub num_cost_optimized_rows: ::core::option::Option<i64>,
+    /// System generated message to provide insights into cost optimization state.
+    #[prost(string, optional, tag = "2")]
+    pub message: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Provides statistics for each Ai function call within a query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenAiFunctionStats {
+    /// Name of the function.
+    #[prost(string, optional, tag = "1")]
+    pub function_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// User input prompt of the function (truncated to 20 chars).
+    #[prost(string, optional, tag = "2")]
+    pub prompt: ::core::option::Option<::prost::alloc::string::String>,
+    /// Number of rows processed by this GenAi function.
+    /// This includes all cost_optimized, llm_inferred and failed_rows.
+    #[prost(int64, optional, tag = "3")]
+    pub num_processed_rows: ::core::option::Option<i64>,
+    /// Error stats for the function.
+    #[prost(message, optional, tag = "4")]
+    pub error_stats: ::core::option::Option<GenAiFunctionErrorStats>,
+    /// Cost optimization stats if applied on the rows processed by the function.
+    #[prost(message, optional, tag = "5")]
+    pub cost_optimization_stats: ::core::option::Option<
+        GenAiFunctionCostOptimizationStats,
+    >,
+}
+/// Provides error statistics for the query job across all AI function calls.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenAiErrorStats {
+    /// A list of unique errors at query level (up to 5, truncated to 100 chars)
+    #[prost(string, repeated, tag = "1")]
+    pub errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// GenAi stats for the query job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenAiStats {
+    /// Job level error stats across all GenAi functions
+    #[prost(message, optional, tag = "4")]
+    pub error_stats: ::core::option::Option<GenAiErrorStats>,
+    /// Function level stats for GenAi Functions.
+    /// See <https://docs.cloud.google.com/bigquery/docs/generative-ai-overview>
+    #[prost(message, repeated, tag = "5")]
+    pub function_stats: ::prost::alloc::vec::Vec<GenAiFunctionStats>,
 }
 /// Id path of a model.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3145,9 +3320,9 @@ pub struct JobConfigurationQuery {
     #[prost(message, optional, tag = "14")]
     pub maximum_bytes_billed: ::core::option::Option<i64>,
     /// Optional. Specifies whether to use BigQuery's legacy SQL dialect for this
-    /// query. The default value is true. If set to false, the query will use
-    /// BigQuery's GoogleSQL:
-    /// <https://cloud.google.com/bigquery/sql-reference/>
+    /// query. The default value is true. If set to false, the query uses
+    /// BigQuery's
+    /// [GoogleSQL](<https://docs.cloud.google.com/bigquery/docs/introduction-sql>).
     ///
     /// When useLegacySql is set to false, the value of flattenResults is ignored;
     /// query will be run as if flattenResults is false.
@@ -3644,9 +3819,9 @@ pub struct JobConfigurationLoad {
     /// of TIMESTAMP types that are allowed to the destination table for
     /// autodetection mode.
     ///
-    /// Available for the formats: CSV.
+    /// Available for the formats: CSV, PARQUET, and AVRO.
     ///
-    /// For the CSV Format, Possible values include:
+    /// Possible values include:
     /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
     /// columns
     /// \[6, 12\]: timestamp(6) for all auto detected TIMESTAMP columns that have
@@ -7395,6 +7570,21 @@ pub mod model_service_client {
         }
     }
 }
+/// Id path of a property graph.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PropertyGraphReference {
+    /// Required. The ID of the project containing this property graph.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The ID of the dataset containing this property graph.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. The ID of the property graph. The ID must contain only
+    /// letters (a-z, A-Z), numbers (0-9), or underscores (\_). The maximum
+    /// length is 256 characters.
+    #[prost(string, tag = "3")]
+    pub property_graph_id: ::prost::alloc::string::String,
+}
 /// Id path of a row access policy.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowAccessPolicyReference {
@@ -8340,19 +8530,38 @@ pub struct LoadQueryStatistics {
 }
 /// Statistics related to Incremental Query Results. Populated as part of
 /// JobStatistics2. This feature is not yet available.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IncrementalResultStats {
-    /// Reason why incremental query results are/were not written by the query.
+    /// Output only. Reason why incremental query results are/were not written by
+    /// the query.
     #[prost(enumeration = "incremental_result_stats::DisabledReason", tag = "1")]
     pub disabled_reason: i32,
-    /// The time at which the result table's contents were completely replaced.
-    /// May be absent if no results have been written or the query has completed.
+    /// Output only. Additional human-readable clarification, if available, for
+    /// DisabledReason.
+    #[prost(string, tag = "4")]
+    pub disabled_reason_details: ::prost::alloc::string::String,
+    /// Output only. The time at which the result table's contents were completely
+    /// replaced. May be absent if no results have been written or the query has
+    /// completed.
     #[prost(message, optional, tag = "2")]
     pub result_set_last_replace_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time at which the result table's contents were modified.
+    /// Output only. The time at which the result table's contents were modified.
     /// May be absent if no results have been written or the query has completed.
     #[prost(message, optional, tag = "3")]
     pub result_set_last_modify_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the first incremental result was written. If
+    /// the query needed to restart internally, this only describes the final
+    /// attempt.
+    #[prost(message, optional, tag = "5")]
+    pub first_incremental_row_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the last incremental result was written.
+    /// Does not include the final result written after query completion.
+    #[prost(message, optional, tag = "6")]
+    pub last_incremental_row_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Number of rows that were in the latest result set before query
+    /// completion.
+    #[prost(int64, optional, tag = "7")]
+    pub incremental_row_count: ::core::option::Option<i64>,
 }
 /// Nested message and enum types in `IncrementalResultStats`.
 pub mod incremental_result_stats {
@@ -8372,8 +8581,11 @@ pub mod incremental_result_stats {
     pub enum DisabledReason {
         /// Disabled reason not specified.
         Unspecified = 0,
-        /// Some other reason.
+        /// Incremental results are/were disabled for reasons not covered by the
+        /// other enum values, e.g. runtime issues.
         Other = 1,
+        /// Query includes an operation that is not supported.
+        UnsupportedOperator = 2,
     }
     impl DisabledReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8384,6 +8596,7 @@ pub mod incremental_result_stats {
             match self {
                 Self::Unspecified => "DISABLED_REASON_UNSPECIFIED",
                 Self::Other => "OTHER",
+                Self::UnsupportedOperator => "UNSUPPORTED_OPERATOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8391,6 +8604,7 @@ pub mod incremental_result_stats {
             match value {
                 "DISABLED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
                 "OTHER" => Some(Self::Other),
+                "UNSUPPORTED_OPERATOR" => Some(Self::UnsupportedOperator),
                 _ => None,
             }
         }
@@ -8456,6 +8670,10 @@ pub struct JobStatistics2 {
     /// Output only. Referenced routines for the job.
     #[prost(message, repeated, tag = "24")]
     pub referenced_routines: ::prost::alloc::vec::Vec<RoutineReference>,
+    /// Output only. Referenced property graphs for the job. Queries that reference
+    /// more than 50 property graphs will not have a complete list.
+    #[prost(message, repeated, tag = "49")]
+    pub referenced_property_graphs: ::prost::alloc::vec::Vec<PropertyGraphReference>,
     /// Output only. The schema of the results. Present only for successful dry
     /// run of non-legacy SQL queries.
     #[prost(message, optional, tag = "11")]
@@ -8649,6 +8867,9 @@ pub struct JobStatistics2 {
     /// for the query. This feature is not yet available.
     #[prost(message, optional, tag = "53")]
     pub incremental_result_stats: ::core::option::Option<IncrementalResultStats>,
+    /// Output only. Statistics related to GenAI usage in the query.
+    #[prost(message, optional, tag = "54")]
+    pub gen_ai_stats: ::core::option::Option<GenAiStats>,
 }
 /// Statistics for a load job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9008,6 +9229,111 @@ pub struct DmlStats {
     /// statements.
     #[prost(message, optional, tag = "3")]
     pub updated_row_count: ::core::option::Option<i64>,
+    /// Output only. DML mode used.
+    #[prost(enumeration = "dml_stats::DmlMode", tag = "4")]
+    pub dml_mode: i32,
+    /// Output only. Reason for disabling fine-grained DML if applicable.
+    #[prost(enumeration = "dml_stats::FineGrainedDmlUnusedReason", tag = "5")]
+    pub fine_grained_dml_unused_reason: i32,
+}
+/// Nested message and enum types in `DmlStats`.
+pub mod dml_stats {
+    /// Enum to specify the DML mode used.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DmlMode {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Coarse-grained DML was used.
+        CoarseGrainedDml = 1,
+        /// Fine-grained DML was used.
+        FineGrainedDml = 2,
+    }
+    impl DmlMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DML_MODE_UNSPECIFIED",
+                Self::CoarseGrainedDml => "COARSE_GRAINED_DML",
+                Self::FineGrainedDml => "FINE_GRAINED_DML",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DML_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COARSE_GRAINED_DML" => Some(Self::CoarseGrainedDml),
+                "FINE_GRAINED_DML" => Some(Self::FineGrainedDml),
+                _ => None,
+            }
+        }
+    }
+    /// Reason for disabling fine-grained DML. Additional values may be added in
+    /// the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FineGrainedDmlUnusedReason {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Max partition size threshold exceeded. \[Fine-grained DML Limitations\]
+        /// (<https://docs.cloud.google.com/bigquery/docs/data-manipulation-language#fine-grained-dml-limitations>)
+        MaxPartitionSizeExceeded = 1,
+        /// The table is not enrolled for fine-grained DML.
+        TableNotEnrolled = 2,
+        /// The DML statement is part of a multi-statement transaction.
+        DmlInMultiStatementTransaction = 3,
+    }
+    impl FineGrainedDmlUnusedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FINE_GRAINED_DML_UNUSED_REASON_UNSPECIFIED",
+                Self::MaxPartitionSizeExceeded => "MAX_PARTITION_SIZE_EXCEEDED",
+                Self::TableNotEnrolled => "TABLE_NOT_ENROLLED",
+                Self::DmlInMultiStatementTransaction => {
+                    "DML_IN_MULTI_STATEMENT_TRANSACTION"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FINE_GRAINED_DML_UNUSED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAX_PARTITION_SIZE_EXCEEDED" => Some(Self::MaxPartitionSizeExceeded),
+                "TABLE_NOT_ENROLLED" => Some(Self::TableNotEnrolled),
+                "DML_IN_MULTI_STATEMENT_TRANSACTION" => {
+                    Some(Self::DmlInMultiStatementTransaction)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// Performance insights for the job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9971,10 +10297,10 @@ pub struct QueryRequest {
     #[prost(message, optional, tag = "9")]
     pub use_query_cache: ::core::option::Option<bool>,
     /// Specifies whether to use BigQuery's legacy SQL dialect for this query. The
-    /// default value is true. If set to false, the query will use BigQuery's
-    /// GoogleSQL: <https://cloud.google.com/bigquery/sql-reference/> When
-    /// useLegacySql is set to false, the value of flattenResults is ignored; query
-    /// will be run as if flattenResults is false.
+    /// default value is true. If set to false, the query uses BigQuery's
+    /// [GoogleSQL](<https://docs.cloud.google.com/bigquery/docs/introduction-sql>).
+    /// When useLegacySql is set to false, the value of flattenResults is ignored;
+    /// query will be run as if flattenResults is false.
     #[prost(message, optional, tag = "10")]
     pub use_legacy_sql: ::core::option::Option<bool>,
     /// GoogleSQL only. Set to POSITIONAL to use positional (?) query parameters
@@ -11046,6 +11372,11 @@ pub struct Routine {
     /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(message, optional, tag = "21")]
     pub external_runtime_options: ::core::option::Option<ExternalRuntimeOptions>,
+    /// Output only. The build status of the routine. This field is only applicable
+    /// to Python UDFs.
+    /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
+    #[prost(message, optional, tag = "22")]
+    pub build_status: ::core::option::Option<RoutineBuildStatus>,
 }
 /// Nested message and enum types in `Routine`.
 pub mod routine {
@@ -11541,6 +11872,78 @@ pub struct SparkOptions {
     /// should be set for Java/Scala language type.
     #[prost(string, tag = "10")]
     pub main_class: ::prost::alloc::string::String,
+}
+/// The status of a routine build.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RoutineBuildStatus {
+    /// Output only. The current build state of the routine.
+    #[prost(enumeration = "routine_build_status::BuildState", tag = "1")]
+    pub build_state: i32,
+    /// Output only. A result object that will be present only if the build has
+    /// failed.
+    #[prost(message, optional, tag = "2")]
+    pub error_result: ::core::option::Option<ErrorProto>,
+    /// Output only. The time when the build state was updated last.
+    #[prost(message, optional, tag = "3")]
+    pub build_state_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time taken for the image build. Populated only after the
+    /// build succeeds or fails.
+    #[prost(message, optional, tag = "4")]
+    pub build_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The size of the image in bytes. Populated only after the build
+    /// succeeds.
+    #[prost(int64, tag = "5")]
+    pub image_size_bytes: i64,
+}
+/// Nested message and enum types in `RoutineBuildStatus`.
+pub mod routine_build_status {
+    /// The build state of a routine.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BuildState {
+        /// Default value.
+        Unspecified = 0,
+        /// The build is in progress.
+        InProgress = 1,
+        /// The build has succeeded.
+        Succeeded = 2,
+        /// The build has failed.
+        Failed = 3,
+    }
+    impl BuildState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BUILD_STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BUILD_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
 }
 /// Describes the format for getting information about a routine.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -12456,9 +12859,9 @@ pub struct ViewDefinition {
         UserDefinedFunctionResource,
     >,
     /// Specifies whether to use BigQuery's legacy SQL for this view.
-    /// The default value is true. If set to false, the view will use
-    /// BigQuery's GoogleSQL:
-    /// <https://cloud.google.com/bigquery/sql-reference/>
+    /// The default value is true. If set to false, the view uses
+    /// BigQuery's
+    /// [GoogleSQL](<https://docs.cloud.google.com/bigquery/docs/introduction-sql>).
     ///
     /// Queries and views that reference this view must use the same flag value.
     /// A wrapper is used here because the default value is True.

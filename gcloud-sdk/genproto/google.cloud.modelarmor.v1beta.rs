@@ -155,6 +155,9 @@ pub struct FloorSetting {
     pub floor_setting_metadata: ::core::option::Option<
         floor_setting::FloorSettingMetadata,
     >,
+    /// Optional. Google MCP Server floor setting.
+    #[prost(message, optional, tag = "9")]
+    pub google_mcp_server_floor_setting: ::core::option::Option<McpServerFloorSetting>,
 }
 /// Nested message and enum types in `FloorSetting`.
 pub mod floor_setting {
@@ -195,6 +198,8 @@ pub mod floor_setting {
         Unspecified = 0,
         /// AI Platform.
         AiPlatform = 1,
+        /// Google MCP Server (via Shim Service Extension)
+        GoogleMcpServer = 2,
     }
     impl IntegratedService {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -205,6 +210,7 @@ pub mod floor_setting {
             match self {
                 Self::Unspecified => "INTEGRATED_SERVICE_UNSPECIFIED",
                 Self::AiPlatform => "AI_PLATFORM",
+                Self::GoogleMcpServer => "GOOGLE_MCP_SERVER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -212,9 +218,43 @@ pub mod floor_setting {
             match value {
                 "INTEGRATED_SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
                 "AI_PLATFORM" => Some(Self::AiPlatform),
+                "GOOGLE_MCP_SERVER" => Some(Self::GoogleMcpServer),
                 _ => None,
             }
         }
+    }
+}
+/// Message describing MCP Server Floor Setting.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct McpServerFloorSetting {
+    /// Optional. If true, log Model Armor filter results to Cloud Logging.
+    #[prost(bool, tag = "3")]
+    pub enable_cloud_logging: bool,
+    /// Optional. List of MCP servers for which the MCP floor setting is
+    /// applicable. Examples: "bigquery.googleapis.com/mcp",
+    /// "run.googleapis.com/mcp" Empty list denotes that the floor setting is
+    /// applicable to all MCP servers.
+    #[prost(string, repeated, tag = "4")]
+    pub apis: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// enforcement type for Model Armor filters.
+    #[prost(oneof = "mcp_server_floor_setting::EnforcementType", tags = "1, 2")]
+    pub enforcement_type: ::core::option::Option<
+        mcp_server_floor_setting::EnforcementType,
+    >,
+}
+/// Nested message and enum types in `McpServerFloorSetting`.
+pub mod mcp_server_floor_setting {
+    /// enforcement type for Model Armor filters.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum EnforcementType {
+        /// Optional. If true, Model Armor filters will be run in inspect only mode.
+        /// No action will be taken on the request.
+        #[prost(bool, tag = "1")]
+        InspectOnly(bool),
+        /// Optional. If true, Model Armor filters will be run in inspect and block
+        /// mode. Requests that trip Model Armor filters will be blocked.
+        #[prost(bool, tag = "2")]
+        InspectAndBlock(bool),
     }
 }
 /// message describing AiPlatformFloorSetting
@@ -446,7 +486,7 @@ pub mod pi_and_jailbreak_filter_settings {
         Unspecified = 0,
         /// Enabled
         Enabled = 1,
-        /// Enabled
+        /// Disabled
         Disabled = 2,
     }
     impl PiAndJailbreakFilterEnforcement {
@@ -678,6 +718,9 @@ pub struct SanitizeUserPromptRequest {
     pub multi_language_detection_metadata: ::core::option::Option<
         MultiLanguageDetectionMetadata,
     >,
+    /// Optional. Streaming Mode for StreamSanitize\* API.
+    #[prost(enumeration = "StreamingMode", optional, tag = "7")]
+    pub streaming_mode: ::core::option::Option<i32>,
 }
 /// Sanitize Model Response request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -697,6 +740,9 @@ pub struct SanitizeModelResponseRequest {
     pub multi_language_detection_metadata: ::core::option::Option<
         MultiLanguageDetectionMetadata,
     >,
+    /// Optional. Streaming Mode for StreamSanitize\* API.
+    #[prost(enumeration = "StreamingMode", optional, tag = "8")]
+    pub streaming_mode: ::core::option::Option<i32>,
 }
 /// Sanitized User Prompt Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -766,8 +812,18 @@ pub mod sanitization_result {
 pub struct MultiLanguageDetectionMetadata {
     /// Optional. Optional Source language of the user prompt.
     ///
-    /// If multi-language detection is enabled but language is not set in that case
-    /// we would automatically detect the source language.
+    /// If multi-language detection is enabled and this field is not set, the
+    /// source language will be automatically detected. When a source language is
+    /// provided, Model Armor uses it to sanitize the input. In that case the
+    /// system does not perform auto-detection and relies solely on the specified
+    /// language.
+    ///
+    /// This string field accepts a language code from the ISO-639 standard.
+    /// For a list of languages supported by Model Armor, see
+    /// \[Model Armor supported languages\]
+    /// (<https://cloud.google.com/security-command-center/docs/model-armor-overview#languages-supported>).
+    /// For a comprehensive list of language codes, see
+    /// [ISO-639](<https://cloud.google.com/translate/docs/languages#nmt>).
     #[prost(string, tag = "1")]
     pub source_language: ::prost::alloc::string::String,
     /// Optional. Enable detection of multi-language prompts and responses.
@@ -829,7 +885,8 @@ pub struct RaiFilterResult {
     #[prost(enumeration = "FilterMatchState", tag = "3")]
     pub match_state: i32,
     /// The map of RAI filter results where key is RAI filter type - either of
-    /// "sexually_explicit", "hate_speech", "harassment", "dangerous".
+    /// "sexually_explicit", "hate_speech", "harassment", "dangerous", "violence",
+    /// "sexually_suggestive".
     #[prost(map = "string, message", tag = "4")]
     pub rai_filter_type_results: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -931,6 +988,10 @@ pub struct ByteDataItem {
     /// Required. Bytes Data
     #[prost(bytes = "vec", tag = "2")]
     pub byte_data: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Label of the file. This is used to identify the file in the
+    /// response.
+    #[prost(string, tag = "3")]
+    pub file_label: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ByteDataItem`.
 pub mod byte_data_item {
@@ -964,6 +1025,8 @@ pub mod byte_data_item {
         Txt = 6,
         /// CSV
         Csv = 7,
+        /// ZIP
+        Zip = 9,
     }
     impl ByteItemType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -980,6 +1043,7 @@ pub mod byte_data_item {
                 Self::PowerpointDocument => "POWERPOINT_DOCUMENT",
                 Self::Txt => "TXT",
                 Self::Csv => "CSV",
+                Self::Zip => "ZIP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -993,6 +1057,7 @@ pub mod byte_data_item {
                 "POWERPOINT_DOCUMENT" => Some(Self::PowerpointDocument),
                 "TXT" => Some(Self::Txt),
                 "CSV" => Some(Self::Csv),
+                "ZIP" => Some(Self::Zip),
                 _ => None,
             }
         }
@@ -1047,11 +1112,13 @@ pub mod sdp_finding {
         /// These are relative to the finding's containing element.
         /// Note that when the content is not textual, this references
         /// the UTF-8 encoded textual representation of the content.
+        /// Note: Omitted if content is an image.
         #[prost(message, optional, tag = "1")]
         pub byte_range: ::core::option::Option<super::RangeInfo>,
         /// Unicode character offsets delimiting the finding.
         /// These are relative to the finding's containing element.
         /// Provided when the content is text.
+        /// Note: Omitted if content is an image.
         #[prost(message, optional, tag = "2")]
         pub codepoint_range: ::core::option::Option<super::RangeInfo>,
     }
@@ -1584,6 +1651,39 @@ impl InvocationResult {
         }
     }
 }
+/// Streaming Mode for Sanitize\* API.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StreamingMode {
+    /// Default value.
+    Unspecified = 0,
+    /// Buffered Streaming mode.
+    Buffered = 1,
+    /// Real Time Streaming mode.
+    Realtime = 2,
+}
+impl StreamingMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "STREAMING_MODE_UNSPECIFIED",
+            Self::Buffered => "STREAMING_MODE_BUFFERED",
+            Self::Realtime => "STREAMING_MODE_REALTIME",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STREAMING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STREAMING_MODE_BUFFERED" => Some(Self::Buffered),
+            "STREAMING_MODE_REALTIME" => Some(Self::Realtime),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod model_armor_client {
     #![allow(
@@ -1927,6 +2027,72 @@ pub mod model_armor_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Streaming version of Sanitize User Prompt.
+        pub async fn stream_sanitize_user_prompt(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::SanitizeUserPromptRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::SanitizeUserPromptResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.modelarmor.v1beta.ModelArmor/StreamSanitizeUserPrompt",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.modelarmor.v1beta.ModelArmor",
+                        "StreamSanitizeUserPrompt",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Streaming version of Sanitizes Model Response.
+        pub async fn stream_sanitize_model_response(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::SanitizeModelResponseRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::SanitizeModelResponseResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.modelarmor.v1beta.ModelArmor/StreamSanitizeModelResponse",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.modelarmor.v1beta.ModelArmor",
+                        "StreamSanitizeModelResponse",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }

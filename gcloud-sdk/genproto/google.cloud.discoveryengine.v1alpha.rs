@@ -5776,6 +5776,9 @@ pub mod search_request {
             Disabled = 1,
             /// Enables Search As You Type.
             Enabled = 2,
+            /// Automatic switching between search-as-you-type and standard search
+            /// modes, ideal for single-API implementations (e.g., debouncing).
+            Auto = 3,
         }
         impl Condition {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -5787,6 +5790,7 @@ pub mod search_request {
                     Self::Unspecified => "CONDITION_UNSPECIFIED",
                     Self::Disabled => "DISABLED",
                     Self::Enabled => "ENABLED",
+                    Self::Auto => "AUTO",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5795,6 +5799,7 @@ pub mod search_request {
                     "CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
                     "DISABLED" => Some(Self::Disabled),
                     "ENABLED" => Some(Self::Enabled),
+                    "AUTO" => Some(Self::Auto),
                     _ => None,
                 }
             }

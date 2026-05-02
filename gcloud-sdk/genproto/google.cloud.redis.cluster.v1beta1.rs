@@ -1729,6 +1729,12 @@ pub enum NodeType {
     RedisHighmemXlarge = 3,
     /// Redis standard small node_type.
     RedisStandardSmall = 4,
+    /// Redis highcpu medium node_type.
+    RedisHighcpuMedium = 7,
+    /// Redis standard large node_type.
+    RedisStandardLarge = 8,
+    /// Redis highmem 2xlarge node_type.
+    RedisHighmem2xlarge = 9,
 }
 impl NodeType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1742,6 +1748,9 @@ impl NodeType {
             Self::RedisHighmemMedium => "REDIS_HIGHMEM_MEDIUM",
             Self::RedisHighmemXlarge => "REDIS_HIGHMEM_XLARGE",
             Self::RedisStandardSmall => "REDIS_STANDARD_SMALL",
+            Self::RedisHighcpuMedium => "REDIS_HIGHCPU_MEDIUM",
+            Self::RedisStandardLarge => "REDIS_STANDARD_LARGE",
+            Self::RedisHighmem2xlarge => "REDIS_HIGHMEM_2XLARGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1752,6 +1761,9 @@ impl NodeType {
             "REDIS_HIGHMEM_MEDIUM" => Some(Self::RedisHighmemMedium),
             "REDIS_HIGHMEM_XLARGE" => Some(Self::RedisHighmemXlarge),
             "REDIS_STANDARD_SMALL" => Some(Self::RedisStandardSmall),
+            "REDIS_HIGHCPU_MEDIUM" => Some(Self::RedisHighcpuMedium),
+            "REDIS_STANDARD_LARGE" => Some(Self::RedisStandardLarge),
+            "REDIS_HIGHMEM_2XLARGE" => Some(Self::RedisHighmem2xlarge),
             _ => None,
         }
     }

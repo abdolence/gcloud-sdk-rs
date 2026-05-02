@@ -1669,7 +1669,7 @@ pub struct ExpandedDataSet {
 /// A resource message representing a Google Analytics account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Account {
-    /// Output only. Resource name of this account.
+    /// Identifier. Resource name of this account.
     /// Format: accounts/{account}
     /// Example: "accounts/100"
     #[prost(string, tag = "1")]
@@ -1699,7 +1699,7 @@ pub struct Account {
 /// A resource message representing a Google Analytics property.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Property {
-    /// Output only. Resource name of this property.
+    /// Identifier. Resource name of this property.
     /// Format: properties/{property_id}
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
@@ -1770,7 +1770,7 @@ pub struct Property {
 /// A resource message representing a data stream.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataStream {
-    /// Output only. Resource name of this Data Stream.
+    /// Identifier. Resource name of this Data Stream.
     /// Format: properties/{property_id}/dataStreams/{stream_id}
     /// Example: "properties/1000/dataStreams/2000"
     #[prost(string, tag = "1")]
@@ -1907,7 +1907,7 @@ pub mod data_stream {
 /// A link between a Google Analytics property and a Firebase project.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirebaseLink {
-    /// Output only. Example format: properties/1234/firebaseLinks/5678
+    /// Identifier. Example format: properties/1234/firebaseLinks/5678
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. Firebase project resource name. When creating a FirebaseLink,
@@ -1927,7 +1927,7 @@ pub struct FirebaseLink {
 /// DataStream. Only present for web DataStream resources.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalSiteTag {
-    /// Output only. Resource name for this GlobalSiteTag resource.
+    /// Identifier. Resource name for this GlobalSiteTag resource.
     /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
     /// Example: "properties/123/dataStreams/456/globalSiteTag"
     #[prost(string, tag = "1")]
@@ -1940,7 +1940,7 @@ pub struct GlobalSiteTag {
 /// A link between a Google Analytics property and a Google Ads account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleAdsLink {
-    /// Output only. Format:
+    /// Identifier. Format:
     /// properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
     ///
     /// Note: googleAdsLinkId is not the Google Ads customer ID.
@@ -1973,7 +1973,7 @@ pub struct GoogleAdsLink {
 /// account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSharingSettings {
-    /// Output only. Resource name.
+    /// Identifier. Resource name.
     /// Format: accounts/{account}/dataSharingSettings
     /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag = "1")]
@@ -2022,7 +2022,7 @@ pub struct DataSharingSettings {
 /// all its child Google Analytics properties.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountSummary {
-    /// Resource name for this account summary.
+    /// Identifier. Resource name for this account summary.
     /// Format: accountSummaries/{account_id}
     /// Example: "accountSummaries/1000"
     #[prost(string, tag = "1")]
@@ -2064,8 +2064,8 @@ pub struct PropertySummary {
 /// A secret value used for sending hits to Measurement Protocol.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MeasurementProtocolSecret {
-    /// Output only. Resource name of this secret. This secret may be a child of
-    /// any type of stream. Format:
+    /// Identifier. Resource name of this secret. This secret may be a child of any
+    /// type of stream. Format:
     /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2081,7 +2081,7 @@ pub struct MeasurementProtocolSecret {
 /// SKAdNetwork conversion value schema of an iOS stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkConversionValueSchema {
-    /// Output only. Resource name of the schema. This will be child of ONLY an iOS
+    /// Identifier. Resource name of the schema. This will be child of ONLY an iOS
     /// stream, and there can be at most one such child under an iOS stream.
     /// Format:
     /// properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
@@ -2258,7 +2258,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2360,6 +2360,9 @@ pub mod change_history_change {
             /// A snapshot of a ReportingIdentitySettings resource in change history.
             #[prost(message, tag = "34")]
             ReportingIdentitySettings(super::super::ReportingIdentitySettings),
+            /// A snapshot of a UserProvidedDataSettings resource in change history.
+            #[prost(message, tag = "35")]
+            UserProvidedDataSettings(super::super::UserProvidedDataSettings),
         }
     }
 }
@@ -2367,7 +2370,7 @@ pub mod change_history_change {
 /// advertiser.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLink {
-    /// Output only. The resource name for this DisplayVideo360AdvertiserLink
+    /// Identifier. The resource name for this DisplayVideo360AdvertiserLink
     /// resource. Format:
     /// properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
     ///
@@ -2406,7 +2409,7 @@ pub struct DisplayVideo360AdvertiserLink {
 /// admins approve outbound proposals.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLinkProposal {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// DisplayVideo360AdvertiserLinkProposal resource. Format:
     /// properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
     ///
@@ -2448,7 +2451,7 @@ pub struct DisplayVideo360AdvertiserLinkProposal {
 /// A link between a Google Analytics property and a Search Ads 360 entity.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAds360Link {
-    /// Output only. The resource name for this SearchAds360Link resource.
+    /// Identifier. The resource name for this SearchAds360Link resource.
     /// Format: properties/{propertyId}/searchAds360Links/{linkId}
     ///
     /// Note: linkId is not the Search Ads 360 advertiser ID
@@ -2500,7 +2503,7 @@ pub struct LinkProposalStatusDetails {
 /// A conversion event in a Google Analytics property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionEvent {
-    /// Output only. Resource name of this conversion event.
+    /// Identifier. Resource name of this conversion event.
     /// Format: properties/{property}/conversionEvents/{conversion_event}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2712,7 +2715,7 @@ pub struct GoogleSignalsSettings {
 /// A definition for a CustomDimension.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomDimension {
-    /// Output only. Resource name for this CustomDimension resource.
+    /// Identifier. Resource name for this CustomDimension resource.
     /// Format: properties/{property}/customDimensions/{customDimension}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2804,7 +2807,7 @@ pub mod custom_dimension {
 /// A definition for a custom metric.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomMetric {
-    /// Output only. Resource name for this CustomMetric resource.
+    /// Identifier. Resource name for this CustomMetric resource.
     /// Format: properties/{property}/customMetrics/{customMetric}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -3012,7 +3015,7 @@ pub mod custom_metric {
 /// A definition for a calculated metric.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CalculatedMetric {
-    /// Output only. Resource name for this CalculatedMetric.
+    /// Identifier. Resource name for this CalculatedMetric.
     /// Format: 'properties/{property_id}/calculatedMetrics/{calculated_metric_id}'
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -3183,7 +3186,7 @@ pub mod calculated_metric {
 /// Settings values for data retention. This is a singleton resource.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataRetentionSettings {
-    /// Output only. Resource name for this DataRetentionSetting resource.
+    /// Identifier. Resource name for this DataRetentionSetting resource.
     /// Format: properties/{property}/dataRetentionSettings
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -4008,6 +4011,24 @@ pub mod reporting_identity_settings {
         }
     }
 }
+/// Configuration for user-provided data collection. This is a singleton resource
+/// for a Google Analytics property.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserProvidedDataSettings {
+    /// Identifier. Resource name of this setting.
+    /// Format: properties/{property}/userProvidedDataSettings
+    /// Example: "properties/1000/userProvidedDataSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Whether this property accepts user-provided data sent to it.
+    #[prost(bool, tag = "2")]
+    pub user_provided_data_collection_enabled: bool,
+    /// Optional. Whether this property allows a Google Tag to automatically
+    /// collect user-provided data from your website. This setting only takes
+    /// effect if `user_provided_data_collection_enabled` is also true.
+    #[prost(bool, tag = "3")]
+    pub automatically_detected_data_collection_enabled: bool,
+}
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4309,6 +4330,8 @@ pub enum ChangeHistoryResourceType {
     SubpropertySyncConfig = 33,
     /// ReportingIdentitySettings resource
     ReportingIdentitySettings = 34,
+    /// UserProvidedDataSettings resource
+    UserProvidedDataSettings = 35,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4351,6 +4374,7 @@ impl ChangeHistoryResourceType {
             Self::ReportingDataAnnotation => "REPORTING_DATA_ANNOTATION",
             Self::SubpropertySyncConfig => "SUBPROPERTY_SYNC_CONFIG",
             Self::ReportingIdentitySettings => "REPORTING_IDENTITY_SETTINGS",
+            Self::UserProvidedDataSettings => "USER_PROVIDED_DATA_SETTINGS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4392,6 +4416,7 @@ impl ChangeHistoryResourceType {
             "REPORTING_DATA_ANNOTATION" => Some(Self::ReportingDataAnnotation),
             "SUBPROPERTY_SYNC_CONFIG" => Some(Self::SubpropertySyncConfig),
             "REPORTING_IDENTITY_SETTINGS" => Some(Self::ReportingIdentitySettings),
+            "USER_PROVIDED_DATA_SETTINGS" => Some(Self::UserProvidedDataSettings),
             _ => None,
         }
     }
@@ -4994,13 +5019,13 @@ pub struct GetAccountRequest {
 /// Request message for ListAccounts RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountsRequest {
-    /// The maximum number of resources to return. The service may return
+    /// Optional. The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "1")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListAccounts` call.
+    /// Optional. A page token, received from a previous `ListAccounts` call.
     /// Provide this to retrieve the subsequent page.
     /// When paginating, all other parameters provided to `ListAccounts` must
     /// match the call that provided the page token.
@@ -5094,13 +5119,13 @@ pub struct ListPropertiesRequest {
     /// ```
     #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
-    /// The maximum number of resources to return. The service may return
+    /// Optional. The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListProperties` call.
+    /// Optional. A page token, received from a previous `ListProperties` call.
     /// Provide this to retrieve the subsequent page.
     /// When paginating, all other parameters provided to `ListProperties` must
     /// match the call that provided the page token.
@@ -5184,13 +5209,13 @@ pub struct ListFirebaseLinksRequest {
     /// Example: `properties/1234`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return. The service may return
+    /// Optional. The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListFirebaseLinks` call.
+    /// Optional. A page token, received from a previous `ListFirebaseLinks` call.
     /// Provide this to retrieve the subsequent page.
     /// When paginating, all other parameters provided to `ListFirebaseLinks` must
     /// match the call that provided the page token.
@@ -5257,12 +5282,12 @@ pub struct ListGoogleAdsLinksRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
+    /// Optional. The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListGoogleAdsLinks` call.
+    /// Optional. A page token, received from a previous `ListGoogleAdsLinks` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListGoogleAdsLinks` must
@@ -5294,16 +5319,16 @@ pub struct GetDataSharingSettingsRequest {
 /// Request message for ListAccountSummaries RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountSummariesRequest {
-    /// The maximum number of AccountSummary resources to return. The service may
-    /// return fewer than this value, even if there are additional pages.
-    /// If unspecified, at most 50 resources will be returned.
-    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    /// Optional. The maximum number of AccountSummary resources to return. The
+    /// service may return fewer than this value, even if there are additional
+    /// pages. If unspecified, at most 50 resources will be returned. The maximum
+    /// value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "1")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListAccountSummaries` call.
-    /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListAccountSummaries`
-    /// must match the call that provided the page token.
+    /// Optional. A page token, received from a previous `ListAccountSummaries`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `ListAccountSummaries` must match the call
+    /// that provided the page token.
     #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -5455,15 +5480,16 @@ pub struct ListMeasurementProtocolSecretsRequest {
     /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
+    /// Optional. The maximum number of resources to return.
     /// If unspecified, at most 10 resources will be returned.
     /// The maximum value is 10. Higher values will be coerced to the maximum.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListMeasurementProtocolSecrets`
-    /// call. Provide this to retrieve the subsequent page. When paginating, all
-    /// other parameters provided to `ListMeasurementProtocolSecrets` must match
-    /// the call that provided the page token.
+    /// Optional. A page token, received from a previous
+    /// `ListMeasurementProtocolSecrets` call. Provide this to retrieve the
+    /// subsequent page. When paginating, all other parameters provided to
+    /// `ListMeasurementProtocolSecrets` must match the call that provided the page
+    /// token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -5533,13 +5559,13 @@ pub struct ListSkAdNetworkConversionValueSchemasRequest {
     /// Example: properties/1234/dataStreams/5678
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return. The service may return
+    /// Optional. The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous
+    /// Optional. A page token, received from a previous
     /// `ListSKAdNetworkConversionValueSchemas` call. Provide this to retrieve the
     /// subsequent page. When paginating, all other parameters provided to
     /// `ListSKAdNetworkConversionValueSchema` must match the call that provided
@@ -5636,15 +5662,15 @@ pub struct ListConversionEventsRequest {
     /// Example: 'properties/123'
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
+    /// Optional. The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListConversionEvents` call.
-    /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListConversionEvents`
-    /// must match the call that provided the page token.
+    /// Optional. A page token, received from a previous `ListConversionEvents`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `ListConversionEvents` must match the call
+    /// that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -5709,12 +5735,12 @@ pub struct ListKeyEventsRequest {
     /// Example: 'properties/123'
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
+    /// Optional. The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListKeyEvents` call.
+    /// Optional. A page token, received from a previous `ListKeyEvents` call.
     /// Provide this to retrieve the subsequent page.
     /// When paginating, all other parameters provided to `ListKeyEvents`
     /// must match the call that provided the page token.
@@ -5992,13 +6018,13 @@ pub struct ListCustomDimensionsRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
+    /// Optional. The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListCustomDimensions` call.
-    /// Provide this to retrieve the subsequent page.
+    /// Optional. A page token, received from a previous `ListCustomDimensions`
+    /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListCustomDimensions`
     /// must match the call that provided the page token.
@@ -7439,6 +7465,14 @@ pub struct GetReportingIdentitySettingsRequest {
     /// Format:
     /// properties/{property}/reportingIdentitySettings
     /// Example: "properties/1000/reportingIdentitySettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetUserProvidedDataSettings RPC
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetUserProvidedDataSettingsRequest {
+    /// Required. The name of the user provided data settings to retrieve.
+    /// Format: properties/{property}/userProvidedDataSettings
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -12093,7 +12127,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns the singleton data retention settings for this property.
+        /// Returns the reporting identity settings for this property.
         pub async fn get_reporting_identity_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReportingIdentitySettingsRequest>,
@@ -12119,6 +12153,36 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "GetReportingIdentitySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up settings related to user-provided data for a property.
+        pub async fn get_user_provided_data_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserProvidedDataSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UserProvidedDataSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserProvidedDataSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetUserProvidedDataSettings",
                     ),
                 );
             self.inner.unary(req, path, codec).await

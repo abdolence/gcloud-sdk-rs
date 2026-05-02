@@ -117,6 +117,10 @@ pub struct CryptoKey {
     /// justification codes.
     /// <https://cloud.google.com/assured-workloads/key-access-justifications/docs/justification-codes>
     /// By default, this field is absent, and all justification codes are allowed.
+    /// If the
+    /// `key_access_justifications_policy.allowed_access_reasons`
+    /// is empty (zero allowed justification code), all encrypt, decrypt, and sign
+    /// operations will fail.
     #[prost(message, optional, tag = "17")]
     pub key_access_justifications_policy: ::core::option::Option<
         KeyAccessJustificationsPolicy,
@@ -1326,14 +1330,18 @@ pub struct ExternalProtectionLevelOptions {
 /// \[KeyAccessJustificationsPolicy\]\[google.cloud.kms.v1.KeyAccessJustificationsPolicy\]
 /// specifies zero or more allowed
 /// \[AccessReason\]\[google.cloud.kms.v1.AccessReason\] values for encrypt, decrypt,
-/// and sign operations on a \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
+/// and sign operations on a \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] or
+/// \[KeyAccessJustificationsPolicyConfig\]\[google.cloud.kms.v1.KeyAccessJustificationsPolicyConfig\]
+/// (the default Key Access Justifications policy).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KeyAccessJustificationsPolicy {
     /// The list of allowed reasons for access to a
-    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. Zero allowed access reasons
-    /// means all encrypt, decrypt, and sign operations for the
-    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] associated with this policy will
-    /// fail.
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. Note that empty
+    /// allowed_access_reasons has a different meaning depending on where this
+    /// message appears. If this is under
+    /// \[KeyAccessJustificationsPolicyConfig\]\[google.cloud.kms.v1.KeyAccessJustificationsPolicyConfig\],
+    /// it means allow-all. If this is under
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\], it means deny-all.
     #[prost(enumeration = "AccessReason", repeated, tag = "1")]
     pub allowed_access_reasons: ::prost::alloc::vec::Vec<i32>,
 }
@@ -2887,7 +2895,7 @@ pub struct SingleTenantHsmInstance {
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The system-defined duration that an instance can remain
     /// unrefreshed until it is automatically disabled. This will have a value of
-    /// 120 days.
+    /// 730 days.
     #[prost(message, optional, tag = "6")]
     pub unrefreshed_duration_until_disable: ::core::option::Option<
         ::prost_types::Duration,
@@ -2902,6 +2910,12 @@ pub struct SingleTenantHsmInstance {
     /// become disabled.
     #[prost(message, optional, tag = "7")]
     pub disable_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Immutable. Indicates whether key portability is enabled for the
+    /// \[SingleTenantHsmInstance\]\[google.cloud.kms.v1.SingleTenantHsmInstance\].
+    /// This can only be set at creation time. Key portability features are
+    /// disabled by default and not yet available in GA.
+    #[prost(bool, tag = "8")]
+    pub key_portability_enabled: bool,
 }
 /// Nested message and enum types in `SingleTenantHsmInstance`.
 pub mod single_tenant_hsm_instance {
@@ -5794,7 +5808,7 @@ pub struct GenerateRandomBytesResponse {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Digest {
     /// Required. The message digest.
-    #[prost(oneof = "digest::Digest", tags = "1, 2, 3")]
+    #[prost(oneof = "digest::Digest", tags = "1, 2, 3, 4")]
     pub digest: ::core::option::Option<digest::Digest>,
 }
 /// Nested message and enum types in `Digest`.
@@ -5811,6 +5825,12 @@ pub mod digest {
         /// A message digest produced with the SHA-512 algorithm.
         #[prost(bytes, tag = "3")]
         Sha512(::prost::alloc::vec::Vec<u8>),
+        /// A message digest produced with SHAKE-256, to be used with ML-DSA
+        /// external-μ algorithms only. See "message representative" note in
+        /// section 6.2, algorithm 7 of the FIPS-204 standard:
+        /// <https://doi.org/10.6028/nist.fips.204>
+        #[prost(bytes, tag = "4")]
+        ExternalMu(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Cloud KMS metadata for the given

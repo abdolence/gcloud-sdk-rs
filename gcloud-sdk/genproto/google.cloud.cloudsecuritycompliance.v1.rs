@@ -4,8 +4,12 @@
 /// FedRAMP or NIST.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Framework {
-    /// Required. Identifier. The name of the framework, in the format
-    /// `organizations/{organization}/locations/{location}/frameworks/{framework_id}`.
+    /// Required. Identifier. The name of the framework, in one of the following
+    /// formats:
+    /// `organizations/{organization}/locations/{location}/frameworks/{framework}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworks/{framework}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -90,8 +94,11 @@ pub mod framework {
 /// The details of a cloud control.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlDetails {
-    /// Required. The name of the cloud control, in the format
-    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud-control}`.
+    /// Required. The name of the cloud control, in one of the following formats:
+    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud_control}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControls/{cloud_control}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -105,8 +112,11 @@ pub struct CloudControlDetails {
     #[prost(message, repeated, tag = "4")]
     pub parameters: ::prost::alloc::vec::Vec<Parameter>,
 }
-/// The reference of a framework, in the format
-/// `organizations/{organization}/locations/{location}/frameworks/{framework}`.
+/// The reference of a framework, in one of the following formats:
+///
+/// * `organizations/{organization}/locations/{location}/frameworks/{framework}`
+/// * `projects/{project}/locations/{location}/frameworks/{framework}`.
+///
 /// The only supported location is `global`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameworkReference {
@@ -135,8 +145,12 @@ pub struct Parameter {
 /// use to define your organization's security or compliance intent.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControl {
-    /// Required. Identifier. The name of the cloud control, in the format
-    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}`.
+    /// Required. Identifier. The name of the cloud control, in either of the
+    /// formats:
+    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud_control}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControls/{cloud_control}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -403,19 +417,19 @@ pub mod param_value {
     /// The list of possible parameter value types.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
-        /// A string value.
+        /// Optional. A string value.
         #[prost(string, tag = "3")]
         StringValue(::prost::alloc::string::String),
-        /// A boolean value.
+        /// Optional. A boolean value.
         #[prost(bool, tag = "4")]
         BoolValue(bool),
-        /// A repeated string.
+        /// Optional. A repeated string.
         #[prost(message, tag = "5")]
         StringListValue(super::StringList),
-        /// A double value.
+        /// Optional. A double value.
         #[prost(double, tag = "6")]
         NumberValue(f64),
-        /// Sub-parameter values.
+        /// Optional. Sub-parameter values.
         #[prost(message, tag = "7")]
         OneofValue(::prost::alloc::boxed::Box<super::Parameter>),
     }
@@ -532,6 +546,171 @@ pub struct OperationMetadata {
     /// Output only. The API version that was used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// The regulatory control.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Control {
+    /// Output only. The name of a regulatory control, in one of the following
+    /// formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}/controls/{control}`
+    /// * `projects/{project}/locations/{location}/controls/{control}`.
+    ///
+    /// The only supported location is `global`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The friendly name for the regulatory control.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The description of the regulatory control.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The regulatory group that the control belongs to.
+    #[prost(enumeration = "control::Family", tag = "5")]
+    pub family: i32,
+    /// Output only. The regulatory family that the control belongs to.
+    #[prost(message, optional, tag = "6")]
+    pub control_family: ::core::option::Option<ControlFamily>,
+    /// Output only. The entity that's responsible for the control, whether Google,
+    /// you as the customer, or both.
+    #[prost(enumeration = "RegulatoryControlResponsibilityType", tag = "7")]
+    pub responsibility_type: i32,
+    /// Output only. A description of Google's responsibility for the regulatory
+    /// control.
+    #[prost(string, tag = "8")]
+    pub google_responsibility_description: ::prost::alloc::string::String,
+    /// Output only. A description of Google's responsibility for implementing the
+    /// regulatory control.
+    #[prost(string, tag = "9")]
+    pub google_responsibility_implementation: ::prost::alloc::string::String,
+    /// Output only. A description of your responsibility for the regulatory
+    /// control.
+    #[prost(string, tag = "10")]
+    pub customer_responsibility_description: ::prost::alloc::string::String,
+    /// Output only. A description of the your responsibility for implementing the
+    /// regulatory control.
+    #[prost(string, tag = "11")]
+    pub customer_responsibility_implementation: ::prost::alloc::string::String,
+    /// Output only. A description of the responsibility that's shared between
+    /// Google and you in implementing this control.
+    #[prost(string, tag = "12")]
+    pub shared_responsibility_description: ::prost::alloc::string::String,
+    /// Output only. A link to the documentation that's related to this control.
+    #[prost(string, tag = "13")]
+    pub additional_content_uri: ::prost::alloc::string::String,
+    /// Output only. The frameworks that include this control.
+    #[prost(string, repeated, tag = "14")]
+    pub related_frameworks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `Control`.
+pub mod control {
+    /// The regulatory control family.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Family {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Access control
+        Ac = 1,
+        /// Awareness and araining
+        At = 2,
+        /// Audit and accountability
+        Au = 3,
+        /// Certification, accreditation, and security assessments
+        Ca = 4,
+        /// Configuration management
+        Cm = 5,
+        /// Contingency planning
+        Cp = 6,
+        /// Identification and authentication
+        Ia = 7,
+        /// Incident response
+        Ir = 8,
+        /// Maintenance
+        Ma = 9,
+        /// Media protection
+        Mp = 10,
+        /// Physical and environmental protection
+        Pe = 11,
+        /// Security planning
+        Pl = 12,
+        /// Personnel aecurity
+        Ps = 13,
+        /// Risk assessment
+        Ra = 14,
+        /// System services and acquisition
+        Sa = 15,
+        /// System and communications protection
+        Sc = 16,
+        /// System and information integrity
+        Si = 17,
+        /// Supply chain risk management
+        Sr = 18,
+    }
+    impl Family {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FAMILY_UNSPECIFIED",
+                Self::Ac => "AC",
+                Self::At => "AT",
+                Self::Au => "AU",
+                Self::Ca => "CA",
+                Self::Cm => "CM",
+                Self::Cp => "CP",
+                Self::Ia => "IA",
+                Self::Ir => "IR",
+                Self::Ma => "MA",
+                Self::Mp => "MP",
+                Self::Pe => "PE",
+                Self::Pl => "PL",
+                Self::Ps => "PS",
+                Self::Ra => "RA",
+                Self::Sa => "SA",
+                Self::Sc => "SC",
+                Self::Si => "SI",
+                Self::Sr => "SR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAMILY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AC" => Some(Self::Ac),
+                "AT" => Some(Self::At),
+                "AU" => Some(Self::Au),
+                "CA" => Some(Self::Ca),
+                "CM" => Some(Self::Cm),
+                "CP" => Some(Self::Cp),
+                "IA" => Some(Self::Ia),
+                "IR" => Some(Self::Ir),
+                "MA" => Some(Self::Ma),
+                "MP" => Some(Self::Mp),
+                "PE" => Some(Self::Pe),
+                "PL" => Some(Self::Pl),
+                "PS" => Some(Self::Ps),
+                "RA" => Some(Self::Ra),
+                "SA" => Some(Self::Sa),
+                "SC" => Some(Self::Sc),
+                "SI" => Some(Self::Si),
+                "SR" => Some(Self::Sr),
+                _ => None,
+            }
+        }
+    }
 }
 /// The regulatory family of the control.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -700,6 +879,14 @@ pub enum CloudControlCategory {
     CcCategoryPrivacy = 14,
     /// The business continuity and disaster recovery (BCDR) category.
     CcCategoryBcdr = 15,
+    /// The admin access category.
+    CcCategoryAdminAccess = 16,
+    /// DRZ (Data Residency).
+    CcCategoryDataResidency = 17,
+    /// RUR (Resource Usage Restriction).
+    CcCategoryResourceUsageRestriction = 18,
+    /// SERVICE SPECIFIC
+    CcCategoryServiceSpecific = 19,
 }
 impl CloudControlCategory {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -734,6 +921,12 @@ impl CloudControlCategory {
             }
             Self::CcCategoryPrivacy => "CC_CATEGORY_PRIVACY",
             Self::CcCategoryBcdr => "CC_CATEGORY_BCDR",
+            Self::CcCategoryAdminAccess => "CC_CATEGORY_ADMIN_ACCESS",
+            Self::CcCategoryDataResidency => "CC_CATEGORY_DATA_RESIDENCY",
+            Self::CcCategoryResourceUsageRestriction => {
+                "CC_CATEGORY_RESOURCE_USAGE_RESTRICTION"
+            }
+            Self::CcCategoryServiceSpecific => "CC_CATEGORY_SERVICE_SPECIFIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -769,6 +962,12 @@ impl CloudControlCategory {
             }
             "CC_CATEGORY_PRIVACY" => Some(Self::CcCategoryPrivacy),
             "CC_CATEGORY_BCDR" => Some(Self::CcCategoryBcdr),
+            "CC_CATEGORY_ADMIN_ACCESS" => Some(Self::CcCategoryAdminAccess),
+            "CC_CATEGORY_DATA_RESIDENCY" => Some(Self::CcCategoryDataResidency),
+            "CC_CATEGORY_RESOURCE_USAGE_RESTRICTION" => {
+                Some(Self::CcCategoryResourceUsageRestriction)
+            }
+            "CC_CATEGORY_SERVICE_SPECIFIC" => Some(Self::CcCategoryServiceSpecific),
             _ => None,
         }
     }
@@ -1941,8 +2140,11 @@ pub mod cm_enrollment_service_client {
 /// Request message for \[ListFrameworks\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworksRequest {
-    /// Required. The parent resource name, in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// Required. The parent resource name, in one of the following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1973,8 +2175,12 @@ pub struct ListFrameworksResponse {
 /// The request message for \[GetFramework\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFrameworkRequest {
-    /// Required. The name of the framework to retrieve, in the format
-    /// `organizations/{organization}/locations/{location}/frameworks/{framework_id}`
+    /// Required. The name of the framework to retrieve, in one of the following
+    /// formats:
+    /// `organizations/{organization}/locations/{location}/frameworks/{framework}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworks/{framework}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1986,8 +2192,11 @@ pub struct GetFrameworkRequest {
 /// The request message for \[CreateFramework\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFrameworkRequest {
-    /// Required. The parent resource name, in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// Required. The parent resource name, in one of the following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2019,8 +2228,11 @@ pub struct UpdateFrameworkRequest {
 /// Request message for \[DeleteFramework\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFrameworkRequest {
-    /// Required. The name of the resource, in the format
-    /// `organizations/{organization}/locations/{location}/frameworks/{framework}`.
+    /// Required. The name of the resource, in one of the following formats:
+    /// `organizations/{organization}/locations/{location}/frameworks/{framework}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworks/{framework}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2028,8 +2240,11 @@ pub struct DeleteFrameworkRequest {
 /// Request message for \[ListCloudControls\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudControlsRequest {
-    /// Required. The parent resource name, in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// Required. The parent resource name, in one of the following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2064,8 +2279,12 @@ pub struct ListCloudControlsResponse {
 /// The request message for \[GetCloudControl\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudControlRequest {
-    /// Required. The name of the cloud control to retrieve, in the format
-    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud_control}`.
+    /// Required. The name of the cloud control to retrieve, in one of the
+    /// following formats:
+    /// `organizations/{organization}/locations/{location}/cloudControls/{cloud_control}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControls/{cloud_control}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2077,8 +2296,11 @@ pub struct GetCloudControlRequest {
 /// The request message for \[CreateCloudControl\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCloudControlRequest {
-    /// Required. The parent resource name, in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// Required. The parent resource name, in one of the following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`.
+    /// * `projects/{project}/locations/{location}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2117,8 +2339,12 @@ pub struct UpdateCloudControlRequest {
 /// The request message for \[DeleteCloudControl\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCloudControlRequest {
-    /// Required. The name of the cloud control to delete, in the format
-    /// `organizations/{organization}/locations/{location}/CloudControls/{CloudControl}`.
+    /// Required. The name of the cloud control to delete, in one of the following
+    /// formats:
+    /// `organizations/{organization}/locations/{location}/CloudControls/{CloudControl}`
+    /// or
+    /// `projects/{project}/locations/{location}/CloudControls/{CloudControl}`.
+    ///
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2556,7 +2782,9 @@ pub mod config_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrameworkDeployment {
     /// Identifier. The name of the framework deployment, in the format
-    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2632,7 +2860,9 @@ pub struct FrameworkDeployment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlDeployment {
     /// Identifier. The name for the cloud control deployment, in the format
-    /// `organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2777,7 +3007,9 @@ pub struct CloudControlMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFrameworkDeploymentRequest {
     /// Required. The parent resource of the framework deployment in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// `organizations/{organization}/locations/{location}`
+    /// or
+    /// `projects/{project}/locations/{location}`.
     /// Only the global location is supported.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2795,7 +3027,9 @@ pub struct CreateFrameworkDeploymentRequest {
 pub struct DeleteFrameworkDeploymentRequest {
     /// Required. The name of the framework deployment that you want to delete,
     /// in the format
-    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2814,7 +3048,9 @@ pub struct DeleteFrameworkDeploymentRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFrameworkDeploymentRequest {
     /// Required. The name of the framework deployment, in the format
-    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2823,7 +3059,9 @@ pub struct GetFrameworkDeploymentRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworkDeploymentsRequest {
     /// Required. The parent resource of the framework deployment, in the format
-    /// `organizations/{organization}/locations/{location}`.
+    /// `organizations/{organization}/locations/{location}`
+    /// or
+    /// `projects/{project}/locations/{location}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2865,7 +3103,9 @@ pub struct ListFrameworkDeploymentsResponse {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudControlDeploymentRequest {
     /// Required. The name for the cloud control deployment, in the format
-    /// `organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2874,8 +3114,9 @@ pub struct GetCloudControlDeploymentRequest {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudControlDeploymentsRequest {
     /// Required. The parent resource for the cloud control deployment, in the
-    /// format `organizations/{organization}/locations/{location}`. The only
-    /// supported location is `global`.
+    /// format `organizations/{organization}/locations/{location}` or
+    /// `projects/{project}/locations/{location}`.
+    /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The requested page size. The server might return fewer items than
@@ -2916,7 +3157,9 @@ pub struct ListCloudControlDeploymentsResponse {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudControlDeploymentReference {
     /// Output only. The name of the CloudControlDeployment. The format is
-    /// `organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/cloudControlDeployments/{cloud_control_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub cloud_control_deployment: ::prost::alloc::string::String,
@@ -2925,7 +3168,9 @@ pub struct CloudControlDeploymentReference {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameworkDeploymentReference {
     /// Output only. The name of the framework deployment, in the format
-    /// `organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}`.
+    /// `organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}`
+    /// or
+    /// `projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}`.
     /// The only supported location is `global`.
     #[prost(string, tag = "1")]
     pub framework_deployment: ::prost::alloc::string::String,
@@ -2935,7 +3180,7 @@ pub struct FrameworkDeploymentReference {
     /// ```text,
     /// {
     ///   framework:
-    ///   "organizations/{org}/locations/{location}/frameworks/{framework}",
+    ///   "organizations/{organization}/locations/{location}/frameworks/{framework}",
     ///   major_revision_id: 1
     /// }
     /// ```
@@ -2960,6 +3205,8 @@ pub enum DeploymentState {
     Creating = 2,
     /// Deployment is being deleted.
     Deleting = 3,
+    /// Deployment is being updated.
+    Updating = 8,
     /// Deployment has failed. All the changes made by the deployment were
     /// successfully rolled back. You can retry or delete a deployment that's
     /// in this state.
@@ -2986,6 +3233,7 @@ impl DeploymentState {
             Self::Validating => "DEPLOYMENT_STATE_VALIDATING",
             Self::Creating => "DEPLOYMENT_STATE_CREATING",
             Self::Deleting => "DEPLOYMENT_STATE_DELETING",
+            Self::Updating => "DEPLOYMENT_STATE_UPDATING",
             Self::Failed => "DEPLOYMENT_STATE_FAILED",
             Self::Ready => "DEPLOYMENT_STATE_READY",
             Self::PartiallyDeployed => "DEPLOYMENT_STATE_PARTIALLY_DEPLOYED",
@@ -2999,6 +3247,7 @@ impl DeploymentState {
             "DEPLOYMENT_STATE_VALIDATING" => Some(Self::Validating),
             "DEPLOYMENT_STATE_CREATING" => Some(Self::Creating),
             "DEPLOYMENT_STATE_DELETING" => Some(Self::Deleting),
+            "DEPLOYMENT_STATE_UPDATING" => Some(Self::Updating),
             "DEPLOYMENT_STATE_FAILED" => Some(Self::Failed),
             "DEPLOYMENT_STATE_READY" => Some(Self::Ready),
             "DEPLOYMENT_STATE_PARTIALLY_DEPLOYED" => Some(Self::PartiallyDeployed),
@@ -3303,6 +3552,9 @@ pub struct ListFrameworkComplianceSummariesRequest {
     /// Optional. The filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. Specifies the level of detail to return in the response.
+    #[prost(enumeration = "FrameworkComplianceSummaryView", tag = "5")]
+    pub view: i32,
 }
 /// The response message for
 /// \[ListFrameworkComplianceSummariesResponse\]\[google.cloud.cloudsecuritycompliance.v1.ListFrameworkComplianceSummariesResponse\].
@@ -3366,6 +3618,9 @@ pub struct FetchFrameworkComplianceReportRequest {
     /// Optional. The end time of the report.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The filtering results.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// The request message for \[ListFindingSummaries\]\[\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3508,6 +3763,12 @@ pub struct FrameworkComplianceSummary {
     /// The target resource details for the framework.
     #[prost(message, repeated, tag = "10")]
     pub target_resource_details: ::prost::alloc::vec::Vec<TargetResourceDetails>,
+    /// Output only. The count of the findings generated against the framework.
+    #[prost(int64, tag = "11")]
+    pub finding_count: i64,
+    /// Output only. The trend of controls that are passing for the given duration.
+    #[prost(message, optional, tag = "12")]
+    pub controls_passing_trend: ::core::option::Option<Trend>,
 }
 /// The details for a finding.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3705,6 +3966,17 @@ pub struct TargetResourceDetails {
     #[prost(int64, tag = "7")]
     pub minor_revision_id: i64,
 }
+/// The trend of a compliance metric.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct Trend {
+    /// Output only. The duration for the trend.
+    #[prost(message, optional, tag = "1")]
+    pub duration: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The trend value as a percentage. The value can be positive or
+    /// negative.
+    #[prost(double, tag = "2")]
+    pub value_percent: f64,
+}
 /// The evaluation state of the control.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -3806,6 +4078,44 @@ impl FindingClass {
             "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
             "SENSITIVE_DATA_RISK" => Some(Self::SensitiveDataRisk),
             "CHOKEPOINT" => Some(Self::Chokepoint),
+            _ => None,
+        }
+    }
+}
+/// Specifies the view of the framework compliance summary to be returned.
+/// New values may be added in the future.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FrameworkComplianceSummaryView {
+    /// The default / unset value. The API will default to the BASIC view.
+    Unspecified = 0,
+    /// Includes basic compliance metadata, but omits trend data.
+    Basic = 1,
+    /// Includes all information, including
+    /// \[finding_count\]\[google.cloud.cloudsecuritycompliance.v1main.FrameworkComplianceSummary.finding_count\]
+    /// and
+    /// \[controls_passing_trend\]\[google.cloud.cloudsecuritycompliance.v1main.FrameworkComplianceSummary.controls_passing_trend\].
+    /// Trend data is provided for the last 30 days.
+    Full = 2,
+}
+impl FrameworkComplianceSummaryView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_UNSPECIFIED",
+            Self::Basic => "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_BASIC",
+            Self::Full => "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_BASIC" => Some(Self::Basic),
+            "FRAMEWORK_COMPLIANCE_SUMMARY_VIEW_FULL" => Some(Self::Full),
             _ => None,
         }
     }

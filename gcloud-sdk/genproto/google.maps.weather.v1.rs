@@ -959,6 +959,134 @@ pub struct ForecastHour {
     #[prost(message, optional, tag = "19")]
     pub ice_thickness: ::core::option::Option<IceThickness>,
 }
+/// Represents a segment of precipitation forecast data.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PrecipitationSegment {
+    /// The timeframe relevant to the segment.
+    #[prost(message, optional, tag = "1")]
+    pub time_frame: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// The type of precipitation.
+    #[prost(enumeration = "precipitation_segment::DominantPrecipitationType", tag = "2")]
+    pub r#type: i32,
+    /// The chance of precipitation.
+    /// Values are in percentages ranging from 0 to 100.
+    #[prost(int32, tag = "3")]
+    pub probability: i32,
+    /// Quantitative precipitation forecast
+    #[prost(message, optional, tag = "4")]
+    pub qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
+    /// Snow quantitative precipitation forecast
+    #[prost(message, optional, tag = "5")]
+    pub snowfall_amount: ::core::option::Option<QuantitativePrecipitationForecast>,
+    /// Precipitation intensity of the segment.
+    #[prost(enumeration = "precipitation_segment::PrecipitationIntensity", tag = "6")]
+    pub intensity: i32,
+}
+/// Nested message and enum types in `PrecipitationSegment`.
+pub mod precipitation_segment {
+    /// The type of precipitation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DominantPrecipitationType {
+        /// Unspecified precipitation type.
+        Unspecified = 0,
+        /// No precipitation.
+        None = 1,
+        /// Rain.
+        Rain = 2,
+        /// Snow.
+        Snow = 3,
+        /// Hail.
+        Hail = 4,
+    }
+    impl DominantPrecipitationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DOMINANT_PRECIPITATION_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Rain => "RAIN",
+                Self::Snow => "SNOW",
+                Self::Hail => "HAIL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DOMINANT_PRECIPITATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "RAIN" => Some(Self::Rain),
+                "SNOW" => Some(Self::Snow),
+                "HAIL" => Some(Self::Hail),
+                _ => None,
+            }
+        }
+    }
+    /// Precipitation intensity of the segment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PrecipitationIntensity {
+        /// Unknown precipitation intensity.
+        Unspecified = 0,
+        /// No precipitation intensity.
+        NoIntensity = 1,
+        /// Light precipitation intensity.
+        Light = 2,
+        /// Moderate precipitation intensity.
+        Moderate = 3,
+        /// Heavy precipitation intensity.
+        Heavy = 4,
+    }
+    impl PrecipitationIntensity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PRECIPITATION_INTENSITY_UNSPECIFIED",
+                Self::NoIntensity => "NO_INTENSITY",
+                Self::Light => "LIGHT",
+                Self::Moderate => "MODERATE",
+                Self::Heavy => "HEAVY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRECIPITATION_INTENSITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_INTENSITY" => Some(Self::NoIntensity),
+                "LIGHT" => Some(Self::Light),
+                "MODERATE" => Some(Self::Moderate),
+                "HEAVY" => Some(Self::Heavy),
+                _ => None,
+            }
+        }
+    }
+}
 /// Contains high resolution forecast data for precipitation events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrecipitationEvent {
@@ -2341,11 +2469,6 @@ pub struct LookupForecastMinutesRequest {
     /// (default = METRIC).
     #[prost(enumeration = "UnitsSystem", tag = "2")]
     pub units_system: i32,
-    /// Optional. Allows the client to choose the language for the response. If
-    /// data cannot be provided for that language, the API uses the closest match.
-    /// Allowed values rely on the IETF BCP-47 standard. The default value is "en".
-    #[prost(string, optional, tag = "3")]
-    pub language_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The maximum number of forecast records to return per page.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
@@ -2357,9 +2480,6 @@ pub struct LookupForecastMinutesRequest {
 /// Response for the LookupForecastMinutes RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupForecastMinutesResponse {
-    /// The minute-level prediction events.
-    #[prost(message, repeated, tag = "1")]
-    pub events: ::prost::alloc::vec::Vec<PrecipitationEvent>,
     /// The overall timeframe for the predictions.
     #[prost(message, optional, tag = "2")]
     pub overall_prediction_timeframe: ::core::option::Option<
@@ -2371,6 +2491,9 @@ pub struct LookupForecastMinutesResponse {
     /// The token to retrieve the next page.
     #[prost(string, tag = "4")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// The minute-level prediction segments.
+    #[prost(message, repeated, tag = "5")]
+    pub segments: ::prost::alloc::vec::Vec<PrecipitationSegment>,
 }
 /// (-- Request for the LookupMapTile RPC. --)
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
