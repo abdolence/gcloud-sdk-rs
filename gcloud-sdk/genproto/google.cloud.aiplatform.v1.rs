@@ -39356,6 +39356,26 @@ pub struct AsyncQueryReasoningEngineResponse {
     #[prost(string, tag = "1")]
     pub output_gcs_uri: ::prost::alloc::string::String,
 }
+/// Request message for
+/// \[ReasoningEngineExecutionService.CancelAsyncQueryReasoningEngine\]\[google.cloud.aiplatform.v1.ReasoningEngineExecutionService.CancelAsyncQueryReasoningEngine\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelAsyncQueryReasoningEngineRequest {
+    /// Required. The name of the ReasoningEngine resource to use.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the longrunning operation returned from
+    /// AsyncQueryReasoningEngine.
+    /// Format:
+    /// `projects/{project}/locations/{location}/operations/{operation}`
+    #[prost(string, tag = "2")]
+    pub operation_name: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[ReasoningEngineExecutionService.CancelAsyncQueryReasoningEngine\]\[google.cloud.aiplatform.v1.ReasoningEngineExecutionService.CancelAsyncQueryReasoningEngine\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelAsyncQueryReasoningEngineResponse {}
 /// Generated client implementations.
 pub mod reasoning_engine_execution_service_client {
     #![allow(
@@ -39538,6 +39558,38 @@ pub mod reasoning_engine_execution_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.ReasoningEngineExecutionService",
                         "AsyncQueryReasoningEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels an AsyncQueryReasoningEngine operation.
+        pub async fn cancel_async_query_reasoning_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CancelAsyncQueryReasoningEngineRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::CancelAsyncQueryReasoningEngineResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ReasoningEngineExecutionService/CancelAsyncQueryReasoningEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ReasoningEngineExecutionService",
+                        "CancelAsyncQueryReasoningEngine",
                     ),
                 );
             self.inner.unary(req, path, codec).await

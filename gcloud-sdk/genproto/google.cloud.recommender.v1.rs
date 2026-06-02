@@ -3,7 +3,7 @@
 /// may have associated recommendations as well.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Insight {
-    /// Name of the insight.
+    /// Identifier. Name of the insight.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Free-form human readable summary in English. The maximum length is 500
@@ -241,7 +241,7 @@ pub mod insight_state_info {
 /// recommendation for an underutilized VM, IAM role recommendations, etc
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recommendation {
-    /// Name of recommendation.
+    /// Identifier. Name of recommendation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Free-form human readable summary in English. The maximum length is 500
@@ -294,6 +294,9 @@ pub struct Recommendation {
     /// is suggested to be applied.
     #[prost(string, tag = "18")]
     pub xor_group_id: ::prost::alloc::string::String,
+    /// Fully qualified resource names that this recommendation is targeting.
+    #[prost(string, repeated, tag = "19")]
+    pub target_resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Recommendation`.
 pub mod recommendation {
@@ -492,11 +495,13 @@ pub mod operation {
 /// Contains various matching options for values for a GCP resource field.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValueMatcher {
+    /// To be used for full regex matching.
     #[prost(oneof = "value_matcher::MatchVariant", tags = "1")]
     pub match_variant: ::core::option::Option<value_matcher::MatchVariant>,
 }
 /// Nested message and enum types in `ValueMatcher`.
 pub mod value_matcher {
+    /// To be used for full regex matching.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum MatchVariant {
         /// To be used for full regex matching. The regular expression is using the
@@ -612,6 +617,9 @@ pub struct Impact {
     /// Category that is being targeted.
     #[prost(enumeration = "impact::Category", tag = "1")]
     pub category: i32,
+    /// The service that this impact is associated with.
+    #[prost(string, tag = "3")]
+    pub service: ::prost::alloc::string::String,
     /// Contains projections (if any) for this category.
     #[prost(oneof = "impact::Projection", tags = "100, 101, 102, 103")]
     pub projection: ::core::option::Option<impact::Projection>,
@@ -783,7 +791,7 @@ pub mod recommendation_state_info {
 /// Configuration for an InsightType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightTypeConfig {
-    /// Name of insight type config.
+    /// Identifier. Name of insight type config.
     /// Eg,
     /// projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/config
     #[prost(string, tag = "1")]
@@ -837,7 +845,7 @@ pub struct InsightTypeGenerationConfig {
 /// Configuration for a Recommender.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommenderConfig {
-    /// Name of recommender config.
+    /// Identifier. Name of recommender config.
     /// Eg,
     /// projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]/recommenders/\[RECOMMENDER_ID\]/config
     #[prost(string, tag = "1")]

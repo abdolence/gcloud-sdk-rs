@@ -381,6 +381,9 @@ pub struct TestEffort {
     /// Specifies the Operating System build targets to test against.
     #[prost(oneof = "test_effort::Os", tags = "7")]
     pub os: ::core::option::Option<test_effort::Os>,
+    /// Test target details if different from the main build target.
+    #[prost(oneof = "test_effort::TestSource", tags = "12")]
+    pub test_source: ::core::option::Option<test_effort::TestSource>,
 }
 /// Nested message and enum types in `TestEffort`.
 pub mod test_effort {
@@ -461,10 +464,10 @@ pub mod test_effort {
         /// system
         #[prost(string, tag = "1")]
         pub branch: ::prost::alloc::string::String,
-        /// Required. Specifies the release configuration of the build target.
+        /// Optional. Specifies the release configuration of the build target.
         #[prost(string, tag = "2")]
         pub release_config: ::prost::alloc::string::String,
-        /// Required. Specifies the build variant for the target.
+        /// Optional. Specifies the build variant for the target.
         #[prost(string, tag = "3")]
         pub build_variant: ::prost::alloc::string::String,
         /// Required. The build ID of the test effort.
@@ -669,6 +672,13 @@ pub mod test_effort {
         /// Test against an Android build.
         #[prost(message, tag = "7")]
         Android(AndroidBuildTarget),
+    }
+    /// Test target details if different from the main build target.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TestSource {
+        /// Test against an Android build target.
+        #[prost(message, tag = "12")]
+        AndroidTestTarget(AndroidBuildTarget),
     }
 }
 /// Request message for finding the most stable build.

@@ -428,8 +428,11 @@ pub struct SearchResult {
     pub distance: ::core::option::Option<f64>,
 }
 /// Metadata about the search execution.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchResponseMetadata {
+    /// Output only. Warnings or non-fatal errors that occurred during execution.
+    #[prost(message, repeated, tag = "3")]
+    pub warnings: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// The type of index used.
     #[prost(oneof = "search_response_metadata::IndexType", tags = "1, 2")]
     pub index_type: ::core::option::Option<search_response_metadata::IndexType>,
@@ -576,6 +579,10 @@ pub struct Ranker {
     /// The ranking method to use.
     #[prost(oneof = "ranker::Ranker", tags = "1")]
     pub ranker: ::core::option::Option<ranker::Ranker>,
+    /// The reranker to use for final ranking of the results combined by the
+    /// ranker.
+    #[prost(oneof = "ranker::Reranker", tags = "2")]
+    pub reranker: ::core::option::Option<ranker::Reranker>,
 }
 /// Nested message and enum types in `Ranker`.
 pub mod ranker {
@@ -586,6 +593,14 @@ pub mod ranker {
         #[prost(message, tag = "1")]
         Rrf(super::ReciprocalRankFusion),
     }
+    /// The reranker to use for final ranking of the results combined by the
+    /// ranker.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Reranker {
+        /// Optional. Vertex AI ranking.
+        #[prost(message, tag = "2")]
+        VertexRanker(super::VertexRanker),
+    }
 }
 /// Defines the Reciprocal Rank Fusion (RRF) algorithm for result ranking.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -593,6 +608,49 @@ pub struct ReciprocalRankFusion {
     /// Required. The weights to apply to each search result set during fusion.
     #[prost(double, repeated, packed = "false", tag = "1")]
     pub weights: ::prost::alloc::vec::Vec<f64>,
+}
+/// Defines a ranker using the Vertex AI ranking service.
+/// See <https://cloud.google.com/generative-ai-app-builder/docs/ranking> for
+/// details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VertexRanker {
+    /// Required. The model used for ranking documents. The list of available
+    /// models is described in
+    /// <https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models.>
+    /// Currently, only `semantic-ranker-fast@latest` is supported.
+    #[prost(string, tag = "4")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The number of documents to be processed for ranking.
+    #[prost(int32, tag = "5")]
+    pub top_n: i32,
+    /// The record specification for ranking. At least one record spec must be
+    /// set.
+    #[prost(oneof = "vertex_ranker::RecordSpec", tags = "6")]
+    pub record_spec: ::core::option::Option<vertex_ranker::RecordSpec>,
+}
+/// Nested message and enum types in `VertexRanker`.
+pub mod vertex_ranker {
+    /// The record spec for text search.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TextRecordSpec {
+        /// Required. The query against which the records are ranked and scored.
+        #[prost(string, tag = "1")]
+        pub query: ::prost::alloc::string::String,
+        /// Optional. The template used to generate the record's title.
+        #[prost(string, tag = "2")]
+        pub title_template: ::prost::alloc::string::String,
+        /// Optional. The template used to generate the record's content.
+        #[prost(string, tag = "3")]
+        pub content_template: ::prost::alloc::string::String,
+    }
+    /// The record specification for ranking. At least one record spec must be
+    /// set.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum RecordSpec {
+        /// The record spec for text search.
+        #[prost(message, tag = "6")]
+        TextRecordSpec(TextRecordSpec),
+    }
 }
 /// A response from a batch search operation.
 #[derive(Clone, PartialEq, ::prost::Message)]

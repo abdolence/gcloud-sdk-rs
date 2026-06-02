@@ -16,6 +16,9 @@ pub struct LinuxNodeConfig {
     /// net.core.wmem_max
     /// net.core.optmem_max
     /// net.core.somaxconn
+    /// net.ipv4.neigh.default.gc_thresh1
+    /// net.ipv4.neigh.default.gc_thresh2
+    /// net.ipv4.neigh.default.gc_thresh3
     /// net.ipv4.tcp_rmem
     /// net.ipv4.tcp_wmem
     /// net.ipv4.tcp_tw_reuse
@@ -31,6 +34,8 @@ pub struct LinuxNodeConfig {
     /// net.netfilter.nf_conntrack_tcp_timeout_time_wait
     /// net.netfilter.nf_conntrack_tcp_timeout_established
     /// net.netfilter.nf_conntrack_acct
+    /// kernel.keys.maxkeys
+    /// kernel.keys.maxbytes
     /// kernel.shmmni
     /// kernel.shmmax
     /// kernel.shmall
@@ -88,6 +93,10 @@ pub struct LinuxNodeConfig {
     /// for more details.
     #[prost(enumeration = "linux_node_config::TransparentHugepageDefrag", tag = "5")]
     pub transparent_hugepage_defrag: i32,
+    /// Optional. Allow users to run arbitrary bash script or container on the
+    /// node.
+    #[prost(message, optional, tag = "11")]
+    pub custom_node_init: ::core::option::Option<linux_node_config::CustomNodeInit>,
     /// Optional. Enables and configures swap space on nodes.
     /// If omitted, swap is disabled.
     #[prost(message, optional, tag = "12")]
@@ -98,6 +107,11 @@ pub struct LinuxNodeConfig {
     #[prost(message, optional, tag = "13")]
     pub node_kernel_module_loading: ::core::option::Option<
         linux_node_config::NodeKernelModuleLoading,
+    >,
+    /// Optional. The accurate time configuration for the node pool.
+    #[prost(message, optional, tag = "14")]
+    pub accurate_time_config: ::core::option::Option<
+        linux_node_config::AccurateTimeConfig,
     >,
 }
 /// Nested message and enum types in `LinuxNodeConfig`.
@@ -111,6 +125,48 @@ pub mod linux_node_config {
         /// Optional. Amount of 1G hugepages
         #[prost(int32, optional, tag = "2")]
         pub hugepage_size1g: ::core::option::Option<i32>,
+    }
+    /// Support for running custom init code while bootstrapping nodes.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CustomNodeInit {
+        /// Optional. The init script to be executed on the node.
+        #[prost(message, optional, tag = "1")]
+        pub init_script: ::core::option::Option<custom_node_init::InitScript>,
+    }
+    /// Nested message and enum types in `CustomNodeInit`.
+    pub mod custom_node_init {
+        /// InitScript provide a simply bash script to be executed on the node.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct InitScript {
+            /// The Cloud Storage URI for storing the init script.
+            /// Format: gs://BUCKET_NAME/OBJECT_NAME
+            /// The service account on the node pool must have read access to the
+            /// object.
+            /// User can't configure both gcs_uri and gcp_secret_manager_secret_uri.
+            #[prost(string, tag = "1")]
+            pub gcs_uri: ::prost::alloc::string::String,
+            /// The generation of the init script stored in Gloud Storage.
+            /// This is the required field to identify the version of the
+            /// init script.
+            /// User can get the genetaion from
+            /// `gcloud storage objects describe gs://BUCKET_NAME/OBJECT_NAME  --format="value(generation)"` or from the "Version history" tab of the
+            /// object in the Cloud Console UI.
+            #[prost(int64, tag = "2")]
+            pub gcs_generation: i64,
+            /// Optional. The optional arguments line to be passed to the init script.
+            #[prost(string, repeated, tag = "3")]
+            pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The resource name of the secret manager secret hosting the init script.
+            /// Both global and regional secrets are supported with format below:
+            /// Global secret: projects/{project}/secrets/{secret}/versions/{version}
+            /// Regional secret:
+            /// projects/{project}/locations/{location}/secrets/{secret}/versions/{version}
+            /// Example: projects/1234567890/secrets/script_1/versions/1.
+            /// Accept version number only, not support version alias.
+            /// User can't configure both gcp_secret_manager_secret_uri and gcs_uri.
+            #[prost(string, tag = "4")]
+            pub gcp_secret_manager_secret_uri: ::prost::alloc::string::String,
+        }
     }
     /// Configuration for swap memory on a node pool.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -211,7 +267,7 @@ pub mod linux_node_config {
     }
     /// Nested message and enum types in `NodeKernelModuleLoading`.
     pub mod node_kernel_module_loading {
-        /// Defines the kernel module loading policy for nodes in the nodepool.
+        /// Defines the kernel module loading policy for nodes in the node pool.
         #[derive(
             Clone,
             Copy,
@@ -268,6 +324,14 @@ pub mod linux_node_config {
                 }
             }
         }
+    }
+    /// AccurateTimeConfig contains configuration for the accurate time
+    /// synchronization feature.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccurateTimeConfig {
+        /// Enables enhanced time synchronization using PTP-KVM.
+        #[prost(bool, optional, tag = "1")]
+        pub enable_ptp_kvm_time_sync: ::core::option::Option<bool>,
     }
     /// Possible cgroup modes that can be used.
     #[derive(
@@ -668,6 +732,12 @@ pub struct NodeKubeletConfig {
     /// be OOM killed individually instead of as a group.
     #[prost(bool, optional, tag = "22")]
     pub single_process_oom_kill: ::core::option::Option<bool>,
+    /// Optional. Contains configuration options to modify node-level parameters
+    /// for container restart behavior.
+    #[prost(message, optional, tag = "24")]
+    pub crash_loop_back_off: ::core::option::Option<
+        node_kubelet_config::CrashLoopBackOffConfig,
+    >,
     /// Optional. shutdown_grace_period_seconds is the maximum allowed grace period
     /// (in seconds) the total duration that the node should delay the shutdown
     /// during a graceful shutdown. This is the total grace period for pod
@@ -686,6 +756,27 @@ pub struct NodeKubeletConfig {
     /// Range: \[0, 120\].
     #[prost(int32, optional, tag = "27")]
     pub shutdown_grace_period_critical_pods_seconds: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `NodeKubeletConfig`.
+pub mod node_kubelet_config {
+    /// Contains config to modify node-level parameters for container restart
+    /// behavior.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CrashLoopBackOffConfig {
+        /// Optional. The maximum duration the backoff delay can accrue to for
+        /// container restarts, minimum 1 second, maximum 300 seconds. If not set,
+        /// defaults to the internal crashloopbackoff maximum.
+        ///
+        /// The string must be a sequence of decimal numbers, each with optional
+        /// fraction and a unit suffix, such as "300ms".
+        /// Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+        ///
+        /// See
+        /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#configurable-container-restart-delay>
+        /// for more details.
+        #[prost(string, tag = "1")]
+        pub max_container_restart_period: ::prost::alloc::string::String,
+    }
 }
 /// TopologyManager defines the configuration options for Topology Manager
 /// feature. See
@@ -954,14 +1045,27 @@ pub struct NodeConfig {
     /// for available image types.
     #[prost(string, tag = "5")]
     pub image_type: ::prost::alloc::string::String,
-    /// The map of Kubernetes labels (key/value pairs) to be applied to each node.
-    /// These will added in addition to any default label(s) that
-    /// Kubernetes may apply to the node.
-    /// In case of conflict in label keys, the applied set may differ depending on
-    /// the Kubernetes version -- it's best to assume the behavior is undefined
-    /// and conflicts should be avoided.
-    /// For more information, including usage and the valid values, see:
-    /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/>
+    /// The node image configuration to use for this node pool.  Note that this is
+    /// only applicable for node pools using image_type=CUSTOM.
+    #[prost(message, optional, tag = "90")]
+    pub node_image_config: ::core::option::Option<CustomImageConfig>,
+    /// The Kubernetes labels (key/value pairs) to apply to each node. The values
+    /// in this field are added to the set of default labels Kubernetes applies to
+    /// nodes.
+    ///
+    /// This field has the following restrictions:
+    ///
+    /// * Labels must use a valid Kubernetes syntax and character set, as defined
+    ///   in
+    ///   <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set.>
+    /// * This field supports up to 1,024 total characters in a single request.
+    ///
+    /// Depending on the Kubernetes version, keys in this field might conflict with
+    /// the keys of the default labels, which might change which of your labels
+    /// are applied to the nodes. Assume that the behavior is unpredictable and
+    /// avoid label key conflicts. For more information about the default labels,
+    /// see:
+    /// <https://kubernetes.io/docs/reference/labels-annotations-taints/>
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1141,6 +1245,9 @@ pub struct NodeConfig {
     /// default behavior, i.e. according to the chosen autoscaling profile.
     #[prost(message, optional, tag = "60")]
     pub consolidation_delay: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The taint configuration for the node pool.
+    #[prost(message, optional, tag = "62")]
+    pub taint_config: ::core::option::Option<TaintConfig>,
 }
 /// Nested message and enum types in `NodeConfig`.
 pub mod node_config {
@@ -1237,6 +1344,64 @@ pub mod node_config {
                 "EFFECTIVE_CGROUP_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "EFFECTIVE_CGROUP_MODE_V1" => Some(Self::V1),
                 "EFFECTIVE_CGROUP_MODE_V2" => Some(Self::V2),
+                _ => None,
+            }
+        }
+    }
+}
+/// TaintConfig contains the configuration for the taints of the node pool.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TaintConfig {
+    /// Optional. Controls architecture tainting behavior.
+    #[prost(
+        enumeration = "taint_config::ArchitectureTaintBehavior",
+        optional,
+        tag = "2"
+    )]
+    pub architecture_taint_behavior: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `TaintConfig`.
+pub mod taint_config {
+    /// Controls architecture tainting behavior for a node pool.
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ArchitectureTaintBehavior {
+        /// Specifies that the behavior is unspecified, defaults to ARM.
+        Unspecified = 0,
+        /// Disables default architecture taints on the node pool.
+        None = 1,
+        /// Taints all the nodes in the node pool with the default ARM taint.
+        Arm = 2,
+    }
+    impl ArchitectureTaintBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ARCHITECTURE_TAINT_BEHAVIOR_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Arm => "ARM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ARCHITECTURE_TAINT_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "ARM" => Some(Self::Arm),
                 _ => None,
             }
         }
@@ -1367,7 +1532,7 @@ pub struct NodeNetworkConfig {
         node_network_config::NetworkPerformanceConfig,
     >,
     /// \[PRIVATE FIELD\]
-    /// Pod CIDR size overprovisioning config for the nodepool.
+    /// Pod CIDR size overprovisioning config for the node pool.
     ///
     /// Pod CIDR size per node depends on max_pods_per_node. By default, the value
     /// of max_pods_per_node is rounded off to next power of 2 and we then double
@@ -1404,11 +1569,14 @@ pub struct NodeNetworkConfig {
     /// If the cluster is associated with multiple subnetworks, the subnetwork can
     /// be either:
     ///
-    /// 1. A user supplied subnetwork name/full path during node pool creation.
-    ///    Example1: my-subnet
-    ///    Example2: projects/gke-project/regions/us-central1/subnetworks/my-subnet
-    /// 1. A subnetwork path picked based on the IP utilization during node pool
-    ///    creation and is immutable.
+    /// * A user supplied subnetwork name during node pool creation (e.g.,
+    ///   `my-subnet`). The name must be between 1 and 63 characters long, start
+    ///   with a letter, contain only letters, numbers, and hyphens, and end with a
+    ///   letter or a number.
+    /// * A full subnetwork path during node pool creation, such as
+    ///   `projects/gke-project/regions/us-central1/subnetworks/my-subnet`
+    /// * A subnetwork path picked based on the IP utilization during node pool
+    ///   creation and is immutable.
     #[prost(string, tag = "19")]
     pub subnetwork: ::prost::alloc::string::String,
     /// Output only. The network tier configuration for the node pool inherits from
@@ -1416,6 +1584,12 @@ pub struct NodeNetworkConfig {
     /// pool's lifecycle, including during upgrades.
     #[prost(message, optional, tag = "20")]
     pub network_tier_config: ::core::option::Option<NetworkTierConfig>,
+    /// Immutable. The accelerator network profile for the node pool. For now the
+    /// only valid value is "auto". If specified, the network configuration of the
+    /// nodes in this node pool will be managed by this profile for the supported
+    /// machine types, zone, etc.
+    #[prost(string, tag = "21")]
+    pub accelerator_network_profile: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `NodeNetworkConfig`.
 pub mod node_network_config {
@@ -1513,6 +1687,16 @@ pub struct ShieldedInstanceConfig {
     /// the instance is created.
     #[prost(bool, tag = "2")]
     pub enable_integrity_monitoring: bool,
+}
+/// CustomImageConfig contains the information r
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomImageConfig {
+    /// The name of the image to use for this node.
+    #[prost(string, tag = "1")]
+    pub image: ::prost::alloc::string::String,
+    /// The project containing the image to use for this node.
+    #[prost(string, tag = "3")]
+    pub image_project: ::prost::alloc::string::String,
 }
 /// SandboxConfig contains configurations of the sandbox to use for the node.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1763,8 +1947,8 @@ pub mod containerd_config {
             /// Wildcards are NOT supported.
             /// Examples:
             ///
-            /// * my.customdomain.com
-            /// * 10.0.1.2:5000
+            /// * `my.customdomain.com`
+            /// * `10.0.1.2:5000`
             #[prost(string, repeated, tag = "1")]
             pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Certificate access config. The following are supported:
@@ -1817,12 +2001,12 @@ pub mod containerd_config {
         /// Defines the host name of the registry server, which will be used to
         /// create configuration file as /etc/containerd/hosts.d/<server>/hosts.toml.
         /// It supports fully qualified domain names (FQDN) and IP addresses:
-        /// Specifying port is supported.
+        /// Specifying port is supported, while scheme and path are NOT supported.
         /// Wildcards are NOT supported.
         /// Examples:
         ///
-        /// * my.customdomain.com
-        /// * 10.0.1.2:5000
+        /// * `my.customdomain.com`
+        /// * `10.0.1.2:5000`
         #[prost(string, tag = "1")]
         pub server: ::prost::alloc::string::String,
         /// HostConfig configures a list of host-specific configurations for the
@@ -1881,13 +2065,15 @@ pub mod containerd_config {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct HostConfig {
             /// Host configures the registry host/mirror.
-            /// It supports fully qualified domain names (FQDN) and IP addresses:
-            /// Specifying port is supported.
+            /// It supports fully qualified domain names (FQDNs) and IP addresses.
+            /// Specifying scheme, port or path is supported. Scheme can only be http
+            /// or https.
             /// Wildcards are NOT supported.
             /// Examples:
             ///
-            /// * my.customdomain.com
-            /// * 10.0.1.2:5000
+            /// * `my.customdomain.com`
+            /// * `<https://my.customdomain.com/path`>
+            /// * `10.0.1.2:5000`
             #[prost(string, tag = "1")]
             pub host: ::prost::alloc::string::String,
             /// Capabilities represent the capabilities of the registry host,
@@ -2201,9 +2387,21 @@ pub struct AddonsConfig {
     /// Configuration for the Lustre CSI driver.
     #[prost(message, optional, tag = "23")]
     pub lustre_csi_driver_config: ::core::option::Option<LustreCsiDriverConfig>,
+    /// Optional. Configuration for the Pod Snapshot feature.
+    #[prost(message, optional, tag = "24")]
+    pub pod_snapshot_config: ::core::option::Option<PodSnapshotConfig>,
+    /// Configuration for the Slurm Operator.
+    #[prost(message, optional, tag = "25")]
+    pub slurm_operator_config: ::core::option::Option<SlurmOperatorConfig>,
     /// Optional. Configuration for the slice controller add-on.
     #[prost(message, optional, tag = "26")]
     pub slice_controller_config: ::core::option::Option<SliceControllerConfig>,
+    /// Optional. Configuration for the AgentSandbox addon.
+    #[prost(message, optional, tag = "28")]
+    pub agent_sandbox_config: ::core::option::Option<AgentSandboxConfig>,
+    /// Optional. Configuration for NodeReadinessController add-on.
+    #[prost(message, optional, tag = "29")]
+    pub node_readiness_config: ::core::option::Option<NodeReadinessConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -2456,6 +2654,36 @@ pub struct LustreCsiDriverConfig {
     #[deprecated]
     #[prost(bool, tag = "3")]
     pub enable_legacy_lustre_port: bool,
+    /// When set to true, this disables multi-NIC support for the Lustre CSI
+    /// driver.
+    /// By default, GKE enables multi-NIC support, which allows the Lustre
+    /// CSI driver to automatically detect and configure all suitable network
+    /// interfaces on a node to maximize I/O performance for demanding workloads.
+    #[prost(bool, tag = "4")]
+    pub disable_multi_nic: bool,
+}
+/// Configuration for the Slurm Operator.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SlurmOperatorConfig {
+    /// When enabled, it runs a Slurm Operator that manages the set of compute pods
+    /// for Slurm Cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration for the AgentSandbox addon.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentSandboxConfig {
+    /// Optional. Whether AgentSandbox is enabled for this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration for the GKE Node Readiness Controller.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NodeReadinessConfig {
+    /// Optional. Whether the GKE Node Readiness Controller is enabled for this
+    /// cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
 }
 /// Configuration for the Slice Controller.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3206,7 +3434,7 @@ pub struct Cluster {
     /// Fleet information for the cluster.
     #[prost(message, optional, tag = "140")]
     pub fleet: ::core::option::Option<Fleet>,
-    /// Enable/Disable Security Posture API features for the cluster.
+    /// Optional. Enable/Disable Security Posture API features for the cluster.
     #[prost(message, optional, tag = "145")]
     pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
     /// Configuration for all cluster's control plane endpoints.
@@ -3227,7 +3455,12 @@ pub struct Cluster {
     /// Secret CSI driver configuration.
     #[prost(message, optional, tag = "150")]
     pub secret_manager_config: ::core::option::Option<SecretManagerConfig>,
+    /// Optional. Deprecated: Compliance Posture is no longer supported.
+    /// For more details, see
+    /// <https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.>
+    ///
     /// Enable/Disable Compliance Posture features for the cluster.
+    #[deprecated]
     #[prost(message, optional, tag = "151")]
     pub compliance_posture_config: ::core::option::Option<CompliancePostureConfig>,
     /// Output only. Reserved for future use.
@@ -3252,9 +3485,26 @@ pub struct Cluster {
     pub anonymous_authentication_config: ::core::option::Option<
         AnonymousAuthenticationConfig,
     >,
+    /// Optional. Configuration for scheduled upgrades.
+    #[prost(message, optional, tag = "165")]
+    pub schedule_upgrade_config: ::core::option::Option<ScheduleUpgradeConfig>,
+    /// Configuration for sync Secret Manager secrets as k8s secrets.
+    #[prost(message, optional, tag = "166")]
+    pub secret_sync_config: ::core::option::Option<SecretSyncConfig>,
     /// Configuration for Managed OpenTelemetry pipeline.
     #[prost(message, optional, tag = "168")]
     pub managed_opentelemetry_config: ::core::option::Option<ManagedOpenTelemetryConfig>,
+    /// Configuration for control plane egress control.
+    #[prost(message, optional, tag = "169")]
+    pub control_plane_egress: ::core::option::Option<ControlPlaneEgress>,
+    /// Configuration for Managed Machine Learning Diagnostics.
+    #[prost(message, optional, tag = "171")]
+    pub managed_machine_learning_diagnostics_config: ::core::option::Option<
+        ManagedMachineLearningDiagnosticsConfig,
+    >,
+    /// Optional. Configuration for Node Creation Mode.
+    #[prost(message, optional, tag = "174")]
+    pub node_creation_config: ::core::option::Option<NodeCreationConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -3318,6 +3568,114 @@ pub mod cluster {
                 "STOPPING" => Some(Self::Stopping),
                 "ERROR" => Some(Self::Error),
                 "DEGRADED" => Some(Self::Degraded),
+                _ => None,
+            }
+        }
+    }
+}
+/// NodeCreationConfig defines the settings of node creation mode.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NodeCreationConfig {
+    /// The mode of node creation.
+    #[prost(enumeration = "node_creation_config::Mode", tag = "1")]
+    pub node_creation_mode: i32,
+}
+/// Nested message and enum types in `NodeCreationConfig`.
+pub mod node_creation_config {
+    /// The mode of node creation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// When no user input is provided.
+        Unspecified = 0,
+        /// Kubelet registers itself.
+        ViaKubelet = 1,
+        /// gcp-controller-manager automatically creates the node object after
+        /// CSR approval.
+        ViaControlPlane = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::ViaKubelet => "VIA_KUBELET",
+                Self::ViaControlPlane => "VIA_CONTROL_PLANE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VIA_KUBELET" => Some(Self::ViaKubelet),
+                "VIA_CONTROL_PLANE" => Some(Self::ViaControlPlane),
+                _ => None,
+            }
+        }
+    }
+}
+/// ControlPlaneEgress defines the settings needed to enable
+/// control plane egress control.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ControlPlaneEgress {
+    /// Defines the mode of control plane egress.
+    #[prost(enumeration = "control_plane_egress::Mode", tag = "1")]
+    pub mode: i32,
+}
+/// Nested message and enum types in `ControlPlaneEgress`.
+pub mod control_plane_egress {
+    /// Mode defines the mode of control plane egress.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Control plane has public IP and no restriction on egress.
+        ViaControlPlane = 1,
+        /// No public IP on control plane and only internal allowlisted egress.
+        None = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::ViaControlPlane => "VIA_CONTROL_PLANE",
+                Self::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VIA_CONTROL_PLANE" => Some(Self::ViaControlPlane),
+                "NONE" => Some(Self::None),
                 _ => None,
             }
         }
@@ -3444,6 +3802,10 @@ pub mod anonymous_authentication_config {
         }
     }
 }
+/// Deprecated: Compliance Posture is no longer supported.
+/// For more details, see
+/// <https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.>
+///
 /// CompliancePostureConfig defines the settings needed to enable/disable
 /// features for the Compliance Posture.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3554,7 +3916,12 @@ pub mod security_posture_config {
         Disabled = 1,
         /// Applies Security Posture features on the cluster.
         Basic = 2,
+        /// Deprecated: Security Posture Enterprise features are no longer supported.
+        /// For more details, see
+        /// <https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.>
+        ///
         /// Applies the Security Posture off cluster Enterprise level features.
+        #[deprecated]
         Enterprise = 3,
     }
     impl Mode {
@@ -3567,6 +3934,7 @@ pub mod security_posture_config {
                 Self::Unspecified => "MODE_UNSPECIFIED",
                 Self::Disabled => "DISABLED",
                 Self::Basic => "BASIC",
+                #[allow(deprecated)]
                 Self::Enterprise => "ENTERPRISE",
             }
         }
@@ -3576,7 +3944,7 @@ pub mod security_posture_config {
                 "MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DISABLED" => Some(Self::Disabled),
                 "BASIC" => Some(Self::Basic),
-                "ENTERPRISE" => Some(Self::Enterprise),
+                "ENTERPRISE" => Some(#[allow(deprecated)] Self::Enterprise),
                 _ => None,
             }
         }
@@ -3599,7 +3967,12 @@ pub mod security_posture_config {
         Unspecified = 0,
         /// Disables vulnerability scanning on the cluster.
         VulnerabilityDisabled = 1,
+        /// Deprecated: Basic vulnerability scanning is no longer supported.
+        /// For more details, see
+        /// <https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.>
+        ///
         /// Applies basic vulnerability scanning on the cluster.
+        #[deprecated]
         VulnerabilityBasic = 2,
         /// Applies the Security Posture's vulnerability on cluster Enterprise level
         /// features.
@@ -3614,6 +3987,7 @@ pub mod security_posture_config {
             match self {
                 Self::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
                 Self::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
+                #[allow(deprecated)]
                 Self::VulnerabilityBasic => "VULNERABILITY_BASIC",
                 Self::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
             }
@@ -3623,7 +3997,9 @@ pub mod security_posture_config {
             match value {
                 "VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "VULNERABILITY_DISABLED" => Some(Self::VulnerabilityDisabled),
-                "VULNERABILITY_BASIC" => Some(Self::VulnerabilityBasic),
+                "VULNERABILITY_BASIC" => {
+                    Some(#[allow(deprecated)] Self::VulnerabilityBasic)
+                }
                 "VULNERABILITY_ENTERPRISE" => Some(Self::VulnerabilityEnterprise),
                 _ => None,
             }
@@ -3722,6 +4098,16 @@ pub struct ClusterUpdate {
     /// NOTE: Set the "desired_node_pool" field as well.
     #[prost(string, tag = "8")]
     pub desired_image_type: ::prost::alloc::string::String,
+    /// The desired name of the image to use for this node.
+    /// This is used to create clusters using a custom image.
+    /// NOTE: Set the "desired_node_pool" field as well.
+    #[prost(string, tag = "44")]
+    pub desired_image: ::prost::alloc::string::String,
+    /// The project containing the desired image to use for this node.
+    /// This is used to create clusters using a custom image.
+    /// NOTE: Set the "desired_node_pool" field as well.
+    #[prost(string, tag = "45")]
+    pub desired_image_project: ::prost::alloc::string::String,
     /// Configuration of etcd encryption.
     #[prost(message, optional, tag = "46")]
     pub desired_database_encryption: ::core::option::Option<DatabaseEncryption>,
@@ -3966,7 +4352,12 @@ pub struct ClusterUpdate {
     /// Enable/Disable Secret Manager Config.
     #[prost(message, optional, tag = "139")]
     pub desired_secret_manager_config: ::core::option::Option<SecretManagerConfig>,
+    /// Deprecated: Compliance Posture is no longer supported.
+    /// For more details, see
+    /// <https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.>
+    ///
     /// Enable/Disable Compliance Posture features for the cluster.
+    #[deprecated]
     #[prost(message, optional, tag = "140")]
     pub desired_compliance_posture_config: ::core::option::Option<
         CompliancePostureConfig,
@@ -4034,16 +4425,35 @@ pub struct ClusterUpdate {
     /// The desired network tier configuration for the cluster.
     #[prost(message, optional, tag = "155")]
     pub desired_network_tier_config: ::core::option::Option<NetworkTierConfig>,
+    /// Configuration for sync Secret Manager secrets as k8s secrets.
+    #[prost(message, optional, tag = "158")]
+    pub desired_secret_sync_config: ::core::option::Option<SecretSyncConfig>,
     /// The desired privileged admission config for the cluster.
     #[prost(message, optional, tag = "159")]
     pub desired_privileged_admission_config: ::core::option::Option<
         PrivilegedAdmissionConfig,
     >,
+    /// The desired control plane egress control config for the cluster.
+    #[prost(message, optional, tag = "160")]
+    pub desired_control_plane_egress: ::core::option::Option<ControlPlaneEgress>,
     /// The desired managed open telemetry configuration.
     #[prost(message, optional, tag = "163")]
     pub desired_managed_opentelemetry_config: ::core::option::Option<
         ManagedOpenTelemetryConfig,
     >,
+    /// The desired autopilot cluster policies that to be enforced in the cluster.
+    #[prost(message, optional, tag = "164")]
+    pub desired_autopilot_cluster_policy_config: ::core::option::Option<
+        ClusterPolicyConfig,
+    >,
+    /// The desired managed machine learning diagnostics configuration.
+    #[prost(message, optional, tag = "166")]
+    pub desired_managed_machine_learning_diagnostics_config: ::core::option::Option<
+        ManagedMachineLearningDiagnosticsConfig,
+    >,
+    /// Optional. The desired NodeCreationConfig for the cluster.
+    #[prost(message, optional, tag = "171")]
+    pub desired_node_creation_config: ::core::option::Option<NodeCreationConfig>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -4080,7 +4490,7 @@ pub struct AdditionalIpRangesConfig {
 pub mod additional_ip_ranges_config {
     /// Additional subnet with DRAINING status will not be selected during new node
     /// pool creation. To undrain the draining status, update the cluster to set
-    /// the sunbet to ACTIVE status. To remove the additional subnet, use the
+    /// the subnet to ACTIVE status. To remove the additional subnet, use the
     /// update cluster API to remove the subnet from the
     /// desired_additional_ip_ranges list. IP ranges can be removed regardless of
     /// its status, as long as no node pools are using them.
@@ -4669,6 +5079,14 @@ pub struct UpdateNodePoolRequest {
     /// `projects/*/locations/*/clusters/*/nodePools/*`.
     #[prost(string, tag = "8")]
     pub name: ::prost::alloc::string::String,
+    /// The desired name of the image name to use for this node.
+    /// This is used to create clusters using a custom image.
+    #[prost(string, tag = "10")]
+    pub image: ::prost::alloc::string::String,
+    /// The project containing the desired image to use for this node pool.
+    /// This is used to create clusters using a custom image.
+    #[prost(string, tag = "11")]
+    pub image_project: ::prost::alloc::string::String,
     /// The desired list of Google Compute Engine
     /// [zones](<https://cloud.google.com/compute/docs/zones#available>)
     /// in which the node pool's nodes should be located. Changing the locations
@@ -4803,6 +5221,9 @@ pub struct UpdateNodePoolRequest {
     /// default behavior, i.e. according to the chosen autoscaling profile.
     #[prost(message, optional, tag = "49")]
     pub consolidation_delay: ::core::option::Option<::prost_types::Duration>,
+    /// The taint configuration for the node pool.
+    #[prost(message, optional, tag = "51")]
+    pub taint_config: ::core::option::Option<TaintConfig>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5594,6 +6015,9 @@ pub struct NodePool {
     /// Specifies the node drain configuration for this node pool.
     #[prost(message, optional, tag = "116")]
     pub node_drain_config: ::core::option::Option<node_pool::NodeDrainConfig>,
+    /// Optional. Specifies the maintenance policy for the node pool.
+    #[prost(message, optional, tag = "118")]
+    pub maintenance_policy: ::core::option::Option<node_pool::NodePoolMaintenancePolicy>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -5831,19 +6255,51 @@ pub mod node_pool {
     /// QueuedProvisioning defines the queued provisioning used by the node pool.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct QueuedProvisioning {
-        /// Denotes that this nodepool is QRM specific, meaning nodes can be only
+        /// Denotes that this node pool is QRM specific, meaning nodes can be only
         /// obtained through queuing via the Cluster Autoscaler ProvisioningRequest
         /// API.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
     }
     /// NodeDrainConfig contains the node drain related configurations for this
-    /// nodepool.
+    /// node pool.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NodeDrainConfig {
+        /// The duration of the PDB timeout period for node drain.
+        #[prost(message, optional, tag = "1")]
+        pub pdb_timeout_duration: ::core::option::Option<::prost_types::Duration>,
+        /// The duration of the grace termination period for node drain.
+        #[prost(message, optional, tag = "2")]
+        pub grace_termination_duration: ::core::option::Option<::prost_types::Duration>,
         /// Whether to respect PDB during node pool deletion.
         #[prost(bool, optional, tag = "3")]
         pub respect_pdb_during_node_pool_deletion: ::core::option::Option<bool>,
+    }
+    /// Defines the maintenance exclusion for the node pool.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ExclusionUntilEndOfSupport {
+        /// Optional. Indicates whether the exclusion is enabled.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+        /// Output only. The start time of the maintenance exclusion. It is output
+        /// only. It is the exclusion creation time.
+        #[prost(message, optional, tag = "2")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The end time of the maintenance exclusion. It is output
+        /// only. It is the cluster control plane version's end of support time, or
+        /// end of extended support time when the cluster is on extended support
+        /// channel.
+        #[prost(message, optional, tag = "3")]
+        pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Defines the maintenance policy for the node pool.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NodePoolMaintenancePolicy {
+        /// Optional. The exclusion until end of support for the node pool.
+        #[prost(message, optional, tag = "1")]
+        pub exclusion_until_end_of_support: ::core::option::Option<
+            ExclusionUntilEndOfSupport,
+        >,
     }
     /// The current status of the node pool instance.
     #[derive(
@@ -5972,6 +6428,35 @@ pub struct MaintenancePolicy {
     /// resource version and include it with requests to set the policy.
     #[prost(string, tag = "3")]
     pub resource_version: ::prost::alloc::string::String,
+    /// Optional. The upgrade disruption budget for the cluster control plane.
+    #[prost(message, optional, tag = "4")]
+    pub disruption_budget: ::core::option::Option<DisruptionBudget>,
+}
+/// DisruptionBudget defines the upgrade disruption budget for the cluster
+/// control plane.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisruptionBudget {
+    /// Optional. The minimum duration between two minor version upgrades of the
+    /// control plane.
+    #[prost(message, optional, tag = "1")]
+    pub minor_version_disruption_interval: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// Optional. The minimum duration between two patch version upgrades of the
+    /// control plane.
+    #[prost(message, optional, tag = "2")]
+    pub patch_version_disruption_interval: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// Output only. The last time a minor version upgrade was performed on the
+    /// control plane.
+    #[prost(message, optional, tag = "3")]
+    pub last_minor_version_disruption_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
+    /// Output only. The last time a disruption was performed on the control plane.
+    #[prost(message, optional, tag = "5")]
+    pub last_disruption_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// MaintenanceWindow defines the maintenance window to be used for the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5983,7 +6468,7 @@ pub struct MaintenanceWindow {
         ::prost::alloc::string::String,
         TimeWindow,
     >,
-    #[prost(oneof = "maintenance_window::Policy", tags = "2, 3")]
+    #[prost(oneof = "maintenance_window::Policy", tags = "2, 3, 5")]
     pub policy: ::core::option::Option<maintenance_window::Policy>,
 }
 /// Nested message and enum types in `MaintenanceWindow`.
@@ -5998,6 +6483,12 @@ pub mod maintenance_window {
         /// maintenance windows are set, maintenance can occur at any time.
         #[prost(message, tag = "3")]
         RecurringWindow(super::RecurringTimeWindow),
+        /// RecurringMaintenanceWindow specifies some number of recurring time
+        /// periods for maintenance to occur. The time windows may be overlapping.
+        /// If no maintenance windows are set, maintenance can occur at any time.
+        /// Alternative to RecurringWindow, with renamed fields.
+        #[prost(message, tag = "5")]
+        RecurringMaintenanceWindow(super::RecurringMaintenanceWindow),
     }
 }
 /// Represents an arbitrary window of time.
@@ -6167,6 +6658,39 @@ pub struct RecurringTimeWindow {
     /// to specify duration of the window and when it first starts.
     /// The FREQ values of HOURLY, MINUTELY, and SECONDLY are not supported.
     #[prost(string, tag = "2")]
+    pub recurrence: ::prost::alloc::string::String,
+}
+/// Represents an arbitrary window of time that recurs.
+/// Will replace RecurringTimeWindow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RecurringMaintenanceWindow {
+    /// Optional. Specifies the date before which will not be scheduled.
+    /// Depending on the recurrence, this may be the date the first window appears.
+    /// Days are measured in the UTC timezone. This setting must be used when
+    /// INTERVAL>1 or FREQ=WEEKLY/MONTHLY and no BYDAY specified.
+    #[prost(message, optional, tag = "1")]
+    pub delay_until: ::core::option::Option<super::super::r#type::Date>,
+    /// Required. Start time of the window on days that it is scheduled,
+    /// assuming UTC timezone.
+    #[prost(message, optional, tag = "2")]
+    pub window_start_time: ::core::option::Option<super::super::r#type::TimeOfDay>,
+    /// Required. Duration of the window.
+    #[prost(message, optional, tag = "3")]
+    pub window_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Required. An RRULE (<https://tools.ietf.org/html/rfc5545#section-3.8.5.3>)
+    /// for how this window recurs.
+    ///
+    /// For example, to have something repeat every weekday, you'd use:
+    /// `FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR`
+    ///
+    /// To repeat some window daily (equivalent to the DailyMaintenanceWindow):
+    /// `FREQ=DAILY`
+    ///
+    /// For the first weekend of every month:
+    /// `FREQ=MONTHLY;BYSETPOS=1;BYDAY=SA,SU`
+    ///
+    /// The FREQ values of HOURLY, MINUTELY, and SECONDLY are not supported.
+    #[prost(string, tag = "4")]
     pub recurrence: ::prost::alloc::string::String,
 }
 /// Time window specified for daily maintenance operations.
@@ -6410,6 +6934,8 @@ pub mod cluster_autoscaling {
         Unspecified = 0,
         /// Avoid extra IP consumption.
         NoPerformance = 1,
+        /// Use default configuration.
+        None = 2,
     }
     impl AutopilotGeneralProfile {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6420,6 +6946,7 @@ pub mod cluster_autoscaling {
             match self {
                 Self::Unspecified => "AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED",
                 Self::NoPerformance => "NO_PERFORMANCE",
+                Self::None => "NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6427,6 +6954,7 @@ pub mod cluster_autoscaling {
             match value {
                 "AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED" => Some(Self::Unspecified),
                 "NO_PERFORMANCE" => Some(Self::NoPerformance),
+                "NONE" => Some(Self::None),
                 _ => None,
             }
         }
@@ -6534,7 +7062,7 @@ pub struct NodePoolAutoscaling {
     /// Can this node pool be deleted automatically.
     #[prost(bool, tag = "4")]
     pub autoprovisioned: bool,
-    /// Location policy used when scaling up a nodepool.
+    /// Location policy used when scaling up a node pool.
     #[prost(enumeration = "node_pool_autoscaling::LocationPolicy", tag = "5")]
     pub location_policy: i32,
     /// Minimum number of nodes in the node pool. Must be greater than or equal
@@ -6553,7 +7081,7 @@ pub struct NodePoolAutoscaling {
 /// Nested message and enum types in `NodePoolAutoscaling`.
 pub mod node_pool_autoscaling {
     /// Location policy specifies how zones are picked when scaling up the
-    /// nodepool.
+    /// node pool.
     #[derive(
         Clone,
         Copy,
@@ -7150,6 +7678,9 @@ pub struct NetworkConfig {
     /// \[ClusterUpdate.desired_default_enable_private_nodes\]\[google.container.v1.ClusterUpdate.desired_default_enable_private_nodes\]
     #[prost(bool, optional, tag = "22")]
     pub default_enable_private_nodes: ::core::option::Option<bool>,
+    /// Optional. DataplaneV2Config specifies the DPv2 configuration.
+    #[prost(message, optional, tag = "23")]
+    pub dataplane_v2_config: ::core::option::Option<DataplaneV2Config>,
     /// Disable L4 load balancer VPC firewalls to enable firewall policies.
     #[prost(bool, optional, tag = "24")]
     pub disable_l4_lb_firewall_reconciliation: ::core::option::Option<bool>,
@@ -7772,6 +8303,10 @@ pub mod database_encryption {
         /// Secrets in etcd are stored in plain text (at etcd level) - this is
         /// unrelated to Compute Engine level full disk encryption.
         Decrypted = 2,
+        /// Encryption of all objects in the storage is enabled. There is no
+        /// guarantee that all objects in the storage are encrypted, but eventually
+        /// they will be.
+        AllObjectsEncryptionEnabled = 3,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7783,6 +8318,7 @@ pub mod database_encryption {
                 Self::Unknown => "UNKNOWN",
                 Self::Encrypted => "ENCRYPTED",
                 Self::Decrypted => "DECRYPTED",
+                Self::AllObjectsEncryptionEnabled => "ALL_OBJECTS_ENCRYPTION_ENABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7791,6 +8327,9 @@ pub mod database_encryption {
                 "UNKNOWN" => Some(Self::Unknown),
                 "ENCRYPTED" => Some(Self::Encrypted),
                 "DECRYPTED" => Some(Self::Decrypted),
+                "ALL_OBJECTS_ENCRYPTION_ENABLED" => {
+                    Some(Self::AllObjectsEncryptionEnabled)
+                }
                 _ => None,
             }
         }
@@ -7826,6 +8365,14 @@ pub mod database_encryption {
         DecryptionPending = 5,
         /// De-crypting Secrets to plain text in etcd encountered an error.
         DecryptionError = 6,
+        /// Encryption of all objects in the storage is enabled.
+        /// It does not guarantee that all objects in the storage are encrypted,
+        /// but eventually they will be.
+        AllObjectsEncryptionEnabled = 8,
+        /// Enablement of the encryption of all objects in storage is pending.
+        AllObjectsEncryptionPending = 9,
+        /// Enabling encryption of all objects in storage encountered an error.
+        AllObjectsEncryptionError = 10,
     }
     impl CurrentState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7841,6 +8388,15 @@ pub mod database_encryption {
                 Self::EncryptionError => "CURRENT_STATE_ENCRYPTION_ERROR",
                 Self::DecryptionPending => "CURRENT_STATE_DECRYPTION_PENDING",
                 Self::DecryptionError => "CURRENT_STATE_DECRYPTION_ERROR",
+                Self::AllObjectsEncryptionEnabled => {
+                    "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED"
+                }
+                Self::AllObjectsEncryptionPending => {
+                    "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_PENDING"
+                }
+                Self::AllObjectsEncryptionError => {
+                    "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ERROR"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7853,6 +8409,15 @@ pub mod database_encryption {
                 "CURRENT_STATE_ENCRYPTION_ERROR" => Some(Self::EncryptionError),
                 "CURRENT_STATE_DECRYPTION_PENDING" => Some(Self::DecryptionPending),
                 "CURRENT_STATE_DECRYPTION_ERROR" => Some(Self::DecryptionError),
+                "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED" => {
+                    Some(Self::AllObjectsEncryptionEnabled)
+                }
+                "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_PENDING" => {
+                    Some(Self::AllObjectsEncryptionPending)
+                }
+                "CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ERROR" => {
+                    Some(Self::AllObjectsEncryptionError)
+                }
                 _ => None,
             }
         }
@@ -8356,6 +8921,8 @@ pub mod upgrade_info_event {
     pub enum State {
         /// STATE_UNSPECIFIED indicates the state is unspecified.
         Unspecified = 0,
+        /// SCHEDULED indicates the upgrade was scheduled.
+        Scheduled = 1,
         /// STARTED indicates the upgrade has started.
         Started = 3,
         /// SUCCEEDED indicates the upgrade has completed successfully.
@@ -8373,6 +8940,7 @@ pub mod upgrade_info_event {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Scheduled => "SCHEDULED",
                 Self::Started => "STARTED",
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
@@ -8383,6 +8951,7 @@ pub mod upgrade_info_event {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCHEDULED" => Some(Self::Scheduled),
                 "STARTED" => Some(Self::Started),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
@@ -8606,6 +9175,28 @@ pub struct Autopilot {
     /// admission control.
     #[prost(message, optional, tag = "4")]
     pub privileged_admission_config: ::core::option::Option<PrivilegedAdmissionConfig>,
+    /// ClusterPolicyConfig denotes cluster level policies that are enforced for
+    /// the cluster.
+    #[prost(message, optional, tag = "5")]
+    pub cluster_policy_config: ::core::option::Option<ClusterPolicyConfig>,
+}
+/// ClusterPolicyConfig stores the configuration for cluster wide policies.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClusterPolicyConfig {
+    /// Denotes that preventing creation and mutation of resources in GKE
+    /// managed namespaces and cluster-scoped GKE managed resources .
+    #[prost(bool, optional, tag = "1")]
+    pub no_system_mutation: ::core::option::Option<bool>,
+    /// Denotes preventing impersonation and CSRs for GKE System users.
+    #[prost(bool, optional, tag = "2")]
+    pub no_system_impersonation: ::core::option::Option<bool>,
+    /// Denotes preventing unsafe webhooks.
+    #[prost(bool, optional, tag = "3")]
+    pub no_unsafe_webhooks: ::core::option::Option<bool>,
+    /// Denotes preventing standard node pools and requiring only autopilot node
+    /// pools.
+    #[prost(bool, optional, tag = "5")]
+    pub no_standard_node_pools: ::core::option::Option<bool>,
 }
 /// PrivilegedAdmissionConfig stores the list of authorized allowlist
 /// paths for the cluster.
@@ -8818,7 +9409,7 @@ pub struct RayClusterMonitoringConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
-/// NodePoolLoggingConfig specifies logging configuration for nodepools.
+/// NodePoolLoggingConfig specifies logging configuration for node pools.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodePoolLoggingConfig {
     /// Logging variant configuration.
@@ -8975,6 +9566,59 @@ pub mod monitoring_component_config {
                 "KUBELET" => Some(Self::Kubelet),
                 "DCGM" => Some(Self::Dcgm),
                 "JOBSET" => Some(Self::Jobset),
+                _ => None,
+            }
+        }
+    }
+}
+/// DataplaneV2Config is the configuration for DPv2.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataplaneV2Config {
+    /// Optional. Scalability mode for the cluster.
+    #[prost(enumeration = "dataplane_v2_config::ScalabilityMode", optional, tag = "1")]
+    pub scalability_mode: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `DataplaneV2Config`.
+pub mod dataplane_v2_config {
+    /// Options on how to scale the cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ScalabilityMode {
+        /// Default value.
+        Unspecified = 0,
+        /// Disables the scale optimized mode for DPv2.
+        Disabled = 3,
+        /// Enables the scale optimized mode for DPv2.
+        ScaleOptimized = 4,
+    }
+    impl ScalabilityMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCALABILITY_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::ScaleOptimized => "SCALE_OPTIMIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCALABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "SCALE_OPTIMIZED" => Some(Self::ScaleOptimized),
                 _ => None,
             }
         }
@@ -9405,7 +10049,7 @@ pub mod secret_manager_config {
         pub rotation_interval: ::core::option::Option<::prost_types::Duration>,
     }
 }
-/// BootDisk specifies the boot disk configuration for nodepools.
+/// BootDisk specifies the boot disk configuration for node pools.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BootDisk {
     /// Disk type of the boot disk.
@@ -9779,10 +10423,10 @@ pub mod upgrade_details {
     }
 }
 /// FetchNodePoolUpgradeInfoRequest fetches the upgrade information of a
-/// nodepool.
+/// node pool.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchNodePoolUpgradeInfoRequest {
-    /// Required. The name (project, location, cluster, nodepool) of the nodepool
+    /// Required. The name (project, location, cluster, node pool) of the node pool
     /// to get. Specified in the format
     /// `projects/*/locations/*/clusters/*/nodePools/*` or
     /// `projects/*/zones/*/clusters/*/nodePools/*`.
@@ -9792,7 +10436,7 @@ pub struct FetchNodePoolUpgradeInfoRequest {
     #[prost(string, tag = "100")]
     pub version: ::prost::alloc::string::String,
 }
-/// NodePoolUpgradeInfo contains the upgrade information of a nodepool.
+/// NodePoolUpgradeInfo contains the upgrade information of a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePoolUpgradeInfo {
     /// minor_target_version indicates the target version for minor upgrade.
@@ -9818,12 +10462,12 @@ pub struct NodePoolUpgradeInfo {
     /// The list of past auto upgrades.
     #[prost(message, repeated, tag = "5")]
     pub upgrade_details: ::prost::alloc::vec::Vec<UpgradeDetails>,
-    /// The nodepool's current minor version's end of standard support timestamp.
+    /// The node pool's current minor version's end of standard support timestamp.
     #[prost(string, optional, tag = "6")]
     pub end_of_standard_support_timestamp: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
-    /// The nodepool's current minor version's end of extended support timestamp.
+    /// The node pool's current minor version's end of extended support timestamp.
     #[prost(string, optional, tag = "7")]
     pub end_of_extended_support_timestamp: ::core::option::Option<
         ::prost::alloc::string::String,
@@ -9943,6 +10587,13 @@ pub mod node_pool_upgrade_info {
         }
     }
 }
+/// Configuration for scheduled upgrades on the cluster.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ScheduleUpgradeConfig {
+    /// Optional. Whether or not scheduled upgrades are enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// GkeAutoUpgradeConfig is the configuration for GKE auto upgrades.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeAutoUpgradeConfig {
@@ -10060,6 +10711,30 @@ pub mod network_tier_config {
         }
     }
 }
+/// Configuration for sync Secret Manager secrets as k8s secrets.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SecretSyncConfig {
+    /// Enable/Disable Secret Sync Config.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+    /// Rotation config for secret manager.
+    #[prost(message, optional, tag = "2")]
+    pub rotation_config: ::core::option::Option<secret_sync_config::SyncRotationConfig>,
+}
+/// Nested message and enum types in `SecretSyncConfig`.
+pub mod secret_sync_config {
+    /// SyncRotationConfig is config for secret manager auto rotation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SyncRotationConfig {
+        /// Whether the rotation is enabled.
+        #[prost(bool, optional, tag = "1")]
+        pub enabled: ::core::option::Option<bool>,
+        /// The interval between two consecutive rotations. Default rotation interval
+        /// is 2 minutes.
+        #[prost(message, optional, tag = "2")]
+        pub rotation_interval: ::core::option::Option<::prost_types::Duration>,
+    }
+}
 /// ManagedOpenTelemetryConfig is the configuration for the GKE Managed
 /// OpenTelemetry pipeline.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -10118,6 +10793,21 @@ pub mod managed_open_telemetry_config {
             }
         }
     }
+}
+/// ManagedMachineLearningDiagnosticsConfig is the configuration for the GKE
+/// Managed Machine Learning Diagnostics pipeline.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ManagedMachineLearningDiagnosticsConfig {
+    /// Enable/Disable Managed Machine Learning Diagnostics.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+}
+/// PodSnapshotConfig is the configuration for GKE Pod Snapshots feature.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PodSnapshotConfig {
+    /// Whether or not the Pod Snapshots feature is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
 }
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
@@ -10257,8 +10947,8 @@ pub enum NodePoolUpdateStrategy {
     /// max_surge and max_unavailable determines the level of upgrade parallelism.
     Surge = 3,
     /// SHORT_LIVED is the dedicated upgrade strategy for
-    /// QueuedProvisioning and flex start nodepools scaled up only by enqueueing to
-    /// the Dynamic Workload Scheduler (DWS).
+    /// QueuedProvisioning and flex start node pools scaled up only by enqueueing
+    /// to the Dynamic Workload Scheduler (DWS).
     ShortLived = 5,
 }
 impl NodePoolUpdateStrategy {
@@ -11460,7 +12150,7 @@ pub mod cluster_manager_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Fetch upgrade information of a specific nodepool.
+        /// Fetch upgrade information of a specific node pool.
         pub async fn fetch_node_pool_upgrade_info(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchNodePoolUpgradeInfoRequest>,

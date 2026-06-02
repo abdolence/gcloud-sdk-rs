@@ -35,6 +35,7 @@ pub struct UnitVariable {
 /// Nested message and enum types in `UnitVariable`.
 pub mod unit_variable {
     /// Enumeration of variable types.
+    /// `STRUCT` and `LIST` values should be JSON-encoded strings.
     #[derive(
         Clone,
         Copy,
@@ -56,6 +57,10 @@ pub mod unit_variable {
         Int = 2,
         /// Variable type is bool.
         Bool = 3,
+        /// Variable type is struct.
+        Struct = 4,
+        /// Variable type is list.
+        List = 5,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -68,6 +73,8 @@ pub mod unit_variable {
                 Self::String => "STRING",
                 Self::Int => "INT",
                 Self::Bool => "BOOL",
+                Self::Struct => "STRUCT",
+                Self::List => "LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -77,6 +84,8 @@ pub mod unit_variable {
                 "STRING" => Some(Self::String),
                 "INT" => Some(Self::Int),
                 "BOOL" => Some(Self::Bool),
+                "STRUCT" => Some(Self::Struct),
+                "LIST" => Some(Self::List),
                 _ => None,
             }
         }
@@ -177,6 +186,11 @@ pub mod unit_condition {
         /// Condition type is operationError.
         /// True when the last unit operation fails with a non-ignorable error.
         OperationError = 4,
+        /// Indicates if AppHub app has been created or if Apphub app has already
+        /// existed.
+        AppCreatedOrAlreadyExists = 5,
+        /// Indicates if services and workloads have been registered with AppHub.
+        AppComponentsRegistered = 6,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -190,6 +204,8 @@ pub mod unit_condition {
                 Self::Updating => "TYPE_UPDATING",
                 Self::Provisioned => "TYPE_PROVISIONED",
                 Self::OperationError => "TYPE_OPERATION_ERROR",
+                Self::AppCreatedOrAlreadyExists => "TYPE_APP_CREATED_OR_ALREADY_EXISTS",
+                Self::AppComponentsRegistered => "TYPE_APP_COMPONENTS_REGISTERED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -200,6 +216,10 @@ pub mod unit_condition {
                 "TYPE_UPDATING" => Some(Self::Updating),
                 "TYPE_PROVISIONED" => Some(Self::Provisioned),
                 "TYPE_OPERATION_ERROR" => Some(Self::OperationError),
+                "TYPE_APP_CREATED_OR_ALREADY_EXISTS" => {
+                    Some(Self::AppCreatedOrAlreadyExists)
+                }
+                "TYPE_APP_COMPONENTS_REGISTERED" => Some(Self::AppComponentsRegistered),
                 _ => None,
             }
         }
@@ -304,6 +324,12 @@ pub mod unit_operation_condition {
         AppCreated = 6,
         /// Indicates if services and workloads have been registered with AppHub.
         AppComponentsRegistered = 7,
+        /// Indicates if the UnitOperation's core workload execution completed
+        /// successfully.
+        /// The workload is the core execution operation performed for a
+        /// UnitOperation (e.g., provisioning, updating, or deprovisioning
+        /// resources) excluding post-operation checks.
+        WorkloadSucceeded = 8,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -319,6 +345,7 @@ pub mod unit_operation_condition {
                 Self::Cancelled => "TYPE_CANCELLED",
                 Self::AppCreated => "TYPE_APP_CREATED",
                 Self::AppComponentsRegistered => "TYPE_APP_COMPONENTS_REGISTERED",
+                Self::WorkloadSucceeded => "TYPE_WORKLOAD_SUCCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -331,6 +358,120 @@ pub mod unit_operation_condition {
                 "TYPE_CANCELLED" => Some(Self::Cancelled),
                 "TYPE_APP_CREATED" => Some(Self::AppCreated),
                 "TYPE_APP_COMPONENTS_REGISTERED" => Some(Self::AppComponentsRegistered),
+                "TYPE_WORKLOAD_SUCCEEDED" => Some(Self::WorkloadSucceeded),
+                _ => None,
+            }
+        }
+    }
+}
+/// SaasCondition describes the status of a Saas.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SaasCondition {
+    /// Required. Status of the condition.
+    #[prost(enumeration = "saas_condition::Status", tag = "1")]
+    pub status: i32,
+    /// Required. Type of the condition.
+    #[prost(enumeration = "saas_condition::Type", tag = "6")]
+    pub r#type: i32,
+    /// Required. Last time the condition transited from one status to another.
+    #[prost(message, optional, tag = "3")]
+    pub last_transition_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Human readable message indicating details about the last
+    /// transition.
+    #[prost(string, tag = "4")]
+    pub message: ::prost::alloc::string::String,
+    /// Required. Brief reason for the condition's last transition.
+    #[prost(string, tag = "5")]
+    pub reason: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SaasCondition`.
+pub mod saas_condition {
+    /// Enumeration of condition statuses.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// Condition status is unspecified.
+        Unspecified = 0,
+        /// Condition is unknown.
+        Unknown = 1,
+        /// Condition is true.
+        True = 2,
+        /// Condition is false.
+        False = 3,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Unknown => "STATUS_UNKNOWN",
+                Self::True => "STATUS_TRUE",
+                Self::False => "STATUS_FALSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATUS_UNKNOWN" => Some(Self::Unknown),
+                "STATUS_TRUE" => Some(Self::True),
+                "STATUS_FALSE" => Some(Self::False),
+                _ => None,
+            }
+        }
+    }
+    /// Enumeration of condition types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Condition type is unspecified.
+        Unspecified = 0,
+        /// Condition type is ready.
+        Ready = 1,
+        /// Condition type is synchronized.
+        Synchronized = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Ready => "TYPE_READY",
+                Self::Synchronized => "TYPE_SYNCHRONIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TYPE_READY" => Some(Self::Ready),
+                "TYPE_SYNCHRONIZED" => Some(Self::Synchronized),
                 _ => None,
             }
         }
@@ -415,6 +556,30 @@ pub struct Saas {
     /// refers to the list to generate a rollout plan.
     #[prost(message, repeated, tag = "4")]
     pub locations: ::prost::alloc::vec::Vec<Location>,
+    /// Reference to composite ApplicationTemplate.
+    /// When specified, the template components will be imported into their
+    /// equivalent UnitKind, Release and Blueprint resources.
+    /// Deleted references will not delete imported resources.
+    /// Should only be specified on source regions, and be unspecified on replica
+    /// regions.
+    #[prost(message, optional, tag = "5")]
+    pub application_template: ::core::option::Option<CompositeRef>,
+    /// Output only. Name of repository in Artifact Registry for system-generated
+    /// Blueprints, eg. Blueprints of imported ApplicationTemplates.
+    #[prost(string, tag = "6")]
+    pub blueprint_repo: ::prost::alloc::string::String,
+    /// Output only. State of the Saas.
+    /// It is always in ACTIVE state if the application_template is empty.
+    #[prost(enumeration = "saas::State", tag = "7")]
+    pub state: i32,
+    /// Output only. A set of conditions which indicate the various conditions this
+    /// resource can have.
+    #[prost(message, repeated, tag = "8")]
+    pub conditions: ::prost::alloc::vec::Vec<SaasCondition>,
+    /// Output only. If the state is FAILED, the corresponding error code and
+    /// message. Defaults to code=OK for all other states.
+    #[prost(message, optional, tag = "9")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Optional. The labels on the resource, which can be used for categorization.
     /// similar to Kubernetes resource labels.
     #[prost(map = "string, string", tag = "10401")]
@@ -453,6 +618,58 @@ pub struct Saas {
     /// Changes to a resource made by the service should refresh this value.
     #[prost(message, optional, tag = "10304")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `Saas`.
+pub mod saas {
+    /// State of the Saas.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State type is unspecified.
+        TypeUnspecified = 0,
+        /// The Saas is ready
+        Active = 1,
+        /// In the process of importing, synchronizing or replicating
+        /// ApplicationTemplates
+        Running = 2,
+        /// Failure during process of importing, synchronizing or replicating
+        /// ApplicationTemplate processing
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::TypeUnspecified => "STATE_TYPE_UNSPECIFIED",
+                Self::Active => "STATE_ACTIVE",
+                Self::Running => "STATE_RUNNING",
+                Self::Failed => "STATE_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+                "STATE_ACTIVE" => Some(Self::Active),
+                "STATE_RUNNING" => Some(Self::Running),
+                "STATE_FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
 }
 /// Tenant represents the service producer side of an instance of the
 /// service created based on a request from a consumer. In a typical scenario a
@@ -564,6 +781,13 @@ pub struct UnitKind {
     /// once set.
     #[prost(string, tag = "8")]
     pub saas: ::prost::alloc::string::String,
+    /// Output only. Reference to component and revision in a composite
+    /// ApplicationTemplate.
+    #[prost(message, optional, tag = "10")]
+    pub application_template_component: ::core::option::Option<ComponentRef>,
+    /// AppParams contains the parameters for creating an AppHub Application.
+    #[prost(message, optional, tag = "11")]
+    pub app_params: ::core::option::Option<AppParams>,
     /// Optional. The labels on the resource, which can be used for categorization.
     /// similar to Kubernetes resource labels.
     #[prost(map = "string, string", tag = "10401")]
@@ -681,6 +905,11 @@ pub struct Unit {
     /// start removing the unit.
     #[prost(message, optional, tag = "26")]
     pub system_cleanup_at: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Reference to the AppHub Application this unit belongs to.
+    /// All resources deployed in this Unit will be associated with the specified
+    /// Application.
+    #[prost(string, tag = "29")]
+    pub application: ::prost::alloc::string::String,
     /// Optional. The labels on the resource, which can be used for categorization.
     /// similar to Kubernetes resource labels.
     #[prost(map = "string, string", tag = "10401")]
@@ -719,6 +948,13 @@ pub struct Unit {
     /// Changes to a resource made by the service should refresh this value.
     #[prost(message, optional, tag = "10304")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Indicates whether the resource location satisfies Zone
+    /// Separation constraints. This is false by default.
+    #[prost(bool, tag = "10305")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "10306")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `Unit`.
 pub mod unit {
@@ -906,7 +1142,7 @@ pub struct UnitDependency {
 /// unit to focus only on the change they have requested.
 ///
 /// This is a base object that contains the common fields in all unit operations.
-/// Next: 19
+/// Next: 22
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnitOperation {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -992,6 +1228,10 @@ pub struct UnitOperation {
     /// Changes to a resource made by the service should refresh this value.
     #[prost(message, optional, tag = "10304")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was marked for deletion
+    /// (deletion is an asynchronous operation).
+    #[prost(message, optional, tag = "10305")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(oneof = "unit_operation::UnitOperationType", tags = "8, 9, 10")]
     pub unit_operation_type: ::core::option::Option<unit_operation::UnitOperationType>,
 }
@@ -1136,6 +1376,10 @@ pub struct Release {
     /// Optional. Mapping of input variables to default values. Maximum 100
     #[prost(message, repeated, tag = "7")]
     pub input_variable_defaults: ::prost::alloc::vec::Vec<UnitVariable>,
+    /// Output only. Reference to component and revision in a composite
+    /// ApplicationTemplate.
+    #[prost(message, optional, tag = "9")]
+    pub application_template_component: ::core::option::Option<ComponentRef>,
     /// Optional. The labels on the resource, which can be used for categorization.
     /// similar to Kubernetes resource labels.
     #[prost(map = "string, string", tag = "10401")]
@@ -1247,6 +1491,111 @@ pub struct Dependency {
     /// Required. An alias for the dependency. Used for input variable mapping.
     #[prost(string, tag = "2")]
     pub alias: ::prost::alloc::string::String,
+}
+/// CompositeRef represents a reference to a composite resource.
+/// Next ID: 4
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CompositeRef {
+    /// Required. Reference to the ApplicationTemplate resource.
+    #[prost(string, tag = "1")]
+    pub application_template: ::prost::alloc::string::String,
+    /// Revision of the ApplicationTemplate to use.
+    /// Changes to revision will trigger manual resynchronization.
+    /// If empty, ApplicationTemplate will be ignored.
+    #[prost(string, tag = "2")]
+    pub revision: ::prost::alloc::string::String,
+    /// Output only. Reference to on-going AppTemplate import and replication
+    /// operation (i.e. the operation_id for the long-running operation). This
+    /// field is opaque for external usage.
+    #[prost(string, tag = "3")]
+    pub sync_operation: ::prost::alloc::string::String,
+}
+/// ComponentRef represents a reference to a component resource.
+/// Next ID: 4
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ComponentRef {
+    /// Reference to the Composite ApplicationTemplate.
+    #[prost(message, optional, tag = "1")]
+    pub composite_ref: ::core::option::Option<CompositeRef>,
+    /// Name of the component in composite.Components
+    #[prost(string, tag = "2")]
+    pub component: ::prost::alloc::string::String,
+    /// Revision of the component.
+    /// If the component does not have a revision, this field will be explicitly
+    /// set to the revision of the composite ApplicationTemplate.
+    #[prost(string, tag = "3")]
+    pub revision: ::prost::alloc::string::String,
+}
+/// AppParams contains the parameters for creating an AppHub Application.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AppParams {
+    /// Grouping used to construct the name of the AppHub Application.
+    /// Multiple UnitKinds can specify the same group to use the same Application
+    /// across their respective units.
+    /// Corresponds to the app_boundary_id in the ADC composite
+    /// ApplicationTemplate. Defaults to UnitKind.name
+    #[prost(string, tag = "1")]
+    pub group: ::prost::alloc::string::String,
+    /// Corresponds to the scope in the ADC composite ApplicationTemplate.
+    /// Defaults to TYPE_REGIONAL.
+    #[prost(message, optional, tag = "2")]
+    pub scope: ::core::option::Option<app_params::Scope>,
+}
+/// Nested message and enum types in `AppParams`.
+pub mod app_params {
+    /// Scope of an application.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Scope {
+        /// Required. Scope Type.
+        #[prost(enumeration = "scope::Type", tag = "1")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `Scope`.
+    pub mod scope {
+        /// Scope Type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unspecified type.
+            Unspecified = 0,
+            /// Regional type.
+            Regional = 1,
+            /// Global type.
+            Global = 2,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::Regional => "TYPE_REGIONAL",
+                    Self::Global => "TYPE_GLOBAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TYPE_REGIONAL" => Some(Self::Regional),
+                    "TYPE_GLOBAL" => Some(Self::Global),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// The request structure for the ListSaas method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3096,8 +3445,8 @@ pub struct Rollout {
     pub parent_rollout: ::prost::alloc::string::String,
     /// Optional. The strategy used for executing this Rollout.
     /// This strategy will override whatever strategy is specified in the
-    /// RolloutType. If not specified on creation, the
-    /// strategy from RolloutType will be used.
+    /// RolloutKind. If not specified on creation, the
+    /// strategy from RolloutKind will be used.
     ///
     /// There are two supported values strategies which are used to control
     ///
@@ -3111,11 +3460,11 @@ pub struct Rollout {
     /// Optional. CEL(<https://github.com/google/cel-spec>) formatted filter string
     /// against Unit. The filter will be applied to determine the eligible unit
     /// population. This filter can only reduce, but not expand the scope of the
-    /// rollout. If not provided, the unit_filter from the RolloutType will be
+    /// rollout. If not provided, the unit_filter from the RolloutKind will be
     /// used.
     #[prost(string, tag = "21")]
     pub unit_filter: ::prost::alloc::string::String,
-    /// Optional. Immutable. Name of the RolloutKind this rollout is stemming from
+    /// Required. Immutable. Name of the RolloutKind this rollout is stemming from
     /// and adhering to.
     #[prost(string, tag = "22")]
     pub rollout_kind: ::prost::alloc::string::String,
@@ -3130,6 +3479,15 @@ pub struct Rollout {
     /// state.
     #[prost(message, optional, tag = "25")]
     pub control: ::core::option::Option<RolloutControl>,
+    /// Optional. Output only. Output only snapshot of the effective unit filter at
+    /// Rollout start time. Contains a CEL(<https://github.com/google/cel-spec>)
+    /// expression consisting of a conjunction of Rollout.unit_filter and
+    /// RolloutKind.unit_filter. This field captures the filter applied by the
+    /// Rollout to determine the Unit population. If the associated RolloutKind's
+    /// unit_filter is modified after the rollout is started, it will not be
+    /// updated here.
+    #[prost(string, tag = "26")]
+    pub effective_unit_filter: ::prost::alloc::string::String,
     /// Optional. The labels on the resource, which can be used for categorization.
     /// similar to Kubernetes resource labels.
     #[prost(map = "string, string", tag = "10401")]
@@ -3168,6 +3526,10 @@ pub struct Rollout {
     /// Changes to a resource made by the service should refresh this value.
     #[prost(message, optional, tag = "10304")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was marked for deletion
+    /// (deletion is an asynchronous operation).
+    #[prost(message, optional, tag = "10305")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
@@ -3377,20 +3739,20 @@ pub mod rollout_kind {
 pub struct ErrorBudget {
     /// Optional. The maximum number of failed units allowed in a location without
     /// pausing the rollout.
-    #[prost(int32, tag = "1")]
-    pub allowed_count: i32,
+    #[prost(int32, optional, tag = "1")]
+    pub allowed_count: ::core::option::Option<i32>,
     /// Optional. The maximum percentage of units allowed to fail (0, 100\] within a
     /// location without pausing the rollout.
-    #[prost(int32, tag = "2")]
-    pub allowed_percentage: i32,
+    #[prost(int32, optional, tag = "2")]
+    pub allowed_percentage: ::core::option::Option<i32>,
 }
 /// RolloutStats contains information about the progress of a rollout.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutStats {
-    /// Output only. A breakdown of the progress of operations triggered by the
-    /// rollout. Provides a count of Operations by their state. This can be used to
-    /// determine the number of units which have been updated, or are scheduled to
-    /// be updated.
+    /// Optional. Output only. Unordered list. A breakdown of the progress of
+    /// operations triggered by the rollout. Provides a count of Operations by
+    /// their state. This can be used to determine the number of units which have
+    /// been updated, or are scheduled to be updated.
     ///
     /// There will be at most one entry per group.
     /// Possible values for operation groups are:
@@ -3403,6 +3765,10 @@ pub struct RolloutStats {
     /// * "CANCELLED"
     #[prost(message, repeated, tag = "2")]
     pub operations_by_state: ::prost::alloc::vec::Vec<Aggregate>,
+    /// Optional. Output only. Estimated number of units based. The estimation is
+    /// computed upon creation of the rollout.
+    #[prost(int64, optional, tag = "3")]
+    pub estimated_total_unit_count: ::core::option::Option<i64>,
 }
 /// RolloutControl provides a way to request a change to the execution of a
 /// Rollout by pausing or canceling it.

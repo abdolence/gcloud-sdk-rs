@@ -81,6 +81,13 @@ pub struct ListAttachmentsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
+/// Request for getting an attachment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAttachmentRequest {
+    /// Required. The name of the attachment to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// The response message for the ListAttachments endpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttachmentsResponse {
@@ -211,6 +218,63 @@ pub mod case_attachment_service_client {
                     GrpcMethod::new(
                         "google.cloud.support.v2.CaseAttachmentService",
                         "ListAttachments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve an attachment associated with a support case.
+        ///
+        /// EXAMPLES:
+        ///
+        /// cURL:
+        ///
+        /// ```text,shell
+        /// attachment="projects/some-project/cases/23598314/attachments/0684M00000P3h1fQAB"
+        /// curl \
+        ///  --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+        ///  "https://cloudsupport.googleapis.com/v2/$attachment"
+        /// ```
+        ///
+        /// Python:
+        ///
+        /// ```text,python
+        /// import googleapiclient.discovery
+        ///
+        /// api_version = "v2"
+        /// supportApiService = googleapiclient.discovery.build(
+        ///    serviceName="cloudsupport",
+        ///    version=api_version,
+        ///    discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+        /// )
+        /// request = (
+        ///    supportApiService.cases()
+        ///    .attachments()
+        ///    .get(name="projects/some-project/cases/43595344/attachments/0684M00000P3h1fQAB")
+        /// )
+        /// print(request.execute())
+        /// ```
+        pub async fn get_attachment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAttachmentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Attachment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.support.v2.CaseAttachmentService/GetAttachment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v2.CaseAttachmentService",
+                        "GetAttachment",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -1093,6 +1157,13 @@ pub struct CreateCommentRequest {
     #[prost(message, optional, tag = "2")]
     pub comment: ::core::option::Option<Comment>,
 }
+/// The request message for the GetComment endpoint.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetCommentRequest {
+    /// Required. The name of the comment to retrieve.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod comment_service_client {
     #![allow(
@@ -1240,6 +1311,62 @@ pub mod comment_service_client {
                     GrpcMethod::new(
                         "google.cloud.support.v2.CommentService",
                         "CreateComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve a comment.
+        ///
+        /// EXAMPLES:
+        ///
+        /// cURL:
+        ///
+        /// ```text,shell
+        /// comment="projects/some-project/cases/43595344/comments/234567890"
+        /// curl \
+        ///  --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+        ///  "https://cloudsupport.googleapis.com/v2/$comment"
+        /// ```
+        ///
+        /// Python:
+        ///
+        /// ```text,python
+        /// import googleapiclient.discovery
+        ///
+        /// api_version = "v2"
+        /// supportApiService = googleapiclient.discovery.build(
+        ///    serviceName="cloudsupport",
+        ///    version=api_version,
+        ///    discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+        /// )
+        ///
+        /// request = supportApiService.cases().comments().get(
+        ///    name="projects/some-project/cases/43595344/comments/234567890",
+        /// )
+        /// print(request.execute())
+        /// ```
+        pub async fn get_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCommentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Comment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.support.v2.CommentService/GetComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v2.CommentService",
+                        "GetComment",
                     ),
                 );
             self.inner.unary(req, path, codec).await

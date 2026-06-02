@@ -3295,6 +3295,10 @@ pub struct Message {
     /// `false`.
     #[prost(bool, tag = "25")]
     pub thread_reply: bool,
+    /// Output only. Whether this is a silent message. Silent messages are messages
+    /// where Chat suppresses push notifications for recipients.
+    #[prost(bool, tag = "46")]
+    pub silent: bool,
     /// Optional. A custom ID for the message. You can use field to identify a
     /// message, or to get, delete, or update a message. To set a custom ID,
     /// specify the
@@ -3773,6 +3777,13 @@ pub struct CreateMessageRequest {
     /// message](<https://developers.google.com/workspace/chat/create-messages#name_a_created_message>).
     #[prost(string, tag = "9")]
     pub message_id: ::prost::alloc::string::String,
+    /// Optional. Controls the notification behavior when the message is posted.
+    /// To learn more, see [Force notifications or send silent
+    /// messages](<https://developer.google.com/workspace/chat/create-messages#force-notify-silent>).
+    #[prost(message, optional, tag = "10")]
+    pub create_message_notification_options: ::core::option::Option<
+        CreateMessageNotificationOptions,
+    >,
 }
 /// Nested message and enum types in `CreateMessageRequest`.
 pub mod create_message_request {
@@ -3829,6 +3840,75 @@ pub mod create_message_request {
                     Some(Self::ReplyMessageFallbackToNewThread)
                 }
                 "REPLY_MESSAGE_OR_FAIL" => Some(Self::ReplyMessageOrFail),
+                _ => None,
+            }
+        }
+    }
+}
+/// Options for the notification behavior when the message is posted.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateMessageNotificationOptions {
+    /// The notification type for the message.
+    #[prost(
+        enumeration = "create_message_notification_options::NotificationType",
+        tag = "1"
+    )]
+    pub notification_type: i32,
+}
+/// Nested message and enum types in `CreateMessageNotificationOptions`.
+pub mod create_message_notification_options {
+    /// The notification types options for the message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NotificationType {
+        /// Default behavior. Notification behavior is similar to when the human user
+        /// sends the message using the Chat UI: no notification is sent to the
+        /// human sender.
+        None = 0,
+        /// Force notify recipients. This bypasses users' space notification settings
+        /// and [Chat Do Not Disturb
+        /// settings](<https://support.google.com/chat/answer/9093489>). This option
+        /// does not bypass device-level Do Not Disturb settings.
+        ///
+        /// Requires \[app authentication\]
+        /// (<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
+        ForceNotify = 2,
+        /// Silence the notification as if the recipients have [Chat Do Not
+        /// Disturb](<https://support.google.com/chat/answer/9093489>) enabled or
+        /// have muted the space.
+        ///
+        /// Requires \[app authentication\]
+        /// (<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
+        Silent = 3,
+    }
+    impl NotificationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::None => "NOTIFICATION_TYPE_NONE",
+                Self::ForceNotify => "NOTIFICATION_TYPE_FORCE_NOTIFY",
+                Self::Silent => "NOTIFICATION_TYPE_SILENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NOTIFICATION_TYPE_NONE" => Some(Self::None),
+                "NOTIFICATION_TYPE_FORCE_NOTIFY" => Some(Self::ForceNotify),
+                "NOTIFICATION_TYPE_SILENT" => Some(Self::Silent),
                 _ => None,
             }
         }

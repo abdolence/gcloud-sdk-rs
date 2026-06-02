@@ -435,6 +435,13 @@ pub struct CaPool {
     /// in this \[CaPool\]\[google.cloud.security.privateca.v1.CaPool\].
     #[prost(message, optional, tag = "4")]
     pub publishing_options: ::core::option::Option<ca_pool::PublishingOptions>,
+    /// Optional. When
+    /// \[EncryptionSpec\]\[google.cloud.security.privateca.v1.EncryptionSpec\] is
+    /// provided, the \[Subject\]\[google.cloud.security.privateca.v1.Subject\],
+    /// \[SubjectAltNames\]\[google.cloud.security.privateca.v1.SubjectAltNames\], and
+    /// the PEM-encoded certificate fields will be encrypted at rest.
+    #[prost(message, optional, tag = "8")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
@@ -540,15 +547,31 @@ pub mod ca_pool {
         /// the key types listed here. Otherwise, any key may be used.
         #[prost(message, repeated, tag = "1")]
         pub allowed_key_types: ::prost::alloc::vec::Vec<issuance_policy::AllowedKeyType>,
-        /// Optional. The duration to backdate all certificates issued from this
-        /// \[CaPool\]\[google.cloud.security.privateca.v1.CaPool\]. If not set, the
-        /// certificates will be issued with a not_before_time of the issuance time
-        /// (i.e. the current time). If set, the certificates will be issued with a
-        /// not_before_time of the issuance time minus the backdate_duration. The
-        /// not_after_time will be adjusted to preserve the requested lifetime. The
-        /// backdate_duration must be less than or equal to 48 hours.
+        /// Optional. If set, all certificates issued from this
+        /// \[CaPool\]\[google.cloud.security.privateca.v1.CaPool\] will be backdated by
+        /// this duration. The 'not_before_time' will be the issuance time minus this
+        /// \[backdate_duration\]\[google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration\],
+        /// and the 'not_after_time' will be adjusted to preserve the requested
+        /// lifetime. The maximum duration that a certificate can be backdated with
+        /// these options is 48 hours in the past.
+        /// This option cannot be set if
+        /// \[allow_requester_specified_not_before_time\]\[google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time\]
+        /// is set.
         #[prost(message, optional, tag = "7")]
         pub backdate_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. If set to true, allows requesters to specify the
+        /// \[requested_not_before_time\]\[google.cloud.security.privateca.v1.Certificate.requested_not_before_time\]
+        /// field when creating a
+        /// \[Certificate\]\[google.cloud.security.privateca.v1.Certificate\].
+        /// Certificates requested with this option enabled will have a
+        /// 'not_before_time' equal to the value specified in the request. The
+        /// 'not_after_time' will be adjusted to preserve the requested lifetime. The
+        /// maximum time that a certificate can be backdated with these options is 48
+        /// hours in the past. This option cannot be set if
+        /// \[backdate_duration\]\[google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration\]
+        /// is set.
+        #[prost(bool, tag = "8")]
+        pub allow_requester_specified_not_before_time: bool,
         /// Optional. The maximum lifetime allowed for issued
         /// \[Certificates\]\[google.cloud.security.privateca.v1.Certificate\]. Note that
         /// if the issuing
@@ -781,6 +804,14 @@ pub mod ca_pool {
         }
     }
 }
+/// The configuration used for encrypting data at rest.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// The resource name for a Cloud KMS key in the format
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, tag = "1")]
+    pub cloud_kms_key: ::prost::alloc::string::String,
+}
 /// A
 /// \[CertificateRevocationList\]\[google.cloud.security.privateca.v1.CertificateRevocationList\]
 /// corresponds to a signed X.509 certificate Revocation List (CRL). A CRL
@@ -973,6 +1004,22 @@ pub struct Certificate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The requested
+    /// \[not_before_time\]\[google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.not_before_time\]
+    /// of this \[Certificate\]\[google.cloud.security.privateca.v1.Certificate\]. This
+    /// field may only be set if the
+    /// \[CaPool.IssuancePolicy.allow_requester_specified_not_before_time\]\[google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time\]
+    /// field is set to true for the issuing
+    /// \[CaPool\]\[google.cloud.security.privateca.v1.CaPool\].
+    ///
+    /// If this field is specified, the certificate will be issued with this
+    /// 'not_before_time'. If this is not specified, the 'not_before_time' will be
+    /// set to the issuance time or issuance time minus
+    /// \[backdate_duration\]\[google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration\]
+    /// depending on the \[CaPool\]\[google.cloud.security.privateca.v1.CaPool\]
+    /// configuration.
+    #[prost(message, optional, tag = "15")]
+    pub requested_not_before_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The config used to create a signed X.509 certificate.
     #[prost(oneof = "certificate::CertificateConfig", tags = "2, 3")]
     pub certificate_config: ::core::option::Option<certificate::CertificateConfig>,
@@ -2086,9 +2133,18 @@ pub struct GetCertificateRequest {
 /// \[CertificateAuthorityService.ListCertificates\]\[google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCertificatesRequest {
-    /// Required. The resource name of the location associated with the
+    /// Required. The resource name of the parent associated with the
     /// \[Certificates\]\[google.cloud.security.privateca.v1.Certificate\], in the
-    /// format `projects/*/locations/*/caPools/*`.
+    /// format `projects/*/locations/*/caPools/*`. The parent resource name can be
+    /// in one of two forms:
+    ///
+    /// 1. **Specific CA Pool:** To list certificates within a single CA Pool:
+    ///    `projects/*/locations/*/caPools/*`
+    ///
+    /// 1. **All CA Pools in a Location:** To list certificates across *all* CA
+    ///    Pools in a given project and location, use the wildcard character (`-`)
+    ///    in place of the CA Pool ID.
+    ///    Example: `projects/*/locations/*/caPools/-`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of

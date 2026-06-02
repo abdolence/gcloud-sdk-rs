@@ -1346,8 +1346,6 @@ pub struct HistoryHour {
 pub enum MapType {
     /// The default value. The server ignores it if it is passed as a parameter.
     Unspecified = 0,
-    /// Global precipitation current map.
-    GlobalPrecipitationCurrent = 1,
     /// US precipitation current map.
     UsPrecipitationCurrent = 2,
     /// EU precipitation current map.
@@ -1361,7 +1359,6 @@ impl MapType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "MAP_TYPE_UNSPECIFIED",
-            Self::GlobalPrecipitationCurrent => "GLOBAL_PRECIPITATION_CURRENT",
             Self::UsPrecipitationCurrent => "US_PRECIPITATION_CURRENT",
             Self::EuPrecipitationCurrent => "EU_PRECIPITATION_CURRENT",
         }
@@ -1370,7 +1367,6 @@ impl MapType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "MAP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "GLOBAL_PRECIPITATION_CURRENT" => Some(Self::GlobalPrecipitationCurrent),
             "US_PRECIPITATION_CURRENT" => Some(Self::UsPrecipitationCurrent),
             "EU_PRECIPITATION_CURRENT" => Some(Self::EuPrecipitationCurrent),
             _ => None,
@@ -1685,8 +1681,6 @@ pub enum Publisher {
     BrazilCenad = 7,
     /// Meteorological Agency in Brazil
     BrazilInmet = 8,
-    /// United Kingdom
-    UkEnvAgency = 9,
     /// Meteoalarm / EUMETNET
     /// Bulgaria
     MeteoAlarmBg = 10,
@@ -1797,7 +1791,6 @@ impl Publisher {
             Self::MeteoAlarmBs => "METEO_ALARM_BS",
             Self::BrazilCenad => "BRAZIL_CENAD",
             Self::BrazilInmet => "BRAZIL_INMET",
-            Self::UkEnvAgency => "UK_ENV_AGENCY",
             Self::MeteoAlarmBg => "METEO_ALARM_BG",
             Self::MeteoAlarmCr => "METEO_ALARM_CR",
             Self::MeteoAlarmCy => "METEO_ALARM_CY",
@@ -1853,7 +1846,6 @@ impl Publisher {
             "METEO_ALARM_BS" => Some(Self::MeteoAlarmBs),
             "BRAZIL_CENAD" => Some(Self::BrazilCenad),
             "BRAZIL_INMET" => Some(Self::BrazilInmet),
-            "UK_ENV_AGENCY" => Some(Self::UkEnvAgency),
             "METEO_ALARM_BG" => Some(Self::MeteoAlarmBg),
             "METEO_ALARM_CR" => Some(Self::MeteoAlarmCr),
             "METEO_ALARM_CY" => Some(Self::MeteoAlarmCy),
@@ -2503,7 +2495,6 @@ pub struct LookupMapTileRequest {
     ///
     /// ```text
     /// Allowed values:
-    /// - GLOBAL_PRECIPITATION_CURRENT - Global precipitation current map.
     /// - US_PRECIPITATION_CURRENT - US precipitation current map.
     /// - EU_PRECIPITATION_CURRENT - EU precipitation current map.
     /// ```

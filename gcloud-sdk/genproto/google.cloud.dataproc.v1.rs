@@ -583,13 +583,13 @@ pub struct RuntimeConfig {
     /// Optional. Autotuning configuration of the workload.
     #[prost(message, optional, tag = "6")]
     pub autotuning_config: ::core::option::Option<AutotuningConfig>,
-    /// Optional. Cohort identifier. Identifies families of the workloads having
-    /// the same shape, e.g. daily ETL jobs.
+    /// Optional. Cohort identifier. Identifies families of the workloads that have
+    /// the same shape, for example, daily ETL jobs.
     #[prost(string, tag = "7")]
     pub cohort: ::prost::alloc::string::String,
 }
 /// Environment configuration for a workload.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentConfig {
     /// Optional. Execution configuration for a workload.
     #[prost(message, optional, tag = "1")]
@@ -599,7 +599,7 @@ pub struct EnvironmentConfig {
     pub peripherals_config: ::core::option::Option<PeripheralsConfig>,
 }
 /// Execution configuration for a workload.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionConfig {
     /// Optional. Service account that used to execute workload.
     #[prost(string, tag = "2")]
@@ -654,6 +654,17 @@ pub struct ExecutionConfig {
     /// resources on the project(s).
     #[prost(message, optional, tag = "11")]
     pub authentication_config: ::core::option::Option<AuthenticationConfig>,
+    /// Optional. Associates Resource Manager tags with the workload nodes.
+    /// There is a max limit of 30 tags.
+    /// Keys and values can be either in numeric format, such as
+    /// `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}`, or in namespaced
+    /// format, such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// `{tag_value_short_name}`.
+    #[prost(map = "string, string", tag = "12")]
+    pub resource_manager_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Network configuration for workload execution.
     #[prost(oneof = "execution_config::Network", tags = "4, 5")]
     pub network: ::core::option::Option<execution_config::Network>,
@@ -744,14 +755,17 @@ pub struct UsageMetrics {
     /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
     #[prost(int64, tag = "2")]
     pub shuffle_storage_gb_seconds: i64,
-    /// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
-    /// \[Dataproc Serverless pricing\]
+    /// Optional. \[DEPRECATED\] Accelerator usage in (`milliAccelerator` x
+    /// `seconds`) (see \[Dataproc Serverless pricing\]
     /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
     #[prost(int64, tag = "3")]
     pub milli_accelerator_seconds: i64,
-    /// Optional. Accelerator type being used, if any
+    /// Optional. \[DEPRECATED\] Accelerator type being used, if any
     #[prost(string, tag = "4")]
     pub accelerator_type: ::prost::alloc::string::String,
+    /// Optional. The timestamp of the usage metrics.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The usage snapshot represents the resources consumed by a workload at a
 /// specified time.
@@ -1021,7 +1035,7 @@ pub mod gke_node_pool_config {
         /// (<https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek>)
         /// used to encrypt the boot disk attached to each node in the node pool.
         /// Specify the key using the following format:
-        /// <code>projects/<var>KEY_PROJECT_ID</var>/locations/<var>LOCATION</var>/keyRings/<var>RING_NAME</var>/cryptoKeys/<var>KEY_NAME</var></code>.
+        /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`
         #[prost(string, tag = "23")]
         pub boot_disk_kms_key: ::prost::alloc::string::String,
         /// Optional. Whether the nodes are created as \[Spot VM instances\]
@@ -1208,7 +1222,8 @@ pub struct RepositoryConfig {
 /// Configuration for PyPi repository
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PyPiRepositoryConfig {
-    /// Optional. PyPi repository address
+    /// Optional. The PyPi repository address. **Note: This field is not available
+    /// for batch workloads.**
     #[prost(string, tag = "1")]
     pub pypi_repository: ::prost::alloc::string::String,
 }
@@ -1242,8 +1257,6 @@ pub enum Component {
     Iceberg = 19,
     /// The Jupyter Notebook.
     Jupyter = 1,
-    /// The Jupyter Kernel Gateway.
-    JupyterKernelGateway = 22,
     /// The Pig component.
     Pig = 21,
     /// The Presto query engine.
@@ -1258,6 +1271,8 @@ pub enum Component {
     Zeppelin = 4,
     /// The Zookeeper service.
     Zookeeper = 8,
+    /// The Jupyter Kernel Gateway.
+    JupyterKernelGateway = 22,
 }
 impl Component {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1277,7 +1292,6 @@ impl Component {
             Self::Hudi => "HUDI",
             Self::Iceberg => "ICEBERG",
             Self::Jupyter => "JUPYTER",
-            Self::JupyterKernelGateway => "JUPYTER_KERNEL_GATEWAY",
             Self::Pig => "PIG",
             Self::Presto => "PRESTO",
             Self::Trino => "TRINO",
@@ -1285,6 +1299,7 @@ impl Component {
             Self::Solr => "SOLR",
             Self::Zeppelin => "ZEPPELIN",
             Self::Zookeeper => "ZOOKEEPER",
+            Self::JupyterKernelGateway => "JUPYTER_KERNEL_GATEWAY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1301,7 +1316,6 @@ impl Component {
             "HUDI" => Some(Self::Hudi),
             "ICEBERG" => Some(Self::Iceberg),
             "JUPYTER" => Some(Self::Jupyter),
-            "JUPYTER_KERNEL_GATEWAY" => Some(Self::JupyterKernelGateway),
             "PIG" => Some(Self::Pig),
             "PRESTO" => Some(Self::Presto),
             "TRINO" => Some(Self::Trino),
@@ -1309,6 +1323,7 @@ impl Component {
             "SOLR" => Some(Self::Solr),
             "ZEPPELIN" => Some(Self::Zeppelin),
             "ZOOKEEPER" => Some(Self::Zookeeper),
+            "JUPYTER_KERNEL_GATEWAY" => Some(Self::JupyterKernelGateway),
             _ => None,
         }
     }
@@ -1364,10 +1379,9 @@ pub struct CreateBatchRequest {
     pub batch_id: ::prost::alloc::string::String,
     /// Optional. A unique ID used to identify the request. If the service
     /// receives two
-    /// [CreateBatchRequest](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateBatchRequest>)s
-    /// with the same request_id, the second request is ignored and the
-    /// Operation that corresponds to the first Batch created and stored
-    /// in the backend is returned.
+    /// `CreateBatchRequests` with the same `request_id`, the second request is
+    /// ignored and the operation that corresponds to the first Batch created and
+    /// stored in the backend is returned.
     ///
     /// Recommendation: Set this value to a
     /// [UUID](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -1406,10 +1420,13 @@ pub struct ListBatchesRequest {
     /// A filter is a logical expression constraining the values of various fields
     /// in each batch resource. Filters are case sensitive, and may contain
     /// multiple clauses combined with logical operators (AND/OR).
-    /// Supported fields are `batch_id`, `batch_uuid`, `state`, and `create_time`.
+    /// Supported fields are `batch_id`, `batch_uuid`, `state`, `create_time`, and
+    /// `labels`.
     ///
     /// e.g. `state = RUNNING and create_time < "2023-01-01T00:00:00Z"`
-    /// filters for batches in state RUNNING that were created before 2023-01-01
+    /// filters for batches in state RUNNING that were created before 2023-01-01.
+    /// `state = RUNNING and labels.environment=production` filters for batches in
+    /// state in a RUNNING state that have a production environment label.
     ///
     /// See <https://google.aip.dev/assets/misc/ebnf-filtering.txt> for a detailed
     /// description of the filter syntax and a list of supported comparisons.
@@ -1427,7 +1444,7 @@ pub struct ListBatchesRequest {
 /// A list of batch workloads.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchesResponse {
-    /// The batches from the specified collection.
+    /// Output only. The batches from the specified collection.
     #[prost(message, repeated, tag = "1")]
     pub batches: ::prost::alloc::vec::Vec<Batch>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -1503,7 +1520,7 @@ pub struct Batch {
     #[prost(message, repeated, tag = "17")]
     pub state_history: ::prost::alloc::vec::Vec<batch::StateHistory>,
     /// The application/framework-specific portion of the batch configuration.
-    #[prost(oneof = "batch::BatchConfig", tags = "4, 5, 6, 7")]
+    #[prost(oneof = "batch::BatchConfig", tags = "4, 5, 6, 7, 19")]
     pub batch_config: ::core::option::Option<batch::BatchConfig>,
 }
 /// Nested message and enum types in `Batch`.
@@ -1595,6 +1612,9 @@ pub mod batch {
         /// Optional. SparkSql batch config.
         #[prost(message, tag = "7")]
         SparkSqlBatch(super::SparkSqlBatch),
+        /// Optional. PySpark notebook batch config.
+        #[prost(message, tag = "19")]
+        PysparkNotebookBatch(super::PySparkNotebookBatch),
     }
 }
 /// A configuration for running an
@@ -1721,6 +1741,34 @@ pub struct SparkSqlBatch {
     /// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
     #[prost(string, repeated, tag = "3")]
     pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A configuration for running a PySpark Notebook batch workload.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PySparkNotebookBatch {
+    /// Required. The HCFS URI of the notebook file to execute.
+    #[prost(string, tag = "1")]
+    pub notebook_file_uri: ::prost::alloc::string::String,
+    /// Optional. The parameters to pass to the notebook.
+    #[prost(map = "string, string", tag = "2")]
+    pub params: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. HCFS URIs of Python files to pass to the PySpark framework.
+    #[prost(string, repeated, tag = "3")]
+    pub python_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
+    #[prost(string, repeated, tag = "4")]
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor
+    #[prost(string, repeated, tag = "5")]
+    pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
+    /// `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
+    #[prost(string, repeated, tag = "6")]
+    pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod batch_controller_client {
@@ -1901,8 +1949,10 @@ pub mod batch_controller_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes the batch workload resource. If the batch is not in terminal state,
-        /// the delete fails and the response returns `FAILED_PRECONDITION`.
+        /// Deletes the batch workload resource. If the batch is not in a
+        /// `CANCELLED`, `SUCCEEDED` or `FAILED`
+        /// \[`State`\]\[google.cloud.dataproc.v1.Batch.State\], the delete operation fails
+        /// and the response returns `FAILED_PRECONDITION`.
         pub async fn delete_batch(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBatchRequest>,
@@ -5491,6 +5541,14 @@ pub struct YarnApplication {
     /// possibly, access.
     #[prost(string, tag = "4")]
     pub tracking_url: ::prost::alloc::string::String,
+    /// Optional. The cumulative CPU time consumed by the application for a job,
+    /// measured in vcore-seconds.
+    #[prost(int64, tag = "5")]
+    pub vcore_seconds: i64,
+    /// Optional. The cumulative memory usage of the application for a job,
+    /// measured in mb-seconds.
+    #[prost(int64, tag = "6")]
+    pub memory_mb_seconds: i64,
 }
 /// Nested message and enum types in `YarnApplication`.
 pub mod yarn_application {
@@ -5799,15 +5857,18 @@ pub struct ListJobsRequest {
     ///
     /// \[field = value\] AND \[field \[= value\]\] ...
     ///
-    /// where **field** is `status.state` or `labels.\[KEY\]`, and `\[KEY\]` is a label
-    /// key. **value** can be `*` to match all values.
+    /// where **field** is `status.state` or `insertTime`, or `labels.\[KEY\]`, and
+    /// `\[KEY\]` is a label key. **value** can be `*` to match all values.
     /// `status.state` can be either `ACTIVE` or `NON_ACTIVE`.
-    /// Only the logical `AND` operator is supported; space-separated items are
-    /// treated as having an implicit `AND` operator.
+    /// Allows `insertTime` to be a timestamp in RFC 3339 format in double quotes,
+    /// such as `2025-01-01T00:00:00Z`. Only the logical `AND` operator is
+    /// supported; space-separated items are treated as having an implicit `AND`
+    /// operator.
     ///
     /// Example filter:
     ///
-    /// status.state = ACTIVE AND labels.env = staging AND labels.starred = *
+    /// status.state = ACTIVE AND labels.env = staging AND labels.starred = * AND
+    /// insertTime \<= "2025-01-01T00:00:00Z"
     #[prost(string, tag = "7")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -6609,7 +6670,7 @@ pub struct DeleteSessionRequest {
 /// A representation of a session.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Session {
-    /// Required. The resource name of the session.
+    /// Identifier. The resource name of the session.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. A session UUID (Unique Universal Identifier). The service
@@ -6754,7 +6815,7 @@ pub mod session {
         /// Optional. Jupyter session config.
         #[prost(message, tag = "4")]
         JupyterSession(super::JupyterConfig),
-        /// Optional. Spark Connect session config.
+        /// Optional. Spark connect session config.
         #[prost(message, tag = "17")]
         SparkConnectSession(super::SparkConnectConfig),
     }
@@ -6815,7 +6876,7 @@ pub mod jupyter_config {
         }
     }
 }
-/// Spark Connect configuration for an interactive session.
+/// Spark connect configuration for an interactive session.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SparkConnectConfig {}
 /// Generated client implementations.
@@ -7126,7 +7187,7 @@ pub struct DeleteSessionTemplateRequest {
 /// A representation of a session template.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionTemplate {
-    /// Required. The resource name of the session template.
+    /// Required. Identifier. The resource name of the session template.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Brief description of the template.
@@ -7175,7 +7236,7 @@ pub mod session_template {
         /// Optional. Jupyter session config.
         #[prost(message, tag = "3")]
         JupyterSession(super::JupyterConfig),
-        /// Optional. Spark Connect session config.
+        /// Optional. Spark connect session config.
         #[prost(message, tag = "11")]
         SparkConnectSession(super::SparkConnectConfig),
     }

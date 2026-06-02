@@ -3072,6 +3072,123 @@ pub struct AggregatedListGlobalOperationsRequest {
     #[prost(int64, optional, tag = "316757497")]
     pub service_project_number: ::core::option::Option<i64>,
 }
+/// A request message for GlobalVmExtensionPolicies.AggregatedList. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AggregatedListGlobalVmExtensionPoliciesRequest {
+    /// A filter expression that filters resources listed in the response. Most
+    /// Compute resources support two types of filter expressions:
+    /// expressions that support regular expressions and expressions that follow
+    /// API improvement proposal AIP-160.
+    /// These two types of filter expressions cannot be mixed in one request.
+    ///
+    /// If you want to use AIP-160, your expression must specify the field name, an
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The operator
+    /// must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`.
+    ///
+    /// For example, if you are filtering Compute Engine instances, you can
+    /// exclude instances named `example-instance` by specifying
+    /// `name != example-instance`.
+    ///
+    /// The `:*` comparison can be used to test whether a key has been defined.
+    /// For example, to find all objects with `owner` label use:
+    ///
+    /// ```text,
+    /// labels.owner:*
+    /// ```
+    ///
+    /// You can also filter nested fields. For example, you could specify
+    /// `scheduling.automaticRestart = false` to include instances only
+    /// if they are not scheduled for automatic restarts. You can use filtering
+    /// on nested fields to filter based onresource labels.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    ///
+    /// ```text,
+    /// (scheduling.automaticRestart = true)
+    /// (cpuPlatform = "Intel Skylake")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    ///
+    /// ```text,
+    /// (cpuPlatform = "Intel Skylake") OR
+    /// (cpuPlatform = "Intel Broadwell") AND
+    /// (scheduling.automaticRestart = true)
+    /// ```
+    ///
+    /// If you want to use a regular expression, use the `eq` (equal) or `ne`
+    /// (not equal) operator against a single un-parenthesized expression with or
+    /// without quotes or against multiple parenthesized expressions. Examples:
+    ///
+    /// `fieldname eq unquoted literal`
+    /// `fieldname eq 'single quoted literal'`
+    /// `fieldname eq "double quoted literal"`
+    /// `(fieldname1 eq literal) (fieldname2 ne "literal")`
+    ///
+    /// The literal value is interpreted as a regular expression using GoogleRE2 library syntax.
+    /// The literal value must match the entire field.
+    ///
+    /// For example, to filter for instances that do not end with name "instance",
+    /// you would use `name ne .*instance`.
+    ///
+    /// You cannot combine constraints on multiple fields using regular
+    /// expressions.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// Indicates whether every visible scope for each scope type (zone, region,
+    /// global) should be included in the response. For new resource types added
+    /// after this field, the flag has no effect as new resource types will always
+    /// include every visible scope for each scope type in response. For resource
+    /// types which predate this field, if this flag is omitted or false, only
+    /// scopes of the scope types where the resource type is expected to be found
+    /// will be included.
+    #[prost(bool, optional, tag = "391327988")]
+    pub include_all_scopes: ::core::option::Option<bool>,
+    /// The maximum number of results per page that should be returned.
+    /// If the number of available results is larger than `maxResults`,
+    /// Compute Engine returns a `nextPageToken` that can be used to get
+    /// the next page of results in subsequent list requests. Acceptable values are
+    /// `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results
+    /// are returned in alphanumerical order based on the resource name.
+    ///
+    /// You can also sort results in descending order based on the creation
+    /// timestamp using `orderBy="creationTimestamp desc"`. This sorts
+    /// results based on the `creationTimestamp` field in
+    /// reverse chronological order (newest result first). Use this to sort
+    /// resources like operations so that the newest operation is returned first.
+    ///
+    /// Currently, only sorting by `name` or
+    /// `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the
+    /// `nextPageToken` returned by a previous list request to get
+    /// the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the project scoping this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case
+    /// of failure. The default value is false.
+    ///
+    /// For example, when partial success behavior is enabled, aggregatedList for a
+    /// single zone scope either returns all resources in the zone or no resources,
+    /// with an error code.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+    /// The Shared VPC service project id or service project number for which
+    /// aggregated list request is invoked for subnetworks list-usable api.
+    #[prost(int64, optional, tag = "316757497")]
+    pub service_project_number: ::core::option::Option<i64>,
+}
 /// A request message for HealthChecks.AggregatedList. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListHealthChecksRequest {
@@ -9192,8 +9309,8 @@ pub struct AttachedDiskInitializeParams {
     /// Input only. Resource manager tags to be bound to the disk. Tag keys and values
     /// have the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT & PATCH) when
     /// empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -10126,6 +10243,16 @@ pub struct AutoscalingPolicy {
         ::prost::alloc::string::String,
         AutoscalingPolicyScalingSchedule,
     >,
+    /// The number of seconds that autoscaler waits for load stabilization before
+    /// making scale-in decisions. This is referred to as the
+    /// [stabilization period](/compute/docs/autoscaler#stabilization_period).
+    /// This might appear as a delay in scaling in but it is an important mechanism
+    /// for your application to not have fluctuating size due to short term load
+    /// fluctuations.
+    ///
+    /// The default stabilization period is 600 seconds.
+    #[prost(int32, optional, tag = "420200243")]
+    pub stabilization_period_sec: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `AutoscalingPolicy`.
 pub mod autoscaling_policy {
@@ -15395,6 +15522,67 @@ pub struct CancelRegionInstanceGroupManagerResizeRequestRequest {
     #[prost(string, tag = "216941060")]
     pub resize_request: ::prost::alloc::string::String,
 }
+/// A request message for Networks.CancelRequestRemovePeering. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelRequestRemovePeeringNetworkRequest {
+    /// Name of the network resource to remove peering from.
+    #[prost(string, tag = "232872494")]
+    pub network: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "177326909")]
+    pub networks_cancel_request_remove_peering_request_resource: ::core::option::Option<
+        NetworksCancelRequestRemovePeeringRequest,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for Rollouts.Cancel. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelRolloutRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. If true, then the ongoing rollout must be rolled back. Else, just cancel
+    /// the rollout without taking any further actions. Note that products must
+    /// support at least one of these options, however, it does not need to support
+    /// both.
+    #[prost(bool, optional, tag = "277151460")]
+    pub rollback: ::core::option::Option<bool>,
+    /// Name of the Rollout resource to cancel.
+    #[prost(string, tag = "303366577")]
+    pub rollout: ::prost::alloc::string::String,
+}
 /// Settings controlling the volume of requests, connections and retries to this
 /// backend service.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -15655,7 +15843,7 @@ pub struct Commitment {
     /// resource types.
     ///
     /// The type must be one of the following:ACCELERATOR_OPTIMIZED, ACCELERATOR_OPTIMIZED_A3,ACCELERATOR_OPTIMIZED_A3_MEGA,COMPUTE_OPTIMIZED, COMPUTE_OPTIMIZED_C2D,
-    /// COMPUTE_OPTIMIZED_C3, COMPUTE_OPTIMIZED_C3D,COMPUTE_OPTIMIZED_H3, GENERAL_PURPOSE,GENERAL_PURPOSE_C4, GENERAL_PURPOSE_E2,GENERAL_PURPOSE_N2, GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4, GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED, GRAPHICS_OPTIMIZED_G4,MEMORY_OPTIMIZED, MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
+    /// COMPUTE_OPTIMIZED_C3, COMPUTE_OPTIMIZED_C3D,COMPUTE_OPTIMIZED_H3, GENERAL_PURPOSE,GENERAL_PURPOSE_C4, GENERAL_PURPOSE_E2,GENERAL_PURPOSE_N2, GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4, GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED, GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED, MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
     /// example, type MEMORY_OPTIMIZED specifies a commitment that
     /// applies only to eligible resources of memory optimized M1 and M2 machine
     /// series. Type GENERAL_PURPOSE specifies a commitment that
@@ -15826,7 +16014,7 @@ pub mod commitment {
     /// resource types.
     ///
     /// The type must be one of the following:ACCELERATOR_OPTIMIZED, ACCELERATOR_OPTIMIZED_A3,ACCELERATOR_OPTIMIZED_A3_MEGA,COMPUTE_OPTIMIZED, COMPUTE_OPTIMIZED_C2D,
-    /// COMPUTE_OPTIMIZED_C3, COMPUTE_OPTIMIZED_C3D,COMPUTE_OPTIMIZED_H3, GENERAL_PURPOSE,GENERAL_PURPOSE_C4, GENERAL_PURPOSE_E2,GENERAL_PURPOSE_N2, GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4, GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED, GRAPHICS_OPTIMIZED_G4,MEMORY_OPTIMIZED, MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
+    /// COMPUTE_OPTIMIZED_C3, COMPUTE_OPTIMIZED_C3D,COMPUTE_OPTIMIZED_H3, GENERAL_PURPOSE,GENERAL_PURPOSE_C4, GENERAL_PURPOSE_E2,GENERAL_PURPOSE_N2, GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4, GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED, GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED, MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
     /// example, type MEMORY_OPTIMIZED specifies a commitment that
     /// applies only to eligible resources of memory optimized M1 and M2 machine
     /// series. Type GENERAL_PURPOSE specifies a commitment that
@@ -15870,6 +16058,7 @@ pub mod commitment {
         GeneralPurposeT2d = 232477166,
         GraphicsOptimized = 68500563,
         GraphicsOptimizedG4 = 54029369,
+        GraphicsOptimizedG4Vgpu = 298988732,
         MemoryOptimized = 281753417,
         MemoryOptimizedM3 = 276301372,
         MemoryOptimizedM4 = 276301373,
@@ -15927,6 +16116,7 @@ pub mod commitment {
                 Self::GeneralPurposeT2d => "GENERAL_PURPOSE_T2D",
                 Self::GraphicsOptimized => "GRAPHICS_OPTIMIZED",
                 Self::GraphicsOptimizedG4 => "GRAPHICS_OPTIMIZED_G4",
+                Self::GraphicsOptimizedG4Vgpu => "GRAPHICS_OPTIMIZED_G4_VGPU",
                 Self::MemoryOptimized => "MEMORY_OPTIMIZED",
                 Self::MemoryOptimizedM3 => "MEMORY_OPTIMIZED_M3",
                 Self::MemoryOptimizedM4 => "MEMORY_OPTIMIZED_M4",
@@ -15974,6 +16164,7 @@ pub mod commitment {
                 "GENERAL_PURPOSE_T2D" => Some(Self::GeneralPurposeT2d),
                 "GRAPHICS_OPTIMIZED" => Some(Self::GraphicsOptimized),
                 "GRAPHICS_OPTIMIZED_G4" => Some(Self::GraphicsOptimizedG4),
+                "GRAPHICS_OPTIMIZED_G4_VGPU" => Some(Self::GraphicsOptimizedG4Vgpu),
                 "MEMORY_OPTIMIZED" => Some(Self::MemoryOptimized),
                 "MEMORY_OPTIMIZED_M3" => Some(Self::MemoryOptimizedM3),
                 "MEMORY_OPTIMIZED_M4" => Some(Self::MemoryOptimizedM4),
@@ -17392,6 +17583,36 @@ pub struct DeleteGlobalPublicDelegatedPrefixeRequest {
     /// Name of the PublicDelegatedPrefix resource to delete.
     #[prost(string, tag = "204238440")]
     pub public_delegated_prefix: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for GlobalVmExtensionPolicies.Delete. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGlobalVmExtensionPolicyRequest {
+    /// Name of the global VM extension policy to purge scoped resources for.
+    #[prost(string, tag = "8334110")]
+    pub global_vm_extension_policy: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "147209176")]
+    pub global_vm_extension_policy_rollout_operation_rollout_input_resource: ::core::option::Option<
+        GlobalVmExtensionPolicyRolloutOperationRolloutInput,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so
     /// that if you must retry your request, the server will know to ignore the
     /// request if it has already been completed.
@@ -19054,6 +19275,56 @@ pub struct DeleteResourcePolicyRequest {
     /// Name of the resource policy to delete.
     #[prost(string, tag = "159240835")]
     pub resource_policy: ::prost::alloc::string::String,
+}
+/// A request message for RolloutPlans.Delete. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRolloutPlanRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the RolloutPlan resource to delete.
+    #[prost(string, tag = "459057399")]
+    pub rollout_plan: ::prost::alloc::string::String,
+}
+/// A request message for Rollouts.Delete. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRolloutRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the Rollout resource to delete.
+    #[prost(string, tag = "303366577")]
+    pub rollout: ::prost::alloc::string::String,
 }
 /// A request message for Routers.DeleteRoutePolicy. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -20882,8 +21153,8 @@ pub struct DiskParams {
     /// Input only. Resource manager tags to be bound to the disk. Tag keys and values
     /// have the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -22320,7 +22591,8 @@ pub struct FirewallPolicy {
     /// This field is not applicable to network firewall policies.
     #[prost(string, optional, tag = "78317738")]
     pub parent: ::core::option::Option<::prost::alloc::string::String>,
-    /// The type of the firewall policy. This field can be eitherVPC_POLICY or RDMA_ROCE_POLICY.
+    /// The type of the firewall policy. This field can be one of
+    /// VPC_POLICY, RDMA_ROCE_POLICY or ULL_POLICY.
     ///
     /// Note: if not specified then VPC_POLICY will be used.
     /// Check the PolicyType enum for the list of possible values.
@@ -22363,7 +22635,8 @@ pub struct FirewallPolicy {
 }
 /// Nested message and enum types in `FirewallPolicy`.
 pub mod firewall_policy {
-    /// The type of the firewall policy. This field can be eitherVPC_POLICY or RDMA_ROCE_POLICY.
+    /// The type of the firewall policy. This field can be one of
+    /// VPC_POLICY, RDMA_ROCE_POLICY or ULL_POLICY.
     ///
     /// Note: if not specified then VPC_POLICY will be used.
     #[derive(
@@ -22382,6 +22655,7 @@ pub mod firewall_policy {
         /// A value indicating that the enum field is not set.
         UndefinedPolicyType = 0,
         RdmaRocePolicy = 148757145,
+        UllPolicy = 100494364,
         VpcPolicy = 74319208,
     }
     impl PolicyType {
@@ -22393,6 +22667,7 @@ pub mod firewall_policy {
             match self {
                 Self::UndefinedPolicyType => "UNDEFINED_POLICY_TYPE",
                 Self::RdmaRocePolicy => "RDMA_ROCE_POLICY",
+                Self::UllPolicy => "ULL_POLICY",
                 Self::VpcPolicy => "VPC_POLICY",
             }
         }
@@ -22401,6 +22676,7 @@ pub mod firewall_policy {
             match value {
                 "UNDEFINED_POLICY_TYPE" => Some(Self::UndefinedPolicyType),
                 "RDMA_ROCE_POLICY" => Some(Self::RdmaRocePolicy),
+                "ULL_POLICY" => Some(Self::UllPolicy),
                 "VPC_POLICY" => Some(Self::VpcPolicy),
                 _ => None,
             }
@@ -22972,8 +23248,7 @@ pub mod firewall_policy_rule_secure_tag {
 /// Encapsulates numeric value that can be either absolute or relative.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FixedOrPercent {
-    /// Output only. \[Output Only\] Absolute value of VM instances calculated based on the
-    /// specific mode.
+    /// Output only. Absolute value of VM instances calculated based on the specific mode.
     ///
     /// ```text
     /// - If the value is fixed, then the calculated
@@ -25961,6 +26236,16 @@ pub struct GetGlobalPublicDelegatedPrefixeRequest {
     #[prost(string, tag = "204238440")]
     pub public_delegated_prefix: ::prost::alloc::string::String,
 }
+/// A request message for GlobalVmExtensionPolicies.Get. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGlobalVmExtensionPolicyRequest {
+    /// Name of the GlobalVmExtensionPolicy resource to return.
+    #[prost(string, tag = "8334110")]
+    pub global_vm_extension_policy: ::prost::alloc::string::String,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+}
 /// A request message for Instances.GetGuestAttributes. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGuestAttributesInstanceRequest {
@@ -26205,6 +26490,19 @@ pub struct GetIamPolicyInterconnectAttachmentGroupRequest {
 /// A request message for InterconnectGroups.GetIamPolicy. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInterconnectGroupRequest {
+    /// Requested IAM Policy version.
+    #[prost(int32, optional, tag = "499220029")]
+    pub options_requested_policy_version: ::core::option::Option<i32>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name or id of the resource for this request.
+    #[prost(string, tag = "195806222")]
+    pub resource: ::prost::alloc::string::String,
+}
+/// A request message for LicenseCodes.GetIamPolicy. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetIamPolicyLicenseCodeRequest {
     /// Requested IAM Policy version.
     #[prost(int32, optional, tag = "499220029")]
     pub options_requested_policy_version: ::core::option::Option<i32>,
@@ -27722,6 +28020,26 @@ pub struct GetResourcePolicyRequest {
     #[prost(string, tag = "159240835")]
     pub resource_policy: ::prost::alloc::string::String,
 }
+/// A request message for RolloutPlans.Get. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRolloutPlanRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the persistent rollout plan to return.
+    #[prost(string, tag = "459057399")]
+    pub rollout_plan: ::prost::alloc::string::String,
+}
+/// A request message for Rollouts.Get. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRolloutRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the persistent rollout to return.
+    #[prost(string, tag = "303366577")]
+    pub rollout: ::prost::alloc::string::String,
+}
 /// A request message for Routers.GetRoutePolicy. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRoutePolicyRouterRequest {
@@ -28198,15 +28516,15 @@ pub struct GetVersionOperationMetadata {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionOperationMetadataSbomInfo {
-    /// SBOM versions currently applied to the resource. The key is the component
-    /// name and the value is the version.
+    /// A mapping of components to their currently-applied versions or other
+    /// appropriate identifiers.
     #[prost(map = "string, string", tag = "273325091")]
     pub current_component_versions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// SBOM versions scheduled for the next maintenance. The key is the
-    /// component name and the value is the version.
+    /// A mapping of components to their target versions or other appropriate
+    /// identifiers.
     #[prost(map = "string, string", tag = "345997579")]
     pub target_component_versions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -28556,6 +28874,483 @@ pub struct GlobalSetPolicyRequest {
     /// valid policy but certain services (like Projects) might reject them.
     #[prost(message, optional, tag = "91071794")]
     pub policy: ::core::option::Option<Policy>,
+}
+/// Message describing GlobalVmExtensionPolicy object.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicy {
+    /// Output only. \[Output Only\] Creation timestamp inRFC3339
+    /// text format.
+    #[prost(string, optional, tag = "30525366")]
+    pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
+    /// An optional description of this resource. Provide this property when you
+    /// create the resource.
+    #[prost(string, optional, tag = "422937596")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Map from extension (eg: "cloudops") to its policy configuration.
+    /// The key is the name of the extension.
+    #[prost(map = "string, message", tag = "227761488")]
+    pub extension_policies: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        GlobalVmExtensionPolicyExtensionPolicy,
+    >,
+    /// Output only. \[Output Only\] The unique identifier for the resource. This identifier is
+    /// defined by the server.
+    #[prost(uint64, optional, tag = "3355")]
+    pub id: ::core::option::Option<u64>,
+    /// Optional. Selector to target VMs for a policy.
+    /// There is a logical "AND" between instance_selectors.
+    #[prost(message, repeated, tag = "520298826")]
+    pub instance_selectors: ::prost::alloc::vec::Vec<
+        GlobalVmExtensionPolicyInstanceSelector,
+    >,
+    /// Output only. \[Output Only\] Type of the resource. Alwayscompute#globalVmExtensionPolicy for globalVmExtensionPolicies.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the resource. Provided by the client when the resource is created.
+    /// The name must be 1-63 characters long, and comply withRFC1035.
+    /// Specifically, the name must be 1-63 characters long and match the regular
+    /// expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`
+    /// which means the first character must be a lowercase letter, and all
+    /// following characters must be a dash, lowercase letter, or digit, except
+    /// the last character, which cannot be a dash.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Used to resolve conflicts when multiple policies are active for the same
+    /// extension. Defaults to 0.
+    ///
+    /// Larger the number, higher the priority. When the priority is the same,
+    /// the policy with the newer create time has higher priority.
+    #[prost(int32, optional, tag = "445151652")]
+    pub priority: ::core::option::Option<i32>,
+    /// Required. The rollout strategy and status.
+    #[prost(message, optional, tag = "486746201")]
+    pub rollout_operation: ::core::option::Option<
+        GlobalVmExtensionPolicyRolloutOperation,
+    >,
+    /// Output only. \[Output Only\] The scoped resource status. It's only for tracking the
+    /// purging status of the policy.
+    /// Check the ScopedResourceStatus enum for the list of possible values.
+    #[prost(string, optional, tag = "181976980")]
+    pub scoped_resource_status: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined fully-qualified URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource's resource id.
+    #[prost(string, optional, tag = "44520962")]
+    pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Update timestamp inRFC3339
+    /// text format.
+    #[prost(string, optional, tag = "120894752")]
+    pub update_timestamp: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GlobalVmExtensionPolicy`.
+pub mod global_vm_extension_policy {
+    /// Output only. \[Output Only\] The scoped resource status. It's only for tracking the
+    /// purging status of the policy.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ScopedResourceStatus {
+        /// A value indicating that the enum field is not set.
+        UndefinedScopedResourceStatus = 0,
+        /// The zonal policies are being deleted.
+        Deleting = 404198387,
+        /// Default value. This value is unused.
+        Unspecified = 437941996,
+    }
+    impl ScopedResourceStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedScopedResourceStatus => "UNDEFINED_SCOPED_RESOURCE_STATUS",
+                Self::Deleting => "SCOPED_RESOURCE_STATUS_DELETING",
+                Self::Unspecified => "SCOPED_RESOURCE_STATUS_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SCOPED_RESOURCE_STATUS" => {
+                    Some(Self::UndefinedScopedResourceStatus)
+                }
+                "SCOPED_RESOURCE_STATUS_DELETING" => Some(Self::Deleting),
+                "SCOPED_RESOURCE_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
+    }
+}
+/// Policy for a single extension.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyExtensionPolicy {
+    /// Optional. The version pinning for the extension.
+    /// If empty, the extension will be installed with the latest version
+    /// released by the extension producer.
+    #[prost(string, optional, tag = "446267249")]
+    pub pinned_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. String configuration. Any string payload that the extension
+    /// understands.
+    #[prost(string, optional, tag = "318905136")]
+    pub string_config: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Selector to target VMs for a zone VM extension policy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyInstanceSelector {
+    /// Optional. Labels within the LabelSelector are OR'd.
+    #[prost(message, optional, tag = "349780170")]
+    pub label_selector: ::core::option::Option<GlobalVmExtensionPolicyLabelSelector>,
+}
+/// A LabelSelector is applicable for a VM only if it matches all labels in
+/// the LabelSelector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyLabelSelector {
+    /// Optional. Labels as key value pairs.
+    /// A VM should contain all the pairs specified in this map to be selected;
+    /// Labels within the LabelSelector are OR'ed.
+    #[prost(map = "string, string", tag = "501312642")]
+    pub inclusion_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Response to list global VM extension policy resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyList {
+    #[prost(string, optional, tag = "3123477")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of GlobalVmExtensionPolicy resources.
+    #[prost(message, repeated, tag = "100526016")]
+    pub items: ::prost::alloc::vec::Vec<GlobalVmExtensionPolicy>,
+    /// Output only. Type of resource.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] This token allows you to get the next page of results for
+    /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+    /// the query parameter pageToken in the next list request.
+    /// Subsequent list requests will have their own nextPageToken to
+    /// continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Unreachable resources.
+    #[prost(string, repeated, tag = "243372063")]
+    pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[Output Only\] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
+/// Represents the rollout operation
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyRolloutOperation {
+    /// Required. The rollout input which defines the rollout plan.
+    #[prost(message, optional, tag = "265745340")]
+    pub rollout_input: ::core::option::Option<
+        GlobalVmExtensionPolicyRolloutOperationRolloutInput,
+    >,
+    /// Output only. \[Output Only\] The rollout status of the policy.
+    #[prost(message, optional, tag = "476426816")]
+    pub rollout_status: ::core::option::Option<
+        GlobalVmExtensionPolicyRolloutOperationRolloutStatus,
+    >,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyRolloutOperationRolloutInput {
+    /// Optional. Specifies the behavior of the rollout if a conflict is detected in a
+    /// project during a rollout. This only applies to `insert` and `update`
+    /// methods.
+    ///
+    /// A conflict occurs in the following cases:
+    ///
+    /// * `insert` method: If the zonal policy already exists when the insert
+    ///   happens.
+    /// * `update` method: If the zonal policy was modified by a zonal API call
+    ///   outside of this rollout.
+    ///
+    /// Possible values are the following:
+    ///
+    /// * `""` (empty string): If a conflict occurs, the local value is not
+    ///   overwritten. This is the default behavior.
+    /// * `"overwrite"`: If a conflict occurs, the local value is overwritten
+    ///   with the rollout value.
+    #[prost(string, optional, tag = "115729439")]
+    pub conflict_behavior: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The name of the rollout plan.
+    /// Ex.
+    /// projects//locations/global/rolloutPlans/.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Specifies the predefined rollout plan for the policy. Valid values
+    /// are `SLOW_ROLLOUT` and `FAST_ROLLOUT`. The recommended value is
+    /// `SLOW_ROLLOUT` for progressive rollout. For more information, see Rollout
+    /// plans for global policies.
+    /// Check the PredefinedRolloutPlan enum for the list of possible values.
+    #[prost(string, optional, tag = "364023440")]
+    pub predefined_rollout_plan: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The UUID that identifies a policy rollout retry attempt for update and
+    /// delete operations. Set this field only when retrying a rollout for an
+    /// existing extension policy.
+    ///
+    /// * `update` method: Lets you retry policy rollout without changes.
+    ///   An error occurs if you set retry_uuid but the policy is modified.
+    /// * `delete` method: Lets you retry policy deletion rollout if the
+    ///   previous deletion rollout is not finished and the policy is in the
+    ///   DELETING state. If you set this field when the policy is not in the
+    ///   DELETING state, an error occurs.
+    #[prost(string, optional, tag = "472838898")]
+    pub retry_uuid: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GlobalVmExtensionPolicyRolloutOperationRolloutInput`.
+pub mod global_vm_extension_policy_rollout_operation_rollout_input {
+    /// Optional. Specifies the predefined rollout plan for the policy. Valid values
+    /// are `SLOW_ROLLOUT` and `FAST_ROLLOUT`. The recommended value is
+    /// `SLOW_ROLLOUT` for progressive rollout. For more information, see Rollout
+    /// plans for global policies.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PredefinedRolloutPlan {
+        /// A value indicating that the enum field is not set.
+        UndefinedPredefinedRolloutPlan = 0,
+        FastRollout = 207153326,
+        RolloutPlanUnspecified = 144511983,
+        SlowRollout = 31032659,
+    }
+    impl PredefinedRolloutPlan {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedPredefinedRolloutPlan => {
+                    "UNDEFINED_PREDEFINED_ROLLOUT_PLAN"
+                }
+                Self::FastRollout => "FAST_ROLLOUT",
+                Self::RolloutPlanUnspecified => "ROLLOUT_PLAN_UNSPECIFIED",
+                Self::SlowRollout => "SLOW_ROLLOUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PREDEFINED_ROLLOUT_PLAN" => {
+                    Some(Self::UndefinedPredefinedRolloutPlan)
+                }
+                "FAST_ROLLOUT" => Some(Self::FastRollout),
+                "ROLLOUT_PLAN_UNSPECIFIED" => Some(Self::RolloutPlanUnspecified),
+                "SLOW_ROLLOUT" => Some(Self::SlowRollout),
+                _ => None,
+            }
+        }
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatus {
+    /// Output only. \[Output Only\] The current rollouts for the latest version of the
+    /// resource. There should be only one current rollout, but for
+    /// scalability, we make it repeated.
+    #[prost(message, repeated, tag = "39829736")]
+    pub current_rollouts: ::prost::alloc::vec::Vec<
+        GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata,
+    >,
+    /// Output only. \[Output Only\] The last completed rollout resource. This field will not
+    /// be populated until the first rollout is completed.
+    #[prost(message, optional, tag = "375749737")]
+    pub previous_rollout: ::core::option::Option<
+        GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata,
+    >,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata {
+    /// Output only. \[Output Only\] The rollout status for each location. The list of the
+    /// locations is the same as the list of locations in the rollout plan.
+    #[prost(map = "string, message", tag = "278036490")]
+    pub location_rollout_status: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus,
+    >,
+    /// Output only. \[Output Only\] The name of the rollout.
+    /// Ex. projects//locations/global/rollouts/.
+    #[prost(string, optional, tag = "303366577")]
+    pub rollout: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] The name of the rollout plan.
+    /// Ex.
+    /// projects//locations/global/rolloutPlans/.
+    #[prost(string, optional, tag = "459057399")]
+    pub rollout_plan: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] The overall state of the rollout.
+    /// Check the State enum for the list of possible values.
+    #[prost(string, optional, tag = "109757585")]
+    pub state: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata`.
+pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_metadata {
+    /// Output only. \[Output Only\] The overall state of the rollout.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A value indicating that the enum field is not set.
+        UndefinedState = 0,
+        /// Iteration was explicitly cancelled.
+        Cancelled = 534636259,
+        /// Iteration completed, with all actions being successful.
+        Completed = 265728989,
+        /// Iteration completed, with failures.
+        Failed = 50857931,
+        /// The rollout is paused.
+        Paused = 337513660,
+        /// Iteration is in progress.
+        Processing = 74195873,
+        /// Impossible to determine current state of the iteration.
+        Unknown = 230861404,
+        /// Default value. This value is unused.
+        Unspecified = 470755401,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedState => "UNDEFINED_STATE",
+                Self::Cancelled => "STATE_CANCELLED",
+                Self::Completed => "STATE_COMPLETED",
+                Self::Failed => "STATE_FAILED",
+                Self::Paused => "STATE_PAUSED",
+                Self::Processing => "STATE_PROCESSING",
+                Self::Unknown => "STATE_UNKNOWN",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "STATE_CANCELLED" => Some(Self::Cancelled),
+                "STATE_COMPLETED" => Some(Self::Completed),
+                "STATE_FAILED" => Some(Self::Failed),
+                "STATE_PAUSED" => Some(Self::Paused),
+                "STATE_PROCESSING" => Some(Self::Processing),
+                "STATE_UNKNOWN" => Some(Self::Unknown),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
+    }
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus {
+    /// Output only. \[Output Only\] The state of the location rollout.
+    /// Check the State enum for the list of possible values.
+    #[prost(string, optional, tag = "109757585")]
+    pub state: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus`.
+pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_metadata_location_rollout_status {
+    /// Output only. \[Output Only\] The state of the location rollout.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A value indicating that the enum field is not set.
+        UndefinedState = 0,
+        /// The location rollout is completed.
+        LocationRolloutStateCompleted = 134765221,
+        /// The location rollout has failed.
+        LocationRolloutStateFailed = 53286403,
+        /// The location rollout has not started.
+        LocationRolloutStateNotStarted = 471817423,
+        /// The location rollout is skipped.
+        LocationRolloutStateSkipped = 54074890,
+        /// Default value. This value is unused.
+        LocationRolloutStateUnspecified = 242367761,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedState => "UNDEFINED_STATE",
+                Self::LocationRolloutStateCompleted => "LOCATION_ROLLOUT_STATE_COMPLETED",
+                Self::LocationRolloutStateFailed => "LOCATION_ROLLOUT_STATE_FAILED",
+                Self::LocationRolloutStateNotStarted => {
+                    "LOCATION_ROLLOUT_STATE_NOT_STARTED"
+                }
+                Self::LocationRolloutStateSkipped => "LOCATION_ROLLOUT_STATE_SKIPPED",
+                Self::LocationRolloutStateUnspecified => {
+                    "LOCATION_ROLLOUT_STATE_UNSPECIFIED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "LOCATION_ROLLOUT_STATE_COMPLETED" => {
+                    Some(Self::LocationRolloutStateCompleted)
+                }
+                "LOCATION_ROLLOUT_STATE_FAILED" => Some(Self::LocationRolloutStateFailed),
+                "LOCATION_ROLLOUT_STATE_NOT_STARTED" => {
+                    Some(Self::LocationRolloutStateNotStarted)
+                }
+                "LOCATION_ROLLOUT_STATE_SKIPPED" => {
+                    Some(Self::LocationRolloutStateSkipped)
+                }
+                "LOCATION_ROLLOUT_STATE_UNSPECIFIED" => {
+                    Some(Self::LocationRolloutStateUnspecified)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// Maintenance Info for ReservationBlocks.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -31825,8 +32620,8 @@ pub struct ImageParams {
     /// Input only. Resource manager tags to be bound to the image. Tag keys and values have
     /// the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -32235,6 +33030,33 @@ pub struct InsertGlobalPublicDelegatedPrefixeRequest {
     /// The body resource for this request
     #[prost(message, optional, tag = "47594501")]
     pub public_delegated_prefix_resource: ::core::option::Option<PublicDelegatedPrefix>,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for GlobalVmExtensionPolicies.Insert. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsertGlobalVmExtensionPolicyRequest {
+    /// The body resource for this request
+    #[prost(message, optional, tag = "101542927")]
+    pub global_vm_extension_policy_resource: ::core::option::Option<
+        GlobalVmExtensionPolicy,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so
     /// that if you must retry your request, the server will know to ignore the
     /// request if it has already been completed.
@@ -33801,6 +34623,31 @@ pub struct InsertResourcePolicyRequest {
     /// The body resource for this request
     #[prost(message, optional, tag = "76826186")]
     pub resource_policy_resource: ::core::option::Option<ResourcePolicy>,
+}
+/// A request message for RolloutPlans.Insert. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsertRolloutPlanRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "38629974")]
+    pub rollout_plan_resource: ::core::option::Option<RolloutPlan>,
 }
 /// A request message for Routes.Insert. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -35401,7 +36248,7 @@ pub struct InstanceGroupManagerActionsSummary {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerAggregatedList {
-    /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
+    /// Output only. Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of InstanceGroupManagersScopedList resources.
@@ -35410,24 +36257,24 @@ pub struct InstanceGroupManagerAggregatedList {
         ::prost::alloc::string::String,
         InstanceGroupManagersScopedList,
     >,
-    /// Output only. \[Output Only\] The resource type, which is alwayscompute#instanceGroupManagerAggregatedList for an aggregated
+    /// Output only. The resource type, which is alwayscompute#instanceGroupManagerAggregatedList for an aggregated
     /// list of managed instance groups.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] This token allows you to get the next page of results for
+    /// Output only. This token allows you to get the next page of results for
     /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
     /// the query parameter pageToken in the next list request.
     /// Subsequent list requests will have their own nextPageToken to
     /// continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    /// Output only. Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Unreachable resources.
+    /// Output only. Unreachable resources.
     #[prost(string, repeated, tag = "243372063")]
     pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Informational warning message.
+    /// Output only. Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -35711,27 +36558,27 @@ pub mod instance_group_manager_instance_lifecycle_policy {
 /// \[Output Only\] A list of managed instance groups.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerList {
-    /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
+    /// Output only. Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of InstanceGroupManager resources.
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<InstanceGroupManager>,
-    /// Output only. \[Output Only\] The resource type, which is always
-    /// compute#instanceGroupManagerList for a list of managed instance groups.
+    /// Output only. The resource type, which is always compute#instanceGroupManagerList for a
+    /// list of managed instance groups.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] This token allows you to get the next page of results for
+    /// Output only. This token allows you to get the next page of results for
     /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
     /// the query parameter pageToken in the next list request.
     /// Subsequent list requests will have their own nextPageToken to
     /// continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    /// Output only. Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Informational warning message.
+    /// Output only. Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -35888,27 +36735,26 @@ pub struct InstanceGroupManagerResizeRequestStatusLastAttempt {
 /// \[Output Only\] A list of resize requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerResizeRequestsListResponse {
-    /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
+    /// Output only. Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of resize request resources.
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<InstanceGroupManagerResizeRequest>,
-    /// Output only. \[Output Only\] Type of the resource. Alwayscompute#instanceGroupManagerResizeRequestList for
+    /// Output only. Type of the resource. Alwayscompute#instanceGroupManagerResizeRequestList for
     /// a list of resize requests.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] This token allows you to get the next page of results for
-    /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
-    /// the query parameter pageToken in the next list request.
+    /// Output only. This token allows you to get the next page of results for list requests.
+    /// If the number of results is larger than maxResults, use thenextPageToken as a value for the query parameterpageToken in the next list request.
     /// Subsequent list requests will have their own nextPageToken to
     /// continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    /// Output only. Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Informational warning message.
+    /// Output only. Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -36976,12 +37822,12 @@ pub struct InstanceGroupManagersResumeInstancesRequest {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersScopedList {
-    /// Output only. \[Output Only\] The list of managed instance groups that are contained in
-    /// the specified project and zone.
+    /// Output only. The list of managed instance groups that are contained in the specified
+    /// project and zone.
     #[prost(message, repeated, tag = "214072592")]
     pub instance_group_managers: ::prost::alloc::vec::Vec<InstanceGroupManager>,
-    /// Output only. \[Output Only\] The warning that replaces the list of managed instance
-    /// groups when the list is empty.
+    /// Output only. The warning that replaces the list of managed instance groups when the list
+    /// is empty.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -37408,8 +38254,8 @@ pub struct InstanceParams {
     /// Input only. Resource manager tags to be bound to the instance. Tag keys and values
     /// have the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -37502,8 +38348,10 @@ pub struct InstanceProperties {
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
     /// Input only. Resource manager tags to be bound to the instance. Tag keys and values
     /// have the same definition as resource
-    /// manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and
-    /// values are in the format `tagValues/456`. The field is ignored (both PUT &
+    /// manager tags. Keys and values can be either in numeric format,
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
     pub resource_manager_tags: ::std::collections::HashMap<
@@ -42154,7 +43002,6 @@ pub mod interconnect_groups_create_members {
         }
     }
 }
-/// LINT.IfChange
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupsCreateMembersInterconnectInput {
     /// Administrative status of the interconnect. When this is set to true, the
@@ -44095,6 +44942,16 @@ pub struct License {
 /// images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseCode {
+    /// Specifies licenseCodes of licenses that can replace this license. Note:
+    /// such replacements are allowed even if removable_from_disk is false.
+    #[prost(string, repeated, tag = "195677718")]
+    pub allowed_replacement_licenses: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// If true, this license can be appended to an existing disk's set of
+    /// licenses.
+    #[prost(bool, optional, tag = "16959254")]
+    pub appendable_to_disk: ::core::option::Option<bool>,
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
     /// text format.
     #[prost(string, optional, tag = "30525366")]
@@ -44106,6 +44963,11 @@ pub struct LicenseCode {
     /// defined by the server.
     #[prost(uint64, optional, tag = "3355")]
     pub id: ::core::option::Option<u64>,
+    /// Specifies licenseCodes of licenses that are incompatible with this license.
+    /// If a license is incompatible with this license, it cannot be attached to
+    /// the same disk or image.
+    #[prost(string, repeated, tag = "334239768")]
+    pub incompatible_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. \[Output Only\] Type of resource. Always compute#licenseCode for
     /// licenses.
     #[prost(string, optional, tag = "3292052")]
@@ -44114,13 +44976,38 @@ pub struct LicenseCode {
     /// License Code.
     #[prost(message, repeated, tag = "43550930")]
     pub license_alias: ::prost::alloc::vec::Vec<LicenseCodeLicenseAlias>,
+    /// If set, this license will be unable to be removed or replaced once attached
+    /// to a disk until the minimum_retention period has passed.
+    #[prost(message, optional, tag = "155398189")]
+    pub minimum_retention: ::core::option::Option<Duration>,
+    /// If true, this license can only be used on VMs on multi tenant nodes.
+    #[prost(bool, optional, tag = "274395163")]
+    pub multi_tenant_only: ::core::option::Option<bool>,
     /// Output only. \[Output Only\] Name of the resource. The name is 1-20 characters long and
     /// must be a valid 64 bit integer.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// If true, indicates this is an OS license. Only one OS license can be
+    /// attached to a disk or image at a time.
+    #[prost(bool, optional, tag = "487986406")]
+    pub os_license: ::core::option::Option<bool>,
+    /// If true, this license can be removed from a disk's set of licenses, with no
+    /// replacement license needed.
+    #[prost(bool, optional, tag = "25854638")]
+    pub removable_from_disk: ::core::option::Option<bool>,
+    /// Specifies the set of permissible coattached licenseCodes of licenses that
+    /// satisfy the coattachment requirement of this license. At least one license
+    /// from the set must be attached to the same disk or image as this license.
+    #[prost(string, repeated, tag = "129195265")]
+    pub required_coattached_licenses: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Output only. \[Output Only\] Server-defined URL for the resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// If true, this license can only be used on VMs on sole tenant nodes.
+    #[prost(bool, optional, tag = "427525559")]
+    pub sole_tenant_only: ::core::option::Option<bool>,
     /// Output only. \[Output Only\] Current state of this License Code.
     /// Check the State enum for the list of possible values.
     #[prost(string, optional, tag = "109757585")]
@@ -44129,6 +45016,10 @@ pub struct LicenseCode {
     /// images or snapshots from disks. Otherwise, the license is not transferred.
     #[prost(bool, optional, tag = "4349893")]
     pub transferable: ::core::option::Option<bool>,
+    /// Output only. \[Output Only\] Last update timestamp inRFC3339
+    /// text format.
+    #[prost(string, optional, tag = "120894752")]
+    pub update_timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `LicenseCode`.
 pub mod license_code {
@@ -44203,8 +45094,8 @@ pub struct LicenseParams {
     /// Input only. Resource manager tags to be bound to the license. Tag keys and values
     /// have the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -46951,6 +47842,110 @@ pub struct ListGlobalOrganizationOperationsRequest {
 /// A request message for GlobalPublicDelegatedPrefixes.List. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalPublicDelegatedPrefixesRequest {
+    /// A filter expression that filters resources listed in the response. Most
+    /// Compute resources support two types of filter expressions:
+    /// expressions that support regular expressions and expressions that follow
+    /// API improvement proposal AIP-160.
+    /// These two types of filter expressions cannot be mixed in one request.
+    ///
+    /// If you want to use AIP-160, your expression must specify the field name, an
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The operator
+    /// must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`.
+    ///
+    /// For example, if you are filtering Compute Engine instances, you can
+    /// exclude instances named `example-instance` by specifying
+    /// `name != example-instance`.
+    ///
+    /// The `:*` comparison can be used to test whether a key has been defined.
+    /// For example, to find all objects with `owner` label use:
+    ///
+    /// ```text,
+    /// labels.owner:*
+    /// ```
+    ///
+    /// You can also filter nested fields. For example, you could specify
+    /// `scheduling.automaticRestart = false` to include instances only
+    /// if they are not scheduled for automatic restarts. You can use filtering
+    /// on nested fields to filter based onresource labels.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    ///
+    /// ```text,
+    /// (scheduling.automaticRestart = true)
+    /// (cpuPlatform = "Intel Skylake")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    ///
+    /// ```text,
+    /// (cpuPlatform = "Intel Skylake") OR
+    /// (cpuPlatform = "Intel Broadwell") AND
+    /// (scheduling.automaticRestart = true)
+    /// ```
+    ///
+    /// If you want to use a regular expression, use the `eq` (equal) or `ne`
+    /// (not equal) operator against a single un-parenthesized expression with or
+    /// without quotes or against multiple parenthesized expressions. Examples:
+    ///
+    /// `fieldname eq unquoted literal`
+    /// `fieldname eq 'single quoted literal'`
+    /// `fieldname eq "double quoted literal"`
+    /// `(fieldname1 eq literal) (fieldname2 ne "literal")`
+    ///
+    /// The literal value is interpreted as a regular expression using GoogleRE2 library syntax.
+    /// The literal value must match the entire field.
+    ///
+    /// For example, to filter for instances that do not end with name "instance",
+    /// you would use `name ne .*instance`.
+    ///
+    /// You cannot combine constraints on multiple fields using regular
+    /// expressions.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// The maximum number of results per page that should be returned.
+    /// If the number of available results is larger than `maxResults`,
+    /// Compute Engine returns a `nextPageToken` that can be used to get
+    /// the next page of results in subsequent list requests. Acceptable values are
+    /// `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results
+    /// are returned in alphanumerical order based on the resource name.
+    ///
+    /// You can also sort results in descending order based on the creation
+    /// timestamp using `orderBy="creationTimestamp desc"`. This sorts
+    /// results based on the `creationTimestamp` field in
+    /// reverse chronological order (newest result first). Use this to sort
+    /// resources like operations so that the newest operation is returned first.
+    ///
+    /// Currently, only sorting by `name` or
+    /// `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the
+    /// `nextPageToken` returned by a previous list request to get
+    /// the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case
+    /// of failure. The default value is false.
+    ///
+    /// For example, when partial success behavior is enabled, aggregatedList for a
+    /// single zone scope either returns all resources in the zone or no resources,
+    /// with an error code.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
+/// A request message for GlobalVmExtensionPolicies.List. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGlobalVmExtensionPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
     /// Compute resources support two types of filter expressions:
     /// expressions that support regular expressions and expressions that follow
@@ -55832,6 +56827,214 @@ pub struct ListResourcePoliciesRequest {
     #[prost(bool, optional, tag = "517198390")]
     pub return_partial_success: ::core::option::Option<bool>,
 }
+/// A request message for RolloutPlans.List. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRolloutPlansRequest {
+    /// A filter expression that filters resources listed in the response. Most
+    /// Compute resources support two types of filter expressions:
+    /// expressions that support regular expressions and expressions that follow
+    /// API improvement proposal AIP-160.
+    /// These two types of filter expressions cannot be mixed in one request.
+    ///
+    /// If you want to use AIP-160, your expression must specify the field name, an
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The operator
+    /// must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`.
+    ///
+    /// For example, if you are filtering Compute Engine instances, you can
+    /// exclude instances named `example-instance` by specifying
+    /// `name != example-instance`.
+    ///
+    /// The `:*` comparison can be used to test whether a key has been defined.
+    /// For example, to find all objects with `owner` label use:
+    ///
+    /// ```text,
+    /// labels.owner:*
+    /// ```
+    ///
+    /// You can also filter nested fields. For example, you could specify
+    /// `scheduling.automaticRestart = false` to include instances only
+    /// if they are not scheduled for automatic restarts. You can use filtering
+    /// on nested fields to filter based onresource labels.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    ///
+    /// ```text,
+    /// (scheduling.automaticRestart = true)
+    /// (cpuPlatform = "Intel Skylake")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    ///
+    /// ```text,
+    /// (cpuPlatform = "Intel Skylake") OR
+    /// (cpuPlatform = "Intel Broadwell") AND
+    /// (scheduling.automaticRestart = true)
+    /// ```
+    ///
+    /// If you want to use a regular expression, use the `eq` (equal) or `ne`
+    /// (not equal) operator against a single un-parenthesized expression with or
+    /// without quotes or against multiple parenthesized expressions. Examples:
+    ///
+    /// `fieldname eq unquoted literal`
+    /// `fieldname eq 'single quoted literal'`
+    /// `fieldname eq "double quoted literal"`
+    /// `(fieldname1 eq literal) (fieldname2 ne "literal")`
+    ///
+    /// The literal value is interpreted as a regular expression using GoogleRE2 library syntax.
+    /// The literal value must match the entire field.
+    ///
+    /// For example, to filter for instances that do not end with name "instance",
+    /// you would use `name ne .*instance`.
+    ///
+    /// You cannot combine constraints on multiple fields using regular
+    /// expressions.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// The maximum number of results per page that should be returned.
+    /// If the number of available results is larger than `maxResults`,
+    /// Compute Engine returns a `nextPageToken` that can be used to get
+    /// the next page of results in subsequent list requests. Acceptable values are
+    /// `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results
+    /// are returned in alphanumerical order based on the resource name.
+    ///
+    /// You can also sort results in descending order based on the creation
+    /// timestamp using `orderBy="creationTimestamp desc"`. This sorts
+    /// results based on the `creationTimestamp` field in
+    /// reverse chronological order (newest result first). Use this to sort
+    /// resources like operations so that the newest operation is returned first.
+    ///
+    /// Currently, only sorting by `name` or
+    /// `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the
+    /// `nextPageToken` returned by a previous list request to get
+    /// the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case
+    /// of failure. The default value is false.
+    ///
+    /// For example, when partial success behavior is enabled, aggregatedList for a
+    /// single zone scope either returns all resources in the zone or no resources,
+    /// with an error code.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
+/// A request message for Rollouts.List. See the method description for details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRolloutsRequest {
+    /// A filter expression that filters resources listed in the response. Most
+    /// Compute resources support two types of filter expressions:
+    /// expressions that support regular expressions and expressions that follow
+    /// API improvement proposal AIP-160.
+    /// These two types of filter expressions cannot be mixed in one request.
+    ///
+    /// If you want to use AIP-160, your expression must specify the field name, an
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The operator
+    /// must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`.
+    ///
+    /// For example, if you are filtering Compute Engine instances, you can
+    /// exclude instances named `example-instance` by specifying
+    /// `name != example-instance`.
+    ///
+    /// The `:*` comparison can be used to test whether a key has been defined.
+    /// For example, to find all objects with `owner` label use:
+    ///
+    /// ```text,
+    /// labels.owner:*
+    /// ```
+    ///
+    /// You can also filter nested fields. For example, you could specify
+    /// `scheduling.automaticRestart = false` to include instances only
+    /// if they are not scheduled for automatic restarts. You can use filtering
+    /// on nested fields to filter based onresource labels.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    ///
+    /// ```text,
+    /// (scheduling.automaticRestart = true)
+    /// (cpuPlatform = "Intel Skylake")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    ///
+    /// ```text,
+    /// (cpuPlatform = "Intel Skylake") OR
+    /// (cpuPlatform = "Intel Broadwell") AND
+    /// (scheduling.automaticRestart = true)
+    /// ```
+    ///
+    /// If you want to use a regular expression, use the `eq` (equal) or `ne`
+    /// (not equal) operator against a single un-parenthesized expression with or
+    /// without quotes or against multiple parenthesized expressions. Examples:
+    ///
+    /// `fieldname eq unquoted literal`
+    /// `fieldname eq 'single quoted literal'`
+    /// `fieldname eq "double quoted literal"`
+    /// `(fieldname1 eq literal) (fieldname2 ne "literal")`
+    ///
+    /// The literal value is interpreted as a regular expression using GoogleRE2 library syntax.
+    /// The literal value must match the entire field.
+    ///
+    /// For example, to filter for instances that do not end with name "instance",
+    /// you would use `name ne .*instance`.
+    ///
+    /// You cannot combine constraints on multiple fields using regular
+    /// expressions.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// The maximum number of results per page that should be returned.
+    /// If the number of available results is larger than `maxResults`,
+    /// Compute Engine returns a `nextPageToken` that can be used to get
+    /// the next page of results in subsequent list requests. Acceptable values are
+    /// `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results
+    /// are returned in alphanumerical order based on the resource name.
+    ///
+    /// You can also sort results in descending order based on the creation
+    /// timestamp using `orderBy="creationTimestamp desc"`. This sorts
+    /// results based on the `creationTimestamp` field in
+    /// reverse chronological order (newest result first). Use this to sort
+    /// resources like operations so that the newest operation is returned first.
+    ///
+    /// Currently, only sorting by `name` or
+    /// `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the
+    /// `nextPageToken` returned by a previous list request to get
+    /// the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case
+    /// of failure. The default value is false.
+    ///
+    /// For example, when partial success behavior is enabled, aggregatedList for a
+    /// single zone scope either returns all resources in the zone or no resources,
+    /// with an error code.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
 /// A request message for Routers.ListRoutePolicies. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutePoliciesRoutersRequest {
@@ -62652,8 +63855,14 @@ pub mod network_peering_connection_status_consensus_state {
         /// be deleted.
         DeleteAcknowledged = 325293916,
         Unspecified = 395396446,
+        /// The local network admin requested to cancel their delete request
+        /// after DELETE_ACKNOWLEDGED.
+        LocalCancelRequested = 169545277,
         /// Network admin has requested deletion of this peering connection.
         LocalDeleteRequested = 227335214,
+        /// The peer network admin requested to cancel their delete request after
+        /// DELETE_ACKNOWLEDGED.
+        PeerCancelRequested = 140057862,
         /// The peer network admin has requested deletion of this peering
         /// connection.
         PeerDeleteRequested = 197847799,
@@ -62668,7 +63877,9 @@ pub mod network_peering_connection_status_consensus_state {
                 Self::UndefinedDeleteStatus => "UNDEFINED_DELETE_STATUS",
                 Self::DeleteAcknowledged => "DELETE_ACKNOWLEDGED",
                 Self::Unspecified => "DELETE_STATUS_UNSPECIFIED",
+                Self::LocalCancelRequested => "LOCAL_CANCEL_REQUESTED",
                 Self::LocalDeleteRequested => "LOCAL_DELETE_REQUESTED",
+                Self::PeerCancelRequested => "PEER_CANCEL_REQUESTED",
                 Self::PeerDeleteRequested => "PEER_DELETE_REQUESTED",
             }
         }
@@ -62678,7 +63889,9 @@ pub mod network_peering_connection_status_consensus_state {
                 "UNDEFINED_DELETE_STATUS" => Some(Self::UndefinedDeleteStatus),
                 "DELETE_ACKNOWLEDGED" => Some(Self::DeleteAcknowledged),
                 "DELETE_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCAL_CANCEL_REQUESTED" => Some(Self::LocalCancelRequested),
                 "LOCAL_DELETE_REQUESTED" => Some(Self::LocalDeleteRequested),
+                "PEER_CANCEL_REQUESTED" => Some(Self::PeerCancelRequested),
                 "PEER_DELETE_REQUESTED" => Some(Self::PeerDeleteRequested),
                 _ => None,
             }
@@ -64397,6 +65610,7 @@ pub mod network_profile_network_features {
         /// A value indicating that the enum field is not set.
         UndefinedFirewallPolicyTypes = 0,
         RdmaRocePolicy = 148757145,
+        UllPolicy = 100494364,
         VpcPolicy = 74319208,
     }
     impl FirewallPolicyTypes {
@@ -64408,6 +65622,7 @@ pub mod network_profile_network_features {
             match self {
                 Self::UndefinedFirewallPolicyTypes => "UNDEFINED_FIREWALL_POLICY_TYPES",
                 Self::RdmaRocePolicy => "RDMA_ROCE_POLICY",
+                Self::UllPolicy => "ULL_POLICY",
                 Self::VpcPolicy => "VPC_POLICY",
             }
         }
@@ -64418,6 +65633,7 @@ pub mod network_profile_network_features {
                     Some(Self::UndefinedFirewallPolicyTypes)
                 }
                 "RDMA_ROCE_POLICY" => Some(Self::RdmaRocePolicy),
+                "ULL_POLICY" => Some(Self::UllPolicy),
                 "VPC_POLICY" => Some(Self::VpcPolicy),
                 _ => None,
             }
@@ -65255,6 +66471,12 @@ pub struct NetworksAddPeeringRequest {
     /// as the current network.
     #[prost(string, optional, tag = "500625489")]
     pub peer_network: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NetworksCancelRequestRemovePeeringRequest {
+    /// Name of the peering, which should conform to RFC1035.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksGetEffectiveFirewallsResponse {
@@ -73188,28 +74410,27 @@ pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
 /// Contains a list of managed instance groups.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerList {
-    /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
+    /// Output only. Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of InstanceGroupManager resources.
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<InstanceGroupManager>,
-    /// Output only. \[Output Only\] The resource type, which is always
-    /// compute#instanceGroupManagerList for a list of managed instance groups that
-    /// exist in th regional scope.
+    /// Output only. The resource type, which is always compute#instanceGroupManagerList for a
+    /// list of managed instance groups that exist in th regional scope.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] This token allows you to get the next page of results for
+    /// Output only. This token allows you to get the next page of results for
     /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
     /// the query parameter pageToken in the next list request.
     /// Subsequent list requests will have their own nextPageToken to
     /// continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    /// Output only. Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Informational warning message.
+    /// Output only. Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -73225,31 +74446,31 @@ pub struct RegionInstanceGroupManagerPatchInstanceConfigReq {
 pub struct RegionInstanceGroupManagerResizeRequestsListResponse {
     #[prost(string, optional, tag = "3123477")]
     pub etag: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
+    /// Output only. Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of Resize Request resources.
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<InstanceGroupManagerResizeRequest>,
-    /// Output only. \[Output Only\] Type of the resource. Alwayscompute#regionInstanceGroupManagerResizeRequestList for
+    /// Output only. Type of the resource. Alwayscompute#regionInstanceGroupManagerResizeRequestList for
     /// a list of Resize Requests.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] This token allows you to get the next page of results for
+    /// Output only. This token allows you to get the next page of results for
     /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
     /// the query parameter pageToken in the next list request.
     /// Subsequent list requests will have their own nextPageToken to
     /// continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    /// Output only. Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Unreachable resources.
+    /// Output only. Unreachable resources.
     /// end_interface: MixerListResponseWithEtagBuilder
     #[prost(string, repeated, tag = "243372063")]
     pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. \[Output Only\] Informational warning message.
+    /// Output only. Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -77513,6 +78734,740 @@ pub struct ResumeInstancesRegionInstanceGroupManagerRequest {
     /// (00000000-0000-0000-0000-000000000000).
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Rollout resource.
+///
+/// A Rollout is a specific instance of a RolloutPlan. It represents a single
+/// execution of a strategy to roll out a specific resource. It also provides
+/// APIs to interact with the rollout.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Rollout {
+    /// Output only. The timestamp at which the Rollout was cancelled.
+    #[prost(string, optional, tag = "323792009")]
+    pub cancellation_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The timestamp at which the Rollout was completed.
+    #[prost(string, optional, tag = "122892624")]
+    pub completion_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Creation timestamp inRFC3339
+    /// text format.
+    #[prost(string, optional, tag = "30525366")]
+    pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The number of the currently running wave.
+    /// Ex. 1
+    #[prost(int64, optional, tag = "178280841")]
+    pub current_wave_number: ::core::option::Option<i64>,
+    /// An optional description of this resource. Provide this property when you
+    /// create the resource.
+    #[prost(string, optional, tag = "422937596")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. etag of the Rollout
+    /// Ex. abc1234
+    #[prost(string, optional, tag = "3123477")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] The unique identifier for the resource. This identifier is
+    /// defined by the server.
+    #[prost(uint64, optional, tag = "3355")]
+    pub id: ::core::option::Option<u64>,
+    /// Output only. \[Output Only\] Type of the resource. Always compute#rollout
+    /// for rollouts.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the resource. Provided by the client when the resource is created.
+    /// The name must be 1-63 characters long, and comply withRFC1035.
+    /// Specifically, the name must be 1-63 characters long and match the regular
+    /// expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`
+    /// which means the first character must be a lowercase letter, and all
+    /// following characters must be a dash, lowercase letter, or digit, except
+    /// the last character, which cannot be a dash.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The resource being rolled out.
+    #[prost(message, optional, tag = "70633009")]
+    pub rollout_entity: ::core::option::Option<RolloutRolloutEntity>,
+    /// Required. Rollout Plan used to model the Rollout.
+    /// Ex. compute.googleapis.com/v1/projects/1234/rolloutPlans/rp1
+    #[prost(string, optional, tag = "459057399")]
+    pub rollout_plan: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined fully-qualified URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource's resource id.
+    #[prost(string, optional, tag = "44520962")]
+    pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The current state of the Rollout.
+    /// Check the State enum for the list of possible values.
+    #[prost(string, optional, tag = "109757585")]
+    pub state: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Details about each wave of the rollout.
+    #[prost(message, repeated, tag = "8266492")]
+    pub wave_details: ::prost::alloc::vec::Vec<RolloutWaveDetails>,
+}
+/// Nested message and enum types in `Rollout`.
+pub mod rollout {
+    /// Output only. The current state of the Rollout.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A value indicating that the enum field is not set.
+        UndefinedState = 0,
+        /// The rollout is in a failure terminal state.
+        Cancelled = 41957681,
+        /// The rollout is being cancelled.
+        Cancelling = 226950512,
+        /// An attempted cancel operation was unsuccessful.
+        CancelFailed = 389121442,
+        /// The rollout is in a successful terminal state.
+        Completed = 309921323,
+        /// An attempted complete operation was unsuccessful.
+        CompleteFailed = 188367363,
+        /// The rollout is being marked as completed.
+        Completing = 480759734,
+        /// The rollout completed with failures.
+        Failed = 455706685,
+        /// The rollout is paused.
+        Paused = 205491502,
+        /// An attempted pause operation was unsuccessful.
+        PauseFailed = 7486150,
+        /// The rollout is being paused.
+        Pausing = 464660755,
+        /// A wave is being processed by the product.
+        Processing = 370416403,
+        /// The rollout has been successfully initialized and is ready to start.
+        Ready = 77848963,
+        /// The rollout is being resumed after being paused.
+        Resuming = 446856618,
+        /// An attempted rollback operation failed to complete successfully.
+        RollbackWaveFailed = 326793064,
+        /// A wave rollback is in progress for this rollout.
+        RollingBack = 259411649,
+        /// Undefined default state. Should never be exposed to users.
+        Unspecified = 470755401,
+        /// The rollout has been created but is not yet ready to be started.
+        Uninitialized = 327337595,
+        /// The product failed to process the wave.
+        WaveFailed = 195452995,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedState => "UNDEFINED_STATE",
+                Self::Cancelled => "CANCELLED",
+                Self::Cancelling => "CANCELLING",
+                Self::CancelFailed => "CANCEL_FAILED",
+                Self::Completed => "COMPLETED",
+                Self::CompleteFailed => "COMPLETE_FAILED",
+                Self::Completing => "COMPLETING",
+                Self::Failed => "FAILED",
+                Self::Paused => "PAUSED",
+                Self::PauseFailed => "PAUSE_FAILED",
+                Self::Pausing => "PAUSING",
+                Self::Processing => "PROCESSING",
+                Self::Ready => "READY",
+                Self::Resuming => "RESUMING",
+                Self::RollbackWaveFailed => "ROLLBACK_WAVE_FAILED",
+                Self::RollingBack => "ROLLING_BACK",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Uninitialized => "UNINITIALIZED",
+                Self::WaveFailed => "WAVE_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "CANCELLED" => Some(Self::Cancelled),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCEL_FAILED" => Some(Self::CancelFailed),
+                "COMPLETED" => Some(Self::Completed),
+                "COMPLETE_FAILED" => Some(Self::CompleteFailed),
+                "COMPLETING" => Some(Self::Completing),
+                "FAILED" => Some(Self::Failed),
+                "PAUSED" => Some(Self::Paused),
+                "PAUSE_FAILED" => Some(Self::PauseFailed),
+                "PAUSING" => Some(Self::Pausing),
+                "PROCESSING" => Some(Self::Processing),
+                "READY" => Some(Self::Ready),
+                "RESUMING" => Some(Self::Resuming),
+                "ROLLBACK_WAVE_FAILED" => Some(Self::RollbackWaveFailed),
+                "ROLLING_BACK" => Some(Self::RollingBack),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNINITIALIZED" => Some(Self::Uninitialized),
+                "WAVE_FAILED" => Some(Self::WaveFailed),
+                _ => None,
+            }
+        }
+    }
+}
+/// RolloutPlan resource.
+///
+/// A RolloutPlan is the customer-defined strategy to divide a large-scale change
+/// into smaller increments, referred to as "waves". Each wave targets a specific
+/// portion of the overall affected area and defines criteria that must be met
+/// before progressing to the subsequent wave.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutPlan {
+    /// Output only. \[Output Only\] Creation timestamp inRFC3339
+    /// text format.
+    #[prost(string, optional, tag = "30525366")]
+    pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
+    /// An optional description of this resource. Provide this property when you
+    /// create the resource.
+    #[prost(string, optional, tag = "422937596")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] The unique identifier for the resource. This identifier is
+    /// defined by the server.
+    #[prost(uint64, optional, tag = "3355")]
+    pub id: ::core::option::Option<u64>,
+    /// Output only. \[Output Only\] Type of the resource. Always compute#rolloutPlan
+    /// for rolloutPlans.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// The location scope of the rollout plan. If not specified, the location
+    /// scope is considered as ZONAL.
+    /// Check the LocationScope enum for the list of possible values.
+    #[prost(string, optional, tag = "138667338")]
+    pub location_scope: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the resource. Provided by the client when the resource is created.
+    /// The name must be 1-63 characters long, and comply withRFC1035.
+    /// Specifically, the name must be 1-63 characters long and match the regular
+    /// expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`
+    /// which means the first character must be a lowercase letter, and all
+    /// following characters must be a dash, lowercase letter, or digit, except
+    /// the last character, which cannot be a dash.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined fully-qualified URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource's resource id.
+    #[prost(string, optional, tag = "44520962")]
+    pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The waves included in this rollout plan.
+    #[prost(message, repeated, tag = "112905370")]
+    pub waves: ::prost::alloc::vec::Vec<RolloutPlanWave>,
+}
+/// Nested message and enum types in `RolloutPlan`.
+pub mod rollout_plan {
+    /// The location scope of the rollout plan. If not specified, the location
+    /// scope is considered as ZONAL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LocationScope {
+        /// A value indicating that the enum field is not set.
+        UndefinedLocationScope = 0,
+        /// Unspecified value. Considered as ZONAL.
+        Unspecified = 416410498,
+        /// Regional scope.
+        Regional = 92288543,
+        /// Zonal scope.
+        Zonal = 85547428,
+    }
+    impl LocationScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedLocationScope => "UNDEFINED_LOCATION_SCOPE",
+                Self::Unspecified => "LOCATION_SCOPE_UNSPECIFIED",
+                Self::Regional => "REGIONAL",
+                Self::Zonal => "ZONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOCATION_SCOPE" => Some(Self::UndefinedLocationScope),
+                "LOCATION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGIONAL" => Some(Self::Regional),
+                "ZONAL" => Some(Self::Zonal),
+                _ => None,
+            }
+        }
+    }
+}
+/// A single wave in a rollout plan.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutPlanWave {
+    /// Optional. The display name of this wave of the rollout plan.
+    #[prost(string, optional, tag = "4473832")]
+    pub display_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The wave number.
+    #[prost(int64, optional, tag = "39377737")]
+    pub number: ::core::option::Option<i64>,
+    /// Optional. The orchestration options for this wave.
+    #[prost(message, optional, tag = "93218464")]
+    pub orchestration_options: ::core::option::Option<
+        RolloutPlanWaveOrchestrationOptions,
+    >,
+    /// Required. The selectors for this wave. There is a logical AND between each selector
+    /// defined in a wave, so a resource must satisfy the criteria of *all* the
+    /// specified selectors to be in scope for the wave.
+    #[prost(message, repeated, tag = "431523956")]
+    pub selectors: ::prost::alloc::vec::Vec<RolloutPlanWaveSelector>,
+    /// Required. The validation to be performed at the end of this wave.
+    #[prost(message, optional, tag = "493308025")]
+    pub validation: ::core::option::Option<RolloutPlanWaveValidation>,
+}
+/// Options to control the pace of orchestration of a wave. These options are
+/// required only if the resource being rolled out follows the Orchestrated
+/// pattern.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutPlanWaveOrchestrationOptions {
+    /// Optional. Delays, if any, to be added between batches of projects. We allow
+    /// multiple Delays to be specified, letting users set separate delays
+    /// between batches of projects corresponding to different locations and
+    /// batches of projects corresponding to the same location.
+    #[prost(message, repeated, tag = "275150672")]
+    pub delays: ::prost::alloc::vec::Vec<RolloutPlanWaveOrchestrationOptionsDelay>,
+    /// Optional. Maximum number of locations to be orchestrated in parallel.
+    #[prost(int64, optional, tag = "493763281")]
+    pub max_concurrent_locations: ::core::option::Option<i64>,
+    /// Optional. Maximum number of resources to be orchestrated per location in
+    /// parallel.
+    #[prost(int64, optional, tag = "178401246")]
+    pub max_concurrent_resources_per_location: ::core::option::Option<i64>,
+}
+/// Options to control the delay, if any, between batches of projects.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveOrchestrationOptionsDelay {
+    /// Optional. Controls whether the delay should only be added between batches of
+    /// projects corresponding to different locations, or also between
+    /// batches of projects corresponding to the same location.
+    ///
+    /// Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+    /// Check the Delimiter enum for the list of possible values.
+    #[prost(string, optional, tag = "286352903")]
+    pub delimiter: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The duration of the delay, if any, to be added between batches of
+    /// projects. A zero duration corresponds to no delay.
+    #[prost(string, optional, tag = "155471252")]
+    pub duration: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Controls whether the specified duration is to be added at the end of
+    /// each batch, or if the total processing time for each batch will be
+    /// padded if needed to meet the specified duration.
+    ///
+    /// Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+    /// Check the Type enum for the list of possible values.
+    #[prost(string, optional, tag = "3575610")]
+    pub r#type: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `RolloutPlanWaveOrchestrationOptionsDelay`.
+pub mod rollout_plan_wave_orchestration_options_delay {
+    /// Optional. Controls whether the delay should only be added between batches of
+    /// projects corresponding to different locations, or also between
+    /// batches of projects corresponding to the same location.
+    ///
+    /// Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Delimiter {
+        /// A value indicating that the enum field is not set.
+        UndefinedDelimiter = 0,
+        /// The delay will also be added between batches of projects
+        /// corresponding to the same location.
+        Batch = 253390530,
+        /// The delay will only be added between batches of projects
+        /// corresponding to different locations.
+        Location = 189398797,
+        /// No delay will be added between batches of projects. Processing will
+        /// continue with the next batch as soon as the previous batch of LROs
+        /// is done.
+        Unspecified = 372199615,
+    }
+    impl Delimiter {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedDelimiter => "UNDEFINED_DELIMITER",
+                Self::Batch => "DELIMITER_BATCH",
+                Self::Location => "DELIMITER_LOCATION",
+                Self::Unspecified => "DELIMITER_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DELIMITER" => Some(Self::UndefinedDelimiter),
+                "DELIMITER_BATCH" => Some(Self::Batch),
+                "DELIMITER_LOCATION" => Some(Self::Location),
+                "DELIMITER_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
+    }
+    /// Optional. Controls whether the specified duration is to be added at the end of
+    /// each batch, or if the total processing time for each batch will be
+    /// padded if needed to meet the specified duration.
+    ///
+    /// Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// A value indicating that the enum field is not set.
+        UndefinedType = 0,
+        /// The total processing time for each batch of projects will be padded
+        /// if needed to meet the specified delay duration.
+        Minimum = 234909673,
+        /// The specified delay will directly be added after each batch of
+        /// projects as specified by the delimiter.
+        Offset = 165747000,
+        /// No delay will be added between batches of projects. Processing will
+        /// continue with the next batch as soon as the previous batch of LROs
+        /// is done.
+        Unspecified = 437714322,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedType => "UNDEFINED_TYPE",
+                Self::Minimum => "TYPE_MINIMUM",
+                Self::Offset => "TYPE_OFFSET",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "TYPE_MINIMUM" => Some(Self::Minimum),
+                "TYPE_OFFSET" => Some(Self::Offset),
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
+    }
+}
+/// A selector which specifies what resource(s) are included in a given wave.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveSelector {
+    /// Optional. Roll out to resources by Cloud locations.
+    #[prost(message, optional, tag = "422273321")]
+    pub location_selector: ::core::option::Option<
+        RolloutPlanWaveSelectorLocationSelector,
+    >,
+    /// Optional. Roll out to resources by Cloud Resource Manager resource hierarchy.
+    #[prost(message, optional, tag = "66779770")]
+    pub resource_hierarchy_selector: ::core::option::Option<
+        RolloutPlanWaveSelectorResourceHierarchySelector,
+    >,
+}
+/// Roll out to resources by location.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveSelectorLocationSelector {
+    /// Optional. Example: "us-central1-a"
+    #[prost(string, repeated, tag = "78239643")]
+    pub included_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Roll out to resources by Cloud Resource Manager resource hierarchy
+/// nodes such as projects, folders, orgs.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveSelectorResourceHierarchySelector {
+    /// Optional. Format: "folders/{folder_id}"
+    #[prost(string, repeated, tag = "372825410")]
+    pub included_folders: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Format: "organizations/{organization_id}"
+    #[prost(string, repeated, tag = "318362461")]
+    pub included_organizations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Format: "projects/{project_id}"
+    #[prost(string, repeated, tag = "64232605")]
+    pub included_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The validation to be performed before progressing to the next wave.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveValidation {
+    /// Optional. Metadata required if type = "time".
+    #[prost(message, optional, tag = "69499575")]
+    pub time_based_validation_metadata: ::core::option::Option<
+        RolloutPlanWaveValidationTimeBasedValidationMetadata,
+    >,
+    /// Required. The type of the validation. If a type of validation is associated with
+    /// a metadata object, the appropriate metadata field mapping to the
+    /// validation type must be provided in the validation message. Possible
+    /// values are in quotes below alongside an explanation:
+    /// "manual": The system waits for an end-user approval API before
+    /// progressing to the next wave.
+    /// "time": The system waits for a user specified duration before
+    /// progressing to the next wave. TimeBasedValidation must be provided.
+    #[prost(string, optional, tag = "3575610")]
+    pub r#type: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Metadata required if type = "time".
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutPlanWaveValidationTimeBasedValidationMetadata {
+    /// Optional. The duration that the system waits in between waves. This wait starts
+    /// after all changes in the wave are rolled out.
+    #[prost(string, optional, tag = "452313374")]
+    pub wait_duration: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Contains a list of RolloutPlan resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutPlansListResponse {
+    #[prost(string, optional, tag = "3123477")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of RolloutPlan resources.
+    #[prost(message, repeated, tag = "100526016")]
+    pub items: ::prost::alloc::vec::Vec<RolloutPlan>,
+    /// \[Output Only\] This token allows you to get the next page of results for
+    /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+    /// the query parameter pageToken in the next list request.
+    /// Subsequent list requests will have their own nextPageToken to
+    /// continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Unreachable resources.
+    /// end_interface: MixerListResponseWithEtagBuilder
+    #[prost(string, repeated, tag = "243372063")]
+    pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[Output Only\] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
+/// Specifications of the resource to roll out.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutRolloutEntity {
+    /// Optional. Entity details for products using the Orchestrated Integration model.
+    #[prost(message, optional, tag = "409556732")]
+    pub orchestrated_entity: ::core::option::Option<
+        RolloutRolloutEntityOrchestratedEntity,
+    >,
+}
+/// This message is used if the resource type follows the Orchestrated
+/// integration model with ProgressiveRollout.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutRolloutEntityOrchestratedEntity {
+    /// Required. Specifies the behavior of the Rollout if an out of band update is
+    /// detected in a project during a Rollout. It can be one of the following
+    /// values:
+    ///
+    /// 1. overwrite : Overwrite the local value with the rollout value.
+    /// 1. no_overwrite : Do not overwrite the local value with the rollout
+    ///    value.
+    #[prost(string, optional, tag = "115729439")]
+    pub conflict_behavior: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Orchestration action during the Rollout. It can be one of the following
+    /// values:
+    ///
+    /// 1. "update": Resources will be updated by the rollout.
+    /// 1. "delete": Resources will be deleted by the rollout.
+    #[prost(string, optional, tag = "109745652")]
+    pub orchestration_action: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Fully qualified resource name of the resource which contains the source
+    /// of truth of the configuration being rolled out across
+    /// locations/projects. For example, in the case of a global Rollout which
+    /// is applied across regions, this contains the name of the global
+    /// resource created by the user which contains a payload for a resource
+    /// that is orchestrated across regions. This follows the following format:
+    /// //.googleapis.com/projects//locations/global//
+    /// e.g.
+    /// //osconfig.googleapis.com/projects/1/locations/global/policyOrchestrators/po1
+    #[prost(string, optional, tag = "99319769")]
+    pub orchestration_source: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Additional metadata about the status of each wave provided by the server.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutWaveDetails {
+    /// Output only. Additional details of the wave for products using the Orchestrated
+    /// Integration model.
+    #[prost(message, optional, tag = "421732181")]
+    pub orchestrated_wave_details: ::core::option::Option<
+        RolloutWaveDetailsOrchestratedWaveDetails,
+    >,
+    /// Output only. Wave name.
+    /// Ex. wave1
+    #[prost(string, optional, tag = "29521774")]
+    pub wave_display_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. System generated number for the wave.
+    #[prost(int64, optional, tag = "491629391")]
+    pub wave_number: ::core::option::Option<i64>,
+}
+/// Details of the wave for products using the Orchestrated integration
+/// model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutWaveDetailsOrchestratedWaveDetails {
+    /// Output only. Resource completed so far.
+    #[prost(int64, optional, tag = "208328833")]
+    pub completed_resources_count: ::core::option::Option<i64>,
+    /// Output only. Estimated timestamp at which the wave will complete. Extrapolated from
+    /// current progress.
+    #[prost(string, optional, tag = "102305613")]
+    pub estimated_completion_time: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Estimated total count of resources.
+    #[prost(int64, optional, tag = "457594807")]
+    pub estimated_total_resources_count: ::core::option::Option<i64>,
+    /// Output only. Locations that failed during orchestration, and ProgressiveRollout
+    /// stopped retrying. There may be some successful resources rolled out in
+    /// the wave as the location may have failed later in the Rollout.
+    #[prost(string, repeated, tag = "30506460")]
+    pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Resources failed.
+    #[prost(int64, optional, tag = "391795315")]
+    pub failed_resources_count: ::core::option::Option<i64>,
+    /// Output only. Status of each location in the wave. Map keys (locations) must be
+    /// specified like "us-east1" or "asia-west1-a".
+    #[prost(map = "string, message", tag = "19007420")]
+    pub location_status: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus,
+    >,
+}
+/// Represents the status of a location in a wave.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus {
+    /// Output only. Location state of the wave.
+    /// Check the State enum for the list of possible values.
+    #[prost(string, optional, tag = "109757585")]
+    pub state: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus`.
+pub mod rollout_wave_details_orchestrated_wave_details_location_status {
+    /// Output only. Location state of the wave.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A value indicating that the enum field is not set.
+        UndefinedState = 0,
+        /// Work on the wave failed.
+        Failed = 50857931,
+        /// Work on the wave is in progress.
+        InProgress = 413162809,
+        /// Work on the wave is pending.
+        Pending = 369985449,
+        /// Work on the wave was canceled or skipped.
+        Skipped = 515663170,
+        /// Work on the wave succeeded.
+        Succeeded = 466911219,
+        /// Undefined default state. Should never be exposed to users.
+        Unspecified = 470755401,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedState => "UNDEFINED_STATE",
+                Self::Failed => "STATE_FAILED",
+                Self::InProgress => "STATE_IN_PROGRESS",
+                Self::Pending => "STATE_PENDING",
+                Self::Skipped => "STATE_SKIPPED",
+                Self::Succeeded => "STATE_SUCCEEDED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "STATE_FAILED" => Some(Self::Failed),
+                "STATE_IN_PROGRESS" => Some(Self::InProgress),
+                "STATE_PENDING" => Some(Self::Pending),
+                "STATE_SKIPPED" => Some(Self::Skipped),
+                "STATE_SUCCEEDED" => Some(Self::Succeeded),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutsListResponse {
+    #[prost(string, optional, tag = "3123477")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of Rollout resources.
+    #[prost(message, repeated, tag = "100526016")]
+    pub items: ::prost::alloc::vec::Vec<Rollout>,
+    /// \[Output Only\] This token allows you to get the next page of results for
+    /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+    /// the query parameter pageToken in the next list request.
+    /// Subsequent list requests will have their own nextPageToken to
+    /// continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Unreachable resources.
+    /// end_interface: MixerListResponseWithEtagBuilder
+    #[prost(string, repeated, tag = "243372063")]
+    pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[Output Only\] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Route resource.
 ///
@@ -83870,6 +85825,21 @@ pub struct SetIamPolicyInterconnectGroupRequest {
     #[prost(string, tag = "195806222")]
     pub resource: ::prost::alloc::string::String,
 }
+/// A request message for LicenseCodes.SetIamPolicy. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetIamPolicyLicenseCodeRequest {
+    /// The body resource for this request
+    #[prost(message, optional, tag = "337048498")]
+    pub global_set_policy_request_resource: ::core::option::Option<
+        GlobalSetPolicyRequest,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name or id of the resource for this request.
+    #[prost(string, tag = "195806222")]
+    pub resource: ::prost::alloc::string::String,
+}
 /// A request message for Licenses.SetIamPolicy. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyLicenseRequest {
@@ -86651,8 +88621,8 @@ pub struct SnapshotParams {
     /// Input only. Resource manager tags to be bound to the snapshot. Tag keys and values have
     /// the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -87518,6 +89488,18 @@ pub struct SslPolicy {
     /// dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// One of DEFAULT, ENABLED, orDEFERRED. Controls whether the load balancer negotiates
+    /// X25519MLKEM768 key exchange when clients advertise support for it. When set
+    /// to DEFAULT, or if no SSL Policy is attached to the target
+    /// proxy, the load balancer disallows X25519MLKEM768 key exchange before
+    /// October 2026, and allows it afterward. When set to ENABLED,
+    /// the load balancer allows X25519MLKEM768 key exchange. When set toDEFERRED, the load balancer disallows X25519MLKEM768 key
+    /// exchange until October 2027, and allows it afterward.
+    /// Check the PostQuantumKeyExchange enum for the list of possible values.
+    #[prost(string, optional, tag = "245546214")]
+    pub post_quantum_key_exchange: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
     /// Profile specifies the set of SSL features that can be used by the load
     /// balancer when negotiating SSL with clients. This can be one ofCOMPATIBLE, MODERN, RESTRICTED,FIPS_202205, or CUSTOM. If usingCUSTOM, the set of SSL features to enable must be specified in
     /// the customFeatures field. If using FIPS_202205,
@@ -87588,6 +89570,63 @@ pub mod ssl_policy {
                 "TLS_1_1" => Some(Self::Tls11),
                 "TLS_1_2" => Some(Self::Tls12),
                 "TLS_1_3" => Some(Self::Tls13),
+                _ => None,
+            }
+        }
+    }
+    /// One of DEFAULT, ENABLED, orDEFERRED. Controls whether the load balancer negotiates
+    /// X25519MLKEM768 key exchange when clients advertise support for it. When set
+    /// to DEFAULT, or if no SSL Policy is attached to the target
+    /// proxy, the load balancer disallows X25519MLKEM768 key exchange before
+    /// October 2026, and allows it afterward. When set to ENABLED,
+    /// the load balancer allows X25519MLKEM768 key exchange. When set toDEFERRED, the load balancer disallows X25519MLKEM768 key
+    /// exchange until October 2027, and allows it afterward.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PostQuantumKeyExchange {
+        /// A value indicating that the enum field is not set.
+        UndefinedPostQuantumKeyExchange = 0,
+        /// Default behavior: disabled until October 2026, enabled afterward.
+        Default = 115302945,
+        /// Disabled until October 2027, enabled afterward.
+        Deferred = 356775903,
+        /// Enabled now.
+        Enabled = 182130465,
+    }
+    impl PostQuantumKeyExchange {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UndefinedPostQuantumKeyExchange => {
+                    "UNDEFINED_POST_QUANTUM_KEY_EXCHANGE"
+                }
+                Self::Default => "DEFAULT",
+                Self::Deferred => "DEFERRED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_POST_QUANTUM_KEY_EXCHANGE" => {
+                    Some(Self::UndefinedPostQuantumKeyExchange)
+                }
+                "DEFAULT" => Some(Self::Default),
+                "DEFERRED" => Some(Self::Deferred),
+                "ENABLED" => Some(Self::Enabled),
                 _ => None,
             }
         }
@@ -88736,8 +90775,8 @@ pub struct StoragePoolParams {
     /// Input only. Resource manager tags to be bound to the storage pool. Tag keys and values
     /// have the same definition as resource
     /// manager tags. Keys and values can be either in numeric format,
-    /// such as `tagKeys/{tag_key_id}` and `tagValues/456` or in namespaced
-    /// format such as `{org_id|project_id}/{tag_key_short_name}` and
+    /// such as `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}` or in
+    /// namespaced format such as `{org_id|project_id}/{tag_key_short_name}` and
     /// `{tag_value_short_name}`. The field is ignored (both PUT &
     /// PATCH) when empty.
     #[prost(map = "string, string", tag = "377671164")]
@@ -93753,6 +95792,36 @@ pub struct UpdateFutureReservationRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+/// A request message for GlobalVmExtensionPolicies.Update. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGlobalVmExtensionPolicyRequest {
+    /// Name of the global VM extension policy to update.
+    #[prost(string, tag = "8334110")]
+    pub global_vm_extension_policy: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "101542927")]
+    pub global_vm_extension_policy_resource: ::core::option::Option<
+        GlobalVmExtensionPolicy,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server will know to ignore the
+    /// request if it has already been completed.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same
+    /// request ID, the server can check if original operation with the same
+    /// request ID was received, and if so, will ignore the second request. This
+    /// prevents clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be
+    /// a valid UUID with the exception that zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A request message for HealthChecks.Update. See the method description for details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateHealthCheckRequest {
@@ -95617,6 +97686,16 @@ pub struct VmEndpointNatMappingsList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VmExtensionPoliciesScopedList {
+    /// List of VmExtensionPolicy resources contained in this scope.
+    #[prost(message, repeated, tag = "238490584")]
+    pub vm_extension_policies: ::prost::alloc::vec::Vec<VmExtensionPolicy>,
+    /// Informational warning which replaces the list of
+    /// backend services when the list is empty.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
 /// Represents a VM extension policy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicy {
@@ -95737,6 +97816,41 @@ pub mod vm_extension_policy {
             }
         }
     }
+}
+/// Response for the aggregated list of VM extension policies.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VmExtensionPolicyAggregatedListResponse {
+    #[prost(string, optional, tag = "3123477")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of VmExtensionPoliciesScopedList resources.
+    #[prost(map = "string, message", tag = "100526016")]
+    pub items: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        VmExtensionPoliciesScopedList,
+    >,
+    /// Output only. \[Output Only\] Type of resource. Alwayscompute#VmExtensionPolicyAggregatedList for lists of
+    /// VmExtensionPolicies.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// \[Output Only\] This token allows you to get the next page of results for
+    /// list requests. If the number of results is larger thanmaxResults, use the nextPageToken as a value for
+    /// the query parameter pageToken in the next list request.
+    /// Subsequent list requests will have their own nextPageToken to
+    /// continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. \[Output Only\] Unreachable resources.
+    #[prost(string, repeated, tag = "243372063")]
+    pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[Output Only\] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration for a specific VM extension.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -104202,6 +106316,284 @@ pub mod global_public_delegated_prefixes_client {
     }
 }
 /// Generated client implementations.
+pub mod global_vm_extension_policies_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The GlobalVmExtensionPolicies API.
+    #[derive(Debug, Clone)]
+    pub struct GlobalVmExtensionPoliciesClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GlobalVmExtensionPoliciesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GlobalVmExtensionPoliciesClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GlobalVmExtensionPoliciesClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            GlobalVmExtensionPoliciesClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Retrieves the list of all VM Extension Policy resources
+        /// available to the specified project.
+        ///
+        /// To prevent failure, it's recommended that you set the
+        /// `returnPartialSuccess` parameter to `true`.
+        pub async fn aggregated_list(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::AggregatedListGlobalVmExtensionPoliciesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::VmExtensionPolicyAggregatedListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/AggregatedList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Purge scoped resources (zonal policies) from a global VM extension
+        /// policy, and then delete the global VM extension policy. Purge of the scoped
+        /// resources is a pre-condition of the global VM extension policy deletion.
+        /// The deletion of the global VM extension policy happens after the purge
+        /// rollout is done, so it's not a part of the LRO. It's an automatic process
+        /// that triggers in the backend.
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGlobalVmExtensionPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/Delete",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a global VM extension policy.
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGlobalVmExtensionPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GlobalVmExtensionPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/Get",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new project level GlobalVmExtensionPolicy.
+        pub async fn insert(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InsertGlobalVmExtensionPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/Insert",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists global VM extension policies.
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGlobalVmExtensionPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GlobalVmExtensionPolicyList>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/List",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a global VM extension policy.
+        pub async fn update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGlobalVmExtensionPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.GlobalVmExtensionPolicies/Update",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalVmExtensionPolicies",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
 pub mod health_checks_client {
     #![allow(
         unused_variables,
@@ -111110,6 +113502,68 @@ pub mod license_codes_client {
                 .insert(GrpcMethod::new("google.cloud.compute.v1.LicenseCodes", "Get"));
             self.inner.unary(req, path, codec).await
         }
+        /// Gets the access control policy for a resource. May be empty if no such
+        /// policy or resource exists.
+        /// *Caution* This resource is intended
+        /// for use only by third-party partners who are creatingCloud Marketplace
+        /// images.
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIamPolicyLicenseCodeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.LicenseCodes/GetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.LicenseCodes",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets the access control policy on the specified resource.
+        /// Replaces any existing policy.
+        /// *Caution* This resource is intended
+        /// for use only by third-party partners who are creatingCloud Marketplace
+        /// images.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetIamPolicyLicenseCodeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.LicenseCodes/SetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.LicenseCodes",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Returns permissions that a caller has on the specified resource.
         /// *Caution* This resource is intended
         /// for use only by third-party partners who are creatingCloud Marketplace
@@ -113916,6 +116370,37 @@ pub mod networks_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.compute.v1.Networks", "AddPeering"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancel requests to remove a peering from the specified network. Applicable
+        /// only for PeeringConnection with update_strategy=CONSENSUS.  Cancels a
+        /// request to remove a peering from the specified network.
+        pub async fn cancel_request_remove_peering(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CancelRequestRemovePeeringNetworkRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Networks/CancelRequestRemovePeering",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Networks",
+                        "CancelRequestRemovePeering",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }
@@ -129122,6 +131607,380 @@ pub mod resource_policies_client {
     }
 }
 /// Generated client implementations.
+pub mod rollout_plans_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The RolloutPlans API.
+    #[derive(Debug, Clone)]
+    pub struct RolloutPlansClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl RolloutPlansClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> RolloutPlansClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RolloutPlansClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            RolloutPlansClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Deletes a RolloutPlan.
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRolloutPlanRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RolloutPlans/Delete",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RolloutPlans", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single project-scoped RolloutPlan.
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRolloutPlanRequest>,
+        ) -> std::result::Result<tonic::Response<super::RolloutPlan>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RolloutPlans/Get",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.RolloutPlans", "Get"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new RolloutPlan in a given project and location.
+        pub async fn insert(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InsertRolloutPlanRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RolloutPlans/Insert",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RolloutPlans", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists RolloutPlans in a given project and location.
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRolloutPlansRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RolloutPlansListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RolloutPlans/List",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.RolloutPlans", "List"));
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
+pub mod rollouts_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The Rollouts API.
+    #[derive(Debug, Clone)]
+    pub struct RolloutsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl RolloutsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> RolloutsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RolloutsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            RolloutsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Cancels a Rollout.
+        pub async fn cancel(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelRolloutRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Rollouts/Cancel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Rollouts", "Cancel"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Rollout.
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRolloutRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Rollouts/Delete",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Rollouts", "Delete"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single project-scoped Rollout.
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRolloutRequest>,
+        ) -> std::result::Result<tonic::Response<super::Rollout>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Rollouts/Get",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Rollouts", "Get"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Rollouts in a given project and location.
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRolloutsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RolloutsListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Rollouts/List",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Rollouts", "List"));
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
 pub mod routers_client {
     #![allow(
         unused_variables,
@@ -136649,7 +139508,7 @@ pub mod zone_vm_extension_policies_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Deletes a specified zone VM extension policy.
+        /// Deletes a specified zone VM extension policy within a project.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteZoneVmExtensionPolicyRequest>,
@@ -136676,7 +139535,7 @@ pub mod zone_vm_extension_policies_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Retrieves details of a specific zone VM extension policy.
+        /// Retrieves details of a specific zone VM extension policy within a project.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetZoneVmExtensionPolicyRequest>,
@@ -136763,7 +139622,7 @@ pub mod zone_vm_extension_policies_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Modifies an existing zone VM extension policy.
+        /// Modifies an existing zone VM extension policy within a project.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateZoneVmExtensionPolicyRequest>,

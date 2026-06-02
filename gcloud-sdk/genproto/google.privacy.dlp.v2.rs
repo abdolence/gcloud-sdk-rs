@@ -1667,7 +1667,7 @@ pub struct ContentItem {
     #[prost(message, optional, tag = "6")]
     pub content_metadata: ::core::option::Option<ContentMetadata>,
     /// Data of the item either in the byte array or UTF-8 string form, or table.
-    #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5")]
+    #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5, 7")]
     pub data_item: ::core::option::Option<content_item::DataItem>,
 }
 /// Nested message and enum types in `ContentItem`.
@@ -1686,6 +1686,11 @@ pub mod content_item {
         /// Content data to inspect or redact. Replaces `type` and `data`.
         #[prost(message, tag = "5")]
         ByteItem(super::ByteContentItem),
+        /// Represents a conversation (either complete or a slice).
+        /// It is assumed that all included messages are contiguous and ordered in
+        /// chronological order.
+        #[prost(message, tag = "7")]
+        Conversation(super::Conversation),
     }
 }
 /// Metadata on content to be scanned.
@@ -1694,6 +1699,84 @@ pub struct ContentMetadata {
     /// User provided key-value pairs of content metadata.
     #[prost(message, repeated, tag = "2")]
     pub properties: ::prost::alloc::vec::Vec<KeyValueMetadataProperty>,
+}
+/// Complete conversation or slice of a conversation.
+/// It is assumed that all included messages are contiguous and ordered in
+/// chronological order.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Conversation {
+    /// Messages exchanged within this conversation.
+    /// The maximum number of messages allowed is 50k.
+    /// The order of the messages is assumed to be chronological and will be used
+    /// to index findings in the response.
+    #[prost(message, repeated, tag = "1")]
+    pub messages: ::prost::alloc::vec::Vec<ConversationMessage>,
+}
+/// Single message in a conversation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConversationMessage {
+    /// The contents of this message.
+    #[prost(string, tag = "1")]
+    pub content: ::prost::alloc::string::String,
+    /// The type of message.
+    #[prost(enumeration = "conversation_message::MessageType", tag = "2")]
+    pub message_type: i32,
+    /// Optional. The identifier of the participant,
+    /// for example, 'test-user' or 'gemini'.
+    /// The participant ID can contain lowercase letters, numbers, and hyphens;
+    /// that is, it must match the regular expression:
+    /// `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
+    /// The maximum length is 63 characters.
+    #[prost(string, tag = "3")]
+    pub participant_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ConversationMessage`.
+pub mod conversation_message {
+    /// The type of message.
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MessageType {
+        /// Unused.
+        Unspecified = 0,
+        /// Message contains content to be inspected.
+        Content = 1,
+        /// Message contains context only and will not have findings reported from
+        /// it during inspection or redacted from it during de-identification.
+        Context = 2,
+    }
+    impl MessageType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MESSAGE_TYPE_UNSPECIFIED",
+                Self::Content => "CONTENT",
+                Self::Context => "CONTEXT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MESSAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONTENT" => Some(Self::Content),
+                "CONTEXT" => Some(Self::Context),
+                _ => None,
+            }
+        }
+    }
 }
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
 /// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
@@ -1860,7 +1943,7 @@ pub struct ContentLocation {
     #[prost(string, tag = "7")]
     pub container_version: ::prost::alloc::string::String,
     /// Type of the container within the file with location of the finding.
-    #[prost(oneof = "content_location::Location", tags = "2, 3, 5, 8")]
+    #[prost(oneof = "content_location::Location", tags = "2, 3, 5, 8, 10")]
     pub location: ::core::option::Option<content_location::Location>,
 }
 /// Nested message and enum types in `ContentLocation`.
@@ -1880,6 +1963,35 @@ pub mod content_location {
         /// Location within the metadata for inspected content.
         #[prost(message, tag = "8")]
         MetadataLocation(super::MetadataLocation),
+        /// Location within a conversation.
+        #[prost(message, tag = "10")]
+        ConversationLocation(super::ConversationLocation),
+    }
+}
+/// Location within a conversation.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConversationLocation {
+    /// The location of the finding within a conversation.
+    #[prost(oneof = "conversation_location::Location", tags = "1, 2")]
+    pub location: ::core::option::Option<conversation_location::Location>,
+}
+/// Nested message and enum types in `ConversationLocation`.
+pub mod conversation_location {
+    /// If set, indicates that the finding applies to all messages in the
+    /// conversation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AllMessages {}
+    /// The location of the finding within a conversation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Location {
+        /// Matches an index of a message in the conversation provided in the
+        /// request.
+        #[prost(int32, tag = "1")]
+        MessageIndex(i32),
+        /// If set, indicates that the finding applies to all messages in the
+        /// conversation.
+        #[prost(message, tag = "2")]
+        AllMessages(AllMessages),
     }
 }
 /// Metadata Location
@@ -6243,7 +6355,7 @@ pub mod data_profile_action {
         ///   visible to queries by the time your topic receives the Pub/Sub
         ///   notification.
         /// * The best practice is to use the same table for an entire organization
-        ///   so that you can take advantage of the [provided Looker
+        ///   so that you can take advantage of the [provided Data Studio
         ///   reports](<https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report>).
         ///   If you use VPC Service Controls to define security perimeters, then
         ///   you must use a separate table for each boundary.
@@ -11081,18 +11193,17 @@ pub mod domain {
 pub enum TransformationResultStatusType {
     /// Unused.
     StateTypeUnspecified = 0,
-    /// This will be set when a finding could not be transformed (i.e. outside user
+    /// This is set when a finding cannot be transformed (i.e. outside user
     /// set bucket range).
     InvalidTransform = 1,
-    /// This will be set when a BigQuery transformation was successful but could
-    /// not be stored back in BigQuery because the transformed row exceeds
-    /// BigQuery's max row size.
+    /// This is set when a transformation is successful but cannot be stored in
+    /// BigQuery because the transformed row exceeds BigQuery's max row size.
     BigqueryMaxRowSizeExceeded = 2,
-    /// This will be set when there is a finding in the custom metadata of a file,
+    /// This is set when there is a finding in the custom metadata of a file,
     /// but at the write time of the transformed file, this key / value pair is
     /// unretrievable.
     MetadataUnretrievable = 3,
-    /// This will be set when the transformation and storing of it is successful.
+    /// This is set when the transformation and its storage are successful.
     Success = 4,
 }
 impl TransformationResultStatusType {

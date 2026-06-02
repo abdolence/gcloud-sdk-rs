@@ -2184,6 +2184,80 @@ pub struct AggregateIssueStatsRequest {
     #[prost(message, optional, tag = "4")]
     pub baseline_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
+/// AggregateQueryStatsRequest represents the input to the AggregateQueryStats
+/// method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AggregateQueryStatsRequest {
+    /// Required. Parent can be a project, a folder, or an organization. The search
+    /// is limited to the resources within the `parent`.
+    ///
+    /// The allowed values are:
+    ///
+    /// * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+    /// * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+    /// * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+    /// * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The expression to order the results by.
+    /// Example: `order_by="execution_count"`
+    /// Example: `order_by="execution_count desc"`
+    /// Supported order by fields are `execution_count`, `rows_processed`,
+    /// `total_cpu_time`, `avg_cpu_time`.
+    #[prost(string, tag = "2")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. The expression to filter resources.
+    ///
+    /// Supported fields are: `full_resource_name`, `resource_type`, `container`,
+    /// `product.type`, `product.engine`, `product.version`, `location`,
+    /// `labels`, `issues`, fields of availability_info,
+    /// data_protection_info,'resource_name', etc.
+    ///
+    /// The expression is a list of zero or more restrictions combined via logical
+    /// operators `AND` and `OR`. When `AND` and `OR` are both used in the
+    /// expression, parentheses must be appropriately used to group the
+    /// combinations.
+    ///
+    /// Example: `location="us-east1"`
+    /// Example: `container="projects/123" OR container="projects/456"`
+    /// Example: `(container="projects/123" OR            container="projects/456") AND location="us-east1"`
+    /// Additional specific fields for query stats are: `metric_window`,
+    /// `query_hash`, `normalized_query`.
+    /// Example: `metric_window="LAST_ONE_DAY"`
+    /// (Possible values  for `metric_window` are: `LAST_ONE_DAY`,
+    /// `LAST_ONE_WEEK`, `LAST_TWO_WEEKS`)
+    /// Example: `query_hash="12345678"`
+    /// Example: `normalized_query="SELECT * FROM table"`
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. If unspecified, at most 100 query stats will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `AggregateQueryStatsRequest` call. Provide this to retrieve the subsequent
+    /// page. All parameters except page_token should match the parameters in the
+    /// call that provided the page token.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message containing relevant query stats
+/// for database resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregateQueryStatsResponse {
+    /// List of query stats where each group contains stats for resources having a
+    /// particular combination of relevant query stats.
+    #[prost(message, repeated, tag = "1")]
+    pub query_stats: ::prost::alloc::vec::Vec<QueryStatsInfo>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. List of unreachable regions from where data could not be
+    /// retrieved.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// The response message containing one of more group of relevant health issues
 /// for database resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2351,6 +2425,132 @@ pub struct AggregateFleetRequest {
     /// indicates the current state of the fleet.
     #[prost(message, optional, tag = "7")]
     pub baseline_date: ::core::option::Option<super::super::super::r#type::Date>,
+}
+/// QueryStatsInfo contains the aggregated and detailed query stats for a
+/// particular combination of relevant query stats for queries having same
+/// normalized query.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryStatsInfo {
+    /// Aggregated query stats for the resources for same normalized query.
+    #[prost(message, optional, tag = "1")]
+    pub aggregated_query_stats: ::core::option::Option<QueryStats>,
+    /// List of query stats for the resources in the group.
+    /// This stats is stats at resource level for the resources having same
+    /// normalized query.
+    #[prost(message, repeated, tag = "2")]
+    pub query_stats: ::prost::alloc::vec::Vec<QueryStats>,
+}
+/// ResourceId contains the identifier for a database resource,
+/// including the full resource name, resource type, and product.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ResourceId {
+    /// The full resource name of the resource.
+    #[prost(string, tag = "1")]
+    pub full_resource_name: ::prost::alloc::string::String,
+    /// The type of the resource.
+    /// sqladmin.googleapis.com/Instance
+    /// alloydb.googleapis.com/Cluster
+    /// alloydb.googleapis.com/Instance
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// The product of the resource, including the type, engine, and version.
+    #[prost(message, optional, tag = "3")]
+    pub product: ::core::option::Option<Product>,
+}
+/// QueryStats contains the stats for a particular combination of query_hash,
+/// query_string and resource_type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryStats {
+    /// The query hash of the query.
+    #[prost(string, tag = "1")]
+    pub query_hash: ::prost::alloc::string::String,
+    /// The query string is normalized query without any PII data.
+    #[prost(string, tag = "2")]
+    pub normalized_query: ::prost::alloc::string::String,
+    /// The type of the resource.
+    /// sqladmin.googleapis.com/Instance
+    /// alloydb.googleapis.com/Cluster
+    /// alloydb.googleapis.com/Instance
+    #[prost(string, tag = "4")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// The resource ids for which the query stats are collected.
+    #[prost(message, repeated, tag = "5")]
+    pub resource_ids: ::prost::alloc::vec::Vec<ResourceId>,
+    /// Metrics related to the query performance.
+    #[prost(message, optional, tag = "6")]
+    pub query_metrics: ::core::option::Option<QueryMetrics>,
+    /// Information about inefficient query.
+    #[prost(message, optional, tag = "7")]
+    pub inefficient_query_info: ::core::option::Option<InefficientQueryInfo>,
+}
+/// QueryMetrics contains the metrics related to the query execution.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryMetrics {
+    /// The number of times the query was executed.
+    #[prost(int64, tag = "1")]
+    pub execution_count: i64,
+    /// The average execution period of the query across all runs.
+    #[prost(message, optional, tag = "2")]
+    pub avg_cpu_time: ::core::option::Option<::prost_types::Duration>,
+    /// The total CPU time consumed by the query across all runs.
+    #[prost(message, optional, tag = "3")]
+    pub total_cpu_time: ::core::option::Option<::prost_types::Duration>,
+    /// The average number of rows processed by the query across all runs.
+    #[prost(int64, tag = "4")]
+    pub rows_processed: i64,
+    /// The window over which the metrics are aggregated.
+    #[prost(enumeration = "query_metrics::MetricsWindow", tag = "5")]
+    pub metrics_window: i32,
+}
+/// Nested message and enum types in `QueryMetrics`.
+pub mod query_metrics {
+    /// Enum to represent the window over which the metrics are aggregated.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MetricsWindow {
+        /// Unspecified. Default value.
+        Unspecified = 0,
+        /// Metrics are aggregated over the last 1 day.
+        LastOneDay = 1,
+        /// Metrics are aggregated over the last 7 days.
+        LastOneWeek = 2,
+        /// Metrics are aggregated over the last 14 days.
+        LastTwoWeeks = 3,
+    }
+    impl MetricsWindow {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "METRICS_WINDOW_UNSPECIFIED",
+                Self::LastOneDay => "LAST_ONE_DAY",
+                Self::LastOneWeek => "LAST_ONE_WEEK",
+                Self::LastTwoWeeks => "LAST_TWO_WEEKS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRICS_WINDOW_UNSPECIFIED" => Some(Self::Unspecified),
+                "LAST_ONE_DAY" => Some(Self::LastOneDay),
+                "LAST_ONE_WEEK" => Some(Self::LastOneWeek),
+                "LAST_TWO_WEEKS" => Some(Self::LastTwoWeeks),
+                _ => None,
+            }
+        }
+    }
 }
 /// The response message to aggregate a fleet by some group by
 /// fields.
@@ -3007,6 +3207,36 @@ pub mod database_center_client {
                     GrpcMethod::new(
                         "google.cloud.databasecenter.v1beta.DatabaseCenter",
                         "AggregateIssueStats",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// AggregateQueryStats provides database resource query execution statistics.
+        pub async fn aggregate_query_stats(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AggregateQueryStatsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AggregateQueryStatsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateQueryStats",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                        "AggregateQueryStats",
                     ),
                 );
             self.inner.unary(req, path, codec).await

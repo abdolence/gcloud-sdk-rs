@@ -4835,7 +4835,7 @@ pub mod entry_type {
         pub alternate_use_permission: ::prost::alloc::string::String,
     }
 }
-/// An aspect is a single piece of metadata describing an entry.
+/// Represents a single piece of metadata describing an entry or entry link.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Aspect {
     /// Output only. The resource name of the type used to create this Aspect.
@@ -5433,6 +5433,9 @@ pub struct GetEntryRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional. View to control which parts of an entry the service should
     /// return.
+    /// **Please check the limitations on returned aspects in the Entry view
+    /// documentation. Amount of returned aspects depends on the selected Entry
+    /// View.**
     #[prost(enumeration = "EntryView", tag = "2")]
     pub view: i32,
     /// Optional. Limits the aspects returned to the provided aspect types.
@@ -5453,6 +5456,9 @@ pub struct LookupEntryRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional. View to control which parts of an entry the service should
     /// return.
+    /// **Please check the limitations on returned aspects in the Entry view
+    /// documentation. Amount of returned aspects depends on the selected Entry
+    /// View.**
     #[prost(enumeration = "EntryView", tag = "2")]
     pub view: i32,
     /// Optional. Limits the aspects returned to the provided aspect types.
@@ -5475,25 +5481,80 @@ pub struct LookupContextRequest {
     /// following form: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The entry names to lookup context for. The request should have
-    /// max 10 of those.
+    /// Required. The entry names to look up the context for. The maximum number of
+    /// resources for a request is limited to 10.
     ///
     /// ## Examples:
     ///
-    /// projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`
     #[prost(string, repeated, tag = "2")]
     pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The text representing contextual information for which metadata
+    /// context is being requested.
+    #[prost(string, tag = "3")]
+    pub context: ::prost::alloc::string::String,
     /// Optional. Allows to configure the context.
+    ///
+    /// Supported options:
+    ///
+    /// * `format` - The format of the context (one of `yaml`,
+    ///   `xml`, `json`, default is `yaml`).
+    /// * `context_budget` - If provided, the output will be intelligently
+    ///   truncated on a best-effort basis to contain approximately the desired
+    ///   amount of characters. There is no guarantee to achieve the specific amount.
     #[prost(map = "string, string", tag = "4")]
     pub options: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
 }
+/// Modify Entry request using permissions in the source system.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModifyEntryRequest {
+    /// Required. The project to which the request should be attributed in the
+    /// following form: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The entry to modify.
+    #[prost(message, optional, tag = "2")]
+    pub entry: ::core::option::Option<Entry>,
+    /// Optional. Mask of fields to update. To update Aspects, the update_mask must
+    /// contain the value "aspects".
+    ///
+    /// If the update_mask is empty, the service will update all modifiable fields
+    /// present in the request.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If set to true, any aspects not specified in the request will be
+    /// deleted. The default is false.
+    #[prost(bool, tag = "4")]
+    pub delete_missing_aspects: bool,
+    /// Optional. The aspect keys which the service should modify. It supports
+    /// the following syntaxes:
+    ///
+    /// * `<aspect_type_reference>` - matches an aspect of the given type and empty
+    ///   path.
+    /// * `<aspect_type_reference>@path` - matches an aspect of the given type and
+    ///   specified path. For example, to attach an aspect to a field that is
+    ///   specified by the `schema` aspect, the path should have the format
+    ///   `Schema.<field_name>`.
+    /// * `<aspect_type_reference>@*` - matches aspects of the given type for all
+    ///   paths.
+    /// * `*@path` - matches aspects of all types on the given path.
+    ///
+    /// The service will not remove existing aspects matching the syntax unless
+    /// `delete_missing_aspects` is set to true.
+    ///
+    /// If this field is left empty, the service treats it as specifying
+    /// exactly those Aspects present in the request.
+    #[prost(string, repeated, tag = "5")]
+    pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Lookup Context response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupContextResponse {
-    /// LLM generated context for the resources.
+    /// Pre-formatted block of text containing the context for the requested
+    /// resources.
     #[prost(string, tag = "1")]
     pub context: ::prost::alloc::string::String,
 }
@@ -7570,6 +7631,33 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Modifies an entry using the permission on the source system.
+        pub async fn modify_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ModifyEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ModifyEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ModifyEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Searches for Entries matching the given query and scope.
         pub async fn search_entries(
             &mut self,
@@ -8036,6 +8124,294 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
     }
+}
+/// Represents a proposed change to a metadata resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChangeRequest {
+    /// Identifier. The relative resource name of the ChangeRequest, of the form:
+    /// projects/{project_number}/locations/{location_id}/changeRequests/{change_request_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the ChangeRequest.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the ChangeRequest was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the ChangeRequest was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Justification of the ChangeRequest. This should explain
+    /// *why* the change is needed or why it should be approved.
+    #[prost(string, tag = "5")]
+    pub justification: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the ChangeRequest.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The email address of the user who created the ChangeRequest.
+    #[prost(string, tag = "7")]
+    pub author: ::prost::alloc::string::String,
+    /// Output only. The current state of the ChangeRequest.
+    #[prost(enumeration = "change_request::State", tag = "8")]
+    pub state: i32,
+    /// Output only. The full resource name of the target resource to be modified.
+    /// Example:
+    /// //dataplex.googleapis.com/projects/my-project/locations/us-central1/entryGroups/my-group/entries/my-entry
+    #[prost(string, tag = "9")]
+    pub resource: ::prost::alloc::string::String,
+    /// Output only. The type of change represented by the change_payload.
+    /// This field is derived from the populated field in the change_payload oneof.
+    #[prost(enumeration = "change_request::ChangeType", tag = "19")]
+    pub change_type: i32,
+    /// Output only. The reason provided for rejecting the ChangeRequest.
+    #[prost(string, tag = "16")]
+    pub rejection_comment: ::prost::alloc::string::String,
+    /// Output only. The email address of the user who approved/rejected the
+    /// ChangeRequest.
+    #[prost(string, tag = "17")]
+    pub approver: ::prost::alloc::string::String,
+    /// Optional. This checksum is computed by the service. It can be sent on
+    /// update and delete requests to ensure the client has an up-to-date value
+    /// before proceeding.
+    #[prost(string, tag = "18")]
+    pub etag: ::prost::alloc::string::String,
+    /// Detailed specification of the change, embedding the original request.
+    #[prost(
+        oneof = "change_request::ChangePayload",
+        tags = "10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 26, 27, 28, 30, 32"
+    )]
+    pub change_payload: ::core::option::Option<change_request::ChangePayload>,
+}
+/// Nested message and enum types in `ChangeRequest`.
+pub mod change_request {
+    /// Possible states of a ChangeRequest.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State unspecified.
+        Unspecified = 0,
+        /// The change is proposed and new.
+        New = 1,
+        /// The change has been approved.
+        Approved = 2,
+        /// The change has been rejected.
+        Rejected = 3,
+        /// The change request has expired.
+        Expired = 4,
+        /// The approved change has been revoked.
+        Revoked = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::New => "NEW",
+                Self::Approved => "APPROVED",
+                Self::Rejected => "REJECTED",
+                Self::Expired => "EXPIRED",
+                Self::Revoked => "REVOKED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW" => Some(Self::New),
+                "APPROVED" => Some(Self::Approved),
+                "REJECTED" => Some(Self::Rejected),
+                "EXPIRED" => Some(Self::Expired),
+                "REVOKED" => Some(Self::Revoked),
+                _ => None,
+            }
+        }
+    }
+    /// Enum representing the type of change in the payload.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ChangeType {
+        /// State unspecified.
+        Unspecified = 0,
+        /// Request to create an Entry.
+        CreateEntry = 1,
+        /// Request to update an Entry.
+        UpdateEntry = 2,
+        /// Request to delete an Entry.
+        DeleteEntry = 3,
+        /// Request to create an EntryLink.
+        CreateEntryLink = 4,
+        /// Request to delete an EntryLink.
+        DeleteEntryLink = 5,
+        /// Request to create a Glossary.
+        CreateGlossary = 7,
+        /// Request to update a Glossary.
+        UpdateGlossary = 8,
+        /// Request to delete a Glossary.
+        DeleteGlossary = 9,
+        /// Request to create a GlossaryCategory.
+        CreateGlossaryCategory = 10,
+        /// Request to update a GlossaryCategory.
+        UpdateGlossaryCategory = 11,
+        /// Request to delete a GlossaryCategory.
+        DeleteGlossaryCategory = 13,
+        /// Request to create a GlossaryTerm.
+        CreateGlossaryTerm = 14,
+        /// Request to update a GlossaryTerm.
+        UpdateGlossaryTerm = 15,
+        /// Request to delete a GlossaryTerm.
+        DeleteGlossaryTerm = 17,
+        /// Request to request Data Product access.
+        RequestDataProductAccess = 33,
+    }
+    impl ChangeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                Self::CreateEntry => "CREATE_ENTRY",
+                Self::UpdateEntry => "UPDATE_ENTRY",
+                Self::DeleteEntry => "DELETE_ENTRY",
+                Self::CreateEntryLink => "CREATE_ENTRY_LINK",
+                Self::DeleteEntryLink => "DELETE_ENTRY_LINK",
+                Self::CreateGlossary => "CREATE_GLOSSARY",
+                Self::UpdateGlossary => "UPDATE_GLOSSARY",
+                Self::DeleteGlossary => "DELETE_GLOSSARY",
+                Self::CreateGlossaryCategory => "CREATE_GLOSSARY_CATEGORY",
+                Self::UpdateGlossaryCategory => "UPDATE_GLOSSARY_CATEGORY",
+                Self::DeleteGlossaryCategory => "DELETE_GLOSSARY_CATEGORY",
+                Self::CreateGlossaryTerm => "CREATE_GLOSSARY_TERM",
+                Self::UpdateGlossaryTerm => "UPDATE_GLOSSARY_TERM",
+                Self::DeleteGlossaryTerm => "DELETE_GLOSSARY_TERM",
+                Self::RequestDataProductAccess => "REQUEST_DATA_PRODUCT_ACCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_ENTRY" => Some(Self::CreateEntry),
+                "UPDATE_ENTRY" => Some(Self::UpdateEntry),
+                "DELETE_ENTRY" => Some(Self::DeleteEntry),
+                "CREATE_ENTRY_LINK" => Some(Self::CreateEntryLink),
+                "DELETE_ENTRY_LINK" => Some(Self::DeleteEntryLink),
+                "CREATE_GLOSSARY" => Some(Self::CreateGlossary),
+                "UPDATE_GLOSSARY" => Some(Self::UpdateGlossary),
+                "DELETE_GLOSSARY" => Some(Self::DeleteGlossary),
+                "CREATE_GLOSSARY_CATEGORY" => Some(Self::CreateGlossaryCategory),
+                "UPDATE_GLOSSARY_CATEGORY" => Some(Self::UpdateGlossaryCategory),
+                "DELETE_GLOSSARY_CATEGORY" => Some(Self::DeleteGlossaryCategory),
+                "CREATE_GLOSSARY_TERM" => Some(Self::CreateGlossaryTerm),
+                "UPDATE_GLOSSARY_TERM" => Some(Self::UpdateGlossaryTerm),
+                "DELETE_GLOSSARY_TERM" => Some(Self::DeleteGlossaryTerm),
+                "REQUEST_DATA_PRODUCT_ACCESS" => Some(Self::RequestDataProductAccess),
+                _ => None,
+            }
+        }
+    }
+    /// Detailed specification of the change, embedding the original request.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ChangePayload {
+        /// Payload for creating an Entry.
+        #[prost(message, tag = "10")]
+        CreateEntry(super::CreateEntryRequest),
+        /// Payload for updating an Entry.
+        #[prost(message, tag = "11")]
+        UpdateEntry(super::UpdateEntryRequest),
+        /// Payload for deleting an Entry.
+        #[prost(message, tag = "12")]
+        DeleteEntry(super::DeleteEntryRequest),
+        /// Payload for creating an EntryLink.
+        #[prost(message, tag = "13")]
+        CreateEntryLink(super::CreateEntryLinkRequest),
+        /// Payload for deleting an EntryLink.
+        #[prost(message, tag = "14")]
+        DeleteEntryLink(super::DeleteEntryLinkRequest),
+        /// Payload for creating a Glossary.
+        #[prost(message, tag = "20")]
+        CreateGlossary(super::CreateGlossaryRequest),
+        /// Payload for updating a Glossary.
+        #[prost(message, tag = "21")]
+        UpdateGlossary(super::UpdateGlossaryRequest),
+        /// Payload for deleting a Glossary.
+        #[prost(message, tag = "22")]
+        DeleteGlossary(super::DeleteGlossaryRequest),
+        /// Payload for creating a GlossaryCategory.
+        #[prost(message, tag = "23")]
+        CreateGlossaryCategory(super::CreateGlossaryCategoryRequest),
+        /// Payload for updating a GlossaryCategory.
+        #[prost(message, tag = "24")]
+        UpdateGlossaryCategory(super::UpdateGlossaryCategoryRequest),
+        /// Payload for deleting a GlossaryCategory.
+        #[prost(message, tag = "26")]
+        DeleteGlossaryCategory(super::DeleteGlossaryCategoryRequest),
+        /// Payload for creating a GlossaryTerm.
+        #[prost(message, tag = "27")]
+        CreateGlossaryTerm(super::CreateGlossaryTermRequest),
+        /// Payload for updating a GlossaryTerm.
+        #[prost(message, tag = "28")]
+        UpdateGlossaryTerm(super::UpdateGlossaryTermRequest),
+        /// Payload for deleting a GlossaryTerm.
+        #[prost(message, tag = "30")]
+        DeleteGlossaryTerm(super::DeleteGlossaryTermRequest),
+        /// Payload for Data Product access request.
+        #[prost(message, tag = "32")]
+        DataProductAccessRequest(super::DataProductAccessRequest),
+    }
+}
+/// Message for requesting access to a Data Product. This will be used to
+/// create a ChangeRequest of type REQUEST_DATA_PRODUCT_ACCESS.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataProductAccessRequest {
+    /// Required. The resource name of the data product.
+    /// Format:
+    /// projects/{project_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the access group for which access is being requested.
+    /// This corresponds to the unique identifier of the AccessGroup defined in the
+    /// Data Product.
+    #[prost(string, tag = "2")]
+    pub access_group_id: ::prost::alloc::string::String,
+    /// Output only. The display name of the access group defined in the Data
+    /// Product for which access is being requested.
+    #[prost(string, tag = "4")]
+    pub access_group_display_name: ::prost::alloc::string::String,
+    /// Optional. The principal for which access is being requested in IAM format.
+    /// If not specified, the requestor's principal will be used.
+    /// Example: `serviceAccount:my-sa@my-project.iam.gserviceaccount.com`.
+    /// Only service account principals are currently supported.
+    /// <https://cloud.google.com/iam/docs/principal-identifiers>
+    #[prost(string, optional, tag = "3")]
+    pub requested_principal: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A Resource designed to manage encryption configurations for customers to
 /// support Customer Managed Encryption Keys (CMEK).
@@ -8751,6 +9127,11 @@ pub mod data_discovery_spec {
         /// Optional. Configuration for JSON data.
         #[prost(message, optional, tag = "4")]
         pub json_options: ::core::option::Option<storage_config::JsonOptions>,
+        /// Optional. Specifies configuration for unstructured data discovery.
+        #[prost(message, optional, tag = "5")]
+        pub unstructured_data_options: ::core::option::Option<
+            storage_config::UnstructuredDataOptions,
+        >,
     }
     /// Nested message and enum types in `StorageConfig`.
     pub mod storage_config {
@@ -8789,6 +9170,14 @@ pub mod data_discovery_spec {
             /// (strings, number, or boolean).
             #[prost(bool, tag = "2")]
             pub type_inference_disabled: bool,
+        }
+        /// Describes options for unstructured data discovery.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct UnstructuredDataOptions {
+            /// Optional. Specifies whether deeper semantic inference over the objects'
+            /// contents using GenAI is enabled.
+            #[prost(bool, tag = "2")]
+            pub semantic_inference_enabled: bool,
         }
     }
     /// The configurations of the data discovery scan resource.
@@ -9225,6 +9614,11 @@ pub struct DataProduct {
         ::prost::alloc::string::String,
         data_product::AccessGroup,
     >,
+    /// Optional. Configuration for access approval for the data product.
+    #[prost(message, optional, tag = "15")]
+    pub access_approval_config: ::core::option::Option<
+        data_product::AccessApprovalConfig,
+    >,
 }
 /// Nested message and enum types in `DataProduct`.
 pub mod data_product {
@@ -9232,6 +9626,10 @@ pub mod data_product {
     /// <https://cloud.google.com/iam/docs/principals-overview.>
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Principal {
+        /// Optional. Specifies the email of the producer service account, as per
+        /// <https://cloud.google.com/iam/docs/principals-overview#service-account.>
+        #[prost(string, optional, tag = "2")]
+        pub service_account: ::core::option::Option<::prost::alloc::string::String>,
         /// The type of the principal entity.
         #[prost(oneof = "principal::Type", tags = "1")]
         pub r#type: ::core::option::Option<principal::Type>,
@@ -9266,6 +9664,15 @@ pub mod data_product {
         /// Required. The principal entity associated with this access group.
         #[prost(message, optional, tag = "4")]
         pub principal: ::core::option::Option<Principal>,
+    }
+    /// Configuration for access approval for the data product.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccessApprovalConfig {
+        /// Optional. Specifies the email addresses of users who are potential
+        /// approvers and are notified when an access request is made for the data
+        /// product. The maximum number of emails allowed is 10.
+        #[prost(string, repeated, tag = "2")]
+        pub approver_emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// Represents a data asset resource that can be packaged and shared via a data
@@ -9481,6 +9888,31 @@ pub struct UpdateDataProductRequest {
     /// Default: false.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
+}
+/// Message for requesting access to a Data Product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RequestDataProductAccessRequest {
+    /// Required. The resource name of the data product.
+    /// Format:
+    /// projects/{project_number}/locations/{location_id}/dataProducts/{data_product_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The change request for the data product access request.
+    #[prost(message, optional, tag = "2")]
+    pub change_request: ::core::option::Option<ChangeRequest>,
+    /// Optional. Validates the request without actually creating the access change
+    /// request. Defaults to false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Response message for requesting access to a Data Product.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RequestDataProductAccessResponse {
+    /// The resource name of the created ChangeRequest.
+    /// Format:
+    /// projects/{project_number}/locations/{location_id}/changeRequests/{change_request_id}
+    #[prost(string, tag = "1")]
+    pub change_request_name: ::prost::alloc::string::String,
 }
 /// Request message for creating a data asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9838,6 +10270,38 @@ pub mod data_product_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Requests access to a data product. This will trigger an access approval
+        /// workflow, and the requester will need to wait for the approval to be
+        /// granted before they will be able to access the data product assets.
+        pub async fn request_data_product_access(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RequestDataProductAccessRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RequestDataProductAccessResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataProductService/RequestDataProductAccess",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataProductService",
+                        "RequestDataProductAccess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates a data asset.
         pub async fn create_data_asset(
             &mut self,
@@ -10131,8 +10595,13 @@ pub mod data_source {
         /// //storage.googleapis.com/projects/PROJECT_ID/buckets/BUCKET_ID
         /// or
         /// BigQuery table of type "TABLE" for
-        /// DataProfileScan/DataQualityScan/DataDocumentationScan Format:
+        /// DataProfileScan/DataQualityScan/DataDocumentationScan
+        /// Format:
         /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+        /// or
+        /// BigQuery dataset for DataDocumentationScan only
+        /// Format:
+        /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID
         #[prost(string, tag = "101")]
         Resource(::prost::alloc::string::String),
     }
@@ -10206,6 +10675,9 @@ pub struct DataProfileSpec {
     /// Dataplex Universal Catalog metadata.
     #[prost(bool, tag = "8")]
     pub catalog_publishing_enabled: bool,
+    /// Optional. The execution mode for the profile scan.
+    #[prost(enumeration = "data_profile_spec::Mode", tag = "9")]
+    pub mode: i32,
 }
 /// Nested message and enum types in `DataProfileSpec`.
 pub mod data_profile_spec {
@@ -10241,6 +10713,55 @@ pub mod data_profile_spec {
         /// 'x'.
         #[prost(string, repeated, tag = "1")]
         pub field_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Defines the execution mode for the profile scan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Performs standard profiling. The behavior is controlled by other fields
+        /// such as `sampling_percent`, `row_filter`, and column filters.
+        /// This mode allows for full scans or custom sampling.
+        Standard = 1,
+        /// Specifies lightweight profiling mode. This mode is optimized for
+        /// low-latency, low-fidelity profiling.
+        ///
+        /// When this mode is selected, the following fields must not be set:
+        /// `sampling_percent`, `row_filter`, `include_fields`, and `exclude_fields`.
+        Lightweight = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Lightweight => "LIGHTWEIGHT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "LIGHTWEIGHT" => Some(Self::Lightweight),
+                _ => None,
+            }
+        }
     }
 }
 /// DataProfileResult defines the output of DataProfileScan. Each field of the
@@ -10520,6 +11041,59 @@ pub mod data_profile_result {
         }
     }
 }
+/// DataQualityRuleTemplate represents a template which can be reused across
+/// multiple data quality rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityRuleTemplate {
+    /// Output only. The name of the rule template in the format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The dimension a rule template belongs to. Rule level results
+    /// are also aggregated at the dimension level.
+    #[prost(string, tag = "2")]
+    pub dimension: ::prost::alloc::string::String,
+    /// Output only. Collection of SQLs for data quality rules. Currently only one
+    /// SQL is supported.
+    #[prost(message, repeated, tag = "3")]
+    pub sql_collection: ::prost::alloc::vec::Vec<data_quality_rule_template::Sql>,
+    /// Output only. Description for input parameters
+    #[prost(map = "string, message", tag = "4")]
+    pub input_parameters: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        data_quality_rule_template::ParameterDescription,
+    >,
+    /// Output only. A list of features or properties supported by this rule
+    /// template.
+    #[prost(string, repeated, tag = "5")]
+    pub capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `DataQualityRuleTemplate`.
+pub mod data_quality_rule_template {
+    /// Templatized SQL query for data quality rules. It can have parameters that
+    /// can be substituted with values when a rule is created using this template.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Sql {
+        /// Output only. Templatized SQL query for data quality rules.
+        #[prost(string, tag = "1")]
+        pub query: ::prost::alloc::string::String,
+    }
+    /// Description of the input parameter. It can include the type(s) supported
+    /// by the parameter and intended usage. It is for information purposes only
+    /// and does not affect the behavior of the rule template.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ParameterDescription {
+        /// Output only. Description of the input parameter. It can include the
+        /// type(s) supported by the parameter and intended usage. It is for
+        /// information purposes only and does not affect the behavior of the rule
+        /// template.
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+        /// Output only. The default value for the parameter if no value is provided.
+        #[prost(string, tag = "2")]
+        pub default_value: ::prost::alloc::string::String,
+    }
+}
 /// DataQualityScan related setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualitySpec {
@@ -10552,6 +11126,28 @@ pub struct DataQualitySpec {
     /// Dataplex Universal Catalog metadata.
     #[prost(bool, tag = "8")]
     pub catalog_publishing_enabled: bool,
+    /// Optional. If enabled, the data scan will retrieve rules defined in the
+    /// dataplex-types.global.data-rules aspect on all paths of the catalog entry
+    /// corresponding to the BigQuery table resource and all attached glossary
+    /// terms. The path that data-rules aspect is attached on the table entry
+    /// defines the column that the rule will be evaluated against. For glossary
+    /// terms, the path that the terms are attached on the table entry defines the
+    /// column that the rule will be evaluated against. At the start of scan
+    /// execution, the rules reflect the latest state retrieved from the catalog
+    /// entry and any updates on the rules thereafter are ignored for that
+    /// execution. The updates will be reflected from the next execution. Rules
+    /// defined in the datascan must be empty if this field is enabled.
+    #[prost(bool, tag = "10")]
+    pub enable_catalog_based_rules: bool,
+    /// Optional. Filter for selectively running a subset of rules. You can filter
+    /// the request by the name or attribute key-value pairs defined on the rule.
+    /// If not specified, all rules are run. The filter is applicable to both, the
+    /// rules retrieved from catalog and explicitly defined rules in the scan.
+    /// Please see [filter
+    /// syntax](<https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview#rule-filtering>)
+    /// for more details.
+    #[prost(string, tag = "11")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DataQualitySpec`.
 pub mod data_quality_spec {
@@ -10936,6 +11532,18 @@ pub struct DataQualityRule {
     /// Default is false.
     #[prost(bool, tag = "506")]
     pub suspended: bool,
+    /// Optional. Map of attribute name and value linked to the rule. The rules to
+    /// evaluate can be filtered based on attributes provided here and a filter
+    /// expression provided in the DataQualitySpec.filter field.
+    #[prost(map = "string, string", tag = "507")]
+    pub attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Contains information about the source of the rule and its
+    /// relationship with the BigQuery table, where applicable.
+    #[prost(message, optional, tag = "508")]
+    pub rule_source: ::core::option::Option<data_quality_rule::RuleSource>,
     /// Optional. Specifies the debug queries for this rule.
     /// Currently, only one query is supported, but this may be expanded in the
     /// future.
@@ -10944,7 +11552,7 @@ pub struct DataQualityRule {
     /// The rule-specific configuration.
     #[prost(
         oneof = "data_quality_rule::RuleType",
-        tags = "1, 2, 3, 4, 100, 101, 200, 201, 202"
+        tags = "1, 2, 3, 4, 100, 101, 200, 201, 202, 5"
     )]
     pub rule_type: ::core::option::Option<data_quality_rule::RuleType>,
 }
@@ -11124,6 +11732,113 @@ pub mod data_quality_rule {
         #[prost(string, tag = "1")]
         pub sql_statement: ::prost::alloc::string::String,
     }
+    /// A rule that constructs a SQL statement to evaluate using a rule template
+    /// and parameter values. If the constructed statement returns any rows, this
+    /// rule fails
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TemplateReference {
+        /// Required. The template entry name. Entry must be of EntryType
+        /// `projects/dataplex-types/locations/global/entryTypes/data-quality-rule-template`
+        /// and contains top-level aspect of AspectType
+        /// `projects/dataplex-types/locations/global/aspectTypes/data-quality-rule-template`.
+        /// The format is:
+        /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. Provides the map of parameter name and value.
+        /// The maximum size of the field is 120KB (encoded as UTF-8).
+        #[prost(map = "string, message", tag = "5")]
+        pub values: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            template_reference::ParameterValue,
+        >,
+        /// Output only. The resolved SQL statement generated from the template with
+        /// parameters substituted. It is only populated in the result.
+        #[prost(string, tag = "3")]
+        pub resolved_sql: ::prost::alloc::string::String,
+        /// Output only. The rule template used to resolve the rule. It is only
+        /// populated in the result.
+        #[prost(message, optional, tag = "4")]
+        pub rule_template: ::core::option::Option<super::DataQualityRuleTemplate>,
+    }
+    /// Nested message and enum types in `TemplateReference`.
+    pub mod template_reference {
+        /// Represents a parameter value.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ParameterValue {
+            /// Required. Represents the string value of the parameter.
+            #[prost(string, tag = "1")]
+            pub value: ::prost::alloc::string::String,
+        }
+    }
+    /// Represents the rule source information from Catalog.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RuleSource {
+        /// Output only. Rule path elements represent information about the
+        /// individual items in the relationship path between the scan resource and
+        /// rule origin in that order.
+        #[prost(message, repeated, tag = "1")]
+        pub rule_path_elements: ::prost::alloc::vec::Vec<rule_source::RulePathElement>,
+    }
+    /// Nested message and enum types in `RuleSource`.
+    pub mod rule_source {
+        /// Path Element represents the direct relationship between the rule origin
+        /// (aspects) to the BigQuery Entry. Ordering of the rule relationship will
+        /// be maintained such that the first entry in the list is the closest
+        /// ancestor (BigQuery table itself). A blank source denotes that the rule is
+        /// derived directly from the DataScan itself.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct RulePathElement {
+            /// The source type of the rule.
+            #[prost(oneof = "rule_path_element::SourceType", tags = "1, 2")]
+            pub source_type: ::core::option::Option<rule_path_element::SourceType>,
+        }
+        /// Nested message and enum types in `RulePathElement`.
+        pub mod rule_path_element {
+            /// Entry source represents information about the related source entry.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct EntrySource {
+                /// Output only. The entry type to represent the current characteristics
+                /// of the entry in the form of:
+                /// `projects/{project_id_or_number}/locations/{location_id}/entryTypes/{entry-type-id}`.
+                #[prost(string, tag = "1")]
+                pub entry_type: ::prost::alloc::string::String,
+                /// Output only. The entry name in the form of:
+                /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
+                #[prost(string, tag = "2")]
+                pub entry: ::prost::alloc::string::String,
+                /// Output only. The display name of the entry.
+                #[prost(string, tag = "3")]
+                pub display_name: ::prost::alloc::string::String,
+            }
+            /// Entry link source represents information about the entry link.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct EntryLinkSource {
+                /// Output only. The entry link type to represent the current
+                /// relationship between the entry and the next entry in the path.
+                /// In the form of:
+                /// `projects/{project_id_or_number}/locations/{location_id}/entryLinkTypes/{entry_link_type_id}`
+                #[prost(string, tag = "1")]
+                pub entry_link_type: ::prost::alloc::string::String,
+                /// Output only. The entry link name in the form of:
+                /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}`
+                #[prost(string, tag = "2")]
+                pub entry_link: ::prost::alloc::string::String,
+            }
+            /// The source type of the rule.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum SourceType {
+                /// Output only. Entry source represents information about the related
+                /// source entry.
+                #[prost(message, tag = "1")]
+                EntrySource(EntrySource),
+                /// Output only. Entry link source represents information about the entry
+                /// link.
+                #[prost(message, tag = "2")]
+                EntryLinkSource(EntryLinkSource),
+            }
+        }
+    }
     /// Specifies a SQL statement that is evaluated to return up to 10 scalar
     /// values that are used to debug rules. If the rule fails, the values can help
     /// diagnose the cause of the failure.
@@ -11155,7 +11870,7 @@ pub mod data_quality_rule {
         pub sql_statement: ::prost::alloc::string::String,
     }
     /// The rule-specific configuration.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuleType {
         /// Row-level rule which evaluates whether each column value lies between a
         /// specified range.
@@ -11191,6 +11906,11 @@ pub mod data_quality_rule {
         /// provided statement. If any rows are returned, this rule fails.
         #[prost(message, tag = "202")]
         SqlAssertion(SqlAssertion),
+        /// Aggregate rule which references a rule template and provides the
+        /// parameters to be substituted in the template. If any rows are returned,
+        /// this rule fails.
+        #[prost(message, tag = "5")]
+        TemplateReference(TemplateReference),
     }
 }
 /// DataQualityColumnResult provides a more detailed, per-column view of
@@ -12303,7 +13023,8 @@ pub struct CreateDataScanRequest {
     /// Required. DataScan resource.
     #[prost(message, optional, tag = "2")]
     pub data_scan: ::core::option::Option<DataScan>,
-    /// Required. DataScan identifier.
+    /// Optional. DataScan identifier. If not provided, a unique ID will be
+    /// generated with the prefix "data-scan-".
     ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
@@ -12579,6 +13300,19 @@ pub struct ListDataScanJobsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for the `CancelDataScanJob` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelDataScanJobRequest {
+    /// Required. The resource name of the DataScanJob:
+    /// `projects/{project_id_or_number}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}`
+    /// where `project_id_or_number` refers to a *project_id* or *project_number*
+    /// and `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for the `CancelDataScanJob` method.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelDataScanJobResponse {}
 /// Request details for generating data quality rule recommendations.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateDataQualityRulesRequest {
@@ -12615,10 +13349,11 @@ pub struct GenerateDataQualityRulesResponse {
 /// * Data discovery: scans data in Cloud Storage buckets to extract and then
 ///   catalog metadata. For more information, see [Discover and catalog Cloud
 ///   Storage data](<https://cloud.google.com/bigquery/docs/automatic-discovery>).
-/// * Data documentation: analyzes the table details and generates insights
-///   including descriptions and sample SQL queries for the table. For more
-///   information, see [Generate data insights in
-///   BigQuery](<https://cloud.google.com/bigquery/docs/data-insights>).
+/// * Data documentation: analyzes the table or dataset metadata and generates
+///   insights. For tables, insights include descriptions and sample SQL
+///   queries. For datasets, insights include descriptions, schema relationships
+///   and sample SQL queries. For more information, see [Generate data insights
+///   in BigQuery](<https://cloud.google.com/bigquery/docs/data-insights>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScan {
     /// Output only. Identifier. The relative resource name of the scan, of the
@@ -12670,6 +13405,10 @@ pub struct DataScan {
     /// Output only. The type of DataScan.
     #[prost(enumeration = "DataScanType", tag = "12")]
     pub r#type: i32,
+    /// Optional. Immutable. The identity to run the datascan.
+    /// If not specified, defaults to the Dataplex Service Agent.
+    #[prost(message, optional, tag = "300")]
+    pub execution_identity: ::core::option::Option<ExecutionIdentity>,
     /// Data scan related setting.
     /// The settings are required and immutable. After you configure the settings
     /// for one type of data scan, you can't change the data scan to a different
@@ -12765,6 +13504,47 @@ pub mod data_scan {
         DataDocumentationResult(super::DataDocumentationResult),
     }
 }
+/// The identity to run the datascan.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExecutionIdentity {
+    /// The identity to run the datascan.
+    #[prost(oneof = "execution_identity::Identity", tags = "1, 2, 3")]
+    pub identity: ::core::option::Option<execution_identity::Identity>,
+}
+/// Nested message and enum types in `ExecutionIdentity`.
+pub mod execution_identity {
+    /// The Dataplex service agent associated with the user's project.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DataplexServiceAgent {}
+    /// The credential of the calling user.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UserCredential {}
+    /// The service account
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ServiceAccount {
+        /// Required. Service account email. The datascan will execute with this
+        /// service account's credentials. The user calling this API must have
+        /// permissions to act as this service account. Dataplex service agent must
+        /// be granted iam.serviceAccounts.getAccessToken permission on this service
+        /// account, for example, through the iam.serviceAccountTokenCreator role .
+        #[prost(string, tag = "1")]
+        pub email: ::prost::alloc::string::String,
+    }
+    /// The identity to run the datascan.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Identity {
+        /// Optional. The Dataplex service agent associated with the user's project.
+        #[prost(message, tag = "1")]
+        DataplexServiceAgent(DataplexServiceAgent),
+        /// Optional. The credential of the calling user. Supports only ONE_TIME
+        /// trigger type.
+        #[prost(message, tag = "2")]
+        UserCredential(UserCredential),
+        /// Optional. The provided service account.
+        #[prost(message, tag = "3")]
+        ServiceAccount(ServiceAccount),
+    }
+}
 /// A DataScanJob represents an instance of DataScan execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScanJob {
@@ -12781,6 +13561,9 @@ pub struct DataScanJob {
     /// Output only. The time when the DataScanJob was created.
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A message indicating partial failure details.
+    #[prost(string, tag = "9")]
+    pub partial_failure_message: ::prost::alloc::string::String,
     /// Output only. The time when the DataScanJob was started.
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -12833,6 +13616,8 @@ pub mod data_scan_job {
         Failed = 5,
         /// The DataScanJob has been created but not started to run yet.
         Pending = 7,
+        /// The DataScanJob succeeded with errors.
+        SucceededWithErrors = 8,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -12848,6 +13633,7 @@ pub mod data_scan_job {
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
                 Self::Pending => "PENDING",
+                Self::SucceededWithErrors => "SUCCEEDED_WITH_ERRORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12860,6 +13646,7 @@ pub mod data_scan_job {
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
                 "PENDING" => Some(Self::Pending),
+                "SUCCEEDED_WITH_ERRORS" => Some(Self::SucceededWithErrors),
                 _ => None,
             }
         }
@@ -13262,6 +14049,36 @@ pub mod data_scan_service_client {
                     GrpcMethod::new(
                         "google.cloud.dataplex.v1.DataScanService",
                         "ListDataScanJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels a running/pending DataScan job.
+        pub async fn cancel_data_scan_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelDataScanJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CancelDataScanJobResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/CancelDataScanJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "CancelDataScanJob",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -14667,6 +15484,9 @@ pub mod data_quality_scan_rule_result {
         /// See
         /// \[DataQualityRule.SqlAssertion\]\[google.cloud.dataplex.v1.DataQualityRule.SqlAssertion\].
         SqlAssertion = 9,
+        /// See
+        /// \[DataQualityRule.TemplateReference\]\[google.cloud.dataplex.v1.DataQualityRule.TemplateReference\].
+        TemplateReference = 10,
     }
     impl RuleType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -14685,6 +15505,7 @@ pub mod data_quality_scan_rule_result {
                 Self::TableConditionExpectation => "TABLE_CONDITION_EXPECTATION",
                 Self::UniquenessExpectation => "UNIQUENESS_EXPECTATION",
                 Self::SqlAssertion => "SQL_ASSERTION",
+                Self::TemplateReference => "TEMPLATE_REFERENCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14700,6 +15521,7 @@ pub mod data_quality_scan_rule_result {
                 "TABLE_CONDITION_EXPECTATION" => Some(Self::TableConditionExpectation),
                 "UNIQUENESS_EXPECTATION" => Some(Self::UniquenessExpectation),
                 "SQL_ASSERTION" => Some(Self::SqlAssertion),
+                "TEMPLATE_REFERENCE" => Some(Self::TemplateReference),
                 _ => None,
             }
         }

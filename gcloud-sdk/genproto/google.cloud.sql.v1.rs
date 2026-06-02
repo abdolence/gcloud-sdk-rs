@@ -1299,6 +1299,22 @@ pub struct PscConfig {
     /// format: projects/PROJECT/regions/REGION/networkAttachments/ID
     #[prost(string, tag = "4")]
     pub network_attachment_uri: ::prost::alloc::string::String,
+    /// Optional. Indicates whether PSC DNS automation is enabled for this
+    /// instance. When enabled, Cloud SQL provisions a universal DNS record across
+    /// all networks configured with Private Service Connect (PSC)
+    /// auto-connections. This will default to true for new instances when Private
+    /// Service Connect is enabled.
+    #[prost(bool, optional, tag = "5")]
+    pub psc_auto_dns_enabled: ::core::option::Option<bool>,
+    /// Optional. Indicates whether PSC write endpoint DNS automation is enabled
+    /// for this instance. When enabled, Cloud SQL provisions a universal global
+    /// DNS record across all networks configured with Private Service Connect
+    /// (PSC) auto-connections that always points to the cluster primary instance.
+    /// This feature is only supported for Enterprise Plus edition.
+    /// This will default to true for new Enterprise Plus instances when
+    /// `psc_auto_dns_enabled` is enabled.
+    #[prost(bool, optional, tag = "6")]
+    pub psc_write_endpoint_dns_enabled: ::core::option::Option<bool>,
 }
 /// Settings for an automatically-setup Private Service Connect consumer endpoint
 /// that is used to connect to a Cloud SQL instance.
@@ -1307,7 +1323,7 @@ pub struct PscAutoConnectionConfig {
     /// Optional. This is the project ID of consumer service project of this
     /// consumer endpoint.
     ///
-    /// Optional. This is only applicable if consumer_network is a shared vpc
+    /// This is only applicable if `consumer_network` is a shared VPC
     /// network.
     #[prost(string, tag = "1")]
     pub consumer_project: ::prost::alloc::string::String,
@@ -1762,6 +1778,8 @@ pub mod operation {
         RepairReadPool = 52,
         /// Creates a Cloud SQL read pool instance.
         CreateReadPool = 53,
+        /// Pre-checks the major version upgrade operation.
+        PreCheckMajorVersionUpgrade = 54,
     }
     impl SqlOperationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1830,6 +1848,7 @@ pub mod operation {
                 Self::EnhancedBackup => "ENHANCED_BACKUP",
                 Self::RepairReadPool => "REPAIR_READ_POOL",
                 Self::CreateReadPool => "CREATE_READ_POOL",
+                Self::PreCheckMajorVersionUpgrade => "PRE_CHECK_MAJOR_VERSION_UPGRADE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1891,6 +1910,9 @@ pub mod operation {
                 "ENHANCED_BACKUP" => Some(Self::EnhancedBackup),
                 "REPAIR_READ_POOL" => Some(Self::RepairReadPool),
                 "CREATE_READ_POOL" => Some(Self::CreateReadPool),
+                "PRE_CHECK_MAJOR_VERSION_UPGRADE" => {
+                    Some(Self::PreCheckMajorVersionUpgrade)
+                }
                 _ => None,
             }
         }
@@ -2252,6 +2274,10 @@ pub struct Settings {
     /// Optional. The read pool auto-scale configuration for the instance.
     #[prost(message, optional, tag = "48")]
     pub read_pool_auto_scale_config: ::core::option::Option<ReadPoolAutoScaleConfig>,
+    /// Optional. Whether the replica is in accelerated mode. This feature is in
+    /// private preview and requires allowlisting to take effect.
+    #[prost(message, optional, tag = "49")]
+    pub accelerated_replica_mode: ::core::option::Option<bool>,
     /// Optional. Cloud SQL for MySQL auto-upgrade configuration. When this
     /// parameter is set to true, auto-upgrade is enabled for MySQL 8.0 minor
     /// versions. The MySQL version must be 8.0.35 or higher.
@@ -2454,29 +2480,30 @@ pub mod settings {
         }
     }
 }
-/// Performance Capture configuration.
+/// Performance capture configuration.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformanceCaptureConfig {
-    /// Optional. Enable or disable the Performance Capture feature.
+    /// Optional. Enables or disables the performance capture feature.
     #[prost(bool, optional, tag = "1")]
     pub enabled: ::core::option::Option<bool>,
-    /// Optional. The time interval in seconds between any two probes.
+    /// Optional. Specifies the interval in seconds between consecutive probes that
+    /// check if any trigger condition thresholds have been reached.
     #[prost(int32, optional, tag = "2")]
     pub probing_interval_seconds: ::core::option::Option<i32>,
-    /// Optional. The minimum number of consecutive readings above threshold that
-    /// triggers instance state capture.
+    /// Optional. Specifies the minimum number of consecutive probe threshold that
+    /// triggers performance capture.
     #[prost(int32, optional, tag = "3")]
     pub probe_threshold: ::core::option::Option<i32>,
-    /// Optional. The minimum number of server threads running to trigger the
-    /// capture on primary.
+    /// Optional. Specifies the minimum number of MySQL `Threads_running` to
+    /// trigger the performance capture on the primary instance.
     #[prost(int32, optional, tag = "4")]
     pub running_threads_threshold: ::core::option::Option<i32>,
-    /// Optional. The minimum number of seconds replica must be lagging behind
-    /// primary to trigger capture on replica.
+    /// Optional. Specifies the minimum number of seconds replica must be lagging
+    /// behind primary instance to trigger the performance capture on replica.
     #[prost(int32, optional, tag = "5")]
     pub seconds_behind_source_threshold: ::core::option::Option<i32>,
-    /// Optional. The amount of time in seconds that a transaction needs to have
-    /// been open before the watcher starts recording it.
+    /// Optional. Specifies the amount of time in seconds that a transaction needs
+    /// to have been open before the watcher starts recording it.
     #[prost(int32, optional, tag = "8")]
     pub transaction_duration_threshold: ::core::option::Option<i32>,
 }
@@ -3193,6 +3220,8 @@ pub enum SqlDatabaseVersion {
     Postgres17 = 408,
     /// The database version is PostgreSQL 18.
     Postgres18 = 557,
+    /// The database version is PostgreSQL 19.
+    Postgres19 = 684,
     /// The database version is SQL Server 2019 Standard.
     Sqlserver2019Standard = 26,
     /// The database version is SQL Server 2019 Enterprise.
@@ -3209,6 +3238,12 @@ pub enum SqlDatabaseVersion {
     Sqlserver2022Express = 201,
     /// The database version is SQL Server 2022 Web.
     Sqlserver2022Web = 202,
+    /// The database version is SQL Server 2025 Standard.
+    Sqlserver2025Standard = 549,
+    /// The database version is SQL Server 2025 Enterprise.
+    Sqlserver2025Enterprise = 550,
+    /// The database version is SQL Server 2025 Express.
+    Sqlserver2025Express = 551,
 }
 impl SqlDatabaseVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3263,6 +3298,7 @@ impl SqlDatabaseVersion {
             Self::Postgres16 => "POSTGRES_16",
             Self::Postgres17 => "POSTGRES_17",
             Self::Postgres18 => "POSTGRES_18",
+            Self::Postgres19 => "POSTGRES_19",
             Self::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
             Self::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
             Self::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
@@ -3271,6 +3307,9 @@ impl SqlDatabaseVersion {
             Self::Sqlserver2022Enterprise => "SQLSERVER_2022_ENTERPRISE",
             Self::Sqlserver2022Express => "SQLSERVER_2022_EXPRESS",
             Self::Sqlserver2022Web => "SQLSERVER_2022_WEB",
+            Self::Sqlserver2025Standard => "SQLSERVER_2025_STANDARD",
+            Self::Sqlserver2025Enterprise => "SQLSERVER_2025_ENTERPRISE",
+            Self::Sqlserver2025Express => "SQLSERVER_2025_EXPRESS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3319,6 +3358,7 @@ impl SqlDatabaseVersion {
             "POSTGRES_16" => Some(Self::Postgres16),
             "POSTGRES_17" => Some(Self::Postgres17),
             "POSTGRES_18" => Some(Self::Postgres18),
+            "POSTGRES_19" => Some(Self::Postgres19),
             "SQLSERVER_2019_STANDARD" => Some(Self::Sqlserver2019Standard),
             "SQLSERVER_2019_ENTERPRISE" => Some(Self::Sqlserver2019Enterprise),
             "SQLSERVER_2019_EXPRESS" => Some(Self::Sqlserver2019Express),
@@ -3327,6 +3367,9 @@ impl SqlDatabaseVersion {
             "SQLSERVER_2022_ENTERPRISE" => Some(Self::Sqlserver2022Enterprise),
             "SQLSERVER_2022_EXPRESS" => Some(Self::Sqlserver2022Express),
             "SQLSERVER_2022_WEB" => Some(Self::Sqlserver2022Web),
+            "SQLSERVER_2025_STANDARD" => Some(Self::Sqlserver2025Standard),
+            "SQLSERVER_2025_ENTERPRISE" => Some(Self::Sqlserver2025Enterprise),
+            "SQLSERVER_2025_EXPRESS" => Some(Self::Sqlserver2025Express),
             _ => None,
         }
     }
@@ -4032,7 +4075,7 @@ pub struct SqlInstancesCloneRequest {
     /// not include the project ID.
     #[prost(string, tag = "1")]
     pub instance: ::prost::alloc::string::String,
-    /// Required. Project ID of the source as well as the clone Cloud SQL instance.
+    /// Required. Project ID of the source Cloud SQL instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
@@ -5078,7 +5121,7 @@ pub struct CloneContext {
 }
 /// The context to perform a point-in-time recovery of an instance managed by
 /// Backup and Disaster Recovery (DR) Service.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointInTimeRestoreContext {
     /// The Backup and Disaster Recovery (DR) Service Datasource URI.
     /// Format:
@@ -5115,6 +5158,20 @@ pub struct PointInTimeRestoreContext {
     /// instance. This value cannot be the same as the preferred_zone field.
     #[prost(string, optional, tag = "9")]
     pub preferred_secondary_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Specifies the instance settings that will be overridden from the
+    /// source instance. This field is only applicable for cross project PITRs.
+    #[prost(message, optional, tag = "11")]
+    pub target_instance_settings: ::core::option::Option<DatabaseInstance>,
+    /// Optional. Specifies the instance settings that will be cleared from the
+    /// source instance. This field is only applicable for cross project PITRs.
+    #[prost(string, repeated, tag = "12")]
+    pub target_instance_clear_settings_field_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The region of the target instance where the datasource will be
+    /// restored. For example: "us-central1".
+    #[prost(string, optional, tag = "13")]
+    pub region: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Binary log coordinates.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6472,7 +6529,7 @@ pub mod execute_sql_payload {
     /// Credentials for the database connection.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum UserPassword {
-        /// Optional. When set to true, the API caller identity associated with the
+        /// Optional. When set to `true`, the API caller identity associated with the
         /// request is used for database authentication. The API caller must be an
         /// IAM user in the database.
         #[prost(bool, tag = "11")]
@@ -6619,7 +6676,7 @@ pub struct SqlInstancesReleaseSsrsLeaseResponse {
 }
 /// Request to perform a point in time restore on a Google Cloud Backup and
 /// Disaster Recovery managed instance.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPointInTimeRestoreRequest {
     /// Required. The parent resource where you created this instance.
     /// Format: projects/{project}
@@ -6726,6 +6783,8 @@ pub enum SqlSuspensionReason {
     OperationalIssue = 4,
     /// The KMS key used by the instance is either revoked or denied access to
     KmsKeyIssue = 5,
+    /// The project is suspended due to abuse detected by Ares.
+    ProjectAbuse = 8,
 }
 impl SqlSuspensionReason {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -6739,6 +6798,7 @@ impl SqlSuspensionReason {
             Self::LegalIssue => "LEGAL_ISSUE",
             Self::OperationalIssue => "OPERATIONAL_ISSUE",
             Self::KmsKeyIssue => "KMS_KEY_ISSUE",
+            Self::ProjectAbuse => "PROJECT_ABUSE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6749,6 +6809,7 @@ impl SqlSuspensionReason {
             "LEGAL_ISSUE" => Some(Self::LegalIssue),
             "OPERATIONAL_ISSUE" => Some(Self::OperationalIssue),
             "KMS_KEY_ISSUE" => Some(Self::KmsKeyIssue),
+            "PROJECT_ABUSE" => Some(Self::ProjectAbuse),
             _ => None,
         }
     }

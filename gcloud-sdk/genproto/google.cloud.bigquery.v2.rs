@@ -387,6 +387,16 @@ pub struct DataPolicyOption {
     #[prost(string, optional, tag = "1")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A list of data policy options. For more information, see
+/// [Mask data by applying data policies to a
+/// column](<https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataPolicyList {
+    /// Contains a list of data policy options. At most 9 data policies are
+    /// allowed per field.
+    #[prost(message, repeated, tag = "1")]
+    pub data_policies: ::prost::alloc::vec::Vec<DataPolicyOption>,
+}
 /// A field in TableSchema
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableFieldSchema {
@@ -431,10 +441,37 @@ pub struct TableFieldSchema {
     /// access control. If not set, defaults to empty policy_tags.
     #[prost(message, optional, tag = "9")]
     pub policy_tags: ::core::option::Option<table_field_schema::PolicyTagList>,
+    /// Optional. Specifies the data governance tags on this field. This field
+    /// works with other column-level security fields as follows:
+    ///
+    /// * Precedence: If a data governance tag is attached to a column, it takes
+    ///   precedence over the policy tag attached to the column.
+    ///   However, if a data policy is attached to a column, it takes precedence
+    ///   over the data governance tag.
+    ///
+    /// * Patching behavior (how this field behaves during a `Table.patch` schema
+    ///   update):
+    ///
+    ///   * Unset: If the `data_governance_tags_info` field is omitted
+    ///     from the update request, the existing tags on the column are preserved.
+    ///   * Empty Field: To clear data governance tags from a column, send the
+    ///     `data_governance_tags_info` field as an empty object. This will remove
+    ///     all tags from the column.
+    ///   * Updating tags: To replace existing tag, send the field with the
+    ///     new tag.
+    #[prost(message, optional, tag = "30")]
+    pub data_governance_tags_info: ::core::option::Option<
+        table_field_schema::DataGovernanceTagsInfo,
+    >,
     /// Optional. Data policies attached to this field, used for field-level access
     /// control.
     #[prost(message, repeated, tag = "21")]
     pub data_policies: ::prost::alloc::vec::Vec<DataPolicyOption>,
+    /// Optional. Specifies data policies attached to this field, used for
+    /// field-level access control. When set, this will be the source of truth for
+    /// data policy information.
+    #[prost(message, optional, tag = "29")]
+    pub data_policy_list: ::core::option::Option<DataPolicyList>,
     /// Optional. Maximum length of values of this field for STRINGS or BYTES.
     ///
     /// If max_length is not specified, no maximum length constraint is imposed
@@ -539,6 +576,25 @@ pub mod table_field_schema {
         /// is currently allowed.
         #[prost(string, repeated, tag = "1")]
         pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataGovernanceTagsInfo {
+        /// Optional. The data governance tags added to this field are used for
+        /// field-level access control. Only one data governance tag is currently
+        /// supported on a field. Tag keys are globally unique. Tag key is expected
+        /// to be in the namespaced format, for example "123456789012/pii" where
+        /// 123456789012 is the ID of the parent organization or project resource for
+        /// this tag key. Tag value is expected to be the short name, for example
+        /// "sensitive". See [Tag
+        /// definitions](<https://cloud.google.com/iam/docs/tags-access-control#definitions>)
+        /// for more details. For example:
+        /// "123456789012/pii": "sensitive",
+        /// "myProject/cost_center": "sales"
+        #[prost(map = "string, string", tag = "1")]
+        pub data_governance_tags: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Represents the type of a field element.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2604,7 +2660,7 @@ pub struct ExternalDataConfiguration {
     /// of TIMESTAMP types that are allowed to the destination table for
     /// autodetection mode.
     ///
-    /// Available for the formats: CSV, PARQUET, and AVRO.
+    /// Available for the formats: CSV, PARQUET, AVRO, and Iceberg External Table.
     ///
     /// Possible values include:
     /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
@@ -2736,6 +2792,13 @@ pub struct GenAiFunctionCostOptimizationStats {
     #[prost(string, optional, tag = "2")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Provides cache statistics for a GenAi function call.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenAiFunctionCacheStats {
+    /// Number of rows served from cache.
+    #[prost(int64, optional, tag = "1")]
+    pub num_cache_hit_rows: ::core::option::Option<i64>,
+}
 /// Provides statistics for each Ai function call within a query.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiFunctionStats {
@@ -2757,6 +2820,9 @@ pub struct GenAiFunctionStats {
     pub cost_optimization_stats: ::core::option::Option<
         GenAiFunctionCostOptimizationStats,
     >,
+    /// Cache stats for the function.
+    #[prost(message, optional, tag = "6")]
+    pub cache_stats: ::core::option::Option<GenAiFunctionCacheStats>,
 }
 /// Provides error statistics for the query job across all AI function calls.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3819,7 +3885,7 @@ pub struct JobConfigurationLoad {
     /// of TIMESTAMP types that are allowed to the destination table for
     /// autodetection mode.
     ///
-    /// Available for the formats: CSV, PARQUET, and AVRO.
+    /// Available for the formats: CSV, PARQUET, AVRO, and Iceberg External Table.
     ///
     /// Possible values include:
     /// Not Specified, \[\], or \[6\]: timestamp(6) for all auto detected TIMESTAMP
@@ -9355,6 +9421,10 @@ pub struct PerformanceInsights {
     pub stage_performance_change_insights: ::prost::alloc::vec::Vec<
         StagePerformanceChangeInsight,
     >,
+    /// Output only. Performance insights for table-level attributes that changed
+    /// compared to previous runs.
+    #[prost(message, repeated, tag = "4")]
+    pub table_change_insights: ::prost::alloc::vec::Vec<TableChangeInsight>,
 }
 /// Performance insights compared to the previous executions for a specific
 /// stage.
@@ -9429,6 +9499,37 @@ pub mod partition_skew {
         #[prost(int64, tag = "1")]
         pub stage_id: i64,
     }
+}
+/// Table-level performance insights compared to previous runs. These insights
+/// don't apply to specific query stages, rather they apply to the whole table.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableChangeInsight {
+    /// Output only. The table that was queried.
+    #[prost(message, optional, tag = "1")]
+    pub table_reference: ::core::option::Option<TableReference>,
+    /// Output only. If present, indicates that the table's metadata column index
+    /// staleness has increased significantly compared to previous jobs with the
+    /// same query hash.
+    #[prost(message, optional, tag = "2")]
+    pub metadata_cache_staleness_insight: ::core::option::Option<
+        MetadataCacheStalenessInsight,
+    >,
+    /// Output only. True if the table's column metadata index was not used in the
+    /// current job, but was used in a previous job with the same query hash.
+    #[prost(bool, optional, tag = "3")]
+    pub metadata_cache_not_used_but_used_previously: ::core::option::Option<bool>,
+}
+/// Column Metadata Index staleness detailed infnormation.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct MetadataCacheStalenessInsight {
+    /// Output only. Average column metadata index staleness of previous runs with
+    /// the same query hash.
+    #[prost(message, optional, tag = "1")]
+    pub avg_previous_staleness_ms: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The percent increase in staleness between the current job and
+    /// the average staleness of previous jobs with the same query hash.
+    #[prost(double, tag = "2")]
+    pub staleness_percentage_increase: f64,
 }
 /// Statistics for a BigSpark query.
 /// Populated as part of JobStatistics2
@@ -11816,6 +11917,10 @@ pub struct ExternalRuntimeOptions {
     /// Optional. Language runtime version. Example: `python-3.11`.
     #[prost(string, tag = "5")]
     pub runtime_version: ::prost::alloc::string::String,
+    /// Optional. Maximum number of requests that a Cloud Run instance can handle
+    /// concurrently. If absent or if `0`, a default concurrency is used.
+    #[prost(int64, tag = "6")]
+    pub container_request_concurrency: i64,
 }
 /// Options for a user-defined Spark routine.
 #[derive(Clone, PartialEq, ::prost::Message)]

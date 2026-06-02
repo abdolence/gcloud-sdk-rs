@@ -1004,6 +1004,830 @@ pub struct GetProjectIntelligenceConfigRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The `IntelligenceFinding` resource that represents a security, performance,
+/// or cost-related finding about a project or bucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntelligenceFinding {
+    /// Identifier. The resource name of `IntelligenceFinding`.
+    /// Format:
+    /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. A short description about the finding.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Type of this finding.
+    #[prost(enumeration = "FindingType", tag = "3")]
+    pub r#type: i32,
+    /// Output only. Category of this finding.
+    #[prost(enumeration = "FindingCategory", tag = "4")]
+    pub category: i32,
+    /// Output only. Severity of the finding.
+    #[prost(enumeration = "FindingSeverity", tag = "5")]
+    pub severity: i32,
+    /// Output only. The time at which the finding was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the finding was last updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The fully qualified resource name of the resource that this
+    /// `IntelligenceFinding` applies to. eg:
+    ///
+    /// * `storage.googleapis.com/projects/_/buckets/b1`
+    /// * `cloudresourecemanager.googleapis.com/projects/p1`
+    #[prost(string, tag = "8")]
+    pub target_resource: ::prost::alloc::string::String,
+    /// Output only. Contains GCP resource names that are
+    /// relevant to this `IntelligenceFinding`. The `target_resource` is also added
+    /// as part of `associated_resources`. eg:
+    ///
+    /// * `storage.googleapis.com/projects/_/buckets/b1`
+    /// * `cloudresourecemanager.googleapis.com/projects/p1`
+    #[prost(string, repeated, tag = "9")]
+    pub associated_resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The time interval during which the underlying data was used to
+    /// generate this `IntelligenceFinding`.
+    #[prost(message, optional, tag = "10")]
+    pub observation_period: ::core::option::Option<
+        super::super::super::r#type::Interval,
+    >,
+    /// The specific details of the `IntelligenceFinding`.
+    #[prost(
+        oneof = "intelligence_finding::IntelligenceFindingDetails",
+        tags = "11, 12, 13, 14"
+    )]
+    pub intelligence_finding_details: ::core::option::Option<
+        intelligence_finding::IntelligenceFindingDetails,
+    >,
+}
+/// Nested message and enum types in `IntelligenceFinding`.
+pub mod intelligence_finding {
+    /// Represents a finding about a spike in Class A/B operations on Coldline
+    /// or Archive Cloud Storage objects.
+    /// This corresponds to the `COLD_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE`
+    /// finding type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ColdlineAndArchivalStorageOperationsSpike {
+        /// Output only. The percentage increase in operations across the project.
+        #[prost(double, tag = "1")]
+        pub percentage_increase: f64,
+        /// Output only. The total count of operations across the project.
+        #[prost(int64, tag = "2")]
+        pub total_operations_count: i64,
+        /// Output only. A list of the top buckets driving the increase in
+        /// operations.
+        #[prost(message, repeated, tag = "3")]
+        pub top_buckets: ::prost::alloc::vec::Vec<
+            coldline_and_archival_storage_operations_spike::BucketContribution,
+        >,
+    }
+    /// Nested message and enum types in `ColdlineAndArchivalStorageOperationsSpike`.
+    pub mod coldline_and_archival_storage_operations_spike {
+        /// Represents the operation spike details for a bucket.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BucketContribution {
+            /// Output only. The name of the bucket.
+            #[prost(string, tag = "1")]
+            pub bucket: ::prost::alloc::string::String,
+            /// Output only. The percentage increase in operations for the bucket.
+            #[prost(double, tag = "2")]
+            pub percentage_increase: f64,
+            /// Output only. The total count of operations for the bucket.
+            #[prost(int64, tag = "3")]
+            pub total_operations_count: i64,
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[prost(oneof = "bucket_contribution::Details", tags = "4, 5")]
+            pub details: ::core::option::Option<bucket_contribution::Details>,
+        }
+        /// Nested message and enum types in `BucketContribution`.
+        pub mod bucket_contribution {
+            /// Represents the contribution of the bucket towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Contribution {
+                /// Output only. A list of the top object prefixes driving the increase
+                /// in operations.
+                #[prost(message, repeated, tag = "1")]
+                pub top_prefixes: ::prost::alloc::vec::Vec<
+                    contribution::PrefixContribution,
+                >,
+            }
+            /// Nested message and enum types in `Contribution`.
+            pub mod contribution {
+                /// Represents the operation spike details for an object prefix.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct PrefixContribution {
+                    /// Output only. The object prefix.
+                    /// Format: `a/b/c`, 'a/b/d', etc.
+                    #[prost(string, tag = "1")]
+                    pub prefix: ::prost::alloc::string::String,
+                    /// Output only. The percentage increase in operations for the object
+                    /// prefix.
+                    #[prost(double, tag = "2")]
+                    pub percentage_increase: f64,
+                    /// Output only. The total count of operations for the object prefix.
+                    #[prost(int64, tag = "3")]
+                    pub total_operations_count: i64,
+                }
+            }
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Details {
+                /// Output only. The details about the contribution of the bucket.
+                #[prost(message, tag = "4")]
+                Contribution(Contribution),
+                /// Output only. The error related to accessing the details about the
+                /// contribution of the bucket.
+                #[prost(message, tag = "5")]
+                Error(super::super::super::super::super::super::rpc::Status),
+            }
+        }
+    }
+    /// Represents a finding about a spike in cross-region egress from Cloud
+    /// Storage.
+    /// This corresponds to the `CROSS_REGION_EGRESS_SPIKE` finding type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CrossRegionEgressSpike {
+        /// Output only. The total cross-region egress volume in bytes across the
+        /// project.
+        #[prost(int64, tag = "1")]
+        pub total_egress_bytes: i64,
+        /// Output only. The percentage increase in cross-region egress across the
+        /// project.
+        #[prost(double, tag = "2")]
+        pub percentage_increase: f64,
+        /// Output only. A list of top buckets driving the increase in cross-region
+        /// egress.
+        #[prost(message, repeated, tag = "3")]
+        pub top_buckets: ::prost::alloc::vec::Vec<
+            cross_region_egress_spike::BucketContribution,
+        >,
+    }
+    /// Nested message and enum types in `CrossRegionEgressSpike`.
+    pub mod cross_region_egress_spike {
+        /// Represents the cross-region egress spike details for a bucket.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BucketContribution {
+            /// Output only. The name of the bucket.
+            #[prost(string, tag = "1")]
+            pub bucket: ::prost::alloc::string::String,
+            /// Output only. The total cross-region egress volume in bytes for the
+            /// bucket.
+            #[prost(int64, tag = "2")]
+            pub total_egress_bytes: i64,
+            /// Output only. The percentage increase in cross-region egress for the
+            /// bucket.
+            #[prost(double, tag = "3")]
+            pub percentage_increase: f64,
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[prost(oneof = "bucket_contribution::Details", tags = "4, 5")]
+            pub details: ::core::option::Option<bucket_contribution::Details>,
+        }
+        /// Nested message and enum types in `BucketContribution`.
+        pub mod bucket_contribution {
+            /// Represents the contribution of the bucket towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Contribution {
+                /// Output only. A list of the top object prefixes driving the increase
+                /// in cross-region egress.
+                #[prost(message, repeated, tag = "1")]
+                pub top_prefixes: ::prost::alloc::vec::Vec<
+                    contribution::PrefixContribution,
+                >,
+            }
+            /// Nested message and enum types in `Contribution`.
+            pub mod contribution {
+                /// Represents the cross-region egress spike details for an object
+                /// prefix.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct PrefixContribution {
+                    /// Output only. The object prefix.
+                    /// Format: `a/b/c`, 'a/b/d', etc.
+                    #[prost(string, tag = "1")]
+                    pub prefix: ::prost::alloc::string::String,
+                    /// Output only. The total cross-region egress volume in bytes from the
+                    /// object prefix.
+                    #[prost(int64, tag = "2")]
+                    pub total_egress_bytes: i64,
+                    /// Output only. The percentage increase in cross-region egress for the
+                    /// object prefix.
+                    #[prost(double, tag = "3")]
+                    pub percentage_increase: f64,
+                }
+            }
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Details {
+                /// Output only. The details about the contribution of the bucket.
+                #[prost(message, tag = "4")]
+                Contribution(Contribution),
+                /// Output only. The error related to accessing the details about the
+                /// contribution of the bucket.
+                #[prost(message, tag = "5")]
+                Error(super::super::super::super::super::super::rpc::Status),
+            }
+        }
+    }
+    /// Represents a finding about a spike in throttled requests (429 errors)
+    /// within a project.
+    /// This corresponds to the `THROTTLED_REQUEST_SPIKE` finding type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ThrottledRequestSpike {
+        /// Output only. The count of throttled requests across the project.
+        #[prost(int64, tag = "1")]
+        pub throttled_requests: i64,
+        /// Output only. The percentage increase in throttled requests across the
+        /// project.
+        #[prost(double, tag = "2")]
+        pub percentage_increase: f64,
+        /// Output only. A list of top buckets driving the increase in throttled
+        /// requests.
+        #[prost(message, repeated, tag = "3")]
+        pub top_buckets: ::prost::alloc::vec::Vec<
+            throttled_request_spike::BucketContribution,
+        >,
+    }
+    /// Nested message and enum types in `ThrottledRequestSpike`.
+    pub mod throttled_request_spike {
+        /// Represents the throttled requests details for a bucket.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BucketContribution {
+            /// Output only. The name of the bucket.
+            #[prost(string, tag = "1")]
+            pub bucket: ::prost::alloc::string::String,
+            /// Output only. The count of throttled requests for the bucket.
+            #[prost(int64, tag = "2")]
+            pub throttled_requests: i64,
+            /// Output only. The percentage increase in throttled requests for the
+            /// bucket.
+            #[prost(double, tag = "3")]
+            pub percentage_increase: f64,
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[prost(oneof = "bucket_contribution::Details", tags = "4, 5")]
+            pub details: ::core::option::Option<bucket_contribution::Details>,
+        }
+        /// Nested message and enum types in `BucketContribution`.
+        pub mod bucket_contribution {
+            /// Represents the contribution of the bucket towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Contribution {
+                /// Output only. A list of top object prefixes driving the increase in
+                /// throttled requests.
+                #[prost(message, repeated, tag = "1")]
+                pub top_prefixes: ::prost::alloc::vec::Vec<
+                    contribution::PrefixContribution,
+                >,
+            }
+            /// Nested message and enum types in `Contribution`.
+            pub mod contribution {
+                /// Represents throttled requests details for an object prefix.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct PrefixContribution {
+                    /// Output only. The object prefix.
+                    /// Format: `a/b/c`, 'a/b/d', etc.
+                    #[prost(string, tag = "1")]
+                    pub prefix: ::prost::alloc::string::String,
+                    /// Output only. The count of throttled requests for the object prefix.
+                    #[prost(int64, tag = "2")]
+                    pub throttled_requests: i64,
+                    /// Output only. The percentage increase in throttled requests for the
+                    /// object prefix.
+                    #[prost(double, tag = "3")]
+                    pub percentage_increase: f64,
+                }
+            }
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Details {
+                /// Output only. The details about the contribution of the bucket.
+                #[prost(message, tag = "4")]
+                Contribution(Contribution),
+                /// Output only. The error related to accessing the details about the
+                /// contribution of the bucket.
+                #[prost(message, tag = "5")]
+                Error(super::super::super::super::super::super::rpc::Status),
+            }
+        }
+    }
+    /// Represents a finding about a storage growth above the expected trend.
+    /// This corresponds to the `STORAGE_GROWTH_ABOVE_TREND` finding type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StorageGrowthAboveTrend {
+        /// Output only. The total storage growth in bytes.
+        #[prost(int64, tag = "1")]
+        pub total_storage_growth_bytes: i64,
+        /// Output only. The percentage increase in storage growth.
+        #[prost(double, tag = "2")]
+        pub percentage_increase: f64,
+        /// Output only. A list of top buckets driving the increase in storage
+        /// growth.
+        #[prost(message, repeated, tag = "3")]
+        pub top_buckets: ::prost::alloc::vec::Vec<
+            storage_growth_above_trend::BucketContribution,
+        >,
+    }
+    /// Nested message and enum types in `StorageGrowthAboveTrend`.
+    pub mod storage_growth_above_trend {
+        /// Represents the storage growth details for a bucket.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BucketContribution {
+            /// Output only. The name of the bucket.
+            #[prost(string, tag = "1")]
+            pub bucket: ::prost::alloc::string::String,
+            /// Output only. The total storage growth in bytes for the bucket.
+            #[prost(int64, tag = "2")]
+            pub total_storage_growth_bytes: i64,
+            /// Output only. The percentage increase in storage growth for the bucket.
+            #[prost(double, tag = "3")]
+            pub percentage_increase: f64,
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[prost(oneof = "bucket_contribution::Details", tags = "5")]
+            pub details: ::core::option::Option<bucket_contribution::Details>,
+        }
+        /// Nested message and enum types in `BucketContribution`.
+        pub mod bucket_contribution {
+            /// The details of the bucket's contribution towards the
+            /// `IntelligenceFinding`.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Details {
+                /// Output only. The error related to accessing the details about the
+                /// contribution of the bucket.
+                #[prost(message, tag = "5")]
+                Error(super::super::super::super::super::super::rpc::Status),
+            }
+        }
+    }
+    /// The specific details of the `IntelligenceFinding`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum IntelligenceFindingDetails {
+        /// Output only. `IntelligenceFinding` about a spike in Class A/B operations
+        /// on Coldline or Archive Cloud Storage objects.
+        #[prost(message, tag = "11")]
+        ColdlineAndArchivalStorageOperationsSpike(
+            ColdlineAndArchivalStorageOperationsSpike,
+        ),
+        /// Output only. `IntelligenceFinding` about a spike in throttled requests
+        /// (429 errors) within a project.
+        #[prost(message, tag = "12")]
+        ThrottledRequestsSpike(ThrottledRequestSpike),
+        /// Output only. `IntelligenceFinding` about a spike in cross-region egress.
+        #[prost(message, tag = "13")]
+        CrossRegionEgressSpike(CrossRegionEgressSpike),
+        /// Output only. `IntelligenceFinding` about growth in storage above the
+        /// expected trend.
+        #[prost(message, tag = "14")]
+        StorageGrowthAboveTrend(StorageGrowthAboveTrend),
+    }
+}
+/// An `IntelligenceFindingRevision` represents a specific revision of an
+/// `IntelligenceFinding` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntelligenceFindingRevision {
+    /// Identifier. The resource name of `IntelligenceFindingRevision`.
+    /// Format:
+    /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The snapshot of the `IntelligenceFinding` at the time the
+    /// revision was created. This field contains the full finding details as they
+    /// existed for the revision.
+    #[prost(message, optional, tag = "2")]
+    pub snapshot: ::core::option::Option<IntelligenceFinding>,
+    /// Output only. The timestamp when the revision was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message to get the `IntelligenceFinding` resource associated with a
+/// project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetIntelligenceFindingRequest {
+    /// Required. The name of the `IntelligenceFinding` resource.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to list `IntelligenceFinding` resources associated with
+/// a project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListIntelligenceFindingsRequest {
+    /// Required. The parent of the `IntelligenceFinding` resource.
+    ///
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The filter expression to be applied.
+    /// Supports filtering by `type` and `associated_resources`.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of `IntelligenceFinding` resources to return.
+    ///
+    /// The maximum value is `100`; values above `100` will be coerced to `100`.
+    /// The default value is `100`.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListIntelligenceFindings`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListIntelligenceFindings` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message to list the `IntelligenceFinding` resources associated with
+/// a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIntelligenceFindingsResponse {
+    /// The `IntelligenceFinding` resources from the specified project.
+    #[prost(message, repeated, tag = "1")]
+    pub intelligence_findings: ::prost::alloc::vec::Vec<IntelligenceFinding>,
+    /// A token to retrieve the next page of results.
+    /// Pass this value in the `page_token` field in the subsequent call.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message to summarize the intelligence findings for the specified
+/// scope(org, folder or project).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SummarizeIntelligenceFindingsRequest {
+    /// Required. The scope to summarize the findings for.
+    /// Format:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Determines the granularity of the findings
+    /// when the `parent` is an organization or folder.
+    ///
+    /// * `PARENT` (or not set): A single summary is
+    ///   returned for each insight type, aggregated across the entire `parent`
+    ///   scope.
+    /// * `PROJECT`: A separate summary is returned for each
+    ///   insight type for every project within the `parent` scope.
+    ///
+    /// The only supported values are `PARENT` and `PROJECT`.
+    /// If no value is specified, the API behaviour defaults to the `PARENT`.
+    #[prost(
+        enumeration = "summarize_intelligence_findings_request::ResourceScope",
+        tag = "2"
+    )]
+    pub resource_scope: i32,
+    /// Optional. The filter expression, following AIP-160.
+    /// Supports filtering by FindingType.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of findings to return.
+    ///
+    /// The maximum value is `100`; values above `100` will be coerced to `100`.
+    /// The default value is `100`.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `SummarizeIntelligenceFindings` call. Provide this to retrieve the
+    /// subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `SummarizeIntelligenceFindings` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SummarizeIntelligenceFindingsRequest`.
+pub mod summarize_intelligence_findings_request {
+    /// The list of resource scopes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ResourceScope {
+        /// The default behavior. Falls back to PARENT behaviour
+        Unspecified = 0,
+        /// Summaries are aggregated at the level of the `parent` resource.
+        Parent = 1,
+        /// Summaries are broken down by each project within the `parent` scope.
+        Project = 2,
+    }
+    impl ResourceScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RESOURCE_SCOPE_UNSPECIFIED",
+                Self::Parent => "PARENT",
+                Self::Project => "PROJECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESOURCE_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PARENT" => Some(Self::Parent),
+                "PROJECT" => Some(Self::Project),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message to summarize the intelligence findings for a specified
+/// scope(org, folder or project).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizeIntelligenceFindingsResponse {
+    /// The list of `FindingSummary` summaries.
+    #[prost(message, repeated, tag = "1")]
+    pub finding_summaries: ::prost::alloc::vec::Vec<FindingSummary>,
+    /// A token to retrieve the next page of results.
+    /// Pass this value in the `page_token` field in the subsequent call to
+    /// `SummarizeIntelligenceFindings` to retrieve the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message to get the `IntelligenceFindingRevision` resource associated
+/// with a project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetIntelligenceFindingRevisionRequest {
+    /// Required. The name of the `IntelligenceFindingRevision` resource.
+    ///
+    /// ## Format:
+    ///
+    /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to list `IntelligenceFindingRevision` resources associated
+/// with a project.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListIntelligenceFindingRevisionsRequest {
+    /// Required. The parent of the `IntelligenceFindingRevision` resource.
+    ///
+    /// ## Format:
+    ///
+    /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of `IntelligenceFindingRevision` resources to
+    /// return.
+    ///
+    /// The maximum value is `100`; values above `100` will be coerced to `100`.
+    /// The default value is `100`.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListIntelligenceFindingRevisions` call. Provide this to retrieve the
+    /// subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message to list `IntelligenceFindingRevision` resources associated
+/// with a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIntelligenceFindingRevisionsResponse {
+    /// The `IntelligenceFindingRevision` resources from the specified project.
+    #[prost(message, repeated, tag = "1")]
+    pub intelligence_finding_revisions: ::prost::alloc::vec::Vec<
+        IntelligenceFindingRevision,
+    >,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A summary of findings generated for an organization, a folder, or a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindingSummary {
+    /// Output only. The type of the finding.
+    #[prost(enumeration = "FindingType", tag = "1")]
+    pub r#type: i32,
+    /// Output only. The category of finding.
+    #[prost(enumeration = "FindingCategory", tag = "2")]
+    pub category: i32,
+    /// Output only. The fully qualified Cloud resource name for which this
+    /// summary was generated.
+    /// eg: `//cloudresourcemanager.googleapis.com/projects/p1`
+    #[prost(string, tag = "4")]
+    pub target_resource: ::prost::alloc::string::String,
+    /// Output only. The creation time of the earliest finding that this summary is
+    /// based on.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time of the most recent update among all the findings that
+    /// this summary is based on.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Severity of the finding.
+    #[prost(enumeration = "FindingSeverity", tag = "7")]
+    pub severity: i32,
+    /// Output only. List of `SummaryDetails`.
+    #[prost(message, repeated, tag = "8")]
+    pub summary_details: ::prost::alloc::vec::Vec<finding_summary::SummaryDetails>,
+}
+/// Nested message and enum types in `FindingSummary`.
+pub mod finding_summary {
+    /// Details about the `FindingSummary` resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SummaryDetails {
+        /// Output only. The type of Cloud resource this summary detail applies to.
+        #[prost(enumeration = "summary_details::ResourceType", tag = "3")]
+        pub resource_type: i32,
+        /// Output only. A short description about the FindingSummary
+        #[prost(string, tag = "4")]
+        pub description: ::prost::alloc::string::String,
+        /// The value of the summary.
+        #[prost(oneof = "summary_details::Magnitude", tags = "1, 2")]
+        pub magnitude: ::core::option::Option<summary_details::Magnitude>,
+    }
+    /// Nested message and enum types in `SummaryDetails`.
+    pub mod summary_details {
+        /// The list of resource types.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ResourceType {
+            /// Resource type is unspecified.
+            Unspecified = 0,
+            /// Resource type is project.
+            Project = 1,
+            /// Resource type is bucket.
+            Bucket = 2,
+        }
+        impl ResourceType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+                    Self::Project => "PROJECT",
+                    Self::Bucket => "BUCKET",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PROJECT" => Some(Self::Project),
+                    "BUCKET" => Some(Self::Bucket),
+                    _ => None,
+                }
+            }
+        }
+        /// The value of the summary.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Magnitude {
+            /// The count of impacted resources.
+            #[prost(int64, tag = "1")]
+            Count(i64),
+            /// The percentage of impacted resources.
+            #[prost(float, tag = "2")]
+            Percentage(f32),
+        }
+    }
+}
+/// List the finding types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FindingType {
+    /// Finding type is unspecified.
+    Unspecified = 0,
+    /// Finding is about a spike in Class A/B operations on Coldline or Archive
+    /// Cloud Storage objects.
+    ColdlineAndArchivalStorageOperationsSpike = 1,
+    /// Finding is about a spike in throttled requests (429 errors) within a
+    /// project.
+    ThrottledRequestSpike = 2,
+    /// Finding is about a spike in cross region egress in Cloud Storage.
+    CrossRegionEgressSpike = 3,
+    /// Finding is about growth in storage above the expected trend.
+    StorageGrowthAboveTrend = 4,
+}
+impl FindingType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FINDING_TYPE_UNSPECIFIED",
+            Self::ColdlineAndArchivalStorageOperationsSpike => {
+                "FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE"
+            }
+            Self::ThrottledRequestSpike => "FINDING_TYPE_THROTTLED_REQUEST_SPIKE",
+            Self::CrossRegionEgressSpike => "FINDING_TYPE_CROSS_REGION_EGRESS_SPIKE",
+            Self::StorageGrowthAboveTrend => "FINDING_TYPE_STORAGE_GROWTH_ABOVE_TREND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FINDING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE" => {
+                Some(Self::ColdlineAndArchivalStorageOperationsSpike)
+            }
+            "FINDING_TYPE_THROTTLED_REQUEST_SPIKE" => Some(Self::ThrottledRequestSpike),
+            "FINDING_TYPE_CROSS_REGION_EGRESS_SPIKE" => {
+                Some(Self::CrossRegionEgressSpike)
+            }
+            "FINDING_TYPE_STORAGE_GROWTH_ABOVE_TREND" => {
+                Some(Self::StorageGrowthAboveTrend)
+            }
+            _ => None,
+        }
+    }
+}
+/// List of categories a finding falls under.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FindingCategory {
+    /// Category is unspecified.
+    Unspecified = 0,
+    /// Category is 'Data Management'.
+    DataManagement = 1,
+    /// Category is 'Performance'.
+    Performance = 2,
+}
+impl FindingCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FINDING_CATEGORY_UNSPECIFIED",
+            Self::DataManagement => "FINDING_CATEGORY_DATA_MANAGEMENT",
+            Self::Performance => "FINDING_CATEGORY_PERFORMANCE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FINDING_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "FINDING_CATEGORY_DATA_MANAGEMENT" => Some(Self::DataManagement),
+            "FINDING_CATEGORY_PERFORMANCE" => Some(Self::Performance),
+            _ => None,
+        }
+    }
+}
+/// Severity of the `IntelligenceFinding` resource.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FindingSeverity {
+    /// Severity is unspecified.
+    Unspecified = 0,
+    /// Severity is critical.
+    Critical = 1,
+}
+impl FindingSeverity {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FINDING_SEVERITY_UNSPECIFIED",
+            Self::Critical => "FINDING_SEVERITY_CRITICAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FINDING_SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "FINDING_SEVERITY_CRITICAL" => Some(Self::Critical),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod storage_control_client {
     #![allow(
@@ -1911,6 +2735,161 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the `IntelligenceFinding` for a project.
+        pub async fn get_intelligence_finding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIntelligenceFindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceFinding>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetIntelligenceFinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetIntelligenceFinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the `IntelligenceFinding` resources for the specified project.
+        pub async fn list_intelligence_findings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIntelligenceFindingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIntelligenceFindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ListIntelligenceFindings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ListIntelligenceFindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Summarize the intelligence findings for the specified scope(org, folder or
+        /// project).
+        pub async fn summarize_intelligence_findings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SummarizeIntelligenceFindingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SummarizeIntelligenceFindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/SummarizeIntelligenceFindings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "SummarizeIntelligenceFindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the `IntelligenceFindingRevision` resource.
+        pub async fn get_intelligence_finding_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetIntelligenceFindingRevisionRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceFindingRevision>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetIntelligenceFindingRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetIntelligenceFindingRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the revisions of an `IntelligenceFinding` resource.
+        pub async fn list_intelligence_finding_revisions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListIntelligenceFindingRevisionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIntelligenceFindingRevisionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ListIntelligenceFindingRevisions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ListIntelligenceFindingRevisions",
                     ),
                 );
             self.inner.unary(req, path, codec).await

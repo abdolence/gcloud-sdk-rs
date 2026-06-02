@@ -1442,6 +1442,14 @@ pub struct AuthzPolicy {
     /// to 5 rules.
     #[prost(message, repeated, tag = "7")]
     pub http_rules: ::prost::alloc::vec::Vec<authz_policy::AuthzRule>,
+    /// Optional. A list of authorization network rules to match against the
+    /// incoming request. A policy match occurs when at least one network rule
+    /// matches the request.
+    /// At least one network rule is required for Allow or Deny Action if no HTTP
+    /// rules are provided. Network rules are mutually exclusive with HTTP rules.
+    /// Limited to 5 rules.
+    #[prost(message, repeated, tag = "12")]
+    pub network_rules: ::prost::alloc::vec::Vec<authz_policy::AuthzRule>,
     /// Required. Can be one of `ALLOW`, `DENY`, `CUSTOM`.
     ///
     /// When the action is `CUSTOM`, `customProvider` must be specified.
@@ -1485,14 +1493,17 @@ pub mod authz_policy {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Target {
         /// Optional. All gateways and forwarding rules referenced by this policy and
-        /// extensions must share the same load balancing scheme. Supported values:
+        /// extensions must share the same load balancing scheme. Required only when
+        /// targeting forwarding rules. If targeting Secure Web Proxy, this field
+        /// must be `INTERNAL_MANAGED` or not specified. Must not be specified
+        /// when targeting Agent Gateway. Supported values:
         /// `INTERNAL_MANAGED` and `EXTERNAL_MANAGED`. For more information, refer
         /// to [Backend services
         /// overview](<https://cloud.google.com/load-balancing/docs/backend-service>).
         #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
         pub load_balancing_scheme: i32,
-        /// Required. A list of references to the Forwarding Rules on which this
-        /// policy will be applied.
+        /// Required. A list of references to the Forwarding Rules, Secure Web Proxy
+        /// Gateways, or Agent Gateways on which this policy will be applied.
         #[prost(string, repeated, tag = "1")]
         pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -1799,6 +1810,13 @@ pub mod authz_policy {
                 /// targeting AgentGateway resources.
                 #[prost(message, optional, tag = "5")]
                 pub mcp: ::core::option::Option<request_operation::Mcp>,
+                /// Optional. A list of SNIs to match against. The match can be one of
+                /// exact, prefix, suffix, or contains (substring match). If there is no
+                /// SNI (i.e. plaintext HTTP traffic), the request will be denied.
+                /// Matches are always case sensitive unless the ignoreCase is set.
+                /// Limited to 10 SNIs per Authorization Policy.
+                #[prost(message, repeated, tag = "7")]
+                pub snis: ::prost::alloc::vec::Vec<super::StringMatch>,
             }
             /// Nested message and enum types in `RequestOperation`.
             pub mod request_operation {
@@ -3049,10 +3067,10 @@ pub struct FirewallEndpoint {
     /// <https://google.aip.dev/128.>
     #[prost(bool, tag = "6")]
     pub reconciling: bool,
-    /// Output only. List of networks that are associated with this endpoint in the
-    /// local zone. This is a projection of the FirewallEndpointAssociations
-    /// pointing at this endpoint. A network will only appear in this list after
-    /// traffic routing is fully configured. Format:
+    /// Output only. Deprecated: List of networks that are associated with this
+    /// endpoint in the local zone. This is a projection of the
+    /// FirewallEndpointAssociations pointing at this endpoint. A network will only
+    /// appear in this list after traffic routing is fully configured. Format:
     /// projects/{project}/global/networks/{name}.
     #[deprecated]
     #[prost(string, repeated, tag = "7")]
@@ -3620,6 +3638,36 @@ pub mod firewall_activation_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists FirewallEndpoints in a given project and location.
+        pub async fn list_project_firewall_endpoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFirewallEndpointsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFirewallEndpointsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.FirewallActivation/ListProjectFirewallEndpoints",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.FirewallActivation",
+                        "ListProjectFirewallEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets details of a single org Endpoint.
         pub async fn get_firewall_endpoint(
             &mut self,
@@ -3646,6 +3694,36 @@ pub mod firewall_activation_client {
                     GrpcMethod::new(
                         "google.cloud.networksecurity.v1.FirewallActivation",
                         "GetFirewallEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single project Endpoint.
+        pub async fn get_project_firewall_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFirewallEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallEndpoint>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.FirewallActivation/GetProjectFirewallEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.FirewallActivation",
+                        "GetProjectFirewallEndpoint",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3680,6 +3758,36 @@ pub mod firewall_activation_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a new FirewallEndpoint in a given project and location.
+        pub async fn create_project_firewall_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFirewallEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.FirewallActivation/CreateProjectFirewallEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.FirewallActivation",
+                        "CreateProjectFirewallEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a single org Endpoint.
         pub async fn delete_firewall_endpoint(
             &mut self,
@@ -3710,6 +3818,36 @@ pub mod firewall_activation_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deletes a single project Endpoint.
+        pub async fn delete_project_firewall_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFirewallEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.FirewallActivation/DeleteProjectFirewallEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.FirewallActivation",
+                        "DeleteProjectFirewallEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Update a single org Endpoint.
         pub async fn update_firewall_endpoint(
             &mut self,
@@ -3736,6 +3874,36 @@ pub mod firewall_activation_client {
                     GrpcMethod::new(
                         "google.cloud.networksecurity.v1.FirewallActivation",
                         "UpdateFirewallEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a single project Endpoint.
+        pub async fn update_project_firewall_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFirewallEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.FirewallActivation/UpdateProjectFirewallEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.FirewallActivation",
+                        "UpdateProjectFirewallEndpoint",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -10591,6 +10759,403 @@ pub struct DeleteSecurityProfileRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
+pub mod security_profile_group_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// SecurityProfileGroup is a resource that defines an action for specific threat
+    /// signatures or severity levels.
+    #[derive(Debug, Clone)]
+    pub struct SecurityProfileGroupServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SecurityProfileGroupServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SecurityProfileGroupServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SecurityProfileGroupServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SecurityProfileGroupServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists SecurityProfileGroups in a given project and location.
+        pub async fn list_security_profile_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSecurityProfileGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSecurityProfileGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/ListSecurityProfileGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "ListSecurityProfileGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single SecurityProfileGroup.
+        pub async fn get_security_profile_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSecurityProfileGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityProfileGroup>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "GetSecurityProfileGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new SecurityProfileGroup in a given project and location.
+        pub async fn create_security_profile_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSecurityProfileGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfileGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "CreateSecurityProfileGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single SecurityProfileGroup.
+        pub async fn update_security_profile_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSecurityProfileGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "UpdateSecurityProfileGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single SecurityProfileGroup.
+        pub async fn delete_security_profile_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSecurityProfileGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfileGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "DeleteSecurityProfileGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists SecurityProfiles in a given project and location.
+        pub async fn list_security_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSecurityProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSecurityProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/ListSecurityProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "ListSecurityProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single SecurityProfile.
+        pub async fn get_security_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSecurityProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "GetSecurityProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new SecurityProfile in a given project and location.
+        pub async fn create_security_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSecurityProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "CreateSecurityProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single SecurityProfile.
+        pub async fn update_security_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSecurityProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "UpdateSecurityProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single SecurityProfile.
+        pub async fn delete_security_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSecurityProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SecurityProfileGroupService",
+                        "DeleteSecurityProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
 pub mod organization_security_profile_group_service_client {
     #![allow(
         unused_variables,
@@ -10980,6 +11545,759 @@ pub mod organization_security_profile_group_service_client {
                     GrpcMethod::new(
                         "google.cloud.networksecurity.v1.OrganizationSecurityProfileGroupService",
                         "DeleteSecurityProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Represents a Secure Access Connect (SAC) realm resource.
+///
+/// A Secure Access Connect realm establishes a connection between your Google
+/// Cloud project and an SSE service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SacRealm {
+    /// Identifier. Resource name, in the form
+    /// `projects/{project}/locations/global/sacRealms/{sacRealm}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the realm was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the realm was last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Optional list of labels applied to the resource.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Immutable. SSE service provider associated with the realm.
+    #[prost(enumeration = "sac_realm::SecurityService", tag = "5")]
+    pub security_service: i32,
+    /// Output only. Key to be shared with SSE service provider during pairing.
+    #[prost(message, optional, tag = "6")]
+    pub pairing_key: ::core::option::Option<sac_realm::PairingKey>,
+    /// Output only. State of the realm.
+    #[prost(enumeration = "sac_realm::State", tag = "7")]
+    pub state: i32,
+}
+/// Nested message and enum types in `SACRealm`.
+pub mod sac_realm {
+    /// Key to be shared with SSE service provider to establish global handshake.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PairingKey {
+        /// Output only. Key value.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Output only. Timestamp in UTC of when this resource is considered
+        /// expired. It expires 7 days after creation.
+        #[prost(message, optional, tag = "2")]
+        pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// SSE service provider
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SecurityService {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// [Palo Alto Networks Prisma
+        /// Access](<https://www.paloaltonetworks.com/sase/access>).
+        PaloAltoPrismaAccess = 1,
+    }
+    impl SecurityService {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SECURITY_SERVICE_UNSPECIFIED",
+                Self::PaloAltoPrismaAccess => "PALO_ALTO_PRISMA_ACCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SECURITY_SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PALO_ALTO_PRISMA_ACCESS" => Some(Self::PaloAltoPrismaAccess),
+                _ => None,
+            }
+        }
+    }
+    /// State of the realm.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// No state specified. This should not be used.
+        Unspecified = 0,
+        /// Has never been attached to a partner.
+        /// Used only for Prisma Access.
+        PendingPartnerAttachment = 7,
+        /// Currently attached to a partner.
+        PartnerAttached = 1,
+        /// Was once attached to a partner but has been detached.
+        PartnerDetached = 2,
+        /// Is not attached to a partner and has an expired pairing key.
+        /// Used only for Prisma Access.
+        KeyExpired = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::PendingPartnerAttachment => "PENDING_PARTNER_ATTACHMENT",
+                Self::PartnerAttached => "PARTNER_ATTACHED",
+                Self::PartnerDetached => "PARTNER_DETACHED",
+                Self::KeyExpired => "KEY_EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING_PARTNER_ATTACHMENT" => Some(Self::PendingPartnerAttachment),
+                "PARTNER_ATTACHED" => Some(Self::PartnerAttached),
+                "PARTNER_DETACHED" => Some(Self::PartnerDetached),
+                "KEY_EXPIRED" => Some(Self::KeyExpired),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for `ListSACRealms` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListSacRealmsRequest {
+    /// Required. The parent, in the form `projects/{project}/locations/global`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for `ListSACRealms` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSacRealmsResponse {
+    /// The list of SACRealms.
+    #[prost(message, repeated, tag = "1")]
+    pub sac_realms: ::prost::alloc::vec::Vec<SacRealm>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for `GetSACRealm` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetSacRealmRequest {
+    /// Required. Name of the resource, in the form
+    /// `projects/{project}/locations/global/sacRealms/{sacRealm}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for `CreateSACRealm` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSacRealmRequest {
+    /// Required. The parent, in the form `projects/{project}/locations/global`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the created realm.
+    /// The ID must be 1-63 characters long, and comply with
+    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// Specifically, it must be 1-63 characters long and match the regular
+    /// expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`
+    /// which means the first character must be a lowercase letter, and all
+    /// following characters must be a dash, lowercase letter, or digit, except
+    /// the last character, which cannot be a dash.
+    #[prost(string, tag = "2")]
+    pub sac_realm_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub sac_realm: ::core::option::Option<SacRealm>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for `DeleteSACRealm` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteSacRealmRequest {
+    /// Required. Name of the resource, in the form
+    /// `projects/{project}/locations/global/sacRealms/{sacRealm}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Represents a Secure Access Connect (SAC) attachment resource.
+///
+/// A Secure Access Connect attachment enables NCC Gateway to process traffic
+/// with an SSE product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SacAttachment {
+    /// Identifier. Resource name, in the form
+    /// `projects/{project}/locations/{location}/sacAttachments/{sac_attachment}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the attachment was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the attachment was last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Optional list of labels applied to the resource.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. SAC Realm which owns the attachment. This can be input as an ID
+    /// or a full resource name. The output always has the form
+    /// `projects/{project_number}/locations/{location}/sacRealms/{sac_realm}`.
+    #[prost(string, tag = "5")]
+    pub sac_realm: ::prost::alloc::string::String,
+    /// Required. NCC Gateway associated with the attachment. This can be input as
+    /// an ID or a full resource name. The output always has the form
+    /// `projects/{project_number}/locations/{location}/spokes/{ncc_gateway}`.
+    #[prost(string, tag = "6")]
+    pub ncc_gateway: ::prost::alloc::string::String,
+    /// Output only. State of the attachment.
+    #[prost(enumeration = "sac_attachment::State", tag = "10")]
+    pub state: i32,
+}
+/// Nested message and enum types in `SACAttachment`.
+pub mod sac_attachment {
+    /// State of the attachment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// No state specified. This should not be used.
+        Unspecified = 0,
+        /// Has never been attached to a partner.
+        PendingPartnerAttachment = 1,
+        /// Currently attached to a partner.
+        PartnerAttached = 2,
+        /// Was once attached to a partner but has been detached.
+        PartnerDetached = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::PendingPartnerAttachment => "PENDING_PARTNER_ATTACHMENT",
+                Self::PartnerAttached => "PARTNER_ATTACHED",
+                Self::PartnerDetached => "PARTNER_DETACHED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING_PARTNER_ATTACHMENT" => Some(Self::PendingPartnerAttachment),
+                "PARTNER_ATTACHED" => Some(Self::PartnerAttached),
+                "PARTNER_DETACHED" => Some(Self::PartnerDetached),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for `ListSACAttachments` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListSacAttachmentsRequest {
+    /// Required. The parent, in the form
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for `ListSACAttachments` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSacAttachmentsResponse {
+    /// The list of SACAttachments.
+    #[prost(message, repeated, tag = "1")]
+    pub sac_attachments: ::prost::alloc::vec::Vec<SacAttachment>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for `GetSACAttachment` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetSacAttachmentRequest {
+    /// Required. Name of the resource, in the form
+    /// `projects/{project}/locations/{location}/sacAttachments/{sac_attachment}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for `CreateSACAttachment` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSacAttachmentRequest {
+    /// Required. The parent, in the form
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the created attachment.
+    /// The ID must be 1-63 characters long, and comply with
+    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
+    /// Specifically, it must be 1-63 characters long and match the regular
+    /// expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`
+    /// which means the first character must be a lowercase letter, and all
+    /// following characters must be a dash, lowercase letter, or digit, except
+    /// the last character, which cannot be a dash.
+    #[prost(string, tag = "2")]
+    pub sac_attachment_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub sac_attachment: ::core::option::Option<SacAttachment>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for `DeleteSACAttachment` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteSacAttachmentRequest {
+    /// Required. Name of the resource, in the form
+    /// `projects/{project}/locations/{location}/sacAttachments/{sac_attachment}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod sse_realm_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service describing handlers for resources
+    #[derive(Debug, Clone)]
+    pub struct SseRealmServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SseRealmServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SseRealmServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SseRealmServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SseRealmServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists SACRealms in a given project.
+        pub async fn list_sac_realms(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSacRealmsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSacRealmsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/ListSACRealms",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "ListSACRealms",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the specified realm.
+        pub async fn get_sac_realm(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSacRealmRequest>,
+        ) -> std::result::Result<tonic::Response<super::SacRealm>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/GetSACRealm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "GetSACRealm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new SACRealm in a given project.
+        pub async fn create_sac_realm(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSacRealmRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/CreateSACRealm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "CreateSACRealm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified realm.
+        pub async fn delete_sac_realm(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSacRealmRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/DeleteSACRealm",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "DeleteSACRealm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists SACAttachments in a given project and location.
+        pub async fn list_sac_attachments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSacAttachmentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSacAttachmentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/ListSACAttachments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "ListSACAttachments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the specified attachment.
+        pub async fn get_sac_attachment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSacAttachmentRequest>,
+        ) -> std::result::Result<tonic::Response<super::SacAttachment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/GetSACAttachment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "GetSACAttachment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new SACAttachment in a given project and location.
+        pub async fn create_sac_attachment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSacAttachmentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/CreateSACAttachment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "CreateSACAttachment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified attachment.
+        pub async fn delete_sac_attachment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSacAttachmentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networksecurity.v1.SSERealmService/DeleteSACAttachment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.SSERealmService",
+                        "DeleteSACAttachment",
                     ),
                 );
             self.inner.unary(req, path, codec).await

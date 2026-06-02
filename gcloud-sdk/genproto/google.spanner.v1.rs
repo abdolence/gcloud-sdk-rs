@@ -3180,6 +3180,22 @@ pub struct BatchWriteResponse {
     #[prost(message, optional, tag = "3")]
     pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// The request for
+/// \[FetchCacheUpdate\]\[google.spanner.v1.Spanner.FetchCacheUpdate\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchCacheUpdateRequest {
+    /// Required. The database for which to retrieve the cache update.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. The maximum number of key recipes to return in the response.
+    /// If not set, a default limit of 100 will be used.
+    #[prost(int32, tag = "2")]
+    pub max_recipe_count: i32,
+    /// Optional. The maximum number of ranges to return in the response.
+    /// If not set, a default limit of 10000 will be used.
+    #[prost(int32, tag = "3")]
+    pub max_range_count: i32,
+}
 /// Generated client implementations.
 pub mod spanner_client {
     #![allow(
@@ -3793,6 +3809,41 @@ pub mod spanner_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.spanner.v1.Spanner", "BatchWrite"));
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// Retrieves a cache update for a given database.
+        ///
+        /// This RPC can be used to warm up the client cache by fetching key recipes
+        /// and server information for a given database. It is recommended to call
+        /// this RPC at the beginning of the client's lifecycle, prior to any other
+        /// data plane operations.
+        ///
+        /// The cache update is returned as a stream because the response can be too
+        /// large to fit into a single `CacheUpdate` message.
+        pub async fn fetch_cache_update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchCacheUpdateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::CacheUpdate>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.v1.Spanner/FetchCacheUpdate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.spanner.v1.Spanner", "FetchCacheUpdate"),
+                );
             self.inner.server_streaming(req, path, codec).await
         }
     }

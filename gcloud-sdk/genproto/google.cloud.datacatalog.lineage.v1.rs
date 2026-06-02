@@ -40,7 +40,7 @@ pub struct Run {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A human-readable name you can set to display in a user interface.
-    /// Must be not longer than 1024 characters and only contain UTF-8 letters
+    /// Must be not longer than 200 characters and only contain UTF-8 letters
     /// or numbers, spaces or characters like `_-:&.`
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
@@ -153,15 +153,37 @@ pub struct EventLink {
     /// Required. Reference to the target entity
     #[prost(message, optional, tag = "2")]
     pub target: ::core::option::Option<EntityReference>,
+    /// Optional. Describes how the target depends on the source.
+    #[prost(message, optional, tag = "3")]
+    pub dependency_info: ::core::option::Option<DependencyInfo>,
+}
+/// Dependency info describes how one entity depends on another.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DependencyInfo {
+    /// Required. Type of dependency.
+    #[prost(enumeration = "DependencyType", tag = "1")]
+    pub dependency_type: i32,
 }
 /// The soft reference to everything you can attach a lineage event to.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntityReference {
     /// Required. [Fully Qualified Name
-    /// (FQN)](<https://cloud.google.com/data-catalog/docs/fully-qualified-names>)
+    /// (FQN)](<https://cloud.google.com/dataplex/docs/fully-qualified-names>)
     /// of the entity.
     #[prost(string, tag = "1")]
     pub fully_qualified_name: ::prost::alloc::string::String,
+    /// Optional. Field path within the entity. Each nesting level should be a
+    /// separate value in the repeated field. The order matters. Must be empty for
+    /// asset level lineage
+    ///
+    /// For example to address "salary.net" subfield where "salary" is a column and
+    /// "net" is a proto field two values in the `field` should be reported,
+    /// the first is "salary" and the second is "net".
+    ///
+    /// Each field length is limited to 500 characters.
+    /// Maximum supported nesting level is 20.
+    #[prost(string, repeated, tag = "3")]
+    pub field: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata describing the operation.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -286,7 +308,7 @@ pub mod operation_metadata {
     }
 }
 /// Request message for
-/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent\].
+/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessOpenLineageRunEventRequest {
     /// Required. The name of the project and its location that should own the
@@ -297,14 +319,14 @@ pub struct ProcessOpenLineageRunEventRequest {
     /// <https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json>
     #[prost(message, optional, tag = "2")]
     pub open_lineage: ::core::option::Option<::prost_types::Struct>,
-    /// A unique identifier for this request. Restricted to 36 ASCII characters.
-    /// A random UUID is recommended. This request is idempotent only if a
-    /// `request_id` is provided.
+    /// Optional. A unique identifier for this request. Restricted to 36 ASCII
+    /// characters. A random UUID is recommended. This request is idempotent only
+    /// if a `request_id` is provided.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent\].
+/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProcessOpenLineageRunEventResponse {
     /// Created process name.
@@ -323,7 +345,7 @@ pub struct ProcessOpenLineageRunEventResponse {
     pub lineage_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// \[CreateProcess\]\[google.cloud.datacatalog.lineage.v1.CreateProcess\].
+/// \[CreateProcess\]\[google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProcessRequest {
     /// Required. The name of the project and its location that should own the
@@ -333,14 +355,14 @@ pub struct CreateProcessRequest {
     /// Required. The process to create.
     #[prost(message, optional, tag = "2")]
     pub process: ::core::option::Option<Process>,
-    /// A unique identifier for this request. Restricted to 36 ASCII characters.
-    /// A random UUID is recommended. This request is idempotent only if a
-    /// `request_id` is provided.
+    /// Optional. A unique identifier for this request. Restricted to 36 ASCII
+    /// characters. A random UUID is recommended. This request is idempotent only
+    /// if a `request_id` is provided.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[UpdateProcess\]\[google.cloud.datacatalog.lineage.v1.UpdateProcess\].
+/// \[UpdateProcess\]\[google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProcessRequest {
     /// Required. The lineage process to update.
@@ -348,16 +370,22 @@ pub struct UpdateProcessRequest {
     /// The process's `name` field is used to identify the process to update.
     #[prost(message, optional, tag = "1")]
     pub process: ::core::option::Option<Process>,
-    /// The list of fields to update. Currently not used. The whole message is
-    /// updated.
+    /// Optional. The list of fields to update. Currently not used. The whole
+    /// message is updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// If set to true and the process is not found, the request inserts it.
+    /// Optional. If set to true and the process is not found, the request inserts
+    /// it.
     #[prost(bool, tag = "3")]
     pub allow_missing: bool,
+    /// Optional. A unique identifier for this request. Restricted to 36 ASCII
+    /// characters. A random UUID is recommended. This request is idempotent only
+    /// if a `request_id` is provided.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[GetProcess\]\[google.cloud.datacatalog.lineage.v1.GetProcess\].
+/// \[GetProcess\]\[google.cloud.datacatalog.lineage.v1.Lineage.GetProcess\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProcessRequest {
     /// Required. The name of the process to get.
@@ -365,21 +393,21 @@ pub struct GetProcessRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.ListProcesses\].
+/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProcessesRequest {
     /// Required. The name of the project and its location that owns this
     /// collection of processes.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of processes to return. The service may return
+    /// Optional. The maximum number of processes to return. The service may return
     /// fewer than this value. If unspecified, at most 50 processes are
     /// returned. The maximum value is 100; values greater than 100 are cut to
     /// 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The page token received from a previous `ListProcesses` call. Specify
-    /// it to get the next page.
+    /// Optional. The page token received from a previous `ListProcesses` call.
+    /// Specify it to get the next page.
     ///
     /// When paginating, all other parameters specified in this call must
     /// match the parameters of the call that provided the page token.
@@ -387,7 +415,7 @@ pub struct ListProcessesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.ListProcesses\].
+/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessesResponse {
     /// The processes from the specified project and location.
@@ -399,19 +427,19 @@ pub struct ListProcessesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[DeleteProcess\]\[google.cloud.datacatalog.lineage.v1.DeleteProcess\].
+/// \[DeleteProcess\]\[google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProcessRequest {
     /// Required. The name of the process to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set to true and the process is not found, the request
+    /// Optional. If set to true and the process is not found, the request
     /// succeeds but the server doesn't perform any actions.
     #[prost(bool, tag = "2")]
     pub allow_missing: bool,
 }
 /// Request message for
-/// \[CreateRun\]\[google.cloud.datacatalog.lineage.v1.CreateRun\].
+/// \[CreateRun\]\[google.cloud.datacatalog.lineage.v1.Lineage.CreateRun\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRunRequest {
     /// Required. The name of the process that should own the run.
@@ -420,14 +448,14 @@ pub struct CreateRunRequest {
     /// Required. The run to create.
     #[prost(message, optional, tag = "2")]
     pub run: ::core::option::Option<Run>,
-    /// A unique identifier for this request. Restricted to 36 ASCII characters.
-    /// A random UUID is recommended. This request is idempotent only if a
-    /// `request_id` is provided.
+    /// Optional. A unique identifier for this request. Restricted to 36 ASCII
+    /// characters. A random UUID is recommended. This request is idempotent only
+    /// if a `request_id` is provided.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[UpdateRun\]\[google.cloud.datacatalog.lineage.v1.UpdateRun\].
+/// \[UpdateRun\]\[google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRunRequest {
     /// Required. The lineage run to update.
@@ -438,16 +466,16 @@ pub struct UpdateRunRequest {
     /// `projects/{project}/locations/{location}/processes/{process}/runs/{run}`.
     #[prost(message, optional, tag = "1")]
     pub run: ::core::option::Option<Run>,
-    /// The list of fields to update. Currently not used. The whole message is
-    /// updated.
+    /// Optional. The list of fields to update. Currently not used. The whole
+    /// message is updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// If set to true and the run is not found, the request creates it.
+    /// Optional. If set to true and the run is not found, the request creates it.
     #[prost(bool, tag = "3")]
     pub allow_missing: bool,
 }
 /// Request message for
-/// \[GetRun\]\[google.cloud.datacatalog.lineage.v1.GetRun\].
+/// \[GetRun\]\[google.cloud.datacatalog.lineage.v1.Lineage.GetRun\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRunRequest {
     /// Required. The name of the run to get.
@@ -455,19 +483,19 @@ pub struct GetRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.ListRuns\].
+/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListRuns\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRunsRequest {
     /// Required. The name of process that owns this collection of runs.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of runs to return. The service may return
+    /// Optional. The maximum number of runs to return. The service may return
     /// fewer than this value. If unspecified, at most 50 runs are
     /// returned. The maximum value is 100; values greater than 100 are cut to
     /// 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The page token received from a previous `ListRuns` call. Specify
+    /// Optional. The page token received from a previous `ListRuns` call. Specify
     /// it to get the next page.
     ///
     /// When paginating, all other parameters specified in this call must
@@ -476,7 +504,7 @@ pub struct ListRunsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.ListRuns\].
+/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListRuns\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRunsResponse {
     /// The runs from the specified project and location.
@@ -488,19 +516,19 @@ pub struct ListRunsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[DeleteRun\]\[google.cloud.datacatalog.lineage.v1.DeleteRun\].
+/// \[DeleteRun\]\[google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRunRequest {
     /// Required. The name of the run to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set to true and the run is not found, the request
+    /// Optional. If set to true and the run is not found, the request
     /// succeeds but the server doesn't perform any actions.
     #[prost(bool, tag = "2")]
     pub allow_missing: bool,
 }
 /// Request message for
-/// \[CreateLineageEvent\]\[google.cloud.datacatalog.lineage.v1.CreateLineageEvent\].
+/// \[CreateLineageEvent\]\[google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLineageEventRequest {
     /// Required. The name of the run that should own the lineage event.
@@ -509,14 +537,14 @@ pub struct CreateLineageEventRequest {
     /// Required. The lineage event to create.
     #[prost(message, optional, tag = "2")]
     pub lineage_event: ::core::option::Option<LineageEvent>,
-    /// A unique identifier for this request. Restricted to 36 ASCII characters.
-    /// A random UUID is recommended. This request is idempotent only if a
-    /// `request_id` is provided.
+    /// Optional. A unique identifier for this request. Restricted to 36 ASCII
+    /// characters. A random UUID is recommended. This request is idempotent only
+    /// if a `request_id` is provided.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[GetLineageEvent\]\[google.cloud.datacatalog.lineage.v1.GetLineageEvent\].
+/// \[GetLineageEvent\]\[google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLineageEventRequest {
     /// Required. The name of the lineage event to get.
@@ -524,22 +552,22 @@ pub struct GetLineageEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.ListLineageEvents\].
+/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLineageEventsRequest {
     /// Required. The name of the run that owns the collection of lineage events to
     /// get.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of lineage events to return.
+    /// Optional. The maximum number of lineage events to return.
     ///
     /// The service may return fewer events than this value.
     /// If unspecified, at most 50 events are returned. The maximum value is 100;
     /// values greater than 100 are cut to 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The page token received from a previous `ListLineageEvents` call. Specify
-    /// it to get the next page.
+    /// Optional. The page token received from a previous `ListLineageEvents` call.
+    /// Specify it to get the next page.
     ///
     /// When paginating, all other parameters specified in this call must
     /// match the parameters of the call that provided the page token.
@@ -547,7 +575,7 @@ pub struct ListLineageEventsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.ListLineageEvents\].
+/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLineageEventsResponse {
     /// Lineage events from the specified project and location.
@@ -559,20 +587,20 @@ pub struct ListLineageEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[DeleteLineageEvent\]\[google.cloud.datacatalog.lineage.v1.DeleteLineageEvent\].
+/// \[DeleteLineageEvent\]\[google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLineageEventRequest {
     /// Required. The name of the lineage event to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set to true and the lineage event is not found, the request
+    /// Optional. If set to true and the lineage event is not found, the request
     /// succeeds but the server doesn't perform any actions.
     #[prost(bool, tag = "2")]
     pub allow_missing: bool,
 }
 /// Request message for
 /// \[SearchLinks\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchLinksRequest {
     /// Required. The project and location you want search in.
     #[prost(string, tag = "1")]
@@ -593,13 +621,13 @@ pub struct SearchLinksRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The asset for which you want to retrieve links.
-    #[prost(oneof = "search_links_request::Criteria", tags = "4, 5")]
+    #[prost(oneof = "search_links_request::Criteria", tags = "4, 5, 6, 7")]
     pub criteria: ::core::option::Option<search_links_request::Criteria>,
 }
 /// Nested message and enum types in `SearchLinksRequest`.
 pub mod search_links_request {
     /// The asset for which you want to retrieve links.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Criteria {
         /// Optional. Send asset information in the **source** field to retrieve all
         /// links that lead from the specified asset to downstream assets.
@@ -609,7 +637,33 @@ pub mod search_links_request {
         /// links that lead from upstream assets to the specified asset.
         #[prost(message, tag = "5")]
         Target(super::EntityReference),
+        /// Optional. Send a list of asset information in the **sources** field to
+        /// retrieve all links that lead from the specified assets to downstream
+        /// assets. This field is similar to the `source`
+        /// \[source\]\[google.cloud.datacatalog.lineage.v1.SearchLinksRequest.source\]
+        /// field but allows providing multiple entities.
+        /// All entities within the `MultipleEntityReference` must have the same
+        /// `fully_qualified_name`.
+        #[prost(message, tag = "6")]
+        Sources(super::MultipleEntityReference),
+        /// Optional. Send a list of asset information in the **targets** field to
+        /// retrieve all links that lead from upstream assets to the specified
+        /// assets. This field is similar to the `target`
+        /// \[target\]\[google.cloud.datacatalog.lineage.v1.SearchLinksRequest.target\]
+        /// field but allows providing multiple entities.
+        /// All entities within the `MultipleEntityReference` must have the same
+        /// `fully_qualified_name`.
+        #[prost(message, tag = "7")]
+        Targets(super::MultipleEntityReference),
     }
+}
+/// Multiple entity reference for SearchLinksRequest.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultipleEntityReference {
+    /// Optional. The list of entities to search for links. The maximum number of
+    /// entities is 20.
+    #[prost(message, repeated, tag = "1")]
+    pub entities: ::prost::alloc::vec::Vec<EntityReference>,
 }
 /// Response message for
 /// \[SearchLinks\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks\].
@@ -629,7 +683,7 @@ pub struct SearchLinksResponse {
 ///
 /// Links are created when LineageEvents record data transformation between
 /// related assets.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Link {
     /// Output only. Immutable. The name of the link. Format:
     /// `projects/{project}/locations/{location}/links/{link}`.
@@ -647,6 +701,20 @@ pub struct Link {
     /// The end of the last event establishing this link.
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The dependency info of the link (applies only to column level
+    /// links).
+    #[prost(message, repeated, tag = "6")]
+    pub dependency_info: ::prost::alloc::vec::Vec<link::DependencyInfo>,
+}
+/// Nested message and enum types in `Link`.
+pub mod link {
+    /// Dependency info describes how one entity depends on another.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DependencyInfo {
+        /// The type of dependency.
+        #[prost(enumeration = "super::DependencyType", tag = "1")]
+        pub dependency_type: i32,
+    }
 }
 /// Request message for
 /// \[BatchSearchLinkProcesses\]\[google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses\].
@@ -664,12 +732,12 @@ pub struct BatchSearchLinkProcessesRequest {
     /// Format: `projects/{project}/locations/{location}/links/{link}`.
     #[prost(string, repeated, tag = "2")]
     pub links: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The maximum number of processes to return in a single page of the response.
-    /// A page may contain fewer results than this value.
+    /// Optional. The maximum number of processes to return in a single page of the
+    /// response. A page may contain fewer results than this value.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// The page token received from a previous `BatchSearchLinkProcesses` call.
-    /// Use it to get the next page.
+    /// Optional. The page token received from a previous
+    /// `BatchSearchLinkProcesses` call. Use it to get the next page.
     ///
     /// When requesting subsequent pages of a response, remember that
     /// all parameters must match the values you provided
@@ -725,12 +793,13 @@ pub struct Origin {
     /// Type of the source.
     ///
     /// Use of a source_type other than `CUSTOM` for process creation
-    /// or updating is highly discouraged, and may be restricted in the future
-    /// without notice.
+    /// or updating is highly discouraged. It might be restricted in the future
+    /// without notice. There will be increase in cost if you use any of the source
+    /// types other than `CUSTOM`.
     #[prost(enumeration = "origin::SourceType", tag = "1")]
     pub source_type: i32,
-    /// If the source_type isn't CUSTOM, the value of this field should be a GCP
-    /// resource name of the system, which reports lineage. The project and
+    /// If the source_type isn't CUSTOM, the value of this field should be a Google
+    /// Cloud resource name of the system, which reports lineage. The project and
     /// location parts of the resource name must match the project and location of
     /// the lineage resource being created. Examples:
     ///
@@ -770,6 +839,12 @@ pub mod origin {
         LookerStudio = 5,
         /// Dataproc
         Dataproc = 6,
+        /// Vertex AI
+        VertexAi = 7,
+        /// Dataflow
+        Dataflow = 8,
+        /// Looker Core
+        LookerCore = 9,
     }
     impl SourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -785,6 +860,9 @@ pub mod origin {
                 Self::Composer => "COMPOSER",
                 Self::LookerStudio => "LOOKER_STUDIO",
                 Self::Dataproc => "DATAPROC",
+                Self::VertexAi => "VERTEX_AI",
+                Self::Dataflow => "DATAFLOW",
+                Self::LookerCore => "LOOKER_CORE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -797,8 +875,277 @@ pub mod origin {
                 "COMPOSER" => Some(Self::Composer),
                 "LOOKER_STUDIO" => Some(Self::LookerStudio),
                 "DATAPROC" => Some(Self::Dataproc),
+                "VERTEX_AI" => Some(Self::VertexAi),
+                "DATAFLOW" => Some(Self::Dataflow),
+                "LOOKER_CORE" => Some(Self::LookerCore),
                 _ => None,
             }
+        }
+    }
+}
+/// Lineage link between two entities.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LineageLink {
+    /// The entity that is the **source** of this link.
+    #[prost(message, optional, tag = "1")]
+    pub source: ::core::option::Option<EntityReference>,
+    /// The entity that is the **target** of this link.
+    #[prost(message, optional, tag = "2")]
+    pub target: ::core::option::Option<EntityReference>,
+    /// Processes metadata associated with the link.
+    #[prost(message, repeated, tag = "3")]
+    pub processes: ::prost::alloc::vec::Vec<lineage_link::LineageProcess>,
+    /// Describes how the target entity is dependent on the source entity.
+    #[prost(message, repeated, tag = "4")]
+    pub dependency_info: ::prost::alloc::vec::Vec<lineage_link::DependencyInfo>,
+    /// Depth of the current link in the graph starting from 1.
+    #[prost(int32, tag = "5")]
+    pub depth: i32,
+    /// The location where the LineageEvent that created the link is stored.
+    #[prost(string, tag = "7")]
+    pub location: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `LineageLink`.
+pub mod lineage_link {
+    /// Process metadata for the link.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LineageProcess {
+        /// Process that created the link.
+        #[prost(message, optional, tag = "3")]
+        pub process: ::core::option::Option<super::Process>,
+    }
+    /// Dependency info describes how one entity is dependent on another.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DependencyInfo {
+        /// The type of dependency.
+        #[prost(enumeration = "super::DependencyType", tag = "1")]
+        pub dependency_type: i32,
+    }
+}
+/// Request message for
+/// \[SearchLineageStreaming\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchLineageStreamingRequest {
+    /// Required. The project and location to initiate the search from.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The locations to search in.
+    #[prost(string, repeated, tag = "2")]
+    pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. Criteria for the root of the search.
+    #[prost(message, optional, tag = "3")]
+    pub root_criteria: ::core::option::Option<
+        search_lineage_streaming_request::RootCriteria,
+    >,
+    /// Required. Direction of the search.
+    #[prost(
+        enumeration = "search_lineage_streaming_request::SearchDirection",
+        tag = "4"
+    )]
+    pub direction: i32,
+    /// Optional. Filters for the search.
+    #[prost(message, optional, tag = "5")]
+    pub filters: ::core::option::Option<search_lineage_streaming_request::SearchFilters>,
+    /// Optional. Limits for the search.
+    #[prost(message, optional, tag = "6")]
+    pub limits: ::core::option::Option<search_lineage_streaming_request::SearchLimits>,
+}
+/// Nested message and enum types in `SearchLineageStreamingRequest`.
+pub mod search_lineage_streaming_request {
+    /// Filters for the search.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SearchFilters {
+        /// Optional. Types of dependencies between entities to retrieve.
+        /// If unspecified, all dependency types are returned.
+        #[prost(
+            enumeration = "super::DependencyType",
+            repeated,
+            packed = "false",
+            tag = "1"
+        )]
+        pub dependency_types: ::prost::alloc::vec::Vec<i32>,
+        /// Optional. Entity set restriction. If unspecified, the method returns all
+        /// entities.
+        #[prost(enumeration = "EntitySet", tag = "2")]
+        pub entity_set: i32,
+        /// Optional. Time interval to search for lineage. If unspecified, all
+        /// lineage is returned. Currently, at most one of `start_time` and
+        /// `end_time` can be set.
+        #[prost(message, optional, tag = "3")]
+        pub time_range: ::core::option::Option<
+            super::super::super::super::super::r#type::Interval,
+        >,
+    }
+    /// Limits for the search results.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SearchLimits {
+        /// Optional. The maximum depth of the search. The default value is 5 and
+        /// maximum value is 100.
+        #[prost(int32, tag = "1")]
+        pub max_depth: i32,
+        /// Optional. The maximum number of links to return in the response. The
+        /// default value is 1_000 and the maximum value is 10_000.
+        #[prost(int32, tag = "2")]
+        pub max_results: i32,
+        /// Optional. The maximum number of processes to return per link. The default
+        /// value is 0 and the maximum value is 100. If this value is non-zero, the
+        /// response will contain process names for the links. To retrieve full
+        /// process details in the response, include `links.processes.process` in the
+        /// [FieldMask](<https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask>).
+        #[prost(int32, tag = "3")]
+        pub max_process_per_link: i32,
+    }
+    /// Criteria for the root of the search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RootCriteria {
+        /// Criteria for the root of the search.
+        #[prost(oneof = "root_criteria::Criteria", tags = "1")]
+        pub criteria: ::core::option::Option<root_criteria::Criteria>,
+    }
+    /// Nested message and enum types in `RootCriteria`.
+    pub mod root_criteria {
+        /// Criteria for the root of the search.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Criteria {
+            /// Optional. The entities to initiate the search from. Entities can be
+            /// specified by FQN only, or by FQN and field. To search by FQN and all
+            /// available fields for that FQN, use the wildcard `*` as the field value.
+            #[prost(message, tag = "1")]
+            Entities(super::super::MultipleEntityReference),
+        }
+    }
+    /// Direction of the search.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SearchDirection {
+        /// Direction is unspecified.
+        Unspecified = 0,
+        /// Retrieve links that lead from the specified asset to downstream assets.
+        Downstream = 1,
+        /// Retrieve links that lead from upstream assets to the specified asset.
+        Upstream = 2,
+    }
+    impl SearchDirection {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SEARCH_DIRECTION_UNSPECIFIED",
+                Self::Downstream => "DOWNSTREAM",
+                Self::Upstream => "UPSTREAM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DOWNSTREAM" => Some(Self::Downstream),
+                "UPSTREAM" => Some(Self::Upstream),
+                _ => None,
+            }
+        }
+    }
+    /// Entity set restriction.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EntitySet {
+        /// The entity set is unspecified. Returns all the data.
+        Unspecified = 0,
+        /// Returns entities with only FQN specified. For example, entities with the
+        /// `field` field set are not returned.
+        Entities = 1,
+    }
+    impl EntitySet {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENTITY_SET_UNSPECIFIED",
+                Self::Entities => "ENTITIES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTITY_SET_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTITIES" => Some(Self::Entities),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message for
+/// \[SearchLineageStreaming\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchLineageStreamingResponse {
+    /// Output only. The lineage links that match the search criteria. Can be empty
+    /// if no links match.
+    #[prost(message, repeated, tag = "1")]
+    pub links: ::prost::alloc::vec::Vec<LineageLink>,
+    /// Unordered list. Unreachable resources. If non-empty, the result set might
+    /// be incomplete.
+    ///
+    /// Currently, only locations are supported.
+    ///
+    /// Format: `projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]`
+    /// Example: projects/123456789/locations/us-east1
+    #[prost(string, repeated, tag = "2")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Type of dependency between entities.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DependencyType {
+    /// Dependency type unspecified.
+    Unspecified = 0,
+    /// Exact data copy without any change.
+    ExactCopy = 1,
+    /// Other types of dependencies like filtering or grouping.
+    Other = 3,
+}
+impl DependencyType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DEPENDENCY_TYPE_UNSPECIFIED",
+            Self::ExactCopy => "EXACT_COPY",
+            Self::Other => "OTHER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEPENDENCY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXACT_COPY" => Some(Self::ExactCopy),
+            "OTHER" => Some(Self::Other),
+            _ => None,
         }
     }
 }
@@ -1406,6 +1753,64 @@ pub mod lineage_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a streaming response of lineage links connected to the requested
+        /// assets by performing a breadth-first search in the given direction. Links
+        /// represent the data flow between **source** (upstream) and **target**
+        /// (downstream) assets in transformation pipelines. Links are stored in the
+        /// same project as the Lineage Events that create them. This method retrieves
+        /// links from all valid locations provided in the request. This method
+        /// supports Column-Level Lineage (CLL) along with wildcard support to retrieve
+        /// all CLL for an Entity FQN.
+        ///
+        /// Following permissions are required to retrieve links:
+        ///
+        /// * `datalineage.events.get` permission for the project where the link is
+        ///  stored for entity-level lineage.
+        /// * `datalineage.events.getFields` permission for the project where the link
+        ///  is stored for column-level lineage.
+        ///
+        /// This method also returns processes that created the links if explicitly
+        /// requested by setting
+        /// [max_process_per_link](google.cloud.datacatalog.lineage.v1.SearchLineageStreamingRequest.limits.max_process_per_link)
+        /// is non-zero and full process details are requested via
+        /// `links.processes.process` in the
+        /// [FieldMask](https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask).
+        ///
+        /// Permission required to retrieve processes:
+        ///
+        /// * `datalineage.processes.get` permission for the project where the process
+        ///  is stored.
+        pub async fn search_lineage_streaming(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchLineageStreamingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::SearchLineageStreamingResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.lineage.v1.Lineage/SearchLineageStreaming",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "SearchLineageStreaming",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }

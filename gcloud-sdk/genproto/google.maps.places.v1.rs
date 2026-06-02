@@ -701,6 +701,250 @@ pub struct PriceRange {
     #[prost(message, optional, tag = "2")]
     pub end_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
+/// Represents transit-specific information for a place.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransitStation {
+    /// The name of the station in the local language.
+    #[prost(message, optional, tag = "1")]
+    pub display_name: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The transit agencies that serve this station.
+    #[prost(message, repeated, tag = "2")]
+    pub agencies: ::prost::alloc::vec::Vec<TransitAgency>,
+    /// Transit stops at this station.
+    #[prost(message, repeated, tag = "3")]
+    pub stops: ::prost::alloc::vec::Vec<TransitStop>,
+}
+/// Represents a transit agency.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransitAgency {
+    /// Agency name (e.g. "VTA") in the requested language.
+    #[prost(message, optional, tag = "1")]
+    pub display_name: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The URL of the agency's homepage.
+    #[prost(string, tag = "2")]
+    pub url: ::prost::alloc::string::String,
+    /// The URL of the agency's fare details page.
+    #[prost(string, tag = "3")]
+    pub fare_url: ::prost::alloc::string::String,
+    /// Icon identifier for localized branded icon of a transit system (e.g. London
+    /// Underground) which should be used instead of TransitLine.vehicle_icon in
+    /// the UI.
+    #[prost(message, optional, tag = "4")]
+    pub icon: ::core::option::Option<TransitIcon>,
+    /// The transit lines that are served by this agency.
+    #[prost(message, repeated, tag = "5")]
+    pub lines: ::prost::alloc::vec::Vec<TransitLine>,
+}
+/// Represents a single transit line.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TransitLine {
+    /// The id of the transit line that can be used to uniquely identify the line
+    /// among other transit lines in the same transit station. This identifier is
+    /// not guaranteed to be stable across different responses.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// The type of vehicle using this line.
+    #[prost(enumeration = "transit_line::VehicleType", tag = "2")]
+    pub vehicle_type: i32,
+    /// The long name for this transit line (e.g. "Sunnydale local").
+    #[prost(message, optional, tag = "3")]
+    pub display_name: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The short name for this transit line (e.g. "S2").
+    #[prost(message, optional, tag = "4")]
+    pub short_display_name: ::core::option::Option<
+        super::super::super::r#type::LocalizedText,
+    >,
+    /// The text color of labels for this transit line in #RRGGBB hex format,
+    /// e.g. #909CE1.
+    #[prost(string, tag = "5")]
+    pub text_color: ::prost::alloc::string::String,
+    /// The background color of the labels for this transit line in #RRGGBB hex
+    /// format, e.g. #909CE1. This color can also be used for drawing shapes for
+    /// this transit line.
+    #[prost(string, tag = "6")]
+    pub background_color: ::prost::alloc::string::String,
+    /// The URL of a webpage with details about this line.
+    #[prost(string, tag = "7")]
+    pub url: ::prost::alloc::string::String,
+    /// Icon identifier for this particular line (e.g. subway lines in New York).
+    #[prost(message, optional, tag = "8")]
+    pub icon: ::core::option::Option<TransitIcon>,
+    /// Icon identifier for this particular vehicle type.
+    #[prost(message, optional, tag = "9")]
+    pub vehicle_icon: ::core::option::Option<TransitIcon>,
+}
+/// Nested message and enum types in `TransitLine`.
+pub mod transit_line {
+    /// The type of vehicle for a transit line.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VehicleType {
+        /// Default value when vehicle type is not specified.
+        Unspecified = 0,
+        /// Rail.
+        Rail = 1,
+        /// Metro rail.
+        MetroRail = 2,
+        /// Subway.
+        Subway = 3,
+        /// Tram.
+        Tram = 4,
+        /// Monorail.
+        Monorail = 5,
+        /// Heavy rail.
+        HeavyRail = 6,
+        /// Commuter train.
+        CommuterTrain = 7,
+        /// High speed train.
+        HighSpeedTrain = 8,
+        /// Long distance train.
+        LongDistanceTrain = 9,
+        /// Bus.
+        Bus = 10,
+        /// Intercity bus.
+        IntercityBus = 11,
+        /// Trolleybus.
+        Trolleybus = 12,
+        /// Share taxi.
+        ShareTaxi = 13,
+        /// Coach.
+        Coach = 14,
+        /// Ferry.
+        Ferry = 15,
+        /// Cable car.
+        CableCar = 16,
+        /// Gondola lift.
+        GondolaLift = 17,
+        /// Funicular.
+        Funicular = 18,
+        /// Special.
+        Special = 19,
+        /// Horse carriage.
+        HorseCarriage = 20,
+        /// Airplane.
+        Airplane = 21,
+    }
+    impl VehicleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VEHICLE_TYPE_UNSPECIFIED",
+                Self::Rail => "RAIL",
+                Self::MetroRail => "METRO_RAIL",
+                Self::Subway => "SUBWAY",
+                Self::Tram => "TRAM",
+                Self::Monorail => "MONORAIL",
+                Self::HeavyRail => "HEAVY_RAIL",
+                Self::CommuterTrain => "COMMUTER_TRAIN",
+                Self::HighSpeedTrain => "HIGH_SPEED_TRAIN",
+                Self::LongDistanceTrain => "LONG_DISTANCE_TRAIN",
+                Self::Bus => "BUS",
+                Self::IntercityBus => "INTERCITY_BUS",
+                Self::Trolleybus => "TROLLEYBUS",
+                Self::ShareTaxi => "SHARE_TAXI",
+                Self::Coach => "COACH",
+                Self::Ferry => "FERRY",
+                Self::CableCar => "CABLE_CAR",
+                Self::GondolaLift => "GONDOLA_LIFT",
+                Self::Funicular => "FUNICULAR",
+                Self::Special => "SPECIAL",
+                Self::HorseCarriage => "HORSE_CARRIAGE",
+                Self::Airplane => "AIRPLANE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VEHICLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RAIL" => Some(Self::Rail),
+                "METRO_RAIL" => Some(Self::MetroRail),
+                "SUBWAY" => Some(Self::Subway),
+                "TRAM" => Some(Self::Tram),
+                "MONORAIL" => Some(Self::Monorail),
+                "HEAVY_RAIL" => Some(Self::HeavyRail),
+                "COMMUTER_TRAIN" => Some(Self::CommuterTrain),
+                "HIGH_SPEED_TRAIN" => Some(Self::HighSpeedTrain),
+                "LONG_DISTANCE_TRAIN" => Some(Self::LongDistanceTrain),
+                "BUS" => Some(Self::Bus),
+                "INTERCITY_BUS" => Some(Self::IntercityBus),
+                "TROLLEYBUS" => Some(Self::Trolleybus),
+                "SHARE_TAXI" => Some(Self::ShareTaxi),
+                "COACH" => Some(Self::Coach),
+                "FERRY" => Some(Self::Ferry),
+                "CABLE_CAR" => Some(Self::CableCar),
+                "GONDOLA_LIFT" => Some(Self::GondolaLift),
+                "FUNICULAR" => Some(Self::Funicular),
+                "SPECIAL" => Some(Self::Special),
+                "HORSE_CARRIAGE" => Some(Self::HorseCarriage),
+                "AIRPLANE" => Some(Self::Airplane),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents a transit stop within a station. This is a specific location
+/// where passengers board and alight transit vehicles, such as a platform or
+/// bus bay. This is distinct from a `Departure`, which is an event of a vehicle
+/// leaving a stop at a specific time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransitStop {
+    /// The id of the transit stop that can be used to uniquely identify the stop
+    /// among other transit stops in the same transit station. This identifier is
+    /// not guaranteed to be stable across different responses.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// The name of the stop.
+    #[prost(message, optional, tag = "2")]
+    pub display_name: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The platform code represented by this stop. It can be formatted in any way.
+    /// (eg: "2", "Platform 2", "2-4", or "1x").
+    #[prost(message, optional, tag = "3")]
+    pub platform_code: ::core::option::Option<
+        super::super::super::r#type::LocalizedText,
+    >,
+    /// The verbatim text written on the signboard for this platform, e.g. "Towards
+    /// Central" or "East side & Brooklyn". When `platform_code` is absent, this
+    /// field is potentially the only identifier for the platform; however, both
+    /// `platform_code` and `signage_text` may be set simultaneously.
+    #[prost(message, optional, tag = "4")]
+    pub signage_text: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// Human readable identifier of the stop, used by transit agencies to
+    /// distinguish stops with the same name.
+    #[prost(message, optional, tag = "5")]
+    pub stop_code: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The stop's location.
+    #[prost(message, optional, tag = "6")]
+    pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// Wheelchair accessibility of this stop. This field indicates whether there
+    /// is an accessible path from outside the station to the stop. It does not
+    /// indicate whether it is possible to board a vehicle from the stop.
+    #[prost(bool, optional, tag = "7")]
+    pub wheelchair_accessible_entrance: ::core::option::Option<bool>,
+}
+/// Icon for a transit line, vehicle, or agency.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TransitIcon {
+    /// The URL of the icon.
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// Whether the name is contained in the icon and there is no need to display
+    /// it next to the icon.
+    #[prost(bool, tag = "2")]
+    pub name_included: bool,
+}
 /// All the information representing a Place.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
@@ -1033,6 +1277,9 @@ pub struct Place {
     /// be populated if this Place has not moved.
     #[prost(string, tag = "94")]
     pub moved_place_id: ::prost::alloc::string::String,
+    /// The transit station information for the place.
+    #[prost(message, optional, tag = "98")]
+    pub transit_station: ::core::option::Option<TransitStation>,
 }
 /// Nested message and enum types in `Place`.
 pub mod place {
