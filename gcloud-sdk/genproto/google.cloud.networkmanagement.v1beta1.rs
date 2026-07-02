@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 45, 25, 26, 27, 28, 29, 42"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 45, 25, 26, 27, 28, 29, 42, 43"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -131,6 +131,8 @@ pub mod step {
         /// group backend. Used only for return traces.
         /// The serverless_neg information is populated.
         StartFromServerlessNeg = 31,
+        /// Initial state: packet originating from a DMS Private Connection.
+        StartFromDmsPrivateConnection = 48,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -234,6 +236,9 @@ pub mod step {
                 Self::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
                 Self::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
                 Self::StartFromServerlessNeg => "START_FROM_SERVERLESS_NEG",
+                Self::StartFromDmsPrivateConnection => {
+                    "START_FROM_DMS_PRIVATE_CONNECTION"
+                }
                 Self::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
                 Self::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
                 Self::ApplyRoute => "APPLY_ROUTE",
@@ -292,6 +297,9 @@ pub mod step {
                     Some(Self::StartFromPscPublishedService)
                 }
                 "START_FROM_SERVERLESS_NEG" => Some(Self::StartFromServerlessNeg),
+                "START_FROM_DMS_PRIVATE_CONNECTION" => {
+                    Some(Self::StartFromDmsPrivateConnection)
+                }
                 "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
                 "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
                 "APPLY_ROUTE" => Some(Self::ApplyRoute),
@@ -468,6 +476,9 @@ pub mod step {
         /// Display information of a layer 7 packet inspection by the firewall.
         #[prost(message, tag = "42")]
         NgfwPacketInspection(super::NgfwPacketInspectionInfo),
+        /// Display information of a DMS Private Connection.
+        #[prost(message, tag = "43")]
+        DmsPrivateConnection(super::PrivateConnectionInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -1758,6 +1769,8 @@ pub mod deliver_info {
         GkePod = 19,
         /// Target is a Cloud Run Job. Used only for return traces.
         CloudRunJob = 20,
+        /// Target is a DMS Private Connection. Used only for return traces.
+        DmsPrivateConnection = 21,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1786,6 +1799,7 @@ pub mod deliver_info {
                 Self::RedisCluster => "REDIS_CLUSTER",
                 Self::GkePod => "GKE_POD",
                 Self::CloudRunJob => "CLOUD_RUN_JOB",
+                Self::DmsPrivateConnection => "DMS_PRIVATE_CONNECTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1811,6 +1825,7 @@ pub mod deliver_info {
                 "REDIS_CLUSTER" => Some(Self::RedisCluster),
                 "GKE_POD" => Some(Self::GkePod),
                 "CLOUD_RUN_JOB" => Some(Self::CloudRunJob),
+                "DMS_PRIVATE_CONNECTION" => Some(Self::DmsPrivateConnection),
                 _ => None,
             }
         }
@@ -2495,6 +2510,8 @@ pub mod drop_info {
         DroppedInsideGkeService = 18,
         /// Packet was dropped inside Cloud SQL Service.
         DroppedInsideCloudSqlService = 19,
+        /// Packet was dropped inside DMS Private Connection.
+        DroppedInsideDmsPrivateConnection = 114,
         /// Packet was dropped because there is no peering between the originating
         /// network and the Google Managed Services Network.
         GoogleManagedServiceNoPeering = 20,
@@ -2697,6 +2714,9 @@ pub mod drop_info {
         /// Packet is dropped because there is no valid matching route from the
         /// network of the Google-managed service to the destination.
         NoValidRouteFromGoogleManagedNetworkToDestination = 110,
+        /// Packet is dropped due to no running instance found for private
+        /// connection.
+        PrivateConnectionNoRunningInstance = 111,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2774,6 +2794,9 @@ pub mod drop_info {
                 }
                 Self::DroppedInsideGkeService => "DROPPED_INSIDE_GKE_SERVICE",
                 Self::DroppedInsideCloudSqlService => "DROPPED_INSIDE_CLOUD_SQL_SERVICE",
+                Self::DroppedInsideDmsPrivateConnection => {
+                    "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION"
+                }
                 Self::GoogleManagedServiceNoPeering => {
                     "GOOGLE_MANAGED_SERVICE_NO_PEERING"
                 }
@@ -2917,6 +2940,9 @@ pub mod drop_info {
                 Self::NoValidRouteFromGoogleManagedNetworkToDestination => {
                     "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION"
                 }
+                Self::PrivateConnectionNoRunningInstance => {
+                    "PRIVATE_CONNECTION_NO_RUNNING_INSTANCE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3000,6 +3026,9 @@ pub mod drop_info {
                 "DROPPED_INSIDE_GKE_SERVICE" => Some(Self::DroppedInsideGkeService),
                 "DROPPED_INSIDE_CLOUD_SQL_SERVICE" => {
                     Some(Self::DroppedInsideCloudSqlService)
+                }
+                "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION" => {
+                    Some(Self::DroppedInsideDmsPrivateConnection)
                 }
                 "GOOGLE_MANAGED_SERVICE_NO_PEERING" => {
                     Some(Self::GoogleManagedServiceNoPeering)
@@ -3163,6 +3192,9 @@ pub mod drop_info {
                 "GKE_NETWORK_POLICY" => Some(Self::GkeNetworkPolicy),
                 "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION" => {
                     Some(Self::NoValidRouteFromGoogleManagedNetworkToDestination)
+                }
+                "PRIVATE_CONNECTION_NO_RUNNING_INSTANCE" => {
+                    Some(Self::PrivateConnectionNoRunningInstance)
                 }
                 _ => None,
             }
@@ -3915,6 +3947,14 @@ pub struct NgfwPacketInspectionInfo {
     #[prost(string, tag = "1")]
     pub security_profile_group_uri: ::prost::alloc::string::String,
 }
+/// For display only. Metadata associated with a Private Connection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PrivateConnectionInfo {
+    /// URI of the Private Connection in format
+    /// "projects/{project_id}/locations/{location}/privateConnections/{private_connection_id}"
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load
 /// balancers](<https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>).
@@ -4120,6 +4160,12 @@ pub struct Endpoint {
     /// URI.
     #[prost(string, tag = "21")]
     pub gke_pod: ::prost::alloc::string::String,
+    /// A [DMS Private
+    /// Connection](<https://docs.cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.privateConnections>)
+    /// name format:
+    /// projects/{project}/locations/{location}/privateConnections/{privateConnection}.
+    #[prost(string, tag = "22")]
+    pub dms_private_connection: ::prost::alloc::string::String,
     /// A [Cloud Function](<https://cloud.google.com/functions>). Applicable only to
     /// source endpoint.
     #[prost(message, optional, tag = "10")]

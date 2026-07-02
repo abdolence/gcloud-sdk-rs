@@ -716,6 +716,10 @@ pub struct Agent {
     /// If multiple rules match, the first one in the list will be used.
     #[prost(message, repeated, tag = "30")]
     pub transfer_rules: ::prost::alloc::vec::Vec<TransferRule>,
+    /// Output only. Misconfigurations or errors in the agent that may affect agent
+    /// quality.
+    #[prost(string, repeated, tag = "32")]
+    pub validation_errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The type of agent.
     #[prost(oneof = "agent::AgentType", tags = "26, 27")]
     pub agent_type: ::core::option::Option<agent::AgentType>,
@@ -773,6 +777,11 @@ pub mod agent {
         ///   app-level barge-in settings.
         #[prost(bool, tag = "6")]
         pub respect_response_interruption_settings: bool,
+        /// Optional. The name of the variable that contains the language code to be
+        /// used for the Dialogflow session. If unspecified, the default language
+        /// code of the Dialogflow agent will be used.
+        #[prost(string, tag = "7")]
+        pub language_code_variable: ::prost::alloc::string::String,
     }
     /// A toolset with a selection of its tools.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -804,6 +813,94 @@ pub mod agent {
         RemoteDialogflowAgent(RemoteDialogflowAgent),
     }
 }
+/// AgentCard conveys key information about a remote agent.
+/// It is a trimmed version of the AgentCard defined in the A2A protocol
+/// <https://a2a-protocol.org/dev/specification/#441-agentcard>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentCard {
+    /// Required. A human-readable name for the agent.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. A description of the agent's domain of action/solution space.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. Ordered list of supported interfaces. The first entry is
+    /// preferred.
+    #[prost(message, repeated, tag = "3")]
+    pub supported_interfaces: ::prost::alloc::vec::Vec<AgentInterface>,
+    /// Required. The version of the agent.
+    #[prost(string, tag = "5")]
+    pub version: ::prost::alloc::string::String,
+    /// Required. Skills represent a unit of ability an agent can perform. This may
+    /// somewhat abstract but represents a more focused set of actions that the
+    /// agent is highly likely to succeed at.
+    #[prost(message, repeated, tag = "6")]
+    pub skills: ::prost::alloc::vec::Vec<AgentSkill>,
+}
+/// Declares a combination of a target URL, transport and protocol version for
+/// interacting with the agent. This allows agents to expose the same
+/// functionality over multiple protocol binding mechanisms.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentInterface {
+    /// Required. The URL where this interface is available. Must be a valid
+    /// absolute HTTPS URL in production. Example:
+    /// "<https://api.example.com/a2a/v1",> "<https://grpc.example.com/a2a">
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// Required. The protocol binding supported at this URL. This is an open form
+    /// string, to be easily extended for other protocol bindings. The core ones
+    /// officially supported are `JSONRPC`, `GRPC` and `HTTP+JSON`.
+    #[prost(string, tag = "2")]
+    pub protocol_binding: ::prost::alloc::string::String,
+    /// Tenant ID to be used in the request when calling the agent.
+    #[prost(string, tag = "3")]
+    pub tenant: ::prost::alloc::string::String,
+    /// Required. The version of the A2A protocol this interface exposes.
+    /// Use the latest supported minor version per major version.
+    /// Examples: "0.3", "1.0"
+    #[prost(string, tag = "4")]
+    pub protocol_version: ::prost::alloc::string::String,
+}
+/// Represents a distinct capability or function that an agent can perform.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentSkill {
+    /// Required. A unique identifier for the agent's skill.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. A human-readable name for the skill.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. A detailed description of the skill.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. A set of keywords describing the skill's capabilities.
+    #[prost(string, repeated, tag = "4")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Example prompts or scenarios that this skill can handle.
+    #[prost(string, repeated, tag = "5")]
+    pub examples: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The set of supported input media types for this skill, overriding the
+    /// agent's defaults.
+    #[prost(string, repeated, tag = "6")]
+    pub input_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The set of supported output media types for this skill, overriding the
+    /// agent's defaults.
+    #[prost(string, repeated, tag = "7")]
+    pub output_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Represents a tool that allows the agent to call another remote agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoteAgentTool {
+    /// Required. The name of the tool.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The description of the tool.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The agent card of the remote agent that this tool invokes.
+    #[prost(message, optional, tag = "3")]
+    pub agent_card: ::core::option::Option<AgentCard>,
+}
 /// Settings to describe the BigQuery export behaviors for the app.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryExportSettings {
@@ -820,6 +917,164 @@ pub struct BigQueryExportSettings {
     /// Optional. The BigQuery **dataset ID** to export the data to.
     #[prost(string, tag = "3")]
     pub dataset: ::prost::alloc::string::String,
+}
+/// Configures the metrics for an evaluation.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EvaluationMetricsConfig {
+    /// Optional. Configuration for the golden metrics for the evaluation.
+    #[prost(message, optional, tag = "1")]
+    pub golden_metrics_config: ::core::option::Option<
+        evaluation_metrics_config::GoldenMetricsConfig,
+    >,
+    /// Optional. Configuration for the scenario metrics for the evaluation.
+    #[prost(message, optional, tag = "2")]
+    pub scenario_metrics_config: ::core::option::Option<
+        evaluation_metrics_config::ScenarioMetricsConfig,
+    >,
+}
+/// Nested message and enum types in `EvaluationMetricsConfig`.
+pub mod evaluation_metrics_config {
+    /// Configuration for similarity metrics for the evaluation.
+    /// To disable the metric, set the message but do not set the
+    /// `enable_semantic_similarity_metrics` field to true (or explicitly set it to
+    /// false). To unset the configuration and fallback to the default behavior,
+    /// omit the message entirely.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SemanticSimilarityMetricsConfig {
+        /// Optional. Whether to calculate semantic similarity metrics for the
+        /// evaluation.
+        #[prost(bool, tag = "1")]
+        pub enable_semantic_similarity_metrics: bool,
+    }
+    /// Configuration for correctness metrics for the evaluation.
+    /// To disable the metric, set the message but do not set the
+    /// `enable_tool_correctness_metrics` field to true (or explicitly set it to
+    /// false). To unset the configuration and fallback to the default behavior,
+    /// omit the message entirely.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ToolCorrectnessMetricsConfig {
+        /// Optional. Whether to calculate tool correctness metrics for the
+        /// evaluation.
+        #[prost(bool, tag = "1")]
+        pub enable_tool_correctness_metrics: bool,
+    }
+    /// Configuration for the hallucination metrics for the evaluation.
+    /// To disable the metric, set the message but do not set the
+    /// `enable_hallucination_metrics` field to true (or explicitly set it to
+    /// false). To unset the configuration and fallback to the default behavior,
+    /// omit the message entirely.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct HallucinationMetricsConfig {
+        /// Optional. Whether to calculate hallucination metrics for the evaluation.
+        #[prost(bool, tag = "1")]
+        pub enable_hallucination_metrics: bool,
+    }
+    /// Configuration for the user goal met metrics for the evaluation.
+    /// To disable the metric, set the message but do not set the
+    /// `enable_user_goal_met_metrics` field to true (or explicitly set it to
+    /// false). To unset the configuration and fallback to the default behavior,
+    /// omit the message entirely.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UserGoalMetMetricsConfig {
+        /// Optional. Whether to calculate the user goal met metrics for the
+        /// evaluation.
+        #[prost(bool, tag = "1")]
+        pub enable_user_goal_met_metrics: bool,
+    }
+    /// Configuration for the expectation level metrics for the evaluation.
+    /// To disable the metric, set the message but do not set the
+    /// `enable_expectations_met_metrics` field to true (or explicitly set it to
+    /// false). To unset the configuration and fallback to the default behavior,
+    /// omit the message entirely.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ExpectationsMetMetricsConfig {
+        /// Optional. Whether to calculate the expectation level metrics for the
+        /// evaluation.
+        #[prost(bool, tag = "1")]
+        pub enable_expectations_met_metrics: bool,
+    }
+    /// Configuration for the golden metrics for the evaluation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GoldenMetricsConfig {
+        /// Optional. Global configuration for semantic similarity metrics.
+        #[prost(message, optional, tag = "1")]
+        pub semantic_similarity_metrics_config: ::core::option::Option<
+            SemanticSimilarityMetricsConfig,
+        >,
+        /// Optional. Configuration for turn level tool correctness metrics.
+        #[prost(message, optional, tag = "2")]
+        pub tool_correctness_metrics_config: ::core::option::Option<
+            ToolCorrectnessMetricsConfig,
+        >,
+        /// Optional. Configuration for step level tool correctness metrics.
+        #[prost(message, optional, tag = "6")]
+        pub step_tool_correctness_metrics_config: ::core::option::Option<
+            ToolCorrectnessMetricsConfig,
+        >,
+    }
+    /// Configuration for the scenario metrics for the evaluation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ScenarioMetricsConfig {
+        /// Optional. Configuration for user goal met metrics.
+        #[prost(message, optional, tag = "2")]
+        pub user_goal_met_metrics_config: ::core::option::Option<
+            UserGoalMetMetricsConfig,
+        >,
+        /// Optional. Configuration for expectation level metrics.
+        #[prost(message, optional, tag = "3")]
+        pub expectations_met_metrics_config: ::core::option::Option<
+            ExpectationsMetMetricsConfig,
+        >,
+    }
+    /// Supported comparison types for checking the agent's response.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ComparisonType {
+        /// Unspecified comparison type. Behavior defaults to SEMANTIC_SIMILARITY
+        /// for agent responses and tool calls.
+        Unspecified = 0,
+        /// Exact string match.
+        Equals = 1,
+        /// Substring match (checks if the expected string is contained in the
+        /// actual response).
+        Contains = 2,
+        /// Semantic similarity match (evaluates meaning similarity using an LLM).
+        SemanticSimilarity = 3,
+    }
+    impl ComparisonType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPARISON_TYPE_UNSPECIFIED",
+                Self::Equals => "EQUALS",
+                Self::Contains => "CONTAINS",
+                Self::SemanticSimilarity => "SEMANTIC_SIMILARITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPARISON_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EQUALS" => Some(Self::Equals),
+                "CONTAINS" => Some(Self::Contains),
+                "SEMANTIC_SIMILARITY" => Some(Self::SemanticSimilarity),
+                _ => None,
+            }
+        }
+    }
 }
 /// A code block to be executed instead of a real tool call.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1181,6 +1436,9 @@ pub struct App {
     /// Optional. The default client certificate settings for the app.
     #[prost(message, optional, tag = "25")]
     pub client_certificate_settings: ::core::option::Option<ClientCertificateSettings>,
+    /// Optional. VPC-SC settings for the app.
+    #[prost(message, optional, tag = "26")]
+    pub vpc_sc_settings: ::core::option::Option<VpcScSettings>,
     /// Optional. Indicates whether the app is locked for changes. If the app is
     /// locked, modifications to the app resources will be rejected.
     #[prost(bool, tag = "29")]
@@ -1193,6 +1451,9 @@ pub struct App {
     /// Optional. The evaluation settings for the app.
     #[prost(message, optional, tag = "33")]
     pub evaluation_settings: ::core::option::Option<EvaluationSettings>,
+    /// Output only. Misconfigurations or warnings in the app.
+    #[prost(string, repeated, tag = "39")]
+    pub validation_errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `App`.
 pub mod app {
@@ -1494,11 +1755,20 @@ pub struct LoggingSettings {
     /// Optional. Configuration for how sensitive data should be redacted.
     #[prost(message, optional, tag = "1")]
     pub redaction_config: ::core::option::Option<RedactionConfig>,
-    /// Optional. Configuration for how audio interactions should be recorded.
+    /// Optional. Configuration for how audio interactions should be recorded. The
+    /// audio is subject to redaction as configured in
+    /// \[RedactionConfig\]\[google.cloud.ces.v1beta.LoggingSettings.redaction_config\].
     #[prost(message, optional, tag = "2")]
     pub audio_recording_config: ::core::option::Option<AudioRecordingConfig>,
-    /// Optional. Settings to describe the BigQuery export behaviors for the app.
-    /// The conversation data will be exported to BigQuery tables if it is enabled.
+    /// Optional. Configures an additional recording of unredacted audio. This can
+    /// be used to maintain a raw audio copy when audio redaction is
+    /// \[enabled\]\[google.cloud.ces.v1beta.RedactionConfig.enable_redaction\],
+    /// typically for auditing or monitoring purposes.
+    #[prost(message, optional, tag = "8")]
+    pub unredacted_audio_recording_config: ::core::option::Option<AudioRecordingConfig>,
+    /// Optional. Configures the BigQuery export behaviors for the app. The
+    /// conversation data is subject to redaction as configured in
+    /// \[RedactionConfig\]\[google.cloud.ces.v1beta.LoggingSettings.redaction_config\].
     #[prost(message, optional, tag = "3")]
     pub bigquery_export_settings: ::core::option::Option<BigQueryExportSettings>,
     /// Optional. Settings to describe the Cloud Logging behaviors for the app.
@@ -1877,6 +2147,13 @@ pub struct EvaluationSettings {
     /// evaluations.
     #[prost(enumeration = "EvaluationToolCallBehaviour", tag = "3")]
     pub scenario_evaluation_tool_call_behaviour: i32,
+    /// Optional. Configures the default metrics for evaluations.
+    #[prost(message, optional, tag = "5")]
+    pub metrics_config: ::core::option::Option<EvaluationMetricsConfig>,
+    /// Optional. The execution mode for scenario evaluations. If not provided,
+    /// will default to QUALITY_OPTIMIZED.
+    #[prost(enumeration = "evaluation_settings::ScenarioExecutionMode", tag = "6")]
+    pub scenario_execution_mode: i32,
 }
 /// Nested message and enum types in `EvaluationSettings`.
 pub mod evaluation_settings {
@@ -1923,6 +2200,49 @@ pub mod evaluation_settings {
             }
         }
     }
+    /// The execution mode for scenario evaluations.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ScenarioExecutionMode {
+        /// Unspecified execution mode. Defaults to QUALITY_OPTIMIZED.
+        Unspecified = 0,
+        /// Quality optimized mode.
+        QualityOptimized = 1,
+        /// Speed optimized mode.
+        SpeedOptimized = 2,
+    }
+    impl ScenarioExecutionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCENARIO_EXECUTION_MODE_UNSPECIFIED",
+                Self::QualityOptimized => "QUALITY_OPTIMIZED",
+                Self::SpeedOptimized => "SPEED_OPTIMIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCENARIO_EXECUTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUALITY_OPTIMIZED" => Some(Self::QualityOptimized),
+                "SPEED_OPTIMIZED" => Some(Self::SpeedOptimized),
+                _ => None,
+            }
+        }
+    }
 }
 /// Settings for custom client certificates.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1942,6 +2262,17 @@ pub struct ClientCertificateSettings {
     /// Format: `projects/{project}/secrets/{secret}/versions/{version}`
     #[prost(string, tag = "3")]
     pub passphrase: ::prost::alloc::string::String,
+}
+/// VPC-SC settings for the app.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VpcScSettings {
+    /// Optional. The allowed HTTP(s) origins that OpenAPI tools in the App are
+    /// able to directly call when VPC Service Controls are enabled. These strings
+    /// must match the origin exactly, including the port if specified. For
+    /// example, "<https://example.com"> or "<https://example.com:443".> This list does
+    /// not yet apply to Python tools that may make direct HTTP calls.
+    #[prost(string, repeated, tag = "1")]
+    pub allowed_origins: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Settings to describe the conversation logging behaviors for the app.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2856,12 +3187,6 @@ pub struct AgentTool {
     /// Optional. Description of the tool's purpose.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. Deprecated: Use `agent` instead.
-    /// The resource name of the root agent that is the entry point of the tool.
-    /// Format: `projects/{project}/locations/{location}/agents/{agent}`
-    #[deprecated]
-    #[prost(string, tag = "3")]
-    pub root_agent: ::prost::alloc::string::String,
     /// Optional. The resource name of the agent that is the entry point of the
     /// tool. Format: `projects/{project}/locations/{location}/agents/{agent}`
     #[prost(string, tag = "4")]
@@ -3953,6 +4278,10 @@ pub struct McpTool {
     /// Required. The name of the MCP tool.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The name override of the MCP tool.
+    /// This is populated if the name was overridden by a Toolset override.
+    #[prost(string, tag = "13")]
+    pub name_override: ::prost::alloc::string::String,
     /// Optional. The description of the MCP tool.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
@@ -3995,6 +4324,62 @@ pub struct McpTool {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Output only. The dynamic availability state of the tool on the external
+    /// server.
+    #[prost(enumeration = "mcp_tool::State", tag = "12")]
+    pub state: i32,
+}
+/// Nested message and enum types in `McpTool`.
+pub mod mcp_tool {
+    /// Represents the dynamic availability state of the tool.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default state.
+        Unspecified = 0,
+        /// The tool is available and actively offered by the server.
+        Active = 1,
+        /// The tool is configured or pinned, but currently not offered by the
+        /// server.
+        Inactive = 2,
+        /// The tool exists on the server, but does not match the version on the
+        /// server.
+        Stale = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
+                Self::Stale => "STALE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "STALE" => Some(Self::Stale),
+                _ => None,
+            }
+        }
+    }
 }
 /// A remote API tool defined by an OpenAPI schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4049,6 +4434,9 @@ pub struct PythonFunction {
     /// code's docstring.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
+    /// Optional. Service Directory configuration for the tool.
+    #[prost(message, optional, tag = "4")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
 }
 /// Pre-defined system tool.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4083,12 +4471,81 @@ pub struct WidgetTool {
     /// the widget's input parameters.
     #[prost(message, optional, tag = "6")]
     pub data_mapping: ::core::option::Option<widget_tool::DataMapping>,
+    /// Optional. Configuration for always-included text responses.
+    #[prost(message, optional, tag = "7")]
+    pub text_response_config: ::core::option::Option<widget_tool::TextResponseConfig>,
     /// The input of the widget tool.
     #[prost(oneof = "widget_tool::Input", tags = "4")]
     pub input: ::core::option::Option<widget_tool::Input>,
 }
 /// Nested message and enum types in `WidgetTool`.
 pub mod widget_tool {
+    /// Configuration for the text response returned with the widget.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TextResponseConfig {
+        /// Optional. The strategy for providing the text response.
+        #[prost(enumeration = "text_response_config::Type", tag = "1")]
+        pub r#type: i32,
+        /// Optional. The static text response to return when type is STATIC.
+        #[prost(string, tag = "2")]
+        pub static_text: ::prost::alloc::string::String,
+        /// Optional. Instruction for the LLM on how to generate the text response.
+        /// Used as the description for the text response parameter if type is
+        /// LLM_GENERATED.
+        #[prost(string, tag = "3")]
+        pub text_response_instruction: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `TextResponseConfig`.
+    pub mod text_response_config {
+        /// Defines how the text response is produced.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unspecified type.
+            Unspecified = 0,
+            /// The LLM dynamically decides whether to generate a text response
+            /// alongside the widget based on the conversation context.
+            None = 1,
+            /// The LLM is explicitly required to generate a text response.
+            LlmGenerated = 2,
+            /// A pre-defined static text response is always used.
+            Static = 3,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::None => "NONE",
+                    Self::LlmGenerated => "LLM_GENERATED",
+                    Self::Static => "STATIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NONE" => Some(Self::None),
+                    "LLM_GENERATED" => Some(Self::LlmGenerated),
+                    "STATIC" => Some(Self::Static),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// Configuration for mapping data from a source tool to the widget's input
     /// parameters.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4278,6 +4735,11 @@ pub struct Tool {
     /// Optional. The execution type of the tool.
     #[prost(enumeration = "ExecutionType", tag = "12")]
     pub execution_type: i32,
+    /// Optional. The timeout for the tool execution. If not set, the default
+    /// timeout is 30 seconds for `SYNCHRONOUS` tools and 60 seconds for
+    /// `ASYNCHRONOUS` tools.
+    #[prost(message, optional, tag = "22")]
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Timestamp when the tool was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -4297,7 +4759,10 @@ pub struct Tool {
     #[prost(message, optional, tag = "20")]
     pub tool_fake_config: ::core::option::Option<ToolFakeConfig>,
     /// The type of the tool.
-    #[prost(oneof = "tool::ToolType", tags = "2, 3, 5, 8, 10, 11, 16, 17, 18, 23, 24")]
+    #[prost(
+        oneof = "tool::ToolType",
+        tags = "2, 3, 5, 8, 10, 11, 16, 17, 18, 23, 24, 25"
+    )]
     pub tool_type: ::core::option::Option<tool::ToolType>,
 }
 /// Nested message and enum types in `Tool`.
@@ -4339,6 +4804,9 @@ pub mod tool {
         /// Optional. The widget tool.
         #[prost(message, tag = "24")]
         WidgetTool(super::WidgetTool),
+        /// Optional. The remote agent tool.
+        #[prost(message, tag = "25")]
+        RemoteAgentTool(super::RemoteAgentTool),
     }
 }
 /// A toolset that generates tools from an Integration Connectors Connection.
@@ -4401,6 +4869,49 @@ pub struct McpToolset {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Overrides for individual tools within this toolset.
+    /// This allows overriding specific details like descriptions, names,
+    /// or pinning the tools' states so they aren't fully dynamic.
+    #[prost(message, repeated, tag = "6")]
+    pub tool_overrides: ::prost::alloc::vec::Vec<McpToolOverride>,
+}
+/// Overrides associated with a given tool in a Toolset.
+/// This enables "pinning" or "overriding" of tool definitions from the external
+/// dynamic server.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct McpToolOverride {
+    /// Required. The original name of the tool as it is emitted by the MCP server.
+    #[prost(string, tag = "1")]
+    pub tool: ::prost::alloc::string::String,
+    /// Optional. If present, this tool uses this name in the Agent instead of the
+    /// original name. This is primarily used as an alias if the MCP server offers
+    /// poorly named tools.
+    #[prost(string, tag = "2")]
+    pub name_override: ::prost::alloc::string::String,
+    /// Optional. If present, this tool uses this description instead of the
+    /// original description from the server.
+    #[prost(string, tag = "3")]
+    pub description_override: ::prost::alloc::string::String,
+    /// Output only. If present, this tool is "Pinned" and uses the snapshot values
+    /// as fallbacks if the server becomes temporarily unavailable or if no
+    /// Override is present.
+    #[prost(message, optional, tag = "4")]
+    pub snapshot: ::core::option::Option<McpToolDefinition>,
+}
+/// Container for a tool's core definition elements that are snapshot.
+/// Schemas in the snapshot are used as-is and cannot be overridden.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct McpToolDefinition {
+    /// Output only. The description of the MCP tool. This can be overridden
+    /// by `description_override` in `McpToolOverride`.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The schema of the input arguments of the MCP tool.
+    #[prost(message, optional, tag = "2")]
+    pub input_schema: ::core::option::Option<Schema>,
+    /// Output only. The schema of the output arguments of the MCP tool.
+    #[prost(message, optional, tag = "3")]
+    pub output_schema: ::core::option::Option<Schema>,
 }
 /// A toolset that contains a list of tools that are defined by an OpenAPI
 /// schema.
@@ -4775,17 +5286,19 @@ pub mod conversation {
     pub enum InputType {
         /// Unspecified input type.
         Unspecified = 0,
-        /// The input message is text.
+        /// Text input.
         Text = 1,
-        /// The input message is audio.
+        /// Event input.
+        Event = 7,
+        /// Audio input.
         Audio = 2,
-        /// The input message is image.
+        /// Image input.
         Image = 3,
-        /// The input message is blob file.
+        /// Blob input.
         Blob = 4,
-        /// The input message is client function tool response.
+        /// Client function tool response input.
         ToolResponse = 5,
-        /// The input message are variables.
+        /// Variables input.
         Variables = 6,
     }
     impl InputType {
@@ -4797,6 +5310,7 @@ pub mod conversation {
             match self {
                 Self::Unspecified => "INPUT_TYPE_UNSPECIFIED",
                 Self::Text => "INPUT_TYPE_TEXT",
+                Self::Event => "INPUT_TYPE_EVENT",
                 Self::Audio => "INPUT_TYPE_AUDIO",
                 Self::Image => "INPUT_TYPE_IMAGE",
                 Self::Blob => "INPUT_TYPE_BLOB",
@@ -4809,6 +5323,7 @@ pub mod conversation {
             match value {
                 "INPUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "INPUT_TYPE_TEXT" => Some(Self::Text),
+                "INPUT_TYPE_EVENT" => Some(Self::Event),
                 "INPUT_TYPE_AUDIO" => Some(Self::Audio),
                 "INPUT_TYPE_IMAGE" => Some(Self::Image),
                 "INPUT_TYPE_BLOB" => Some(Self::Blob),
@@ -4819,9 +5334,102 @@ pub mod conversation {
         }
     }
 }
+/// Experiment for the deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentConfig {
+    /// Optional. Version release for the experiment.
+    #[prost(message, optional, tag = "1")]
+    pub version_release: ::core::option::Option<experiment_config::VersionRelease>,
+}
+/// Nested message and enum types in `ExperimentConfig`.
+pub mod experiment_config {
+    /// Version release for the experiment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VersionRelease {
+        /// Optional. State of the version release.
+        #[prost(enumeration = "State", tag = "1")]
+        pub state: i32,
+        /// Optional. Traffic allocations for the version release.
+        #[prost(message, repeated, tag = "2")]
+        pub traffic_allocations: ::prost::alloc::vec::Vec<
+            version_release::TrafficAllocation,
+        >,
+    }
+    /// Nested message and enum types in `VersionRelease`.
+    pub mod version_release {
+        /// Traffic allocation for the version release.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct TrafficAllocation {
+            /// Optional. Id of the traffic allocation.
+            /// Free format string, up to 128 characters.
+            #[prost(string, tag = "1")]
+            pub id: ::prost::alloc::string::String,
+            /// Optional. Traffic percentage of the traffic allocation.
+            /// Must be between 0 and 100.
+            #[prost(int32, tag = "2")]
+            pub traffic_percentage: i32,
+            /// Optional. App version of the traffic allocation.
+            /// Format:
+            /// `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+            #[prost(string, tag = "3")]
+            pub app_version: ::prost::alloc::string::String,
+        }
+    }
+    /// State of the experiment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// Pending state. Experiment is pending and not valid.
+        Pending = 1,
+        /// Running state. Experiment is running and valid.
+        Running = 2,
+        /// Done state. Experiment is done and no longer valid.
+        Done = 3,
+        /// Expired state. Experiment is expired and no longer valid.
+        Expired = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
+                Self::Expired => "EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
+            }
+        }
+    }
+}
 /// A deployment represents an immutable, queryable version of the app.
 /// It is used to deploy an app version with a specific channel profile.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Identifier. The resource name of the deployment.
     /// Format:
@@ -4852,6 +5460,9 @@ pub struct Deployment {
     /// overwrite any concurrent changes.
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. Experiment configuration for the deployment.
+    #[prost(message, optional, tag = "9")]
+    pub experiment_config: ::core::option::Option<ExperimentConfig>,
 }
 /// A mocked tool call.
 ///
@@ -5124,6 +5735,9 @@ pub mod citations {
         /// Text used for citation.
         #[prost(string, tag = "3")]
         pub text: ::prost::alloc::string::String,
+        /// Whether this citation requires attribution to be shown to the end users.
+        #[prost(bool, tag = "4")]
+        pub requires_attribution: bool,
     }
 }
 /// Event input.
@@ -5822,6 +6436,16 @@ pub struct Evaluation {
     /// ListEvaluationsRequest or GetEvaluationRequest.
     #[prost(message, repeated, tag = "19")]
     pub last_ten_results: ::prost::alloc::vec::Vec<EvaluationResult>,
+    /// Optional. Overrides metrics thresholds for this specific evaluation.
+    #[prost(message, optional, tag = "20")]
+    pub evaluation_metrics_threshold_override: ::core::option::Option<
+        EvaluationMetricsThresholds,
+    >,
+    /// Optional. Overrides metrics config for this specific evaluation.
+    #[prost(message, optional, tag = "21")]
+    pub evaluation_metrics_config_override: ::core::option::Option<
+        EvaluationMetricsConfig,
+    >,
     /// The inputs for the evaluation
     #[prost(oneof = "evaluation::Inputs", tags = "11, 12")]
     pub inputs: ::core::option::Option<evaluation::Inputs>,
@@ -5835,8 +6459,33 @@ pub mod evaluation {
         /// checks fail. E.g., "Check_Payment_Tool_Called".
         #[prost(string, tag = "1")]
         pub note: ::prost::alloc::string::String,
+        /// Optional. If set to true, this specific expectation will not be
+        /// evaluated.
+        #[prost(bool, tag = "8")]
+        pub skip_evaluation: bool,
+        /// Optional. Overrides metrics at the step level.
+        #[prost(message, optional, tag = "9")]
+        pub expectation_level_metrics_thresholds_override: ::core::option::Option<
+            super::evaluation_metrics_thresholds::golden_evaluation_metrics_thresholds::ExpectationLevelMetricsThresholds,
+        >,
+        /// Optional. Overrides for agent_response semantic similarity metrics.
+        #[prost(message, optional, tag = "10")]
+        pub agent_response_semantic_similarity_metrics_config_override: ::core::option::Option<
+            super::evaluation_metrics_config::SemanticSimilarityMetricsConfig,
+        >,
+        /// Optional. Overrides for agent_response hallucination metrics.
+        #[prost(message, optional, tag = "11")]
+        pub agent_response_hallucination_metrics_config_override: ::core::option::Option<
+            super::evaluation_metrics_config::HallucinationMetricsConfig,
+        >,
+        /// Optional. The comparison type to use for the expectation check.
+        #[prost(
+            enumeration = "super::evaluation_metrics_config::ComparisonType",
+            tag = "12"
+        )]
+        pub comparison_type: i32,
         /// The actual check to perform.
-        #[prost(oneof = "golden_expectation::Condition", tags = "2, 3, 4, 5, 6, 7")]
+        #[prost(oneof = "golden_expectation::Condition", tags = "2, 3, 4, 5, 6, 7, 13")]
         pub condition: ::core::option::Option<golden_expectation::Condition>,
     }
     /// Nested message and enum types in `GoldenExpectation`.
@@ -5868,6 +6517,9 @@ pub mod evaluation {
             /// LLM.
             #[prost(message, tag = "7")]
             MockToolResponse(super::super::ToolResponse),
+            /// Optional. Check that no tools were called during this turn.
+            #[prost(bool, tag = "13")]
+            NoToolCalls(bool),
         }
     }
     /// A step defines a singular action to happen during the evaluation.
@@ -5900,14 +6552,27 @@ pub mod evaluation {
         #[prost(message, repeated, tag = "1")]
         pub steps: ::prost::alloc::vec::Vec<Step>,
         /// Optional. The root span of the golden turn for processing and maintaining
-        /// audio information.
+        /// audio information. The uri for the audio must contain audio saved in
+        /// 16Khz sample rate.
         #[prost(message, optional, tag = "2")]
         pub root_span: ::core::option::Option<super::Span>,
+        /// Optional. Overrides for turn-level metric thresholds.
+        #[prost(message, optional, tag = "3")]
+        pub turn_level_metrics_thresholds_override: ::core::option::Option<
+            super::evaluation_metrics_thresholds::golden_evaluation_metrics_thresholds::TurnLevelMetricsThresholds,
+        >,
+        /// Optional. Override for turn-level hallucination metric behavior.
+        #[prost(
+            enumeration = "super::evaluation_metrics_thresholds::HallucinationMetricBehavior",
+            tag = "4"
+        )]
+        pub hallucination_metric_behavior_override: i32,
     }
     /// The steps required to replay a golden conversation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Golden {
         /// Required. The golden turns required to replay a golden conversation.
+        /// The maximum number of allowed turns is 100.
         #[prost(message, repeated, tag = "2")]
         pub turns: ::prost::alloc::vec::Vec<GoldenTurn>,
         /// Optional. The evaluation expectations to evaluate the replayed
@@ -5961,8 +6626,8 @@ pub mod evaluation {
         /// Optional. The user facts to be used by the scenario.
         #[prost(message, repeated, tag = "4")]
         pub user_facts: ::prost::alloc::vec::Vec<scenario::UserFact>,
-        /// Optional. The maximum number of turns to simulate. If not specified, the
-        /// simulation will continue until the task is complete.
+        /// Optional. The maximum number of turns to simulate. The maximum allowed
+        /// value is 100. The default value is 100.
         #[prost(int32, tag = "5")]
         pub max_turns: i32,
         /// Required. The rubrics to score the scenario against.
@@ -5995,6 +6660,12 @@ pub mod evaluation {
         pub evaluation_expectations: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
+        /// Optional. The execution mode for scenario evaluations.
+        #[prost(
+            enumeration = "super::evaluation_settings::ScenarioExecutionMode",
+            tag = "12"
+        )]
+        pub scenario_execution_mode: i32,
     }
     /// Nested message and enum types in `Scenario`.
     pub mod scenario {
@@ -6252,7 +6923,7 @@ pub mod evaluation_result {
             golden_expectation_outcome::ToolInvocationResult,
         >,
         /// The result of the expectation.
-        #[prost(oneof = "golden_expectation_outcome::Result", tags = "2, 3, 4, 5")]
+        #[prost(oneof = "golden_expectation_outcome::Result", tags = "2, 3, 4, 5, 9")]
         pub result: ::core::option::Option<golden_expectation_outcome::Result>,
     }
     /// Nested message and enum types in `GoldenExpectationOutcome`.
@@ -6290,6 +6961,11 @@ pub mod evaluation_result {
             /// Output only. The result of the agent transfer expectation.
             #[prost(message, tag = "5")]
             ObservedAgentTransfer(super::super::AgentTransfer),
+            /// Output only. An observed custom payload.
+            /// There are no expectations for custom payloads. This is only used for
+            /// metrics calculation. The outcome is always SKIPPED.
+            #[prost(message, tag = "9")]
+            ObservedPayload(::prost_types::Struct),
         }
     }
     /// The result of a single evaluation expectation.
@@ -6745,12 +7421,16 @@ pub mod evaluation_result {
     pub enum ExecutionState {
         /// Evaluation result execution state is not specified.
         Unspecified = 0,
+        /// Evaluation result execution is queued.
+        Queued = 5,
         /// Evaluation result execution is running.
         Running = 1,
         /// Evaluation result execution has completed.
         Completed = 2,
         /// Evaluation result execution failed due to an internal error.
         Error = 3,
+        /// Evaluation result execution was cancelled.
+        Cancelled = 4,
     }
     impl ExecutionState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6760,18 +7440,22 @@ pub mod evaluation_result {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "EXECUTION_STATE_UNSPECIFIED",
+                Self::Queued => "QUEUED",
                 Self::Running => "RUNNING",
                 Self::Completed => "COMPLETED",
                 Self::Error => "ERROR",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
                 "RUNNING" => Some(Self::Running),
                 "COMPLETED" => Some(Self::Completed),
                 "ERROR" => Some(Self::Error),
+                "CANCELLED" => Some(Self::Cancelled),
                 _ => None,
             }
         }
@@ -6891,6 +7575,11 @@ pub struct EvaluationRun {
     /// Output only. The method used to run the evaluation.
     #[prost(enumeration = "GoldenRunMethod", tag = "21")]
     pub golden_run_method: i32,
+    /// Output only. The operation that created this evaluation run.
+    /// Format:
+    /// `projects/{project}/locations/{location}/operations/{operation}`
+    #[prost(string, tag = "26")]
+    pub operation: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `EvaluationRun`.
 pub mod evaluation_run {
@@ -6918,6 +7607,10 @@ pub mod evaluation_run {
         /// EvaluationResult.evaluation_status is PASS).
         #[prost(int32, tag = "5")]
         pub passed_count: i32,
+        /// Output only. Number of evaluation results that were cancelled.
+        /// (EvaluationResult.execution_state is CANCELLED).
+        #[prost(int32, tag = "6")]
+        pub cancelled_count: i32,
     }
     /// Contains the summary of passed and failed result counts for a specific
     /// evaluation in an evaluation run.
@@ -7000,12 +7693,16 @@ pub mod evaluation_run {
     pub enum EvaluationRunState {
         /// Evaluation run state is not specified.
         Unspecified = 0,
+        /// Indicates the evaluation run is queued.
+        Queued = 5,
         /// Evaluation run is running.
         Running = 1,
         /// Evaluation run has completed.
         Completed = 2,
         /// The evaluation run has an error.
         Error = 3,
+        /// Evaluation run was cancelled.
+        Cancelled = 4,
     }
     impl EvaluationRunState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7015,18 +7712,22 @@ pub mod evaluation_run {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "EVALUATION_RUN_STATE_UNSPECIFIED",
+                Self::Queued => "QUEUED",
                 Self::Running => "RUNNING",
                 Self::Completed => "COMPLETED",
                 Self::Error => "ERROR",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "EVALUATION_RUN_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
                 "RUNNING" => Some(Self::Running),
                 "COMPLETED" => Some(Self::Completed),
                 "ERROR" => Some(Self::Error),
+                "CANCELLED" => Some(Self::Cancelled),
                 _ => None,
             }
         }
@@ -7256,6 +7957,9 @@ pub struct EvaluationErrorInfo {
     /// Output only. The session ID for the conversation that caused the error.
     #[prost(string, tag = "3")]
     pub session_id: ::prost::alloc::string::String,
+    /// Output only. The user facing error message.
+    #[prost(string, tag = "4")]
+    pub user_facing_error_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `EvaluationErrorInfo`.
 pub mod evaluation_error_info {
@@ -8594,7 +9298,7 @@ pub struct GetDeploymentRequest {
 }
 /// Request message for
 /// \[AgentService.CreateDeployment\]\[google.cloud.ces.v1beta.AgentService.CreateDeployment\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeploymentRequest {
     /// Required. The parent app.
     /// Format:
@@ -8612,7 +9316,7 @@ pub struct CreateDeploymentRequest {
 }
 /// Request message for
 /// \[AgentService.UpdateDeployment\]\[google.cloud.ces.v1beta.AgentService.UpdateDeployment\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeploymentRequest {
     /// Required. The deployment to update.
     #[prost(message, optional, tag = "1")]
@@ -8870,11 +9574,25 @@ pub struct GenerateAppResourceRequest {
         generate_app_resource_request::HillClimbingFixConfig,
     >,
     /// The resource to generate.
-    #[prost(oneof = "generate_app_resource_request::Resource", tags = "2, 4, 6")]
+    #[prost(oneof = "generate_app_resource_request::Resource", tags = "2, 4, 6, 12")]
     pub resource: ::core::option::Option<generate_app_resource_request::Resource>,
 }
 /// Nested message and enum types in `GenerateAppResourceRequest`.
 pub mod generate_app_resource_request {
+    /// The app version context specifying the base snapshot and target agent.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AppVersionContext {
+        /// The resource name of the app version to be used by the LLM assistant.
+        /// Format:
+        /// `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+        #[prost(string, tag = "1")]
+        pub app_version: ::prost::alloc::string::String,
+        /// The resource name of the target agent to be used by the LLM assistant.
+        /// Format:
+        /// `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+        #[prost(string, tag = "2")]
+        pub agent_resource_name: ::prost::alloc::string::String,
+    }
     /// The instructions to be used to refine a part of the resource. The part of
     /// the resource can be specified  with a start index, end index and a field
     /// mask. For example, if you want to refine a part of the agent instructions
@@ -9023,6 +9741,9 @@ pub mod generate_app_resource_request {
         /// generating a new toolset.
         #[prost(message, tag = "6")]
         Toolset(super::Toolset),
+        /// The app version context specifying the base snapshot and target agent.
+        #[prost(message, tag = "12")]
+        AppVersionContext(AppVersionContext),
     }
 }
 /// Response message for
@@ -10820,6 +11541,24 @@ pub mod agent_service_client {
         }
     }
 }
+/// Request message for
+/// \[EvaluationService.RunEvaluationResultMetrics\]\[google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RunEvaluationResultMetricsRequest {
+    /// Required. The evaluation result to run metrics for.
+    /// Format:
+    /// `projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}/results/{evaluation_result_id}`
+    #[prost(string, tag = "1")]
+    pub evaluation_result_id: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[EvaluationService.RunEvaluationResultMetrics\]\[google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RunEvaluationResultMetricsResponse {
+    /// Output only. The status of the evaluation result metrics calculation.
+    #[prost(enumeration = "evaluation_result::Outcome", tag = "1")]
+    pub status: i32,
+}
 /// Response message for
 /// \[EvaluationService.RunEvaluation\]\[google.cloud.ces.v1beta.EvaluationService.RunEvaluation\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -11739,6 +12478,22 @@ pub mod export_evaluations_response {
         EvaluationsUri(::prost::alloc::string::String),
     }
 }
+/// Request message for
+/// \[EvaluationService.ExportEvaluationResults\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationResultsRequest {
+    /// Required. The resource name of the evaluation to export evaluation results
+    /// from. Format:
+    /// `projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource names of the evaluation results to export.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The export options for the evaluation results.
+    #[prost(message, optional, tag = "3")]
+    pub export_options: ::core::option::Option<ExportOptions>,
+}
 /// Response message for
 /// \[EvaluationService.ExportEvaluationResults\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -11768,6 +12523,21 @@ pub mod export_evaluation_results_response {
         EvaluationResultsUri(::prost::alloc::string::String),
     }
 }
+/// Request message for
+/// \[EvaluationService.ExportEvaluationRuns\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationRunsRequest {
+    /// Required. The resource name of the app to export evaluation runs from.
+    /// Format: `projects/{project}/locations/{location}/apps/{app}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource names of the evaluation runs to export.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The export options for the evaluation runs.
+    #[prost(message, optional, tag = "3")]
+    pub export_options: ::core::option::Option<ExportOptions>,
+}
 /// Response message for
 /// \[EvaluationService.ExportEvaluationRuns\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -11794,6 +12564,18 @@ pub mod export_evaluation_runs_response {
         EvaluationRunsUri(::prost::alloc::string::String),
     }
 }
+/// Operation metadata for
+/// \[EvaluationService.ExportEvaluationRuns\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationRunsOperationMetadata {}
+/// Operation metadata for
+/// \[EvaluationService.ExportEvaluationResults\]\[google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportEvaluationResultsOperationMetadata {}
+/// Operation metadata for
+/// \[EvaluationService.RunEvaluationResultMetrics\]\[google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RunEvaluationResultMetricsOperationMetadata {}
 /// Generated client implementations.
 pub mod evaluation_service_client {
     #![allow(
@@ -12822,6 +13604,96 @@ pub mod evaluation_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports evaluations runs.
+        pub async fn export_evaluation_runs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportEvaluationRunsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationRuns",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.ces.v1beta.EvaluationService",
+                        "ExportEvaluationRuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports evaluations results.
+        pub async fn export_evaluation_results(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportEvaluationResultsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationResults",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.ces.v1beta.EvaluationService",
+                        "ExportEvaluationResults",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Runs metrics on an existing evaluation result.
+        pub async fn run_evaluation_result_metrics(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunEvaluationResultMetricsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.ces.v1beta.EvaluationService/RunEvaluationResultMetrics",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.ces.v1beta.EvaluationService",
+                        "RunEvaluationResultMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Represents an Omnichannel resource.
@@ -13040,6 +13912,13 @@ pub struct ExecuteToolResponse {
     /// The variable values at the end of the tool execution.
     #[prost(message, optional, tag = "4")]
     pub variables: ::core::option::Option<::prost_types::Struct>,
+    /// Citations that provide the source information for the tool's execution.
+    #[prost(message, optional, tag = "5")]
+    pub citations: ::core::option::Option<Citations>,
+    /// The suggestions returned from Google Search as a result of invoking the
+    /// Google Search Tool during the tool execution.
+    #[prost(message, optional, tag = "6")]
+    pub google_search_suggestions: ::core::option::Option<GoogleSearchSuggestions>,
     /// The identifier of the tool that got executed.
     #[prost(oneof = "execute_tool_response::ToolIdentifier", tags = "1, 3")]
     pub tool_identifier: ::core::option::Option<execute_tool_response::ToolIdentifier>,
@@ -13134,6 +14013,11 @@ pub struct RetrieveToolsRequest {
     /// If empty, all tools in the toolset will be returned.
     #[prost(string, repeated, tag = "3")]
     pub tool_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. If true, the returned tools will contain raw descriptions and
+    /// schemas directly from the server, bypassing any stored persistence
+    /// configurations (overrides/snapshots).
+    #[prost(bool, tag = "4")]
+    pub bypass_persistence_config: bool,
 }
 /// Response message for
 /// \[ToolService.RetrieveTools\]\[google.cloud.ces.v1beta.ToolService.RetrieveTools\].

@@ -89,9 +89,15 @@ pub mod repository {
         /// Required. The Git remote's URL.
         #[prost(string, tag = "1")]
         pub url: ::prost::alloc::string::String,
-        /// Required. The Git remote's default branch name.
+        /// Optional. The Git remote's default branch name.
+        /// If not set, `main` will be used.
         #[prost(string, tag = "2")]
         pub default_branch: ::prost::alloc::string::String,
+        /// Output only. The Git remote's effective default branch name.
+        /// This is the default branch name of the Git remote if it is set,
+        /// otherwise it is `main`.
+        #[prost(string, tag = "9")]
+        pub effective_default_branch: ::prost::alloc::string::String,
         /// Optional. The name of the Secret Manager secret version to use as an
         /// authentication token for Git operations. Must be in the format
         /// `projects/*/secrets/*/versions/*`.
@@ -102,6 +108,11 @@ pub mod repository {
         pub ssh_authentication_config: ::core::option::Option<
             git_remote_settings::SshAuthenticationConfig,
         >,
+        /// Optional. Resource name for the `GitRepositoryLink` used for machine
+        /// credentials. Must be in the format
+        /// `projects/*/locations/*/connections/*/gitRepositoryLinks/*`
+        #[prost(string, optional, tag = "7")]
+        pub git_repository_link: ::core::option::Option<::prost::alloc::string::String>,
         /// Output only. Deprecated: The field does not contain any token status
         /// information. Instead use
         /// <https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories/computeAccessTokenStatus>
@@ -307,6 +318,25 @@ pub struct DeleteRepositoryRequest {
     /// **Note:** *This flag doesn't support deletion of workspaces, release
     /// configs or workflow configs. If any of such resources exists in the
     /// repository, the request will fail.*.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// `DeleteRepositoryLongRunning` response message.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRepositoryLongRunningResponse {}
+/// `DeleteRepositoryLongRunning` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRepositoryLongRunningRequest {
+    /// Required. The repository's name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, child resources of this repository (compilation
+    /// results and workflow invocations) will also be deleted. Otherwise, the
+    /// request will only succeed if the repository has no child resources.
+    ///
+    /// **Note:** *This flag doesn't support deletion of workspaces, release
+    /// configs or workflow configs. If any of such resources exists in the
+    /// repository, the request will fail.*
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
@@ -532,6 +562,8 @@ pub mod compute_repository_access_token_status_response {
         Invalid = 2,
         /// The token was used successfully to authenticate against the Git remote.
         Valid = 3,
+        /// The token is not accessible due to permission issues.
+        PermissionDenied = 4,
     }
     impl TokenStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -544,6 +576,7 @@ pub mod compute_repository_access_token_status_response {
                 Self::NotFound => "NOT_FOUND",
                 Self::Invalid => "INVALID",
                 Self::Valid => "VALID",
+                Self::PermissionDenied => "PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -553,6 +586,7 @@ pub mod compute_repository_access_token_status_response {
                 "NOT_FOUND" => Some(Self::NotFound),
                 "INVALID" => Some(Self::Invalid),
                 "VALID" => Some(Self::Valid),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 _ => None,
             }
         }
@@ -898,6 +932,12 @@ pub struct QueryDirectoryContentsRequest {
     /// call that provided the page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Specifies the metadata to return for each directory entry.
+    /// If unspecified, the default is `DIRECTORY_CONTENTS_VIEW_BASIC`.
+    /// Currently the `DIRECTORY_CONTENTS_VIEW_METADATA` view is not supported by
+    /// CMEK-protected workspaces.
+    #[prost(enumeration = "DirectoryContentsView", tag = "5")]
+    pub view: i32,
 }
 /// `QueryDirectoryContents` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -913,6 +953,9 @@ pub struct QueryDirectoryContentsResponse {
 /// Represents a single entry in a directory.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DirectoryEntry {
+    /// Entry with metadata.
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<FilesystemEntryMetadata>,
     /// The entry's contents.
     #[prost(oneof = "directory_entry::Entry", tags = "1, 2")]
     pub entry: ::core::option::Option<directory_entry::Entry>,
@@ -922,13 +965,26 @@ pub mod directory_entry {
     /// The entry's contents.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Entry {
-        /// A file in the directory.
+        /// A file in the directory. The path is returned including the full
+        /// folder structure from the root.
         #[prost(string, tag = "1")]
         File(::prost::alloc::string::String),
-        /// A child directory in the directory.
+        /// A child directory in the directory. The path is returned including
+        /// the full folder structure from the root.
         #[prost(string, tag = "2")]
         Directory(::prost::alloc::string::String),
     }
+}
+/// Represents metadata for a single entry in a filesystem.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FilesystemEntryMetadata {
+    /// Output only. Provides the size of the entry in bytes. For directories, this
+    /// will be 0.
+    #[prost(int64, tag = "1")]
+    pub size_bytes: i64,
+    /// Output only. Represents the time of the last modification of the entry.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Configuration containing file search request parameters.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2519,9 +2575,10 @@ pub mod workflow_invocation_action {
         /// Output only. The code contents of a Notebook to be run.
         #[prost(string, tag = "1")]
         pub contents: ::prost::alloc::string::String,
-        /// Output only. The ID of the Vertex job that executed the notebook in
-        /// contents and also the ID used for the outputs created in Google Cloud
-        /// Storage buckets. Only set once the job has started to run.
+        /// Output only. The ID of the Gemini Enterprise Agent Platform job that
+        /// executed the notebook in contents and also the ID used for the outputs
+        /// created in Google Cloud Storage buckets. Only set once the job has
+        /// started to run.
         #[prost(string, tag = "2")]
         pub job_id: ::prost::alloc::string::String,
     }
@@ -2772,8 +2829,8 @@ pub struct Folder {
     /// Optional. The containing Folder resource name. This should take
     /// the format: projects/{project}/locations/{location}/folders/{folder},
     /// projects/{project}/locations/{location}/teamFolders/{teamFolder}, or just
-    /// projects/{project}/locations/{location} if this is a root Folder. This
-    /// field can only be updated through MoveFolder.
+    /// "" if this is a root Folder. This field can only be updated through
+    /// MoveFolder.
     #[prost(string, tag = "3")]
     pub containing_folder: ::prost::alloc::string::String,
     /// Output only. The resource name of the TeamFolder that this Folder is
@@ -2808,8 +2865,11 @@ pub struct CreateFolderRequest {
     /// Required. The Folder to create.
     #[prost(message, optional, tag = "2")]
     pub folder: ::core::option::Option<Folder>,
+    /// Deprecated: This field is not used. The resource name is generated
+    /// automatically.
     /// The ID to use for the Folder, which will become the final component of
     /// the Folder's resource name.
+    #[deprecated]
     #[prost(string, tag = "3")]
     pub folder_id: ::prost::alloc::string::String,
 }
@@ -2854,10 +2914,121 @@ pub struct DeleteFolderRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// `DeleteFolderTree` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFolderTreeRequest {
+    /// Required. The Folder's name.
+    /// Format: projects/{project}/locations/{location}/folders/{folder}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If `false` (default): The operation will fail if any
+    /// Repository within the folder hierarchy has associated Release Configs or
+    /// Workflow Configs.
+    ///
+    /// If `true`: The operation will attempt to delete everything, including any
+    /// Release Configs and Workflow Configs linked to Repositories within the
+    /// folder hierarchy. This permanently removes schedules and resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// `DeleteTeamFolderTree` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteTeamFolderTreeRequest {
+    /// Required. The TeamFolder's name.
+    /// Format: projects/{project}/locations/{location}/teamFolders/{team_folder}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If `false` (default): The operation will fail if any
+    /// Repository within the folder hierarchy has associated Release Configs or
+    /// Workflow Configs.
+    ///
+    /// If `true`: The operation will attempt to delete everything, including any
+    /// Release Configs and Workflow Configs linked to Repositories within the
+    /// folder hierarchy. This permanently removes schedules and resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Contains metadata about the progress of the DeleteFolderTree Long-running
+/// operations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFolderTreeMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Resource name of the target of the operation.
+    /// Format: projects/{project}/locations/{location}/folders/{folder} or
+    /// projects/{project}/locations/{location}/teamFolders/{team_folder}
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. The state of the operation.
+    #[prost(enumeration = "delete_folder_tree_metadata::State", tag = "4")]
+    pub state: i32,
+    /// Output only. Percent complete of the operation \[0, 100\].
+    #[prost(int32, tag = "5")]
+    pub percent_complete: i32,
+}
+/// Nested message and enum types in `DeleteFolderTreeMetadata`.
+pub mod delete_folder_tree_metadata {
+    /// Different states of the DeleteFolderTree operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The operation was initialized and recorded by the server, but not yet
+        /// started.
+        Initialized = 1,
+        /// The operation is in progress.
+        InProgress = 2,
+        /// The operation has completed successfully.
+        Succeeded = 3,
+        /// The operation has failed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initialized => "INITIALIZED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZED" => Some(Self::Initialized),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
 /// `QueryFolderContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryFolderContentsRequest {
-    /// Required. Name of the folder whose contents to list.
+    /// Required. Resource name of the Folder to list contents for.
     /// Format: projects/*/locations/*/folders/\*
     #[prost(string, tag = "1")]
     pub folder: ::prost::alloc::string::String,
@@ -2932,7 +3103,7 @@ pub mod query_folder_contents_response {
 /// `QueryUserRootContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryUserRootContentsRequest {
-    /// Required. Location of the user root folder whose contents to list.
+    /// Required. Location of the user root folder to list contents for.
     /// Format: projects/*/locations/*
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
@@ -3039,8 +3210,11 @@ pub struct CreateTeamFolderRequest {
     /// Required. The TeamFolder to create.
     #[prost(message, optional, tag = "2")]
     pub team_folder: ::core::option::Option<TeamFolder>,
+    /// Deprecated: This field is not used. The resource name is generated
+    /// automatically.
     /// The ID to use for the TeamFolder, which will become the final component of
     /// the TeamFolder's resource name.
+    #[deprecated]
     #[prost(string, tag = "3")]
     pub team_folder_id: ::prost::alloc::string::String,
 }
@@ -3072,7 +3246,7 @@ pub struct DeleteTeamFolderRequest {
 /// `QueryTeamFolderContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryTeamFolderContentsRequest {
-    /// Required. Name of the team_folder whose contents to list.
+    /// Required. Resource name of the TeamFolder to list contents for.
     /// Format: `projects/*/locations/*/teamFolders/*`.
     #[prost(string, tag = "1")]
     pub team_folder: ::prost::alloc::string::String,
@@ -3151,9 +3325,9 @@ pub struct SearchTeamFoldersRequest {
     /// Format: `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
-    /// Optional. Maximum number of TeamFolders to return. The server may return
-    /// fewer items than requested. If unspecified, the server will pick an
-    /// appropriate default.
+    /// Optional. Maximum number of `TeamFolders` to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick a default
+    /// of `page_size` = 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `SearchTeamFolders` call.
@@ -3362,6 +3536,118 @@ pub mod move_repository_metadata {
         }
     }
 }
+/// Represents metadata about the progress of the DeleteRepository long-running
+/// operation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteRepositoryLongRunningMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    /// Format: projects/{project}/locations/{location}/repositories/{repository}
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. The state of the operation.
+    #[prost(enumeration = "delete_repository_long_running_metadata::State", tag = "4")]
+    pub state: i32,
+    /// Output only. Percent complete of the operation \[0, 100\].
+    #[prost(int32, tag = "5")]
+    pub percent_complete: i32,
+    /// Output only. The total number of child resources (Compilation Results,
+    /// Workflow Executions) that will be deleted.
+    #[prost(int64, tag = "6")]
+    pub child_resources_count: i64,
+    /// Output only. The remaining number of child resources to be deleted.
+    #[prost(int64, tag = "7")]
+    pub remaining_child_resources_count: i64,
+}
+/// Nested message and enum types in `DeleteRepositoryLongRunningMetadata`.
+pub mod delete_repository_long_running_metadata {
+    /// Different states of the DeleteRepositoryLongRunning operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The operation is running.
+        Running = 1,
+        /// The operation has completed successfully.
+        Succeeded = 2,
+        /// The operation has failed.
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents the level of detail to return for directory contents.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DirectoryContentsView {
+    /// The default unset value. Defaults to DIRECTORY_CONTENTS_VIEW_BASIC.
+    Unspecified = 0,
+    /// Includes only the file or directory name. This is the default behavior.
+    Basic = 1,
+    /// Includes all metadata for each file or directory. Currently not supported
+    /// by CMEK-protected workspaces.
+    Metadata = 2,
+}
+impl DirectoryContentsView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DIRECTORY_CONTENTS_VIEW_UNSPECIFIED",
+            Self::Basic => "DIRECTORY_CONTENTS_VIEW_BASIC",
+            Self::Metadata => "DIRECTORY_CONTENTS_VIEW_METADATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DIRECTORY_CONTENTS_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "DIRECTORY_CONTENTS_VIEW_BASIC" => Some(Self::Basic),
+            "DIRECTORY_CONTENTS_VIEW_METADATA" => Some(Self::Metadata),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod dataform_client {
     #![allow(
@@ -3563,6 +3849,37 @@ pub mod dataform_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deletes a TeamFolder with its contents (Folders, Repositories, Workspaces,
+        /// ReleaseConfigs, and WorkflowConfigs).
+        pub async fn delete_team_folder_tree(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTeamFolderTreeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteTeamFolderTree",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "DeleteTeamFolderTree",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Returns the contents of a given TeamFolder.
         pub async fn query_team_folder_contents(
             &mut self,
@@ -3728,6 +4045,37 @@ pub mod dataform_client {
                     GrpcMethod::new(
                         "google.cloud.dataform.v1beta1.Dataform",
                         "DeleteFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Folder with its contents (Folders, Repositories, Workspaces,
+        /// ReleaseConfigs, and WorkflowConfigs).
+        pub async fn delete_folder_tree(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFolderTreeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteFolderTree",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "DeleteFolderTree",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3966,6 +4314,36 @@ pub mod dataform_client {
                     GrpcMethod::new(
                         "google.cloud.dataform.v1beta1.Dataform",
                         "DeleteRepository",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single repository asynchronously.
+        pub async fn delete_repository_long_running(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRepositoryLongRunningRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteRepositoryLongRunning",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "DeleteRepositoryLongRunning",
                     ),
                 );
             self.inner.unary(req, path, codec).await

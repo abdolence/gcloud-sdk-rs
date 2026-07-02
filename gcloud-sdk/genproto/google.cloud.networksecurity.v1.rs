@@ -10458,8 +10458,7 @@ pub struct SecurityProfileGroup {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
-    /// Output only. Identifier used by the data-path. Unique within {container,
-    /// location}.
+    /// Output only. Identifier used by the data-path. Unique within `{container,  location}`.
     #[prost(uint64, tag = "12")]
     pub data_path_id: u64,
     /// Optional. Labels as key value pairs.

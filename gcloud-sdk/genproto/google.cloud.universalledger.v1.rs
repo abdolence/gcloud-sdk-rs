@@ -300,6 +300,39 @@ impl NoneValue {
         }
     }
 }
+/// An identifier of the slots which can hold keys on an account.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum KeySlot {
+    /// The key slot is unspecified.
+    Unspecified = 0,
+    /// The primary key slot.
+    Primary = 1,
+    /// The alternate key slot.
+    Alternate = 2,
+}
+impl KeySlot {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "KEY_SLOT_UNSPECIFIED",
+            Self::Primary => "KEY_SLOT_PRIMARY",
+            Self::Alternate => "KEY_SLOT_ALTERNATE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "KEY_SLOT_UNSPECIFIED" => Some(Self::Unspecified),
+            "KEY_SLOT_PRIMARY" => Some(Self::Primary),
+            "KEY_SLOT_ALTERNATE" => Some(Self::Alternate),
+            _ => None,
+        }
+    }
+}
 /// Initiates a settlement operation between two token managers.
 /// The sender must be a clearinghouse account.
 ///
@@ -998,41 +1031,33 @@ pub struct TransferContractTokenManager {
     #[prost(enumeration = "KeyFormat", tag = "3")]
     pub key_format: i32,
 }
-/// Specifies the format a public key is provided in.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum KeyFormat {
-    /// The key format is unspecified. This value is invalid and should not be
-    /// used.
-    Unspecified = 0,
-    /// A binary serialized keyset in [Tink wire
-    /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
-    TinkWireFormat = 1,
-    /// A PEM-encoded elliptic curve signing key using the P-256 curve with
-    /// SHA256 digest. Signatures must be provided in DER format.
-    PemEcP256Sha256 = 2,
+/// Removes the account signing key from the specified slot. The other slot must
+/// not be empty, and must hold the key used to sign the `ClientTransaction`.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RemoveSigningPublicKey {
+    /// Required. The key slot we're removing the key from. If this is already
+    /// empty, the transaction will fail.
+    #[prost(enumeration = "KeySlot", tag = "1")]
+    pub key_slot: i32,
 }
-impl KeyFormat {
-    /// String value of the enum field names used in the ProtoBuf definition.
+/// Replaces the account signing key in the specified slot. The other slot must
+/// not be empty, and must hold the key used to sign the `ClientTransaction`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReplaceSigningPublicKey {
+    /// Required. The key slot we're replacing the key in.
+    #[prost(enumeration = "KeySlot", tag = "1")]
+    pub key_slot: i32,
+    /// Required. The new public key, which will replace the public key in the
+    /// specified slot.
     ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "KEY_FORMAT_UNSPECIFIED",
-            Self::TinkWireFormat => "KEY_FORMAT_TINK_WIRE_FORMAT",
-            Self::PemEcP256Sha256 => "KEY_FORMAT_PEM_EC_P256_SHA256",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "KEY_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
-            "KEY_FORMAT_TINK_WIRE_FORMAT" => Some(Self::TinkWireFormat),
-            "KEY_FORMAT_PEM_EC_P256_SHA256" => Some(Self::PemEcP256Sha256),
-            _ => None,
-        }
-    }
+    /// The format of the public key is defined by the new_key_format field.
+    /// Considered public information.
+    #[prost(bytes = "vec", tag = "2")]
+    pub new_public_key: ::prost::alloc::vec::Vec<u8>,
+    /// Required. The key format of the new public key. See the definition of
+    /// KeyFormat for a list of supported formats. Considered public information.
+    #[prost(enumeration = "KeyFormat", tag = "3")]
+    pub new_key_format: i32,
 }
 /// The settlement mode for a clearinghouse.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1070,6 +1095,43 @@ impl SettlementMode {
             "SETTLEMENT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
             "SETTLEMENT_MODE_DEFERRED" => Some(Self::Deferred),
             "SETTLEMENT_MODE_INSTANT" => Some(Self::Instant),
+            _ => None,
+        }
+    }
+}
+/// Specifies the format a public key is provided in.
+/// New values may be added to this enum in the future.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum KeyFormat {
+    /// The key format is unspecified. This value is invalid and should not be
+    /// used.
+    Unspecified = 0,
+    /// A binary serialized keyset in [Tink wire
+    /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    TinkWireFormat = 1,
+    /// A PEM-encoded elliptic curve signing key using the P-256 curve with
+    /// SHA256 digest. Signatures must be provided in DER format.
+    PemEcP256Sha256 = 2,
+}
+impl KeyFormat {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "KEY_FORMAT_UNSPECIFIED",
+            Self::TinkWireFormat => "KEY_FORMAT_TINK_WIRE_FORMAT",
+            Self::PemEcP256Sha256 => "KEY_FORMAT_PEM_EC_P256_SHA256",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "KEY_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "KEY_FORMAT_TINK_WIRE_FORMAT" => Some(Self::TinkWireFormat),
+            "KEY_FORMAT_PEM_EC_P256_SHA256" => Some(Self::PemEcP256Sha256),
             _ => None,
         }
     }
@@ -1500,7 +1562,7 @@ pub struct ClientTransaction {
     /// The client transaction-specific message.
     #[prost(
         oneof = "client_transaction::Kind",
-        tags = "5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 8"
+        tags = "5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 8"
     )]
     pub kind: ::core::option::Option<client_transaction::Kind>,
 }
@@ -1638,6 +1700,12 @@ pub mod client_transaction {
         /// from one account to another.
         #[prost(message, tag = "35")]
         TransferContractTokenManagerTransaction(super::TransferContractTokenManager),
+        /// Optional. Message for removing an account signing key.
+        #[prost(message, tag = "36")]
+        RemoveSigningPublicKeyTransaction(super::RemoveSigningPublicKey),
+        /// Optional. Message for replacing an account signing key.
+        #[prost(message, tag = "37")]
+        ReplaceSigningPublicKeyTransaction(super::ReplaceSigningPublicKey),
         /// Optional. Message for a transaction chain including multiple transaction
         /// units to execute in sequence.
         #[prost(message, tag = "8")]
@@ -1668,6 +1736,10 @@ pub struct SignedTransaction {
     ///   The digests are computed using SHA-256.
     #[prost(bytes = "vec", tag = "3")]
     pub sender_signature: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The key slot of the sender used to sign the transaction. Uses the
+    /// primary slot of the sender account if not specified.
+    #[prost(enumeration = "KeySlot", tag = "5")]
+    pub sender_signing_key_slot: i32,
     /// Optional. The signatures of accounts listed as additional transaction
     /// signatories. The number and order of these signatures must match the
     /// `signatories` field in the
@@ -1682,6 +1754,13 @@ pub struct SignedTransaction {
     /// chain.
     #[prost(bytes = "vec", repeated, tag = "4")]
     pub other_signatures: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    /// Optional. The key slots of the accounts listed as additional transaction
+    /// signatories. If set, the number and order of these key slots must match the
+    /// `other_signatures` field in the
+    /// \[SignedTransaction\]\[google.cloud.universalledger.v1.SignedTransaction\].
+    /// Defaults to the primary slot of each account if not specified.
+    #[prost(enumeration = "KeySlot", repeated, packed = "false", tag = "6")]
+    pub other_signing_key_slots: ::prost::alloc::vec::Vec<i32>,
 }
 /// A transaction chain including multiple transaction units to execute in
 /// sequence.
@@ -1827,7 +1906,7 @@ pub mod transaction_event {
 /// Certificate of the execution of a specific transaction in a round.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionCertificate {
-    /// Output only. Digest of the transaction this certificate is for.
+    /// Output only. The ID of the transaction this certificate is for.
     #[prost(string, tag = "1")]
     pub transaction_digest_hex: ::prost::alloc::string::String,
     /// Output only. The ID of the execution round at which this transaction was
@@ -1883,10 +1962,10 @@ pub struct ProofOfInclusion {
     /// In here, `path_to_round_root` for `t0` will contain:
     /// `\[(t0, t1), (h10, h11), (h20, h21)\]`.
     ///
-    /// One can consecutively compute SHA-256 hashes of each
-    /// path node to verify that the path hashes to the same value as the
-    /// `round_certificate.merkle_tree.root_digest_hex`. Thus, verifying that the
-    /// leaf was included in the round's Merkle tree.
+    /// One can consecutively compute SHA-256 digests of each
+    /// path node to verify that the digest of the path produces the same value as
+    /// the `round_certificate.merkle_tree.root_digest_hex`. Thus, verifying that
+    /// the leaf was included in the round's Merkle tree.
     #[prost(message, repeated, tag = "3")]
     pub path_to_round_root: ::prost::alloc::vec::Vec<proof_of_inclusion::MerkleTreeNode>,
 }
@@ -1895,15 +1974,15 @@ pub mod proof_of_inclusion {
     /// Represents a node in a Merkle tree path.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MerkleTreeNode {
-        /// Output only. The hex representation of the hash of the left child of a
-        /// node. Deprecated: Use
+        /// Output only. The hexadecimal representation of the digest of the left
+        /// child of a node. Deprecated: Use
         /// \[left_child_digest_hex\]\[google.cloud.universalledger.v1.ProofOfInclusion.MerkleTreeNode.left_child_digest_hex\]
         /// instead.
         #[deprecated]
         #[prost(string, tag = "1")]
         pub left_child_hash_hex: ::prost::alloc::string::String,
-        /// Output only. The hex representation of the hash of the right child of a
-        /// node. Deprecated: Use
+        /// Output only. The hexadecimal representation of the digest of the right
+        /// child of a node. Deprecated: Use
         /// \[right_child_digest_hex\]\[google.cloud.universalledger.v1.ProofOfInclusion.MerkleTreeNode.right_child_digest_hex\]
         /// instead.
         #[deprecated]
@@ -2063,21 +2142,22 @@ pub struct SubmitTransactionRequest {
     pub endpoint: ::prost::alloc::string::String,
     /// Required. A protobuf serialized
     /// \[SignedTransaction\]\[google.cloud.universalledger.v1.SignedTransaction\] to
-    /// submit to the Universal Ledger network. Using a serialized format ensures
-    /// that all validators can compute the same hash for the transaction,
-    /// regardless of the machine or environment where the transaction was
-    /// serialized.
+    /// submit to the ledger. Using a serialized format ensures that all validators
+    /// compute the same transaction ID as the SHA-256 digest of the serialized
+    /// bytes.
     #[prost(bytes = "vec", tag = "2")]
     pub serialized_signed_transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response message for SubmitTransaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubmitTransactionResponse {
-    /// Hex encoded SHA-256 hash of the `serialized_signed_transaction` that
-    /// uniquely identifies the submitted transaction.
-    /// This ID is provided so that a client can track the transaction without
-    /// needing to implement the hashing logic itself. The ID can be directly
-    /// used in subsequent API calls, for example to query the transaction state.
+    /// Identifier that uniquely represents the submitted transaction.
+    /// It is the hexadecimal representation of the SHA-256 digest of the
+    /// `serialized_signed_transaction`.
+    /// This transaction ID is provided so that a client can track the transaction
+    /// without needing to implement the hashing logic itself.
+    /// The identifier can be directly used in subsequent API calls, for example to
+    /// query the transaction state.
     #[prost(string, tag = "1")]
     pub transaction_digest_hex: ::prost::alloc::string::String,
 }
@@ -2091,22 +2171,23 @@ pub struct SubmitOperationalTransactionRequest {
     pub endpoint: ::prost::alloc::string::String,
     /// Required. A protobuf serialized
     /// \[SignedTransaction\]\[google.cloud.universalledger.v1.SignedTransaction\] to
-    /// submit to the network. The enclosed client transaction must be an
+    /// submit to the ledger. The enclosed client transaction must be an
     /// operational transaction, and the sender must be the platform operator.
-    /// Having the fully serialized transaction allows all validators
-    /// to compute the same hash without assuming any format for the serialized
-    /// transaction.
+    /// Using a serialized format ensures that all validators compute the same
+    /// transaction ID as the SHA-256 digest of the serialized bytes.
     #[prost(bytes = "vec", tag = "2")]
     pub serialized_signed_operational_transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response message for SubmitOperationalTransaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubmitOperationalTransactionResponse {
-    /// Hex encoded SHA-256 hash of the `serialized_signed_operational_transaction`
-    /// that uniquely identifies the submitted operational transaction.
-    /// This ID is provided so that a client can track the transaction without
-    /// needing to implement the hashing logic itself. The ID can be directly
-    /// used in subsequent API calls, for example to query the transaction state.
+    /// Identifier that uniquely represents the submitted operational transaction.
+    /// It is the hexadecimal representation of the SHA-256 digest of the
+    /// `serialized_signed_operational_transaction`.
+    /// This transaction ID is provided so that a client can track the transaction
+    /// without needing to implement the hashing logic itself.
+    /// The identifier can be directly used in subsequent API calls, for example to
+    /// query the transaction state.
     #[prost(string, tag = "1")]
     pub transaction_digest_hex: ::prost::alloc::string::String,
 }
@@ -2118,7 +2199,7 @@ pub struct QueryTransactionStateRequest {
     /// The location is a region.
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
-    /// Required. The transaction digest to get the state of.
+    /// Required. The transaction ID to get the state of.
     #[prost(string, tag = "2")]
     pub transaction_digest_hex: ::prost::alloc::string::String,
 }

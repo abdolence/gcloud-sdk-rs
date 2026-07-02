@@ -2828,21 +2828,31 @@ pub struct SampleRowKeysRequest {
     /// "default" application profile will be used.
     #[prost(string, tag = "2")]
     pub app_profile_id: ::prost::alloc::string::String,
+    /// Optional. The row range to sample. If not specified, samples
+    /// from all rows.
+    /// The output will always return the end key in the range as the last sample
+    /// returned.
+    #[prost(message, optional, tag = "6")]
+    pub row_range: ::core::option::Option<RowRange>,
 }
 /// Response message for Bigtable.SampleRowKeys.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleRowKeysResponse {
-    /// Sorted streamed sequence of sample row keys in the table. The table might
-    /// have contents before the first row key in the list and after the last one,
-    /// but a key containing the empty string indicates "end of table" and will be
-    /// the last response given, if present.
+    /// Sorted streamed sequence of sample row keys in the table, restricted to
+    /// the row_range if specified in the request. The table might have contents
+    /// before the first row key in the list and after the last one, but a key
+    /// containing the empty string indicates "end of table" and will be the last
+    /// response given, if present and within the row-range specified in the
+    /// request.
     /// Note that row keys in this list may not have ever been written to or read
     /// from, and users should therefore not make any assumptions about the row key
     /// structure that are specific to their use case.
     #[prost(bytes = "vec", tag = "1")]
     pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// Approximate total storage space used by all rows in the table which precede
-    /// `row_key`. Buffering the contents of all rows between two subsequent
+    /// `row_key` (and if a row-range is specified in the request, which follow
+    /// what would have been the previous sample before the row-range start).
+    /// Buffering the contents of all rows between two subsequent
     /// samples would require space roughly equal to the difference in their
     /// `offset_bytes` fields.
     #[prost(int64, tag = "2")]
@@ -3458,6 +3468,17 @@ pub struct ExecuteQueryRequest {
     /// rejected with `INVALID_ARGUMENT`.
     #[prost(map = "string, message", tag = "7")]
     pub params: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
+    /// Optional. This map provides the runtime values returned by the
+    /// VIEW_PARAMETERS() function calls, typically used for user-level scoping of
+    /// data based on identity.
+    ///
+    /// The key is the name of the view parameter e.g. `user_id`, and
+    /// the value is the parameter value e.g. `alice@example.com`.
+    #[prost(map = "string, message", tag = "12")]
+    pub view_parameters: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Value,
+    >,
     /// Requested data format for the response.
     ///
     /// If `prepared_query` is set, then the `data_format` is fixed by the
@@ -3706,6 +3727,9 @@ pub mod bigtable_client {
         /// delimit contiguous sections of the table of approximately equal size,
         /// which can be used to break up the data for distributed tasks like
         /// mapreduces.
+        ///
+        /// If a `row_range` is provided in the request, the returned samples will be
+        /// restricted to the specified range.
         pub async fn sample_row_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::SampleRowKeysRequest>,

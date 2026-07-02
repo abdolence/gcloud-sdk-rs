@@ -817,7 +817,7 @@ pub struct Realm {
     /// Required. Traffic type of the Realm.
     #[prost(enumeration = "realm::TrafficType", tag = "2")]
     pub traffic_type: i32,
-    /// Required. Management type of the Realm.
+    /// Optional. Management type of the Realm.
     #[prost(enumeration = "realm::ManagementType", tag = "3")]
     pub management_type: i32,
     /// Required. Name of the RegistryBook that claims the Realm.

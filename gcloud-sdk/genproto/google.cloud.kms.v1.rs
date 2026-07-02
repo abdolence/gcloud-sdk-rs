@@ -1130,6 +1130,13 @@ pub struct ImportJob {
     /// \[ACTIVE\]\[google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE\].
     #[prost(message, optional, tag = "7")]
     pub public_key: ::core::option::Option<import_job::WrappingPublicKey>,
+    /// Output only. Specifies the
+    /// \[WrappingPublicKey\]\[google.cloud.kms.v1.ImportJob.WrappingPublicKey\] format
+    /// provided by the customer in the
+    /// \[KeyManagementService.GetImportJob\]\[google.cloud.kms.v1.KeyManagementService.GetImportJob\]
+    /// request.
+    #[prost(enumeration = "public_key::PublicKeyFormat", tag = "12")]
+    pub public_key_format: i32,
     /// Output only. Statement that was generated and signed by the key creator
     /// (for example, an HSM) at key creation time. Use this statement to verify
     /// attributes of the key as stored on the HSM, independently of Google.
@@ -1161,8 +1168,21 @@ pub mod import_job {
         /// Considerations](<https://tools.ietf.org/html/rfc7468#section-2>) and
         /// \[Textual Encoding of Subject Public Key Info\]
         /// (<https://tools.ietf.org/html/rfc7468#section-13>).
+        /// This field gets populated by default for RSA-based import methods, if no
+        /// public_key_format is specified in the request.
+        /// If you want to retrieve the wrapping key of an
+        /// \[ImportJob\]\[google.cloud.kms.v1.ImportJob\] in some other format, use
+        /// \[KeyManagementService.GetImportJob\]\[google.cloud.kms.v1.KeyManagementService.GetImportJob\]
+        /// and set the public_key_format to the desired public key format.
         #[prost(string, tag = "1")]
         pub pem: ::prost::alloc::string::String,
+        /// Output only. Contains the public key, formatted according to the
+        /// \[PublicKey.PublicKeyFormat\]\[google.cloud.kms.v1.PublicKey.PublicKeyFormat\]
+        /// specified in the
+        /// \[KeyManagementService.GetImportJob\]\[google.cloud.kms.v1.KeyManagementService.GetImportJob\]
+        /// request.
+        #[prost(bytes = "vec", tag = "2")]
+        pub data: ::prost::alloc::vec::Vec<u8>,
     }
     /// \[ImportMethod\]\[google.cloud.kms.v1.ImportJob.ImportMethod\] describes the
     /// key wrapping method chosen for this
@@ -1220,6 +1240,30 @@ pub mod import_job {
         /// to technical limitations of RSA wrapping, this method cannot be used to
         /// wrap RSA keys for import.
         RsaOaep4096Sha256 = 6,
+        /// Represents the Hybrid Public Key Encryption (HPKE) Scheme originally
+        /// defined in [RFC 9180](<https://www.rfc-editor.org/rfc/rfc9180>). It
+        /// involves wrapping the raw key with an ephemeral AES key, derived with
+        /// HKDF-SHA256 from an encryption context, that is, in turn obtained from
+        /// the receiver’s public key with the help of the ML-KEM-768 KEM. For more
+        /// details, see the [ML-KEM HPKE
+        /// standard](<http://datatracker.ietf.org/doc/draft-ietf-hpke-pq/01/>).
+        HpkeKemMlKem768HkdfSha256Aes256Gcm = 8,
+        /// Represents the Hybrid Public Key Encryption (HPKE) Scheme originally
+        /// defined in [RFC 9180](<https://www.rfc-editor.org/rfc/rfc9180>). It
+        /// involves wrapping the raw key with an ephemeral AES key, derived with
+        /// HKDF-SHA256 from an encryption context, that is, in turn obtained from
+        /// the receiver’s public key with the help of the ML-KEM-1024 KEM. For more
+        /// details, see the [ML-KEM HPKE
+        /// standard](<http://datatracker.ietf.org/doc/draft-ietf-hpke-pq/01/>).
+        HpkeKemMlKem1024HkdfSha256Aes256Gcm = 9,
+        /// Represents the Hybrid Public Key Encryption (HPKE) Scheme originally
+        /// defined in [RFC 9180](<https://www.rfc-editor.org/rfc/rfc9180>). It
+        /// involves wrapping the raw key with an ephemeral AES key, derived with
+        /// HKDF-SHA256 from an encryption context, that is, in turn obtained from
+        /// the receiver’s public key with the help of the X-Wing hybrid KEM. For
+        /// more details, see the [X-Wing
+        /// standard](<http://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/09/>).
+        HpkeKemXwingHkdfSha256Aes256Gcm = 10,
     }
     impl ImportMethod {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1235,6 +1279,15 @@ pub mod import_job {
                 Self::RsaOaep4096Sha256Aes256 => "RSA_OAEP_4096_SHA256_AES_256",
                 Self::RsaOaep3072Sha256 => "RSA_OAEP_3072_SHA256",
                 Self::RsaOaep4096Sha256 => "RSA_OAEP_4096_SHA256",
+                Self::HpkeKemMlKem768HkdfSha256Aes256Gcm => {
+                    "HPKE_KEM_ML_KEM_768_HKDF_SHA256_AES_256_GCM"
+                }
+                Self::HpkeKemMlKem1024HkdfSha256Aes256Gcm => {
+                    "HPKE_KEM_ML_KEM_1024_HKDF_SHA256_AES_256_GCM"
+                }
+                Self::HpkeKemXwingHkdfSha256Aes256Gcm => {
+                    "HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1247,6 +1300,15 @@ pub mod import_job {
                 "RSA_OAEP_4096_SHA256_AES_256" => Some(Self::RsaOaep4096Sha256Aes256),
                 "RSA_OAEP_3072_SHA256" => Some(Self::RsaOaep3072Sha256),
                 "RSA_OAEP_4096_SHA256" => Some(Self::RsaOaep4096Sha256),
+                "HPKE_KEM_ML_KEM_768_HKDF_SHA256_AES_256_GCM" => {
+                    Some(Self::HpkeKemMlKem768HkdfSha256Aes256Gcm)
+                }
+                "HPKE_KEM_ML_KEM_1024_HKDF_SHA256_AES_256_GCM" => {
+                    Some(Self::HpkeKemMlKem1024HkdfSha256Aes256Gcm)
+                }
+                "HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM" => {
+                    Some(Self::HpkeKemXwingHkdfSha256Aes256Gcm)
+                }
                 _ => None,
             }
         }
@@ -4513,6 +4575,18 @@ pub struct GetImportJobRequest {
     /// \[ImportJob\]\[google.cloud.kms.v1.ImportJob\] to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Specifies the \[WrappingPublicKey\]\[\] format.
+    /// If not specified:
+    ///
+    /// * For RSA-based import methods, the wrapping key will be returned in PEM
+    ///   format
+    /// * For pure ML-KEM-based import methods, the wrapping key will be returned
+    ///   in the raw bytes format specified in FIPS-203
+    /// * For X-Wing-based import methods, the wrapping key will be returned in
+    ///   the raw bytes format specified in
+    ///   <https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.>
+    #[prost(enumeration = "public_key::PublicKeyFormat", tag = "2")]
+    pub public_key_format: i32,
 }
 /// Request message for
 /// \[KeyManagementService.GetRetiredResource\]\[google.cloud.kms.v1.KeyManagementService.GetRetiredResource\].

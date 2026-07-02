@@ -132,6 +132,12 @@ pub struct QueryAction {
     /// Parameters for the SQL string.
     #[prost(message, repeated, tag = "2")]
     pub params: ::prost::alloc::vec::Vec<query_action::Parameter>,
+    /// Secure context parameters.
+    #[prost(map = "string, message", tag = "3")]
+    pub secure_context: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Value,
+    >,
 }
 /// Nested message and enum types in `QueryAction`.
 pub mod query_action {
@@ -1432,11 +1438,17 @@ pub struct BatchPartition {
 /// Performs a read or query for the given partitions. This action must be
 /// executed in the context of the same transaction that was used to generate
 /// given partitions.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutePartitionAction {
     /// Batch partition to execute on.
     #[prost(message, optional, tag = "1")]
     pub partition: ::core::option::Option<BatchPartition>,
+    /// Secure context parameters.
+    #[prost(map = "string, message", tag = "2")]
+    pub secure_context: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Value,
+    >,
 }
 /// Execute a change stream TVF query.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

@@ -60,6 +60,11 @@ pub struct VerifyAttestationRequest {
     /// products.
     #[prost(string, tag = "8")]
     pub attester: ::prost::alloc::string::String,
+    /// Optional. Optional resource link of the Compute Engine instance.
+    /// Format:
+    /// `projects/{project_number}/zones/{zone}/instances/{instance_id}`
+    #[prost(string, tag = "10")]
+    pub instance: ::prost::alloc::string::String,
     /// An optional tee attestation report, used to populate hardware rooted
     /// claims.
     #[prost(oneof = "verify_attestation_request::TeeAttestation", tags = "6, 7")]

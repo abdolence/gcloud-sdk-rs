@@ -530,7 +530,8 @@ pub enum OutputAudioEncoding {
     /// Audio content returned as LINEAR16 also contains a WAV header.
     /// LINT: LEGACY_NAMES
     Linear16 = 1,
-    /// MP3 audio at 32kbps.
+    /// MP3 audio at 64kbps.
+    #[deprecated]
     Mp3 = 2,
     /// MP3 audio at 64kbps.
     /// LINT: LEGACY_NAMES
@@ -554,6 +555,7 @@ impl OutputAudioEncoding {
         match self {
             Self::Unspecified => "OUTPUT_AUDIO_ENCODING_UNSPECIFIED",
             Self::Linear16 => "OUTPUT_AUDIO_ENCODING_LINEAR_16",
+            #[allow(deprecated)]
             Self::Mp3 => "OUTPUT_AUDIO_ENCODING_MP3",
             Self::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
             Self::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
@@ -566,7 +568,7 @@ impl OutputAudioEncoding {
         match value {
             "OUTPUT_AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
             "OUTPUT_AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
-            "OUTPUT_AUDIO_ENCODING_MP3" => Some(Self::Mp3),
+            "OUTPUT_AUDIO_ENCODING_MP3" => Some(#[allow(deprecated)] Self::Mp3),
             "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS" => Some(Self::Mp364Kbps),
             "OUTPUT_AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
             "OUTPUT_AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
@@ -10310,7 +10312,11 @@ pub enum DetectIntentResponseView {
     ///
     /// ## \[QueryResult.diagnostic_info\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.diagnostic_info\]
     ///
-    /// \[QueryResult.generative_info\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info\]
+    /// ## \[QueryResult.generative_info\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info\]
+    ///
+    /// ## \[QueryResult.trace_blocks\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.trace_blocks\]
+    ///
+    /// \[QueryResult.data_store_connection_signals\]\[google.cloud.dialogflow.cx.v3beta1.QueryResult.data_store_connection_signals\]
     Basic = 2,
     /// ## Default response view omits the following fields:
     ///

@@ -2583,8 +2583,10 @@ pub mod build_options {
         /// Standard machine type.
         Unspecified = 0,
         /// Highcpu machine with 8 CPUs.
+        #[deprecated]
         N1Highcpu8 = 1,
         /// Highcpu machine with 32 CPUs.
+        #[deprecated]
         N1Highcpu32 = 2,
         /// Highcpu e2 machine with 8 CPUs.
         E2Highcpu8 = 5,
@@ -2592,6 +2594,8 @@ pub mod build_options {
         E2Highcpu32 = 6,
         /// E2 machine with 1 CPU.
         E2Medium = 7,
+        /// E2 machine with 2 CPUs.
+        E2Standard2 = 11,
     }
     impl MachineType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2601,22 +2605,26 @@ pub mod build_options {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::N1Highcpu8 => "N1_HIGHCPU_8",
+                #[allow(deprecated)]
                 Self::N1Highcpu32 => "N1_HIGHCPU_32",
                 Self::E2Highcpu8 => "E2_HIGHCPU_8",
                 Self::E2Highcpu32 => "E2_HIGHCPU_32",
                 Self::E2Medium => "E2_MEDIUM",
+                Self::E2Standard2 => "E2_STANDARD_2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "UNSPECIFIED" => Some(Self::Unspecified),
-                "N1_HIGHCPU_8" => Some(Self::N1Highcpu8),
-                "N1_HIGHCPU_32" => Some(Self::N1Highcpu32),
+                "N1_HIGHCPU_8" => Some(#[allow(deprecated)] Self::N1Highcpu8),
+                "N1_HIGHCPU_32" => Some(#[allow(deprecated)] Self::N1Highcpu32),
                 "E2_HIGHCPU_8" => Some(Self::E2Highcpu8),
                 "E2_HIGHCPU_32" => Some(Self::E2Highcpu32),
                 "E2_MEDIUM" => Some(Self::E2Medium),
+                "E2_STANDARD_2" => Some(Self::E2Standard2),
                 _ => None,
             }
         }

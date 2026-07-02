@@ -1667,7 +1667,7 @@ pub struct ContentItem {
     #[prost(message, optional, tag = "6")]
     pub content_metadata: ::core::option::Option<ContentMetadata>,
     /// Data of the item either in the byte array or UTF-8 string form, or table.
-    #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5, 7")]
+    #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5, 7, 8")]
     pub data_item: ::core::option::Option<content_item::DataItem>,
 }
 /// Nested message and enum types in `ContentItem`.
@@ -1691,6 +1691,9 @@ pub mod content_item {
         /// chronological order.
         #[prost(message, tag = "7")]
         Conversation(super::Conversation),
+        /// Represents a batch of items to inspect.
+        #[prost(message, tag = "8")]
+        BatchContentItem(super::BatchContentItem),
     }
 }
 /// Metadata on content to be scanned.
@@ -1722,7 +1725,7 @@ pub struct ConversationMessage {
     #[prost(enumeration = "conversation_message::MessageType", tag = "2")]
     pub message_type: i32,
     /// Optional. The identifier of the participant,
-    /// for example, 'test-user' or 'gemini'.
+    /// for example 'test-user' or 'gemini'.
     /// The participant ID can contain lowercase letters, numbers, and hyphens;
     /// that is, it must match the regular expression:
     /// `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
@@ -1777,6 +1780,30 @@ pub mod conversation_message {
             }
         }
     }
+}
+/// Represents a batch of content to inspect or redact.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchContentItem {
+    /// Represents the batch to inspect or redact.
+    #[prost(oneof = "batch_content_item::Batch", tags = "1")]
+    pub batch: ::core::option::Option<batch_content_item::Batch>,
+}
+/// Nested message and enum types in `BatchContentItem`.
+pub mod batch_content_item {
+    /// Represents the batch to inspect or redact.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Batch {
+        /// Optional. Represents a batch of string values to inspect or redact.
+        #[prost(message, tag = "1")]
+        StringValueBatch(super::StringValueBatch),
+    }
+}
+/// Represents a batch of string values to inspect or redact.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StringValueBatch {
+    /// Optional. Represents string data to inspect or redact.
+    #[prost(string, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
 /// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
@@ -1943,7 +1970,7 @@ pub struct ContentLocation {
     #[prost(string, tag = "7")]
     pub container_version: ::prost::alloc::string::String,
     /// Type of the container within the file with location of the finding.
-    #[prost(oneof = "content_location::Location", tags = "2, 3, 5, 8, 10")]
+    #[prost(oneof = "content_location::Location", tags = "2, 3, 5, 8, 10, 11")]
     pub location: ::core::option::Option<content_location::Location>,
 }
 /// Nested message and enum types in `ContentLocation`.
@@ -1966,6 +1993,9 @@ pub mod content_location {
         /// Location within a conversation.
         #[prost(message, tag = "10")]
         ConversationLocation(super::ConversationLocation),
+        /// Location within a batch of content.
+        #[prost(message, tag = "11")]
+        BatchContentLocation(super::BatchContentLocation),
     }
 }
 /// Location within a conversation.
@@ -1993,6 +2023,13 @@ pub mod conversation_location {
         #[prost(message, tag = "2")]
         AllMessages(AllMessages),
     }
+}
+/// Location within a batch of content.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BatchContentLocation {
+    /// Matches an index of a batch item in the batch provided in the request.
+    #[prost(int32, tag = "1")]
+    pub item_index: i32,
 }
 /// Metadata Location
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

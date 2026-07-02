@@ -12334,6 +12334,54 @@ pub struct PublisherModelConfig {
     /// The prediction request/response logging config.
     #[prost(message, optional, tag = "3")]
     pub logging_config: ::core::option::Option<PredictRequestResponseLoggingConfig>,
+    /// Optional. The model provider (publisher) for which the customer has enabled
+    /// data sharing. For publisher models that are configured to require data
+    /// sharing, a prediction request is only allowed when the model's publisher
+    /// matches this provider. Otherwise, the request is rejected.
+    #[prost(enumeration = "publisher_model_config::ModelProvider", tag = "4")]
+    pub data_sharing_enabled_provider: i32,
+}
+/// Nested message and enum types in `PublisherModelConfig`.
+pub mod publisher_model_config {
+    /// A model provider (publisher) that prediction data may be shared with.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ModelProvider {
+        /// Unspecified model provider.
+        Unspecified = 0,
+        /// Anthropic.
+        Anthropic = 1,
+    }
+    impl ModelProvider {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_PROVIDER_UNSPECIFIED",
+                Self::Anthropic => "ANTHROPIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANTHROPIC" => Some(Self::Anthropic),
+                _ => None,
+            }
+        }
+    }
 }
 /// Configurations (e.g. inference timeout) that are applied on your endpoints.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]

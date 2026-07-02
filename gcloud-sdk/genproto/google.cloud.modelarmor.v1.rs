@@ -63,6 +63,10 @@ pub mod template {
         pub multi_language_detection: ::core::option::Option<
             template_metadata::MultiLanguageDetection,
         >,
+        /// Optional. Specifies the modalities to scan.
+        /// If empty, only text modality will be scanned.
+        #[prost(enumeration = "super::Modality", repeated, packed = "false", tag = "11")]
+        pub modalities: ::prost::alloc::vec::Vec<i32>,
     }
     /// Nested message and enum types in `TemplateMetadata`.
     pub mod template_metadata {
@@ -446,7 +450,7 @@ pub mod pi_and_jailbreak_filter_settings {
         Unspecified = 0,
         /// Enabled
         Enabled = 1,
-        /// Enabled
+        /// Disabled
         Disabled = 2,
     }
     impl PiAndJailbreakFilterEnforcement {
@@ -678,6 +682,9 @@ pub struct SanitizeUserPromptRequest {
     pub multi_language_detection_metadata: ::core::option::Option<
         MultiLanguageDetectionMetadata,
     >,
+    /// Optional. Streaming Mode for StreamSanitize\* API.
+    #[prost(enumeration = "StreamingMode", optional, tag = "7")]
+    pub streaming_mode: ::core::option::Option<i32>,
 }
 /// Sanitize Model Response request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -697,6 +704,9 @@ pub struct SanitizeModelResponseRequest {
     pub multi_language_detection_metadata: ::core::option::Option<
         MultiLanguageDetectionMetadata,
     >,
+    /// Optional. Streaming Mode for StreamSanitize\* API.
+    #[prost(enumeration = "StreamingMode", optional, tag = "8")]
+    pub streaming_mode: ::core::option::Option<i32>,
 }
 /// Sanitized User Prompt Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -759,6 +769,9 @@ pub mod sanitization_result {
         /// ignore partial invocation failures.
         #[prost(bool, tag = "3")]
         pub ignore_partial_invocation_failures: bool,
+        /// Output only. The stream chunk processed by the Sanitization service.
+        #[prost(message, optional, tag = "4")]
+        pub stream_chunk_processed: ::core::option::Option<super::DataItem>,
     }
 }
 /// Message for Enabling Multi Language Detection.
@@ -829,7 +842,8 @@ pub struct RaiFilterResult {
     #[prost(enumeration = "FilterMatchState", tag = "3")]
     pub match_state: i32,
     /// The map of RAI filter results where key is RAI filter type - either of
-    /// "sexually_explicit", "hate_speech", "harassment", "dangerous".
+    /// "sexually_explicit", "hate_speech", "harassment", "dangerous", "violence",
+    /// "sexually_suggestive".
     #[prost(map = "string, message", tag = "4")]
     pub rai_filter_type_results: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -856,7 +870,7 @@ pub mod rai_filter_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdpFilterResult {
     /// Either of Sensitive Data Protection Inspect result or Deidentify result.
-    #[prost(oneof = "sdp_filter_result::Result", tags = "1, 2")]
+    #[prost(oneof = "sdp_filter_result::Result", tags = "1, 2, 3")]
     pub result: ::core::option::Option<sdp_filter_result::Result>,
 }
 /// Nested message and enum types in `SdpFilterResult`.
@@ -871,6 +885,10 @@ pub mod sdp_filter_result {
         /// performed.
         #[prost(message, tag = "2")]
         DeidentifyResult(super::SdpDeidentifyResult),
+        /// Sensitive Data Protection Redaction result if redaction is performed.
+        /// This is primarily used for image redaction.
+        #[prost(message, tag = "3")]
+        RedactResult(super::SdpRedactResult),
     }
 }
 /// Sensitive Data Protection Inspection Result.
@@ -901,6 +919,9 @@ pub struct SdpInspectResult {
     /// call.
     #[prost(bool, tag = "5")]
     pub findings_truncated: bool,
+    /// Contains text extracted from the image, if applicable.
+    #[prost(string, tag = "6")]
+    pub extracted_image_text: ::prost::alloc::string::String,
 }
 /// Represents Data item
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -964,6 +985,8 @@ pub mod byte_data_item {
         Txt = 6,
         /// CSV
         Csv = 7,
+        /// IMAGE
+        Image = 8,
     }
     impl ByteItemType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -980,6 +1003,7 @@ pub mod byte_data_item {
                 Self::PowerpointDocument => "POWERPOINT_DOCUMENT",
                 Self::Txt => "TXT",
                 Self::Csv => "CSV",
+                Self::Image => "IMAGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -993,6 +1017,7 @@ pub mod byte_data_item {
                 "POWERPOINT_DOCUMENT" => Some(Self::PowerpointDocument),
                 "TXT" => Some(Self::Txt),
                 "CSV" => Some(Self::Csv),
+                "IMAGE" => Some(Self::Image),
                 _ => None,
             }
         }
@@ -1025,8 +1050,65 @@ pub struct SdpDeidentifyResult {
     #[prost(string, repeated, tag = "6")]
     pub info_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Location of the finding within an image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SdpImageFindingLocation {
+    /// Bounding boxes locating the pixels within the image containing the finding.
+    #[prost(message, repeated, tag = "1")]
+    pub bounding_boxes: ::prost::alloc::vec::Vec<
+        sdp_image_finding_location::SdpBoundingBox,
+    >,
+}
+/// Nested message and enum types in `SdpImageFindingLocation`.
+pub mod sdp_image_finding_location {
+    /// Bounding box encompassing a finding within an image.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SdpBoundingBox {
+        /// Top coordinate of the bounding box. (0,0) is upper left.
+        #[prost(int32, tag = "1")]
+        pub top: i32,
+        /// Left coordinate of the bounding box. (0,0) is upper left.
+        #[prost(int32, tag = "2")]
+        pub left: i32,
+        /// Width of the bounding box in pixels.
+        #[prost(int32, tag = "3")]
+        pub width: i32,
+        /// Height of the bounding box in pixels.
+        #[prost(int32, tag = "4")]
+        pub height: i32,
+    }
+}
+/// Precise location of the finding within a document, record, image, or
+/// metadata container.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SdpContentLocation {
+    /// Name of the container where the finding is located.
+    /// The top level name is the source file name or table name.
+    ///
+    /// Nested names could be absent if the embedded object has no string
+    /// identifier (for example, an image contained within a document).
+    #[prost(string, tag = "1")]
+    pub container_name: ::prost::alloc::string::String,
+    /// Type of the container within the file with location of the finding. This
+    /// may be extended to include other container types like audio, video, etc in
+    /// future.
+    #[prost(oneof = "sdp_content_location::Location", tags = "2")]
+    pub location: ::core::option::Option<sdp_content_location::Location>,
+}
+/// Nested message and enum types in `SdpContentLocation`.
+pub mod sdp_content_location {
+    /// Type of the container within the file with location of the finding. This
+    /// may be extended to include other container types like audio, video, etc in
+    /// future.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Location {
+        /// Location within an image's pixels.
+        #[prost(message, tag = "2")]
+        ImageFindingLocation(super::SdpImageFindingLocation),
+    }
+}
 /// Finding corresponding to Sensitive Data Protection filter.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdpFinding {
     /// Name of Sensitive Data Protection info type for this finding.
     #[prost(string, tag = "1")]
@@ -1041,20 +1123,61 @@ pub struct SdpFinding {
 /// Nested message and enum types in `SdpFinding`.
 pub mod sdp_finding {
     /// Location of this Sensitive Data Protection Finding within input content.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SdpFindingLocation {
         /// Zero-based byte offsets delimiting the finding.
         /// These are relative to the finding's containing element.
         /// Note that when the content is not textual, this references
         /// the UTF-8 encoded textual representation of the content.
+        /// Note: Omitted if content is an image.
         #[prost(message, optional, tag = "1")]
         pub byte_range: ::core::option::Option<super::RangeInfo>,
         /// Unicode character offsets delimiting the finding.
         /// These are relative to the finding's containing element.
         /// Provided when the content is text.
+        /// Note: Omitted if content is an image.
         #[prost(message, optional, tag = "2")]
         pub codepoint_range: ::core::option::Option<super::RangeInfo>,
+        /// List of nested objects pointing to the precise location of the finding
+        /// within an image, file or record.
+        ///
+        /// For example, a single finding might be detected in two
+        /// separate bounding boxes within an image (e.g., if it wraps across
+        /// a line or is partially obscured). In such cases, content_locations
+        /// would contain two SdpContentLocation entries, each with an
+        /// image_finding_location pointing to a different bounding box.
+        #[prost(message, repeated, tag = "3")]
+        pub content_locations: ::prost::alloc::vec::Vec<super::SdpContentLocation>,
     }
+}
+/// Sensitive Data Protection Redaction Result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SdpRedactResult {
+    /// Output only. Reports whether Sensitive Data Protection redaction was
+    /// successfully executed or not.
+    #[prost(enumeration = "FilterExecutionState", tag = "1")]
+    pub execution_state: i32,
+    /// Output only. Optional messages corresponding to the result.
+    /// A message can provide warnings or error details.
+    /// For example, if execution state is skipped then this field provides
+    /// related reason/explanation.
+    #[prost(message, repeated, tag = "2")]
+    pub message_items: ::prost::alloc::vec::Vec<MessageItem>,
+    /// Output only. Match state for Sensitive Data Protection Redaction.
+    /// Value is MATCH_FOUND if content is redacted.
+    #[prost(enumeration = "FilterMatchState", tag = "3")]
+    pub match_state: i32,
+    /// Output only. The redacted image. The type will be the same as the original
+    /// image.
+    #[prost(bytes = "vec", tag = "4")]
+    pub redacted_image: ::prost::alloc::vec::Vec<u8>,
+    /// Output only. The findings. This field is populated in the response only
+    /// when include_findings in the SDP template is set to true.
+    #[prost(message, repeated, tag = "5")]
+    pub findings: ::prost::alloc::vec::Vec<SdpFinding>,
+    /// The extracted text from the image.
+    #[prost(string, tag = "6")]
+    pub extracted_image_text: ::prost::alloc::string::String,
 }
 /// Prompt injection and Jailbreak Filter Result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1584,6 +1707,77 @@ impl InvocationResult {
         }
     }
 }
+/// Streaming Mode for Sanitize\* API.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StreamingMode {
+    /// Default value.
+    Unspecified = 0,
+    /// Buffered Streaming mode.
+    Buffered = 1,
+    /// Real Time Streaming mode.
+    Realtime = 2,
+}
+impl StreamingMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "STREAMING_MODE_UNSPECIFIED",
+            Self::Buffered => "STREAMING_MODE_BUFFERED",
+            Self::Realtime => "STREAMING_MODE_REALTIME",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STREAMING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STREAMING_MODE_BUFFERED" => Some(Self::Buffered),
+            "STREAMING_MODE_REALTIME" => Some(Self::Realtime),
+            _ => None,
+        }
+    }
+}
+/// This enum is used in the TemplateMetadata message to indicate the modality
+/// supported for sanitize API calls.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Modality {
+    /// Unspecified modality. If specified, all modalities will be sanitized.
+    Unspecified = 0,
+    /// Represents text modality. If specified, it will sanitize text fields, and
+    /// text extracted from rich text files (like PDFs, DOCs) and plain text files
+    /// (like TXT).
+    Text = 1,
+    /// Represents image modality. If specified, it will sanitize image files. The
+    /// visual content and the text content in the image will be sanitized
+    /// depending on the filter configuration.
+    Image = 2,
+}
+impl Modality {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MODALITY_UNSPECIFIED",
+            Self::Text => "MODALITY_TEXT",
+            Self::Image => "MODALITY_IMAGE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "MODALITY_TEXT" => Some(Self::Text),
+            "MODALITY_IMAGE" => Some(Self::Image),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod model_armor_client {
     #![allow(
@@ -1927,6 +2121,72 @@ pub mod model_armor_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Streaming version of Sanitize User Prompt.
+        pub async fn stream_sanitize_user_prompt(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::SanitizeUserPromptRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::SanitizeUserPromptResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.modelarmor.v1.ModelArmor/StreamSanitizeUserPrompt",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.modelarmor.v1.ModelArmor",
+                        "StreamSanitizeUserPrompt",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Streaming version of Sanitizes Model Response.
+        pub async fn stream_sanitize_model_response(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::SanitizeModelResponseRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::SanitizeModelResponseResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.modelarmor.v1.ModelArmor/StreamSanitizeModelResponse",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.modelarmor.v1.ModelArmor",
+                        "StreamSanitizeModelResponse",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }

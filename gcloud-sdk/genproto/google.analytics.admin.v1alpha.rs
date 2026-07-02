@@ -2060,6 +2060,10 @@ pub struct PropertySummary {
     /// Example: "accounts/100", "properties/200"
     #[prost(string, tag = "4")]
     pub parent: ::prost::alloc::string::String,
+    /// If true, then the user has a Google Analytics role that permits them to
+    /// edit the property.
+    #[prost(bool, tag = "5")]
+    pub can_edit: bool,
 }
 /// A secret value used for sending hits to Measurement Protocol.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -7468,6 +7472,21 @@ pub struct GetReportingIdentitySettingsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for UpdateReportingIdentitySettings RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateReportingIdentitySettingsRequest {
+    /// Required. The reporting identity settings to update.
+    /// The settings' `name` field is used to identify the settings.
+    #[prost(message, optional, tag = "1")]
+    pub reporting_identity_settings: ::core::option::Option<ReportingIdentitySettings>,
+    /// Optional. The list of fields to be updated. Field names must be in snake
+    /// case (for example, "field_to_update"). Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "\*" to match all
+    /// fields. If omitted, the service will treat it as an implied field mask
+    /// equivalent to all fields that are populated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Request message for GetUserProvidedDataSettings RPC
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserProvidedDataSettingsRequest {
@@ -12153,6 +12172,38 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "GetReportingIdentitySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the reporting identity settings for this property.
+        pub async fn update_reporting_identity_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateReportingIdentitySettingsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportingIdentitySettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateReportingIdentitySettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateReportingIdentitySettings",
                     ),
                 );
             self.inner.unary(req, path, codec).await

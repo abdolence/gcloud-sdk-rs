@@ -3364,10 +3364,6 @@ pub struct AttachedGif {
 }
 /// Information about a message that another message quotes.
 ///
-/// When you create a message, you can quote messages within the same
-/// thread, or quote a root message to create a new root message.
-/// However, you can't quote a message reply from a different thread.
-///
 /// When you update a message, you can't add or replace the
 /// `quotedMessageMetadata` field, but you can remove it.
 ///
@@ -3420,16 +3416,20 @@ pub mod quoted_message_metadata {
     pub enum QuoteType {
         /// Reserved. This value is unused.
         Unspecified = 0,
-        /// If quote_type is `REPLY`, you can do the following:
+        /// When `quote_type` is `REPLY`, you can do the following:
         ///
         /// * If you're replying in a thread, you can quote another message in that
         ///   thread.
         ///
         /// * If you're creating a root message, you can quote another root message
         ///   in that space.
-        ///
-        /// You can't quote a message reply from a different thread.
         Reply = 1,
+        /// When `quote_type` is `FORWARD`, you can quote a:
+        ///
+        /// * Message from a different space.
+        ///
+        /// * Message reply from a different thread in the same space.
+        Forward = 2,
     }
     impl QuoteType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3440,6 +3440,7 @@ pub mod quoted_message_metadata {
             match self {
                 Self::Unspecified => "QUOTE_TYPE_UNSPECIFIED",
                 Self::Reply => "REPLY",
+                Self::Forward => "FORWARD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3447,6 +3448,7 @@ pub mod quoted_message_metadata {
             match value {
                 "QUOTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "REPLY" => Some(Self::Reply),
+                "FORWARD" => Some(Self::Forward),
                 _ => None,
             }
         }

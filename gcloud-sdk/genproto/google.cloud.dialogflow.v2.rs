@@ -1962,6 +1962,18 @@ pub struct CesAppSpec {
     /// Optional. Indicates whether the app requires human confirmation.
     #[prost(enumeration = "tool::ConfirmationRequirement", tag = "2")]
     pub confirmation_requirement: i32,
+    /// Optional. Only applicable for CompanionAgent.
+    /// Indicates whether the ces app is enabled in proactive mode.
+    /// At least one of `proactive_enabled` or `reactive_enabled` should be
+    /// true; otherwise, the ces app will be ignored.
+    #[prost(bool, optional, tag = "3")]
+    pub proactive_enabled: ::core::option::Option<bool>,
+    /// Optional. Only applicable for CompanionAgent.
+    /// Indicates whether the ces app is enabled in reactive mode.
+    /// At least one of `proactive_enabled` or `reactive_enabled` should be
+    /// true; otherwise, the ces app will be ignored.
+    #[prost(bool, optional, tag = "4")]
+    pub reactive_enabled: ::core::option::Option<bool>,
 }
 /// Spec of CES tool that the generator can choose from.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2126,14 +2138,14 @@ pub mod tool_call_result {
     /// The tool call's result.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Result {
-        /// The tool call's error.
+        /// Optional. The tool call's error.
         #[prost(message, tag = "3")]
         Error(Error),
-        /// Only populated if the response content is not utf-8 encoded.
+        /// Optional. Only populated if the response content is not utf-8 encoded.
         /// (by definition byte fields are base64 encoded).
         #[prost(bytes, tag = "5")]
         RawContent(::prost::alloc::vec::Vec<u8>),
-        /// Only populated if the response content is utf-8 encoded.
+        /// Optional. Only populated if the response content is utf-8 encoded.
         #[prost(string, tag = "6")]
         Content(::prost::alloc::string::String),
     }
@@ -3302,6 +3314,11 @@ pub struct InputAudioConfig {
     /// over StreamingDetectIntentRequest.single_utterance.
     #[prost(bool, tag = "8")]
     pub single_utterance: bool,
+    /// Optional. If `true`, responses with voice activity speech events will be
+    /// returned as they are detected.
+    /// Note: This setting is relevant only for streaming methods.
+    #[prost(bool, tag = "27")]
+    pub enable_voice_activity_events: bool,
     /// Only used in
     /// \[Participants.AnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.AnalyzeContent\]
     /// and
@@ -3825,7 +3842,8 @@ pub enum OutputAudioEncoding {
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
     /// Audio content returned as LINEAR16 also contains a WAV header.
     Linear16 = 1,
-    /// MP3 audio at 32kbps.
+    /// MP3 audio at 64kbps.
+    #[deprecated]
     Mp3 = 2,
     /// MP3 audio at 64kbps.
     Mp364Kbps = 4,
@@ -3848,6 +3866,7 @@ impl OutputAudioEncoding {
         match self {
             Self::Unspecified => "OUTPUT_AUDIO_ENCODING_UNSPECIFIED",
             Self::Linear16 => "OUTPUT_AUDIO_ENCODING_LINEAR_16",
+            #[allow(deprecated)]
             Self::Mp3 => "OUTPUT_AUDIO_ENCODING_MP3",
             Self::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
             Self::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
@@ -3860,7 +3879,7 @@ impl OutputAudioEncoding {
         match value {
             "OUTPUT_AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
             "OUTPUT_AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
-            "OUTPUT_AUDIO_ENCODING_MP3" => Some(Self::Mp3),
+            "OUTPUT_AUDIO_ENCODING_MP3" => Some(#[allow(deprecated)] Self::Mp3),
             "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS" => Some(Self::Mp364Kbps),
             "OUTPUT_AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
             "OUTPUT_AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
@@ -7698,19 +7717,22 @@ pub struct StreamingDetectIntentResponse {
 /// finalized transcript values received for the series of results.
 ///
 /// In the following example, single utterance is enabled. In the case where
-/// single utterance is not enabled, result 7 would not occur.
+/// single utterance is not enabled, result 8 would not occur.
 ///
 /// ```text,
-/// Num | transcript              | message_type            | is_final
-/// --- | ----------------------- | ----------------------- | --------
-/// 1   | "tube"                  | TRANSCRIPT              | false
-/// 2   | "to be a"               | TRANSCRIPT              | false
-/// 3   | "to be"                 | TRANSCRIPT              | false
-/// 4   | "to be or not to be"    | TRANSCRIPT              | true
-/// 5   | "that's"                | TRANSCRIPT              | false
-/// 6   | "that is                | TRANSCRIPT              | false
-/// 7   | unset                   | END_OF_SINGLE_UTTERANCE | unset
-/// 8   | " that is the question" | TRANSCRIPT              | true
+/// Num | transcript               | message_type            | is_final
+/// --- | ------------------------ | ----------------------- | --------
+/// 1   | "tube"                   | TRANSCRIPT              | false
+/// 2   | "to be a"                | TRANSCRIPT              | false
+/// 3   | "to be"                  | TRANSCRIPT              | false
+/// 4   | "to be or not to be"     | TRANSCRIPT              | true
+/// 5   | "that's"                 | TRANSCRIPT              | false
+/// 6   | "that is                 | TRANSCRIPT              | false
+/// 7   | " that is the question"  | TRANSCRIPT              | true
+/// 8   | unset                    | END_OF_SINGLE_UTTERANCE | unset
+/// 9   | ". Whether 'tis nobler"  | TRANSCRIPT              | true
+/// 10  | " in the mind"           | TRANSCRIPT              | false
+/// 11  | " in the mind to suffer" | TRANSCRIPT              | true
 /// ```
 ///
 /// Concatenating the finalized transcripts with `is_final` set to true,
@@ -7773,6 +7795,8 @@ pub mod streaming_recognition_result {
         Unspecified = 0,
         /// Message contains a (possibly partial) transcript.
         Transcript = 1,
+        /// Message contains DTMF digits.
+        DtmfDigits = 3,
         /// This event indicates that the server has detected the end of the user's
         /// speech utterance and expects no additional inputs.
         /// Therefore, the server will not process additional audio (although it may
@@ -7782,6 +7806,18 @@ pub mod streaming_recognition_result {
         /// message is only sent if `single_utterance` was set to `true`, and is not
         /// used otherwise.
         EndOfSingleUtterance = 2,
+        /// Message contains DTMF digits. Before a message with DTMF_DIGITS is sent,
+        /// a message with PARTIAL_DTMF_DIGITS may be sent with DTMF digits collected
+        /// up to the time of sending, which represents an intermediate result.
+        PartialDtmfDigits = 4,
+        /// This event indicates that the server has detected the beginning of human
+        /// voice activity in the stream. This event can be returned multiple times
+        /// if speech starts and stops repeatedly throughout the stream.
+        SpeechActivityBegin = 5,
+        /// This event indicates that the server has detected the end of human voice
+        /// activity in the stream. This event can be returned multiple times if
+        /// speech starts and stops repeatedly throughout the stream.
+        SpeechActivityEnd = 6,
     }
     impl MessageType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7792,7 +7828,11 @@ pub mod streaming_recognition_result {
             match self {
                 Self::Unspecified => "MESSAGE_TYPE_UNSPECIFIED",
                 Self::Transcript => "TRANSCRIPT",
+                Self::DtmfDigits => "DTMF_DIGITS",
                 Self::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
+                Self::PartialDtmfDigits => "PARTIAL_DTMF_DIGITS",
+                Self::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
+                Self::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7800,7 +7840,11 @@ pub mod streaming_recognition_result {
             match value {
                 "MESSAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "TRANSCRIPT" => Some(Self::Transcript),
+                "DTMF_DIGITS" => Some(Self::DtmfDigits),
                 "END_OF_SINGLE_UTTERANCE" => Some(Self::EndOfSingleUtterance),
+                "PARTIAL_DTMF_DIGITS" => Some(Self::PartialDtmfDigits),
+                "SPEECH_ACTIVITY_BEGIN" => Some(Self::SpeechActivityBegin),
+                "SPEECH_ACTIVITY_END" => Some(Self::SpeechActivityEnd),
                 _ => None,
             }
         }
@@ -8118,9 +8162,9 @@ pub struct Participant {
     ///    Dialogflow adds the obfuscated user id with the participant.
     ///
     /// 1. If you set this field in
-    ///    \[AnalyzeContent\]\[google.cloud.dialogflow.v2.AnalyzeContentRequest.participant\]
-    ///    or
-    ///    \[StreamingAnalyzeContent\]\[google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant\],
+    ///    \[AnalyzeContent\]\[google.cloud.dialogflow.v2.AnalyzeContentRequest.obfuscated_external_user_id\]
+    ///    or \[StreamingAnalyzeContent\]
+    ///    \[google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.obfuscated_external_user_id\],
     ///    Dialogflow will update
     ///    \[Participant.obfuscated_external_user_id\]\[google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id\].
     ///
@@ -8131,6 +8175,11 @@ pub struct Participant {
     /// Dialogflow uses this user id for billing and measurement purposes. For
     /// example, Dialogflow determines whether a user in one conversation returned
     /// in a later conversation.
+    ///
+    /// Additionally, to link an escalated Virtual Agent conversation
+    /// with its corresponding Agent Assist conversation for analytics, this field
+    /// in Agent Assist conversations should be populated to indicate the user id
+    /// of the `END_USER` participant in the escalated conversation.
     ///
     /// Note:
     ///
@@ -8654,8 +8703,11 @@ pub mod streaming_analyze_content_request {
 ///
 /// 1. If the input was set to streaming audio, the first one or more messages
 ///    contain `recognition_result`. Each `recognition_result` represents a more
-///    complete transcript of what the user said. The last `recognition_result`
-///    has `is_final` set to `true`.
+///    complete transcript of what the user said. When a user speaks multiple
+///    sentences, the API will emit multiple messages where `is_final = true`.
+///    Each time the system detects a distinct pause or completed thought, it
+///    locks in that segment, marks it `is_final = true`, and then immediately
+///    starts a new recognition cycle for the next sentence on the same stream.
 ///
 /// 1. In virtual agent stage: if `enable_partial_automated_agent_reply` is
 ///    true, the following N (currently 1 \<= N \<= 4) messages
@@ -9359,6 +9411,13 @@ pub struct SuggestKnowledgeAssistResponse {
     /// field in the request if there are fewer messages in the conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
+    /// Optional. The list of additional suggested queries based on the context.
+    /// This is used for the cases when we want to generate multiple queries
+    /// for a single request.
+    #[prost(message, repeated, tag = "4")]
+    pub additional_suggested_query_results: ::prost::alloc::vec::Vec<
+        knowledge_assist_answer::AdditionalSuggestedQueryResult,
+    >,
 }
 /// Debug information related to ingested context reference.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9519,6 +9578,14 @@ pub struct KnowledgeAssistDebugInfo {
     /// The latency of the service.
     #[prost(message, optional, tag = "6")]
     pub service_latency: ::core::option::Option<ServiceLatency>,
+    /// Token usage metadata for query generation.
+    #[prost(message, optional, tag = "7")]
+    pub query_generation_debug_info: ::core::option::Option<
+        knowledge_assist_debug_info::QueryGenerationDebugInfo,
+    >,
+    /// Debug information from CES runtime API.
+    #[prost(message, optional, tag = "8")]
+    pub ces_debug_info: ::core::option::Option<::prost_types::Struct>,
 }
 /// Nested message and enum types in `KnowledgeAssistDebugInfo`.
 pub mod knowledge_assist_debug_info {
@@ -9583,6 +9650,19 @@ pub mod knowledge_assist_debug_info {
         /// The number of search contexts appended to the query.
         #[prost(int32, tag = "18")]
         pub appended_search_context_count: i32,
+    }
+    /// Token usage metadata for query generation.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct QueryGenerationDebugInfo {
+        /// The total number of tokens in the prompt.
+        #[prost(int32, tag = "1")]
+        pub prompt_token_count: i32,
+        /// The total number of tokens in the generated candidates.
+        #[prost(int32, tag = "2")]
+        pub candidates_token_count: i32,
+        /// The total number of tokens for the entire request.
+        #[prost(int32, tag = "3")]
+        pub total_token_count: i32,
     }
     /// Reason for query generation failure.
     #[derive(
@@ -9771,11 +9851,44 @@ pub struct KnowledgeAssistAnswer {
 /// Nested message and enum types in `KnowledgeAssistAnswer`.
 pub mod knowledge_assist_answer {
     /// Represents a suggested query.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SuggestedQuery {
         /// Suggested query text.
         #[prost(string, tag = "1")]
         pub query_text: ::prost::alloc::string::String,
+        /// Optional. The search contexts for the query.
+        #[prost(message, repeated, tag = "4")]
+        pub search_contexts: ::prost::alloc::vec::Vec<suggested_query::SearchContext>,
+    }
+    /// Nested message and enum types in `SuggestedQuery`.
+    pub mod suggested_query {
+        /// Search context is information useful for knowledge search that helps
+        /// enrich the query.
+        /// Example:
+        /// search_context {
+        /// key: "application name"
+        /// value: "DesignApp"
+        /// }
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SearchContext {
+            /// Optional. The key of the search context, e.g. "application name".
+            #[prost(string, tag = "1")]
+            pub key: ::prost::alloc::string::String,
+            /// Optional. The value of the search context, e.g. "DesignApp".
+            #[prost(string, tag = "2")]
+            pub value: ::prost::alloc::string::String,
+        }
+    }
+    /// Represents a single suggested query result.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AdditionalSuggestedQueryResult {
+        /// Output only. The suggested query based on the context.
+        #[prost(message, optional, tag = "1")]
+        pub suggested_query: ::core::option::Option<SuggestedQuery>,
+        /// Output only. The name of the answer record.
+        /// Format: `projects/<Project ID>/locations/<Location  ID>/answerRecords/<Answer Record ID>`
+        #[prost(string, tag = "5")]
+        pub answer_record: ::prost::alloc::string::String,
     }
     /// Represents an answer from Knowledge. Currently supports FAQ and Generative
     /// answers.
@@ -9785,7 +9898,7 @@ pub mod knowledge_assist_answer {
         #[prost(string, tag = "1")]
         pub answer_text: ::prost::alloc::string::String,
         /// Source of result.
-        #[prost(oneof = "knowledge_answer::Source", tags = "3, 4")]
+        #[prost(oneof = "knowledge_answer::Source", tags = "3, 4, 7, 8")]
         pub source: ::core::option::Option<knowledge_answer::Source>,
     }
     /// Nested message and enum types in `KnowledgeAnswer`.
@@ -9824,6 +9937,16 @@ pub mod knowledge_assist_answer {
                 pub metadata: ::core::option::Option<::prost_types::Struct>,
             }
         }
+        /// Details about source of Event answer.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct EventSource {
+            /// Name of the triggered event.
+            #[prost(string, tag = "1")]
+            pub event: ::prost::alloc::string::String,
+            /// Sources used in event fulfillment.
+            #[prost(message, optional, tag = "2")]
+            pub snippets: ::core::option::Option<GenerativeSource>,
+        }
         /// Source of result.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
@@ -9833,6 +9956,12 @@ pub mod knowledge_assist_answer {
             /// Populated if the prediction was Generative.
             #[prost(message, tag = "4")]
             GenerativeSource(GenerativeSource),
+            /// Populated if the prediction was from Playbook.
+            #[prost(message, tag = "7")]
+            PlaybookSource(GenerativeSource),
+            /// Populated if the prediction was from an event.
+            #[prost(message, tag = "8")]
+            EventSource(EventSource),
         }
     }
 }
@@ -10995,6 +11124,9 @@ pub struct ConversationProfile {
     /// language tag. Example: "en-US".
     #[prost(string, tag = "10")]
     pub language_code: ::prost::alloc::string::String,
+    /// Optional. Configuration for SIP connections.
+    #[prost(message, optional, tag = "16")]
+    pub sip_config: ::core::option::Option<SipConfig>,
     /// The time zone of this conversational profile from the
     /// [time zone database](<https://www.iana.org/time-zones>), e.g.,
     /// America/New_York, Europe/Paris. Defaults to America/New_York.
@@ -11192,6 +11324,21 @@ pub mod human_agent_assistant_config {
         /// Supported features:  KNOWLEDGE_ASSIST
         #[prost(message, optional, tag = "19")]
         pub rai_settings: ::core::option::Option<super::RaiSettings>,
+        /// Optional. The trigger event for suggestion.
+        /// If unspecified, it will be `CUSTOMER_MESSAGE`.
+        /// Supported features: KNOWLEDGE_ASSIST
+        /// For KNOWLEDGE_ASSIST, these four trigger events are supported:
+        ///
+        /// 1. TRIGGER_EVENT_UNSPECIFIED
+        /// 1. END_OF_UTTERANCE
+        /// 1. CUSTOMER_MESSAGE
+        /// 1. AGENT_MESSAGE
+        #[prost(enumeration = "super::TriggerEvent", tag = "20")]
+        pub suggestion_trigger_event: i32,
+        /// Optional. If true, disable appending available search context to the
+        /// search query. Supported features: KNOWLEDGE_ASSIST
+        #[prost(bool, tag = "21")]
+        pub disable_query_search_context: bool,
         /// Settings of suggestion trigger.
         ///
         /// Currently, only ARTICLE_SUGGESTION and FAQ will use this field.
@@ -11698,6 +11845,39 @@ pub struct LoggingConfig {
     /// \[ConversationEvent\]\[google.cloud.dialogflow.v2.ConversationEvent\] protos.
     #[prost(bool, tag = "3")]
     pub enable_stackdriver_logging: bool,
+}
+/// Defines the SIP configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SipConfig {
+    /// Asks Dialogflow Telephony to create the conversation provided in the SIP
+    /// header on the fly when the call comes in.
+    #[prost(bool, tag = "1")]
+    pub create_conversation_on_the_fly: bool,
+    /// Starts the conversation with inactive SDP directives
+    #[prost(bool, tag = "3")]
+    pub inactive_start: bool,
+    /// Max duration for audio recording.
+    /// Overrides the default value of 15 min.
+    /// Max value is 8 hours.
+    #[prost(message, optional, tag = "4")]
+    pub max_audio_recording_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Allows interactions with a Dialogflow virtual agent even if the call is
+    /// connected for SIPREC purposes.
+    #[prost(bool, tag = "5")]
+    pub allow_virtual_agent_interaction: bool,
+    /// Keeps the conversation running even if the call is disconnected.
+    #[prost(bool, tag = "6")]
+    pub keep_conversation_running: bool,
+    /// List of inbound call leg headers to be copied to outbound call legs created
+    /// later.
+    #[prost(string, repeated, tag = "8")]
+    pub copy_inbound_call_leg_headers: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Ignores any media direction in the reINVITE SDP offer. Reuse the previous
+    /// media direction.
+    #[prost(bool, tag = "9")]
+    pub ignore_reinvite_media_direction: bool,
 }
 /// The type of Human Agent Assistant API suggestion to perform, and the maximum
 /// number of results to return for that type. Multiple `Feature` objects can
@@ -13402,6 +13582,9 @@ pub struct SearchKnowledgeDebugInfo {
     /// The latency of the service.
     #[prost(message, optional, tag = "4")]
     pub service_latency: ::core::option::Option<ServiceLatency>,
+    /// Optional. Debug info from the Customer Engagement Suite (CES) execution.
+    #[prost(message, optional, tag = "5")]
+    pub ces_debug_info: ::core::option::Option<::prost_types::Struct>,
 }
 /// Nested message and enum types in `SearchKnowledgeDebugInfo`.
 pub mod search_knowledge_debug_info {
@@ -13494,6 +13677,10 @@ pub mod search_knowledge_answer {
         Generative = 2,
         /// The answer is from intent matching.
         Intent = 3,
+        /// The answer is from Playbook.
+        Playbook = 4,
+        /// The answer is from event.
+        Event = 5,
     }
     impl AnswerType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -13506,6 +13693,8 @@ pub mod search_knowledge_answer {
                 Self::Faq => "FAQ",
                 Self::Generative => "GENERATIVE",
                 Self::Intent => "INTENT",
+                Self::Playbook => "PLAYBOOK",
+                Self::Event => "EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13515,6 +13704,8 @@ pub mod search_knowledge_answer {
                 "FAQ" => Some(Self::Faq),
                 "GENERATIVE" => Some(Self::Generative),
                 "INTENT" => Some(Self::Intent),
+                "PLAYBOOK" => Some(Self::Playbook),
+                "EVENT" => Some(Self::Event),
                 _ => None,
             }
         }
