@@ -375,14 +375,17 @@ pub struct TestEffort {
     /// Optional. The firmware configuration of the test effort.
     #[prost(message, repeated, tag = "11")]
     pub firmware_configs: ::prost::alloc::vec::Vec<test_effort::FirmwareConfig>,
+    /// Optional. Option to make boot tests optional.
+    #[prost(bool, tag = "15")]
+    pub skip_boot_prerequisite: bool,
     /// The test target of the test effort.
     #[prost(oneof = "test_effort::TestTarget", tags = "4")]
     pub test_target: ::core::option::Option<test_effort::TestTarget>,
     /// Specifies the Operating System build targets to test against.
-    #[prost(oneof = "test_effort::Os", tags = "7")]
+    #[prost(oneof = "test_effort::Os", tags = "7, 13")]
     pub os: ::core::option::Option<test_effort::Os>,
     /// Test target details if different from the main build target.
-    #[prost(oneof = "test_effort::TestSource", tags = "12")]
+    #[prost(oneof = "test_effort::TestSource", tags = "12, 14")]
     pub test_source: ::core::option::Option<test_effort::TestSource>,
 }
 /// Nested message and enum types in `TestEffort`.
@@ -476,6 +479,11 @@ pub mod test_effort {
         /// Optional. Product name of the build target.
         #[prost(string, tag = "5")]
         pub product: ::prost::alloc::string::String,
+        /// Optional. Directly specifies the build target name.
+        /// When it is used, product, build_variant, and release_config are
+        /// overridden.
+        #[prost(string, tag = "6")]
+        pub target: ::prost::alloc::string::String,
     }
     /// The version of the firmware test effort.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -672,6 +680,11 @@ pub mod test_effort {
         /// Test against an Android build.
         #[prost(message, tag = "7")]
         Android(AndroidBuildTarget),
+        /// Deprecated: Use android.target instead.
+        /// Directly specifies the build target name.
+        #[deprecated]
+        #[prost(string, tag = "13")]
+        BuildTargetOverride(::prost::alloc::string::String),
     }
     /// Test target details if different from the main build target.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -679,6 +692,11 @@ pub mod test_effort {
         /// Test against an Android build target.
         #[prost(message, tag = "12")]
         AndroidTestTarget(AndroidBuildTarget),
+        /// Deprecated: Use android_test_target.target instead.
+        /// Directly specifies the test target name.
+        #[deprecated]
+        #[prost(string, tag = "14")]
+        TestTargetOverride(::prost::alloc::string::String),
     }
 }
 /// Request message for finding the most stable build.
@@ -817,7 +835,7 @@ pub struct ListBuildsResponse {
     pub total_size: i32,
 }
 /// Request message for checking if the build artifact is staged.
-/// -- NEXT_TAG: 3 --
+/// -- NEXT_TAG: 6 --
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckBuildStageStatusRequest {
     /// Required. The full resource name of the build artifact.
@@ -830,6 +848,21 @@ pub struct CheckBuildStageStatusRequest {
     /// builds.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The source location of the artifact, defaults to
+    /// `chromeos-image-archive` if missing.
+    #[prost(string, tag = "3")]
+    pub source_bucket_id: ::prost::alloc::string::String,
+    /// Optional. The branch directory in the source_bucket_id where the artifact
+    /// is located, such as `firmware-ec-R143-16463.2.B`. If unspecified, the build
+    /// will be found in goldeneye by version number.
+    #[prost(string, tag = "4")]
+    pub branch: ::prost::alloc::string::String,
+    /// Optional. The name of the artifact to stage, such as
+    /// `karis.EC.16463.2.6.tar.bz2` or `rex/firmware_from_source.tar.bz2` If
+    /// unspecified, the default artifacts will be staged. This only makes sense
+    /// for firmware artifacts.
+    #[prost(string, tag = "5")]
+    pub artifact: ::prost::alloc::string::String,
 }
 /// Response message for checking the stage status of a build artifact.
 /// -- NEXT_TAG: 5 --

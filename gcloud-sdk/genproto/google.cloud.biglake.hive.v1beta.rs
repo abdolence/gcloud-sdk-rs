@@ -6,7 +6,7 @@
 /// on-prem Hive metastore to GCP.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HiveCatalog {
-    /// Output only. The resource name.
+    /// Identifier. The resource name.
     /// Format:
     /// projects/{project_id_or_number}/catalogs/{catalog_id}
     #[prost(string, tag = "1")]
@@ -23,6 +23,12 @@ pub struct HiveCatalog {
     /// Output only. The replicas for the catalog metadata.
     #[prost(message, repeated, tag = "4")]
     pub replicas: ::prost::alloc::vec::Vec<hive_catalog::Replica>,
+    /// Output only. The creation time of the catalog.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update time of the catalog.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `HiveCatalog`.
 pub mod hive_catalog {
@@ -179,7 +185,7 @@ pub struct DeleteHiveCatalogRequest {
 /// description, location and properties associated with the database.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HiveDatabase {
-    /// Output only. The resource name.
+    /// Identifier. The resource name.
     /// Format:
     /// projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
     #[prost(string, tag = "1")]
@@ -201,6 +207,12 @@ pub struct HiveDatabase {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Output only. The creation time of the database.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update time of the database.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for the CreateHiveDatabase method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -281,7 +293,7 @@ pub struct DeleteHiveDatabaseRequest {
 /// message closely matches the Table object in the IMetastoreClient
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HiveTable {
-    /// Output only. The resource name.
+    /// Identifier. The resource name.
     /// Format:
     /// projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
     #[prost(string, tag = "1")]
@@ -305,10 +317,21 @@ pub struct HiveTable {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The original view text. Empty for non-view. The maximum size is
+    /// 16MiB.
+    #[prost(string, tag = "9")]
+    pub view_original_text: ::prost::alloc::string::String,
+    /// Optional. The expanded view text. Empty for non-view. The maximum size is
+    /// 16MiB.
+    #[prost(string, tag = "10")]
+    pub view_expanded_text: ::prost::alloc::string::String,
     /// Output only. The type of the table. This is EXTERNAL for BigLake hive
     /// tables.
     #[prost(string, tag = "11")]
     pub table_type: ::prost::alloc::string::String,
+    /// Output only. The update time of the table.
+    #[prost(message, optional, tag = "12")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Field schema information.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

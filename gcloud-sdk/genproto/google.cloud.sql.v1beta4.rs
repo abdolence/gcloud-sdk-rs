@@ -678,7 +678,7 @@ pub struct CloneContext {
     #[prost(string, optional, tag = "13")]
     pub destination_project: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The fully qualified URI of the VPC network to which the cloned
-    /// instance will be connected via Private Services Access for private IP. For
+    /// instance will be connected via private services access for private IP. For
     /// example:`projects/my-network-project/global/networks/my-network`. This
     /// field is only required for cross-project cloning.
     #[prost(string, optional, tag = "14")]
@@ -2235,7 +2235,7 @@ pub struct InstancesAcquireSsrsLeaseRequest {
 }
 /// Context to perform a point-in-time restore of an instance managed by
 /// Backup and Disaster Recovery (DR) Service.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointInTimeRestoreContext {
     /// The Backup and Disaster Recovery (DR) Service Datasource URI.
     /// Format:
@@ -2272,6 +2272,20 @@ pub struct PointInTimeRestoreContext {
     /// instance. This value cannot be the same as the preferred_zone field.
     #[prost(string, optional, tag = "9")]
     pub preferred_secondary_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Specifies the instance settings that will be overridden from the
+    /// source instance. This field is only applicable for cross project PITRs.
+    #[prost(message, optional, tag = "11")]
+    pub target_instance_settings: ::core::option::Option<DatabaseInstance>,
+    /// Optional. Specifies the instance settings that will be cleared from the
+    /// source instance. This field is only applicable for cross project PITRs.
+    #[prost(string, repeated, tag = "12")]
+    pub target_instance_clear_settings_field_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The region of the target instance where the datasource will be
+    /// restored. For example: "us-central1".
+    #[prost(string, optional, tag = "13")]
+    pub region: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Perform disk shrink context.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3063,6 +3077,26 @@ pub struct PscConfig {
     /// format: projects/PROJECT/regions/REGION/networkAttachments/ID
     #[prost(string, tag = "4")]
     pub network_attachment_uri: ::prost::alloc::string::String,
+    /// Optional. Indicates whether Private Service Connect DNS automation is
+    /// enabled for this instance. When enabled, Cloud SQL provisions a universal
+    /// DNS record across all networks configured with Private Service Connect
+    /// auto-connections. This will default to true for new instances when
+    /// Private Service Connect is enabled.
+    #[prost(bool, optional, tag = "5")]
+    pub psc_auto_dns_enabled: ::core::option::Option<bool>,
+    /// Optional. Indicates whether Private Service Connect write endpoint DNS
+    /// automation is enabled for this instance. When enabled, Cloud SQL provisions
+    /// a universal global DNS record across all networks configured with Private
+    /// Service Connect auto-connections that points to the cluster primary
+    /// instance. This feature is only supported for Enterprise Plus edition. This
+    /// will default to true for new enterprise plus instances when
+    /// `psc_auto_dns_enabled` is enabled.
+    #[prost(bool, optional, tag = "6")]
+    pub psc_write_endpoint_dns_enabled: ::core::option::Option<bool>,
+    /// Optional. Whether to set up the PSC service connection policy
+    /// automatically.
+    #[prost(bool, optional, tag = "7")]
+    pub psc_auto_connection_policy_enabled: ::core::option::Option<bool>,
 }
 /// Settings for an automatically-setup Private Service Connect consumer endpoint
 /// that is used to connect to a Cloud SQL instance.
@@ -3093,6 +3127,27 @@ pub struct PscAutoConnectionConfig {
     /// The connection policy status of the consumer network.
     #[prost(string, optional, tag = "5")]
     pub consumer_network_status: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The service connection policy created automatically for the
+    /// consumer network when `psc_auto_connection_policy_enabled` is true. It is
+    /// in the format of:
+    /// `projects/{project}/regions/{region}/serviceConnectionPolicies/{policy_id}`
+    /// The `policy_id` is in format of `$NETWORK-$RANDOM`.
+    #[prost(string, optional, tag = "6")]
+    pub service_connection_policy: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The status of service connection policy creation.
+    #[prost(string, optional, tag = "7")]
+    pub service_connection_policy_creation_result: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The status of automated DNS provisioning.
+    #[prost(enumeration = "AutoDnsStatus", optional, tag = "8")]
+    pub instance_auto_dns_status: ::core::option::Option<i32>,
+    /// Output only. The status of automated DNS provisioning for the write
+    /// endpoint.
+    #[prost(enumeration = "AutoDnsStatus", optional, tag = "9")]
+    pub write_endpoint_auto_dns_status: ::core::option::Option<i32>,
 }
 /// Database instance IP mapping
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3625,6 +3680,14 @@ pub mod operation {
         RepairReadPool = 52,
         /// Creates a Cloud SQL read pool instance.
         CreateReadPool = 53,
+        /// Pre-checks for major version upgrade.
+        PreCheckMajorVersionUpgrade = 54,
+        /// This operation type represents individual steps in a multi-step setup
+        /// migration workflow: including configuration, replication,
+        /// switchover/back, and data reseeding, as defined by operation's intent.
+        SetupMigration = 58,
+        /// Sends a message to a Cloud SQL agent.
+        AgentSendMessage = 59,
     }
     impl SqlOperationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3693,6 +3756,9 @@ pub mod operation {
                 Self::EnhancedBackup => "ENHANCED_BACKUP",
                 Self::RepairReadPool => "REPAIR_READ_POOL",
                 Self::CreateReadPool => "CREATE_READ_POOL",
+                Self::PreCheckMajorVersionUpgrade => "PRE_CHECK_MAJOR_VERSION_UPGRADE",
+                Self::SetupMigration => "SETUP_MIGRATION",
+                Self::AgentSendMessage => "AGENT_SEND_MESSAGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3754,6 +3820,11 @@ pub mod operation {
                 "ENHANCED_BACKUP" => Some(Self::EnhancedBackup),
                 "REPAIR_READ_POOL" => Some(Self::RepairReadPool),
                 "CREATE_READ_POOL" => Some(Self::CreateReadPool),
+                "PRE_CHECK_MAJOR_VERSION_UPGRADE" => {
+                    Some(Self::PreCheckMajorVersionUpgrade)
+                }
+                "SETUP_MIGRATION" => Some(Self::SetupMigration),
+                "AGENT_SEND_MESSAGE" => Some(Self::AgentSendMessage),
                 _ => None,
             }
         }
@@ -4142,7 +4213,7 @@ pub struct Settings {
     /// SQL Server specific audit configuration.
     #[prost(message, optional, tag = "29")]
     pub sql_server_audit_config: ::core::option::Option<SqlServerAuditConfig>,
-    /// Optional. The edition of the instance.
+    /// Optional. The edition type of the Cloud SQL instance.
     #[prost(enumeration = "settings::Edition", tag = "38")]
     pub edition: i32,
     /// Specifies if connections must use Cloud SQL connectors.
@@ -4208,6 +4279,10 @@ pub struct Settings {
     /// Optional. The read pool auto-scale configuration for the instance.
     #[prost(message, optional, tag = "48")]
     pub read_pool_auto_scale_config: ::core::option::Option<ReadPoolAutoScaleConfig>,
+    /// Optional. Configures whether the replica is in accelerated mode. This
+    /// feature is in private preview and requires allowlisting to take effect.
+    #[prost(message, optional, tag = "49")]
+    pub accelerated_replica_mode: ::core::option::Option<bool>,
     /// Optional. Cloud SQL for MySQL auto-upgrade configuration. When this
     /// parameter is set to true, auto-upgrade is enabled for MySQL 8.0 minor
     /// versions. The MySQL version must be 8.0.35 or higher.
@@ -4276,7 +4351,7 @@ pub mod settings {
             }
         }
     }
-    /// The edition of the instance.
+    /// The list of Cloud SQL editions available to users.
     #[derive(
         Clone,
         Copy,
@@ -4296,6 +4371,8 @@ pub mod settings {
         Enterprise = 2,
         /// The instance is an Enterprise Plus edition.
         EnterprisePlus = 3,
+        /// This instance is a Cloud SQL developer edition instance.
+        Developer = 5,
     }
     impl Edition {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4307,6 +4384,7 @@ pub mod settings {
                 Self::Unspecified => "EDITION_UNSPECIFIED",
                 Self::Enterprise => "ENTERPRISE",
                 Self::EnterprisePlus => "ENTERPRISE_PLUS",
+                Self::Developer => "DEVELOPER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4315,6 +4393,7 @@ pub mod settings {
                 "EDITION_UNSPECIFIED" => Some(Self::Unspecified),
                 "ENTERPRISE" => Some(Self::Enterprise),
                 "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+                "DEVELOPER" => Some(Self::Developer),
                 _ => None,
             }
         }
@@ -4410,31 +4489,133 @@ pub mod settings {
         }
     }
 }
-/// Performance Capture configuration.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+/// Performance capture configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformanceCaptureConfig {
-    /// Optional. Enable or disable the Performance Capture.
+    /// Optional. Enables or disables the performance capture feature.
     #[prost(bool, optional, tag = "1")]
     pub enabled: ::core::option::Option<bool>,
-    /// Optional. The time interval in seconds between any two probes.
+    /// Optional. Specifies the interval in seconds between consecutive probes that
+    /// check if any trigger condition thresholds have been reached.
     #[prost(int32, optional, tag = "2")]
     pub probing_interval_seconds: ::core::option::Option<i32>,
-    /// Optional. The minimum number of consecutive readings above threshold that
-    /// triggers instance state capture.
+    /// Optional. Specifies the minimum number of consecutive probe threshold that
+    /// triggers performance capture.
     #[prost(int32, optional, tag = "3")]
     pub probe_threshold: ::core::option::Option<i32>,
-    /// Optional. The minimum number of server threads running to trigger the
-    /// capture on primary.
+    /// Optional. Specifies the minimum number of MySQL `Threads_running` to
+    /// trigger the performance capture on the primary instance.
     #[prost(int32, optional, tag = "4")]
     pub running_threads_threshold: ::core::option::Option<i32>,
-    /// Optional. The minimum number of seconds replica must be lagging behind
-    /// primary to trigger capture on replica.
+    /// Optional. Specifies the minimum number of seconds replica must be lagging
+    /// behind primary instance to trigger the performance capture on replica.
     #[prost(int32, optional, tag = "5")]
     pub seconds_behind_source_threshold: ::core::option::Option<i32>,
-    /// Optional. The amount of time in seconds that a transaction needs to have
-    /// been open before the watcher starts recording it.
+    /// Optional. Specifies the amount of time in seconds that a transaction needs
+    /// to have been open before the watcher starts recording it.
     #[prost(int32, optional, tag = "8")]
     pub transaction_duration_threshold: ::core::option::Option<i32>,
+    /// Optional. Specifies the minimum percentage of CPU utilization to trigger
+    /// the performance capture. Valid integers range from `10` to `99`. Enter `0`
+    /// to disable the check.
+    #[prost(int32, optional, tag = "9")]
+    pub cpu_utilization_threshold_percent: ::core::option::Option<i32>,
+    /// Optional. Specifies the minimum percentage of memory usage to trigger the
+    /// performance capture.
+    /// Valid integers range from `10` to `99`. Enter `0` to disable the check.
+    #[prost(int32, optional, tag = "10")]
+    pub memory_usage_threshold_percent: ::core::option::Option<i32>,
+    /// Optional. Specifies the minimum allowed number of transactions in lock wait
+    /// state to trigger the performance capture. Valid integers range from `10` to
+    /// `10000`. Enter `0` to disable the check.
+    #[prost(int32, optional, tag = "11")]
+    pub transaction_lock_wait_threshold_count: ::core::option::Option<i32>,
+    /// Optional. Specifies the minimum allowed number of semaphore waits to
+    /// trigger the performance capture. Valid integers range from `10` to `10000`.
+    /// Enter `0` to disable the check.
+    #[prost(int32, optional, tag = "12")]
+    pub semaphore_wait_threshold_count: ::core::option::Option<i32>,
+    /// Optional. Specifies the minimum number of undo log entries in the history
+    /// list length to trigger the performance capture. Valid integers range from
+    /// `10000` to `10000000`. Enter `0` to disable the check.
+    #[prost(int32, optional, tag = "13")]
+    pub history_list_length_threshold_count: ::core::option::Option<i32>,
+    /// Optional. Specifies the amount of time in seconds that a transaction needs
+    /// to have been open before the watcher starts terminating it. Valid integers
+    /// range from `60` to `604800` (7 days). Enter `0` to disable. If enabled
+    /// (i.e., > 0), this value must be greater than or equal to
+    /// `transaction_duration_threshold`. Configurations where
+    /// `0 < transaction_kill_threshold_seconds < transaction_duration_threshold`
+    /// will be rejected.
+    #[prost(int32, optional, tag = "14")]
+    pub transaction_kill_threshold_seconds: ::core::option::Option<i32>,
+    /// Optional. Specifies a customer-defined list of users to exclude from
+    /// transaction termination. Entries can be in the format 'user@host' or just
+    /// 'user'. A standalone 'user' implies 'user@%', excluding the user from any
+    /// host. Wildcard '%' is allowed in the host part of the 'user@host' format.
+    /// Example: `\["app_user", "db_admin@10.1.2.3", "report_user@%"\]`
+    #[prost(string, repeated, tag = "16")]
+    pub transaction_kill_excluded_user_hosts: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Determines which transactions are allowed to be terminated when
+    /// they exceed `transaction_kill_threshold_seconds`. This allows protecting
+    /// write-heavy transactions from auto-termination if desired. Defaults to
+    /// `READ_ONLY_TRANSACTIONS` if unspecified.
+    #[prost(
+        enumeration = "performance_capture_config::TransactionKillType",
+        optional,
+        tag = "17"
+    )]
+    pub transaction_kill_type: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `PerformanceCaptureConfig`.
+pub mod performance_capture_config {
+    /// Defines the categories of long-running transactions eligible for automatic
+    /// termination by the Performance Capture.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TransactionKillType {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Only read-only transactions are eligible for termination.
+        ReadOnlyTransactions = 1,
+        /// All transactions are eligible for termination, including those with write
+        /// operations (such as INSERT, UPDATE, DELETE, or DDL).
+        AllTransactions = 2,
+    }
+    impl TransactionKillType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TRANSACTION_KILL_TYPE_UNSPECIFIED",
+                Self::ReadOnlyTransactions => "READ_ONLY_TRANSACTIONS",
+                Self::AllTransactions => "ALL_TRANSACTIONS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSACTION_KILL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_ONLY_TRANSACTIONS" => Some(Self::ReadOnlyTransactions),
+                "ALL_TRANSACTIONS" => Some(Self::AllTransactions),
+                _ => None,
+            }
+        }
+    }
 }
 /// Specifies options for controlling advanced machine features.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4889,6 +5070,43 @@ impl BakType {
         }
     }
 }
+/// The status of automated DNS provisioning.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AutoDnsStatus {
+    /// Unspecified status. This means status is missing from dependency service.
+    Unspecified = 0,
+    /// DNS provisioning is OK.
+    AutoDnsOk = 1,
+    /// DNS provisioning failed.
+    AutoDnsFailed = 2,
+    /// DNS provisioning status is not recognized by Cloud SQL.
+    AutoDnsUnknown = 3,
+}
+impl AutoDnsStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "AUTO_DNS_STATUS_UNSPECIFIED",
+            Self::AutoDnsOk => "AUTO_DNS_OK",
+            Self::AutoDnsFailed => "AUTO_DNS_FAILED",
+            Self::AutoDnsUnknown => "AUTO_DNS_UNKNOWN",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUTO_DNS_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUTO_DNS_OK" => Some(Self::AutoDnsOk),
+            "AUTO_DNS_FAILED" => Some(Self::AutoDnsFailed),
+            "AUTO_DNS_UNKNOWN" => Some(Self::AutoDnsUnknown),
+            _ => None,
+        }
+    }
+}
 /// The type of maintenance to be performed on the instance.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -5291,6 +5509,10 @@ pub enum SqlDatabaseVersion {
     Postgres17 = 408,
     /// The database version is PostgreSQL 18.
     Postgres18 = 557,
+    /// The database version is PostgreSQL 19.
+    Postgres19 = 684,
+    /// The database version is PostgreSQL 20.
+    Postgres20 = 781,
     /// The database version is SQL Server 2019 Standard.
     Sqlserver2019Standard = 26,
     /// The database version is SQL Server 2019 Enterprise.
@@ -5307,6 +5529,12 @@ pub enum SqlDatabaseVersion {
     Sqlserver2022Express = 201,
     /// The database version is SQL Server 2022 Web.
     Sqlserver2022Web = 202,
+    /// The database version is SQL Server 2025 Standard.
+    Sqlserver2025Standard = 549,
+    /// The database version is SQL Server 2025 Enterprise.
+    Sqlserver2025Enterprise = 550,
+    /// The database version is SQL Server 2025 Express.
+    Sqlserver2025Express = 551,
 }
 impl SqlDatabaseVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -5361,6 +5589,8 @@ impl SqlDatabaseVersion {
             Self::Postgres16 => "POSTGRES_16",
             Self::Postgres17 => "POSTGRES_17",
             Self::Postgres18 => "POSTGRES_18",
+            Self::Postgres19 => "POSTGRES_19",
+            Self::Postgres20 => "POSTGRES_20",
             Self::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
             Self::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
             Self::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
@@ -5369,6 +5599,9 @@ impl SqlDatabaseVersion {
             Self::Sqlserver2022Enterprise => "SQLSERVER_2022_ENTERPRISE",
             Self::Sqlserver2022Express => "SQLSERVER_2022_EXPRESS",
             Self::Sqlserver2022Web => "SQLSERVER_2022_WEB",
+            Self::Sqlserver2025Standard => "SQLSERVER_2025_STANDARD",
+            Self::Sqlserver2025Enterprise => "SQLSERVER_2025_ENTERPRISE",
+            Self::Sqlserver2025Express => "SQLSERVER_2025_EXPRESS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5417,6 +5650,8 @@ impl SqlDatabaseVersion {
             "POSTGRES_16" => Some(Self::Postgres16),
             "POSTGRES_17" => Some(Self::Postgres17),
             "POSTGRES_18" => Some(Self::Postgres18),
+            "POSTGRES_19" => Some(Self::Postgres19),
+            "POSTGRES_20" => Some(Self::Postgres20),
             "SQLSERVER_2019_STANDARD" => Some(Self::Sqlserver2019Standard),
             "SQLSERVER_2019_ENTERPRISE" => Some(Self::Sqlserver2019Enterprise),
             "SQLSERVER_2019_EXPRESS" => Some(Self::Sqlserver2019Express),
@@ -5425,6 +5660,9 @@ impl SqlDatabaseVersion {
             "SQLSERVER_2022_ENTERPRISE" => Some(Self::Sqlserver2022Enterprise),
             "SQLSERVER_2022_EXPRESS" => Some(Self::Sqlserver2022Express),
             "SQLSERVER_2022_WEB" => Some(Self::Sqlserver2022Web),
+            "SQLSERVER_2025_STANDARD" => Some(Self::Sqlserver2025Standard),
+            "SQLSERVER_2025_ENTERPRISE" => Some(Self::Sqlserver2025Enterprise),
+            "SQLSERVER_2025_EXPRESS" => Some(Self::Sqlserver2025Express),
             _ => None,
         }
     }
@@ -5446,6 +5684,8 @@ pub enum SqlSuspensionReason {
     OperationalIssue = 4,
     /// The KMS key used by the instance is either revoked or denied access to
     KmsKeyIssue = 5,
+    /// The project is suspended due to abuse detected by Ares.
+    ProjectAbuse = 8,
 }
 impl SqlSuspensionReason {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -5459,6 +5699,7 @@ impl SqlSuspensionReason {
             Self::LegalIssue => "LEGAL_ISSUE",
             Self::OperationalIssue => "OPERATIONAL_ISSUE",
             Self::KmsKeyIssue => "KMS_KEY_ISSUE",
+            Self::ProjectAbuse => "PROJECT_ABUSE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5469,6 +5710,7 @@ impl SqlSuspensionReason {
             "LEGAL_ISSUE" => Some(Self::LegalIssue),
             "OPERATIONAL_ISSUE" => Some(Self::OperationalIssue),
             "KMS_KEY_ISSUE" => Some(Self::KmsKeyIssue),
+            "PROJECT_ABUSE" => Some(Self::ProjectAbuse),
             _ => None,
         }
     }
@@ -5990,7 +6232,7 @@ pub struct SqlInstancesCloneRequest {
     /// include the project ID.
     #[prost(string, tag = "1")]
     pub instance: ::prost::alloc::string::String,
-    /// Project ID of the source as well as the clone Cloud SQL instance.
+    /// Project ID of the source Cloud SQL instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
@@ -6164,6 +6406,14 @@ pub struct SqlInstancesPatchRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Set PSC config to the same value as the existing config to
+    /// reconcile the PSC networking.
+    #[prost(bool, optional, tag = "4")]
+    pub reconcile_psc_networking: ::core::option::Option<bool>,
+    /// Optional. Set PSC config to the same value as the existing config and force
+    /// reconcile the PSC networking.
+    #[prost(bool, optional, tag = "5")]
+    pub reconcile_psc_networking_force: ::core::option::Option<bool>,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<DatabaseInstance>,
 }
@@ -7051,7 +7301,7 @@ pub struct SqlInstancesAcquireSsrsLeaseResponse {
 }
 /// Request to perform a point in time restore on a Google Cloud Backup and
 /// Disaster Recovery managed instance.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPointInTimeRestoreRequest {
     /// Required. The parent resource where you created this instance.
     /// Format: projects/{project}
@@ -9693,6 +9943,16 @@ pub struct GetConnectSettingsRequest {
     #[prost(message, optional, tag = "7")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Connect settings retrieval request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ResolveConnectSettingsRequest {
+    /// Required. Cloud SQL instance ID. This does not include the project ID.
+    #[prost(string, tag = "1")]
+    pub dns_name: ::prost::alloc::string::String,
+    /// Required. The region of the instance.
+    #[prost(string, tag = "2")]
+    pub location: ::prost::alloc::string::String,
+}
 /// Connect settings retrieval response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectSettings {
@@ -9764,6 +10024,10 @@ pub struct ConnectSettings {
         tag = "39"
     )]
     pub mdx_protocol_support: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Output only. Connection name of the Cloud SQL instance used in
+    /// connection strings, in the format project:region:instance.
+    #[prost(string, tag = "40")]
+    pub connection_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ConnectSettings`.
 pub mod connect_settings {
@@ -10028,6 +10292,37 @@ pub mod sql_connect_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Retrieves connect settings about a Cloud SQL instance using the instance
+        /// DNS name.
+        pub async fn resolve_connect_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResolveConnectSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConnectSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlConnectService/ResolveConnectSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlConnectService",
+                        "ResolveConnectSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Generates a short-lived X509 certificate containing the provided public key
         /// and signed by a private key specific to the target instance. Users may use
         /// the certificate to authenticate as themselves when connecting to the
@@ -10060,6 +10355,342 @@ pub mod sql_connect_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Message sent from the client to `SqlDataService`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamSqlDataRequest {
+    /// Optional. Acknowledges data received by the client.
+    #[prost(message, optional, tag = "4")]
+    pub ack: ::core::option::Option<Ack>,
+    /// Optional. Deprecated: Use `StartSession.instance_id` or
+    /// `ContinueSession.instance_id` instead.
+    /// The Cloud SQL instance resource name, for example:
+    /// projects/example-project/instances/example-instance
+    #[prost(string, tag = "9")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// The message to the server.
+    #[prost(oneof = "stream_sql_data_request::Message", tags = "5, 6, 7, 8")]
+    pub message: ::core::option::Option<stream_sql_data_request::Message>,
+}
+/// Nested message and enum types in `StreamSqlDataRequest`.
+pub mod stream_sql_data_request {
+    /// The message to the server.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Message {
+        /// Starts a new session. When starting a new session, this is the first
+        /// message the client sends.
+        #[prost(message, tag = "5")]
+        StartSession(super::StartSession),
+        /// Continues an existing session. When continuing an existing session, this
+        /// is the first message the client sends.
+        #[prost(message, tag = "6")]
+        ContinueSession(super::ContinueSession),
+        /// Database data.
+        #[prost(message, tag = "7")]
+        Data(super::DataPacket),
+        /// Terminates the session. This closes the connection to the database.
+        #[prost(message, tag = "8")]
+        TerminateSession(super::TerminateSession),
+    }
+}
+/// Start a new session. The client must send this as the first message to the
+/// server to start a new session. The client may immediately send Data messages
+/// without waiting for a reply from the server.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartSession {
+    /// Required. `location_id` is used to route the
+    /// request to a specific region. Use the same region which was used to create
+    /// the instance. Use the format `locations/{location}`, for example:
+    /// `locations/us-central1`.
+    #[prost(string, tag = "1")]
+    pub location_id: ::prost::alloc::string::String,
+    /// Required. The Cloud SQL instance resource name, for example:
+    /// projects/example-project/instances/example-instance
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Optional. The session id, chosen by the client. This should be an
+    /// unguessable string. If the client does not intend to reconnect to this
+    /// session, the client may leave session_id unset.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
+}
+/// Reconnects to an existing session. The client must send this as the first
+/// message to the server to reconnect to an existing session. The client may
+/// immediately send Data messages without waiting for a reply from the server.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContinueSession {
+    /// Required. `location_id` is used to route the
+    /// request to a specific region. Use the same region which was used to create
+    /// the instance. Use the format `locations/{location}`, for example:
+    /// `locations/us-central1`.
+    #[prost(string, tag = "1")]
+    pub location_id: ::prost::alloc::string::String,
+    /// Required. The Cloud SQL instance resource name, for example:
+    /// projects/example-project/instances/example-instance
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Required. The id of the session to reconnect.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
+}
+/// Message sent from SqlDataService back to the client.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamSqlDataResponse {
+    /// Acknowledges data received by the server.
+    #[prost(message, optional, tag = "2")]
+    pub ack: ::core::option::Option<Ack>,
+    /// A message from the server to the client.
+    #[prost(oneof = "stream_sql_data_response::Message", tags = "3, 4, 5")]
+    pub message: ::core::option::Option<stream_sql_data_response::Message>,
+}
+/// Nested message and enum types in `StreamSqlDataResponse`.
+pub mod stream_sql_data_response {
+    /// A message from the server to the client.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Message {
+        /// The first message from the server to the client, containing metadata
+        /// about this session.
+        #[prost(message, tag = "3")]
+        SessionMetadata(super::SessionMetadata),
+        /// Data from the database.
+        #[prost(message, tag = "4")]
+        Data(super::DataPacket),
+        /// Terminates the session. This indicates that the database connection
+        /// is closed. When the client receives this message, it should not
+        /// attempt to reconnect.
+        #[prost(message, tag = "5")]
+        TerminateSession(super::TerminateSession),
+    }
+}
+/// Metadata from the server to the client about the session. The server will
+/// always send this as the first message
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionMetadata {
+    /// The features supported by the server for this session. This field is used
+    /// by the client to determine which features are available on the server.
+    /// The features supported by the server for this session.
+    #[prost(enumeration = "SqlDataFeature", repeated, tag = "1")]
+    pub supported_features: ::prost::alloc::vec::Vec<i32>,
+}
+/// Contains data being sent or received by the database.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataPacket {
+    /// Optional. The absolute byte offset of the first byte in this payload.
+    /// 0 for new connections or resumed connections that hasn't acked any bytes
+    /// from server. Non-zero for resumed connections
+    #[prost(int64, tag = "1")]
+    pub first_byte_offset: i64,
+    /// Required. Raw data being sent or received by the database.
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+}
+/// Acknowledges data received by the client or server.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Ack {
+    /// Required. The absolute number of bytes processed in the session.
+    #[prost(int64, tag = "1")]
+    pub received_offset: i64,
+}
+/// Indicates that the session is permanently ended.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TerminateSession {
+    /// Required. The session termination status.
+    #[prost(message, optional, tag = "1")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// The session features. The server must send the supported features in its
+/// first message to the client.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SqlDataFeature {
+    /// The feature is not specified. This value should not be used.
+    Unspecified = 0,
+    /// The server supports reconnecting to the session. If this feature is not
+    /// present, the client should not attempt to reconnect to the session.
+    Reconnect = 1,
+}
+impl SqlDataFeature {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SQL_DATA_FEATURE_UNSPECIFIED",
+            Self::Reconnect => "SQL_DATA_FEATURE_RECONNECT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_DATA_FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SQL_DATA_FEATURE_RECONNECT" => Some(Self::Reconnect),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod sql_data_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for streaming data to and from Cloud SQL instances.
+    #[derive(Debug, Clone)]
+    pub struct SqlDataServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SqlDataServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SqlDataServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SqlDataServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SqlDataServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// `StreamSqlData` establishes a bidirectional stream to a Cloud SQL instance,
+        /// and then streams data to and from the instance.
+        ///
+        /// The first message from the client MUST be a `StreamSqlDataRequest` request
+        /// with configuration settings, including required values for the
+        /// `connection_settings` field. Subsequent messages from the client may
+        /// contain the `payload` field.
+        ///
+        /// Messages from the server may contain the `payload` field.
+        ///
+        /// The `payload` fields of the request and response streams contain the raw
+        /// data of the database's native wire protocol (e.g., PostgreSQL wire
+        /// protocol). The database client is responsible for generating and parsing
+        /// this data.
+        ///
+        /// Any errors on initial connection (e.g., connection failure, authorization
+        /// issues, network problems) will result in the stream being terminated with
+        /// an appropriate RPC status exception.
+        ///
+        /// After a successful connection is made, if an error occurs, then the server
+        /// terminates connection and returns the appropriate RPC status exception.
+        ///
+        /// Add the request params headers to the request to ensure that
+        /// the streaming request is routed to the correct service for your database.
+        ///
+        /// Use this format for the request params header:
+        ///
+        /// ```text
+        /// `x-goog-request-params`:
+        ///    location_id={location_path}&instance_id={instance_path}`
+        /// ```
+        ///
+        /// `location_path` is `locations/{location_name}`
+        /// `instance_path` is `projects/{project_name}/instances/{instance_name}`
+        ///
+        /// for example:
+        /// `x-goog-request-params`:
+        /// `location_id=locations/us-central1&instance_id=projects/myproject/instances/instancename`
+        pub async fn stream_sql_data(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamSqlDataRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamSqlDataResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1beta4.SqlDataService/StreamSqlData",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDataService",
+                        "StreamSqlData",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -10509,6 +11140,9 @@ pub mod user {
         /// Read-only. Login for a service account that belongs to the
         /// Cloud IAM group.
         CloudIamGroupServiceAccount = 5,
+        /// Cloud IAM workforce identity user managed via workforce identity
+        /// federation.
+        CloudIamWorkforceIdentity = 6,
         /// Microsoft Entra ID user.
         EntraidUser = 7,
     }
@@ -10525,6 +11159,7 @@ pub mod user {
                 Self::CloudIamGroup => "CLOUD_IAM_GROUP",
                 Self::CloudIamGroupUser => "CLOUD_IAM_GROUP_USER",
                 Self::CloudIamGroupServiceAccount => "CLOUD_IAM_GROUP_SERVICE_ACCOUNT",
+                Self::CloudIamWorkforceIdentity => "CLOUD_IAM_WORKFORCE_IDENTITY",
                 Self::EntraidUser => "ENTRAID_USER",
             }
         }
@@ -10539,6 +11174,7 @@ pub mod user {
                 "CLOUD_IAM_GROUP_SERVICE_ACCOUNT" => {
                     Some(Self::CloudIamGroupServiceAccount)
                 }
+                "CLOUD_IAM_WORKFORCE_IDENTITY" => Some(Self::CloudIamWorkforceIdentity),
                 "ENTRAID_USER" => Some(Self::EntraidUser),
                 _ => None,
             }

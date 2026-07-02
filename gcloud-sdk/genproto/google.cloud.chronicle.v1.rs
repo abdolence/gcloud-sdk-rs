@@ -6384,6 +6384,32 @@ pub struct UpdateReferenceListRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// VerifyReferenceList request message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyReferenceListRequest {
+    /// Required. The name of the parent resource, which is the SecOps instance
+    /// associated with the request. Format:
+    /// `projects/{project}/locations/{location}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Type (format) of list lines.
+    #[prost(enumeration = "ReferenceListSyntaxType", tag = "2")]
+    pub syntax_type: i32,
+    /// Required. The entries of the reference list.
+    /// Each line may be either an item in the list or a comment.
+    #[prost(message, repeated, tag = "3")]
+    pub entries: ::prost::alloc::vec::Vec<ReferenceListEntry>,
+}
+/// VerifyListResponse response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyReferenceListResponse {
+    /// Validity of list - true if no errors found.
+    #[prost(bool, tag = "1")]
+    pub success: bool,
+    /// Line-level errors causing the list to be invalid.
+    #[prost(message, repeated, tag = "2")]
+    pub errors: ::prost::alloc::vec::Vec<ReferenceListError>,
+}
 /// A reference list.
 /// Reference lists are user-defined lists of values which users can
 /// use in multiple Rules.
@@ -6435,6 +6461,17 @@ pub struct ReferenceListEntry {
     /// Required. The value of the entry. Maximum length is 512 characters.
     #[prost(string, tag = "1")]
     pub value: ::prost::alloc::string::String,
+}
+/// The error generated when verifying the reference list.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReferenceListError {
+    /// 1-indexed line number where the error occurs.
+    /// General list errors are indexed at -1.
+    #[prost(int32, tag = "1")]
+    pub line_number: i32,
+    /// Message explaining why the line is invalid.
+    #[prost(string, tag = "2")]
+    pub error_message: ::prost::alloc::string::String,
 }
 /// The syntax type indicating how list entries should be validated.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6711,6 +6748,36 @@ pub mod reference_list_service_client {
                     GrpcMethod::new(
                         "google.cloud.chronicle.v1.ReferenceListService",
                         "UpdateReferenceList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// VerifyReferenceList validates list content and returns line errors, if any.
+        pub async fn verify_reference_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VerifyReferenceListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VerifyReferenceListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.ReferenceListService/VerifyReferenceList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.ReferenceListService",
+                        "VerifyReferenceList",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7144,6 +7211,29 @@ pub struct DeleteRuleRequest {
     /// deployment associated with this rule will also be deleted.
     #[prost(bool, tag = "2")]
     pub force: bool,
+}
+/// Request message for VerifyRuleText method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VerifyRuleTextRequest {
+    /// Required. The name of the parent resource, which is the SecOps instance
+    /// associated with the request. Format:
+    /// `projects/{project}/locations/{location}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. The rule text to verify as a UTF-8 string.
+    #[prost(string, tag = "2")]
+    pub rule_text: ::prost::alloc::string::String,
+}
+/// Response message for VerifyRuleText method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyRuleTextResponse {
+    /// Whether or not the rule text was successfully verified.
+    #[prost(bool, tag = "1")]
+    pub success: bool,
+    /// A list of a rule's corresponding compilation diagnostic messages
+    /// such as compilation errors and compilation warnings.
+    #[prost(message, repeated, tag = "3")]
+    pub compilation_diagnostics: ::prost::alloc::vec::Vec<CompilationDiagnostic>,
 }
 /// Request message for ListRuleRevisions method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -7770,6 +7860,36 @@ pub mod rule_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Verifies the given rule text.
+        pub async fn verify_rule_text(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VerifyRuleTextRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VerifyRuleTextResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.RuleService/VerifyRuleText",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.RuleService",
+                        "VerifyRuleText",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lists all revisions of the rule.
         pub async fn list_rule_revisions(
             &mut self,
@@ -7970,6 +8090,227 @@ pub mod rule_service_client {
                     GrpcMethod::new(
                         "google.cloud.chronicle.v1.RuleService",
                         "UpdateRuleDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for ListRuleExecutionErrors.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRuleExecutionErrorsRequest {
+    /// Required. The instance to list rule execution errors from.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of rule execution errors to return. The service may
+    /// return fewer than this value. If unspecified, at most 1000 rule execution
+    /// errors will be returned. The maximum value is 10000; values above 10000
+    /// will be coerced to 10000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListRuleExecutionErrors` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListRuleExecutionErrors`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter that can be used to retrieve specific rule execution errors.
+    /// Only the following filters are allowed:
+    ///
+    /// ```text,
+    ///   rule = "{Rule.name}"
+    ///   curated_rule = "{CuratedRule.name}"
+    /// ```
+    ///
+    /// The value for rule or curated_rule must be a valid rule resource name or a
+    /// valid curated rule resource name specified in quotes.
+    ///
+    /// For 'rule', an optional 'revision_id' can be specified which can be used to
+    /// fetch errors for a given revision of the rule. A '-' is also allowed to
+    /// fetch errors across all revisions of the rule. If unspecified, only errors
+    /// corresponding to the most recent revision of the rule will be returned. So
+    /// these variations are all allowed:
+    ///
+    /// ```text,
+    ///   rule = "{Rule.name}"
+    ///   rule = "{Rule.name}@{Rule.revision_id}"
+    ///   rule = "{Rule.name}@-"
+    /// ```
+    ///
+    /// Revision IDs are not supported for curated rules.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for ListRuleExecutionErrors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRuleExecutionErrorsResponse {
+    /// List of rule execution errors.
+    #[prost(message, repeated, tag = "1")]
+    pub rule_execution_errors: ::prost::alloc::vec::Vec<RuleExecutionError>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The RuleExecutionError resource represents an error generated from
+/// running/deploying a rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RuleExecutionError {
+    /// Output only. The resource name of the rule execution error.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/ruleExecutionErrors/{rule_execution_error}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The error status corresponding with the rule execution error.
+    #[prost(message, optional, tag = "2")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. The event time range that the rule execution error corresponds
+    /// with.
+    #[prost(message, optional, tag = "3")]
+    pub time_range: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// The resource name of the source that generated the rule execution error.
+    #[prost(oneof = "rule_execution_error::Source", tags = "4, 5")]
+    pub source: ::core::option::Option<rule_execution_error::Source>,
+}
+/// Nested message and enum types in `RuleExecutionError`.
+pub mod rule_execution_error {
+    /// The resource name of the source that generated the rule execution error.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Output only. The resource name of the rule that generated the rule
+        /// execution error.
+        #[prost(string, tag = "4")]
+        Rule(::prost::alloc::string::String),
+        /// Output only. The resource name of the curated rule that generated the
+        /// rule execution error.
+        #[prost(string, tag = "5")]
+        CuratedRule(::prost::alloc::string::String),
+    }
+}
+/// Generated client implementations.
+pub mod rule_execution_error_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// RuleExecutionErrorService contains endpoints related to rule execution
+    /// errors.
+    #[derive(Debug, Clone)]
+    pub struct RuleExecutionErrorServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl RuleExecutionErrorServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> RuleExecutionErrorServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RuleExecutionErrorServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            RuleExecutionErrorServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists rule execution errors.
+        pub async fn list_rule_execution_errors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRuleExecutionErrorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRuleExecutionErrorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.RuleExecutionErrorService/ListRuleExecutionErrors",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.RuleExecutionErrorService",
+                        "ListRuleExecutionErrors",
                     ),
                 );
             self.inner.unary(req, path, codec).await

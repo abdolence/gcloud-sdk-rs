@@ -843,8 +843,8 @@ pub struct FindNearest {
     /// affect the meaning of the distance threshold. Since DOT_PRODUCT distances
     /// increase when the vectors are more similar, the comparison is inverted.
     ///
-    /// For EUCLIDEAN, COSINE: WHERE distance \<= distance_threshold
-    /// For DOT_PRODUCT:       WHERE distance >= distance_threshold
+    /// * For EUCLIDEAN, COSINE: WHERE distance \<= distance_threshold
+    /// * For DOT_PRODUCT:       WHERE distance >= distance_threshold
     #[prost(message, optional, tag = "6")]
     pub distance_threshold: ::core::option::Option<f64>,
 }
@@ -1191,6 +1191,9 @@ pub struct LookupRequest {
     /// The entity's key is always returned.
     #[prost(message, optional, tag = "5")]
     pub property_mask: ::core::option::Option<PropertyMask>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "10")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The response for \[Datastore.Lookup\]\[google.datastore.v1.Datastore.Lookup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1255,6 +1258,9 @@ pub struct RunQueryRequest {
     /// statistics will be returned. If not, only query results will be returned.
     #[prost(message, optional, tag = "12")]
     pub explain_options: ::core::option::Option<ExplainOptions>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "13")]
+    pub request_options: ::core::option::Option<RequestOptions>,
     /// The type of query.
     #[prost(oneof = "run_query_request::QueryType", tags = "3, 7")]
     pub query_type: ::core::option::Option<run_query_request::QueryType>,
@@ -1276,7 +1282,13 @@ pub mod run_query_request {
 /// \[Datastore.RunQuery\]\[google.datastore.v1.Datastore.RunQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
-    /// A batch of query results (always present).
+    /// A batch of query results. This is always present unless running a
+    /// query under explain-only
+    /// mode:
+    /// \[RunQueryRequest.explain_options\]\[google.datastore.v1.RunQueryRequest.explain_options\]
+    /// was provided and
+    /// \[ExplainOptions.analyze\]\[google.datastore.v1.ExplainOptions.analyze\] was
+    /// set to false.
     #[prost(message, optional, tag = "1")]
     pub batch: ::core::option::Option<QueryResultBatch>,
     /// The parsed form of the `GqlQuery` from the request, if it was set.
@@ -1323,6 +1335,9 @@ pub struct RunAggregationQueryRequest {
     /// statistics will be returned. If not, only query results will be returned.
     #[prost(message, optional, tag = "11")]
     pub explain_options: ::core::option::Option<ExplainOptions>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "12")]
+    pub request_options: ::core::option::Option<RequestOptions>,
     /// The type of query.
     #[prost(oneof = "run_aggregation_query_request::QueryType", tags = "3, 7")]
     pub query_type: ::core::option::Option<run_aggregation_query_request::QueryType>,
@@ -1381,6 +1396,9 @@ pub struct BeginTransactionRequest {
     /// Options for a new transaction.
     #[prost(message, optional, tag = "10")]
     pub transaction_options: ::core::option::Option<TransactionOptions>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "11")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The response for
 /// \[Datastore.BeginTransaction\]\[google.datastore.v1.Datastore.BeginTransaction\].
@@ -1406,6 +1424,9 @@ pub struct RollbackRequest {
     /// \[Datastore.BeginTransaction\]\[google.datastore.v1.Datastore.BeginTransaction\].
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "10")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The response for
 /// \[Datastore.Rollback\]\[google.datastore.v1.Datastore.Rollback\]. (an empty
@@ -1442,6 +1463,9 @@ pub struct CommitRequest {
     /// entity.
     #[prost(message, repeated, tag = "6")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "11")]
+    pub request_options: ::core::option::Option<RequestOptions>,
     /// Must be set when mode is `TRANSACTIONAL`.
     #[prost(oneof = "commit_request::TransactionSelector", tags = "1, 10")]
     pub transaction_selector: ::core::option::Option<
@@ -1543,6 +1567,9 @@ pub struct AllocateIdsRequest {
     /// IDs. No key may be reserved/read-only.
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "10")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The response for
 /// \[Datastore.AllocateIds\]\[google.datastore.v1.Datastore.AllocateIds\].
@@ -1570,6 +1597,9 @@ pub struct ReserveIdsRequest {
     /// not be auto-allocated.
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
+    /// Optional. The options for this request.
+    #[prost(message, optional, tag = "10")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The response for
 /// \[Datastore.ReserveIds\]\[google.datastore.v1.Datastore.ReserveIds\].
@@ -2035,6 +2065,19 @@ pub mod transaction_options {
         #[prost(message, tag = "2")]
         ReadOnly(ReadOnly),
     }
+}
+/// Options for a request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RequestOptions {
+    /// Optional. The request tags for the request.
+    /// The tags are processed as follows:
+    ///
+    /// * Truncated to 510 characters.
+    /// * Filtered out if empty.
+    /// * Deduplicated.
+    /// * Limited to 50 tags.
+    #[prost(string, repeated, tag = "3")]
+    pub request_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod datastore_client {

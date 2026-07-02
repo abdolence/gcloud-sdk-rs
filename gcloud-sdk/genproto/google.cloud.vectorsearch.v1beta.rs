@@ -359,10 +359,11 @@ pub struct SemanticSearch {
 /// Defines a text search operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSearch {
-    /// Required. The query text.
+    /// Optional. The query text. Required when using the default text search mode.
     #[prost(string, tag = "1")]
     pub search_text: ::prost::alloc::string::String,
-    /// Required. The data field names to search.
+    /// Optional. The data field names to search. Required when using the default
+    /// text search mode.
     #[prost(string, repeated, tag = "2")]
     pub data_field_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The fields to return in the search results.
@@ -1534,6 +1535,11 @@ pub struct DeleteCollectionRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, any Indexes and DataObjects from this Collection
+    /// will also be deleted. (Otherwise, the request will only work if the
+    /// Collection has no Indexes and DataObjects.)
+    #[prost(bool, tag = "3")]
+    pub force: bool,
 }
 /// Message describing Index object
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1836,6 +1842,15 @@ pub struct ExportDataObjectsRequest {
     /// `projects/{project}/locations/{location}/collections/{collection}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Restricts which top-level Data Object fields appear in each
+    /// exported JSONL record. If unset, every field is exported (the existing
+    /// behavior). The primary use case is excluding the per-object `etag` so
+    /// that the exported records can be imported into a Collection in a
+    /// different region without optimistic-concurrency conflicts.
+    ///
+    /// Allowed field names are `id`, `data`, `vectors`, `etag`.
+    #[prost(message, optional, tag = "3")]
+    pub field_filter: ::core::option::Option<export_data_objects_request::FieldFilter>,
     /// The configuration for the export data.
     #[prost(oneof = "export_data_objects_request::Destination", tags = "2")]
     pub destination: ::core::option::Option<export_data_objects_request::Destination>,
@@ -1899,6 +1914,38 @@ pub mod export_data_objects_request {
                     _ => None,
                 }
             }
+        }
+    }
+    /// Selects which top-level Data Object fields are emitted at export time.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct FieldFilter {
+        /// Exactly one of `included_fields` or `excluded_fields` must be set.
+        #[prost(oneof = "field_filter::Selector", tags = "1, 2")]
+        pub selector: ::core::option::Option<field_filter::Selector>,
+    }
+    /// Nested message and enum types in `FieldFilter`.
+    pub mod field_filter {
+        /// Wrapper for a repeated string. Wrapping in a message lets the
+        /// surrounding `oneof` distinguish "field set to an empty list" (which is
+        /// rejected as INVALID_ARGUMENT) from "field not set".
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct FieldList {
+            /// Required. The list of top-level Data Object JSON field names. Allowed
+            /// values are `id`, `data`, `vectors`, `etag`.
+            #[prost(string, repeated, tag = "1")]
+            pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Exactly one of `included_fields` or `excluded_fields` must be set.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Selector {
+            /// Optional. Only these top-level fields will appear in each exported
+            /// record.
+            #[prost(message, tag = "1")]
+            IncludedFields(FieldList),
+            /// Optional. Every top-level field except these will appear in each
+            /// exported record.
+            #[prost(message, tag = "2")]
+            ExcludedFields(FieldList),
         }
     }
     /// The configuration for the export data.

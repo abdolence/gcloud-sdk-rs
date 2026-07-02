@@ -134,22 +134,30 @@ pub struct AutonomousDatabase {
     /// projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The name of the Autonomous Database. The database name must be
-    /// unique in the project. The name must begin with a letter and can contain a
-    /// maximum of 30 alphanumeric characters.
+    /// Optional. Immutable. The name of the Autonomous Database. The database name
+    /// must be unique in the project. The name must begin with a letter and can
+    /// contain a maximum of 30 alphanumeric characters.
     #[prost(string, tag = "2")]
     pub database: ::prost::alloc::string::String,
-    /// Optional. The display name for the Autonomous Database. The name does not
-    /// have to be unique within your project.
+    /// Optional. Immutable. The display name for the Autonomous Database. The name
+    /// does not have to be unique within your project.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. The ID of the subscription entitlement associated with the
     /// Autonomous Database.
     #[prost(string, tag = "5")]
     pub entitlement_id: ::prost::alloc::string::String,
-    /// Optional. The password for the default ADMIN user.
+    /// Optional. Immutable. The password for the default ADMIN user.
+    /// Note: Only one of `admin_password_secret_version` or `admin_password` can
+    /// be populated.
     #[prost(string, tag = "6")]
     pub admin_password: ::prost::alloc::string::String,
+    /// Optional. Immutable. The resource name of a secret version in Secret
+    /// Manager which contains the database admin user's password. Format:
+    /// projects/{project}/secrets/{secret}/versions/{version}. Note: Only one of
+    /// `admin_password_secret_version` or `admin_password` can be populated.
+    #[prost(string, tag = "18")]
+    pub admin_password_secret_version: ::prost::alloc::string::String,
     /// Optional. The properties of the Autonomous Database.
     #[prost(message, optional, tag = "7")]
     pub properties: ::core::option::Option<AutonomousDatabaseProperties>,
@@ -159,28 +167,30 @@ pub struct AutonomousDatabase {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. The name of the VPC network used by the Autonomous Database in
-    /// the following format: projects/{project}/global/networks/{network}
+    /// Optional. Immutable. The name of the VPC network used by the Autonomous
+    /// Database in the following format:
+    /// projects/{project}/global/networks/{network}
     #[prost(string, tag = "9")]
     pub network: ::prost::alloc::string::String,
-    /// Optional. The subnet CIDR range for the Autonomous Database.
+    /// Optional. Immutable. The subnet CIDR range for the Autonomous Database.
     #[prost(string, tag = "10")]
     pub cidr: ::prost::alloc::string::String,
-    /// Optional. The name of the OdbNetwork associated with the Autonomous
-    /// Database. Format:
+    /// Optional. Immutable. The name of the OdbNetwork associated with the
+    /// Autonomous Database. Format:
     /// projects/{project}/locations/{location}/odbNetworks/{odb_network} It is
     /// optional but if specified, this should match the parent ODBNetwork of the
     /// OdbSubnet.
     #[prost(string, tag = "16")]
     pub odb_network: ::prost::alloc::string::String,
-    /// Optional. The name of the OdbSubnet associated with the Autonomous
-    /// Database. Format:
+    /// Optional. Immutable. The name of the OdbSubnet associated with the
+    /// Autonomous Database. Format:
     /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
     #[prost(string, tag = "17")]
     pub odb_subnet: ::prost::alloc::string::String,
-    /// Optional. The source Autonomous Database configuration for the standby
-    /// Autonomous Database. The source Autonomous Database is configured while
-    /// creating the Peer Autonomous Database and can't be updated after creation.
+    /// Optional. Immutable. The source Autonomous Database configuration for the
+    /// standby Autonomous Database. The source Autonomous Database is configured
+    /// while creating the Peer Autonomous Database and can't be updated after
+    /// creation.
     #[prost(message, optional, tag = "11")]
     pub source_config: ::core::option::Option<SourceConfig>,
     /// Output only. The peer Autonomous Database names of the given Autonomous
@@ -218,74 +228,82 @@ pub struct AutonomousDatabaseProperties {
     /// <https://docs.oracle.com/en-us/iaas/Content/General/Concepts/identifiers.htm#Oracle>
     #[prost(string, tag = "1")]
     pub ocid: ::prost::alloc::string::String,
-    /// Optional. The number of compute servers for the Autonomous Database.
+    /// Optional. Immutable. The number of compute servers for the Autonomous
+    /// Database.
     #[prost(float, tag = "2")]
     pub compute_count: f32,
-    /// Optional. The number of CPU cores to be made available to the database.
+    /// Optional. Immutable. The number of CPU cores to be made available to the
+    /// database.
     #[prost(int32, tag = "3")]
     pub cpu_core_count: i32,
-    /// Optional. The size of the data stored in the database, in terabytes.
+    /// Optional. Immutable. The size of the data stored in the database, in
+    /// terabytes.
     #[prost(int32, tag = "4")]
     pub data_storage_size_tb: i32,
-    /// Optional. The size of the data stored in the database, in gigabytes.
+    /// Optional. Immutable. The size of the data stored in the database, in
+    /// gigabytes.
     #[prost(int32, tag = "63")]
     pub data_storage_size_gb: i32,
-    /// Required. The workload type of the Autonomous Database.
+    /// Required. Immutable. The workload type of the Autonomous Database.
     #[prost(enumeration = "DbWorkload", tag = "5")]
     pub db_workload: i32,
-    /// Optional. The edition of the Autonomous Databases.
+    /// Optional. Immutable. The edition of the Autonomous Databases.
     #[prost(enumeration = "autonomous_database_properties::DatabaseEdition", tag = "6")]
     pub db_edition: i32,
-    /// Optional. The character set for the Autonomous Database. The default is
-    /// AL32UTF8.
+    /// Optional. Immutable. The character set for the Autonomous Database. The
+    /// default is AL32UTF8.
     #[prost(string, tag = "8")]
     pub character_set: ::prost::alloc::string::String,
-    /// Optional. The national character set for the Autonomous Database. The
-    /// default is AL16UTF16.
+    /// Optional. Immutable. The national character set for the Autonomous
+    /// Database. The default is AL16UTF16.
     #[prost(string, tag = "9")]
     pub n_character_set: ::prost::alloc::string::String,
-    /// Optional. The private endpoint IP address for the Autonomous Database.
+    /// Optional. Immutable. The private endpoint IP address for the Autonomous
+    /// Database.
     #[prost(string, tag = "10")]
     pub private_endpoint_ip: ::prost::alloc::string::String,
-    /// Optional. The private endpoint label for the Autonomous Database.
+    /// Optional. Immutable. The private endpoint label for the Autonomous
+    /// Database.
     #[prost(string, tag = "11")]
     pub private_endpoint_label: ::prost::alloc::string::String,
-    /// Optional. The Oracle Database version for the Autonomous Database.
+    /// Optional. Immutable. The Oracle Database version for the Autonomous
+    /// Database.
     #[prost(string, tag = "12")]
     pub db_version: ::prost::alloc::string::String,
-    /// Optional. This field indicates if auto scaling is enabled for the
-    /// Autonomous Database CPU core count.
+    /// Optional. Immutable. This field indicates if auto scaling is enabled for
+    /// the Autonomous Database CPU core count.
     #[prost(bool, tag = "14")]
     pub is_auto_scaling_enabled: bool,
-    /// Optional. This field indicates if auto scaling is enabled for the
-    /// Autonomous Database storage.
+    /// Optional. Immutable. This field indicates if auto scaling is enabled for
+    /// the Autonomous Database storage.
     #[prost(bool, tag = "15")]
     pub is_storage_auto_scaling_enabled: bool,
-    /// Required. The license type used for the Autonomous Database.
+    /// Required. Immutable. The license type used for the Autonomous Database.
     #[prost(enumeration = "autonomous_database_properties::LicenseType", tag = "16")]
     pub license_type: i32,
-    /// Optional. The list of customer contacts.
+    /// Optional. Immutable. The list of customer contacts.
     #[prost(message, repeated, tag = "17")]
     pub customer_contacts: ::prost::alloc::vec::Vec<CustomerContact>,
-    /// Optional. The ID of the Oracle Cloud Infrastructure vault secret.
+    /// Optional. Immutable. The ID of the Oracle Cloud Infrastructure vault
+    /// secret.
     #[prost(string, tag = "18")]
     pub secret_id: ::prost::alloc::string::String,
-    /// Optional. The ID of the Oracle Cloud Infrastructure vault.
+    /// Optional. Immutable. The ID of the Oracle Cloud Infrastructure vault.
     #[prost(string, tag = "19")]
     pub vault_id: ::prost::alloc::string::String,
-    /// Optional. The maintenance schedule of the Autonomous Database.
+    /// Optional. Immutable. The maintenance schedule of the Autonomous Database.
     #[prost(
         enumeration = "autonomous_database_properties::MaintenanceScheduleType",
         tag = "20"
     )]
     pub maintenance_schedule_type: i32,
-    /// Optional. This field specifies if the Autonomous Database requires mTLS
-    /// connections.
+    /// Optional. Immutable. This field specifies if the Autonomous Database
+    /// requires mTLS connections.
     #[prost(bool, tag = "34")]
     pub mtls_connection_required: bool,
-    /// Optional. The retention period for the Autonomous Database. This field is
-    /// specified in days, can range from 1 day to 60 days, and has a default value
-    /// of 60 days.
+    /// Optional. Immutable. The retention period for the Autonomous Database. This
+    /// field is specified in days, can range from 1 day to 60 days, and has a
+    /// default value of 60 days.
     #[prost(int32, tag = "57")]
     pub backup_retention_period_days: i32,
     /// Output only. The amount of storage currently being used for user and system
@@ -340,12 +358,17 @@ pub struct AutonomousDatabaseProperties {
     /// Database.
     #[prost(int32, tag = "32")]
     pub memory_table_gbs: i32,
-    /// Output only. This field indicates whether the Autonomous Database has local
-    /// (in-region) Data Guard enabled.
+    /// Output only. Deprecated: Please use `local_data_guard_enabled` instead.
+    /// This field indicates whether the Autonomous Database has local (in-region)
+    /// Data Guard enabled.
+    #[deprecated]
     #[prost(bool, tag = "33")]
     pub is_local_data_guard_enabled: bool,
-    /// Output only. This field indicates the maximum data loss limit for an
-    /// Autonomous Database, in seconds.
+    /// Output only. Deprecated: Please use
+    /// `local_adg_auto_failover_max_data_loss_limit_duration` instead.
+    /// This field indicates the maximum data loss limit for an Autonomous
+    /// Database, in seconds.
+    #[deprecated]
     #[prost(int32, tag = "35")]
     pub local_adg_auto_failover_max_data_loss_limit: i32,
     /// Output only. The details of the Autonomous Data Guard standby database.
@@ -445,7 +468,8 @@ pub struct AutonomousDatabaseProperties {
     /// Output only. The date and time when maintenance will end.
     #[prost(message, optional, tag = "66")]
     pub maintenance_end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The list of allowlisted IP addresses for the Autonomous Database.
+    /// Optional. Immutable. The list of allowlisted IP addresses for the
+    /// Autonomous Database.
     #[prost(string, repeated, tag = "67")]
     pub allowlisted_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The encryption key used to encrypt the Autonomous Database.
@@ -463,6 +487,17 @@ pub struct AutonomousDatabaseProperties {
     /// customers can grant roles to access resources in the customer project.
     #[prost(string, tag = "70")]
     pub service_agent_email: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the Autonomous Database has a local (in-region)
+    /// standby database. Not applicable to cross-region Data Guard or dedicated
+    /// Exadata infrastructure.
+    #[prost(bool, optional, tag = "71")]
+    pub local_data_guard_enabled: ::core::option::Option<bool>,
+    /// Optional. This field indicates the maximum data loss limit for an
+    /// Autonomous Database, in seconds.
+    #[prost(int32, optional, tag = "72")]
+    pub local_adg_auto_failover_max_data_loss_limit_duration: ::core::option::Option<
+        i32,
+    >,
 }
 /// Nested message and enum types in `AutonomousDatabaseProperties`.
 pub mod autonomous_database_properties {
@@ -616,6 +651,8 @@ pub mod autonomous_database_properties {
         Adg = 1,
         /// Backup based recovery.
         BackupBased = 2,
+        /// Local disaster recovery is not available.
+        NotAvailable = 3,
     }
     impl LocalDisasterRecoveryType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -627,6 +664,7 @@ pub mod autonomous_database_properties {
                 Self::Unspecified => "LOCAL_DISASTER_RECOVERY_TYPE_UNSPECIFIED",
                 Self::Adg => "ADG",
                 Self::BackupBased => "BACKUP_BASED",
+                Self::NotAvailable => "NOT_AVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -635,6 +673,7 @@ pub mod autonomous_database_properties {
                 "LOCAL_DISASTER_RECOVERY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ADG" => Some(Self::Adg),
                 "BACKUP_BASED" => Some(Self::BackupBased),
+                "NOT_AVAILABLE" => Some(Self::NotAvailable),
                 _ => None,
             }
         }
@@ -2547,12 +2586,29 @@ pub struct Database {
     /// Optional. The DB_UNIQUE_NAME of the Oracle Database being backed up.
     #[prost(string, tag = "3")]
     pub db_unique_name: ::prost::alloc::string::String,
-    /// Required. The password for the default ADMIN user.
+    /// Optional. The password for the default ADMIN user.
+    /// Note: Only one of `admin_password_secret_version` or `admin_password` can
+    /// be populated.
     #[prost(string, tag = "4")]
     pub admin_password: ::prost::alloc::string::String,
+    /// Optional. The resource name of a secret version in Secret Manager which
+    /// contains the database admin user's password. Format:
+    /// projects/{project}/secrets/{secret}/versions/{version}. Note: Only one of
+    /// `admin_password_secret_version` or `admin_password` can be populated.
+    #[prost(string, tag = "17")]
+    pub admin_password_secret_version: ::prost::alloc::string::String,
     /// Optional. The TDE wallet password for the database.
+    /// Note: Only one of `tde_wallet_password_secret_version` or
+    /// `tde_wallet_password` can be populated.
     #[prost(string, tag = "5")]
     pub tde_wallet_password: ::prost::alloc::string::String,
+    /// Optional. The resource name of a secret version in Secret Manager which
+    /// contains the TDE wallet password for the database. Format:
+    /// projects/{project}/secrets/{secret}/versions/{version}. Note: Only one of
+    /// `tde_wallet_password_secret_version` or `tde_wallet_password` can be
+    /// populated.
+    #[prost(string, tag = "18")]
+    pub tde_wallet_password_secret_version: ::prost::alloc::string::String,
     /// Optional. The character set for the database. The default is AL32UTF8.
     #[prost(string, tag = "6")]
     pub character_set: ::prost::alloc::string::String,
@@ -2582,6 +2638,15 @@ pub struct Database {
     /// Output only. The Status of Operations Insights for this Database.
     #[prost(enumeration = "database::OperationsInsightsStatus", tag = "14")]
     pub ops_insights_status: i32,
+    /// Optional. The ID of the pluggable database associated with the Database.
+    /// The ID must be unique within the project and location.
+    #[prost(string, tag = "15")]
+    pub pluggable_database_id: ::prost::alloc::string::String,
+    /// Optional. The pluggable database associated with the Database. The name
+    /// must begin with an alphabetic character and can contain a maximum of thirty
+    /// alphanumeric characters.
+    #[prost(string, tag = "16")]
+    pub pluggable_database_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
@@ -3700,7 +3765,8 @@ pub mod db_system_options {
     pub enum StorageManagement {
         /// The storage management is unspecified.
         Unspecified = 0,
-        /// Automatic storage management.
+        /// Automatic storage management. This option is not supported. Only LVM is
+        /// supported.
         Asm = 1,
         /// Logical Volume management.
         Lvm = 2,
@@ -3835,6 +3901,10 @@ pub struct ListDbSystemsResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Summary of the DbSystem initial storage size.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4346,6 +4416,9 @@ pub struct CloudExadataInfrastructureProperties {
     /// Output only. The storage server type of the Exadata Infrastructure.
     #[prost(string, tag = "30")]
     pub storage_server_type: ::prost::alloc::string::String,
+    /// Output only. The Exascale configuration for the Exadata Infrastructure.
+    #[prost(message, optional, tag = "32")]
+    pub exascale_config: ::core::option::Option<ExascaleConfig>,
 }
 /// Nested message and enum types in `CloudExadataInfrastructureProperties`.
 pub mod cloud_exadata_infrastructure_properties {
@@ -4412,6 +4485,16 @@ pub mod cloud_exadata_infrastructure_properties {
             }
         }
     }
+}
+/// Details of the Exascale configuration for the Exadata Infrastructure.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExascaleConfig {
+    /// Output only. Total storage size needed for Exascale in GBs.
+    #[prost(int32, tag = "1")]
+    pub total_storage_size_gb: i32,
+    /// Output only. Available storage size for Exascale in GBs.
+    #[prost(int32, tag = "2")]
+    pub available_storage_size_gb: i32,
 }
 /// Maintenance window as defined by Oracle.
 /// <https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/datatypes/MaintenanceWindow>
@@ -4559,6 +4642,21 @@ pub mod maintenance_window {
             }
         }
     }
+}
+/// The request for `CloudExadataInfrastructure.ConfigureExascale`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ConfigureExascaleCloudExadataInfrastructureRequest {
+    /// Required. The name of the Cloud Exadata Infrastructure in the following
+    /// format:
+    /// projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The total storage to be allocated to Exascale in GBs.
+    #[prost(int32, tag = "2")]
+    pub total_storage_size_gb: i32,
+    /// Optional. An optional ID to identify the request.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// ExadbVmCluster represents a cluster of VMs that are used to run Exadata
 /// workloads.
@@ -4890,6 +4988,12 @@ pub struct ExascaleDbStorageVault {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The Exadata Infrastructure resource on which
+    /// ExascaleDbStorageVault
+    /// resource is created, in the following format:
+    /// projects/{project}/locations/{region}/cloudExadataInfrastuctures/{cloud_extradata_infrastructure}
+    #[prost(string, tag = "8")]
+    pub exadata_infrastructure: ::prost::alloc::string::String,
 }
 /// The properties of the ExascaleDbStorageVault.
 /// next ID: 12
@@ -5106,6 +5210,10 @@ pub struct ListExascaleDbStorageVaultsResponse {
     /// If empty, there are no more pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for `ExascaleDbStorageVault.Create`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5169,6 +5277,5535 @@ pub struct GiVersion {
     /// Optional. version
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
+}
+/// Details of the GoldengateConnection resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateConnection {
+    /// Identifier. The name of the GoldengateConnection resource in the following
+    /// format:
+    /// projects/{project}/locations/{region}/goldengateConnections/{goldengate_connection}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The properties of the GoldengateConnection.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<GoldengateConnectionProperties>,
+    /// Optional. The GCP Oracle zone where Oracle GoldengateConnection is hosted.
+    /// Example: us-east4-b-r2.
+    /// If not specified, the system will pick a zone based on availability.
+    #[prost(string, tag = "3")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Optional. The labels or tags associated with the GoldengateConnection.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The name of the OdbNetwork associated with the
+    /// GoldengateConnection. The format is
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+    /// It is optional but if specified, this should match the parent ODBNetwork
+    /// of the OdbSubnet.
+    #[prost(string, tag = "5")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Optional. The name of the OdbSubnet associated with the
+    /// GoldengateConnection for IP allocation. Format:
+    /// projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+    #[prost(string, tag = "6")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// GoldengateConnection.
+    #[prost(string, tag = "7")]
+    pub entitlement_id: ::prost::alloc::string::String,
+    /// Output only. The date and time that the GoldengateConnection was created.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. HTTPS link to OCI resources exposed to Customer via UI
+    /// Interface.
+    #[prost(string, tag = "9")]
+    pub oci_url: ::prost::alloc::string::String,
+}
+/// The properties of a GoldengateConnection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateConnectionProperties {
+    /// Required. The connection type.
+    #[prost(
+        enumeration = "goldengate_connection_properties::GoldengateConnectionType",
+        tag = "1"
+    )]
+    pub connection_type: i32,
+    /// Output only. The \[OCID\] of the connection being
+    /// referenced.
+    #[prost(string, tag = "2")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Required. An object's Display Name.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Metadata about this specific object.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The lifecycle state of the connection.
+    #[prost(
+        enumeration = "goldengate_connection_properties::GoldengateConnectionLifecycleState",
+        tag = "5"
+    )]
+    pub lifecycle_state: i32,
+    /// Output only. Describes the object's current state in detail. For example,
+    /// it can be used to provide actionable information for a resource in a Failed
+    /// state.
+    #[prost(string, tag = "6")]
+    pub lifecycle_details: ::prost::alloc::string::String,
+    /// Output only. The time the resource was last updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The routing method for the GoldengateConnection.
+    #[prost(
+        enumeration = "goldengate_connection_properties::GoldengateConnectionRoutingMethod",
+        tag = "8"
+    )]
+    pub routing_method: i32,
+    /// Output only. The Ingress IPs of the GoldengateConnection.
+    #[prost(string, repeated, tag = "39")]
+    pub ingress_ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The connection details.
+    #[prost(
+        oneof = "goldengate_connection_properties::ConnectionDetails",
+        tags = "9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38"
+    )]
+    pub connection_details: ::core::option::Option<
+        goldengate_connection_properties::ConnectionDetails,
+    >,
+}
+/// Nested message and enum types in `GoldengateConnectionProperties`.
+pub mod goldengate_connection_properties {
+    /// Enum for Connection type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateConnectionType {
+        /// Connection type unspecified.
+        Unspecified = 0,
+        /// Goldengate connection type.
+        Goldengate = 1,
+        /// Kafka connection type.
+        Kafka = 2,
+        /// Kafka schema registry connection type.
+        KafkaSchemaRegistry = 3,
+        /// MySQL connection type.
+        Mysql = 4,
+        /// Java message service connection type.
+        JavaMessageService = 5,
+        /// Microsoft SQL Server connection type.
+        MicrosoftSqlserver = 6,
+        /// OCI object storage connection type.
+        OciObjectStorage = 7,
+        /// Oracle connection type.
+        Oracle = 8,
+        /// Azure data lake storage connection type.
+        AzureDataLakeStorage = 9,
+        /// PostgreSQL connection type.
+        Postgresql = 10,
+        /// Azure synapse analytics connection type.
+        AzureSynapseAnalytics = 11,
+        /// Snowflake connection type.
+        Snowflake = 12,
+        /// Amazon S3 connection type.
+        AmazonS3 = 13,
+        /// HDFS connection type.
+        Hdfs = 14,
+        /// Oracle AI data platform connection type.
+        OracleAiDataPlatform = 15,
+        /// Oracle NoSQL connection type.
+        OracleNosql = 16,
+        /// MongoDB connection type.
+        Mongodb = 17,
+        /// Amazon Kinesis connection type.
+        AmazonKinesis = 18,
+        /// Amazon Redshift connection type.
+        AmazonRedshift = 19,
+        /// DB2 connection type.
+        Db2 = 20,
+        /// Redis connection type.
+        Redis = 21,
+        /// Elasticsearch connection type.
+        Elasticsearch = 22,
+        /// Generic connection type.
+        Generic = 23,
+        /// Google Cloud Storage connection type.
+        GoogleCloudStorage = 24,
+        /// Google BigQuery connection type.
+        GoogleBigquery = 25,
+        /// Databricks connection type.
+        Databricks = 26,
+        /// Google Pub/Sub connection type.
+        GooglePubsub = 27,
+        /// Microsoft Fabric connection type.
+        MicrosoftFabric = 28,
+        /// Iceberg connection type.
+        Iceberg = 29,
+    }
+    impl GoldengateConnectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_CONNECTION_TYPE_UNSPECIFIED",
+                Self::Goldengate => "GOLDENGATE",
+                Self::Kafka => "KAFKA",
+                Self::KafkaSchemaRegistry => "KAFKA_SCHEMA_REGISTRY",
+                Self::Mysql => "MYSQL",
+                Self::JavaMessageService => "JAVA_MESSAGE_SERVICE",
+                Self::MicrosoftSqlserver => "MICROSOFT_SQLSERVER",
+                Self::OciObjectStorage => "OCI_OBJECT_STORAGE",
+                Self::Oracle => "ORACLE",
+                Self::AzureDataLakeStorage => "AZURE_DATA_LAKE_STORAGE",
+                Self::Postgresql => "POSTGRESQL",
+                Self::AzureSynapseAnalytics => "AZURE_SYNAPSE_ANALYTICS",
+                Self::Snowflake => "SNOWFLAKE",
+                Self::AmazonS3 => "AMAZON_S3",
+                Self::Hdfs => "HDFS",
+                Self::OracleAiDataPlatform => "ORACLE_AI_DATA_PLATFORM",
+                Self::OracleNosql => "ORACLE_NOSQL",
+                Self::Mongodb => "MONGODB",
+                Self::AmazonKinesis => "AMAZON_KINESIS",
+                Self::AmazonRedshift => "AMAZON_REDSHIFT",
+                Self::Db2 => "DB2",
+                Self::Redis => "REDIS",
+                Self::Elasticsearch => "ELASTICSEARCH",
+                Self::Generic => "GENERIC",
+                Self::GoogleCloudStorage => "GOOGLE_CLOUD_STORAGE",
+                Self::GoogleBigquery => "GOOGLE_BIGQUERY",
+                Self::Databricks => "DATABRICKS",
+                Self::GooglePubsub => "GOOGLE_PUBSUB",
+                Self::MicrosoftFabric => "MICROSOFT_FABRIC",
+                Self::Iceberg => "ICEBERG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOLDENGATE" => Some(Self::Goldengate),
+                "KAFKA" => Some(Self::Kafka),
+                "KAFKA_SCHEMA_REGISTRY" => Some(Self::KafkaSchemaRegistry),
+                "MYSQL" => Some(Self::Mysql),
+                "JAVA_MESSAGE_SERVICE" => Some(Self::JavaMessageService),
+                "MICROSOFT_SQLSERVER" => Some(Self::MicrosoftSqlserver),
+                "OCI_OBJECT_STORAGE" => Some(Self::OciObjectStorage),
+                "ORACLE" => Some(Self::Oracle),
+                "AZURE_DATA_LAKE_STORAGE" => Some(Self::AzureDataLakeStorage),
+                "POSTGRESQL" => Some(Self::Postgresql),
+                "AZURE_SYNAPSE_ANALYTICS" => Some(Self::AzureSynapseAnalytics),
+                "SNOWFLAKE" => Some(Self::Snowflake),
+                "AMAZON_S3" => Some(Self::AmazonS3),
+                "HDFS" => Some(Self::Hdfs),
+                "ORACLE_AI_DATA_PLATFORM" => Some(Self::OracleAiDataPlatform),
+                "ORACLE_NOSQL" => Some(Self::OracleNosql),
+                "MONGODB" => Some(Self::Mongodb),
+                "AMAZON_KINESIS" => Some(Self::AmazonKinesis),
+                "AMAZON_REDSHIFT" => Some(Self::AmazonRedshift),
+                "DB2" => Some(Self::Db2),
+                "REDIS" => Some(Self::Redis),
+                "ELASTICSEARCH" => Some(Self::Elasticsearch),
+                "GENERIC" => Some(Self::Generic),
+                "GOOGLE_CLOUD_STORAGE" => Some(Self::GoogleCloudStorage),
+                "GOOGLE_BIGQUERY" => Some(Self::GoogleBigquery),
+                "DATABRICKS" => Some(Self::Databricks),
+                "GOOGLE_PUBSUB" => Some(Self::GooglePubsub),
+                "MICROSOFT_FABRIC" => Some(Self::MicrosoftFabric),
+                "ICEBERG" => Some(Self::Iceberg),
+                _ => None,
+            }
+        }
+    }
+    /// Possible lifecycle states for connection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateConnectionLifecycleState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is in provisioning state.
+        Creating = 1,
+        /// Indicates that the resource is in active state.
+        Active = 2,
+        /// Indicates that the resource is in updating state.
+        Updating = 3,
+        /// Indicates that the resource is in deleting state.
+        Deleting = 4,
+        /// Indicates that the resource is in deleted state.
+        Deleted = 5,
+        /// Indicates that the resource is in failed state.
+        Failed = 6,
+    }
+    impl GoldengateConnectionLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_CONNECTION_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Deleted => "DELETED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_CONNECTION_LIFECYCLE_STATE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "DELETED" => Some(Self::Deleted),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The various routing methods of the GoldengateConnection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateConnectionRoutingMethod {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Network traffic flows from the assigned deployment's private endpoint
+        /// through the deployment's subnet.
+        SharedDeploymentEndpoint = 1,
+        /// A dedicated private endpoint is created in the target VCN subnet for
+        /// the connection.
+        DedicatedEndpoint = 2,
+    }
+    impl GoldengateConnectionRoutingMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_CONNECTION_ROUTING_METHOD_UNSPECIFIED",
+                Self::SharedDeploymentEndpoint => "SHARED_DEPLOYMENT_ENDPOINT",
+                Self::DedicatedEndpoint => "DEDICATED_ENDPOINT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_CONNECTION_ROUTING_METHOD_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "SHARED_DEPLOYMENT_ENDPOINT" => Some(Self::SharedDeploymentEndpoint),
+                "DEDICATED_ENDPOINT" => Some(Self::DedicatedEndpoint),
+                _ => None,
+            }
+        }
+    }
+    /// The connection details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConnectionDetails {
+        /// Properties for an Oracle Database Connection.
+        #[prost(message, tag = "9")]
+        OracleConnectionProperties(super::GoldengateOracleConnectionProperties),
+        /// Properties for a Goldengate Connection.
+        #[prost(message, tag = "10")]
+        GoldengateConnectionProperties(super::GoldengateGoldengateConnectionProperties),
+        /// Properties for a Generic Connection.
+        #[prost(message, tag = "11")]
+        GenericConnectionProperties(super::GoldengateGenericConnectionProperties),
+        /// Properties for a Google Cloud Storage Connection.
+        #[prost(message, tag = "12")]
+        GoogleCloudStorageConnectionProperties(
+            super::GoldengateGoogleCloudStorageConnectionProperties,
+        ),
+        /// Properties for a Google BigQuery Connection.
+        #[prost(message, tag = "13")]
+        GoogleBigQueryConnectionProperties(
+            super::GoldengateGoogleBigQueryConnectionProperties,
+        ),
+        /// Properties for a Mysql Connection.
+        #[prost(message, tag = "14")]
+        MysqlConnectionProperties(super::GoldengateMysqlConnectionProperties),
+        /// Properties for a Kafka Connection.
+        #[prost(message, tag = "15")]
+        KafkaConnectionProperties(super::GoldengateKafkaConnectionProperties),
+        /// Properties for a Kafka Schema Registry Connection.
+        #[prost(message, tag = "16")]
+        KafkaSchemaRegistryConnectionProperties(
+            super::GoldengateKafkaSchemaRegistryConnectionProperties,
+        ),
+        /// Properties for an OCI Object Storage Connection.
+        #[prost(message, tag = "17")]
+        OciObjectStorageConnectionProperties(
+            super::GoldengateOciObjectStorageConnectionProperties,
+        ),
+        /// Properties for an Azure Data Lake Storage Connection.
+        #[prost(message, tag = "18")]
+        AzureDataLakeStorageConnectionProperties(
+            super::GoldengateAzureDataLakeStorageConnectionProperties,
+        ),
+        /// Properties for an Azure Synapse Analytics connection.
+        #[prost(message, tag = "19")]
+        AzureSynapseAnalyticsConnectionProperties(
+            super::GoldengateAzureSynapseAnalyticsConnectionProperties,
+        ),
+        /// Properties for a PostgreSQL connection.
+        #[prost(message, tag = "20")]
+        PostgresqlConnectionProperties(super::GoldengatePostgresqlConnectionProperties),
+        /// Properties for a Microsoft SQL Server connection.
+        #[prost(message, tag = "21")]
+        MicrosoftSqlserverConnectionProperties(
+            super::GoldengateMicrosoftSqlserverConnectionProperties,
+        ),
+        /// Properties for an Amazon S3 connection.
+        #[prost(message, tag = "22")]
+        AmazonS3ConnectionProperties(super::GoldengateAmazonS3ConnectionProperties),
+        /// Properties for an HDFS connection.
+        #[prost(message, tag = "23")]
+        HdfsConnectionProperties(super::GoldengateHdfsConnectionProperties),
+        /// Properties for a Java Message Service connection.
+        #[prost(message, tag = "24")]
+        JavaMessageServiceConnectionProperties(
+            super::GoldengateJavaMessageServiceConnectionProperties,
+        ),
+        /// Properties for a MongoDB connection.
+        #[prost(message, tag = "25")]
+        MongodbConnectionProperties(super::GoldengateMongodbConnectionProperties),
+        /// Properties for an Oracle NoSQL connection.
+        #[prost(message, tag = "26")]
+        OracleNosqlConnectionProperties(
+            super::GoldengateOracleNosqlConnectionProperties,
+        ),
+        /// Properties for a Snowflake connection.
+        #[prost(message, tag = "27")]
+        SnowflakeConnectionProperties(super::GoldengateSnowflakeConnectionProperties),
+        /// Properties for an Amazon Redshift connection.
+        #[prost(message, tag = "28")]
+        AmazonRedshiftConnectionProperties(
+            super::GoldengateAmazonRedshiftConnectionProperties,
+        ),
+        /// Properties for an Elasticsearch connection.
+        #[prost(message, tag = "29")]
+        ElasticsearchConnectionProperties(
+            super::GoldengateElasticsearchConnectionProperties,
+        ),
+        /// Properties for an Amazon Kinesis connection.
+        #[prost(message, tag = "31")]
+        AmazonKinesisConnectionProperties(
+            super::GoldengateAmazonKinesisConnectionProperties,
+        ),
+        /// Properties for a DB2 connection.
+        #[prost(message, tag = "32")]
+        Db2ConnectionProperties(super::GoldengateDb2ConnectionProperties),
+        /// Properties for a Redis connection.
+        #[prost(message, tag = "33")]
+        RedisConnectionProperties(super::GoldengateRedisConnectionProperties),
+        /// Properties for a Databricks connection.
+        #[prost(message, tag = "34")]
+        DatabricksConnectionProperties(super::GoldengateDatabricksConnectionProperties),
+        /// Properties for a Google Pub/Sub connection.
+        #[prost(message, tag = "35")]
+        GooglePubsubConnectionProperties(
+            super::GoldengateGooglePubsubConnectionProperties,
+        ),
+        /// Properties for a Microsoft Fabric connection.
+        #[prost(message, tag = "36")]
+        MicrosoftFabricConnectionProperties(
+            super::GoldengateMicrosoftFabricConnectionProperties,
+        ),
+        /// Properties for an Oracle AI Data Platform connection.
+        #[prost(message, tag = "37")]
+        OracleAiDataPlatformConnectionProperties(
+            super::GoldengateOracleAiDataPlatformConnectionProperties,
+        ),
+        /// Properties for an Iceberg connection.
+        #[prost(message, tag = "38")]
+        IcebergConnectionProperties(super::GoldengateIcebergConnectionProperties),
+    }
+}
+/// The properties of Goldengate Oracle Database Connection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateOracleConnectionProperties {
+    /// Optional. The technology type.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect.
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. Authentication mode.
+    #[prost(
+        enumeration = "goldengate_oracle_connection_properties::OracleAuthenticationMode",
+        tag = "3"
+    )]
+    pub authentication_mode: i32,
+    /// Optional. Connect descriptor or Easy Connect Naming method used to connect
+    /// to a database.
+    #[prost(string, tag = "4")]
+    pub connection_string: ::prost::alloc::string::String,
+    /// Optional. The mode of the database connection session to be established by
+    /// the data client.
+    #[prost(
+        enumeration = "goldengate_oracle_connection_properties::SessionMode",
+        tag = "5"
+    )]
+    pub session_mode: i32,
+    /// Optional. Autonomous AI Database instance id of database in Oracle Database
+    /// @ Google Cloud. If gcp_oracle_database_id is provided, connection_string
+    /// must be empty. Format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}
+    #[prost(string, tag = "6")]
+    pub gcp_oracle_database_id: ::prost::alloc::string::String,
+    /// Optional. The wallet contents Oracle Goldengate uses to make connections to
+    /// a database. This attribute is expected to be base64 encoded.
+    #[prost(string, tag = "9")]
+    pub wallet_file: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of the
+    /// given technology. It must conform to the specific security requirements
+    /// including length, case sensitivity, and so on.
+    #[prost(
+        oneof = "goldengate_oracle_connection_properties::ConnectionPasswordOptions",
+        tags = "10, 11"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_oracle_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateOracleConnectionProperties`.
+pub mod goldengate_oracle_connection_properties {
+    /// Enum for Authentication mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OracleAuthenticationMode {
+        /// Authentication mode not specified.
+        Unspecified = 0,
+        /// TLS authentication mode.
+        Tls = 1,
+        /// MTLS authentication mode.
+        Mtls = 2,
+    }
+    impl OracleAuthenticationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ORACLE_AUTHENTICATION_MODE_UNSPECIFIED",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ORACLE_AUTHENTICATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// The various session modes of the GoldengateConnection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SessionMode {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Indicates that the resource is using direct session mode.
+        Direct = 1,
+        /// Indicates that the resource is using redirect session mode.
+        Redirect = 2,
+    }
+    impl SessionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SESSION_MODE_UNSPECIFIED",
+                Self::Direct => "DIRECT",
+                Self::Redirect => "REDIRECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SESSION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIRECT" => Some(Self::Direct),
+                "REDIRECT" => Some(Self::Redirect),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated system of the
+    /// given technology. It must conform to the specific security requirements
+    /// including length, case sensitivity, and so on.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses in plain text.
+        #[prost(string, tag = "10")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "11")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateGoldengateConnectionProperties.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGoldengateConnectionProperties {
+    /// Optional. The technology type.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The name of the GoldengateDeployment associated with the
+    /// GoldengateConnection.
+    /// Format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}
+    #[prost(string, tag = "2")]
+    pub goldengate_deployment_id: ::prost::alloc::string::String,
+    /// Optional. The host of the GoldengateConnection.
+    #[prost(string, tag = "3")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of the GoldengateConnection.
+    #[prost(int32, tag = "4")]
+    pub port: i32,
+    /// Optional. The username credential.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// The password used to connect to the Oracle Goldengate accessed through this
+    /// connection.
+    #[prost(
+        oneof = "goldengate_goldengate_connection_properties::ConnectionPasswordOptions",
+        tags = "7, 8"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_goldengate_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateGoldengateConnectionProperties`.
+pub mod goldengate_goldengate_connection_properties {
+    /// The password used to connect to the Oracle Goldengate accessed through this
+    /// connection.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password used to connect to the Oracle
+        /// Goldengate in plain text.
+        #[prost(string, tag = "7")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password used to connect to the Oracle
+        /// Goldengate. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "8")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateGenericConnectionProperties.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGenericConnectionProperties {
+    /// Optional. The technology type.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The host of the GenericConnection.
+    #[prost(string, tag = "2")]
+    pub host: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateGoogleCloudStorageConnectionProperties.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGoogleCloudStorageConnectionProperties {
+    /// Optional. The technology type.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the service account key file
+    /// containing the credentials required to use Google Cloud Storage.
+    #[prost(string, tag = "3")]
+    pub service_account_key_file: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateGoogleBigQueryConnectionProperties.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGoogleBigQueryConnectionProperties {
+    /// Optional. The technology type.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the service account key file
+    /// containing the credentials required to use Google BigQuery.
+    #[prost(string, tag = "3")]
+    pub service_account_key_file: ::prost::alloc::string::String,
+}
+/// Properties of GoldengateMysqlConnection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateMysqlConnectionProperties {
+    /// Optional. The technology type of MysqlConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The name or address of a host.
+    #[prost(string, tag = "4")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of an endpoint usually specified for a connection.
+    #[prost(int32, tag = "5")]
+    pub port: i32,
+    /// Optional. The name of the database.
+    #[prost(string, tag = "6")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. Security Type for MySQL.
+    #[prost(
+        enumeration = "goldengate_mysql_connection_properties::MysqlSecurityProtocol",
+        tag = "7"
+    )]
+    pub security_protocol: i32,
+    /// Optional. SSL modes for MySQL.
+    #[prost(enumeration = "goldengate_mysql_connection_properties::SslMode", tag = "8")]
+    pub ssl_mode: i32,
+    /// Optional. Database Certificate - The base64 encoded content of a .pem or
+    /// .crt file containing the server public key (for 1 and 2-way SSL).
+    #[prost(string, tag = "9")]
+    pub ssl_ca_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded list of certificates revoked by the trusted
+    /// certificate authorities (Trusted CA).
+    #[prost(string, tag = "10")]
+    pub ssl_crl_file: ::prost::alloc::string::String,
+    /// Optional. Client Certificate - The base64 encoded content of a .pem or .crt
+    /// file containing the client public key (for 2-way SSL).
+    #[prost(string, tag = "11")]
+    pub ssl_cert_file: ::prost::alloc::string::String,
+    /// Optional. Client Key - The base64 encoded content of a .pem or .crt file
+    /// containing the client private key (for 2-way SSL).
+    #[prost(string, tag = "12")]
+    pub ssl_key_file: ::prost::alloc::string::String,
+    /// Optional. An array of name-value pair attribute entries.
+    /// Used as additional parameters in connection string.
+    #[prost(message, repeated, tag = "13")]
+    pub additional_attributes: ::prost::alloc::vec::Vec<NameValuePair>,
+    /// Optional. The OCID of the database system being referenced.
+    #[prost(string, tag = "14")]
+    pub db_system_id: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology. It must conform to the specific security
+    /// requirements including length, case sensitivity, and so on.
+    #[prost(
+        oneof = "goldengate_mysql_connection_properties::ConnectionPasswordOptions",
+        tags = "15, 16"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_mysql_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateMysqlConnectionProperties`.
+pub mod goldengate_mysql_connection_properties {
+    /// Enum for Security Type for MySQL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MysqlSecurityProtocol {
+        /// Security type not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+        /// Mutual Transport Layer Security.
+        Mtls = 3,
+    }
+    impl MysqlSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MYSQL_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MYSQL_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// Enum for SSL modes for MySQL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SslMode {
+        /// SSL mode not specified.
+        Unspecified = 0,
+        /// SSL is disabled.
+        Disabled = 1,
+        /// SSL is preferred.
+        Preferred = 2,
+        /// SSL is required.
+        Required = 3,
+        /// SSL is required and certificate is verified.
+        VerifyCa = 4,
+        /// SSL is required and certificate and hostname are verified.
+        VerifyIdentity = 5,
+    }
+    impl SslMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SSL_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Preferred => "PREFERRED",
+                Self::Required => "REQUIRED",
+                Self::VerifyCa => "VERIFY_CA",
+                Self::VerifyIdentity => "VERIFY_IDENTITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SSL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "PREFERRED" => Some(Self::Preferred),
+                "REQUIRED" => Some(Self::Required),
+                "VERIFY_CA" => Some(Self::VerifyCa),
+                "VERIFY_IDENTITY" => Some(Self::VerifyIdentity),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology. It must conform to the specific security
+    /// requirements including length, case sensitivity, and so on.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses to connect to
+        /// MySQL in plain text.
+        #[prost(string, tag = "15")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses to connect to
+        /// MySQL. Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "16")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateKafkaConnection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateKafkaConnectionProperties {
+    /// Optional. The technology type of KafkaConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The OCID of the stream pool being referenced.
+    #[prost(string, tag = "2")]
+    pub stream_pool_id: ::prost::alloc::string::String,
+    /// Optional. The OCID of the Kafka cluster being referenced from OCI Streaming
+    /// with Apache Kafka.
+    #[prost(string, tag = "3")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Optional. Kafka bootstrap. Equivalent of bootstrap.servers configuration
+    /// property in Kafka: list of KafkaBootstrapServer objects specified by
+    /// host/port. Used for establishing the initial connection to the Kafka
+    /// cluster. Example: "server1.example.com:9092,server2.example.com:9092"
+    #[prost(message, repeated, tag = "4")]
+    pub bootstrap_servers: ::prost::alloc::vec::Vec<KafkaBootstrapServer>,
+    /// Optional. Security Type for Kafka.
+    #[prost(
+        enumeration = "goldengate_kafka_connection_properties::KafkaSecurityProtocol",
+        tag = "5"
+    )]
+    pub security_protocol: i32,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "6")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the TrustStore file.
+    #[prost(string, tag = "8")]
+    pub trust_store_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the KeyStore file.
+    #[prost(string, tag = "10")]
+    pub key_store_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the consumer.properties file.
+    #[prost(string, tag = "13")]
+    pub consumer_properties_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the producer.properties file.
+    #[prost(string, tag = "14")]
+    pub producer_properties_file: ::prost::alloc::string::String,
+    /// Optional. Specifies that the user intends to authenticate to the instance
+    /// using a resource principal. Applicable only for OCI Streaming connections.
+    #[prost(bool, tag = "15")]
+    pub use_resource_principal: bool,
+    /// The password for Kafka basic/SASL auth.
+    #[prost(
+        oneof = "goldengate_kafka_connection_properties::ConnectionPasswordOptions",
+        tags = "16, 20"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_kafka_connection_properties::ConnectionPasswordOptions,
+    >,
+    /// The TrustStore password.
+    #[prost(
+        oneof = "goldengate_kafka_connection_properties::TrustStorePasswordOptions",
+        tags = "17, 21"
+    )]
+    pub trust_store_password_options: ::core::option::Option<
+        goldengate_kafka_connection_properties::TrustStorePasswordOptions,
+    >,
+    /// The KeyStore password.
+    #[prost(
+        oneof = "goldengate_kafka_connection_properties::KeyStorePasswordOptions",
+        tags = "18, 22"
+    )]
+    pub key_store_password_options: ::core::option::Option<
+        goldengate_kafka_connection_properties::KeyStorePasswordOptions,
+    >,
+    /// The password for the cert inside of the KeyStore.
+    /// In case it differs from the KeyStore password, it should be provided.
+    #[prost(
+        oneof = "goldengate_kafka_connection_properties::SslKeyPasswordOptions",
+        tags = "19, 23"
+    )]
+    pub ssl_key_password_options: ::core::option::Option<
+        goldengate_kafka_connection_properties::SslKeyPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateKafkaConnectionProperties`.
+pub mod goldengate_kafka_connection_properties {
+    /// Enum for Security Type for Kafka.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KafkaSecurityProtocol {
+        /// Security type not specified.
+        Unspecified = 0,
+        /// SSL security protocol.
+        Ssl = 1,
+        /// SASL SSL security protocol.
+        SaslSsl = 2,
+        /// Plaintext security protocol.
+        Plaintext = 3,
+        /// SASL Plaintext security protocol.
+        SaslPlaintext = 4,
+    }
+    impl KafkaSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KAFKA_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Ssl => "SSL",
+                Self::SaslSsl => "SASL_SSL",
+                Self::Plaintext => "PLAINTEXT",
+                Self::SaslPlaintext => "SASL_PLAINTEXT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KAFKA_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "SSL" => Some(Self::Ssl),
+                "SASL_SSL" => Some(Self::SaslSsl),
+                "PLAINTEXT" => Some(Self::Plaintext),
+                "SASL_PLAINTEXT" => Some(Self::SaslPlaintext),
+                _ => None,
+            }
+        }
+    }
+    /// The password for Kafka basic/SASL auth.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password for Kafka basic/SASL auth in plain
+        /// text.
+        #[prost(string, tag = "16")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password for Kafka basic/SASL auth. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "20")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The TrustStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TrustStorePasswordOptions {
+        /// Optional. Input only. The TrustStore password in plain text.
+        #[prost(string, tag = "17")]
+        TrustStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the TrustStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "21")]
+        TrustStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The KeyStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum KeyStorePasswordOptions {
+        /// Optional. Input only. The KeyStore password in plain text.
+        #[prost(string, tag = "18")]
+        KeyStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the KeyStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "22")]
+        KeyStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The password for the cert inside of the KeyStore.
+    /// In case it differs from the KeyStore password, it should be provided.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SslKeyPasswordOptions {
+        /// Optional. Input only. The password for the cert inside of the KeyStore in
+        /// plain text.
+        #[prost(string, tag = "19")]
+        SslKeyPassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password for the cert inside of the KeyStore.
+        /// Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "23")]
+        SslKeyPasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateKafkaSchemaRegistryConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateKafkaSchemaRegistryConnectionProperties {
+    /// Optional. The technology type of KafkaSchemaRegistryConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Kafka Schema Registry URL.
+    /// e.g.: '<https://server1.us.oracle.com:8081'>
+    #[prost(string, tag = "2")]
+    pub url: ::prost::alloc::string::String,
+    /// Optional. Used authentication mechanism to access Schema Registry.
+    #[prost(
+        enumeration = "goldengate_kafka_schema_registry_connection_properties::AuthenticationType",
+        tag = "3"
+    )]
+    pub authentication_type: i32,
+    /// Optional. The username to access Schema Registry using basic
+    /// authentication. This value is injected into
+    /// 'schema.registry.basic.auth.user.info=user:password' configuration
+    /// property.
+    #[prost(string, tag = "4")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the TrustStore file.
+    #[prost(string, tag = "6")]
+    pub trust_store_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the KeyStore file.
+    #[prost(string, tag = "8")]
+    pub key_store_file: ::prost::alloc::string::String,
+    /// The password to access Schema Registry using basic authentication.
+    #[prost(
+        oneof = "goldengate_kafka_schema_registry_connection_properties::ConnectionPasswordOptions",
+        tags = "11, 15"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_kafka_schema_registry_connection_properties::ConnectionPasswordOptions,
+    >,
+    /// The TrustStore password.
+    #[prost(
+        oneof = "goldengate_kafka_schema_registry_connection_properties::TrustStorePasswordOptions",
+        tags = "12, 16"
+    )]
+    pub trust_store_password_options: ::core::option::Option<
+        goldengate_kafka_schema_registry_connection_properties::TrustStorePasswordOptions,
+    >,
+    /// The KeyStore password.
+    #[prost(
+        oneof = "goldengate_kafka_schema_registry_connection_properties::KeyStorePasswordOptions",
+        tags = "13, 17"
+    )]
+    pub key_store_password_options: ::core::option::Option<
+        goldengate_kafka_schema_registry_connection_properties::KeyStorePasswordOptions,
+    >,
+    /// The password for the cert inside the KeyStore.
+    #[prost(
+        oneof = "goldengate_kafka_schema_registry_connection_properties::SslKeyPasswordOptions",
+        tags = "14, 18"
+    )]
+    pub ssl_key_password_options: ::core::option::Option<
+        goldengate_kafka_schema_registry_connection_properties::SslKeyPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateKafkaSchemaRegistryConnectionProperties`.
+pub mod goldengate_kafka_schema_registry_connection_properties {
+    /// Enum for authentication mechanism to access Schema Registry.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// No authentication.
+        None = 1,
+        /// Basic authentication.
+        Basic = 2,
+        /// Mutual authentication.
+        Mutual = 3,
+    }
+    impl AuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Basic => "BASIC",
+                Self::Mutual => "MUTUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "BASIC" => Some(Self::Basic),
+                "MUTUAL" => Some(Self::Mutual),
+                _ => None,
+            }
+        }
+    }
+    /// The password to access Schema Registry using basic authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password to access Schema Registry in plain
+        /// text.
+        #[prost(string, tag = "11")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password to access Schema Registry using basic
+        /// authentication. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "15")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The TrustStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TrustStorePasswordOptions {
+        /// Optional. Input only. The TrustStore password in plain text.
+        #[prost(string, tag = "12")]
+        TrustStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the TrustStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "16")]
+        TrustStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The KeyStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum KeyStorePasswordOptions {
+        /// Optional. Input only. The KeyStore password in plain text.
+        #[prost(string, tag = "13")]
+        KeyStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the KeyStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "17")]
+        KeyStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The password for the cert inside the KeyStore.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SslKeyPasswordOptions {
+        /// Optional. Input only. The password for the cert inside the KeyStore in
+        /// plain text.
+        #[prost(string, tag = "14")]
+        SslKeyPassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password for the cert inside the KeyStore.
+        /// Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "18")]
+        SslKeyPasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateOciObjectStorageConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateOciObjectStorageConnectionProperties {
+    /// Optional. The technology type of OciObjectStorageConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The OCID of the related OCI tenancy.
+    #[prost(string, tag = "2")]
+    pub tenancy_id: ::prost::alloc::string::String,
+    /// Optional. The name of the region of OCI Object Storage. e.g.: us-ashburn-1
+    /// If the region is not provided, backend will default to the default region.
+    #[prost(string, tag = "3")]
+    pub region: ::prost::alloc::string::String,
+    /// Optional. The OCID of the OCI user who will access the Object Storage.
+    /// The user must have write access to the bucket they want to connect to.
+    #[prost(string, tag = "4")]
+    pub user_id: ::prost::alloc::string::String,
+    /// Optional. The content of the private key file (PEM file)
+    /// corresponding to the API key of the fingerprint.
+    #[prost(string, tag = "5")]
+    pub private_key_file: ::prost::alloc::string::String,
+    /// Optional. The passphrase of the private key.
+    #[prost(string, tag = "6")]
+    pub private_key_passphrase_secret: ::prost::alloc::string::String,
+    /// Optional. The fingerprint of the API Key of the user specified by the
+    /// userId.
+    #[prost(string, tag = "7")]
+    pub public_key_fingerprint: ::prost::alloc::string::String,
+    /// Optional. Specifies that the user intends to authenticate to the instance
+    /// using a resource principal.
+    #[prost(bool, tag = "8")]
+    pub use_resource_principal: bool,
+}
+/// The properties of GoldengateAzureDataLakeStorageConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateAzureDataLakeStorageConnectionProperties {
+    /// Optional. The technology type of AzureDataLakeStorageConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Authentication mechanism to access Azure Data Lake Storage.
+    #[prost(
+        enumeration = "goldengate_azure_data_lake_storage_connection_properties::AuthenticationType",
+        tag = "2"
+    )]
+    pub authentication_type: i32,
+    /// Optional. Sets the Azure storage account name.
+    #[prost(string, tag = "3")]
+    pub account: ::prost::alloc::string::String,
+    /// Optional. Azure storage account key. This property is required when
+    /// 'authentication_type' is set to 'SHARED_KEY'.
+    #[prost(string, tag = "4")]
+    pub account_key_secret: ::prost::alloc::string::String,
+    /// Optional. Credential that uses a shared access signature (SAS) to
+    /// authenticate to an Azure Service.
+    #[prost(string, tag = "5")]
+    pub sas_token_secret: ::prost::alloc::string::String,
+    /// Optional. Azure tenant ID of the application. This property is required
+    /// when 'authentication_type' is set to 'AZURE_ACTIVE_DIRECTORY'.
+    #[prost(string, tag = "6")]
+    pub azure_tenant_id: ::prost::alloc::string::String,
+    /// Optional. Azure client ID of the application. This property is required
+    /// when 'authentication_type' is set to 'AZURE_ACTIVE_DIRECTORY'.
+    #[prost(string, tag = "7")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Optional. Azure client secret (aka application password) for
+    /// authentication.
+    #[prost(string, tag = "8")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Optional. Azure Storage service endpoint.
+    /// e.g: <https://test.blob.core.windows.net>
+    #[prost(string, tag = "9")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The endpoint used for authentication with Microsoft Entra ID
+    /// (formerly Azure Active Directory). Default value:
+    /// <https://login.microsoftonline.com>
+    #[prost(string, tag = "10")]
+    pub azure_authority_host: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `GoldengateAzureDataLakeStorageConnectionProperties`.
+pub mod goldengate_azure_data_lake_storage_connection_properties {
+    /// Enum for authentication mechanism to access Azure Data Lake Storage.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// Shared key authentication.
+        SharedKey = 1,
+        /// Shared access signature authentication.
+        SharedAccessSignature = 2,
+        /// Azure active directory authentication.
+        AzureActiveDirectory = 3,
+    }
+    impl AuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::SharedKey => "SHARED_KEY",
+                Self::SharedAccessSignature => "SHARED_ACCESS_SIGNATURE",
+                Self::AzureActiveDirectory => "AZURE_ACTIVE_DIRECTORY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHARED_KEY" => Some(Self::SharedKey),
+                "SHARED_ACCESS_SIGNATURE" => Some(Self::SharedAccessSignature),
+                "AZURE_ACTIVE_DIRECTORY" => Some(Self::AzureActiveDirectory),
+                _ => None,
+            }
+        }
+    }
+}
+/// The properties of GoldengateAzureSynapseAnalyticsConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateAzureSynapseAnalyticsConnectionProperties {
+    /// Optional. The technology type of AzureSynapseAnalyticsConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. JDBC connection string.
+    /// e.g.:
+    /// 'jdbc:sqlserver://<synapse-workspace>.sql.azuresynapse.net:1433;database=<db-name>;encrypt=true;trustServerCertificate=false;hostNameInCertificate=\*.sql.azuresynapse.net;loginTimeout=300;'
+    #[prost(string, tag = "2")]
+    pub connection_string: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "3")]
+    pub username: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[prost(
+        oneof = "goldengate_azure_synapse_analytics_connection_properties::ConnectionPasswordOptions",
+        tags = "5, 6"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_azure_synapse_analytics_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateAzureSynapseAnalyticsConnectionProperties`.
+pub mod goldengate_azure_synapse_analytics_connection_properties {
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Azure
+        /// Synapse Analytics connection in plain text.
+        #[prost(string, tag = "5")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Azure
+        /// Synapse Analytics connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "6")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengatePostgresqlConnection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengatePostgresqlConnectionProperties {
+    /// Optional. The technology type of PostgresqlConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The name of the database.
+    #[prost(string, tag = "2")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. The name or address of a host.
+    #[prost(string, tag = "3")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of an endpoint usually specified for a connection.
+    #[prost(int32, tag = "4")]
+    pub port: i32,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. An array of name-value pair attribute entries.
+    /// Used as additional parameters in connection string.
+    #[prost(message, repeated, tag = "7")]
+    pub additional_attributes: ::prost::alloc::vec::Vec<NameValuePair>,
+    /// Optional. Security protocol for PostgreSQL.
+    #[prost(
+        enumeration = "goldengate_postgresql_connection_properties::PostgresqlSecurityProtocol",
+        tag = "8"
+    )]
+    pub security_protocol: i32,
+    /// Optional. SSL modes for PostgreSQL.
+    #[prost(
+        enumeration = "goldengate_postgresql_connection_properties::PostgresqlSslMode",
+        tag = "9"
+    )]
+    pub ssl_mode: i32,
+    /// Optional. The base64 encoded certificate of the trusted certificate
+    /// authorities (Trusted CA) for PostgreSQL.
+    #[prost(string, tag = "10")]
+    pub ssl_ca_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded list of certificates revoked by the trusted
+    /// certificate authorities (Trusted CA).
+    #[prost(string, tag = "11")]
+    pub ssl_crl_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded certificate of the PostgreSQL server.
+    #[prost(string, tag = "12")]
+    pub ssl_cert_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded private key of the PostgreSQL server.
+    #[prost(string, tag = "13")]
+    pub ssl_key_file: ::prost::alloc::string::String,
+    /// Optional. The OCID of the database system being referenced.
+    #[prost(string, tag = "14")]
+    pub db_system_id: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[prost(
+        oneof = "goldengate_postgresql_connection_properties::ConnectionPasswordOptions",
+        tags = "15, 16"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_postgresql_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengatePostgresqlConnectionProperties`.
+pub mod goldengate_postgresql_connection_properties {
+    /// Enum for Security protocol for PostgreSQL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PostgresqlSecurityProtocol {
+        /// Security protocol not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+        /// Mutual Transport Layer Security.
+        Mtls = 3,
+    }
+    impl PostgresqlSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POSTGRESQL_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POSTGRESQL_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// Enum for SSL modes for PostgreSQL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PostgresqlSslMode {
+        /// SSL mode not specified.
+        Unspecified = 0,
+        /// Prefer SSL.
+        Prefer = 1,
+        /// Require SSL.
+        Require = 2,
+        /// Verify Certificate Authority.
+        VerifyCa = 3,
+        /// Verify Full.
+        VerifyFull = 4,
+    }
+    impl PostgresqlSslMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POSTGRESQL_SSL_MODE_UNSPECIFIED",
+                Self::Prefer => "PREFER",
+                Self::Require => "REQUIRE",
+                Self::VerifyCa => "VERIFY_CA",
+                Self::VerifyFull => "VERIFY_FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POSTGRESQL_SSL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PREFER" => Some(Self::Prefer),
+                "REQUIRE" => Some(Self::Require),
+                "VERIFY_CA" => Some(Self::VerifyCa),
+                "VERIFY_FULL" => Some(Self::VerifyFull),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for PostgreSQL
+        /// connection in plain text.
+        #[prost(string, tag = "15")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for PostgreSQL
+        /// connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "16")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateMicrosoftSqlserverConnection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateMicrosoftSqlserverConnectionProperties {
+    /// Optional. The technology type of MicrosoftSqlserverConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The name of the database.
+    #[prost(string, tag = "2")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. The name or address of a host.
+    #[prost(string, tag = "3")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of an endpoint usually specified for a connection.
+    #[prost(int32, tag = "4")]
+    pub port: i32,
+    /// Optional. The username Oracle Goldengate uses to connect to the Microsoft
+    /// SQL Server.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. An array of name-value pair attribute entries.
+    /// Used as additional parameters in connection string.
+    #[prost(message, repeated, tag = "7")]
+    pub additional_attributes: ::prost::alloc::vec::Vec<NameValuePair>,
+    /// Optional. Security Type for Microsoft SQL Server.
+    #[prost(
+        enumeration = "goldengate_microsoft_sqlserver_connection_properties::MicrosoftSqlserverSecurityProtocol",
+        tag = "8"
+    )]
+    pub security_protocol: i32,
+    /// Optional. Database Certificate - The base64 encoded content of a .pem or
+    /// .crt file containing the server public key (for 1-way SSL).
+    #[prost(string, tag = "9")]
+    pub ssl_ca_file: ::prost::alloc::string::String,
+    /// Optional. If set to true, the driver validates the certificate that is sent
+    /// by the database server.
+    #[prost(bool, tag = "10")]
+    pub server_certificate_validation_required: bool,
+    /// The password Oracle Goldengate uses to connect the associated Microsoft
+    /// SQL Server.
+    #[prost(
+        oneof = "goldengate_microsoft_sqlserver_connection_properties::ConnectionPasswordOptions",
+        tags = "11, 12"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_microsoft_sqlserver_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateMicrosoftSqlserverConnectionProperties`.
+pub mod goldengate_microsoft_sqlserver_connection_properties {
+    /// Enum for Security Type for Microsoft SQL Server.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MicrosoftSqlserverSecurityProtocol {
+        /// Security type not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+    }
+    impl MicrosoftSqlserverSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MICROSOFT_SQLSERVER_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MICROSOFT_SQLSERVER_SECURITY_PROTOCOL_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated Microsoft
+    /// SQL Server.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Microsoft
+        /// SQL Server connection in plain text.
+        #[prost(string, tag = "11")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Microsoft
+        /// SQL Server connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "12")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateAmazonS3Connection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateAmazonS3ConnectionProperties {
+    /// Optional. The technology type of AmazonS3Connection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Access key ID to access the Amazon S3 bucket.
+    #[prost(string, tag = "2")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Optional. Secret access key to access the Amazon S3 bucket.
+    #[prost(string, tag = "3")]
+    pub secret_access_key_secret: ::prost::alloc::string::String,
+    /// Optional. The Amazon Endpoint for S3.
+    #[prost(string, tag = "4")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The name of the AWS region where the bucket is created.
+    #[prost(string, tag = "5")]
+    pub region: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateHdfsConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateHdfsConnectionProperties {
+    /// Optional. The technology type of HdfsConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The content of the Hadoop Distributed File System
+    /// configuration file (core-site.xml).
+    #[prost(string, tag = "2")]
+    pub core_site_xml: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateJavaMessageServiceConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateJavaMessageServiceConnectionProperties {
+    /// Optional. The technology type of JavaMessageServiceConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. If set to true, Java Naming and Directory Interface (JNDI)
+    /// properties should be provided.
+    #[prost(bool, tag = "2")]
+    pub use_jndi: bool,
+    /// Optional. The Connection Factory can be looked up using this name.
+    /// e.g.: 'ConnectionFactory'
+    #[prost(string, tag = "3")]
+    pub jndi_connection_factory: ::prost::alloc::string::String,
+    /// Optional. The URL that Java Message Service will use to contact the JNDI
+    /// provider. e.g.: 'tcp://myjms.host.domain:61616?jms.prefetchPolicy.all=1000'
+    #[prost(string, tag = "4")]
+    pub jndi_provider_url: ::prost::alloc::string::String,
+    /// Optional. The implementation of javax.naming.spi.InitialContextFactory
+    /// interface used to obtain initial naming context.
+    #[prost(string, tag = "5")]
+    pub jndi_initial_context_factory: ::prost::alloc::string::String,
+    /// Optional. Specifies the identity of the principal (user) to be
+    /// authenticated.
+    #[prost(string, tag = "6")]
+    pub jndi_security_principal: ::prost::alloc::string::String,
+    /// Optional. The password associated to the principal.
+    #[prost(string, tag = "7")]
+    pub jndi_security_credentials_secret: ::prost::alloc::string::String,
+    /// Optional. Connection URL of the Java Message Service, specifying the
+    /// protocol, host, and port. e.g.: 'mq://myjms.host.domain:7676'
+    #[prost(string, tag = "8")]
+    pub connection_url: ::prost::alloc::string::String,
+    /// Optional. The Java class implementing javax.jms.ConnectionFactory interface
+    /// supplied by the JMS provider.
+    #[prost(string, tag = "9")]
+    pub connection_factory: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect to the Java
+    /// Message Service.
+    #[prost(string, tag = "10")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. Security protocol for Java Message Service.
+    #[prost(
+        enumeration = "goldengate_java_message_service_connection_properties::JmsSecurityProtocol",
+        tag = "12"
+    )]
+    pub security_protocol: i32,
+    /// Optional. Authentication type for Java Message Service.
+    #[prost(
+        enumeration = "goldengate_java_message_service_connection_properties::JmsAuthenticationType",
+        tag = "13"
+    )]
+    pub authentication_type: i32,
+    /// Optional. The base64 encoded content of the TrustStore file.
+    #[prost(string, tag = "14")]
+    pub trust_store_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the KeyStore file.
+    #[prost(string, tag = "16")]
+    pub key_store_file: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated Java Message
+    /// Service.
+    #[prost(
+        oneof = "goldengate_java_message_service_connection_properties::ConnectionPasswordOptions",
+        tags = "19, 23"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_java_message_service_connection_properties::ConnectionPasswordOptions,
+    >,
+    /// The TrustStore password.
+    #[prost(
+        oneof = "goldengate_java_message_service_connection_properties::TrustStorePasswordOptions",
+        tags = "20, 24"
+    )]
+    pub trust_store_password_options: ::core::option::Option<
+        goldengate_java_message_service_connection_properties::TrustStorePasswordOptions,
+    >,
+    /// The KeyStore password.
+    #[prost(
+        oneof = "goldengate_java_message_service_connection_properties::KeyStorePasswordOptions",
+        tags = "21, 25"
+    )]
+    pub key_store_password_options: ::core::option::Option<
+        goldengate_java_message_service_connection_properties::KeyStorePasswordOptions,
+    >,
+    /// The password for the cert inside of the KeyStore.
+    /// In case it differs from the KeyStore password, it should be provided.
+    #[prost(
+        oneof = "goldengate_java_message_service_connection_properties::SslKeyPasswordOptions",
+        tags = "22, 26"
+    )]
+    pub ssl_key_password_options: ::core::option::Option<
+        goldengate_java_message_service_connection_properties::SslKeyPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateJavaMessageServiceConnectionProperties`.
+pub mod goldengate_java_message_service_connection_properties {
+    /// Enum for Security protocol for Java Message Service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum JmsSecurityProtocol {
+        /// Security protocol not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+        /// Mutual Transport Layer Security.
+        Mtls = 3,
+    }
+    impl JmsSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "JMS_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JMS_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// Enum for Authentication type for Java Message Service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum JmsAuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// No authentication.
+        None = 1,
+        /// Basic authentication.
+        Basic = 2,
+    }
+    impl JmsAuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "JMS_AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JMS_AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated Java Message
+    /// Service.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses to connect the
+        /// Java Message Service in plain text.
+        #[prost(string, tag = "19")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses to connect the
+        /// associated Java Message Service. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "23")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The TrustStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TrustStorePasswordOptions {
+        /// Optional. Input only. The TrustStore password in plain text.
+        #[prost(string, tag = "20")]
+        TrustStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the TrustStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "24")]
+        TrustStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The KeyStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum KeyStorePasswordOptions {
+        /// Optional. Input only. The KeyStore password in plain text.
+        #[prost(string, tag = "21")]
+        KeyStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the KeyStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "25")]
+        KeyStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The password for the cert inside of the KeyStore.
+    /// In case it differs from the KeyStore password, it should be provided.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum SslKeyPasswordOptions {
+        /// Optional. Input only. The password for the cert inside of the KeyStore in
+        /// plain text.
+        #[prost(string, tag = "22")]
+        SslKeyPassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password for the cert inside of the KeyStore.
+        /// Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "26")]
+        SslKeyPasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateMongodbConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateMongodbConnectionProperties {
+    /// Optional. The technology type of MongodbConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. MongoDB connection string.
+    /// e.g.: 'mongodb://mongodb0.example.com:27017/recordsrecords'
+    #[prost(string, tag = "2")]
+    pub connection_string: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect to the database.
+    #[prost(string, tag = "3")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The OCID of the Oracle Autonomous Json Database.
+    #[prost(string, tag = "5")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Optional. Security Type for MongoDB.
+    #[prost(
+        enumeration = "goldengate_mongodb_connection_properties::MongodbSecurityProtocol",
+        tag = "6"
+    )]
+    pub security_protocol: i32,
+    /// Optional. Database Certificate - The base64 encoded content of a .pem file,
+    /// containing the server public key (for 1 and 2-way SSL).
+    #[prost(string, tag = "7")]
+    pub tls_ca_file: ::prost::alloc::string::String,
+    /// Optional. Client Certificate - The base64 encoded content of a .pem file,
+    /// containing the client public key (for 2-way SSL).
+    #[prost(string, tag = "8")]
+    pub tls_certificate_key_file: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated database.
+    #[prost(
+        oneof = "goldengate_mongodb_connection_properties::ConnectionPasswordOptions",
+        tags = "10, 12"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_mongodb_connection_properties::ConnectionPasswordOptions,
+    >,
+    /// Client Certificate key file password.
+    #[prost(
+        oneof = "goldengate_mongodb_connection_properties::TlsCertificateKeyFilePasswordOptions",
+        tags = "11, 13"
+    )]
+    pub tls_certificate_key_file_password_options: ::core::option::Option<
+        goldengate_mongodb_connection_properties::TlsCertificateKeyFilePasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateMongodbConnectionProperties`.
+pub mod goldengate_mongodb_connection_properties {
+    /// Enum for Security Type for MongoDB.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MongodbSecurityProtocol {
+        /// Security type not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+        /// Mutual Transport Layer Security.
+        Mtls = 3,
+    }
+    impl MongodbSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MONGODB_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MONGODB_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated database.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses to connect the
+        /// Mongodb connection in plain text.
+        #[prost(string, tag = "10")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses to connect the
+        /// Mongodb connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "12")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// Client Certificate key file password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TlsCertificateKeyFilePasswordOptions {
+        /// Optional. Input only. The Client Certificate key file password in plain
+        /// text.
+        #[prost(string, tag = "11")]
+        TlsCertificateKeyFilePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the Client Certificate key file password in Secret
+        /// Manager. Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "13")]
+        TlsCertificateKeyFilePasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateOracleNosqlConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateOracleNosqlConnectionProperties {
+    /// Optional. The technology type of OracleNosqlConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The OCID of the OCI tenancy.
+    #[prost(string, tag = "2")]
+    pub tenancy_id: ::prost::alloc::string::String,
+    /// Optional. The name of the region. e.g.: us-ashburn-1
+    #[prost(string, tag = "3")]
+    pub region: ::prost::alloc::string::String,
+    /// Optional. The OCID of the OCI user who will access the Oracle NoSQL
+    /// database.
+    #[prost(string, tag = "4")]
+    pub user_id: ::prost::alloc::string::String,
+    /// Optional. The content of the private key file (PEM file)
+    /// corresponding to the API key of the fingerprint.
+    #[prost(string, tag = "5")]
+    pub private_key_file: ::prost::alloc::string::String,
+    /// Optional. The passphrase of the private key.
+    #[prost(string, tag = "6")]
+    pub private_key_passphrase_secret: ::prost::alloc::string::String,
+    /// Optional. The fingerprint of the API Key of the user specified by the
+    /// userId.
+    #[prost(string, tag = "7")]
+    pub public_key_fingerprint: ::prost::alloc::string::String,
+    /// Optional. Specifies that the user intends to authenticate to the instance
+    /// using a resource principal.
+    #[prost(bool, tag = "8")]
+    pub use_resource_principal: bool,
+}
+/// The properties of GoldengateSnowflakeConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateSnowflakeConnectionProperties {
+    /// Optional. The technology type of SnowflakeConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. JDBC connection URL.
+    /// e.g.:
+    /// 'jdbc:snowflake://\<account_name>.snowflakecomputing.com/?warehouse=<warehouse-name>&db=<db-name>'
+    #[prost(string, tag = "2")]
+    pub connection_url: ::prost::alloc::string::String,
+    /// Optional. Used authentication mechanism to access Snowflake.
+    #[prost(
+        enumeration = "goldengate_snowflake_connection_properties::AuthenticationType",
+        tag = "3"
+    )]
+    pub authentication_type: i32,
+    /// Optional. The username Oracle Goldengate uses to connect to Snowflake.
+    #[prost(string, tag = "4")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The content of private key file in PEM format.
+    #[prost(string, tag = "6")]
+    pub private_key_file: ::prost::alloc::string::String,
+    /// Optional. Password if the private key file is encrypted.
+    #[prost(string, tag = "7")]
+    pub private_key_passphrase_secret: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect to Snowflake platform.
+    #[prost(
+        oneof = "goldengate_snowflake_connection_properties::ConnectionPasswordOptions",
+        tags = "8, 9"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_snowflake_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateSnowflakeConnectionProperties`.
+pub mod goldengate_snowflake_connection_properties {
+    /// Enum for authentication mechanism to access Snowflake.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// Basic authentication.
+        Basic = 1,
+        /// Key pair authentication.
+        KeyPair = 2,
+    }
+    impl AuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::Basic => "BASIC",
+                Self::KeyPair => "KEY_PAIR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "KEY_PAIR" => Some(Self::KeyPair),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect to Snowflake platform.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses to connect to
+        /// Snowflake platform in plain text.
+        #[prost(string, tag = "8")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses to connect to
+        /// Snowflake platform. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "9")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateAmazonRedshiftConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateAmazonRedshiftConnectionProperties {
+    /// Optional. The technology type of AmazonRedshiftConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Connection URL.
+    /// e.g.:
+    /// 'jdbc:redshift://aws-redshift-instance.aaaaaaaaaaaa.us-east-2.redshift.amazonaws.com:5439/mydb'
+    #[prost(string, tag = "2")]
+    pub connection_url: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "3")]
+    pub username: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[prost(
+        oneof = "goldengate_amazon_redshift_connection_properties::ConnectionPasswordOptions",
+        tags = "5, 6"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_amazon_redshift_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateAmazonRedshiftConnectionProperties`.
+pub mod goldengate_amazon_redshift_connection_properties {
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Amazon
+        /// Redshift connection in plain text.
+        #[prost(string, tag = "5")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Amazon
+        /// Redshift connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "6")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateElasticsearchConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateElasticsearchConnectionProperties {
+    /// Optional. The technology type of ElasticsearchConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Comma separated list of Elasticsearch server addresses, specified
+    /// as host:port entries, where :port is optional. If port is not specified, it
+    /// defaults to 9200. Example:
+    /// "server1.example.com:4000,server2.example.com:4000"
+    #[prost(string, tag = "2")]
+    pub servers: ::prost::alloc::string::String,
+    /// Optional. Security protocol for Elasticsearch.
+    #[prost(
+        enumeration = "goldengate_elasticsearch_connection_properties::ElasticsearchSecurityProtocol",
+        tag = "3"
+    )]
+    pub security_protocol: i32,
+    /// Optional. Authentication type for Elasticsearch.
+    #[prost(
+        enumeration = "goldengate_elasticsearch_connection_properties::ElasticsearchAuthenticationType",
+        tag = "4"
+    )]
+    pub authentication_type: i32,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. Fingerprint required by TLS security protocol.
+    /// Eg.: '6152b2dfbff200f973c5074a5b91d06ab3b472c07c09a1ea57bb7fd406cdce9c'
+    #[prost(string, tag = "7")]
+    pub fingerprint: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[prost(
+        oneof = "goldengate_elasticsearch_connection_properties::ConnectionPasswordOptions",
+        tags = "8, 9"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_elasticsearch_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateElasticsearchConnectionProperties`.
+pub mod goldengate_elasticsearch_connection_properties {
+    /// Enum for Security protocol for Elasticsearch.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ElasticsearchSecurityProtocol {
+        /// Security protocol not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+    }
+    impl ElasticsearchSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ELASTICSEARCH_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ELASTICSEARCH_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                _ => None,
+            }
+        }
+    }
+    /// Enum for Authentication type for Elasticsearch.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ElasticsearchAuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// No authentication.
+        None = 1,
+        /// Basic authentication.
+        Basic = 2,
+    }
+    impl ElasticsearchAuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ELASTICSEARCH_AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ELASTICSEARCH_AUTHENTICATION_TYPE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "NONE" => Some(Self::None),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Elastic
+        /// Search connection in plain text.
+        #[prost(string, tag = "8")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Elastic
+        /// Search connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "9")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateAmazonKinesisConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateAmazonKinesisConnectionProperties {
+    /// Optional. The technology type of AmazonKinesisConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Access key ID to access the Amazon Kinesis.
+    #[prost(string, tag = "2")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Optional. Secret access key to access the Amazon Kinesis.
+    #[prost(string, tag = "3")]
+    pub secret_access_key_secret: ::prost::alloc::string::String,
+    /// Optional. The endpoint URL of the Amazon Kinesis service.
+    /// e.g.: '<https://kinesis.us-east-1.amazonaws.com'>
+    /// If not provided, Goldengate will default to
+    /// '<https://kinesis.<region>.amazonaws.com'.>
+    #[prost(string, tag = "4")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The name of the AWS region.
+    /// If not provided, Goldengate will default to 'us-west-1'.
+    #[prost(string, tag = "5")]
+    pub aws_region: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateDb2Connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateDb2ConnectionProperties {
+    /// Optional. The technology type of Db2Connection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The name or address of a host.
+    #[prost(string, tag = "2")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of an endpoint usually specified for a connection.
+    #[prost(int32, tag = "3")]
+    pub port: i32,
+    /// Optional. The name of the database.
+    #[prost(string, tag = "4")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. The username Oracle Goldengate uses to connect to the DB2
+    /// database.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. Security protocol for the DB2 database.
+    #[prost(
+        enumeration = "goldengate_db2_connection_properties::Db2SecurityProtocol",
+        tag = "6"
+    )]
+    pub security_protocol: i32,
+    /// Optional. An array of name-value pair attribute entries.
+    /// Used as additional parameters in connection string.
+    #[prost(message, repeated, tag = "8")]
+    pub additional_attributes: ::prost::alloc::vec::Vec<NameValuePair>,
+    /// Optional. The keystore file created at the client containing the
+    /// server certificate / CA root certificate. Not supported for IBM Db2 for i.
+    #[prost(string, tag = "9")]
+    pub ssl_client_keystoredb_file: ::prost::alloc::string::String,
+    /// Optional. The keystash file which contains the encrypted password to
+    /// the key database file. Not supported for IBM Db2 for i.
+    #[prost(string, tag = "10")]
+    pub ssl_client_keystash_file: ::prost::alloc::string::String,
+    /// Optional. The file which contains the self-signed server certificate
+    /// / Certificate Authority (CA) certificate.
+    #[prost(string, tag = "11")]
+    pub ssl_server_certificate_file: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect to the associated DB2
+    /// database.
+    #[prost(
+        oneof = "goldengate_db2_connection_properties::ConnectionPasswordOptions",
+        tags = "12, 13"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_db2_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateDb2ConnectionProperties`.
+pub mod goldengate_db2_connection_properties {
+    /// Enum for Security protocol for the DB2 database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Db2SecurityProtocol {
+        /// Security protocol not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+    }
+    impl Db2SecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DB2_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DB2_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect to the associated DB2
+    /// database.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Db2
+        /// connection in plain text.
+        #[prost(string, tag = "12")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Db2
+        /// connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "13")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateRedisConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateRedisConnectionProperties {
+    /// Optional. The technology type of RedisConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Comma separated list of Redis server addresses, specified as
+    /// host:port entries, where :port is optional. If port is not specified, it
+    /// defaults to 6379. Example:
+    /// "server1.example.com:6379,server2.example.com:6379"
+    #[prost(string, tag = "2")]
+    pub servers: ::prost::alloc::string::String,
+    /// Optional. Security protocol for Redis.
+    #[prost(
+        enumeration = "goldengate_redis_connection_properties::RedisSecurityProtocol",
+        tag = "3"
+    )]
+    pub security_protocol: i32,
+    /// Optional. Authentication type for Redis.
+    #[prost(
+        enumeration = "goldengate_redis_connection_properties::RedisAuthenticationType",
+        tag = "4"
+    )]
+    pub authentication_type: i32,
+    /// Optional. The username Oracle Goldengate uses to connect the associated
+    /// system of the given technology.
+    #[prost(string, tag = "5")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. The OCID of the Redis cluster.
+    #[prost(string, tag = "7")]
+    pub redis_cluster_id: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the TrustStore file.
+    #[prost(string, tag = "8")]
+    pub trust_store_file: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the KeyStore file.
+    #[prost(string, tag = "10")]
+    pub key_store_file: ::prost::alloc::string::String,
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[prost(
+        oneof = "goldengate_redis_connection_properties::ConnectionPasswordOptions",
+        tags = "12, 15"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_redis_connection_properties::ConnectionPasswordOptions,
+    >,
+    /// The TrustStore password.
+    #[prost(
+        oneof = "goldengate_redis_connection_properties::TrustStorePasswordOptions",
+        tags = "13, 16"
+    )]
+    pub trust_store_password_options: ::core::option::Option<
+        goldengate_redis_connection_properties::TrustStorePasswordOptions,
+    >,
+    /// The KeyStore password.
+    #[prost(
+        oneof = "goldengate_redis_connection_properties::KeyStorePasswordOptions",
+        tags = "14, 17"
+    )]
+    pub key_store_password_options: ::core::option::Option<
+        goldengate_redis_connection_properties::KeyStorePasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateRedisConnectionProperties`.
+pub mod goldengate_redis_connection_properties {
+    /// Enum for Security protocol for Redis.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RedisSecurityProtocol {
+        /// Security protocol not specified.
+        Unspecified = 0,
+        /// Plain text communication.
+        Plain = 1,
+        /// Transport Layer Security.
+        Tls = 2,
+        /// Mutual Transport Layer Security.
+        Mtls = 3,
+    }
+    impl RedisSecurityProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REDIS_SECURITY_PROTOCOL_UNSPECIFIED",
+                Self::Plain => "PLAIN",
+                Self::Tls => "TLS",
+                Self::Mtls => "MTLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REDIS_SECURITY_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN" => Some(Self::Plain),
+                "TLS" => Some(Self::Tls),
+                "MTLS" => Some(Self::Mtls),
+                _ => None,
+            }
+        }
+    }
+    /// Enum for Authentication type for Redis.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RedisAuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// No authentication.
+        None = 1,
+        /// Basic authentication.
+        Basic = 2,
+    }
+    impl RedisAuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REDIS_AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REDIS_AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+    /// The password Oracle Goldengate uses to connect the associated system of
+    /// the given technology.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password Oracle Goldengate uses for Redis
+        /// connection in plain text.
+        #[prost(string, tag = "12")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password Oracle Goldengate uses for Redis
+        /// connection. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "15")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The TrustStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum TrustStorePasswordOptions {
+        /// Optional. Input only. The TrustStore password in plain text.
+        #[prost(string, tag = "13")]
+        TrustStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the TrustStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "16")]
+        TrustStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+    /// The KeyStore password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum KeyStorePasswordOptions {
+        /// Optional. Input only. The KeyStore password in plain text.
+        #[prost(string, tag = "14")]
+        KeyStorePassword(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the KeyStore password. Format:
+        /// projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "17")]
+        KeyStorePasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateDatabricksConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDatabricksConnectionProperties {
+    /// Optional. The technology type of DatabricksConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Authentication type for Databricks.
+    #[prost(
+        enumeration = "goldengate_databricks_connection_properties::DatabricksAuthenticationType",
+        tag = "2"
+    )]
+    pub authentication_type: i32,
+    /// Optional. Connection URL.
+    /// e.g.:
+    /// 'jdbc:databricks://adb-33934.4.azuredatabricks.net:443/default;transportMode=http;ssl=1;httpPath=sql/protocolv1/o/3393########44/0##3-7-hlrb'
+    #[prost(string, tag = "3")]
+    pub connection_url: ::prost::alloc::string::String,
+    /// Optional. OAuth client id, only applicable for authentication_type ==
+    /// OAUTH_M2M
+    #[prost(string, tag = "5")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Optional. OAuth client secret, only applicable for authentication_type ==
+    /// OAUTH_M2M
+    #[prost(string, tag = "6")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Optional. External storage credential name to access files on object
+    /// storage such as ADLS Gen2, S3 or Cloud Storage.
+    #[prost(string, tag = "7")]
+    pub storage_credential: ::prost::alloc::string::String,
+    /// The password used to connect to Databricks.
+    /// Only applicable for authentication_type == PERSONAL_ACCESS_TOKEN.
+    #[prost(
+        oneof = "goldengate_databricks_connection_properties::ConnectionPasswordOptions",
+        tags = "8, 9"
+    )]
+    pub connection_password_options: ::core::option::Option<
+        goldengate_databricks_connection_properties::ConnectionPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateDatabricksConnectionProperties`.
+pub mod goldengate_databricks_connection_properties {
+    /// Enum for authentication type for Databricks.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabricksAuthenticationType {
+        /// Authentication type not specified.
+        Unspecified = 0,
+        /// Personal access token authentication.
+        PersonalAccessToken = 1,
+        /// OAuth M2M authentication.
+        OauthM2m = 2,
+    }
+    impl DatabricksAuthenticationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATABRICKS_AUTHENTICATION_TYPE_UNSPECIFIED",
+                Self::PersonalAccessToken => "PERSONAL_ACCESS_TOKEN",
+                Self::OauthM2m => "OAUTH_M2M",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABRICKS_AUTHENTICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERSONAL_ACCESS_TOKEN" => Some(Self::PersonalAccessToken),
+                "OAUTH_M2M" => Some(Self::OauthM2m),
+                _ => None,
+            }
+        }
+    }
+    /// The password used to connect to Databricks.
+    /// Only applicable for authentication_type == PERSONAL_ACCESS_TOKEN.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ConnectionPasswordOptions {
+        /// Optional. Input only. The password used to connect to Databricks in plain
+        /// text.
+        #[prost(string, tag = "8")]
+        Password(::prost::alloc::string::String),
+        /// Optional. Input only. The resource name of a secret version in Secret
+        /// Manager which contains the password used to connect to Databricks.
+        /// Format: projects/{project}/secrets/{secret}/versions/{version}.
+        #[prost(string, tag = "9")]
+        PasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The properties of GoldengateGooglePubsubConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGooglePubsubConnectionProperties {
+    /// Optional. The technology type of GooglePubsubConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the service account key file
+    /// containing the credentials required to use Google Pub/Sub.
+    #[prost(string, tag = "2")]
+    pub service_account_key_file: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateMicrosoftFabricConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateMicrosoftFabricConnectionProperties {
+    /// Optional. The technology type of MicrosoftFabricConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Azure tenant ID of the application.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// Optional. Azure client ID of the application.
+    #[prost(string, tag = "3")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Optional. Client secret associated with the client id.
+    #[prost(string, tag = "4")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Optional. Optional Microsoft Fabric service endpoint.
+    /// Default value: <https://onelake.dfs.fabric.microsoft.com>
+    #[prost(string, tag = "5")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// The properties of GoldengateOracleAIDataPlatformConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateOracleAiDataPlatformConnectionProperties {
+    /// Optional. The technology type of OracleAiDataPlatformConnection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Optional. Connection URL. It must start with 'jdbc:spark://'
+    #[prost(string, tag = "2")]
+    pub connection_url: ::prost::alloc::string::String,
+    /// Optional. The OCID of the related OCI tenancy.
+    #[prost(string, tag = "3")]
+    pub tenancy_id: ::prost::alloc::string::String,
+    /// Optional. The name of the region. e.g.: us-ashburn-1
+    #[prost(string, tag = "4")]
+    pub region: ::prost::alloc::string::String,
+    /// Optional. The OCID of the OCI user who will access.
+    #[prost(string, tag = "5")]
+    pub user_id: ::prost::alloc::string::String,
+    /// Optional. The content of the private key file (PEM file)
+    /// corresponding to the API key of the fingerprint.
+    #[prost(string, tag = "6")]
+    pub private_key_file: ::prost::alloc::string::String,
+    /// Optional. The passphrase of the private key.
+    #[prost(string, tag = "7")]
+    pub private_key_passphrase_secret: ::prost::alloc::string::String,
+    /// Optional. The fingerprint of the API Key of the user specified by the
+    /// user_id.
+    #[prost(string, tag = "8")]
+    pub public_key_fingerprint: ::prost::alloc::string::String,
+    /// Optional. Specifies that the user intends to authenticate to the instance
+    /// using a resource principal.
+    #[prost(bool, tag = "9")]
+    pub use_resource_principal: bool,
+}
+/// The Glue Iceberg catalog.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GlueIcebergCatalog {
+    /// Required. The catalog ID of Glue.
+    #[prost(string, tag = "1")]
+    pub glue_id: ::prost::alloc::string::String,
+}
+/// The Nessie Iceberg catalog.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NessieIcebergCatalog {
+    /// Required. The Nessie uri.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Required. The Nessie branch.
+    #[prost(string, tag = "2")]
+    pub branch: ::prost::alloc::string::String,
+}
+/// The Polaris Iceberg catalog.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PolarisIcebergCatalog {
+    /// Required. The Polaris uri.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Required. The catalog name within Polaris.
+    #[prost(string, tag = "2")]
+    pub polaris_catalog: ::prost::alloc::string::String,
+    /// Required. The Polaris client ID.
+    #[prost(string, tag = "3")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Required. The Polaris principal role.
+    #[prost(string, tag = "4")]
+    pub principal_role: ::prost::alloc::string::String,
+    /// Optional. The Polaris client secret.
+    #[prost(string, tag = "5")]
+    pub client_secret: ::prost::alloc::string::String,
+}
+/// The REST Iceberg catalog.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RestIcebergCatalog {
+    /// Required. The REST uri.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the configuration file containing
+    /// additional properties for the REST catalog.
+    #[prost(string, tag = "2")]
+    pub properties: ::prost::alloc::string::String,
+}
+/// The Iceberg catalog details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IcebergCatalog {
+    /// Required. The type of Iceberg catalog.
+    #[prost(enumeration = "iceberg_catalog::CatalogType", tag = "6")]
+    pub catalog_type: i32,
+    /// The type of Iceberg catalog.
+    #[prost(oneof = "iceberg_catalog::CatalogDetails", tags = "1, 3, 4, 5")]
+    pub catalog_details: ::core::option::Option<iceberg_catalog::CatalogDetails>,
+}
+/// Nested message and enum types in `IcebergCatalog`.
+pub mod iceberg_catalog {
+    /// The type of Iceberg catalog.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CatalogType {
+        /// Catalog type not specified.
+        Unspecified = 0,
+        /// Glue catalog.
+        Glue = 1,
+        /// Hadoop catalog.
+        Hadoop = 2,
+        /// Nessie catalog.
+        Nessie = 3,
+        /// Polaris catalog.
+        Polaris = 4,
+        /// REST catalog.
+        Rest = 5,
+    }
+    impl CatalogType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CATALOG_TYPE_UNSPECIFIED",
+                Self::Glue => "GLUE",
+                Self::Hadoop => "HADOOP",
+                Self::Nessie => "NESSIE",
+                Self::Polaris => "POLARIS",
+                Self::Rest => "REST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATALOG_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GLUE" => Some(Self::Glue),
+                "HADOOP" => Some(Self::Hadoop),
+                "NESSIE" => Some(Self::Nessie),
+                "POLARIS" => Some(Self::Polaris),
+                "REST" => Some(Self::Rest),
+                _ => None,
+            }
+        }
+    }
+    /// The type of Iceberg catalog.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum CatalogDetails {
+        /// The Glue Iceberg catalog.
+        #[prost(message, tag = "1")]
+        GlueIcebergCatalog(super::GlueIcebergCatalog),
+        /// The Nessie Iceberg catalog.
+        #[prost(message, tag = "3")]
+        NessieIcebergCatalog(super::NessieIcebergCatalog),
+        /// The Polaris Iceberg catalog.
+        #[prost(message, tag = "4")]
+        PolarisIcebergCatalog(super::PolarisIcebergCatalog),
+        /// The REST Iceberg catalog.
+        #[prost(message, tag = "5")]
+        RestIcebergCatalog(super::RestIcebergCatalog),
+    }
+}
+/// The Amazon S3 Iceberg storage.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonS3IcebergStorage {
+    /// Required. The scheme type of Amazon S3.
+    #[prost(enumeration = "amazon_s3_iceberg_storage::SchemeType", tag = "1")]
+    pub scheme_type: i32,
+    /// Required. The access key ID of Amazon S3.
+    #[prost(string, tag = "2")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Required. The region of Amazon S3.
+    #[prost(string, tag = "3")]
+    pub region: ::prost::alloc::string::String,
+    /// Required. The bucket of Amazon S3.
+    #[prost(string, tag = "4")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Optional. The endpoint of Amazon S3.
+    #[prost(string, tag = "5")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The secret access key of Amazon S3.
+    #[prost(string, tag = "6")]
+    pub secret_access_key_secret: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AmazonS3IcebergStorage`.
+pub mod amazon_s3_iceberg_storage {
+    /// Enum for scheme type of Amazon S3.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SchemeType {
+        /// Scheme type not specified.
+        Unspecified = 0,
+        /// S3 scheme.
+        S3 = 1,
+        /// S3A scheme.
+        S3a = 2,
+    }
+    impl SchemeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCHEME_TYPE_UNSPECIFIED",
+                Self::S3 => "S3",
+                Self::S3a => "S3A",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEME_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "S3" => Some(Self::S3),
+                "S3A" => Some(Self::S3a),
+                _ => None,
+            }
+        }
+    }
+}
+/// The Google Cloud Storage Iceberg storage.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudStorageIcebergStorage {
+    /// Required. The bucket of Google Cloud Storage.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. The project ID of Google Cloud Storage.
+    #[prost(string, tag = "2")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Optional. The base64 encoded content of the service account key file of
+    /// Google Cloud Storage.
+    #[prost(string, tag = "3")]
+    pub service_account_key_file: ::prost::alloc::string::String,
+}
+/// The Azure Data Lake Storage Iceberg storage.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureDataLakeStorageIcebergStorage {
+    /// Required. The account of Azure Data Lake Storage.
+    #[prost(string, tag = "1")]
+    pub azure_account: ::prost::alloc::string::String,
+    /// Required. The container of Azure Data Lake Storage.
+    #[prost(string, tag = "2")]
+    pub container: ::prost::alloc::string::String,
+    /// Optional. The account key of Azure Data Lake Storage.
+    #[prost(string, tag = "3")]
+    pub account_key_secret: ::prost::alloc::string::String,
+    /// Optional. The endpoint of Azure Data Lake Storage.
+    #[prost(string, tag = "4")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// The Iceberg storage details.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IcebergStorage {
+    /// Required. The type of Iceberg storage.
+    #[prost(enumeration = "iceberg_storage::StorageType", tag = "4")]
+    pub storage_type: i32,
+    /// The type of Iceberg storage.
+    #[prost(oneof = "iceberg_storage::StorageDetails", tags = "1, 2, 3")]
+    pub storage_details: ::core::option::Option<iceberg_storage::StorageDetails>,
+}
+/// Nested message and enum types in `IcebergStorage`.
+pub mod iceberg_storage {
+    /// The type of Iceberg storage.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageType {
+        /// Storage type not specified.
+        Unspecified = 0,
+        /// Amazon S3 storage.
+        AmazonS3 = 1,
+        /// Google Cloud Storage storage.
+        GoogleCloudStorage = 2,
+        /// Azure Data Lake Storage storage.
+        AzureDataLakeStorage = 3,
+    }
+    impl StorageType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::AmazonS3 => "AMAZON_S3",
+                Self::GoogleCloudStorage => "GOOGLE_CLOUD_STORAGE",
+                Self::AzureDataLakeStorage => "AZURE_DATA_LAKE_STORAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AMAZON_S3" => Some(Self::AmazonS3),
+                "GOOGLE_CLOUD_STORAGE" => Some(Self::GoogleCloudStorage),
+                "AZURE_DATA_LAKE_STORAGE" => Some(Self::AzureDataLakeStorage),
+                _ => None,
+            }
+        }
+    }
+    /// The type of Iceberg storage.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum StorageDetails {
+        /// The Amazon S3 Iceberg storage.
+        #[prost(message, tag = "1")]
+        AmazonS3IcebergStorage(super::AmazonS3IcebergStorage),
+        /// The Google Cloud Storage Iceberg storage.
+        #[prost(message, tag = "2")]
+        GoogleCloudStorageIcebergStorage(super::GoogleCloudStorageIcebergStorage),
+        /// The Azure Data Lake Storage Iceberg storage.
+        #[prost(message, tag = "3")]
+        AzureDataLakeStorageIcebergStorage(super::AzureDataLakeStorageIcebergStorage),
+    }
+}
+/// The properties of GoldengateIcebergConnection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateIcebergConnectionProperties {
+    /// Required. The technology type of Iceberg connection.
+    #[prost(string, tag = "1")]
+    pub technology_type: ::prost::alloc::string::String,
+    /// Required. The Iceberg catalog.
+    #[prost(message, optional, tag = "2")]
+    pub catalog: ::core::option::Option<IcebergCatalog>,
+    /// Required. The Iceberg storage.
+    #[prost(message, optional, tag = "3")]
+    pub storage: ::core::option::Option<IcebergStorage>,
+}
+/// The request for `GoldengateConnection.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGoldengateConnectionRequest {
+    /// Required. The value for parent of the GoldengateConnection in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the GoldengateConnection to create. This value is
+    /// restricted to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of
+    /// 63 characters in length. The value must start with a letter and end with a
+    /// letter or a number.
+    #[prost(string, tag = "2")]
+    pub goldengate_connection_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub goldengate_connection: ::core::option::Option<GoldengateConnection>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateConnection.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGoldengateConnectionRequest {
+    /// Required. The name of the GoldengateConnection in the following format:
+    /// projects/{project}/locations/{location}/goldengateConnections/{goldengate_connection}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateConnection.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGoldengateConnectionRequest {
+    /// Required. The name of the GoldengateConnection in the following format:
+    /// projects/{project}/locations/{location}/goldengateConnections/{goldengate_connection}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateConnection.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateConnectionsRequest {
+    /// Required. The parent value for GoldengateConnections in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 GoldengateConnections will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListGoldengateConnections
+    /// call. Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `GoldengateConnection.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateConnectionsResponse {
+    /// The list of GoldengateConnections.
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_connections: ::prost::alloc::vec::Vec<GoldengateConnection>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Optional. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A name-value pair representing an attribute entry usable in a list of
+/// attributes.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NameValuePair {
+    /// Required. The name of the property entry.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Required. The value of the property entry.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// Represents a Kafka bootstrap server with host name, optional port defaults to
+/// 9092, and an optional private ip.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct KafkaBootstrapServer {
+    /// Required. The name or address of a host.
+    #[prost(string, tag = "1")]
+    pub host: ::prost::alloc::string::String,
+    /// Optional. The port of an endpoint usually specified for a connection.
+    #[prost(int32, tag = "2")]
+    pub port: i32,
+    /// Optional. The private IP address of the connection's endpoint in the
+    /// customer's VCN, typically a database endpoint or a big data endpoint (e.g.
+    /// Kafka bootstrap server). In case the privateIp is provided, the subnetId
+    /// must also be provided. In case the privateIp (and the subnetId) is not
+    /// provided it is assumed the datasource is publicly accessible. In case the
+    /// connection is accessible only privately, the lack of privateIp will result
+    /// in not being able to access the connection.
+    #[prost(string, tag = "3")]
+    pub private_ip_address: ::prost::alloc::string::String,
+}
+/// Represents the metadata of a Goldengate Connection Assignment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateConnectionAssignment {
+    /// Identifier. The name of the GoldengateConnectionAssignment resource in the
+    /// following format:
+    /// projects/{project}/locations/{region}/goldengateConnectionAssignments/{goldengate_connection_assignment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The properties of the GoldengateConnectionAssignment.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<GoldengateConnectionAssignmentProperties>,
+    /// Output only. The time when the connection assignment was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The labels or tags associated with the
+    /// GoldengateConnectionAssignment.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The display name for the GoldengateConnectionAssignment.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The OCID of the entitlement linked to this resource.
+    #[prost(string, tag = "6")]
+    pub entitlement_id: ::prost::alloc::string::String,
+}
+/// The properties of a GoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateConnectionAssignmentProperties {
+    /// Output only. The
+    /// [OCID](<https://docs.cloud.oracle.com/Content/General/Concepts/identifiers.htm>)
+    /// of the connection assignment being referenced.
+    #[prost(string, tag = "1")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Required. The GoldengateConnection resource to be assigned.
+    /// Format:
+    /// projects/{project}/locations/{location}/goldengateConnections/{goldengate_connection}
+    #[prost(string, tag = "2")]
+    pub goldengate_connection: ::prost::alloc::string::String,
+    /// Required. The GoldenGateDeployment to assign the connection to.
+    /// Format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}
+    #[prost(string, tag = "3")]
+    pub goldengate_deployment: ::prost::alloc::string::String,
+    /// Output only. Credential store alias.
+    #[prost(string, tag = "4")]
+    pub alias: ::prost::alloc::string::String,
+    /// Output only. The lifecycle state of the connection assignment.
+    #[prost(
+        enumeration = "goldengate_connection_assignment_properties::State",
+        tag = "5"
+    )]
+    pub state: i32,
+}
+/// Nested message and enum types in `GoldengateConnectionAssignmentProperties`.
+pub mod goldengate_connection_assignment_properties {
+    /// Possible lifecycle states for connection assignments.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Lifecycle state is unspecified.
+        Unspecified = 0,
+        /// Connection assignment is being created.
+        Creating = 1,
+        /// Connection assignment is active.
+        Active = 2,
+        /// Connection assignment failed.
+        Failed = 3,
+        /// Connection assignment is being updated.
+        Updating = 4,
+        /// Connection assignment is being deleted.
+        Deleting = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for listing GoldengateConnectionAssignments.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateConnectionAssignmentsRequest {
+    /// Required. The parent value for the GoldengateConnectionAssignments.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of GoldengateConnectionAssignments to return.
+    /// The service may return fewer than this value. If unspecified, at most 50
+    /// GoldengateConnectionAssignments will be returned. The maximum value is
+    /// 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListGoldengateConnectionAssignments` call. Provide this to retrieve the
+    /// subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListGoldengateConnectionAssignments` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter expression that filters GoldengateConnectionAssignments
+    /// listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "DESC" after a field name for descending.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for listing GoldengateConnectionAssignments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateConnectionAssignmentsResponse {
+    /// The list of GoldengateConnectionAssignments.
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_connection_assignments: ::prost::alloc::vec::Vec<
+        GoldengateConnectionAssignment,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for getting a GoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGoldengateConnectionAssignmentRequest {
+    /// Required. The name of the GoldengateConnectionAssignment to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/goldengateConnectionAssignments/{goldengate_connection_assignment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for creating a GoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGoldengateConnectionAssignmentRequest {
+    /// Required. The parent resource where this GoldengateConnectionAssignment
+    /// will be created. Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the GoldengateConnectionAssignment to create.
+    #[prost(string, tag = "2")]
+    pub goldengate_connection_assignment_id: ::prost::alloc::string::String,
+    /// Required. The GoldengateConnectionAssignment to create.
+    #[prost(message, optional, tag = "3")]
+    pub goldengate_connection_assignment: ::core::option::Option<
+        GoldengateConnectionAssignment,
+    >,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for TestGoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TestGoldengateConnectionAssignmentRequest {
+    /// Required. Name of the connection assignment for which to test connection.
+    /// projects/{project}/locations/{region}/goldengateConnectionAssignments/{goldengate_connection_assignment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The type of the test of the assigned connection.
+    /// The only type actually supported is DEFAULT.
+    #[prost(
+        enumeration = "test_goldengate_connection_assignment_request::TestType",
+        tag = "2"
+    )]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `TestGoldengateConnectionAssignmentRequest`.
+pub mod test_goldengate_connection_assignment_request {
+    /// The type of test to perform.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TestType {
+        /// The default value. This value is unused.
+        Unspecified = 0,
+        /// The default connection test.
+        Default = 1,
+    }
+    impl TestType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TEST_TYPE_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TEST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEFAULT" => Some(Self::Default),
+                _ => None,
+            }
+        }
+    }
+}
+/// Error details for TestGoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TestConnectionAssignmentError {
+    /// A short error code that defines the error, meant for programmatic parsing.
+    #[prost(string, tag = "1")]
+    pub code: ::prost::alloc::string::String,
+    /// A human-readable error message.
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    /// The text describing the action required to fix the issue.
+    #[prost(string, tag = "3")]
+    pub action: ::prost::alloc::string::String,
+    /// The text describing the root cause of the reported issue.
+    #[prost(string, tag = "4")]
+    pub issue: ::prost::alloc::string::String,
+}
+/// The result of the connectivity test performed between the Goldengate
+/// deployment and the associated database / service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TestGoldengateConnectionAssignmentResponse {
+    /// Type of the result i.e. Success, Failure or Timeout.
+    #[prost(
+        enumeration = "test_goldengate_connection_assignment_response::ResultType",
+        tag = "1"
+    )]
+    pub result_type: i32,
+    /// Error details if test connection failed.
+    #[prost(message, optional, tag = "2")]
+    pub error: ::core::option::Option<TestConnectionAssignmentError>,
+    /// List of test connection assignment error objects.
+    #[prost(message, repeated, tag = "3")]
+    pub errors: ::prost::alloc::vec::Vec<TestConnectionAssignmentError>,
+}
+/// Nested message and enum types in `TestGoldengateConnectionAssignmentResponse`.
+pub mod test_goldengate_connection_assignment_response {
+    /// Type of the result.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ResultType {
+        /// Result type is unspecified.
+        Unspecified = 0,
+        /// Test connection succeeded.
+        Succeeded = 1,
+        /// Test connection failed.
+        Failed = 2,
+        /// Test connection timed out.
+        TimedOut = 3,
+    }
+    impl ResultType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RESULT_TYPE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::TimedOut => "TIMED_OUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "TIMED_OUT" => Some(Self::TimedOut),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for deleting a GoldengateConnectionAssignment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGoldengateConnectionAssignmentRequest {
+    /// Required. The name of the GoldengateConnectionAssignment to delete.
+    /// Format:
+    /// projects/{project}/locations/{location}/goldengateConnectionAssignments/{goldengate_connection_assignment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Details of the Goldengate Connection Type resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateConnectionType {
+    /// Identifier. The name of the Goldengate Connection Type resource with the
+    /// format:
+    /// projects/{project}/locations/{region}/goldengateConnectionTypes/{goldengate_connection_type}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The connection type of the Goldengate Connection Type
+    /// resource.
+    #[prost(enumeration = "goldengate_connection_type::ConnectionType", tag = "2")]
+    pub connection_type: i32,
+    /// Output only. The technology type of the Goldengate Connection Type
+    /// resource.
+    #[prost(string, repeated, tag = "3")]
+    pub technology_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GoldengateConnectionType`.
+pub mod goldengate_connection_type {
+    /// The connection type of the Goldengate Connection Type resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConnectionType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Connection Type category is GOLDENGATE.
+        Goldengate = 1,
+        /// Goldengate Connection Type category is KAFKA.
+        Kafka = 2,
+        /// Goldengate Connection Type category is KAFKA_SCHEMA_REGISTRY.
+        KafkaSchemaRegistry = 3,
+        /// Goldengate Connection Type category is MYSQL.
+        Mysql = 4,
+        /// Goldengate Connection Type category is JAVA_MESSAGE_SERVICE.
+        JavaMessageService = 5,
+        /// Goldengate Connection Type category is MICROSOFT_SQLSERVER.
+        MicrosoftSqlserver = 6,
+        /// Goldengate Connection Type category is OCI_OBJECT_STORAGE.
+        OciObjectStorage = 7,
+        /// Goldengate Connection Type category is ORACLE.
+        Oracle = 8,
+        /// Goldengate Connection Type category is AZURE_DATA_LAKE_STORAGE.
+        AzureDataLakeStorage = 9,
+        /// Goldengate Connection Type category is POSTGRESQL.
+        Postgresql = 10,
+        /// Goldengate Connection Type category is AZURE_SYNAPSE_ANALYTICS.
+        AzureSynapseAnalytics = 11,
+        /// Goldengate Connection Type category is SNOWFLAKE.
+        Snowflake = 12,
+        /// Goldengate Connection Type category is AMAZON_S3.
+        AmazonS3 = 13,
+        /// Goldengate Connection Type category is HDFS.
+        Hdfs = 14,
+        /// Goldengate Connection Type category is ORACLE_AI_DATA_PLATFORM.
+        OracleAiDataPlatform = 15,
+        /// Goldengate Connection Type category is ORACLE_NOSQL.
+        OracleNosql = 16,
+        /// Goldengate Connection Type category is MONGODB.
+        Mongodb = 17,
+        /// Goldengate Connection Type category is AMAZON_KINESIS.
+        AmazonKinesis = 18,
+        /// Goldengate Connection Type category is AMAZON_REDSHIFT.
+        AmazonRedshift = 19,
+        /// Goldengate Connection Type category is DB2.
+        Db2 = 20,
+        /// Goldengate Connection Type category is REDIS.
+        Redis = 21,
+        /// Goldengate Connection Type category is ELASTICSEARCH.
+        Elasticsearch = 22,
+        /// Goldengate Connection Type category is GENERIC.
+        Generic = 23,
+        /// Goldengate Connection Type category is GOOGLE_CLOUD_STORAGE.
+        GoogleCloudStorage = 24,
+        /// Goldengate Connection Type category is GOOGLE_BIGQUERY.
+        GoogleBigquery = 25,
+        /// Goldengate Connection Type category is DATABRICKS.
+        Databricks = 26,
+        /// Goldengate Connection Type category is GOOGLE_PUBSUB.
+        GooglePubsub = 27,
+        /// Goldengate Connection Type category is MICROSOFT_FABRIC.
+        MicrosoftFabric = 28,
+        /// Goldengate Connection Type category is ICEBERG.
+        Iceberg = 29,
+    }
+    impl ConnectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONNECTION_TYPE_UNSPECIFIED",
+                Self::Goldengate => "GOLDENGATE",
+                Self::Kafka => "KAFKA",
+                Self::KafkaSchemaRegistry => "KAFKA_SCHEMA_REGISTRY",
+                Self::Mysql => "MYSQL",
+                Self::JavaMessageService => "JAVA_MESSAGE_SERVICE",
+                Self::MicrosoftSqlserver => "MICROSOFT_SQLSERVER",
+                Self::OciObjectStorage => "OCI_OBJECT_STORAGE",
+                Self::Oracle => "ORACLE",
+                Self::AzureDataLakeStorage => "AZURE_DATA_LAKE_STORAGE",
+                Self::Postgresql => "POSTGRESQL",
+                Self::AzureSynapseAnalytics => "AZURE_SYNAPSE_ANALYTICS",
+                Self::Snowflake => "SNOWFLAKE",
+                Self::AmazonS3 => "AMAZON_S3",
+                Self::Hdfs => "HDFS",
+                Self::OracleAiDataPlatform => "ORACLE_AI_DATA_PLATFORM",
+                Self::OracleNosql => "ORACLE_NOSQL",
+                Self::Mongodb => "MONGODB",
+                Self::AmazonKinesis => "AMAZON_KINESIS",
+                Self::AmazonRedshift => "AMAZON_REDSHIFT",
+                Self::Db2 => "DB2",
+                Self::Redis => "REDIS",
+                Self::Elasticsearch => "ELASTICSEARCH",
+                Self::Generic => "GENERIC",
+                Self::GoogleCloudStorage => "GOOGLE_CLOUD_STORAGE",
+                Self::GoogleBigquery => "GOOGLE_BIGQUERY",
+                Self::Databricks => "DATABRICKS",
+                Self::GooglePubsub => "GOOGLE_PUBSUB",
+                Self::MicrosoftFabric => "MICROSOFT_FABRIC",
+                Self::Iceberg => "ICEBERG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOLDENGATE" => Some(Self::Goldengate),
+                "KAFKA" => Some(Self::Kafka),
+                "KAFKA_SCHEMA_REGISTRY" => Some(Self::KafkaSchemaRegistry),
+                "MYSQL" => Some(Self::Mysql),
+                "JAVA_MESSAGE_SERVICE" => Some(Self::JavaMessageService),
+                "MICROSOFT_SQLSERVER" => Some(Self::MicrosoftSqlserver),
+                "OCI_OBJECT_STORAGE" => Some(Self::OciObjectStorage),
+                "ORACLE" => Some(Self::Oracle),
+                "AZURE_DATA_LAKE_STORAGE" => Some(Self::AzureDataLakeStorage),
+                "POSTGRESQL" => Some(Self::Postgresql),
+                "AZURE_SYNAPSE_ANALYTICS" => Some(Self::AzureSynapseAnalytics),
+                "SNOWFLAKE" => Some(Self::Snowflake),
+                "AMAZON_S3" => Some(Self::AmazonS3),
+                "HDFS" => Some(Self::Hdfs),
+                "ORACLE_AI_DATA_PLATFORM" => Some(Self::OracleAiDataPlatform),
+                "ORACLE_NOSQL" => Some(Self::OracleNosql),
+                "MONGODB" => Some(Self::Mongodb),
+                "AMAZON_KINESIS" => Some(Self::AmazonKinesis),
+                "AMAZON_REDSHIFT" => Some(Self::AmazonRedshift),
+                "DB2" => Some(Self::Db2),
+                "REDIS" => Some(Self::Redis),
+                "ELASTICSEARCH" => Some(Self::Elasticsearch),
+                "GENERIC" => Some(Self::Generic),
+                "GOOGLE_CLOUD_STORAGE" => Some(Self::GoogleCloudStorage),
+                "GOOGLE_BIGQUERY" => Some(Self::GoogleBigquery),
+                "DATABRICKS" => Some(Self::Databricks),
+                "GOOGLE_PUBSUB" => Some(Self::GooglePubsub),
+                "MICROSOFT_FABRIC" => Some(Self::MicrosoftFabric),
+                "ICEBERG" => Some(Self::Iceberg),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for listing GoldengateConnectionTypes.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateConnectionTypesRequest {
+    /// Required. Parent value for ListGoldengateConnectionTypesRequest
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. The
+    /// connection_type field must be specified in the format:
+    /// `connection_type="ORACLE"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Message for response to listing GoldengateConnectionTypes
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateConnectionTypesResponse {
+    /// The list of GoldengateConnectionType
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_connection_types: ::prost::alloc::vec::Vec<GoldengateConnectionType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// GoldengateDeployment Goldengate Deployment resource model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateDeployment {
+    /// Identifier. The name of the GoldengateDeployment resource in the following
+    /// format:
+    /// projects/{project}/locations/{region}/goldengateDeployments/{goldengate_deployment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The properties of the GoldengateDeployment.
+    #[prost(message, optional, tag = "2")]
+    pub properties: ::core::option::Option<GoldengateDeploymentProperties>,
+    /// Optional. The GCP Oracle zone where Oracle GoldengateDeployment is hosted.
+    /// Example: us-east4-b-r2.
+    /// If not specified, the system will pick a zone based on availability.
+    #[prost(string, tag = "3")]
+    pub gcp_oracle_zone: ::prost::alloc::string::String,
+    /// Optional. The labels or tags associated with the GoldengateDeployment.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The name of the OdbNetwork associated with the
+    /// GoldengateDeployment.
+    #[prost(string, tag = "5")]
+    pub odb_network: ::prost::alloc::string::String,
+    /// Required. The name of the OdbSubnet associated with the
+    /// GoldengateDeployment for IP allocation.
+    #[prost(string, tag = "6")]
+    pub odb_subnet: ::prost::alloc::string::String,
+    /// Output only. The ID of the subscription entitlement associated with the
+    /// GoldengateDeployment
+    #[prost(string, tag = "7")]
+    pub entitlement_id: ::prost::alloc::string::String,
+    /// Required. The display name for the GoldengateDeployment.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The date and time that the GoldengateDeployment was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. HTTPS link to OCI resources exposed to Customer via UI
+    /// Interface.
+    #[prost(string, tag = "10")]
+    pub oci_url: ::prost::alloc::string::String,
+}
+/// Properties of GoldengateDeployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoldengateDeploymentProperties {
+    /// Output only. OCID of the GoldengateDeployment.
+    #[prost(string, tag = "1")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Output only. State of the GoldengateDeployment.
+    #[prost(
+        enumeration = "goldengate_deployment_properties::GoldengateDeploymentLifecycleState",
+        tag = "2"
+    )]
+    pub lifecycle_state: i32,
+    /// Optional. The Oracle license model that applies to a Deployment.
+    #[prost(enumeration = "goldengate_deployment_properties::LicenseModel", tag = "3")]
+    pub license_model: i32,
+    /// Optional. The environment type of the GoldengateDeployment.
+    #[prost(string, tag = "4")]
+    pub environment_type: ::prost::alloc::string::String,
+    /// Optional. The Minimum number of OCPUs to be made available for this
+    /// Deployment.
+    #[prost(int32, tag = "5")]
+    pub cpu_core_count: i32,
+    /// Optional. Indicates if auto scaling is enabled for the Deployment's CPU
+    /// core count.
+    #[prost(bool, tag = "6")]
+    pub is_auto_scaling_enabled: bool,
+    /// Optional. The description of the GoldengateDeployment.
+    #[prost(string, tag = "7")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. A valid Goldengate Deployment type. For a list of supported
+    /// types, use the `ListGoldengateDeploymentTypes` operation.
+    #[prost(string, tag = "8")]
+    pub deployment_type: ::prost::alloc::string::String,
+    /// Required. The ogg data of the GoldengateDeployment.
+    #[prost(message, optional, tag = "9")]
+    pub ogg_data: ::core::option::Option<GoldengateOggDeployment>,
+    /// Optional. The maintenance window of the GoldengateDeployment.
+    #[prost(message, optional, tag = "10")]
+    pub maintenance_window: ::core::option::Option<GoldengateMaintenanceWindow>,
+    /// Optional. The maintenance configuration of the GoldengateDeployment.
+    #[prost(message, optional, tag = "11")]
+    pub maintenance_config: ::core::option::Option<GoldengateMaintenanceConfig>,
+    /// Output only. The Fully Qualified Domain Name of the GoldengateDeployment.
+    #[prost(string, tag = "12")]
+    pub fqdn: ::prost::alloc::string::String,
+    /// Output only. The lifecycle sub-state of the GoldengateDeployment.
+    #[prost(
+        enumeration = "goldengate_deployment_properties::GoldengateDeploymentLifecycleSubState",
+        tag = "13"
+    )]
+    pub lifecycle_sub_state: i32,
+    /// Output only. The category of the GoldengateDeployment.
+    #[prost(
+        enumeration = "goldengate_deployment_properties::GoldengateDeploymentCategory",
+        tag = "14"
+    )]
+    pub category: i32,
+    /// Output only. The deployment backup id of the GoldengateDeployment.
+    #[prost(string, tag = "15")]
+    pub deployment_backup_id: ::prost::alloc::string::String,
+    /// Output only. The time the GoldengateDeployment was updated.
+    #[prost(message, optional, tag = "16")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The lifecycle details of the GoldengateDeployment.
+    #[prost(string, tag = "17")]
+    pub lifecycle_details: ::prost::alloc::string::String,
+    /// Output only. Whether the GoldengateDeployment is healthy.
+    #[prost(bool, tag = "18")]
+    pub healthy: bool,
+    /// Output only. The load balancer subnet id of the GoldengateDeployment.
+    #[prost(string, tag = "19")]
+    pub load_balancer_subnet_id: ::prost::alloc::string::String,
+    /// Output only. The load balancer id of the GoldengateDeployment.
+    #[prost(string, tag = "20")]
+    pub load_balancer_id: ::prost::alloc::string::String,
+    /// Output only. The nsg ids of the GoldengateDeployment.
+    #[prost(string, repeated, tag = "21")]
+    pub nsg_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Whether the GoldengateDeployment is public.
+    #[prost(bool, tag = "22")]
+    pub is_public: bool,
+    /// Output only. The public ip address of the GoldengateDeployment.
+    #[prost(string, tag = "23")]
+    pub public_ip_address: ::prost::alloc::string::String,
+    /// Output only. The private ip address of the GoldengateDeployment.
+    #[prost(string, tag = "24")]
+    pub private_ip_address: ::prost::alloc::string::String,
+    /// Output only. The deployment url of the GoldengateDeployment.
+    #[prost(string, tag = "25")]
+    pub deployment_url: ::prost::alloc::string::String,
+    /// Output only. Whether the GoldengateDeployment is of the latest version.
+    #[prost(bool, tag = "26")]
+    pub is_latest_version: bool,
+    /// Output only. The time upgrade required of the GoldengateDeployment.
+    #[prost(message, optional, tag = "27")]
+    pub upgrade_required_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The storage utilization in bytes of the GoldengateDeployment.
+    #[prost(int64, tag = "28")]
+    pub storage_utilization_bytes: i64,
+    /// Output only. Whether storage utilization limit is exceeded of the
+    /// GoldengateDeployment.
+    #[prost(bool, tag = "29")]
+    pub is_storage_utilization_limit_exceeded: bool,
+    /// Output only. The deployment diagnostic data of the GoldengateDeployment.
+    #[prost(message, optional, tag = "30")]
+    pub deployment_diagnostic_data: ::core::option::Option<DeploymentDiagnosticData>,
+    /// Output only. The backup schedule of the GoldengateDeployment.
+    #[prost(message, optional, tag = "31")]
+    pub backup_schedule: ::core::option::Option<GoldengateBackupSchedule>,
+    /// Output only. The time of next maintenance of the GoldengateDeployment.
+    #[prost(message, optional, tag = "32")]
+    pub next_maintenance_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The next maintenance action type of the GoldengateDeployment.
+    #[prost(
+        enumeration = "goldengate_deployment_properties::NextMaintenanceActionType",
+        tag = "33"
+    )]
+    pub next_maintenance_action_type: i32,
+    /// Output only. The next maintenance description of the GoldengateDeployment.
+    #[prost(string, tag = "34")]
+    pub next_maintenance_description: ::prost::alloc::string::String,
+    /// Output only. The time ogg version supported until of the
+    /// GoldengateDeployment.
+    #[prost(message, optional, tag = "35")]
+    pub ogg_version_support_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The ingress ips of the GoldengateDeployment.
+    #[prost(message, repeated, tag = "36")]
+    pub ingress_ips: ::prost::alloc::vec::Vec<IngressIp>,
+    /// Output only. The deployment role of the GoldengateDeployment.
+    #[prost(
+        enumeration = "goldengate_deployment_properties::GoldengateDeploymentRoleType",
+        tag = "37"
+    )]
+    pub deployment_role: i32,
+    /// Output only. The time last backup scheduled of the GoldengateDeployment.
+    #[prost(message, optional, tag = "38")]
+    pub last_backup_schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time next backup scheduled of the GoldengateDeployment.
+    #[prost(message, optional, tag = "39")]
+    pub next_backup_schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the role of the GoldengateDeployment was
+    /// changed.
+    #[prost(message, optional, tag = "40")]
+    pub role_change_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The locks of the GoldengateDeployment.
+    #[prost(message, repeated, tag = "41")]
+    pub locks: ::prost::alloc::vec::Vec<GoldengateDeploymentLock>,
+    /// Output only. The placements of the GoldengateDeployment.
+    #[prost(message, repeated, tag = "42")]
+    pub placements: ::prost::alloc::vec::Vec<GoldengatePlacement>,
+}
+/// Nested message and enum types in `GoldengateDeploymentProperties`.
+pub mod goldengate_deployment_properties {
+    /// The various lifecycle states of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateDeploymentLifecycleState {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// The deployment is being created.
+        Creating = 1,
+        /// The deployment is being updated.
+        Updating = 2,
+        /// The deployment is active.
+        Active = 3,
+        /// The deployment is inactive.
+        Inactive = 4,
+        /// The deployment is being deleted.
+        Deleting = 5,
+        /// The deployment is deleted.
+        Deleted = 6,
+        /// The deployment failed.
+        Failed = 7,
+        /// The deployment needs attention.
+        NeedsAttention = 8,
+        /// The deployment is in progress.
+        InProgress = 9,
+        /// The deployment is canceling.
+        Cancelling = 10,
+        /// The deployment is canceled.
+        Cancelled = 11,
+        /// The deployment succeeded.
+        Succeeded = 12,
+        /// The deployment is waiting.
+        Waiting = 13,
+    }
+    impl GoldengateDeploymentLifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_DEPLOYMENT_LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Deleted => "DELETED",
+                Self::Failed => "FAILED",
+                Self::NeedsAttention => "NEEDS_ATTENTION",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Waiting => "WAITING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_DEPLOYMENT_LIFECYCLE_STATE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "DELETING" => Some(Self::Deleting),
+                "DELETED" => Some(Self::Deleted),
+                "FAILED" => Some(Self::Failed),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "WAITING" => Some(Self::Waiting),
+                _ => None,
+            }
+        }
+    }
+    /// The license model of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LicenseModel {
+        /// The license model is unspecified.
+        Unspecified = 0,
+        /// The license model is included.
+        LicenseIncluded = 1,
+        /// The license model is bring your own license.
+        BringYourOwnLicense = 2,
+    }
+    impl LicenseModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LICENSE_MODEL_UNSPECIFIED",
+                Self::LicenseIncluded => "LICENSE_INCLUDED",
+                Self::BringYourOwnLicense => "BRING_YOUR_OWN_LICENSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LICENSE_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LICENSE_INCLUDED" => Some(Self::LicenseIncluded),
+                "BRING_YOUR_OWN_LICENSE" => Some(Self::BringYourOwnLicense),
+                _ => None,
+            }
+        }
+    }
+    /// The various lifecycle sub-states of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateDeploymentLifecycleSubState {
+        /// The lifecycle sub-state is unspecified.
+        Unspecified = 0,
+        /// The deployment is recovering.
+        Recovering = 1,
+        /// The deployment is starting.
+        Starting = 2,
+        /// The deployment is stopping.
+        Stopping = 3,
+        /// The deployment is moving.
+        Moving = 4,
+        /// The deployment is upgrading.
+        Upgrading = 5,
+        /// The deployment is restoring.
+        Restoring = 6,
+        /// The deployment is backing up.
+        BackingUp = 7,
+        /// The deployment is rolling back.
+        RollingBack = 8,
+    }
+    impl GoldengateDeploymentLifecycleSubState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => {
+                    "GOLDENGATE_DEPLOYMENT_LIFECYCLE_SUB_STATE_UNSPECIFIED"
+                }
+                Self::Recovering => "RECOVERING",
+                Self::Starting => "STARTING",
+                Self::Stopping => "STOPPING",
+                Self::Moving => "MOVING",
+                Self::Upgrading => "UPGRADING",
+                Self::Restoring => "RESTORING",
+                Self::BackingUp => "BACKING_UP",
+                Self::RollingBack => "ROLLING_BACK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_DEPLOYMENT_LIFECYCLE_SUB_STATE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "RECOVERING" => Some(Self::Recovering),
+                "STARTING" => Some(Self::Starting),
+                "STOPPING" => Some(Self::Stopping),
+                "MOVING" => Some(Self::Moving),
+                "UPGRADING" => Some(Self::Upgrading),
+                "RESTORING" => Some(Self::Restoring),
+                "BACKING_UP" => Some(Self::BackingUp),
+                "ROLLING_BACK" => Some(Self::RollingBack),
+                _ => None,
+            }
+        }
+    }
+    /// The category of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateDeploymentCategory {
+        /// The category is unspecified.
+        Unspecified = 0,
+        /// The deployment is data replication.
+        DataReplication = 1,
+        /// The deployment is data transforms.
+        DataTransforms = 2,
+    }
+    impl GoldengateDeploymentCategory {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_DEPLOYMENT_CATEGORY_UNSPECIFIED",
+                Self::DataReplication => "DATA_REPLICATION",
+                Self::DataTransforms => "DATA_TRANSFORMS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_DEPLOYMENT_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_REPLICATION" => Some(Self::DataReplication),
+                "DATA_TRANSFORMS" => Some(Self::DataTransforms),
+                _ => None,
+            }
+        }
+    }
+    /// The various next maintenance action types of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NextMaintenanceActionType {
+        /// The next maintenance action type is unspecified.
+        Unspecified = 0,
+        /// The next maintenance action type is upgrade.
+        Upgrade = 1,
+    }
+    impl NextMaintenanceActionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "NEXT_MAINTENANCE_ACTION_TYPE_UNSPECIFIED",
+                Self::Upgrade => "UPGRADE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NEXT_MAINTENANCE_ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UPGRADE" => Some(Self::Upgrade),
+                _ => None,
+            }
+        }
+    }
+    /// The deployment role type of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GoldengateDeploymentRoleType {
+        /// The deployment role type is unspecified.
+        Unspecified = 0,
+        /// The deployment role type is primary.
+        Primary = 1,
+        /// The deployment role type is standby.
+        Standby = 2,
+    }
+    impl GoldengateDeploymentRoleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GOLDENGATE_DEPLOYMENT_ROLE_TYPE_UNSPECIFIED",
+                Self::Primary => "PRIMARY",
+                Self::Standby => "STANDBY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GOLDENGATE_DEPLOYMENT_ROLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIMARY" => Some(Self::Primary),
+                "STANDBY" => Some(Self::Standby),
+                _ => None,
+            }
+        }
+    }
+}
+/// The Ogg data of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateOggDeployment {
+    /// Required. The name given to the Goldengate service deployment. The name
+    /// must be 1 to 32 characters long, must contain only alphanumeric characters
+    /// and must start with a letter.
+    #[prost(string, tag = "1")]
+    pub deployment: ::prost::alloc::string::String,
+    /// Required. The Goldengate deployment console username.
+    #[prost(string, tag = "2")]
+    pub admin_username: ::prost::alloc::string::String,
+    /// Optional. Version of OGG
+    #[prost(string, tag = "4")]
+    pub ogg_version: ::prost::alloc::string::String,
+    /// Output only. The certificate of the GoldengateDeployment.
+    #[prost(string, tag = "5")]
+    pub certificate: ::prost::alloc::string::String,
+    /// Output only. The credential store of the GoldengateDeployment.
+    #[prost(enumeration = "goldengate_ogg_deployment::CredentialStore", tag = "6")]
+    pub credential_store: i32,
+    /// Output only. The identity domain id of the GoldengateDeployment.
+    #[prost(string, tag = "7")]
+    pub identity_domain_id: ::prost::alloc::string::String,
+    /// Output only. The password secret id of the GoldengateDeployment.
+    #[prost(string, tag = "8")]
+    pub password_secret_id: ::prost::alloc::string::String,
+    /// Output only. The group to roles mapping of the GoldengateDeployment.
+    #[prost(message, optional, tag = "9")]
+    pub group_roles_mapping: ::core::option::Option<GoldengateGroupToRolesMapping>,
+    /// The Goldengate deployment console password.
+    #[prost(
+        oneof = "goldengate_ogg_deployment::DeploymentPasswordOptions",
+        tags = "3, 10"
+    )]
+    pub deployment_password_options: ::core::option::Option<
+        goldengate_ogg_deployment::DeploymentPasswordOptions,
+    >,
+}
+/// Nested message and enum types in `GoldengateOggDeployment`.
+pub mod goldengate_ogg_deployment {
+    /// The credential store of the GoldengateDeployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CredentialStore {
+        /// The credential store is unspecified.
+        Unspecified = 0,
+        /// The credential store is Goldengate.
+        Goldengate = 1,
+        /// The credential store is IAM.
+        Iam = 2,
+    }
+    impl CredentialStore {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CREDENTIAL_STORE_UNSPECIFIED",
+                Self::Goldengate => "GOLDENGATE",
+                Self::Iam => "IAM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CREDENTIAL_STORE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOLDENGATE" => Some(Self::Goldengate),
+                "IAM" => Some(Self::Iam),
+                _ => None,
+            }
+        }
+    }
+    /// The Goldengate deployment console password.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum DeploymentPasswordOptions {
+        /// Optional. The Goldengate deployment console password in plain text.
+        #[prost(string, tag = "3")]
+        AdminPassword(::prost::alloc::string::String),
+        /// Optional. Input only. The Goldengate deployment console password secret
+        /// version.
+        #[prost(string, tag = "10")]
+        AdminPasswordSecretVersion(::prost::alloc::string::String),
+    }
+}
+/// The maintenance window of the GoldengateDeployment.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateMaintenanceWindow {
+    /// Required. Days of the week.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
+    pub day: i32,
+    /// Required. Start hour for maintenance period. Hour is in UTC.
+    #[prost(int32, tag = "2")]
+    pub start_hour: i32,
+}
+/// The maintenance configuration of the GoldengateDeployment.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateMaintenanceConfig {
+    /// Optional. By default auto upgrade for interim releases are not enabled. If
+    /// auto-upgrade is enabled for interim release,  you have to specify
+    /// interim_release_upgrade_period_days too.
+    #[prost(bool, tag = "1")]
+    pub is_interim_release_auto_upgrade_enabled: bool,
+    /// Optional. Defines auto upgrade period for interim releases. This period
+    /// must be shorter or equal to bundle release upgrade period.
+    #[prost(int32, tag = "2")]
+    pub interim_release_upgrade_period_days: i32,
+    /// Optional. Defines auto upgrade period for bundle releases. Manually
+    /// configured period cannot be longer than service defined period for bundle
+    /// releases. This period must be shorter or equal to major release upgrade
+    /// period. Not passing this field during create will equate to using the
+    /// service default.
+    #[prost(int32, tag = "3")]
+    pub bundle_release_upgrade_period_days: i32,
+    /// Optional. Defines auto upgrade period for major releases. Manually
+    /// configured period cannot be longer than service defined period for major
+    /// releases. Not passing this field during create will equate to using the
+    /// service default.
+    #[prost(int32, tag = "4")]
+    pub major_release_upgrade_period_days: i32,
+    /// Optional. Defines auto upgrade period for releases with security fix.
+    /// Manually configured period cannot be longer than service defined period for
+    /// security releases. Not passing this field during create will equate to
+    /// using the service default.
+    #[prost(int32, tag = "5")]
+    pub security_patch_upgrade_period_days: i32,
+}
+/// The deployment diagnostic data.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeploymentDiagnosticData {
+    /// Output only. The namespace name.
+    #[prost(string, tag = "1")]
+    pub namespace: ::prost::alloc::string::String,
+    /// Output only. The bucket name.
+    #[prost(string, tag = "2")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Output only. The object name.
+    #[prost(string, tag = "3")]
+    pub object: ::prost::alloc::string::String,
+    /// Output only. The diagnostic state.
+    #[prost(enumeration = "deployment_diagnostic_data::DiagnosticState", tag = "4")]
+    pub diagnostic_state: i32,
+    /// Output only. The time diagnostic start.
+    #[prost(message, optional, tag = "5")]
+    pub diagnostic_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time diagnostic end.
+    #[prost(message, optional, tag = "6")]
+    pub diagnostic_end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `DeploymentDiagnosticData`.
+pub mod deployment_diagnostic_data {
+    /// The possible states of the diagnostic data.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DiagnosticState {
+        /// The diagnostic state is unspecified.
+        Unspecified = 0,
+        /// The diagnostic is in progress.
+        InProgress = 1,
+        /// The diagnostic completed successfully.
+        Succeeded = 2,
+        /// The diagnostic failed.
+        Failed = 3,
+    }
+    impl DiagnosticState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DIAGNOSTIC_STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIAGNOSTIC_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// The backup schedule of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateBackupSchedule {
+    /// Output only. The bucket name.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Output only. The compartment id.
+    #[prost(string, tag = "2")]
+    pub compartment_id: ::prost::alloc::string::String,
+    /// Output only. The frequency backup scheduled.
+    #[prost(
+        enumeration = "goldengate_backup_schedule::FrequencyBackupScheduled",
+        tag = "3"
+    )]
+    pub frequency_backup_scheduled: i32,
+    /// Output only. If metadata only.
+    #[prost(bool, tag = "4")]
+    pub metadata_only: bool,
+    /// Output only. The namespace name.
+    #[prost(string, tag = "5")]
+    pub namespace: ::prost::alloc::string::String,
+    /// Output only. The timestamp of when the backup was scheduled.
+    #[prost(message, optional, tag = "6")]
+    pub backup_scheduled_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `GoldengateBackupSchedule`.
+pub mod goldengate_backup_schedule {
+    /// Enum for frequency backup scheduled.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FrequencyBackupScheduled {
+        /// The frequency backup scheduled is unspecified.
+        Unspecified = 0,
+        /// The frequency backup scheduled is daily.
+        Daily = 1,
+        /// The frequency backup scheduled is weekly.
+        Weekly = 2,
+        /// The frequency backup scheduled is monthly.
+        Monthly = 3,
+    }
+    impl FrequencyBackupScheduled {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FREQUENCY_BACKUP_SCHEDULED_UNSPECIFIED",
+                Self::Daily => "DAILY",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FREQUENCY_BACKUP_SCHEDULED_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
+            }
+        }
+    }
+}
+/// The ingress IPs of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IngressIp {
+    /// Output only. The ingress IP.
+    #[prost(string, tag = "1")]
+    pub ingress_ip_address: ::prost::alloc::string::String,
+}
+/// The lock of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDeploymentLock {
+    /// Output only. The type of lock.
+    #[prost(enumeration = "goldengate_deployment_lock::LockType", tag = "1")]
+    pub r#type: i32,
+    /// Output only. The compartment id.
+    #[prost(string, tag = "2")]
+    pub compartment_id: ::prost::alloc::string::String,
+    /// Output only. The related resource id.
+    #[prost(string, tag = "3")]
+    pub related_resource_id: ::prost::alloc::string::String,
+    /// Output only. The message.
+    #[prost(string, tag = "4")]
+    pub message: ::prost::alloc::string::String,
+    /// Output only. The time created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `GoldengateDeploymentLock`.
+pub mod goldengate_deployment_lock {
+    /// The type of lock.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LockType {
+        /// The lock type is unspecified.
+        Unspecified = 0,
+        /// The lock type is full.
+        Full = 1,
+        /// The lock type is delete.
+        Delete = 2,
+    }
+    impl LockType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LOCK_TYPE_UNSPECIFIED",
+                Self::Full => "FULL",
+                Self::Delete => "DELETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                "DELETE" => Some(Self::Delete),
+                _ => None,
+            }
+        }
+    }
+}
+/// The placement of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengatePlacement {
+    /// Output only. The availability domain.
+    #[prost(string, tag = "1")]
+    pub availability_domain: ::prost::alloc::string::String,
+    /// Output only. The fault domain.
+    #[prost(string, tag = "2")]
+    pub fault_domain: ::prost::alloc::string::String,
+}
+/// The group to roles mapping of the GoldengateDeployment.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateGroupToRolesMapping {
+    /// Output only. The security group id.
+    #[prost(string, tag = "1")]
+    pub security_group_id: ::prost::alloc::string::String,
+    /// Output only. The administrator group id.
+    #[prost(string, tag = "2")]
+    pub administrator_group_id: ::prost::alloc::string::String,
+    /// Output only. The operator group id.
+    #[prost(string, tag = "3")]
+    pub operator_group_id: ::prost::alloc::string::String,
+    /// Output only. The user group id.
+    #[prost(string, tag = "4")]
+    pub user_group_id: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateDeployment.Create`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGoldengateDeploymentRequest {
+    /// Required. The value for parent of the GoldengateDeployment in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the GoldengateDeployment to create. This value is
+    /// restricted to (^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$) and must be a maximum of
+    /// 63 characters in length. The value must start with a letter and end with a
+    /// letter or a number.
+    #[prost(string, tag = "2")]
+    pub goldengate_deployment_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub goldengate_deployment: ::core::option::Option<GoldengateDeployment>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateDeployment.Delete`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteGoldengateDeploymentRequest {
+    /// Required. The name of the GoldengateDeployment in the following format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional ID to identify the request. This value is used to
+    /// identify duplicate requests. If you make a request with the same request ID
+    /// and the original request is still in progress or completed, the server
+    /// ignores the second request. This prevents clients from
+    /// accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateDeployment.Get`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetGoldengateDeploymentRequest {
+    /// Required. The name of the GoldengateDeployment in the following format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateDeployment.List`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateDeploymentsRequest {
+    /// Required. The parent value for GoldengateDeployments in the following
+    /// format: projects/{project}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 GoldengateDeployments will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListGoldengateDeployments
+    /// call. Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. An expression for ordering the results of the request.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response for `GoldengateDeployment.List`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateDeploymentsResponse {
+    /// The list of GoldengateDeployments.
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_deployments: ::prost::alloc::vec::Vec<GoldengateDeployment>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Optional. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for `GoldengateDeployment.Stop`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StopGoldengateDeploymentRequest {
+    /// Required. The name of the Goldengate Deployment in the following format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `GoldengateDeployment.Start`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartGoldengateDeploymentRequest {
+    /// Required. The name of the Goldengate Deployment in the following format:
+    /// projects/{project}/locations/{location}/goldengateDeployments/{goldengate_deployment}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Details of the Goldengate Deployment Environment resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDeploymentEnvironment {
+    /// Identifier. The name of the Goldengate Deployment Environment resource with
+    /// the format:
+    /// projects/{project}/locations/{location}/goldengateDeploymentEnvironments/{goldengate_deployment_environment}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The category of the Goldengate Deployment Environment
+    /// resource.
+    #[prost(
+        enumeration = "goldengate_deployment_environment::DeploymentCategory",
+        tag = "2"
+    )]
+    pub category: i32,
+    /// The display name of the Goldengate Deployment Environment resource.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The default CPU core count of the Goldengate Deployment
+    /// Environment resource.
+    #[prost(int32, tag = "4")]
+    pub default_cpu_core_count: i32,
+    /// Output only. The environment type of the Goldengate Deployment Environment
+    /// resource.
+    #[prost(
+        enumeration = "goldengate_deployment_environment::DeploymentEnvironmentType",
+        tag = "5"
+    )]
+    pub environment_type: i32,
+    /// Output only. Whether auto scaling is enabled by default for the Goldengate
+    /// Deployment Environment resource.
+    #[prost(bool, tag = "6")]
+    pub auto_scaling_enabled: bool,
+    /// Output only. The max CPU core count of the Goldengate Deployment
+    /// Environment resource.
+    #[prost(int32, tag = "7")]
+    pub max_cpu_core_count: i32,
+    /// Output only. The memory per CPU core in GBs of the Goldengate Deployment
+    /// Environment resource.
+    #[prost(int32, tag = "8")]
+    pub memory_gb_per_cpu_core: i32,
+    /// Output only. The min CPU core count of the Goldengate Deployment
+    /// Environment resource.
+    #[prost(int32, tag = "9")]
+    pub min_cpu_core_count: i32,
+    /// Output only. The network bandwidth per CPU core in Gbps of the Goldengate
+    /// Deployment Environment resource.
+    #[prost(int32, tag = "10")]
+    pub network_bandwidth_gbps_per_cpu_core: i32,
+    /// Output only. The storage usage limit per CPU core in GBs of the Goldengate
+    /// Deployment Environment resource.
+    #[prost(int32, tag = "11")]
+    pub storage_usage_limit_gb_per_cpu_core: i32,
+}
+/// Nested message and enum types in `GoldengateDeploymentEnvironment`.
+pub mod goldengate_deployment_environment {
+    /// Deployment category of the Goldengate Deployment resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentCategory {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Environment category is DATA_REPLICATION_CATEGORY.
+        DataReplicationCategory = 1,
+        /// Goldengate Deployment Environment category is DATA_TRANSFORMS_CATEGORY.
+        DataTransformsCategory = 2,
+    }
+    impl DeploymentCategory {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_CATEGORY_UNSPECIFIED",
+                Self::DataReplicationCategory => "DATA_REPLICATION_CATEGORY",
+                Self::DataTransformsCategory => "DATA_TRANSFORMS_CATEGORY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_REPLICATION_CATEGORY" => Some(Self::DataReplicationCategory),
+                "DATA_TRANSFORMS_CATEGORY" => Some(Self::DataTransformsCategory),
+                _ => None,
+            }
+        }
+    }
+    /// The environment type of the Goldengate Deployment Environment resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentEnvironmentType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Environment type is PRODUCTION.
+        Production = 1,
+        /// Goldengate Deployment Environment type is DEVELOPMENT_OR_TESTING.
+        DevelopmentOrTesting = 2,
+    }
+    impl DeploymentEnvironmentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_ENVIRONMENT_TYPE_UNSPECIFIED",
+                Self::Production => "PRODUCTION",
+                Self::DevelopmentOrTesting => "DEVELOPMENT_OR_TESTING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_ENVIRONMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRODUCTION" => Some(Self::Production),
+                "DEVELOPMENT_OR_TESTING" => Some(Self::DevelopmentOrTesting),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for listing GoldengateDeploymentEnvironments.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateDeploymentEnvironmentsRequest {
+    /// Required. The parent, which owns this collection of
+    /// GoldengateDeploymentEnvironments. Format:
+    /// projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    /// If unspecified, at most 50 deployment environments will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to listing GoldengateDeploymentEnvironments
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateDeploymentEnvironmentsResponse {
+    /// The list of GoldengateDeploymentEnvironment
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_deployment_environments: ::prost::alloc::vec::Vec<
+        GoldengateDeploymentEnvironment,
+    >,
+    /// A token identifying a page of results the server should return.
+    /// If this field is empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Details of the Goldengate Deployment Type resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDeploymentType {
+    /// Identifier. The name of the Goldengate Deployment Type resource with the
+    /// format:
+    /// projects/{project}/locations/{region}/goldengateDeploymentTypes/{goldengate_deployment_type}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The deployment type of the Goldengate Deployment Type
+    /// resource.
+    #[prost(enumeration = "goldengate_deployment_type::DeploymentType", tag = "2")]
+    pub deployment_type: i32,
+    /// Output only. The category of the Goldengate Deployment Type resource.
+    #[prost(enumeration = "goldengate_deployment_type::DeploymentCategory", tag = "3")]
+    pub category: i32,
+    /// Output only. The connection types of the Goldengate Deployment Type
+    /// resource.
+    #[prost(string, repeated, tag = "4")]
+    pub connection_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The display name of the Goldengate Deployment Type resource.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The Ogg version of the Goldengate Deployment Type resource.
+    #[prost(string, tag = "6")]
+    pub ogg_version: ::prost::alloc::string::String,
+    /// Output only. The source technologies of the Goldengate Deployment Type
+    /// resource.
+    #[prost(string, repeated, tag = "7")]
+    pub source_technologies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The supported capabilities of the Goldengate Deployment Type
+    /// resource.
+    #[prost(string, repeated, tag = "8")]
+    pub supported_capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The supported technologies URL of the Goldengate Deployment
+    /// Type resource.
+    #[prost(string, tag = "9")]
+    pub supported_technologies_url: ::prost::alloc::string::String,
+    /// Output only. The target technologies of the Goldengate Deployment Type
+    /// resource.
+    #[prost(string, repeated, tag = "10")]
+    pub target_technologies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The default username of the Goldengate Deployment Type
+    /// resource.
+    #[prost(string, tag = "11")]
+    pub default_username: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `GoldengateDeploymentType`.
+pub mod goldengate_deployment_type {
+    /// The deployment type of the Goldengate Deployment Type resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Type category is OGG.
+        Ogg = 1,
+        /// Goldengate Deployment Type category is DATABASE_ORACLE.
+        DatabaseOracle = 2,
+        /// Goldengate Deployment Type category is BIGDATA.
+        Bigdata = 3,
+        /// Goldengate Deployment Type category is DATABASE_MICROSOFT_SQLSERVER.
+        DatabaseMicrosoftSqlserver = 4,
+        /// Goldengate Deployment Type category is DATABASE_MYSQL.
+        DatabaseMysql = 5,
+        /// Goldengate Deployment Type category is DATABASE_POSTGRESQL.
+        DatabasePostgresql = 6,
+        /// Goldengate Deployment Type category is DATABASE_DB2ZOS.
+        DatabaseDb2zos = 7,
+        /// Goldengate Deployment Type category is DATABASE_DB2I.
+        DatabaseDb2i = 8,
+        /// Goldengate Deployment Type category is GGSA.
+        Ggsa = 9,
+        /// Goldengate Deployment Type category is DATA_TRANSFORMS.
+        DataTransforms = 10,
+    }
+    impl DeploymentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_TYPE_UNSPECIFIED",
+                Self::Ogg => "OGG",
+                Self::DatabaseOracle => "DATABASE_ORACLE",
+                Self::Bigdata => "BIGDATA",
+                Self::DatabaseMicrosoftSqlserver => "DATABASE_MICROSOFT_SQLSERVER",
+                Self::DatabaseMysql => "DATABASE_MYSQL",
+                Self::DatabasePostgresql => "DATABASE_POSTGRESQL",
+                Self::DatabaseDb2zos => "DATABASE_DB2ZOS",
+                Self::DatabaseDb2i => "DATABASE_DB2I",
+                Self::Ggsa => "GGSA",
+                Self::DataTransforms => "DATA_TRANSFORMS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OGG" => Some(Self::Ogg),
+                "DATABASE_ORACLE" => Some(Self::DatabaseOracle),
+                "BIGDATA" => Some(Self::Bigdata),
+                "DATABASE_MICROSOFT_SQLSERVER" => Some(Self::DatabaseMicrosoftSqlserver),
+                "DATABASE_MYSQL" => Some(Self::DatabaseMysql),
+                "DATABASE_POSTGRESQL" => Some(Self::DatabasePostgresql),
+                "DATABASE_DB2ZOS" => Some(Self::DatabaseDb2zos),
+                "DATABASE_DB2I" => Some(Self::DatabaseDb2i),
+                "GGSA" => Some(Self::Ggsa),
+                "DATA_TRANSFORMS" => Some(Self::DataTransforms),
+                _ => None,
+            }
+        }
+    }
+    /// The category of the Goldengate Deployment Type resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentCategory {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Type category is DATA_REPLICATION_CATEGORY.
+        DataReplicationCategory = 1,
+        /// Goldengate Deployment Type category is DATA_TRANSFORMS_CATEGORY.
+        DataTransformsCategory = 2,
+    }
+    impl DeploymentCategory {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_CATEGORY_UNSPECIFIED",
+                Self::DataReplicationCategory => "DATA_REPLICATION_CATEGORY",
+                Self::DataTransformsCategory => "DATA_TRANSFORMS_CATEGORY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_REPLICATION_CATEGORY" => Some(Self::DataReplicationCategory),
+                "DATA_TRANSFORMS_CATEGORY" => Some(Self::DataTransformsCategory),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for listing GoldengateDeploymentTypes.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateDeploymentTypesRequest {
+    /// Required. The parent resource.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Either
+    /// the deployment_type and ogg_version fields must be specified in the format:
+    /// `deployment_type="DATABASE_ORACLE"` or `ogg_version="version"`.
+    /// Allowed values for deployment_type are: `DATABASE_ORACLE`, `BIGDATA`,
+    /// `DATABASE_MICROSOFT_SQLSERVER`, `DATABASE_MYSQL`, `DATABASE_POSTGRESQL`,
+    /// `DATABASE_DB2ZOS`, `DATABASE_DB2I`, `GGSA`, `DATA_TRANSFORMS`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint for how to order the results
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Message for response to listing GoldengateDeploymentTypes
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateDeploymentTypesResponse {
+    /// The list of GoldengateDeploymentType
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_deployment_types: ::prost::alloc::vec::Vec<GoldengateDeploymentType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. The resource names of locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Details of the Goldengate Deployment Version resource.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDeploymentVersion {
+    /// Identifier. The name of the Goldengate Deployment Version resource with the
+    /// format:
+    /// projects/{project}/locations/{location}/goldengateDeploymentVersions/{goldengate_deployment_version}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The deployment version ocid of the Goldengate Deployment
+    /// Version resource.
+    #[prost(string, tag = "2")]
+    pub ocid: ::prost::alloc::string::String,
+    /// Output only. The technology type of the Goldengate Deployment Version
+    /// resource.
+    #[prost(message, optional, tag = "3")]
+    pub properties: ::core::option::Option<GoldengateDeploymentVersionProperties>,
+}
+/// Properties of GoldengateDeploymentVersion.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoldengateDeploymentVersionProperties {
+    /// Output only. The deployment type of the Goldengate Deployment Version
+    /// resource.
+    #[prost(
+        enumeration = "goldengate_deployment_version_properties::DeploymentType",
+        tag = "1"
+    )]
+    pub deployment_type: i32,
+    /// Optional. Whether the Goldengate Deployment Version resource is a security
+    /// fix.
+    #[prost(bool, tag = "2")]
+    pub security_fix: bool,
+    /// Output only. The OGG version of the Goldengate Deployment Version resource.
+    #[prost(string, tag = "3")]
+    pub ogg_version: ::prost::alloc::string::String,
+    /// Output only. The release type of the Goldengate Deployment Version
+    /// resource.
+    #[prost(
+        enumeration = "goldengate_deployment_version_properties::DeploymentReleaseType",
+        tag = "4"
+    )]
+    pub release_type: i32,
+    /// Output only. The release time of the Goldengate Deployment Version
+    /// resource.
+    #[prost(message, optional, tag = "5")]
+    pub release_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The support end time of the Goldengate Deployment Version
+    /// resource.
+    #[prost(message, optional, tag = "6")]
+    pub support_end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `GoldengateDeploymentVersionProperties`.
+pub mod goldengate_deployment_version_properties {
+    /// The deployment type of the Goldengate Deployment Version resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Type category is OGG.
+        Ogg = 1,
+        /// Goldengate Deployment Type category is DATABASE_ORACLE.
+        DatabaseOracle = 2,
+        /// Goldengate Deployment Type category is BIGDATA.
+        Bigdata = 3,
+        /// Goldengate Deployment Type category is DATABASE_MICROSOFT_SQLSERVER.
+        DatabaseMicrosoftSqlserver = 4,
+        /// Goldengate Deployment Type category is DATABASE_MYSQL.
+        DatabaseMysql = 5,
+        /// Goldengate Deployment Type category is DATABASE_POSTGRESQL.
+        DatabasePostgresql = 6,
+        /// Goldengate Deployment Type category is DATABASE_DB2ZOS.
+        DatabaseDb2zos = 7,
+        /// Goldengate Deployment Type category is DATABASE_DB2I.
+        DatabaseDb2i = 8,
+        /// Goldengate Deployment Type category is GGSA.
+        Ggsa = 9,
+        /// Goldengate Deployment Type category is DATA_TRANSFORMS.
+        DataTransforms = 10,
+    }
+    impl DeploymentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_TYPE_UNSPECIFIED",
+                Self::Ogg => "OGG",
+                Self::DatabaseOracle => "DATABASE_ORACLE",
+                Self::Bigdata => "BIGDATA",
+                Self::DatabaseMicrosoftSqlserver => "DATABASE_MICROSOFT_SQLSERVER",
+                Self::DatabaseMysql => "DATABASE_MYSQL",
+                Self::DatabasePostgresql => "DATABASE_POSTGRESQL",
+                Self::DatabaseDb2zos => "DATABASE_DB2ZOS",
+                Self::DatabaseDb2i => "DATABASE_DB2I",
+                Self::Ggsa => "GGSA",
+                Self::DataTransforms => "DATA_TRANSFORMS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OGG" => Some(Self::Ogg),
+                "DATABASE_ORACLE" => Some(Self::DatabaseOracle),
+                "BIGDATA" => Some(Self::Bigdata),
+                "DATABASE_MICROSOFT_SQLSERVER" => Some(Self::DatabaseMicrosoftSqlserver),
+                "DATABASE_MYSQL" => Some(Self::DatabaseMysql),
+                "DATABASE_POSTGRESQL" => Some(Self::DatabasePostgresql),
+                "DATABASE_DB2ZOS" => Some(Self::DatabaseDb2zos),
+                "DATABASE_DB2I" => Some(Self::DatabaseDb2i),
+                "GGSA" => Some(Self::Ggsa),
+                "DATA_TRANSFORMS" => Some(Self::DataTransforms),
+                _ => None,
+            }
+        }
+    }
+    /// The release type of the Goldengate Deployment Version resource.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentReleaseType {
+        /// Default unspecified value.
+        Unspecified = 0,
+        /// Goldengate Deployment Version release type is MAJOR.
+        Major = 1,
+        /// Goldengate Deployment Version release type is BUNDLE.
+        Bundle = 2,
+        /// Goldengate Deployment Version release type is MINOR.
+        Minor = 3,
+    }
+    impl DeploymentReleaseType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_RELEASE_TYPE_UNSPECIFIED",
+                Self::Major => "MAJOR",
+                Self::Bundle => "BUNDLE",
+                Self::Minor => "MINOR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_RELEASE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAJOR" => Some(Self::Major),
+                "BUNDLE" => Some(Self::Bundle),
+                "MINOR" => Some(Self::Minor),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for listing GoldengateDeploymentVersions.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListGoldengateDeploymentVersionsRequest {
+    /// Required. Parent value for ListGoldengateDeploymentVersionsRequest
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. Either
+    /// the deployment_id and deployment_type fields must be specified in the
+    /// format: `deployment_id="id"` or `deployment_type="DATABASE_ORACLE"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Message for response to listing GoldengateDeploymentVersions
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGoldengateDeploymentVersionsResponse {
+    /// The list of GoldengateDeploymentVersion
+    #[prost(message, repeated, tag = "1")]
+    pub goldengate_deployment_versions: ::prost::alloc::vec::Vec<
+        GoldengateDeploymentVersion,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata for a given \[Location\]\[google.cloud.location.Location\].
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5677,6 +11314,11 @@ pub struct CloudVmCluster {
     /// securely access the resources in the customer project.
     #[prost(message, optional, tag = "16")]
     pub identity_connector: ::core::option::Option<IdentityConnector>,
+    /// Optional. The name of ExascaleDbStorageVault associated with the VM
+    /// Cluster. Format:
+    /// projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
+    #[prost(string, tag = "17")]
+    pub exascale_db_storage_vault: ::prost::alloc::string::String,
 }
 /// Various properties and settings associated with Exadata VM cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5737,10 +11379,10 @@ pub struct CloudVmClusterProperties {
     /// Output only. State of the cluster.
     #[prost(enumeration = "cloud_vm_cluster_properties::State", tag = "20")]
     pub state: i32,
-    /// Output only. SCAN listener port - TCP
+    /// Optional. SCAN listener port - TCP
     #[prost(int32, tag = "21")]
     pub scan_listener_port_tcp: i32,
-    /// Output only. SCAN listener port - TLS
+    /// Optional. SCAN listener port - TLS
     #[prost(int32, tag = "22")]
     pub scan_listener_port_tcp_ssl: i32,
     /// Output only. Parent DNS domain where SCAN DNS and hosts names are
@@ -5786,6 +11428,12 @@ pub struct CloudVmClusterProperties {
     /// Output only. The compute model of the VM Cluster.
     #[prost(enumeration = "ComputeModel", tag = "37")]
     pub compute_model: i32,
+    /// Output only. The storage management type of the VM Cluster.
+    #[prost(
+        enumeration = "cloud_vm_cluster_properties::StorageManagementType",
+        tag = "38"
+    )]
+    pub storage_management_type: i32,
 }
 /// Nested message and enum types in `CloudVmClusterProperties`.
 pub mod cloud_vm_cluster_properties {
@@ -5938,6 +11586,49 @@ pub mod cloud_vm_cluster_properties {
             }
         }
     }
+    /// The type of storage management for the Cloud VM Cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageManagementType {
+        /// Unspecified storage management type.
+        Unspecified = 0,
+        /// Automatic Storage Management.
+        Asm = 1,
+        /// Exascale storage management.
+        Exascale = 2,
+    }
+    impl StorageManagementType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_MANAGEMENT_TYPE_UNSPECIFIED",
+                Self::Asm => "ASM",
+                Self::Exascale => "EXASCALE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_MANAGEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASM" => Some(Self::Asm),
+                "EXASCALE" => Some(Self::Exascale),
+                _ => None,
+            }
+        }
+    }
 }
 /// Data collection options for diagnostics.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5987,6 +11678,10 @@ pub struct ListCloudExadataInfrastructuresResponse {
     /// A token for fetching next page of response.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for `CloudExadataInfrastructure.Get`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6076,6 +11771,10 @@ pub struct ListCloudVmClustersResponse {
     /// A token to fetch the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for `CloudVmCluster.Get`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6341,6 +12040,10 @@ pub struct ListAutonomousDatabasesResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for `AutonomousDatabase.Get`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6461,7 +12164,8 @@ pub struct SwitchoverAutonomousDatabaseRequest {
     /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The peer database name to switch over to.
+    /// Optional. The peer database name to switch over to. Required for
+    /// cross-region standby, and must be omitted for in-region Data Guard.
     #[prost(string, tag = "2")]
     pub peer_autonomous_database: ::prost::alloc::string::String,
 }
@@ -6472,7 +12176,8 @@ pub struct FailoverAutonomousDatabaseRequest {
     /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The peer database name to fail over to.
+    /// Optional. The peer database name to fail over to. Required for cross-region
+    /// standby, and must be omitted for in-region Data Guard.
     #[prost(string, tag = "2")]
     pub peer_autonomous_database: ::prost::alloc::string::String,
 }
@@ -6687,6 +12392,10 @@ pub struct ListExadbVmClustersResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations when listing resources across all locations using
+    /// wildcard location '-'.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for `ExadbVmCluster.Update`. We only support adding the
 /// Virtual Machine to the ExadbVmCluster. Rest of the fields in ExadbVmCluster
@@ -6948,6 +12657,38 @@ pub mod oracle_database_client {
                     GrpcMethod::new(
                         "google.cloud.oracledatabase.v1.OracleDatabase",
                         "DeleteCloudExadataInfrastructure",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Configures Exascale for a single Exadata Infrastructure.
+        pub async fn configure_exascale_cloud_exadata_infrastructure(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ConfigureExascaleCloudExadataInfrastructureRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ConfigureExascaleCloudExadataInfrastructure",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ConfigureExascaleCloudExadataInfrastructure",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -8512,6 +14253,430 @@ pub mod oracle_database_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists all the GoldengateDeployments for the given project and location.
+        pub async fn list_goldengate_deployments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGoldengateDeploymentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateDeploymentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateDeployments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateDeployments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single GoldengateDeployment.
+        pub async fn get_goldengate_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGoldengateDeploymentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GoldengateDeployment>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetGoldengateDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new GoldengateDeployment in a given project and location.
+        pub async fn create_goldengate_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGoldengateDeploymentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateGoldengateDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateGoldengateDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single GoldengateDeployment.
+        pub async fn delete_goldengate_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGoldengateDeploymentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteGoldengateDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteGoldengateDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops a single GoldengateDeployment.
+        pub async fn stop_goldengate_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopGoldengateDeploymentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/StopGoldengateDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "StopGoldengateDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Starts a single GoldengateDeployment.
+        pub async fn start_goldengate_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartGoldengateDeploymentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/StartGoldengateDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "StartGoldengateDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the GoldengateConnections for the given project and location.
+        pub async fn list_goldengate_connections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGoldengateConnectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateConnections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single GoldengateConnection.
+        pub async fn get_goldengate_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGoldengateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GoldengateConnection>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetGoldengateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new GoldengateConnection in a given project and location.
+        pub async fn create_goldengate_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGoldengateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateGoldengateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateGoldengateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single GoldengateConnection.
+        pub async fn delete_goldengate_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGoldengateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteGoldengateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteGoldengateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GoldengateDeploymentVersions in a given project and location.
+        pub async fn list_goldengate_deployment_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListGoldengateDeploymentVersionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateDeploymentVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateDeploymentVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateDeploymentVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GoldenGateDeploymentTypes in a given project and location.
+        pub async fn list_goldengate_deployment_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGoldengateDeploymentTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateDeploymentTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateDeploymentTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateDeploymentTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GoldengateDeploymentEnvironments in a given project and location.
+        pub async fn list_goldengate_deployment_environments(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListGoldengateDeploymentEnvironmentsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateDeploymentEnvironmentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateDeploymentEnvironments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateDeploymentEnvironments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GoldengateConnectionTypes in a given project and location.
+        pub async fn list_goldengate_connection_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGoldengateConnectionTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateConnectionTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateConnectionTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateConnectionTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// List DbVersions for the given project and location.
         pub async fn list_db_versions(
             &mut self,
@@ -8568,6 +14733,167 @@ pub mod oracle_database_client {
                     GrpcMethod::new(
                         "google.cloud.oracledatabase.v1.OracleDatabase",
                         "ListDatabaseCharacterSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists GoldengateConnectionAssignments in a given project and location.
+        pub async fn list_goldengate_connection_assignments(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListGoldengateConnectionAssignmentsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGoldengateConnectionAssignmentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListGoldengateConnectionAssignments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "ListGoldengateConnectionAssignments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single GoldengateConnectionAssignment.
+        pub async fn get_goldengate_connection_assignment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetGoldengateConnectionAssignmentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GoldengateConnectionAssignment>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateConnectionAssignment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "GetGoldengateConnectionAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new GoldengateConnectionAssignment in a given project and
+        /// location.
+        pub async fn create_goldengate_connection_assignment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateGoldengateConnectionAssignmentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateGoldengateConnectionAssignment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "CreateGoldengateConnectionAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single GoldengateConnectionAssignment.
+        pub async fn delete_goldengate_connection_assignment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteGoldengateConnectionAssignmentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteGoldengateConnectionAssignment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "DeleteGoldengateConnectionAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Tests a single GoldengateConnectionAssignment.
+        pub async fn test_goldengate_connection_assignment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::TestGoldengateConnectionAssignmentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::TestGoldengateConnectionAssignmentResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/TestGoldengateConnectionAssignment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "TestGoldengateConnectionAssignment",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -10,14 +10,12 @@ pub struct AgentContextReference {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Credentials {
     /// The kind of credentials.
-    /// }
     #[prost(oneof = "credentials::Kind", tags = "1")]
     pub kind: ::core::option::Option<credentials::Kind>,
 }
 /// Nested message and enum types in `Credentials`.
 pub mod credentials {
     /// The kind of credentials.
-    /// }
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Kind {
         /// OAuth credentials.
@@ -100,13 +98,21 @@ pub mod datasource_references {
     }
 }
 /// Message representing references to BigQuery tables and property graphs.
-/// At least one of `table_references` or `property_graph_references` must be
-/// populated.
+/// At least one of `table_references`, `property_graph_references`, or
+/// `search_scope` must be populated.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryTableReferences {
     /// Optional. References to BigQuery tables.
     #[prost(message, repeated, tag = "1")]
     pub table_references: ::prost::alloc::vec::Vec<BigQueryTableReference>,
+    /// Optional. Preview feature. References to BigQuery property graphs.
+    /// Note: Data sources must exclusively use either tables or property graphs,
+    /// not both. When using property graphs, a maximum of one graph reference is
+    /// supported.
+    #[prost(message, repeated, tag = "2")]
+    pub property_graph_references: ::prost::alloc::vec::Vec<
+        BigQueryPropertyGraphReference,
+    >,
 }
 /// Message representing a reference to a single BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -127,7 +133,7 @@ pub struct BigQueryTableReference {
 /// Message representing references to Looker Studio datasources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StudioDatasourceReferences {
-    /// The references to the studio datasources.
+    /// Optional. The references to the studio datasources.
     #[prost(message, repeated, tag = "2")]
     pub studio_references: ::prost::alloc::vec::Vec<StudioDatasourceReference>,
 }
@@ -140,7 +146,7 @@ pub struct StudioDatasourceReference {
 }
 /// Message representing reference to an AlloyDB database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlloyDbReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -150,8 +156,45 @@ pub struct AlloyDbReference {
     #[prost(message, optional, tag = "3")]
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
+/// Message representing a table including its schema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseTableReference {
+    /// Required. The name of the table as defined in the database.
+    ///
+    /// Note: The precise rules for table naming, including valid characters,
+    /// length limits, and case sensitivity, are determined by the specific
+    /// database system.
+    ///
+    /// Requirements:
+    ///
+    /// * Exact Match: The provided name must be identical to the name stored
+    ///   in the database.
+    /// * Case Sensitivity: Respect the case sensitivity rules of the specific
+    ///   database system and how the table was created. For example, "Orders"
+    ///   and "orders" may be distinct table names.
+    /// * Special Characters/Keywords: If the table name includes spaces, special
+    ///   characters, or is a database reserved keyword, provide the literal name
+    ///   as it is stored. Do not add any database-specific identifier quoting
+    ///   characters (e.g., ", \`, \[\]).
+    ///
+    /// Examples:
+    ///
+    /// * Simple name: "orders", "UserActivity"
+    /// * Case sensitive: "MyTable"
+    /// * Name with spaces: "Order Details"
+    /// * Name with other special characters: "user/data", "order-items"
+    /// * Name that is a keyword: "Group", "Order"
+    ///
+    /// Permissions: The caller's credentials must have the necessary database
+    /// permissions to access the table's schema and data.
+    #[prost(string, tag = "1")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Optional. The schema of the table.
+    #[prost(message, optional, tag = "2")]
+    pub schema: ::core::option::Option<Schema>,
+}
 /// Message representing a reference to a single AlloyDB database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlloyDbDatabaseReference {
     /// Required. The project the instance belongs to.
     #[prost(string, tag = "1")]
@@ -171,10 +214,15 @@ pub struct AlloyDbDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "6")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "7")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
 }
 /// Message representing reference to a Spanner database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -185,7 +233,7 @@ pub struct SpannerReference {
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single Spanner database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerDatabaseReference {
     /// Required. The engine of the Spanner instance.
     #[prost(enumeration = "spanner_database_reference::Engine", tag = "6")]
@@ -193,9 +241,6 @@ pub struct SpannerDatabaseReference {
     /// Required. The project the instance belongs to.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
-    /// Required. The region of the instance.
-    #[prost(string, tag = "2")]
-    pub region: ::prost::alloc::string::String,
     /// Required. The instance id.
     #[prost(string, tag = "3")]
     pub instance_id: ::prost::alloc::string::String,
@@ -205,6 +250,22 @@ pub struct SpannerDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "5")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "7")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+    /// Optional. Priority for the queries to Spanner. Should be a value supported
+    /// by Cloud Spanner e.g.: LOW, MEDIUM, HIGH. Unsupported values will be
+    /// ignored. See
+    /// <https://docs.cloud.google.com/spanner/docs/reference/rest/v1/RequestOptions#Priority>
+    /// for complete list.
+    #[prost(string, tag = "8")]
+    pub priority: ::prost::alloc::string::String,
+    /// Tag to be attached to all queries to Spanner. Allows to identify and
+    /// monitor queries sent to Spanner by the GDA service.
+    #[prost(string, tag = "9")]
+    pub request_tag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SpannerDatabaseReference`.
 pub mod spanner_database_reference {
@@ -254,7 +315,7 @@ pub mod spanner_database_reference {
 }
 /// Message representing reference to a CloudSQL database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -265,7 +326,7 @@ pub struct CloudSqlReference {
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single CloudSQL database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlDatabaseReference {
     /// Required. The engine of the Cloud SQL instance.
     #[prost(enumeration = "cloud_sql_database_reference::Engine", tag = "1")]
@@ -285,6 +346,11 @@ pub struct CloudSqlDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "7")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "8")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
 }
 /// Nested message and enum types in `CloudSqlDatabaseReference`.
 pub mod cloud_sql_database_reference {
@@ -338,12 +404,14 @@ pub struct LookerExploreReferences {
     /// Required. References to Looker explores.
     #[prost(message, repeated, tag = "1")]
     pub explore_references: ::prost::alloc::vec::Vec<LookerExploreReference>,
-    /// Optional. The credentials to use when calling the Looker API.
+    /// Optional. Deprecated: Use credentials in ChatRequest.
+    /// The credentials to use when calling the Looker API.
     ///
     /// Currently supports both OAuth token and API key-based credentials, as
     /// described in
     /// [Authentication with an
     /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub credentials: ::core::option::Option<Credentials>,
 }
@@ -382,6 +450,19 @@ pub mod looker_explore_reference {
         PrivateLookerInstanceInfo(super::PrivateLookerInstanceInfo),
     }
 }
+/// Message representing a reference to a single BigQuery property graph.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryPropertyGraphReference {
+    /// Required. The project that the property graph belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The dataset that the property graph belongs to.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. The property graph id.
+    #[prost(string, tag = "3")]
+    pub property_graph_id: ::prost::alloc::string::String,
+}
 /// Message representing a private Looker instance info required if the Looker
 /// instance is behind a private network.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -408,7 +489,7 @@ pub struct Datasource {
     #[prost(message, optional, tag = "10")]
     pub struct_schema: ::core::option::Option<::prost_types::Struct>,
     /// The reference to the datasource.
-    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14")]
+    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14, 16")]
     pub reference: ::core::option::Option<datasource::Reference>,
 }
 /// Nested message and enum types in `Datasource`.
@@ -434,6 +515,9 @@ pub mod datasource {
         /// A reference to a CloudSQL database.
         #[prost(message, tag = "14")]
         CloudSqlReference(super::CloudSqlReference),
+        /// A reference to a BigQuery property graph.
+        #[prost(message, tag = "16")]
+        BigqueryPropertyGraphReference(super::BigQueryPropertyGraphReference),
     }
 }
 /// The schema of a Datasource or QueryResult instance.
@@ -499,8 +583,6 @@ pub struct Field {
     #[prost(message, repeated, tag = "9")]
     pub subfields: ::prost::alloc::vec::Vec<Field>,
     /// Optional. Field category, not required, currently only useful for Looker.
-    /// We are using a string to avoid depending on an external package and keep
-    /// this package self-contained.
     #[prost(string, tag = "10")]
     pub category: ::prost::alloc::string::String,
     /// Optional. Looker only. Value format of the field.
@@ -576,21 +658,26 @@ pub struct Context {
     pub options: ::core::option::Option<ConversationOptions>,
     /// Optional. A list of example queries, providing examples of relevant and
     /// commonly used SQL queries and their corresponding natural language queries
-    /// optionally present. Currently only used for BigQuery data sources.
+    /// optionally present. Currently only used for BigQuery data sources and
+    /// databases (alloydb, cloudsql, spanner) data sources.
     #[prost(message, repeated, tag = "5")]
     pub example_queries: ::prost::alloc::vec::Vec<ExampleQuery>,
     /// Optional. A list of golden queries, providing examples of relevant and
     /// commonly used Looker queries and their corresponding natural language
-    /// queries optionally present.
+    /// queries optionally present. Only supported for Looker data sources.
     #[prost(message, repeated, tag = "11")]
     pub looker_golden_queries: ::prost::alloc::vec::Vec<LookerGoldenQuery>,
     /// Optional. Term definitions (currently, only user authored)
+    /// Not supported for databases (alloydb, cloudsql, spanner) data sources.
     #[prost(message, repeated, tag = "8")]
     pub glossary_terms: ::prost::alloc::vec::Vec<GlossaryTerm>,
     /// Optional. Relationships between table schema, including referencing and
     /// referenced columns.
     #[prost(message, repeated, tag = "9")]
     pub schema_relationships: ::prost::alloc::vec::Vec<context::SchemaRelationship>,
+    /// Optional. A collection of user functions to be included in context.
+    #[prost(message, optional, tag = "10")]
+    pub user_functions: ::core::option::Option<UserFunctions>,
 }
 /// Nested message and enum types in `Context`.
 pub mod context {
@@ -611,10 +698,15 @@ pub mod context {
         /// index in the `left_schema_paths` list.
         #[prost(message, optional, tag = "2")]
         pub right_schema_paths: ::core::option::Option<schema_relationship::SchemaPaths>,
-        /// Sources which generated the schema relation edge.
-        #[prost(enumeration = "schema_relationship::Source", repeated, tag = "3")]
+        /// Optional. Sources which generated the schema relation edge.
+        #[prost(
+            enumeration = "schema_relationship::Source",
+            repeated,
+            packed = "false",
+            tag = "3"
+        )]
         pub sources: ::prost::alloc::vec::Vec<i32>,
-        /// A confidence score for the suggested relationship.
+        /// Optional. A confidence score for the suggested relationship.
         /// Manually added edges have the highest confidence score.
         #[prost(float, tag = "4")]
         pub confidence_score: f32,
@@ -682,15 +774,52 @@ pub mod context {
         }
     }
 }
+/// A collection of user functions to be included in context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserFunctions {
+    /// A list of BigQuery routines to include in the context.
+    #[prost(message, repeated, tag = "1")]
+    pub bq_routines: ::prost::alloc::vec::Vec<BigQueryRoutine>,
+}
+/// A reference to a BigQuery routine.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryRoutine {
+    /// The reference to the BigQuery routine.
+    #[prost(message, optional, tag = "1")]
+    pub routine_reference: ::core::option::Option<BigQueryRoutineReference>,
+    /// User override or addition to description, to tell the agent when to use the
+    /// UDF.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+}
+/// A reference to a BigQuery routine.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryRoutineReference {
+    /// The project ID of the routine.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The dataset ID of the routine.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// The routine ID of the routine.
+    #[prost(string, tag = "3")]
+    pub routine_id: ::prost::alloc::string::String,
+}
 /// Example of relevant and commonly used SQL query and its corresponding natural
 /// language queries optionally present. Currently only used for BigQuery data
 /// sources.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExampleQuery {
     /// Optional. A natural language question that a user might ask.
     /// For example: "How many orders were placed last month?"
     #[prost(string, tag = "1")]
     pub natural_language_question: ::prost::alloc::string::String,
+    /// Optional. The list of query parameters.
+    /// Example: The parameterized SQL query
+    /// "SELECT * FROM my_table WHERE id = @id" can be matched with any value of
+    /// id.
+    #[prost(message, repeated, tag = "3")]
+    pub parameters: ::prost::alloc::vec::Vec<QueryParameter>,
     /// The SQL or Looker query that should be generated to answer the natural
     /// language query.
     #[prost(oneof = "example_query::Query", tags = "101")]
@@ -708,6 +837,49 @@ pub mod example_query {
         #[prost(string, tag = "101")]
         SqlQuery(::prost::alloc::string::String),
     }
+}
+/// A query parameter message represents a parameter that can be used to
+/// parameterize a SQL query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryParameter {
+    /// Required. The name of the parameter reference in the SQL query.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The description of the parameter that can be used by LLM to
+    /// extract the parameter value from the user question.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The data type of the parameter, e.g. "STRING", "INT64", "DATE",
+    /// etc. For valid values, see the [BigQuery
+    /// documentation](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>).
+    /// This will be used to populate
+    /// google.cloud.bigquery.v2.QueryParameterType.type.
+    #[prost(string, tag = "3")]
+    pub data_type: ::prost::alloc::string::String,
+}
+/// A matched query message represents the agent having matched one of the
+/// example queries supplied in context as being applicable to the current
+/// question. It will also contain additional info during the matching process.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MatchedQuery {
+    /// The query that was matched based on an example query.
+    #[prost(message, optional, tag = "1")]
+    pub example_query: ::core::option::Option<ExampleQuery>,
+    /// The extracted values for the query parameters.
+    #[prost(message, repeated, tag = "2")]
+    pub query_parameter_values: ::prost::alloc::vec::Vec<QueryParameterValues>,
+}
+/// A query parameter values message represents the values for the query
+/// parameters that were extracted from the user question by LLM, based on the
+/// example query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryParameterValues {
+    /// Required. The name of the parameter.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The value of the parameter.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
 }
 /// A golden query for Looker, including natural language questions and a
 /// corresponding Looker Query. Analogous to ExampleQuery.
@@ -746,6 +918,16 @@ pub struct LookerQuery {
     /// Optional. Limit in the query.
     #[prost(string, optional, tag = "6")]
     pub limit: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The primary identifier for the query resource in Looker, used for
+    /// API operations. Maps to `id` (or `slug`) in the Looker API `Query`
+    /// resource.
+    #[prost(string, optional, tag = "10")]
+    pub query_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The short alphanumeric identifier for the query, used for share
+    /// links and Explore URLs (e.g., in the `qid` parameter). Maps to `client_id`
+    /// in the Looker API `Query` resource.
+    #[prost(string, optional, tag = "11")]
+    pub client_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `LookerQuery`.
 pub mod looker_query {
@@ -755,9 +937,11 @@ pub mod looker_query {
         /// Required. The field to filter on.
         #[prost(string, tag = "1")]
         pub field: ::prost::alloc::string::String,
-        /// Required. The value for the field to filter on.
-        #[prost(string, tag = "2")]
-        pub value: ::prost::alloc::string::String,
+        /// Optional. The value for the field to filter on.
+        /// Optional so we can preserve the default value as an empty
+        /// string, important to get a valid and working Looker Explore url.
+        #[prost(string, optional, tag = "2")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
     }
 }
 /// Definition of a term within a specific domain.
@@ -789,6 +973,53 @@ pub struct ConversationOptions {
     /// Optional. Options for datasources.
     #[prost(message, optional, tag = "3")]
     pub datasource: ::core::option::Option<DatasourceOptions>,
+    /// Optional. The model to use for the agent loop.
+    #[prost(enumeration = "conversation_options::Model", optional, tag = "6")]
+    pub model: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ConversationOptions`.
+pub mod conversation_options {
+    /// Allowed models for the agent/conversation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Model {
+        /// No model specified. The model may be set on the chat request, or the
+        /// default model will be used.
+        Unspecified = 0,
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
+        LatestGaModel = 1,
+    }
+    impl Model {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_UNSPECIFIED",
+                Self::LatestGaModel => "LATEST_GA_MODEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LATEST_GA_MODEL" => Some(Self::LatestGaModel),
+                _ => None,
+            }
+        }
+    }
 }
 /// Options for datasources configurations.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -855,6 +1086,86 @@ pub mod analysis_options {
         pub enabled: bool,
     }
 }
+/// Source attributions for content.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Citation {
+    /// Output only. List of the sources being cited.
+    #[prost(message, repeated, tag = "1")]
+    pub sources: ::prost::alloc::vec::Vec<CitationSource>,
+    /// Output only. List of the anchors of the citations.
+    #[prost(message, repeated, tag = "2")]
+    pub anchors: ::prost::alloc::vec::Vec<CitationAnchor>,
+}
+/// The source of the citation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CitationSource {
+    /// Output only. Unique identifier of the source. This ID is service-generated
+    /// and is unique within the scope of a single `Citation` message.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. The title of the source.
+    #[prost(string, tag = "2")]
+    pub title: ::prost::alloc::string::String,
+    /// The source of the citation, which can be one of the supported types.
+    #[prost(oneof = "citation_source::SourceType", tags = "3, 4, 5")]
+    pub source_type: ::core::option::Option<citation_source::SourceType>,
+}
+/// Nested message and enum types in `CitationSource`.
+pub mod citation_source {
+    /// The source of the citation, which can be one of the supported types.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceType {
+        /// Output only. The uri used as the source, such as a web grounding URL.
+        #[prost(string, tag = "3")]
+        Uri(::prost::alloc::string::String),
+        /// Output only. The example query used as the source.
+        #[prost(message, tag = "4")]
+        ExampleQuery(super::ExampleQuery),
+        /// Output only. The glossary term used as the source.
+        #[prost(message, tag = "5")]
+        GlossaryTerm(super::GlossaryTerm),
+    }
+}
+/// The anchor of the citation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CitationAnchor {
+    /// The anchor of the citation, which can be one of the supported types.
+    #[prost(oneof = "citation_anchor::AnchorType", tags = "1")]
+    pub anchor_type: ::core::option::Option<citation_anchor::AnchorType>,
+}
+/// Nested message and enum types in `CitationAnchor`.
+pub mod citation_anchor {
+    /// Citation anchor within a TextMessage.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TextMessageCitationAnchor {
+        /// Output only. The 0-based index of the part within the TextMessage.parts
+        /// field.
+        #[prost(int32, tag = "1")]
+        pub part_index: i32,
+        /// Output only. The offset, measured in UTF-8 bytes, within the part string
+        /// where the citation begins (inclusive). Example: For the text "Hello,
+        /// world" where "world" is cited, the start offset bytes (inclusive) is 7
+        /// and the end offset bytes (exclusive) is 12.
+        #[prost(int32, tag = "2")]
+        pub start_offset_bytes: i32,
+        /// Output only. The offset, measured in UTF-8 bytes, within the part string
+        /// where the citation ends (exclusive). Example: For the text "Hello, world"
+        /// where "world" is cited, the start offset bytes (inclusive) is 7 and the
+        /// end offset bytes (exclusive) is 12.
+        #[prost(int32, tag = "3")]
+        pub end_offset_bytes: i32,
+        /// Output only. The ids of the sources that are cited.
+        #[prost(string, repeated, tag = "4")]
+        pub source_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// The anchor of the citation, which can be one of the supported types.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AnchorType {
+        /// Output only. Only set if the citation is for a TextMessage.
+        #[prost(message, tag = "1")]
+        TextMessageAnchor(TextMessageCitationAnchor),
+    }
+}
 /// Message for a conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Conversation {
@@ -892,6 +1203,17 @@ pub struct Conversation {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
+    /// Conversation resources. Encryption will happen at Titan layer, we will pass
+    /// the KMS key to Titan.
+    ///
+    /// Format:
+    /// projects/{project_id}/locations/{location}/keyRings/{key_ring_name}/cryptoKeys/{key_name}.
+    #[prost(string, optional, tag = "10")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Whether memory is paused for this conversation.
+    #[prost(bool, optional, tag = "11")]
+    pub memory_paused: ::core::option::Option<bool>,
 }
 /// Request for creating a conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -933,8 +1255,9 @@ pub struct ListConversationsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
-    /// requested. The max page size is 100. All larger page sizes will be coerced
-    /// to 100. If unspecified, server will pick 50 as an approperiate default.
+    /// requested. The max page size is `100`. All larger page sizes will be
+    /// coerced to `100`. If unspecified, server will pick `50` as an appropriate
+    /// default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
@@ -1037,6 +1360,12 @@ pub struct DataAgent {
     /// on input.
     #[prost(message, optional, tag = "13")]
     pub purge_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
+    /// DataAgent resources. Cloud KMS CryptoKeys must reside in the same location
+    /// as the DataAgent. The expected format is
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, optional, tag = "14")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
     /// The type of the agent. Can be one of the following:
     ///
     /// * Data analytics agent.
@@ -1792,13 +2121,23 @@ pub struct QueryDataContext {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterizedSecureViewParameters {
     /// Optional. Named parameters for Parameterized Secure Views (PSV).
-    /// The map keys are parameter names (e.g., `"user_id"`), and values are the
-    /// corresponding parameter values (e.g., `"123"`).
-    #[prost(map = "string, string", tag = "1")]
-    pub parameters: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "1")]
+    pub parameters: ::prost::alloc::vec::Vec<
+        parameterized_secure_view_parameters::Parameter,
     >,
+}
+/// Nested message and enum types in `ParameterizedSecureViewParameters`.
+pub mod parameterized_secure_view_parameters {
+    /// Represents a single parameter for Parameterized Secure Views.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Parameter {
+        /// Required. The parameter key (e.g., `"user_id"`).
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Required. The parameter value (e.g., `"123"`).
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+    }
 }
 /// Response containing the generated query and related information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1894,8 +2233,9 @@ pub struct ListMessagesRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
-    /// requested. The max page size is 100. All larger page sizes will be coerced
-    /// to 100. If unspecified, server will pick 50 as an approperiate default.
+    /// requested. The max page size is `100`. All larger page sizes will be
+    /// coerced to `100`. If unspecified, server will pick `50` as an appropriate
+    /// default.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
@@ -1934,7 +2274,8 @@ pub struct StorageMessage {
 /// Request for Chat.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChatRequest {
-    /// Optional. The Google Cloud project to be used for quota and billing.
+    /// Optional. Deprecated: Use `parent` field instead.
+    /// The Google Cloud project to be used for quota and billing.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -1945,10 +2286,24 @@ pub struct ChatRequest {
     /// Required. Content of current conversation.
     #[prost(message, repeated, tag = "2")]
     pub messages: ::prost::alloc::vec::Vec<Message>,
+    /// Optional. The credentials to use when calling the data source(s) specified
+    /// in the context.
+    ///
+    /// This field can be used to provide credentials for various data sources.
+    /// For example, when connecting to Looker, it currently supports both OAuth
+    /// token and API key-based credentials, as described in
+    /// [Authentication with an
+    /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[prost(message, optional, tag = "7")]
+    pub credentials: ::core::option::Option<Credentials>,
     /// Optional. The thinking mode to use for the agent loop.
     /// Defaults to THINKING_MODE_UNSPECIFIED if not specified.
     #[prost(enumeration = "chat_request::ThinkingMode", tag = "9")]
     pub thinking_mode: i32,
+    /// Optional. The model to use for the agent loop when processing the request.
+    /// This setting only has an effect when context.options.model is not set.
+    #[prost(enumeration = "chat_request::Model", tag = "11")]
+    pub model: i32,
     /// Context Provider for the chat request.
     /// It can either be -
     /// inline_context, which is a context provided inline in the request.
@@ -1957,6 +2312,10 @@ pub struct ChatRequest {
     /// and context using conversation_id and agent_id.
     #[prost(oneof = "chat_request::ContextProvider", tags = "101, 103, 104, 105")]
     pub context_provider: ::core::option::Option<chat_request::ContextProvider>,
+    /// Optional settings to customize request behavior, specific to the target
+    /// datasource.
+    #[prost(oneof = "chat_request::DatasourceSettings", tags = "13")]
+    pub datasource_settings: ::core::option::Option<chat_request::DatasourceSettings>,
 }
 /// Nested message and enum types in `ChatRequest`.
 pub mod chat_request {
@@ -2003,6 +2362,46 @@ pub mod chat_request {
             }
         }
     }
+    /// Model selection for the agent.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Model {
+        /// No model specified. The default model will be used.
+        Unspecified = 0,
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
+        LatestGaModel = 1,
+    }
+    impl Model {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_UNSPECIFIED",
+                Self::LatestGaModel => "LATEST_GA_MODEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LATEST_GA_MODEL" => Some(Self::LatestGaModel),
+                _ => None,
+            }
+        }
+    }
     /// Context Provider for the chat request.
     /// It can either be -
     /// inline_context, which is a context provided inline in the request.
@@ -2031,6 +2430,14 @@ pub mod chat_request {
         #[prost(message, tag = "105")]
         ClientManagedResourceContext(super::ClientManagedResourceContext),
     }
+    /// Optional settings to customize request behavior, specific to the target
+    /// datasource.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum DatasourceSettings {
+        /// Optional. Looker specific settings.
+        #[prost(message, tag = "13")]
+        LookerSettings(super::LookerSettings),
+    }
 }
 /// Context for the chat request using a data agent.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2038,12 +2445,14 @@ pub struct DataAgentContext {
     /// Required. The name of the data agent resource.
     #[prost(string, tag = "1")]
     pub data_agent: ::prost::alloc::string::String,
-    /// Optional. The credentials to use when calling the Looker data source.
+    /// Optional. Deprecated: Use credentials in ChatRequest.
+    /// The credentials to use when calling the Looker data source.
     ///
     /// Currently supports both OAuth token and API key-based credentials, as
     /// described in
     /// [Authentication with an
     /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub credentials: ::core::option::Option<Credentials>,
     /// Optional. Version of context to be used by DCS (e.g. STAGING, PUBLISHED)
@@ -2157,6 +2566,18 @@ pub mod message {
         SystemMessage(super::SystemMessage),
     }
 }
+/// Message to hold Looker specific custom settings.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LookerSettings {
+    /// Optional. Whether to operate in Looker's Development Mode.
+    /// If true, the API session will be switched to the "dev" workspace,
+    /// allowing interaction with LookML changes in the user's development branch.
+    /// If false or unset, the session remains in the default state (Production
+    /// Mode).
+    /// See <https://cloud.google.com/looker/docs/dev-mode-prod-mode.>
+    #[prost(bool, tag = "1")]
+    pub enable_dev_mode: bool,
+}
 /// A message from the user that is interacting with the system.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserMessage {
@@ -2175,7 +2596,7 @@ pub mod user_message {
     }
 }
 /// A message from the system in response to the user. This message can also be a
-/// message from the user as historical context for multiturn conversations with
+/// message from the user as historical context for multi-turn conversations with
 /// the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemMessage {
@@ -2184,6 +2605,9 @@ pub struct SystemMessage {
     /// the UI.
     #[prost(int32, optional, tag = "12")]
     pub group_id: ::core::option::Option<i32>,
+    /// Output only. Citation information for the system message.
+    #[prost(message, optional, tag = "15")]
+    pub citation: ::core::option::Option<Citation>,
     /// The kind of content in the system message.
     #[prost(oneof = "system_message::Kind", tags = "1, 2, 3, 4, 5, 6, 13, 14")]
     pub kind: ::core::option::Option<system_message::Kind>,
@@ -2214,7 +2638,9 @@ pub mod system_message {
         /// Optional. A message containing example queries.
         #[prost(message, tag = "13")]
         ExampleQueries(super::ExampleQueries),
-        /// Optional. A message containing clarification questions.
+        /// Optional. Deprecated: Use TextMessage with TextType.FINAL_RESPONSE
+        /// instead. A message containing clarification questions.
+        #[deprecated]
         #[prost(message, tag = "14")]
         Clarification(super::ClarificationMessage),
     }
@@ -2261,6 +2687,9 @@ pub mod text_message {
         /// (`FINAL_RESPONSE`). These messages provide insight into the agent's
         /// actions.
         Progress = 3,
+        /// The text is a list of follow-up questions suggested.
+        /// Each item in parts is a follow-up question.
+        FollowupQuestions = 4,
     }
     impl TextType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2273,6 +2702,7 @@ pub mod text_message {
                 Self::FinalResponse => "FINAL_RESPONSE",
                 Self::Thought => "THOUGHT",
                 Self::Progress => "PROGRESS",
+                Self::FollowupQuestions => "FOLLOWUP_QUESTIONS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2282,6 +2712,7 @@ pub mod text_message {
                 "FINAL_RESPONSE" => Some(Self::FinalResponse),
                 "THOUGHT" => Some(Self::Thought),
                 "PROGRESS" => Some(Self::Progress),
+                "FOLLOWUP_QUESTIONS" => Some(Self::FollowupQuestions),
                 _ => None,
             }
         }
@@ -2328,7 +2759,7 @@ pub struct SchemaResult {
 pub struct DataMessage {
     /// Whether this message contains the query, the result, or generated SQL for
     /// the data retrieval.
-    #[prost(oneof = "data_message::Kind", tags = "1, 2, 3, 4, 5")]
+    #[prost(oneof = "data_message::Kind", tags = "1, 2, 3, 4, 5, 6")]
     pub kind: ::core::option::Option<data_message::Kind>,
 }
 /// Nested message and enum types in `DataMessage`.
@@ -2346,14 +2777,17 @@ pub mod data_message {
         /// Retrieved data.
         #[prost(message, tag = "3")]
         Result(super::DataResult),
-        /// Looker Query generated by the system to retrieve data.
         /// Deprecated: generated looker query is now under DataQuery.looker.
+        /// Looker Query generated by the system to retrieve data.
         #[deprecated]
         #[prost(message, tag = "4")]
         GeneratedLookerQuery(super::LookerQuery),
         /// A BigQuery job executed by the system to retrieve data.
         #[prost(message, tag = "5")]
         BigQueryJob(super::BigQueryJob),
+        /// A pre-existing query that was matched to retrieve data.
+        #[prost(message, tag = "6")]
+        MatchedQuery(super::MatchedQuery),
     }
 }
 /// A query for retrieving data.
@@ -2590,20 +3024,29 @@ pub struct ErrorMessage {
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
 }
+/// Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead.
 /// Represents a single question to the user to help clarify their query.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClarificationQuestion {
-    /// Required. The natural language question to ask the user.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// The natural language question to ask the user.
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub question: ::prost::alloc::string::String,
-    /// Required. The selection mode for this question.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// The selection mode for this question.
+    #[deprecated]
     #[prost(enumeration = "clarification_question::SelectionMode", tag = "2")]
     pub selection_mode: i32,
-    /// Required. A list of distinct options for the user to choose from.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// A list of distinct options for the user to choose from.
     /// The number of options is limited to a maximum of 5.
+    #[deprecated]
     #[prost(string, repeated, tag = "3")]
     pub options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The type of clarification question.
+    /// Optional. Deprecated: The parent message is deprecated.
+    /// The type of clarification question.
+    #[deprecated]
     #[prost(
         enumeration = "clarification_question::ClarificationQuestionType",
         tag = "4"
@@ -2612,6 +3055,7 @@ pub struct ClarificationQuestion {
 }
 /// Nested message and enum types in `ClarificationQuestion`.
 pub mod clarification_question {
+    /// Deprecated: The parent message is deprecated.
     /// The selection mode for the clarification question.
     #[derive(
         Clone,
@@ -2626,11 +3070,17 @@ pub mod clarification_question {
     )]
     #[repr(i32)]
     pub enum SelectionMode {
+        /// Deprecated: The parent message is deprecated.
         /// Unspecified selection mode.
+        #[deprecated]
         Unspecified = 0,
+        /// Deprecated: The parent message is deprecated.
         /// The user can select only one option.
+        #[deprecated]
         SingleSelect = 1,
+        /// Deprecated: The parent message is deprecated.
         /// The user can select multiple options.
+        #[deprecated]
         MultiSelect = 2,
     }
     impl SelectionMode {
@@ -2640,21 +3090,27 @@ pub mod clarification_question {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "SELECTION_MODE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::SingleSelect => "SINGLE_SELECT",
+                #[allow(deprecated)]
                 Self::MultiSelect => "MULTI_SELECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "SELECTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                "SINGLE_SELECT" => Some(Self::SingleSelect),
-                "MULTI_SELECT" => Some(Self::MultiSelect),
+                "SELECTION_MODE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "SINGLE_SELECT" => Some(#[allow(deprecated)] Self::SingleSelect),
+                "MULTI_SELECT" => Some(#[allow(deprecated)] Self::MultiSelect),
                 _ => None,
             }
         }
     }
+    /// Deprecated: The parent message is deprecated.
     /// The type of clarification question.
     /// This enum may be extended with new values in the future.
     #[derive(
@@ -2670,13 +3126,19 @@ pub mod clarification_question {
     )]
     #[repr(i32)]
     pub enum ClarificationQuestionType {
+        /// Deprecated: The parent message is deprecated.
         /// Unspecified clarification question type.
+        #[deprecated]
         Unspecified = 0,
+        /// Deprecated: The parent message is deprecated.
         /// The clarification question is for filter values.
+        #[deprecated]
         FilterValues = 1,
+        /// Deprecated: The parent message is deprecated.
         /// The clarification question is for data fields. This is a generic term
         /// encompassing SQL columns, Looker fields (dimensions/measures), or
         /// nested data structure properties.
+        #[deprecated]
         Fields = 2,
     }
     impl ClarificationQuestionType {
@@ -2686,27 +3148,35 @@ pub mod clarification_question {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::FilterValues => "FILTER_VALUES",
+                #[allow(deprecated)]
                 Self::Fields => "FIELDS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "FILTER_VALUES" => Some(Self::FilterValues),
-                "FIELDS" => Some(Self::Fields),
+                "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "FILTER_VALUES" => Some(#[allow(deprecated)] Self::FilterValues),
+                "FIELDS" => Some(#[allow(deprecated)] Self::Fields),
                 _ => None,
             }
         }
     }
 }
+/// Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead.
 /// A message of questions to help clarify the user's query. This is returned
 /// when the system cannot confidently answer the user's question.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClarificationMessage {
-    /// Required. A batch of clarification questions to ask the user.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// A batch of clarification questions to ask the user.
+    #[deprecated]
     #[prost(message, repeated, tag = "1")]
     pub questions: ::prost::alloc::vec::Vec<ClarificationQuestion>,
 }
@@ -2825,7 +3295,7 @@ pub mod data_chat_service_client {
             self
         }
         /// Answers a data question by generating a stream of
-        /// \[Message\]\[google.cloud.geminidataanalytics.v1alpha.Message\] objects.
+        /// \[Message\]\[google.cloud.geminidataanalytics.v1.Message\] objects.
         pub async fn chat(
             &mut self,
             request: impl tonic::IntoRequest<super::ChatRequest>,

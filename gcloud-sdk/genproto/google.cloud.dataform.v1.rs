@@ -87,9 +87,15 @@ pub mod repository {
         /// Required. The Git remote's URL.
         #[prost(string, tag = "1")]
         pub url: ::prost::alloc::string::String,
-        /// Required. The Git remote's default branch name.
+        /// Optional. The Git remote's default branch name.
+        /// If not set, `main` will be used.
         #[prost(string, tag = "2")]
         pub default_branch: ::prost::alloc::string::String,
+        /// Output only. The Git remote's effective default branch name.
+        /// This is the default branch name of the Git remote if it is set,
+        /// otherwise it is `main`.
+        #[prost(string, tag = "9")]
+        pub effective_default_branch: ::prost::alloc::string::String,
         /// Optional. The name of the Secret Manager secret version to use as an
         /// authentication token for Git operations. Must be in the format
         /// `projects/*/secrets/*/versions/*`.
@@ -100,6 +106,11 @@ pub mod repository {
         pub ssh_authentication_config: ::core::option::Option<
             git_remote_settings::SshAuthenticationConfig,
         >,
+        /// Optional. Resource name for the `GitRepositoryLink` used for machine
+        /// credentials. Must be in the format
+        /// `projects/*/locations/*/connections/*/gitRepositoryLinks/*`
+        #[prost(string, optional, tag = "7")]
+        pub git_repository_link: ::core::option::Option<::prost::alloc::string::String>,
         /// Output only. Deprecated: The field does not contain any token status
         /// information.
         #[deprecated]
@@ -925,10 +936,12 @@ pub mod directory_entry {
     /// The entry's contents.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Entry {
-        /// A file in the directory.
+        /// A file in the directory. The path is returned including the full
+        /// folder structure from the root.
         #[prost(string, tag = "1")]
         File(::prost::alloc::string::String),
-        /// A child directory in the directory.
+        /// A child directory in the directory. The path is returned including
+        /// the full folder structure from the root.
         #[prost(string, tag = "2")]
         Directory(::prost::alloc::string::String),
     }
@@ -2533,9 +2546,10 @@ pub mod workflow_invocation_action {
         /// Output only. The code contents of a Notebook to be run.
         #[prost(string, tag = "1")]
         pub contents: ::prost::alloc::string::String,
-        /// Output only. The ID of the Vertex job that executed the notebook in
-        /// contents and also the ID used for the outputs created in Google Cloud
-        /// Storage buckets. Only set once the job has started to run.
+        /// Output only. The ID of the Gemini Enterprise Agent Platform job that
+        /// executed the notebook in contents and also the ID used for the outputs
+        /// created in Google Cloud Storage buckets. Only set once the job has
+        /// started to run.
         #[prost(string, tag = "2")]
         pub job_id: ::prost::alloc::string::String,
     }
@@ -2786,8 +2800,8 @@ pub struct Folder {
     /// Optional. The containing Folder resource name. This should take
     /// the format: projects/{project}/locations/{location}/folders/{folder},
     /// projects/{project}/locations/{location}/teamFolders/{teamFolder}, or just
-    /// projects/{project}/locations/{location} if this is a root Folder. This
-    /// field can only be updated through MoveFolder.
+    /// "" if this is a root Folder. This field can only be updated through
+    /// MoveFolder.
     #[prost(string, tag = "3")]
     pub containing_folder: ::prost::alloc::string::String,
     /// Output only. The resource name of the TeamFolder that this Folder is
@@ -2978,7 +2992,7 @@ pub mod delete_folder_tree_metadata {
 /// `QueryFolderContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryFolderContentsRequest {
-    /// Required. Name of the folder whose contents to list.
+    /// Required. Resource name of the Folder to list contents for.
     /// Format: projects/*/locations/*/folders/\*
     #[prost(string, tag = "1")]
     pub folder: ::prost::alloc::string::String,
@@ -3053,7 +3067,7 @@ pub mod query_folder_contents_response {
 /// `QueryUserRootContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryUserRootContentsRequest {
-    /// Required. Location of the user root folder whose contents to list.
+    /// Required. Location of the user root folder to list contents for.
     /// Format: projects/*/locations/*
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
@@ -3189,7 +3203,7 @@ pub struct DeleteTeamFolderRequest {
 /// `QueryTeamFolderContents` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryTeamFolderContentsRequest {
-    /// Required. Name of the team_folder whose contents to list.
+    /// Required. Resource name of the TeamFolder to list contents for.
     /// Format: `projects/*/locations/*/teamFolders/*`.
     #[prost(string, tag = "1")]
     pub team_folder: ::prost::alloc::string::String,
@@ -3268,9 +3282,9 @@ pub struct SearchTeamFoldersRequest {
     /// Format: `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
-    /// Optional. Maximum number of TeamFolders to return. The server may return
-    /// fewer items than requested. If unspecified, the server will pick an
-    /// appropriate default.
+    /// Optional. Maximum number of `TeamFolders` to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick a default
+    /// of `page_size` = 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `SearchTeamFolders` call.
@@ -3483,7 +3497,7 @@ pub mod move_repository_metadata {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DirectoryContentsView {
-    /// The default / unset value. Defaults to DIRECTORY_CONTENTS_VIEW_BASIC.
+    /// The default unset value. Defaults to DIRECTORY_CONTENTS_VIEW_BASIC.
     Unspecified = 0,
     /// Includes only the file or directory name. This is the default behavior.
     Basic = 1,

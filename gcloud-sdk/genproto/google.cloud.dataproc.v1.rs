@@ -2848,9 +2848,18 @@ pub struct GceClusterConfig {
     #[prost(message, optional, tag = "14")]
     pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
     /// Optional. Confidential Instance Config for clusters using [Confidential
-    /// VMs](<https://cloud.google.com/compute/confidential-vm/docs>).
+    /// VMs](<https://cloud.google.com/confidential-computing/confidential-vm/docs>).
     #[prost(message, optional, tag = "15")]
     pub confidential_instance_config: ::core::option::Option<ConfidentialInstanceConfig>,
+    /// Optional. \[Resource manager tags\]
+    /// (<https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing>)
+    /// to add to all instances (see \[Use secure tags\]
+    /// (<https://cloud.google.com/dataproc/docs/guides/use-secure-tags>)).
+    #[prost(map = "string, string", tag = "16")]
+    pub resource_manager_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `GceClusterConfig`.
 pub mod gce_cluster_config {
@@ -2945,13 +2954,75 @@ pub struct ShieldedInstanceConfig {
     pub enable_integrity_monitoring: ::core::option::Option<bool>,
 }
 /// Confidential Instance Config for clusters using [Confidential
-/// VMs](<https://cloud.google.com/compute/confidential-vm/docs>)
+/// VMs](<https://cloud.google.com/confidential-computing/confidential-vm/docs>)
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfidentialInstanceConfig {
-    /// Optional. Defines whether the instance should have confidential compute
-    /// enabled.
+    /// Optional. Deprecated: Use 'confidential_instance_type' instead.
+    /// Defines whether the instance should have confidential compute enabled.
+    #[deprecated]
     #[prost(bool, tag = "1")]
     pub enable_confidential_compute: bool,
+    /// Optional. Defines the type of Confidential Compute technology to use.
+    #[prost(
+        enumeration = "confidential_instance_config::ConfidentialInstanceType",
+        tag = "2"
+    )]
+    pub confidential_instance_type: i32,
+}
+/// Nested message and enum types in `ConfidentialInstanceConfig`.
+pub mod confidential_instance_config {
+    /// The type of Confidential Compute technology as per [Confidential Computing
+    /// types](<https://cloud.google.com/confidential-computing/confidential-vm/docs/create-a-confidential-vm-instance#create-instance>).
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConfidentialInstanceType {
+        /// Confidential Instance Type is not specified.
+        Unspecified = 0,
+        /// [AMD Secure Encrypted
+        /// Virtualization](<https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#amd_sev>)
+        Sev = 1,
+        /// [AMD Secure Encrypted Virtualization-Secure Nested
+        /// Paging](<https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#amd_sev-snp>)
+        SevSnp = 2,
+        /// [Intel Trust Domain
+        /// Extensions](<https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#intel_tdx>)
+        Tdx = 3,
+    }
+    impl ConfidentialInstanceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED",
+                Self::Sev => "SEV",
+                Self::SevSnp => "SEV_SNP",
+                Self::Tdx => "TDX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEV" => Some(Self::Sev),
+                "SEV_SNP" => Some(Self::SevSnp),
+                "TDX" => Some(Self::Tdx),
+                _ => None,
+            }
+        }
+    }
 }
 /// The config settings for Compute Engine resources in
 /// an instance group, such as a master or worker group.
@@ -3220,7 +3291,7 @@ pub mod instance_flexibility_policy {
         pub standard_capacity_percent_above_base: ::core::option::Option<i32>,
     }
     /// Defines machines types and a rank to which the machines types belong.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceSelection {
         /// Optional. Full machine-type names, e.g. "n1-standard-16".
         #[prost(string, repeated, tag = "1")]
@@ -3232,6 +3303,12 @@ pub mod instance_flexibility_policy {
         /// priority have the same preference.
         #[prost(int32, tag = "2")]
         pub rank: i32,
+        /// Optional. Disk configuration to apply to the instances in this instance
+        /// selection. If specified on any entry in instanceSelectionList, then it
+        /// must be specified on every entry in instanceSelectionList and the
+        /// instanceGroupConfig must not specify any diskConfig.
+        #[prost(message, optional, tag = "3")]
+        pub disk_config: ::core::option::Option<super::DiskConfig>,
     }
     /// Defines a mapping from machine types to the number of VMs that are created
     /// with each machine type.
@@ -3272,13 +3349,14 @@ pub struct AcceleratorConfig {
     #[prost(int32, tag = "2")]
     pub accelerator_count: i32,
 }
-/// Specifies the config of disk options for a group of VM instances.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+/// Specifies the config of boot disk and attached disk options for a group of VM
+/// instances.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskConfig {
-    /// Optional. Type of the boot disk (default is "pd-standard").
-    /// Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive),
-    /// "pd-ssd" (Persistent Disk Solid State Drive),
-    /// or "pd-standard" (Persistent Disk Hard Disk Drive).
+    /// Optional. Type of the boot disk (default is `pd-standard`).
+    /// Valid values: `pd-balanced` (Persistent Disk Balanced Solid State Drive),
+    /// `pd-ssd` (Persistent Disk Solid State Drive),
+    /// or `pd-standard` (Persistent Disk Hard Disk Drive).
     /// See [Disk types](<https://cloud.google.com/compute/docs/disks#disk-types>).
     #[prost(string, tag = "3")]
     pub boot_disk_type: ::prost::alloc::string::String,
@@ -3296,24 +3374,104 @@ pub struct DiskConfig {
     /// selected.
     #[prost(int32, tag = "2")]
     pub num_local_ssds: i32,
-    /// Optional. Interface type of local SSDs (default is "scsi").
-    /// Valid values: "scsi" (Small Computer System Interface),
-    /// "nvme" (Non-Volatile Memory Express).
+    /// Optional. Interface type of local SSDs (default is `scsi`).
+    /// Valid values: `scsi` (Small Computer System Interface),
+    /// `nvme` (Non-Volatile Memory Express).
     /// See [local SSD
     /// performance](<https://cloud.google.com/compute/docs/disks/local-ssd#performance>).
     #[prost(string, tag = "4")]
     pub local_ssd_interface: ::prost::alloc::string::String,
     /// Optional. Indicates how many IOPS to provision for the disk. This sets the
-    /// number of I/O operations per second that the disk can handle. Note: This
-    /// field is only supported if boot_disk_type is hyperdisk-balanced.
+    /// number of I/O operations per second that the disk can handle.
+    /// **This field is supported only if
+    /// \[boot_disk_type\]\[google.cloud.dataproc.v1.DiskConfig.boot_disk_type\] is
+    /// `hyperdisk-balanced`.**
     #[prost(int64, optional, tag = "5")]
     pub boot_disk_provisioned_iops: ::core::option::Option<i64>,
     /// Optional. Indicates how much throughput to provision for the disk. This
     /// sets the number of throughput mb per second that the disk can handle.
-    /// Values must be greater than or equal to 1. Note: This field is only
-    /// supported if boot_disk_type is hyperdisk-balanced.
+    /// Values must be greater than or equal to 1. **This field is supported only
+    /// if \[boot_disk_type\]\[google.cloud.dataproc.v1.DiskConfig.boot_disk_type\] is
+    /// `hyperdisk-balanced`.**
     #[prost(int64, optional, tag = "6")]
     pub boot_disk_provisioned_throughput: ::core::option::Option<i64>,
+    /// Optional. A list of attached disk configs for a group of VM instances.
+    #[prost(message, repeated, tag = "7")]
+    pub attached_disk_configs: ::prost::alloc::vec::Vec<AttachedDiskConfig>,
+}
+/// Specifies the config of attached disk options for single VM instance.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AttachedDiskConfig {
+    /// Optional. Disk type.
+    #[prost(enumeration = "attached_disk_config::DiskType", tag = "1")]
+    pub disk_type: i32,
+    /// Optional. Disk size in GB.
+    #[prost(int32, tag = "2")]
+    pub disk_size_gb: i32,
+    /// Optional. Indicates how many IOPS to provision for the attached disk. This
+    /// sets the number of I/O operations per second that the disk can handle. See
+    /// <https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features>
+    #[prost(int64, optional, tag = "3")]
+    pub provisioned_iops: ::core::option::Option<i64>,
+    /// Optional. Indicates how much throughput to provision for the attached
+    /// disk. This sets the number of throughput mb per second that the disk can
+    /// handle. See
+    /// <https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features>
+    #[prost(int64, optional, tag = "4")]
+    pub provisioned_throughput: ::core::option::Option<i64>,
+}
+/// Nested message and enum types in `AttachedDiskConfig`.
+pub mod attached_disk_config {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DiskType {
+        /// Required unspecified disk type.
+        Unspecified = 0,
+        /// Hyperdisk Balanced disk type.
+        HyperdiskBalanced = 1,
+        /// Hyperdisk Extreme disk type.
+        HyperdiskExtreme = 2,
+        /// Hyperdisk ML disk type.
+        HyperdiskMl = 3,
+        /// Hyperdisk Throughput disk type.
+        HyperdiskThroughput = 4,
+    }
+    impl DiskType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DISK_TYPE_UNSPECIFIED",
+                Self::HyperdiskBalanced => "HYPERDISK_BALANCED",
+                Self::HyperdiskExtreme => "HYPERDISK_EXTREME",
+                Self::HyperdiskMl => "HYPERDISK_ML",
+                Self::HyperdiskThroughput => "HYPERDISK_THROUGHPUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HYPERDISK_BALANCED" => Some(Self::HyperdiskBalanced),
+                "HYPERDISK_EXTREME" => Some(Self::HyperdiskExtreme),
+                "HYPERDISK_ML" => Some(Self::HyperdiskMl),
+                "HYPERDISK_THROUGHPUT" => Some(Self::HyperdiskThroughput),
+                _ => None,
+            }
+        }
+    }
 }
 /// Node group identification and configuration information.
 #[derive(Clone, PartialEq, ::prost::Message)]

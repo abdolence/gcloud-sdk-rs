@@ -188,9 +188,9 @@ pub mod unit_condition {
         OperationError = 4,
         /// Indicates if AppHub app has been created or if Apphub app has already
         /// existed.
-        AppCreatedOrAlreadyExists = 5,
+        AppCreatedOrAlreadyExists = 6,
         /// Indicates if services and workloads have been registered with AppHub.
-        AppComponentsRegistered = 6,
+        AppComponentsRegistered = 7,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.

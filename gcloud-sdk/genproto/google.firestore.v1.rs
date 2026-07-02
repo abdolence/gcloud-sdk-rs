@@ -265,9 +265,12 @@ pub struct StructuredQuery {
     pub r#where: ::core::option::Option<structured_query::Filter>,
     /// The order to apply to the query results.
     ///
-    /// Firestore allows callers to provide a full ordering, a partial ordering, or
-    /// no ordering at all. In all cases, Firestore guarantees a stable ordering
-    /// through the following rules:
+    /// Callers can provide a full ordering, a partial ordering, or no ordering at
+    /// all. While Firestore will always respect the provided order, the behavior
+    /// for queries without a full ordering is different per database edition:
+    ///
+    /// In Standard edition, Firestore guarantees a stable ordering through the
+    /// following rules:
     ///
     /// * The `order_by` is required to reference all fields used with an
     ///   inequality filter.
@@ -283,6 +286,13 @@ pub struct StructuredQuery {
     /// * `WHERE a > 1` becomes `WHERE a > 1 ORDER BY a ASC, __name__ ASC`
     /// * `WHERE __name__ > ... AND a > 1` becomes
     ///   `WHERE __name__ > ... AND a > 1 ORDER BY a ASC, __name__ ASC`
+    ///
+    /// In Enterprise edition, Firestore does not guarantee a stable ordering.
+    /// Instead it will pick the most efficient ordering based on the indexes
+    /// available at the time of query execution. This will result in a different
+    /// ordering for queries that are otherwise identical. To ensure a stable
+    /// ordering, always include a unique field in the `order_by` clause, such as
+    /// `__name__`.
     #[prost(message, repeated, tag = "4")]
     pub order_by: ::prost::alloc::vec::Vec<structured_query::Order>,
     /// A potential prefix of a position in the result set to start the query at.
@@ -1136,14 +1146,21 @@ pub struct TransactionOptions {
 /// Nested message and enum types in `TransactionOptions`.
 pub mod transaction_options {
     /// Options for a transaction that can be used to read and write documents.
-    ///
-    /// Firestore does not allow 3rd party auth requests to create read-write.
-    /// transactions.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReadWrite {
         /// An optional transaction to retry.
         #[prost(bytes = "vec", tag = "1")]
         pub retry_transaction: ::prost::alloc::vec::Vec<u8>,
+        /// Optional. The concurrency control mode to use for this transaction.
+        ///
+        /// A database is able to use different concurrency modes for different
+        /// transactions simultaneously.
+        ///
+        /// 3rd party auth requests are only allowed to create optimistic
+        /// read-write transactions and must specify that here even if the
+        /// database-level setting is already configured to optimistic.
+        #[prost(enumeration = "ConcurrencyMode", tag = "2")]
+        pub concurrency_mode: i32,
     }
     /// Options for a transaction that can only be used to read documents.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1166,6 +1183,49 @@ pub mod transaction_options {
             /// whole minute timestamp within the past 7 days.
             #[prost(message, tag = "2")]
             ReadTime(::prost_types::Timestamp),
+        }
+    }
+    /// The type of concurrency control mode for transactions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConcurrencyMode {
+        /// Start the transaction with the database-level default concurrency mode.
+        Unspecified = 0,
+        /// Use optimistic concurrency control for the new transaction.
+        Optimistic = 1,
+        /// Use pessimistic concurrency control for the new transaction.
+        Pessimistic = 2,
+    }
+    impl ConcurrencyMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONCURRENCY_MODE_UNSPECIFIED",
+                Self::Optimistic => "OPTIMISTIC",
+                Self::Pessimistic => "PESSIMISTIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONCURRENCY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPTIMISTIC" => Some(Self::Optimistic),
+                "PESSIMISTIC" => Some(Self::Pessimistic),
+                _ => None,
+            }
         }
     }
     /// The mode of the transaction.
@@ -2056,6 +2116,11 @@ pub struct ExecutePipelineRequest {
     /// `projects/{project}/databases/{database}`.
     #[prost(string, tag = "1")]
     pub database: ::prost::alloc::string::String,
+    /// Optional. Automatically commits the transaction after the pipeline has been
+    /// executed. Only permitted in combination with `transaction` or
+    /// `new_transaction`.
+    #[prost(bool, tag = "9")]
+    pub auto_commit_transaction: bool,
     #[prost(oneof = "execute_pipeline_request::PipelineType", tags = "2")]
     pub pipeline_type: ::core::option::Option<execute_pipeline_request::PipelineType>,
     /// Optional consistency arguments, defaults to strong consistency.
@@ -2700,6 +2765,9 @@ pub struct ListCollectionIdsRequest {
     /// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
     /// For example:
     /// `projects/my-project/databases/my-database/documents/chatrooms/my-chatroom`
+    ///
+    /// Use `projects/{project_id}/databases/{database_id}/documents` to list
+    /// top-level collections.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of results to return.

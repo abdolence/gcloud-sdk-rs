@@ -56,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29, 42"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 45, 25, 26, 27, 28, 29, 42, 43"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -117,6 +117,9 @@ pub mod step {
         /// Initial state: packet originating from a Cloud Run revision.
         /// A CloudRunRevisionInfo is populated with starting revision information.
         StartFromCloudRunRevision = 26,
+        /// Initial state: packet originating from a Cloud Run Job.
+        /// A CloudRunJobInfo is populated with starting Job information.
+        StartFromCloudRunJob = 50,
         /// Initial state: packet originating from a Storage Bucket. Used only for
         /// return traces.
         /// The storage_bucket information is populated.
@@ -128,6 +131,8 @@ pub mod step {
         /// group backend. Used only for return traces.
         /// The serverless_neg information is populated.
         StartFromServerlessNeg = 31,
+        /// Initial state: packet originating from a DMS Private Connection.
+        StartFromDmsPrivateConnection = 48,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -223,9 +228,13 @@ pub mod step {
                 Self::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
                 Self::StartFromAppEngineVersion => "START_FROM_APP_ENGINE_VERSION",
                 Self::StartFromCloudRunRevision => "START_FROM_CLOUD_RUN_REVISION",
+                Self::StartFromCloudRunJob => "START_FROM_CLOUD_RUN_JOB",
                 Self::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
                 Self::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
                 Self::StartFromServerlessNeg => "START_FROM_SERVERLESS_NEG",
+                Self::StartFromDmsPrivateConnection => {
+                    "START_FROM_DMS_PRIVATE_CONNECTION"
+                }
                 Self::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
                 Self::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
                 Self::ApplyRoute => "APPLY_ROUTE",
@@ -278,11 +287,15 @@ pub mod step {
                 "START_FROM_CLOUD_FUNCTION" => Some(Self::StartFromCloudFunction),
                 "START_FROM_APP_ENGINE_VERSION" => Some(Self::StartFromAppEngineVersion),
                 "START_FROM_CLOUD_RUN_REVISION" => Some(Self::StartFromCloudRunRevision),
+                "START_FROM_CLOUD_RUN_JOB" => Some(Self::StartFromCloudRunJob),
                 "START_FROM_STORAGE_BUCKET" => Some(Self::StartFromStorageBucket),
                 "START_FROM_PSC_PUBLISHED_SERVICE" => {
                     Some(Self::StartFromPscPublishedService)
                 }
                 "START_FROM_SERVERLESS_NEG" => Some(Self::StartFromServerlessNeg),
+                "START_FROM_DMS_PRIVATE_CONNECTION" => {
+                    Some(Self::StartFromDmsPrivateConnection)
+                }
                 "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
                 "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
                 "APPLY_ROUTE" => Some(Self::ApplyRoute),
@@ -437,6 +450,9 @@ pub mod step {
         /// Display information of a Cloud Run revision.
         #[prost(message, tag = "23")]
         CloudRunRevision(super::CloudRunRevisionInfo),
+        /// Display information of a Cloud Run job.
+        #[prost(message, tag = "45")]
+        CloudRunJob(super::CloudRunJobInfo),
         /// Display information of a NAT.
         #[prost(message, tag = "25")]
         Nat(super::NatInfo),
@@ -456,6 +472,9 @@ pub mod step {
         /// Display information of a layer 7 packet inspection by the firewall.
         #[prost(message, tag = "42")]
         NgfwPacketInspection(super::NgfwPacketInspectionInfo),
+        /// Display information of a DMS Private Connection.
+        #[prost(message, tag = "43")]
+        DmsPrivateConnection(super::PrivateConnectionInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -1744,6 +1763,10 @@ pub mod deliver_info {
         RedisCluster = 17,
         /// Target is a GKE Pod.
         GkePod = 19,
+        /// Target is a Cloud Run Job. Used only for return traces.
+        CloudRunJob = 20,
+        /// Target is a DMS Private Connection. Used only for return traces.
+        DmsPrivateConnection = 21,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1771,6 +1794,8 @@ pub mod deliver_info {
                 Self::RedisInstance => "REDIS_INSTANCE",
                 Self::RedisCluster => "REDIS_CLUSTER",
                 Self::GkePod => "GKE_POD",
+                Self::CloudRunJob => "CLOUD_RUN_JOB",
+                Self::DmsPrivateConnection => "DMS_PRIVATE_CONNECTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1795,6 +1820,8 @@ pub mod deliver_info {
                 "REDIS_INSTANCE" => Some(Self::RedisInstance),
                 "REDIS_CLUSTER" => Some(Self::RedisCluster),
                 "GKE_POD" => Some(Self::GkePod),
+                "CLOUD_RUN_JOB" => Some(Self::CloudRunJob),
+                "DMS_PRIVATE_CONNECTION" => Some(Self::DmsPrivateConnection),
                 _ => None,
             }
         }
@@ -2481,6 +2508,8 @@ pub mod drop_info {
         DroppedInsideGkeService = 18,
         /// Packet was dropped inside Cloud SQL Service.
         DroppedInsideCloudSqlService = 19,
+        /// Packet was dropped inside DMS Private Connection.
+        DroppedInsideDmsPrivateConnection = 114,
         /// Packet was dropped because there is no peering between the originating
         /// network and the Google Managed Services Network.
         GoogleManagedServiceNoPeering = 20,
@@ -2566,6 +2595,8 @@ pub mod drop_info {
         HybridNegNonLocalDynamicRouteMatched = 56,
         /// Packet sent from a Cloud Run revision that is not ready.
         CloudRunRevisionNotReady = 29,
+        /// Packet sent from a Cloud Run job that is not ready.
+        CloudRunJobNotReady = 113,
         /// Packet was dropped inside Private Service Connect service producer.
         DroppedInsidePscServiceProducer = 37,
         /// Packet sent to a load balancer, which requires a proxy-only subnet and
@@ -2681,6 +2712,9 @@ pub mod drop_info {
         /// Packet is dropped because there is no valid matching route from the
         /// network of the Google-managed service to the destination.
         NoValidRouteFromGoogleManagedNetworkToDestination = 110,
+        /// Packet is dropped due to no running instance found for private
+        /// connection.
+        PrivateConnectionNoRunningInstance = 111,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2758,6 +2792,9 @@ pub mod drop_info {
                 }
                 Self::DroppedInsideGkeService => "DROPPED_INSIDE_GKE_SERVICE",
                 Self::DroppedInsideCloudSqlService => "DROPPED_INSIDE_CLOUD_SQL_SERVICE",
+                Self::DroppedInsideDmsPrivateConnection => {
+                    "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION"
+                }
                 Self::GoogleManagedServiceNoPeering => {
                     "GOOGLE_MANAGED_SERVICE_NO_PEERING"
                 }
@@ -2813,6 +2850,7 @@ pub mod drop_info {
                     "HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED"
                 }
                 Self::CloudRunRevisionNotReady => "CLOUD_RUN_REVISION_NOT_READY",
+                Self::CloudRunJobNotReady => "CLOUD_RUN_JOB_NOT_READY",
                 Self::DroppedInsidePscServiceProducer => {
                     "DROPPED_INSIDE_PSC_SERVICE_PRODUCER"
                 }
@@ -2900,6 +2938,9 @@ pub mod drop_info {
                 Self::NoValidRouteFromGoogleManagedNetworkToDestination => {
                     "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION"
                 }
+                Self::PrivateConnectionNoRunningInstance => {
+                    "PRIVATE_CONNECTION_NO_RUNNING_INSTANCE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2984,6 +3025,9 @@ pub mod drop_info {
                 "DROPPED_INSIDE_CLOUD_SQL_SERVICE" => {
                     Some(Self::DroppedInsideCloudSqlService)
                 }
+                "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION" => {
+                    Some(Self::DroppedInsideDmsPrivateConnection)
+                }
                 "GOOGLE_MANAGED_SERVICE_NO_PEERING" => {
                     Some(Self::GoogleManagedServiceNoPeering)
                 }
@@ -3045,6 +3089,7 @@ pub mod drop_info {
                     Some(Self::HybridNegNonLocalDynamicRouteMatched)
                 }
                 "CLOUD_RUN_REVISION_NOT_READY" => Some(Self::CloudRunRevisionNotReady),
+                "CLOUD_RUN_JOB_NOT_READY" => Some(Self::CloudRunJobNotReady),
                 "DROPPED_INSIDE_PSC_SERVICE_PRODUCER" => {
                     Some(Self::DroppedInsidePscServiceProducer)
                 }
@@ -3145,6 +3190,9 @@ pub mod drop_info {
                 "GKE_NETWORK_POLICY" => Some(Self::GkeNetworkPolicy),
                 "NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION" => {
                     Some(Self::NoValidRouteFromGoogleManagedNetworkToDestination)
+                }
+                "PRIVATE_CONNECTION_NO_RUNNING_INSTANCE" => {
+                    Some(Self::PrivateConnectionNoRunningInstance)
                 }
                 _ => None,
             }
@@ -3490,6 +3538,19 @@ pub struct CloudRunRevisionInfo {
     /// URI of Cloud Run service this revision belongs to.
     #[prost(string, tag = "5")]
     pub service_uri: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a Cloud Run job.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CloudRunJobInfo {
+    /// Name of a Cloud Run job.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a Cloud Run job.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Location in which this job is deployed.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with an App Engine version.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3884,6 +3945,14 @@ pub struct NgfwPacketInspectionInfo {
     #[prost(string, tag = "1")]
     pub security_profile_group_uri: ::prost::alloc::string::String,
 }
+/// For display only. Metadata associated with a Private Connection.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PrivateConnectionInfo {
+    /// URI of the Private Connection in format
+    /// "projects/{project_id}/locations/{location}/privateConnections/{private_connection_id}"
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load
 /// balancers](<https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>).
@@ -4089,6 +4158,12 @@ pub struct Endpoint {
     /// URI.
     #[prost(string, tag = "21")]
     pub gke_pod: ::prost::alloc::string::String,
+    /// A [DMS Private
+    /// Connection](<https://docs.cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.privateConnections>)
+    /// name format:
+    /// projects/{project}/locations/{location}/privateConnections/{privateConnection}.
+    #[prost(string, tag = "22")]
+    pub dms_private_connection: ::prost::alloc::string::String,
     /// A [Cloud Function](<https://cloud.google.com/functions>). Applicable only to
     /// source endpoint.
     #[prost(message, optional, tag = "10")]
@@ -4103,6 +4178,13 @@ pub struct Endpoint {
     /// Applicable only to source endpoint.
     #[prost(message, optional, tag = "12")]
     pub cloud_run_revision: ::core::option::Option<endpoint::CloudRunRevisionEndpoint>,
+    /// A [Cloud Run](<https://cloud.google.com/run>)
+    /// [job](<https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs#Job>)
+    /// URI.
+    /// Applicable only to source endpoint.
+    /// The format is: projects/{project}/locations/{location}/jobs/{job}
+    #[prost(string, tag = "24")]
+    pub cloud_run_job: ::prost::alloc::string::String,
     /// A VPC network URI. For source endpoints, used according to the
     /// `network_type`. For destination endpoints, used only when the source is an
     /// external IP address endpoint, and the destination is an internal IP address
