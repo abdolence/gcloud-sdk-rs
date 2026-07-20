@@ -8,4 +8,4 @@ edition = "2021"
 tonic-prost-build = { version = "0.14.0" }
 prost-build = "0.14"
 prettyplease = "0.3"
-syn = { version = "2", default-features = false, features = ["full", "parsing"] }
+syn = { version = "3", default-features = false, features = ["full", "parsing"] }
