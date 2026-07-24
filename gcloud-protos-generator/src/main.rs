@@ -60,6 +60,7 @@ fn filter_unwanted_protos(protos: Vec<Proto>) -> Vec<Proto> {
                 && !path.contains("google/cloud/gkehub/")
                 && !path.contains("google/cloud/retail/")
                 && !path.contains("google/shopping")
+                && !path.contains("google/cloud/dialogflow/v2beta")
                 && !path.contains("preview/google/")
         })
         .collect()
