@@ -7,6 +7,9 @@ pub enum ErrorKind {
     Http(reqwest::Error),
     /// Http status code that is not 2xx when getting token.
     HttpStatus(reqwest::StatusCode),
+    /// Authentication failed while obtaining or refreshing a token.
+    /// Distinguishes auth failures from errors of the API call itself.
+    Auth(AuthErrorDetails),
     /// GCE metadata service error.
     Metadata(String),
     TonicMetadata(tonic::metadata::errors::InvalidMetadataValue),
@@ -27,6 +30,56 @@ pub enum ErrorKind {
     ExternalCredsSourceError(String),
     #[doc(hidden)]
     __Nonexhaustive,
+}
+
+/// Details of an authentication failure (see [`ErrorKind::Auth`]).
+#[derive(Debug)]
+pub struct AuthErrorDetails {
+    /// HTTP status returned by the authentication endpoint, if any.
+    pub status: Option<reqwest::StatusCode>,
+    /// OAuth error code from the response body (e.g. `invalid_grant`), if present.
+    pub oauth_error: Option<String>,
+    /// Human readable details: the OAuth `error_description` or the raw response body.
+    pub details: Option<String>,
+}
+
+impl AuthErrorDetails {
+    /// A remediation hint for well-known OAuth error codes, if one is available.
+    pub fn hint(&self) -> Option<&'static str> {
+        match self.oauth_error.as_deref() {
+            Some("invalid_grant") => Some(
+                "the credentials are likely expired or revoked; re-authenticate (e.g. `gcloud auth application-default login`) or provide a new service account key",
+            ),
+            _ => None,
+        }
+    }
+}
+
+impl fmt::Display for AuthErrorDetails {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut separate = false;
+        if let Some(ref status) = self.status {
+            write!(f, "HTTP {}", status)?;
+            separate = true;
+        }
+        if let Some(ref e) = self.oauth_error {
+            if separate {
+                write!(f, ", ")?;
+            }
+            write!(f, "oauth error: {}", e)?;
+            separate = true;
+        }
+        if let Some(ref d) = self.details {
+            if separate {
+                write!(f, " ")?;
+            }
+            write!(f, "({})", d)?;
+        }
+        if let Some(hint) = self.hint() {
+            write!(f, ". Hint: {}", hint)?;
+        }
+        Ok(())
+    }
 }
 
 /// Represents errors that can occur during getting token.
@@ -51,6 +104,7 @@ impl fmt::Display for Error {
         match *self.0 {
             Http(ref e) => write!(f, "http error: {}", e),
             HttpStatus(ref s) => write!(f, "http status error: {}", s),
+            Auth(ref details) => write!(f, "authentication error: {}", details),
             Metadata(ref e) => write!(f, "gce metadata service error: {}", e),
             Jwt(ref e) => write!(f, "jwt error: {}", e),
             TokenSource => write!(f, "token source error: not found token source"),
