@@ -197,6 +197,39 @@ fn httpc_post(url: &str) -> reqwest::RequestBuilder {
         .header(reqwest::header::USER_AGENT, crate::GCLOUD_SDK_USER_AGENT)
 }
 
+// https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+#[derive(Debug, serde::Deserialize)]
+struct OAuthErrorResponse {
+    error: Option<String>,
+    error_description: Option<String>,
+}
+
+const OAUTH_ERROR_BODY_MAX_LEN: usize = 512;
+
+async fn auth_error_from_response(resp: reqwest::Response) -> crate::error::Error {
+    let status = resp.status();
+    let body = resp.text().await.unwrap_or_default();
+    let (oauth_error, details) = match serde_json::from_str::<OAuthErrorResponse>(&body) {
+        Ok(oauth_error) => (oauth_error.error, oauth_error.error_description),
+        Err(_) if !body.trim().is_empty() => {
+            let mut body = body;
+            let mut end = OAUTH_ERROR_BODY_MAX_LEN.min(body.len());
+            while !body.is_char_boundary(end) {
+                end -= 1;
+            }
+            body.truncate(end);
+            (None, Some(body))
+        }
+        Err(_) => (None, None),
+    };
+    crate::error::ErrorKind::Auth(crate::error::AuthErrorDetails {
+        status: Some(status),
+        oauth_error,
+        details,
+    })
+    .into()
+}
+
 #[derive(Debug, PartialEq, Eq, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 struct IamCredentialsGenerateAccessToken {
@@ -276,7 +309,7 @@ mod jwt {
             let resp = resp.json::<TokenResponse>().await?;
             Token::try_from(resp)
         } else {
-            Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
+            Err(super::auth_error_from_response(resp).await)
         }
     }
 }
@@ -319,7 +352,7 @@ mod oauth2 {
             let resp = resp.json::<TokenResponse>().await?;
             Token::try_from(resp)
         } else {
-            Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
+            Err(super::auth_error_from_response(resp).await)
         }
     }
 }
@@ -425,6 +458,92 @@ mod external_account {
                 &external_account.token_url, status, err_body
             );
             Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Spawns a local one-shot HTTP server that answers any request with the
+    // given status line and JSON body, and returns its base URL.
+    async fn one_shot_http_server(status_line: &'static str, body: &'static str) -> String {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let (mut socket, _) = listener.accept().await.unwrap();
+            let mut buf = [0u8; 8192];
+            let _ = socket.read(&mut buf).await;
+            let resp = format!(
+                "HTTP/1.1 {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+                status_line,
+                body.len(),
+                body
+            );
+            socket.write_all(resp.as_bytes()).await.unwrap();
+        });
+        format!("http://{}", addr)
+    }
+
+    fn test_user() -> User {
+        User {
+            client_secret: "test-secret".into(),
+            client_id: "test-client-id".to_string(),
+            refresh_token: "test-refresh-token".into(),
+            quota_project_id: None,
+        }
+    }
+
+    #[tokio::test]
+    async fn test_user_token_refresh_invalid_grant() {
+        let url = one_shot_http_server(
+            "400 Bad Request",
+            r#"{"error":"invalid_grant","error_description":"Token has been expired or revoked."}"#,
+        )
+        .await;
+
+        let err = oauth2::fetch_token(&url, &test_user()).await.unwrap_err();
+
+        match err.kind() {
+            crate::error::ErrorKind::Auth(details) => {
+                assert_eq!(details.status, Some(reqwest::StatusCode::BAD_REQUEST));
+                assert_eq!(details.oauth_error.as_deref(), Some("invalid_grant"));
+                assert_eq!(
+                    details.details.as_deref(),
+                    Some("Token has been expired or revoked.")
+                );
+            }
+            other => panic!("expected Auth error, got: {:?}", other),
+        }
+
+        let msg = err.to_string();
+        assert!(msg.contains("authentication error"), "message: {}", msg);
+        assert!(msg.contains("invalid_grant"), "message: {}", msg);
+        assert!(
+            msg.contains("gcloud auth application-default login"),
+            "message: {}",
+            msg
+        );
+    }
+
+    #[tokio::test]
+    async fn test_user_token_refresh_non_json_body() {
+        let url = one_shot_http_server("503 Service Unavailable", "upstream unavailable").await;
+
+        let err = oauth2::fetch_token(&url, &test_user()).await.unwrap_err();
+
+        match err.kind() {
+            crate::error::ErrorKind::Auth(details) => {
+                assert_eq!(
+                    details.status,
+                    Some(reqwest::StatusCode::SERVICE_UNAVAILABLE)
+                );
+                assert_eq!(details.oauth_error, None);
+                assert_eq!(details.details.as_deref(), Some("upstream unavailable"));
+            }
+            other => panic!("expected Auth error, got: {:?}", other),
         }
     }
 }
