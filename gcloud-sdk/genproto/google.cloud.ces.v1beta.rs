@@ -300,6 +300,12 @@ pub struct ChannelProfile {
     /// Available values are "low", "moderate", "high", "very_high".
     #[prost(string, tag = "8")]
     pub noise_suppression_level: ::prost::alloc::string::String,
+    /// Optional. Configuration specific to WhatsApp deployments.
+    #[prost(message, optional, tag = "9")]
+    pub whatsapp_config: ::core::option::Option<channel_profile::WhatsAppConfig>,
+    /// Optional. Configuration specific to Instagram deployments.
+    #[prost(message, optional, tag = "10")]
+    pub instagram_config: ::core::option::Option<channel_profile::InstagramConfig>,
 }
 /// Nested message and enum types in `ChannelProfile`.
 pub mod channel_profile {
@@ -499,6 +505,44 @@ pub mod channel_profile {
             }
         }
     }
+    /// Configuration specific to WhatsApp deployments.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct WhatsAppConfig {
+        /// Required. The WhatsApp Business Account ID.
+        #[prost(string, tag = "1")]
+        pub waba_id: ::prost::alloc::string::String,
+        /// Required. The Meta phone number ID.
+        #[prost(string, tag = "2")]
+        pub phone_number_id: ::prost::alloc::string::String,
+        /// Optional. The phone number in E.164 format.
+        #[prost(string, tag = "3")]
+        pub phone_number: ::prost::alloc::string::String,
+        /// Output only. The fetched Meta business page name.
+        #[prost(string, tag = "4")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Output only. The fetched Meta business profile thumbnail URL.
+        #[prost(string, tag = "5")]
+        pub thumbnail_url: ::prost::alloc::string::String,
+        /// Output only. The description of the Meta business page or profile.
+        #[prost(string, tag = "6")]
+        pub description: ::prost::alloc::string::String,
+    }
+    /// Configuration specific to Instagram deployments.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct InstagramConfig {
+        /// Required. The Instagram Account ID.
+        #[prost(string, tag = "1")]
+        pub instagram_account_id: ::prost::alloc::string::String,
+        /// Output only. The fetched Meta business page name.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Output only. The fetched Meta business profile thumbnail URL.
+        #[prost(string, tag = "3")]
+        pub thumbnail_url: ::prost::alloc::string::String,
+        /// Output only. The description of the Meta business page or profile.
+        #[prost(string, tag = "4")]
+        pub description: ::prost::alloc::string::String,
+    }
     /// The type of the channel profile.
     #[derive(
         Clone,
@@ -525,10 +569,16 @@ pub mod channel_profile {
         GoogleTelephonyPlatform = 5,
         /// Contact Center as a Service (CCaaS) channel.
         ContactCenterAsAService = 6,
+        /// Contact Center as a Service (CCaaS Chat) channel.
+        ContactCenterAsAServiceChat = 11,
         /// Five9 channel.
         Five9 = 7,
         /// Third party contact center integration channel.
         ContactCenterIntegration = 8,
+        /// WhatsApp channel.
+        Whatsapp = 9,
+        /// Instagram channel.
+        Instagram = 10,
     }
     impl ChannelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -543,8 +593,11 @@ pub mod channel_profile {
                 Self::Twilio => "TWILIO",
                 Self::GoogleTelephonyPlatform => "GOOGLE_TELEPHONY_PLATFORM",
                 Self::ContactCenterAsAService => "CONTACT_CENTER_AS_A_SERVICE",
+                Self::ContactCenterAsAServiceChat => "CONTACT_CENTER_AS_A_SERVICE_CHAT",
                 Self::Five9 => "FIVE9",
                 Self::ContactCenterIntegration => "CONTACT_CENTER_INTEGRATION",
+                Self::Whatsapp => "WHATSAPP",
+                Self::Instagram => "INSTAGRAM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -556,8 +609,13 @@ pub mod channel_profile {
                 "TWILIO" => Some(Self::Twilio),
                 "GOOGLE_TELEPHONY_PLATFORM" => Some(Self::GoogleTelephonyPlatform),
                 "CONTACT_CENTER_AS_A_SERVICE" => Some(Self::ContactCenterAsAService),
+                "CONTACT_CENTER_AS_A_SERVICE_CHAT" => {
+                    Some(Self::ContactCenterAsAServiceChat)
+                }
                 "FIVE9" => Some(Self::Five9),
                 "CONTACT_CENTER_INTEGRATION" => Some(Self::ContactCenterIntegration),
+                "WHATSAPP" => Some(Self::Whatsapp),
+                "INSTAGRAM" => Some(Self::Instagram),
                 _ => None,
             }
         }
@@ -584,6 +642,66 @@ pub struct Span {
     /// Output only. The child spans that are nested under this span.
     #[prost(message, repeated, tag = "5")]
     pub child_spans: ::prost::alloc::vec::Vec<Span>,
+}
+/// Settings for evaluation run caching.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EvaluationRunCachingSettings {
+    /// Optional. The caching mode to use for the evaluation run. If not set,
+    /// default to FORCE_RUN.
+    #[prost(
+        enumeration = "evaluation_run_caching_settings::EvaluationRunCachingMode",
+        tag = "1"
+    )]
+    pub run_caching_mode: i32,
+}
+/// Nested message and enum types in `EvaluationRunCachingSettings`.
+pub mod evaluation_run_caching_settings {
+    /// The evaluation result caching behavior. Controls whether to return the last
+    /// completed evaluation result (if existing) or to execute a new evaluation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EvaluationRunCachingMode {
+        /// The run caching mode is unspecified.
+        Unspecified = 0,
+        /// Always execute a full live simulation regardless of whether changelogs
+        /// exist.
+        ForceRun = 1,
+        /// Skip execution and copy previous verified results if no dependencies have
+        /// mutated, the evaluation channel/run method are the same.
+        SkipIfUnchanged = 2,
+    }
+    impl EvaluationRunCachingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVALUATION_RUN_CACHING_MODE_UNSPECIFIED",
+                Self::ForceRun => "FORCE_RUN",
+                Self::SkipIfUnchanged => "SKIP_IF_UNCHANGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_RUN_CACHING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FORCE_RUN" => Some(Self::ForceRun),
+                "SKIP_IF_UNCHANGED" => Some(Self::SkipIfUnchanged),
+                _ => None,
+            }
+        }
+    }
 }
 /// The execution type of the tool or toolset.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1705,12 +1823,12 @@ pub mod ambient_sound_config {
 /// Configuration for how the user barge-in activities should be handled.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BargeInConfig {
-    /// Optional. Disables user barge-in while the agent is speaking. If true, user
-    /// input during agent response playback will be ignored.
-    ///
-    /// Deprecated: `disable_barge_in` is deprecated in favor of
+    /// Optional. Deprecated: `disable_barge_in` is deprecated in favor of
     /// \[`disable_barge_in_control`\]\[google.cloud.ces.v1beta.ChannelProfile.disable_barge_in_control\]
     /// in ChannelProfile.
+    ///
+    /// Disables user barge-in while the agent is speaking. If true, user input
+    /// during agent response playback will be ignored.
     #[deprecated]
     #[prost(bool, tag = "1")]
     pub disable_barge_in: bool,
@@ -1732,12 +1850,31 @@ pub struct SynthesizeSpeechConfig {
     /// Text-to-Speech.
     #[prost(string, tag = "1")]
     pub voice: ::prost::alloc::string::String,
+    /// Optional. The Cloud Storage URI to the audio sample for voice cloning. The
+    /// audio sample should be a mono-channel, 24kHz WAV file.
+    ///
+    /// Note: Please make sure the CES service agent
+    /// `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com` has
+    /// `storage.objects.get` permission to the Cloud Storage object.
+    #[prost(string, tag = "3")]
+    pub voice_sample_gcs_uri: ::prost::alloc::string::String,
     /// Optional. The speaking rate/speed in the range \[0.25, 2.0\]. 1.0 is the
     /// normal native speed supported by the specific voice. 2.0 is twice as fast,
     /// and 0.5 is half as fast. Values outside of the range \[0.25, 2.0\] will
     /// return an error.
     #[prost(double, tag = "2")]
     pub speaking_rate: f64,
+    /// Optional. The model used to synthesize audio.
+    /// Currently supported values:
+    ///
+    /// * "gemini-3.1-flash-tts-preview"
+    ///   If empty, Chirp3-HD is used.
+    #[prost(string, tag = "4")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. The instruction used to synthesize speech when using a generative
+    /// model.
+    #[prost(string, tag = "5")]
+    pub instruction: ::prost::alloc::string::String,
 }
 /// Settings to describe the conversation data collection behaviors for LLM
 /// analysis metrics pipeline.
@@ -1771,6 +1908,13 @@ pub struct LoggingSettings {
     /// \[RedactionConfig\]\[google.cloud.ces.v1beta.LoggingSettings.redaction_config\].
     #[prost(message, optional, tag = "3")]
     pub bigquery_export_settings: ::core::option::Option<BigQueryExportSettings>,
+    /// Optional. Configures the BigQuery export behaviors for the app.
+    /// The unredacted conversation data will be exported to BigQuery tables if it
+    /// is enabled.
+    #[prost(message, optional, tag = "9")]
+    pub unredacted_bigquery_export_settings: ::core::option::Option<
+        BigQueryExportSettings,
+    >,
     /// Optional. Settings to describe the Cloud Logging behaviors for the app.
     #[prost(message, optional, tag = "4")]
     pub cloud_logging_settings: ::core::option::Option<CloudLoggingSettings>,
@@ -2154,6 +2298,11 @@ pub struct EvaluationSettings {
     /// will default to QUALITY_OPTIMIZED.
     #[prost(enumeration = "evaluation_settings::ScenarioExecutionMode", tag = "6")]
     pub scenario_execution_mode: i32,
+    /// Optional. The caching settings to use for the evaluation run.
+    #[prost(message, optional, tag = "7")]
+    pub evaluation_run_caching_settings: ::core::option::Option<
+        EvaluationRunCachingSettings,
+    >,
 }
 /// Nested message and enum types in `EvaluationSettings`.
 pub mod evaluation_settings {
@@ -4958,6 +5107,11 @@ pub struct Toolset {
     /// Optional. The description of the toolset.
     #[prost(string, tag = "10")]
     pub description: ::prost::alloc::string::String,
+    /// Optional. The timeout for the toolset execution. If not set, the default
+    /// timeout is 30 seconds for `SYNCHRONOUS` toolsets and 60 seconds for
+    /// `ASYNCHRONOUS` toolsets.
+    #[prost(message, optional, tag = "12")]
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Timestamp when the toolset was created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -5391,13 +5545,13 @@ pub mod experiment_config {
     pub enum State {
         /// Unspecified state.
         Unspecified = 0,
-        /// Pending state. Experiment is pending and not valid.
+        /// Deprecated: This state is no longer used.
         Pending = 1,
         /// Running state. Experiment is running and valid.
         Running = 2,
-        /// Done state. Experiment is done and no longer valid.
+        /// Deprecated: This state is no longer used.
         Done = 3,
-        /// Expired state. Experiment is expired and no longer valid.
+        /// Deprecated: This state is no longer used.
         Expired = 4,
     }
     impl State {
@@ -5463,6 +5617,46 @@ pub struct Deployment {
     /// Optional. Experiment configuration for the deployment.
     #[prost(message, optional, tag = "9")]
     pub experiment_config: ::core::option::Option<ExperimentConfig>,
+    /// Optional. Input only. Ephemeral WhatsApp credentials required when
+    /// configuring a WhatsApp channel profile.
+    #[prost(message, optional, tag = "10")]
+    pub whatsapp_credentials: ::core::option::Option<WhatsAppCredentials>,
+    /// Optional. Input only. Ephemeral Instagram credentials required when
+    /// configuring a Instagram channel profile.
+    #[prost(message, optional, tag = "11")]
+    pub instagram_credentials: ::core::option::Option<InstagramCredentials>,
+}
+/// Ephemeral Meta credentials for WhatsApp native integration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WhatsAppCredentials {
+    /// Required. The Meta auth code provided by the embedded signup flow.
+    #[prost(string, tag = "1")]
+    pub auth_code: ::prost::alloc::string::String,
+    /// Required. The 6-digit PIN created by the user for two-step verification.
+    #[prost(string, tag = "2")]
+    pub pin: ::prost::alloc::string::String,
+    /// Required. The phone number to register with WhatsApp.
+    #[prost(string, tag = "3")]
+    pub phone_number: ::prost::alloc::string::String,
+    /// Required. The Business Account ID to use for the phone number.
+    #[prost(string, tag = "4")]
+    pub business_account_id: ::prost::alloc::string::String,
+    /// Required. The WhatsApp Business Account ID.
+    #[prost(string, tag = "5")]
+    pub waba_id: ::prost::alloc::string::String,
+    /// Required. The Conversation Profile ID to use for the deployment.
+    #[prost(string, tag = "6")]
+    pub conversation_profile_id: ::prost::alloc::string::String,
+}
+/// Ephemeral Meta credentials for Instagram native integration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct InstagramCredentials {
+    /// Required. The Meta auth code provided by the embedded signup flow.
+    #[prost(string, tag = "1")]
+    pub auth_code: ::prost::alloc::string::String,
+    /// Required. The Conversation Profile ID to use for the deployment.
+    #[prost(string, tag = "2")]
+    pub conversation_profile_id: ::prost::alloc::string::String,
 }
 /// A mocked tool call.
 ///
@@ -5816,6 +6010,9 @@ pub struct SessionOutput {
     /// `turn_completed=true`) for each turn.
     #[prost(message, optional, tag = "7")]
     pub diagnostic_info: ::core::option::Option<session_output::DiagnosticInfo>,
+    /// Context messages for external supervision guardrails.
+    #[prost(message, repeated, tag = "12")]
+    pub context: ::prost::alloc::vec::Vec<::prost_types::Any>,
     /// The type of the output.
     #[prost(oneof = "session_output::OutputType", tags = "1, 2, 3, 8, 10, 9, 11")]
     pub output_type: ::core::option::Option<session_output::OutputType>,
@@ -8082,6 +8279,11 @@ pub struct RunEvaluationRequest {
     /// Optional. Whether to generate a latency report for the evaluation run.
     #[prost(bool, tag = "14")]
     pub generate_latency_report: bool,
+    /// Optional. The caching settings to use for the evaluation run.
+    #[prost(message, optional, tag = "15")]
+    pub evaluation_run_caching_settings: ::core::option::Option<
+        EvaluationRunCachingSettings,
+    >,
 }
 /// Represents a scheduled evaluation run configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9717,6 +9919,58 @@ pub mod generate_app_resource_request {
         /// Required. The evaluation run used to inform quality report analysis.
         #[prost(string, tag = "1")]
         pub evaluation_run: ::prost::alloc::string::String,
+        /// Optional. The loss attribution algorithm to use.
+        #[prost(
+            enumeration = "quality_report_generation_config::LossAttributionAlgorithm",
+            tag = "2"
+        )]
+        pub algorithm: i32,
+    }
+    /// Nested message and enum types in `QualityReportGenerationConfig`.
+    pub mod quality_report_generation_config {
+        /// The algorithm to use for loss attribution.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum LossAttributionAlgorithm {
+            /// Unspecified.
+            Unspecified = 0,
+            /// App-centric loss attribution. Treats the app as a single unit.
+            AppCentric = 1,
+            /// Agent-centric loss attribution. Attributes loss to individual agents.
+            AgentCentric = 2,
+        }
+        impl LossAttributionAlgorithm {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED",
+                    Self::AppCentric => "APP_CENTRIC",
+                    Self::AgentCentric => "AGENT_CENTRIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                    "APP_CENTRIC" => Some(Self::AppCentric),
+                    "AGENT_CENTRIC" => Some(Self::AgentCentric),
+                    _ => None,
+                }
+            }
+        }
     }
     /// The configuration to be used for hill climbing fixes.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11640,6 +11894,56 @@ pub struct GenerateEvaluationRequest {
     #[deprecated]
     #[prost(enumeration = "conversation::Source", tag = "2")]
     pub source: i32,
+    /// Optional. The type of evaluation to generate. Defaults to GOLDEN if
+    /// unspecified.
+    #[prost(enumeration = "generate_evaluation_request::EvaluationType", tag = "3")]
+    pub evaluation_type: i32,
+}
+/// Nested message and enum types in `GenerateEvaluationRequest`.
+pub mod generate_evaluation_request {
+    /// The type of evaluation to generate.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EvaluationType {
+        /// Unspecified type. Defaults to GOLDEN.
+        Unspecified = 0,
+        /// Golden evaluation.
+        Golden = 1,
+        /// Scenario evaluation.
+        Scenario = 2,
+    }
+    impl EvaluationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVALUATION_TYPE_UNSPECIFIED",
+                Self::Golden => "GOLDEN",
+                Self::Scenario => "SCENARIO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOLDEN" => Some(Self::Golden),
+                "SCENARIO" => Some(Self::Scenario),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request message for
 /// \[EvaluationService.ImportEvaluations\]\[google.cloud.ces.v1beta.EvaluationService.ImportEvaluations\].

@@ -1618,6 +1618,15 @@ pub struct UndeleteSupportEventSubscriptionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for ExpungeSupportEventSubscription.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExpungeSupportEventSubscriptionRequest {
+    /// Required. The name of the support event subscription to expunge.
+    /// Format:
+    /// organizations/{organization_id}/supportEventSubscriptions/{subscription_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod support_event_subscription_service_client {
     #![allow(
@@ -1774,7 +1783,7 @@ pub mod support_event_subscription_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists support event subscriptions.
+        /// Lists support event subscriptions for an organization.
         pub async fn list_support_event_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSupportEventSubscriptionsRequest>,
@@ -1896,6 +1905,65 @@ pub mod support_event_subscription_service_client {
                     GrpcMethod::new(
                         "google.cloud.support.v2.SupportEventSubscriptionService",
                         "UndeleteSupportEventSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Expunges a support event subscription.
+        ///
+        /// EXAMPLES:
+        ///
+        /// cURL:
+        ///
+        /// ```text,shell
+        /// support_event_subscription="organizations/123456789/supportEventSubscriptions/abcdef123456"
+        /// curl \
+        ///  --request POST \
+        ///  --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+        ///  "https://cloudsupport.googleapis.com/v2/$support_event_subscription:expunge"
+        /// ```
+        ///
+        /// Python:
+        ///
+        /// ```text,python
+        /// import googleapiclient.discovery
+        ///
+        /// api_version = "v2"
+        /// supportApiService = googleapiclient.discovery.build(
+        ///    serviceName="cloudsupport",
+        ///    version=api_version,
+        ///    discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+        /// )
+        ///
+        /// request = supportApiService.supportEventSubscriptions().expunge(
+        ///    name="organizations/123456789/supportEventSubscriptions/abcdef123456"
+        /// )
+        /// print(request.execute())
+        /// ```
+        pub async fn expunge_support_event_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ExpungeSupportEventSubscriptionRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.support.v2.SupportEventSubscriptionService/ExpungeSupportEventSubscription",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v2.SupportEventSubscriptionService",
+                        "ExpungeSupportEventSubscription",
                     ),
                 );
             self.inner.unary(req, path, codec).await

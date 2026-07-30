@@ -39,15 +39,19 @@ pub mod check_error {
     )]
     #[repr(i32)]
     pub enum Code {
-        /// This is never used in `CheckResponse`.
+        /// This is the default value if error code is not explicitly set.
+        /// It should not be used directly.
         ErrorCodeUnspecified = 0,
         /// The consumer's project id, network container, or resource container was
-        /// not found. Same as \[google.rpc.Code.NOT_FOUND\]\[google.rpc.Code.NOT_FOUND\].
+        /// not found. Same as
+        /// \[google.rpc.Code.NOT_FOUND\]\[google.rpc.Code.NOT_FOUND\].
         NotFound = 5,
         /// The consumer doesn't have access to the specified resource.
-        /// Same as \[google.rpc.Code.PERMISSION_DENIED\]\[google.rpc.Code.PERMISSION_DENIED\].
+        /// Same as
+        /// \[google.rpc.Code.PERMISSION_DENIED\]\[google.rpc.Code.PERMISSION_DENIED\].
         PermissionDenied = 7,
-        /// Quota check failed. Same as \[google.rpc.Code.RESOURCE_EXHAUSTED\]\[google.rpc.Code.RESOURCE_EXHAUSTED\].
+        /// Quota check failed. Same as
+        /// \[google.rpc.Code.RESOURCE_EXHAUSTED\]\[google.rpc.Code.RESOURCE_EXHAUSTED\].
         ResourceExhausted = 8,
         /// The consumer hasn't activated the service.
         ServiceNotActivated = 104,
@@ -187,7 +191,8 @@ pub struct Distribution {
     /// The buckets are defined below in `bucket_option`. There are N buckets.
     /// `bucket_counts\[0\]` is the number of samples in the underflow bucket.
     /// `bucket_counts\[1\]` to `bucket_counts\[N-1\]` are the numbers of samples
-    /// in each of the finite buckets. And `bucket_counts\[N\] is the number  of samples in the overflow bucket. See the comments of `bucket_option\`
+    /// in each of the finite buckets. And `bucket_counts\[N\]` is the number
+    /// of samples in the overflow bucket. See the comments of `bucket_option`
     /// below for more details.
     ///
     /// Any suffix of trailing zeros may be omitted.
@@ -361,7 +366,7 @@ pub struct HttpRequest {
     pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
-    /// Definitions](<http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>).
+    /// Definitions](<https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>).
     #[prost(string, tag = "8")]
     pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was
@@ -503,9 +508,10 @@ pub struct LogEntrySourceLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// The labels describing the metric value.
-    /// See comments on \[google.api.servicecontrol.v1.Operation.labels\]\[google.api.servicecontrol.v1.Operation.labels\] for
-    /// the overriding relationship.
-    /// Note that this map must not contain monitored resource labels.
+    /// See comments on
+    /// \[google.api.servicecontrol.v1.Operation.labels\]\[google.api.servicecontrol.v1.Operation.labels\]
+    /// for the overriding relationship. Note that this map must not contain
+    /// monitored resource labels.
     #[prost(map = "string, string", tag = "1")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -515,12 +521,14 @@ pub struct MetricValue {
     /// applies. The time period has different semantics for different metric
     /// types (cumulative, delta, and gauge). See the metric definition
     /// documentation in the service configuration for details. If not specified,
-    /// \[google.api.servicecontrol.v1.Operation.start_time\]\[google.api.servicecontrol.v1.Operation.start_time\] will be used.
+    /// \[google.api.servicecontrol.v1.Operation.start_time\]\[google.api.servicecontrol.v1.Operation.start_time\]
+    /// will be used.
     #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end of the time period over which this metric value's measurement
     /// applies.  If not specified,
-    /// \[google.api.servicecontrol.v1.Operation.end_time\]\[google.api.servicecontrol.v1.Operation.end_time\] will be used.
+    /// \[google.api.servicecontrol.v1.Operation.end_time\]\[google.api.servicecontrol.v1.Operation.end_time\]
+    /// will be used.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value. The type of value used in the request must
@@ -645,6 +653,15 @@ pub struct Operation {
     /// DO NOT USE. This is an experimental field.
     #[prost(enumeration = "operation::Importance", tag = "11")]
     pub importance: i32,
+    /// Private Preview. This feature is only available for approved services.
+    ///
+    /// User defined labels for the resource that this operation is associated
+    /// with.
+    #[prost(map = "string, string", tag = "12")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Unimplemented.
     #[prost(message, repeated, tag = "16")]
     pub extensions: ::prost::alloc::vec::Vec<::prost_types::Any>,
@@ -700,7 +717,8 @@ pub struct AllocateQuotaRequest {
     /// Name of the service as specified in the service configuration. For example,
     /// `"pubsub.googleapis.com"`.
     ///
-    /// See \[google.api.Service\]\[google.api.Service\] for the definition of a service name.
+    /// See \[google.api.Service\]\[google.api.Service\] for the definition of a
+    /// service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Operation that describes the quota allocation.
@@ -715,9 +733,9 @@ pub struct AllocateQuotaRequest {
 /// Represents information regarding a quota operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaOperation {
-    /// Identity of the operation. This is expected to be unique within the scope
-    /// of the service that generated the operation, and guarantees idempotency in
-    /// case of retries.
+    /// Identity of the operation. For Allocation Quota, this is expected to be
+    /// unique within the scope of the service that generated the operation, and
+    /// guarantees idempotency in case of retries.
     ///
     /// In order to ensure best performance and latency in the Quota backends,
     /// operation_ids are optimally associated with time, so that related
@@ -876,7 +894,8 @@ pub struct AllocateQuotaResponse {
     #[prost(string, tag = "4")]
     pub service_config_id: ::prost::alloc::string::String,
 }
-/// Represents error information for \[QuotaOperation\]\[google.api.servicecontrol.v1.QuotaOperation\].
+/// Represents error information for
+/// \[QuotaOperation\]\[google.api.servicecontrol.v1.QuotaOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaError {
     /// Error code.
@@ -918,7 +937,8 @@ pub mod quota_error {
         /// This is never used.
         Unspecified = 0,
         /// Quota allocation failed.
-        /// Same as \[google.rpc.Code.RESOURCE_EXHAUSTED\]\[google.rpc.Code.RESOURCE_EXHAUSTED\].
+        /// Same as
+        /// \[google.rpc.Code.RESOURCE_EXHAUSTED\]\[google.rpc.Code.RESOURCE_EXHAUSTED\].
         ResourceExhausted = 8,
         /// Consumer cannot access the service because the service requires active
         /// billing.
@@ -970,7 +990,7 @@ pub mod quota_controller_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// [Google Quota Control API](/service-control/overview)
+    /// [Google Quota Control API](https://cloud.google.com/service-control/overview)
     ///
     /// Allows clients to allocate and release quota against a [managed
     /// service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService).
@@ -1326,7 +1346,8 @@ pub mod service_controller_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// [Google Service Control API](/service-control/overview)
+    /// [Google Service Control
+    /// API](https://cloud.google.com/service-control/overview)
     ///
     /// Lets clients check and report operations against a [managed
     /// service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService).
@@ -1421,8 +1442,8 @@ pub mod service_controller_client {
         /// propagation, therefore callers MUST NOT depend on the `Check` method having
         /// the latest policy information.
         ///
-        /// NOTE: the \[CheckRequest\]\[google.api.servicecontrol.v1.CheckRequest\] has
-        /// the size limit (wire-format byte size) of 1MB.
+        /// NOTE: the \[CheckRequest\]\[google.api.servicecontrol.v1.CheckRequest\] has the
+        /// size limit (wire-format byte size) of 1MB.
         ///
         /// This method requires the `servicemanagement.services.check` permission
         /// on the specified service. For more information, see

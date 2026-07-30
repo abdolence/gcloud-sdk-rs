@@ -7173,7 +7173,9 @@ pub mod grounding_chunk {
             RagChunk(super::super::RagChunk),
         }
     }
-    /// Chunk from Google Maps.
+    /// A `Maps` chunk is a piece of evidence that comes from Google Maps,
+    /// containing information about places or routes. This is used to provide
+    /// the user with rich, location-based information.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Maps {
         /// URI reference of the chunk.
@@ -7194,6 +7196,9 @@ pub mod grounding_chunk {
         /// answer, as well as uris to flag content.
         #[prost(message, optional, tag = "5")]
         pub place_answer_sources: ::core::option::Option<maps::PlaceAnswerSources>,
+        /// Output only. Route information.
+        #[prost(message, optional, tag = "6")]
+        pub route: ::core::option::Option<maps::Route>,
     }
     /// Nested message and enum types in `Maps`.
     pub mod maps {
@@ -7220,6 +7225,20 @@ pub mod grounding_chunk {
                 #[prost(string, tag = "3")]
                 pub title: ::prost::alloc::string::String,
             }
+        }
+        /// Route information from Google Maps.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Route {
+            /// The total distance of the route, in meters.
+            #[prost(int32, tag = "1")]
+            pub distance_meters: i32,
+            /// The total duration of the route.
+            #[prost(message, optional, tag = "2")]
+            pub duration: ::core::option::Option<::prost_types::Duration>,
+            /// An encoded polyline of the route. See
+            /// <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>
+            #[prost(string, tag = "3")]
+            pub encoded_polyline: ::prost::alloc::string::String,
         }
     }
     /// Chunk type.
@@ -7263,6 +7282,11 @@ pub struct GroundingMetadata {
     /// Optional. Google search entry for the following-up web searches.
     #[prost(message, optional, tag = "4")]
     pub search_entry_point: ::core::option::Option<SearchEntryPoint>,
+    /// Optional. The queries that were executed by the retrieval tools.
+    /// This field is populated only when the grounding source is a retrieval tool,
+    /// such as Vertex AI Search.
+    #[prost(string, repeated, tag = "3")]
+    pub retrieval_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of supporting references retrieved from specified grounding source.
     #[prost(message, repeated, tag = "5")]
     pub grounding_chunks: ::prost::alloc::vec::Vec<GroundingChunk>,
@@ -39036,6 +39060,12 @@ pub struct ReasoningEngineSpec {
     /// "llama-index", "custom".
     #[prost(string, tag = "5")]
     pub agent_framework: ::prost::alloc::string::String,
+    /// Optional. The identity type to use for the Reasoning Engine. If not
+    /// specified, the `service_account` field will be used if set, otherwise the
+    /// default Vertex AI Reasoning Engine Service Agent in the project will be
+    /// used.
+    #[prost(enumeration = "reasoning_engine_spec::IdentityType", tag = "12")]
+    pub identity_type: i32,
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is
     /// specified.
@@ -39229,6 +39259,53 @@ pub mod reasoning_engine_spec {
         /// container image that is to be run on each worker replica.
         #[prost(string, tag = "1")]
         pub image_uri: ::prost::alloc::string::String,
+    }
+    /// The identity type to use for the Reasoning Engine.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IdentityType {
+        /// Default value. Use a custom service account if the `service_account`
+        /// field is set, otherwise use the default Vertex AI Reasoning Engine
+        /// Service Agent in the project. Same behavior as SERVICE_ACCOUNT.
+        Unspecified = 0,
+        /// Use a custom service account if the `service_account` field is set,
+        /// otherwise use the default Vertex AI Reasoning Engine Service Agent in the
+        /// project.
+        ServiceAccount = 2,
+        /// Use Agent Identity. The `service_account` field must not be set.
+        AgentIdentity = 3,
+    }
+    impl IdentityType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "IDENTITY_TYPE_UNSPECIFIED",
+                Self::ServiceAccount => "SERVICE_ACCOUNT",
+                Self::AgentIdentity => "AGENT_IDENTITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVICE_ACCOUNT" => Some(Self::ServiceAccount),
+                "AGENT_IDENTITY" => Some(Self::AgentIdentity),
+                _ => None,
+            }
+        }
     }
     /// Defines the source for the deployment.
     /// The `package_spec` field should not be set if `deployment_source` is

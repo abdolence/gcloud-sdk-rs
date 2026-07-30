@@ -993,6 +993,272 @@ impl AnnotationType {
         }
     }
 }
+/// A target audience in Google Chat. A target audience represents a group of
+/// users within a Google Workspace organization, defined by an administrator.
+/// Target audiences are used to configure access and visibility settings for
+/// resources, such as making a space discoverable to a specific group of users.
+///
+/// For more details, see [Target
+/// audiences](<https://support.google.com/a/answer/9934697>) and [Make a space
+/// discoverable to a target
+/// audience](<https://developers.google.com/workspace/chat/space-target-audience>).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Audience {
+    /// The resource name of the [target
+    /// audience](<https://support.google.com/a/answer/9934697>) who can discover
+    /// or join the space. For details, see [Make a space
+    /// discoverable to a target
+    /// audience](<https://developers.google.com/workspace/chat/space-target-audience>).
+    /// Format: `audiences/{audience}`
+    ///
+    /// To use the default target audience for the Google Workspace organization,
+    /// set to `audiences/default`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Represents a user's current availability information in Google Chat,
+/// including their state (for example, Active, Away, Do Not Disturb) and any
+/// custom status.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Availability {
+    /// Identifier. Resource name of the user's availability.
+    ///
+    /// Format: `users/{user}/availability`
+    ///
+    /// `{user}` is the id for the Person in the People API or Admin SDK directory
+    /// API. For example, `users/123456789`.
+    ///
+    /// The user's email address or `me` can also be used as an alias to refer to
+    /// the caller.  For example, `users/user@example.com` or `users/me`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The user's current availability state.
+    #[prost(enumeration = "availability::State", tag = "2")]
+    pub state: i32,
+    /// Optional. The user's custom status.
+    #[prost(message, optional, tag = "4")]
+    pub custom_status: ::core::option::Option<CustomStatus>,
+    /// Additional metadata associated with the user's availability state.
+    #[prost(oneof = "availability::StateMetadata", tags = "3")]
+    pub state_metadata: ::core::option::Option<availability::StateMetadata>,
+}
+/// Nested message and enum types in `Availability`.
+pub mod availability {
+    /// Represents the current availability state of the user.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. The state is unspecified.
+        Unspecified = 0,
+        /// The user is currently active, based on recent activity.
+        Active = 1,
+        /// The user is currently idle. This state indicates a period of inactivity
+        /// after being ACTIVE, before potentially transitioning to AWAY.
+        Idle = 2,
+        /// The user is currently away. This can be either automatically set after
+        /// a period of inactivity in ACTIVE or IDLE state, or it can be manually set
+        /// by the user. When manually set via `MarkAsAway`, this state persists
+        /// regardless of user activity.
+        Away = 3,
+        /// The user is in Do Not Disturb state, which is manually set.
+        DoNotDisturb = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Idle => "IDLE",
+                Self::Away => "AWAY",
+                Self::DoNotDisturb => "DO_NOT_DISTURB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "IDLE" => Some(Self::Idle),
+                "AWAY" => Some(Self::Away),
+                "DO_NOT_DISTURB" => Some(Self::DoNotDisturb),
+                _ => None,
+            }
+        }
+    }
+    /// Additional metadata associated with the user's availability state.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum StateMetadata {
+        /// Output only. Metadata if the user state is set to DO_NOT_DISTURB.
+        #[prost(message, tag = "3")]
+        DoNotDisturbMetadata(super::DoNotDisturbMetadata),
+    }
+}
+/// Represents a user's custom status in Google Chat.
+/// This includes a short text message with an optional emoji that a user sets to
+/// give more context about their availability.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomStatus {
+    /// Required. The text of the custom status. This will be a string with maximum
+    /// length of 64.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// Required. The emoji of the custom status. Only Unicode emojis are
+    /// supported; custom emojis are not supported.
+    #[prost(message, optional, tag = "2")]
+    pub emoji: ::core::option::Option<Emoji>,
+    /// The expiration time of the custom status. It can be specified as either
+    /// an absolute timestamp or a time-to-live duration.
+    #[prost(oneof = "custom_status::Expiration", tags = "3, 4")]
+    pub expiration: ::core::option::Option<custom_status::Expiration>,
+}
+/// Nested message and enum types in `CustomStatus`.
+pub mod custom_status {
+    /// The expiration time of the custom status. It can be specified as either
+    /// an absolute timestamp or a time-to-live duration.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// The timestamp when the custom status expires.
+        #[prost(message, tag = "3")]
+        ExpireTime(::prost_types::Timestamp),
+        /// Input only. The time-to-live duration after which the custom status
+        /// expires.
+        #[prost(message, tag = "4")]
+        Ttl(::prost_types::Duration),
+    }
+}
+/// Metadata associated with the `DO_NOT_DISTURB` availability state,
+/// specifying when the state is set to expire.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DoNotDisturbMetadata {
+    /// Output only. Timestamp until which the user should be marked as
+    /// DO_NOT_DISTURB. This can be maximum of 1 year in the future.
+    #[prost(message, optional, tag = "1")]
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for the `GetAvailability` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAvailabilityRequest {
+    /// Required. The resource name of the availability to retrieve.
+    ///
+    /// Format: users/{user}/availability
+    ///
+    /// `{user}` is the id for the Person in the People API or Admin SDK directory
+    /// API. For example, `users/123456789`.
+    ///
+    /// The user's email address or `me` can also be used as an alias to refer to
+    /// the caller.  For example, `users/user@example.com` or `users/me`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for the `UpdateAvailability` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateAvailabilityRequest {
+    /// Required. The availability to update.
+    #[prost(message, optional, tag = "1")]
+    pub availability: ::core::option::Option<Availability>,
+    /// Required. The list of fields to update.
+    /// The only field that can be updated is `custom_status`.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for the `MarkAsActive` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MarkAsActiveRequest {
+    /// Required. The resource name of the availability to mark as active.
+    /// Format: users/{user}/availability
+    ///
+    /// `{user}` is the id for the Person in the People API or Admin SDK directory
+    /// API. For example, `users/123456789`.
+    ///
+    /// The user's email address or `me` can also be used as an alias to refer to
+    /// the caller.  For example, `users/user@example.com` or `users/me`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The expiration for the ACTIVE availability state. The user will
+    /// be marked as Away after expiration. If no expiration is provided, the
+    /// ACTIVE state will expire 30 minutes from the current time.
+    #[prost(oneof = "mark_as_active_request::Expiration", tags = "2, 3")]
+    pub expiration: ::core::option::Option<mark_as_active_request::Expiration>,
+}
+/// Nested message and enum types in `MarkAsActiveRequest`.
+pub mod mark_as_active_request {
+    /// The expiration for the ACTIVE availability state. The user will
+    /// be marked as Away after expiration. If no expiration is provided, the
+    /// ACTIVE state will expire 30 minutes from the current time.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// The absolute timestamp when the ACTIVE state expires.
+        #[prost(message, tag = "2")]
+        ExpireTime(::prost_types::Timestamp),
+        /// The duration from the current time until the ACTIVE state expires.
+        /// Using a short TTL can effectively reset the user's state to be based
+        /// on activity after this brief duration.
+        #[prost(message, tag = "3")]
+        Ttl(::prost_types::Duration),
+    }
+}
+/// Request message for the `MarkAsAway` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MarkAsAwayRequest {
+    /// Required. The resource name of the availability to mark as away.
+    /// Format: users/{user}/availability
+    ///
+    /// `{user}` is the id for the Person in the People API or Admin SDK directory
+    /// API. For example, `users/123456789`.
+    ///
+    /// The user's email address or `me` can also be used as an alias to refer to
+    /// the caller.  For example, `users/user@example.com` or `users/me`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for the `MarkAsDoNotDisturb` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MarkAsDoNotDisturbRequest {
+    /// Required. The resource name of the availability to mark as Do Not Disturb.
+    /// Format: users/{user}/availability
+    ///
+    /// `{user}` is the id for the Person in the People API or Admin SDK directory
+    /// API. For example, `users/123456789`.
+    ///
+    /// The user's email address or `me` can also be used as an alias to refer to
+    /// the caller.  For example, `users/user@example.com` or `users/me`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The expiration for the DND availability state. The user will be
+    /// marked as Away after expiration. This can be at most 1 year from the
+    /// current time.
+    #[prost(oneof = "mark_as_do_not_disturb_request::Expiration", tags = "2, 3")]
+    pub expiration: ::core::option::Option<mark_as_do_not_disturb_request::Expiration>,
+}
+/// Nested message and enum types in `MarkAsDoNotDisturbRequest`.
+pub mod mark_as_do_not_disturb_request {
+    /// Required. The expiration for the DND availability state. The user will be
+    /// marked as Away after expiration. This can be at most 1 year from the
+    /// current time.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Expiration {
+        /// The absolute timestamp when the DND state expires.
+        #[prost(message, tag = "2")]
+        ExpireTime(::prost_types::Timestamp),
+        /// The duration from the current time until the DND state expires.
+        #[prost(message, tag = "3")]
+        Ttl(::prost_types::Duration),
+    }
+}
 /// A Google Group in Google Chat.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Group {
@@ -1034,6 +1300,11 @@ pub struct Membership {
     /// when used to import historical memberships in import mode spaces.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A user's relationship to the Workspace organization that owns
+    /// the space. In spaces owned by consumer accounts, the affiliation of all
+    /// members is `EXTERNAL`.
+    #[prost(enumeration = "membership::Affiliation", tag = "9")]
+    pub affiliation: i32,
     /// Member associated with this membership. Other member types might be
     /// supported in the future.
     #[prost(oneof = "membership::MemberType", tags = "3, 5")]
@@ -1189,6 +1460,60 @@ pub mod membership {
                 "ROLE_MEMBER" => Some(Self::RoleMember),
                 "ROLE_MANAGER" => Some(Self::RoleManager),
                 "ROLE_ASSISTANT_MANAGER" => Some(Self::RoleAssistantManager),
+                _ => None,
+            }
+        }
+    }
+    /// Represents the affiliation of a user to the Google Workspace organization
+    /// that owns the space. This enum may have more values added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Affiliation {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// An account managed by the same Google Workspace organization that owns
+        /// the space.
+        Internal = 1,
+        /// An account external to the Google Workspace organization that owns the
+        /// space (e.g., a consumer account, or an account managed by a different
+        /// Workspace organization).
+        External = 2,
+        /// An account managed by the Workspace organization that owns the space,
+        /// but provisioned for a user who is external to the organization (e.g., a
+        /// Guest user). To learn more about guests, see
+        /// <https://support.google.com/chat/answer/16997417.>
+        ManagedExternal = 3,
+    }
+    impl Affiliation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AFFILIATION_UNSPECIFIED",
+                Self::Internal => "INTERNAL",
+                Self::External => "EXTERNAL",
+                Self::ManagedExternal => "MANAGED_EXTERNAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AFFILIATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL" => Some(Self::Internal),
+                "EXTERNAL" => Some(Self::External),
+                "MANAGED_EXTERNAL" => Some(Self::ManagedExternal),
                 _ => None,
             }
         }
@@ -2108,7 +2433,7 @@ impl HistoryState {
 }
 /// A space in Google Chat. Spaces are conversations between two or more users
 /// or 1:1 messages between a user and a Chat app.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Space {
     /// Identifier. Resource name of the space.
     ///
@@ -2276,7 +2601,7 @@ pub mod space {
     }
     /// Represents the [access
     /// setting](<https://support.google.com/chat/answer/11971020>) of the space.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessSettings {
         /// Output only. Indicates the access state of the space.
         #[prost(enumeration = "access_settings::AccessState", tag = "1")]
@@ -2312,6 +2637,12 @@ pub mod space {
         /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>).
         #[prost(string, tag = "3")]
         pub audience: ::prost::alloc::string::String,
+        /// Optional. Access permission settings for the space.
+        ///
+        /// To set the target audience when creating a space, specify the
+        /// `accessSettings.audience` field in your request.
+        #[prost(message, optional, tag = "5")]
+        pub access_permission_settings: ::core::option::Option<AccessPermissionSettings>,
     }
     /// Nested message and enum types in `AccessSettings`.
     pub mod access_settings {
@@ -2366,6 +2697,40 @@ pub mod space {
                     _ => None,
                 }
             }
+        }
+    }
+    /// Access permission settings for a space.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AccessPermissionSettings {
+        /// Optional. Access permission setting for discovering the space.
+        #[prost(message, optional, tag = "1")]
+        pub discover_space_setting: ::core::option::Option<AccessPermissionSetting>,
+        /// Optional. Access permission setting for joining the space.
+        #[prost(message, optional, tag = "2")]
+        pub join_space_setting: ::core::option::Option<AccessPermissionSetting>,
+    }
+    /// An access permission setting.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AccessPermissionSetting {
+        /// Optional. Unordered list. Allowed principals for this permission.
+        #[prost(message, repeated, tag = "1")]
+        pub principals: ::prost::alloc::vec::Vec<Principal>,
+    }
+    /// A principal representing an entity granted access.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Principal {
+        /// The type of principal.
+        #[prost(oneof = "principal::PrincipalType", tags = "1")]
+        pub principal_type: ::core::option::Option<principal::PrincipalType>,
+    }
+    /// Nested message and enum types in `Principal`.
+    pub mod principal {
+        /// The type of principal.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum PrincipalType {
+            /// An audience.
+            #[prost(message, tag = "1")]
+            Audience(super::super::Audience),
         }
     }
     /// [Permission settings](<https://support.google.com/chat/answer/13340792>)
@@ -2530,15 +2895,18 @@ pub mod space {
     pub enum SpaceThreadingState {
         /// Reserved.
         Unspecified = 0,
-        /// Named spaces that support message threads. When users respond to a
-        /// message, they can reply in-thread, which keeps their response in the
-        /// context of the original message.
+        /// Spaces that support message threads. When users respond to a message,
+        /// they can reply in-thread, which keeps their response in the context of
+        /// the original message.
         ThreadedMessages = 2,
         /// Named spaces where the conversation is organized by topic. Topics and
         /// their replies are grouped together.
         GroupedMessages = 3,
-        /// Direct messages (DMs) between two people and group conversations between
-        /// 3 or more people.
+        /// Spaces that don't support message threading. This space threading state
+        /// is only used for special cases including:
+        ///
+        /// * Continuous meeting chat where threading is intentionally turned off.
+        /// * Legacy group conversations that were created prior to 2022.
         UnthreadedMessages = 4,
     }
     impl SpaceThreadingState {
@@ -2655,7 +3023,7 @@ pub mod space {
     }
 }
 /// A request to create a named space with no members.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpaceRequest {
     /// Required. The `displayName` and `spaceType` fields must be populated.  Only
     /// `SpaceType.SPACE`  and `SpaceType.GROUP_CHAT` are supported.
@@ -2835,7 +3203,7 @@ pub struct FindGroupChatsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to update a single space.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpaceRequest {
     /// Required. Space with fields to be updated. `Space.name` must be
     /// populated in the form of `spaces/{space}`. Only fields
@@ -2888,6 +3256,24 @@ pub struct UpdateSpaceRequest {
     /// To learn more, see [Make a space discoverable to specific
     /// users](<https://developers.google.com/workspace/chat/space-target-audience>).
     /// `access_settings.audience` is not supported with `useAdminAccess`.
+    ///
+    /// `access_settings.access_permission_settings`: Updates the [access
+    /// permission
+    /// settings](<https://support.google.com/chat/answer/11971020>) of who can
+    /// discover and join the space where `spaceType` field is `SPACE`. Principals
+    /// allowed to join the space must also be allowed to discover it. To update
+    /// access permission settings for a space, the authenticating user must be a
+    /// space manager or assistant manager and omit all other field masks in the
+    /// request. You can't update this field if the space is in [import
+    /// mode](<https://developers.google.com/workspace/chat/import-data-overview>).
+    /// To learn more, see [Make a space discoverable to specific
+    /// users](<https://developers.google.com/workspace/chat/space-target-audience>).
+    /// `access_settings.access_permission_settings` is not supported with
+    /// `useAdminAccess`.
+    /// The supported field masks include:
+    ///
+    /// * `access_settings.access_permission_settings.discoverSpaceSetting`
+    /// * `access_settings.access_permission_settings.joinSpaceSetting`
     ///
     /// `permission_settings`: Supports changing the
     /// [permission settings](<https://support.google.com/chat/answer/13340792>)
@@ -3095,7 +3481,7 @@ pub struct CompleteImportSpaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for completing the import process for a space.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteImportSpaceResponse {
     /// The import mode space.
     #[prost(message, optional, tag = "1")]
@@ -3142,6 +3528,163 @@ impl SpaceView {
             _ => None,
         }
     }
+}
+/// The notification setting of a user in a space.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SpaceNotificationSetting {
+    /// Identifier. The resource name of the space notification setting.
+    /// Format: `users/{user}/spaces/{space}/spaceNotificationSetting`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The notification setting.
+    #[prost(
+        enumeration = "space_notification_setting::NotificationSetting",
+        optional,
+        tag = "2"
+    )]
+    pub notification_setting: ::core::option::Option<i32>,
+    /// The space notification mute setting.
+    #[prost(
+        enumeration = "space_notification_setting::MuteSetting",
+        optional,
+        tag = "3"
+    )]
+    pub mute_setting: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `SpaceNotificationSetting`.
+pub mod space_notification_setting {
+    /// The notification setting types. Other types might be supported in the
+    /// future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NotificationSetting {
+        /// Reserved.
+        Unspecified = 0,
+        /// Notifications are triggered by @mentions, followed threads, first
+        /// message of new threads. All new threads are automatically followed,
+        /// unless manually unfollowed by the user.
+        All = 1,
+        /// The notification is triggered by @mentions, followed threads, first
+        /// message of new threads. Not available for 1:1 direct messages.
+        MainConversations = 2,
+        /// The notification is triggered by @mentions, followed threads. Not
+        /// available for 1:1 direct messages.
+        ForYou = 3,
+        /// Notification is off.
+        Off = 4,
+    }
+    impl NotificationSetting {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "NOTIFICATION_SETTING_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::MainConversations => "MAIN_CONVERSATIONS",
+                Self::ForYou => "FOR_YOU",
+                Self::Off => "OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NOTIFICATION_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "MAIN_CONVERSATIONS" => Some(Self::MainConversations),
+                "FOR_YOU" => Some(Self::ForYou),
+                "OFF" => Some(Self::Off),
+                _ => None,
+            }
+        }
+    }
+    /// The space notification mute setting types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MuteSetting {
+        /// Reserved.
+        Unspecified = 0,
+        /// The user will receive notifications for the space based on the
+        /// notification setting.
+        Unmuted = 1,
+        /// The user will not receive any notifications for the space, regardless of
+        /// the notification setting.
+        Muted = 2,
+    }
+    impl MuteSetting {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MUTE_SETTING_UNSPECIFIED",
+                Self::Unmuted => "UNMUTED",
+                Self::Muted => "MUTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MUTE_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNMUTED" => Some(Self::Unmuted),
+                "MUTED" => Some(Self::Muted),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message to get space notification setting.
+/// Only supports getting notification setting for the calling user.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetSpaceNotificationSettingRequest {
+    /// Required. Format: users/{user}/spaces/{space}/spaceNotificationSetting
+    ///
+    /// * `users/me/spaces/{space}/spaceNotificationSetting`, OR
+    /// * `users/user@example.com/spaces/{space}/spaceNotificationSetting`, OR
+    /// * `users/123456789/spaces/{space}/spaceNotificationSetting`.
+    ///   Note: Only the caller's user id or email is allowed in the path.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to update the space notification settings.
+/// Only supports updating notification setting for the calling user.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateSpaceNotificationSettingRequest {
+    /// Required. The resource name for the space notification settings must be
+    /// populated in the form of
+    /// `users/{user}/spaces/{space}/spaceNotificationSetting`. Only fields
+    /// specified by `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub space_notification_setting: ::core::option::Option<SpaceNotificationSetting>,
+    /// Required. Supported field paths:
+    ///
+    /// * `notification_setting`
+    ///
+    /// * `mute_setting`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A message in a Google Chat space.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3204,8 +3747,8 @@ pub struct Message {
     ///
     /// * [Markup
     ///   syntax](<https://developers.google.com/workspace/chat/format-messages>)
-    ///   for bold, italic, strikethrough, monospace, monospace block, and bulleted
-    ///   list.
+    ///   for bold, italic, strikethrough, monospace, monospace block, bulleted
+    ///   list, and block quote.
     ///
     /// * [User
     ///   mentions](<https://developers.google.com/workspace/chat/format-messages#messages-@mention>)
@@ -3282,8 +3825,8 @@ pub struct Message {
     /// Optional. User-uploaded attachment.
     #[prost(message, repeated, tag = "18")]
     pub attachment: ::prost::alloc::vec::Vec<Attachment>,
-    /// Output only. A URL in `spaces.messages.text` that matches a link preview
-    /// pattern. For more information, see [Preview
+    /// Output only. A URL in the Chat message `text` field that matches a link
+    /// preview pattern. For more information, see [Preview
     /// links](<https://developers.google.com/workspace/chat/preview-links>).
     #[prost(message, optional, tag = "20")]
     pub matched_url: ::core::option::Option<MatchedUrl>,
@@ -3885,9 +4428,9 @@ pub mod create_message_notification_options {
         /// Requires \[app authentication\]
         /// (<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
         ForceNotify = 2,
-        /// Silence the notification as if the recipients have [Chat Do Not
-        /// Disturb](<https://support.google.com/chat/answer/9093489>) enabled or
-        /// have muted the space.
+        /// Do not notify recipients, and do not mark the message as unread.
+        /// This behaves similarly to the user muting the conversation or enabling
+        /// [Chat Do Not Disturb](<https://support.google.com/chat/answer/9093489>).
         ///
         /// Requires \[app authentication\]
         /// (<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
@@ -4063,6 +4606,263 @@ pub struct CardWithId {
     /// A card. Maximum size is 32 KB.
     #[prost(message, optional, tag = "2")]
     pub card: ::core::option::Option<super::super::apps::card::v1::Card>,
+}
+/// Request message for searching messages.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SearchMessagesRequest {
+    /// Required. The resource name of the space to search within.
+    ///
+    /// To search across all spaces the user has access to, set this field to
+    /// `spaces/-`. Using any other value for `parent` results in an
+    /// `INVALID_ARGUMENT` error.
+    ///
+    /// To limit the search to one or more spaces, use `space.name` or
+    /// `space.display_name` in the `filter`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. A search query.
+    ///
+    /// The query can specify one or more search keywords, which are used to filter
+    /// the results,
+    ///
+    /// You can also filter the results using the following message fields:
+    ///
+    /// * `create_time`: Accepts a timestamp in
+    ///   [RFC-3339](<https://www.rfc-editor.org/rfc/rfc3339>) format and the
+    ///   supported comparison operators are: `<` and `>=`.
+    /// * `sender.name`: The resource name of the sender (`users/{user}`). Only
+    ///   supports `=`. You can use the e-mail as an alias for `{user}`. For
+    ///   example, `users/example@gmail.com`, where `example@gmail.com` is the
+    ///   e-mail of the Google Chat user.
+    /// * `space.name`: The resource name of the space where the message is posted.
+    ///   (`spaces/{space}`). Only supports `=`. If this filter is not set, the
+    ///   search is performed across all direct messages and spaces the user has
+    ///   access to as a space member.
+    /// * `space.display_name`: Supports the operator `:` (has) and filters spaces
+    ///   based on a partial match of their display name. Results are limited to
+    ///   the top five space matches. For example, `space.display_name:Project`
+    ///   searches for messages in the top five spaces that contain the word
+    ///   "Project" in their display names.
+    /// * `attachment`: Supports the operator `:*` (has any) to check for the
+    ///   presence of attachments. If `attachment:*` is specified, only messages
+    ///   that have at least one attachment are returned.
+    /// * `annotations.user_mentions.user.name`: The resource name of the mentioned
+    ///   user (`users/{user}`). Only supports `:` (has). For example:
+    ///   `annotations.user_mentions.user.name:"users/1234567890"` returns only
+    ///   messages that contain a mention to the specified user. Alternatively, the
+    ///   alias `me` can be used to filter for messages that mention the caller
+    ///   user, for example: `annotations.user_mentions.user.name:users/me`. You
+    ///   can also use the e-mail as an alias for `{user}`, for example,
+    ///   `users/example@gmail.com`.
+    ///
+    /// For advanced filtering, the following functions are also available:
+    ///
+    /// * `has_link()`: Returns only messages that have at least one hyperlink in
+    ///   the message text.
+    /// * `is_unread()`: Filters out messages that have been read by the calling
+    ///   user.
+    ///
+    /// Using the `space.display_name` filter requires that the calling credentials
+    /// include one of the following [authorization
+    /// scopes](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>):
+    ///
+    /// * `<https://www.googleapis.com/auth/chat.spaces.readonly`>
+    /// * `<https://www.googleapis.com/auth/chat.spaces`>
+    ///
+    /// Using the `is_unread()` filter requires that the calling credentials
+    /// include one of the following [authorization
+    /// scopes](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>):
+    ///
+    /// * `<https://www.googleapis.com/auth/chat.users.readstate.readonly`>
+    /// * `<https://www.googleapis.com/auth/chat.users.readstate`>
+    ///
+    /// Across different fields, only `AND` operators are supported. A valid
+    /// example is `sender.name = "users/1234567890" AND is_unread()`. The word
+    /// `AND` is optional and is implied if omitted. For example, `sender.name =  "users/1234567890" is_unread()` is valid and is equivalent to the previous
+    /// example. An invalid example is `sender.name = "users/1234567890" OR  is_unread()` because `OR` is not supported between different fields.
+    ///
+    /// Among the same field:
+    ///
+    /// * `create_time` supports only `AND`, and can only be used to represent
+    ///   an interval, such as `create_time >= "2022-01-01T00:00:00+00:00" AND  create_time < "2023-01-01T00:00:00+00:00"`.
+    /// * `sender.name` supports only the `OR` operator, for example:
+    ///   `sender.name = "users/1234567890" OR sender.name = "users/0987654321"`.
+    /// * `space.name` supports only the `OR` operator, for example:
+    ///   `space.name = "spaces/ABCDEFGH" OR space.name = "spaces/QWERTYUI"`.
+    /// * `space.display_name` supports the operators `AND` and `OR`, but not a
+    ///   mix of both. For example:
+    ///   `space.display_name:Project AND space.display_name:Tasks` returns
+    ///   messages that are in spaces with display names containing both `Project`
+    ///   and `Tasks`, whereas
+    ///   `space.display_name:Project OR space.display_name:Tasks` returns messages
+    ///   that are in spaces with display names containing either `Project` or
+    ///   `Tasks` or both.
+    /// * `annotations.user_mentions.user.name` supports the operators `AND` and
+    ///   `OR`, but not a mix of both. For example:
+    ///   `annotations.user_mentions.user.name:"users/1234567890" AND annotations.user_mentions.user.name:"users/0987654321"` returns only
+    ///   messages that mentions both users, whereas
+    ///   `annotations.user_mentions.user.name:"users/1234567890" OR annotations.user_mentions.user.name:"users/0987654321"` returns messages
+    ///   that mention either user or both.
+    ///
+    /// Parentheses are required to disambiguate operator precedence when combining
+    /// `AND` and `OR` operators in the same query. For example:
+    /// `(sender.name="users/me" OR sender.name="users/123456") AND is_unread()`.
+    /// Otherwise, parentheses are optional.
+    ///
+    /// The following example queries are valid:
+    ///
+    /// ```text,
+    /// "Pending reports" AND create_time >= "2023-01-01T00:00:00Z"
+    ///
+    /// sender.name = "users/example@gmail.com"
+    ///
+    /// annotations.user_mentions.user.name:"users/0987654321"
+    ///
+    /// attachment:* AND space.name = "spaces/ABCDEFGH"
+    ///
+    /// tasks AND is_unread() AND sender.name = "users/1234567890"
+    ///
+    /// "things to do" "urgent"
+    ///
+    /// (sender.name = "users/1234567890")
+    /// AND (create_time < "2023-05-01T00:00:00Z")
+    ///
+    /// tasks AND space.name = "spaces/ABCDEFGH" AND has_link()
+    ///
+    /// "project one" is_unread()
+    ///
+    /// space.display_name:Project tasks
+    /// ```
+    ///
+    /// The maximum query length is 1,000 characters.
+    ///
+    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
+    /// error.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results to return. The service may return
+    /// fewer than this value.
+    ///
+    /// If unspecified, at most 25 are returned.
+    ///
+    /// The maximum value is 100. If you use a value more than 100, it's
+    /// automatically changed to 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A token, received from the previous search messages call. Provide
+    /// this parameter to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided should match the call that
+    /// provided the page token. Passing different values to the other parameters
+    /// might lead to unexpected results.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. How the results list is ordered.
+    ///
+    /// Supported attributes to order by are:
+    ///
+    /// * `create_time`: Sorts the results by the time of the message creation.
+    ///   Default value.
+    /// * `relevance`: Sorts the results by relevance.
+    ///   [Developer Preview](<https://developers.google.com/workspace/preview>).
+    ///
+    /// The default ordering is `create_time desc`. Only a single order per query
+    /// (`create_time` or `relevance`) is supported. Only descending order (`desc`)
+    /// is supported, and it must be specified after the order attribute.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Specifies what kind of search results view to return. The default
+    /// is `SEARCH_MESSAGES_VIEW_BASIC`.
+    #[prost(enumeration = "search_messages_request::SearchMessagesView", tag = "7")]
+    pub view: i32,
+}
+/// Nested message and enum types in `SearchMessagesRequest`.
+pub mod search_messages_request {
+    /// The kinds of view that are supported for partial search results.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SearchMessagesView {
+        /// The default / unset value.
+        /// The API will default to the BASIC view.
+        Unspecified = 0,
+        /// Includes only the matched messages in the results, but no additional
+        /// metadata. This is the default value.
+        Basic = 1,
+        /// Includes everything in the results: the matched messages and additional
+        /// metadata.
+        Full = 2,
+    }
+    impl SearchMessagesView {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SEARCH_MESSAGES_VIEW_UNSPECIFIED",
+                Self::Basic => "SEARCH_MESSAGES_VIEW_BASIC",
+                Self::Full => "SEARCH_MESSAGES_VIEW_FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_MESSAGES_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEARCH_MESSAGES_VIEW_BASIC" => Some(Self::Basic),
+                "SEARCH_MESSAGES_VIEW_FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message for searching messages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchMessagesResponse {
+    /// The list of search results that matched the query.
+    #[prost(message, repeated, tag = "1")]
+    pub results: ::prost::alloc::vec::Vec<SearchMessageResult>,
+    /// A token that can be used to retrieve the next page. If this field is empty,
+    /// there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A single result item from a message search.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchMessageResult {
+    /// The matched message.
+    #[prost(message, optional, tag = "1")]
+    pub message: ::core::option::Option<Message>,
+    /// Indicates if the matched message is read by the calling user.
+    ///
+    /// Only returned if the request view is `SEARCH_MESSAGES_VIEW_FULL` and the
+    /// calling credentials include one of the following [authorization
+    /// scopes](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>):
+    ///
+    /// * `<https://www.googleapis.com/auth/chat.users.readstate.readonly`>
+    /// * `<https://www.googleapis.com/auth/chat.users.readstate`>
+    #[prost(bool, optional, tag = "3")]
+    pub read: ::core::option::Option<bool>,
+    /// The mute setting of the calling user for the space where the message is
+    /// posted. The caller app can use this information to decide how to process
+    /// the message depending on whether the space is muted for the user or not.
+    ///
+    /// Only returned if the request view is `SEARCH_MESSAGES_VIEW_FULL` and the
+    /// calling credentials include the following [authorization
+    /// scope](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>):
+    ///
+    /// * `<https://www.googleapis.com/auth/chat.users.spacesettings`>
+    #[prost(enumeration = "space_notification_setting::MuteSetting", tag = "4")]
+    pub space_mute_setting: i32,
 }
 /// Represents a [section](<https://support.google.com/chat/answer/16059854>) in
 /// Google Chat. Sections help users organize their spaces. There are two types
@@ -4539,7 +5339,7 @@ pub struct MessageBatchDeletedEventData {
 /// Event payload for an updated space.
 ///
 /// Event type: `google.workspace.chat.space.v1.updated`
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpaceUpdatedEventData {
     /// The updated space.
     #[prost(message, optional, tag = "1")]
@@ -4857,163 +5657,6 @@ pub struct ListSpaceEventsResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-}
-/// The notification setting of a user in a space.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct SpaceNotificationSetting {
-    /// Identifier. The resource name of the space notification setting.
-    /// Format: `users/{user}/spaces/{space}/spaceNotificationSetting`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The notification setting.
-    #[prost(
-        enumeration = "space_notification_setting::NotificationSetting",
-        optional,
-        tag = "2"
-    )]
-    pub notification_setting: ::core::option::Option<i32>,
-    /// The space notification mute setting.
-    #[prost(
-        enumeration = "space_notification_setting::MuteSetting",
-        optional,
-        tag = "3"
-    )]
-    pub mute_setting: ::core::option::Option<i32>,
-}
-/// Nested message and enum types in `SpaceNotificationSetting`.
-pub mod space_notification_setting {
-    /// The notification setting types. Other types might be supported in the
-    /// future.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum NotificationSetting {
-        /// Reserved.
-        Unspecified = 0,
-        /// Notifications are triggered by @mentions, followed threads, first
-        /// message of new threads. All new threads are automatically followed,
-        /// unless manually unfollowed by the user.
-        All = 1,
-        /// The notification is triggered by @mentions, followed threads, first
-        /// message of new threads. Not available for 1:1 direct messages.
-        MainConversations = 2,
-        /// The notification is triggered by @mentions, followed threads. Not
-        /// available for 1:1 direct messages.
-        ForYou = 3,
-        /// Notification is off.
-        Off = 4,
-    }
-    impl NotificationSetting {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "NOTIFICATION_SETTING_UNSPECIFIED",
-                Self::All => "ALL",
-                Self::MainConversations => "MAIN_CONVERSATIONS",
-                Self::ForYou => "FOR_YOU",
-                Self::Off => "OFF",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "NOTIFICATION_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
-                "ALL" => Some(Self::All),
-                "MAIN_CONVERSATIONS" => Some(Self::MainConversations),
-                "FOR_YOU" => Some(Self::ForYou),
-                "OFF" => Some(Self::Off),
-                _ => None,
-            }
-        }
-    }
-    /// The space notification mute setting types.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum MuteSetting {
-        /// Reserved.
-        Unspecified = 0,
-        /// The user will receive notifications for the space based on the
-        /// notification setting.
-        Unmuted = 1,
-        /// The user will not receive any notifications for the space, regardless of
-        /// the notification setting.
-        Muted = 2,
-    }
-    impl MuteSetting {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "MUTE_SETTING_UNSPECIFIED",
-                Self::Unmuted => "UNMUTED",
-                Self::Muted => "MUTED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "MUTE_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
-                "UNMUTED" => Some(Self::Unmuted),
-                "MUTED" => Some(Self::Muted),
-                _ => None,
-            }
-        }
-    }
-}
-/// Request message to get space notification setting.
-/// Only supports getting notification setting for the calling user.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetSpaceNotificationSettingRequest {
-    /// Required. Format: users/{user}/spaces/{space}/spaceNotificationSetting
-    ///
-    /// * `users/me/spaces/{space}/spaceNotificationSetting`, OR
-    /// * `users/user@example.com/spaces/{space}/spaceNotificationSetting`, OR
-    /// * `users/123456789/spaces/{space}/spaceNotificationSetting`.
-    ///   Note: Only the caller's user id or email is allowed in the path.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request to update the space notification settings.
-/// Only supports updating notification setting for the calling user.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct UpdateSpaceNotificationSettingRequest {
-    /// Required. The resource name for the space notification settings must be
-    /// populated in the form of
-    /// `users/{user}/spaces/{space}/spaceNotificationSetting`. Only fields
-    /// specified by `update_mask` are updated.
-    #[prost(message, optional, tag = "1")]
-    pub space_notification_setting: ::core::option::Option<SpaceNotificationSetting>,
-    /// Required. Supported field paths:
-    ///
-    /// * `notification_setting`
-    ///
-    /// * `mute_setting`
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A user's read state within a space, used to identify read and unread
 /// messages.
@@ -5646,6 +6289,57 @@ pub mod chat_service_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "DeleteMessage"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches for messages in Google Chat that the calling user has access to.
+        /// Returns a list of messages matching the search criteria.
+        ///
+        /// To search across all spaces the user has access to, set `parent` to
+        /// `spaces/-`. Using any other value for `parent` results in an
+        /// `INVALID_ARGUMENT` error. The returned messages have their `name` field
+        /// populated with the full resource name, which includes the specific `space`
+        /// in which the message resides.
+        ///
+        /// This API doesn't return all message types. The types of messages listed
+        /// below aren't included in the response. Use
+        /// \[ListMessages\]\[google.chat.v1.ChatService.ListMessages\] to list all
+        /// messages.
+        ///
+        /// * Private Messages that are visible to the authenticated user.
+        /// * Messages posted by Chat apps in spaces or group chats.
+        /// * Messages in a Chat app DM.
+        /// * Messages from blocked users.
+        /// * Messages in spaces that the caller has muted.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.messages.readonly`
+        /// * `https://www.googleapis.com/auth/chat.messages`
+        pub async fn search_messages(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchMessagesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchMessagesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/SearchMessages",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "SearchMessages"));
             self.inner.unary(req, path, codec).await
         }
         /// Gets the metadata of a message attachment. The attachment data is fetched
@@ -6786,6 +7480,183 @@ pub mod chat_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.chat.v1.ChatService", "GetThreadReadState"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns availability information for a human user in Google Chat. For
+        /// example, this can be used to check if a user is online or away, or to
+        /// retrieve their custom status message.
+        ///
+        /// This method only retrieves the authenticated user's availability.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.availability.readonly`
+        /// * `https://www.googleapis.com/auth/chat.users.availability`
+        pub async fn get_availability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAvailabilityRequest>,
+        ) -> std::result::Result<tonic::Response<super::Availability>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/GetAvailability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "GetAvailability"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Marks user as `ACTIVE` in Google Chat.
+        ///
+        /// Sets the user's availability state to `ACTIVE`. The `ACTIVE` state
+        /// lasts until the specified expiration, at which point the user's state
+        /// becomes `AWAY`. Note that if the user is actively using Chat, the `ACTIVE`
+        /// state duration may extend beyond the provided expiration.
+        ///
+        /// This method only updates the authenticated user's availability.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.availability`
+        pub async fn mark_as_active(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MarkAsActiveRequest>,
+        ) -> std::result::Result<tonic::Response<super::Availability>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/MarkAsActive",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "MarkAsActive"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Marks user as `AWAY` in Google Chat.
+        ///
+        /// Sets the user's state to away and is not affected by the user's
+        /// activity.
+        ///
+        /// This method only updates the authenticated user's availability.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.availability`
+        pub async fn mark_as_away(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MarkAsAwayRequest>,
+        ) -> std::result::Result<tonic::Response<super::Availability>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/MarkAsAway",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "MarkAsAway"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Marks user as `DO_NOT_DISTURB` in Google Chat.
+        ///
+        /// Sets a user's availability state to `DO_NOT_DISTURB` until a specified
+        /// expiration time.
+        /// When in `DO_NOT_DISTURB`, users typically won't receive notifications.
+        ///
+        /// This method only updates the authenticated user's availability.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.availability`
+        pub async fn mark_as_do_not_disturb(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MarkAsDoNotDisturbRequest>,
+        ) -> std::result::Result<tonic::Response<super::Availability>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/MarkAsDoNotDisturb",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "MarkAsDoNotDisturb"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates availability information for a human user. Only the `custom_status`
+        /// field can be updated through this method.
+        ///
+        /// This method only updates the authenticated user's availability.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.users.availability`
+        pub async fn update_availability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAvailabilityRequest>,
+        ) -> std::result::Result<tonic::Response<super::Availability>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/UpdateAvailability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "UpdateAvailability"),
                 );
             self.inner.unary(req, path, codec).await
         }

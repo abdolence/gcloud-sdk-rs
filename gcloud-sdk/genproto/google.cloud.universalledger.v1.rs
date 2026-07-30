@@ -907,8 +907,11 @@ pub struct CreateContract {
     pub contract_comment: ::prost::alloc::string::String,
 }
 /// Grants permissions to the contract by the transaction sender.
+/// If `delegate_contract_id` is specified, the permissions and corresponding
+/// storage are granted exclusively to the `delegate_contract_id` contract, not
+/// the sender.
 ///
-/// Note that, at the moment, there is no support for revoking permissions.
+/// Note that there is no support for revoking permissions.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrantContractPermissions {
     /// Optional. Deprecated: Use
@@ -924,6 +927,10 @@ pub struct GrantContractPermissions {
     /// The permissions to be granted.
     #[prost(enumeration = "ContractPermission", repeated, tag = "2")]
     pub permissions: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The contract ID for which permissions are being granted.
+    /// The transaction sender must be the owner of this contract.
+    #[prost(string, tag = "4")]
+    pub delegate_contract_id: ::prost::alloc::string::String,
 }
 /// Invokes the execution of a contract method.
 #[derive(Clone, PartialEq, ::prost::Message)]
