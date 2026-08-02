@@ -316,7 +316,7 @@ pub struct GetStorageLayoutRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A managed folder.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedFolder {
     /// Identifier. The name of this managed folder.
     /// Format:
@@ -334,6 +334,86 @@ pub struct ManagedFolder {
     /// Output only. The modification time of the managed folder.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Rapid Cache configuration for a managed prefix.
+    #[prost(message, optional, tag = "6")]
+    pub rapid_cache_config: ::core::option::Option<managed_folder::RapidCacheConfig>,
+}
+/// Nested message and enum types in `ManagedFolder`.
+pub mod managed_folder {
+    /// Rapid Cache configuration for a managed prefix. This configuration is used
+    /// to determine how the rapid cache behaves for objects under the managed
+    /// folder.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RapidCacheConfig {
+        /// Optional. A map of rapid_cache_id to RapidCachePolicy for this prefix.
+        /// Currently, the key rapid_cache_id is the zone. However, the
+        /// field is generalized as rapid_cache_id to align the policy lifetime
+        /// with the cache instance lifetime. This allows for a future transition
+        /// from zone to a cache id if required.
+        #[prost(map = "string, message", tag = "1")]
+        pub policies: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            rapid_cache_config::RapidCachePolicy,
+        >,
+    }
+    /// Nested message and enum types in `RapidCacheConfig`.
+    pub mod rapid_cache_config {
+        /// Rapid Cache policy for a managed folder.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct RapidCachePolicy {
+            /// Required. The identifier for the rapid cache.
+            #[prost(string, tag = "1")]
+            pub rapid_cache_id: ::prost::alloc::string::String,
+            /// Required. If enabled, objects in the Managed Folder will be ingested
+            /// into the cache when they are written.
+            #[prost(enumeration = "rapid_cache_policy::IngestOnWrite", tag = "2")]
+            pub ingest_on_write: i32,
+        }
+        /// Nested message and enum types in `RapidCachePolicy`.
+        pub mod rapid_cache_policy {
+            /// The behavior of the rapid cache when an object is written.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum IngestOnWrite {
+                /// The behavior is not specified at this resource level.
+                /// It should be inherited from the parent resource's configuration.
+                /// This is the default value.
+                Unspecified = 0,
+                /// Ingestion on write is explicitly enabled for this resource.
+                Enabled = 1,
+            }
+            impl IngestOnWrite {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "INGEST_ON_WRITE_UNSPECIFIED",
+                        Self::Enabled => "INGEST_ON_WRITE_ENABLED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "INGEST_ON_WRITE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "INGEST_ON_WRITE_ENABLED" => Some(Self::Enabled),
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
 }
 /// Request message for GetManagedFolder.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -357,7 +437,7 @@ pub struct GetManagedFolderRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for CreateManagedFolder.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateManagedFolderRequest {
     /// Required. Name of the bucket this managed folder belongs to.
     #[prost(string, tag = "1")]
@@ -438,6 +518,37 @@ pub struct ListManagedFoldersResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for UpdateManagedFolder.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateManagedFolderRequest {
+    /// Required. Properties of the managed folder being updated. Currently, this
+    /// RPC only supports updating the `rapid_cache_config` field in
+    /// `managed_folder`.
+    #[prost(message, optional, tag = "1")]
+    pub managed_folder: ::core::option::Option<ManagedFolder>,
+    /// Optional. Update mask for managed_folder.
+    /// Currently, this RPC only supports updating the `rapid_cache_config`
+    /// field in `managed_folder`. This field also supports update mask for the
+    /// subfields in the map of `rapid_cache_config`. The user can specify the
+    /// update mask for `rapid_cache_config.policies` and
+    /// `rapid_cache_config.policies.<key>`, but patching is not supported for
+    /// a field within `RapidCachePolicy.policies.<key>`, like
+    /// rapid_cache_config.policies.\[key\].ingest_on_write.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. The operation succeeds conditional on the managed folder's
+    /// current metageneration matching the value here specified.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Optional. The operation succeeds conditional on the managed folder's
+    /// current metageneration NOT matching the value here specified.
+    #[prost(int64, optional, tag = "4")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Message returned in the metadata field of the Operation resource for
 /// CreateAnywhereCache operations.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -462,6 +573,42 @@ pub struct CreateAnywhereCacheMetadata {
     /// applied if not specified in the create request.
     #[prost(string, optional, tag = "5")]
     pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Specifies whether objects are ingested into the cache upon write.
+    /// Defaults to false.
+    #[prost(bool, optional, tag = "7")]
+    pub ingest_on_write: ::core::option::Option<bool>,
+}
+/// Message returned in the metadata field of the Operation resource for
+/// CreateRapidCache operations.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateRapidCacheMetadata {
+    /// Generic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonLongRunningOperationMetadata>,
+    /// Rapid Cache ID.
+    #[prost(string, optional, tag = "2")]
+    pub rapid_cache_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, optional, tag = "3")]
+    pub zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Rapid Cache entry's TTL. A cache-level config that is applied to all new
+    /// cache entries on admission. Default ttl value (24hrs) is applied if not
+    /// specified in the create request.
+    #[prost(message, optional, tag = "4")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Anywhere Cache entry Admission Policy in kebab-case (e.g.,
+    /// "admit-on-first-miss"). Default admission policy (admit-on-first-miss) is
+    /// applied if not specified in the create request.
+    #[prost(string, optional, tag = "5")]
+    pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Specifies whether objects are ingested into the cache upon write.
+    /// Defaults to false.
+    #[prost(bool, optional, tag = "6")]
+    pub ingest_on_write: ::core::option::Option<bool>,
+    /// Optional. The type of cache. Either rapid cache or rapid cache ultra.
+    #[prost(string, optional, tag = "7")]
+    pub cache_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message returned in the metadata field of the Operation resource for
 /// UpdateAnywhereCache operation.
@@ -482,11 +629,47 @@ pub struct UpdateAnywhereCacheMetadata {
     /// update, this field equals to the new value specified in the Update request.
     #[prost(message, optional, tag = "3")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
-    /// L4 Cache entry Admission Policy in kebab-case (e.g.,
+    /// Optional. Anywhere Cache entry Admission Policy in kebab-case (e.g.,
     /// "admit-on-first-miss"). If `admission_policy` is pending
     /// update, this field equals to the new value specified in the Update request.
     #[prost(string, optional, tag = "4")]
     pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies whether objects are ingested into the cache upon write. If not
+    /// set, it defaults to false.
+    #[prost(bool, optional, tag = "6")]
+    pub ingest_on_write: ::core::option::Option<bool>,
+}
+/// Message returned in the metadata field of the Operation resource for
+/// UpdateRapidCache operation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateRapidCacheMetadata {
+    /// Generic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonLongRunningOperationMetadata>,
+    /// Rapid Cache ID.
+    #[prost(string, optional, tag = "2")]
+    pub rapid_cache_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, optional, tag = "3")]
+    pub zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Rapid Cache entry's TTL between 1h and 7days. A cache-level config that
+    /// is applied to all new cache entries on admission. If `ttl` is pending
+    /// update, this field equals to the new value specified in the Update request.
+    #[prost(message, optional, tag = "4")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Rapid Cache entry Admission Policy in kebab-case (e.g.,
+    /// "admit-on-first-miss"). If `admission_policy` is pending
+    /// update, this field equals to the new value specified in the Update request.
+    #[prost(string, optional, tag = "5")]
+    pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies whether objects are ingested into the cache upon write. If not
+    /// set, it defaults to false.
+    #[prost(bool, optional, tag = "6")]
+    pub ingest_on_write: ::core::option::Option<bool>,
+    /// Optional. The type of cache. Either rapid cache or rapid cache ultra.
+    #[prost(string, optional, tag = "7")]
+    pub cache_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An Anywhere Cache Instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -512,7 +695,8 @@ pub struct AnywhereCache {
     /// create request.
     #[prost(string, tag = "9")]
     pub admission_policy: ::prost::alloc::string::String,
-    /// Output only. Cache state including RUNNING, CREATING, DISABLED and PAUSED.
+    /// Output only. Cache state including `running`, `creating`, `disabled` and
+    /// `paused`.
     #[prost(string, tag = "5")]
     pub state: ::prost::alloc::string::String,
     /// Output only. Time when Anywhere cache instance is allocated.
@@ -527,6 +711,10 @@ pub struct AnywhereCache {
     /// true. Output only.
     #[prost(bool, tag = "8")]
     pub pending_update: bool,
+    /// Optional. Specifies whether objects are ingested into the cache upon write.
+    /// Defaults to false.
+    #[prost(bool, optional, tag = "11")]
+    pub ingest_on_write: ::core::option::Option<bool>,
 }
 /// Request message for CreateAnywhereCache.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -646,6 +834,132 @@ pub struct ListAnywhereCachesResponse {
     /// The list of items.
     #[prost(message, repeated, tag = "1")]
     pub anywhere_caches: ::prost::alloc::vec::Vec<AnywhereCache>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A Rapid Cache Instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RapidCache {
+    /// Immutable. The resource name of this RapidCache.
+    /// Format:
+    /// projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, tag = "2")]
+    pub zone: ::prost::alloc::string::String,
+    /// Immutable. The type of Rapid Cache this represents. Valid values include:
+    /// 'rapid-cache' and 'rapid-cache-ultra'.
+    #[prost(string, tag = "3")]
+    pub cache_type: ::prost::alloc::string::String,
+    /// Cache entry TTL (ranges between 1h to 7d). This is a cache-level config
+    /// that defines how long a cache entry can live. Default ttl value (24hrs)
+    /// is applied if not specified in the create request. TTL must be in whole
+    /// seconds.
+    #[prost(message, optional, tag = "4")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Cache admission policy. Valid policies includes:
+    /// no_read_admission, admit-on-first-miss and admit-on-second-miss. Defaults
+    /// to admit-on-first-miss for both AC and RCU. Default value is applied if not
+    /// specified in the create request.
+    #[prost(string, tag = "5")]
+    pub admission_policy: ::prost::alloc::string::String,
+    /// Output only. Cache state including running, creating, and disabled.
+    #[prost(string, tag = "6")]
+    pub state: ::prost::alloc::string::String,
+    /// Output only. Time when Rapid cache instance is allocated.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when Rapid cache instance is last updated, including
+    /// creation.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. True if there is an active update operation against this cache
+    /// instance. Subsequential update requests will be rejected if this field is
+    /// true. Output only.
+    #[prost(bool, tag = "9")]
+    pub pending_update: bool,
+}
+/// Request message for CreateRapidCache.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateRapidCacheRequest {
+    /// Required. The bucket to which this cache belongs.
+    /// Format: `projects/{project}/buckets/{bucket}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The RapidCache to create. Default values for ingest_on_write, ttl
+    /// and admission_policy will be applied if not specified in the request.
+    #[prost(message, optional, tag = "2")]
+    pub rapid_cache: ::core::option::Option<RapidCache>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for UpdateRapidCache.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateRapidCacheRequest {
+    /// Required. The RapidCache to update.
+    #[prost(message, optional, tag = "1")]
+    pub rapid_cache: ::core::option::Option<RapidCache>,
+    /// Required. List of fields to be updated. Mutable fields of RapidCache
+    /// include `ttl`, `admission_policy` and `ingest_on_write`.
+    ///
+    /// To specify ALL fields, specify a single field with the value `*`. Note: We
+    /// recommend against doing this. If a new field is introduced at a later time,
+    /// an older client updating with the `*` may accidentally reset the new
+    /// field's value.
+    ///
+    /// Not specifying any fields is an error.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for GetRapidCache.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetRapidCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for ListRapidCaches.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListRapidCachesRequest {
+    /// Required. The bucket to which this cache belongs.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of caches to return in a single response.
+    /// The service will use this parameter or 1,000 items, whichever is smaller.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A previously-returned page token representing part of the larger set of
+    /// results to view.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for ListRapidCaches.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRapidCachesResponse {
+    /// The list of rapid caches.
+    #[prost(message, repeated, tag = "1")]
+    pub rapid_caches: ::prost::alloc::vec::Vec<RapidCache>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
@@ -826,7 +1140,7 @@ pub mod intelligence_config {
     /// signifies the edition used for configuring the `IntelligenceConfig`
     /// resource and can only take the following values:
     /// `EDITION_CONFIG_UNSPECIFIED`, `INHERIT`, `DISABLED`, `STANDARD` and
-    /// `TRIAL`.
+    /// `EVALUATE`.
     #[derive(
         Clone,
         Copy,
@@ -856,6 +1170,8 @@ pub mod intelligence_config {
         /// using filters. At the end of the trial period, the `IntelligenceConfig`
         /// resource is upgraded to `STANDARD` edition.
         Trial = 5,
+        /// The `IntelligenceConfig` resource is of ESSENTIALS edition.
+        Essentials = 6,
     }
     impl EditionConfig {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -869,6 +1185,7 @@ pub mod intelligence_config {
                 Self::Disabled => "DISABLED",
                 Self::Standard => "STANDARD",
                 Self::Trial => "TRIAL",
+                Self::Essentials => "ESSENTIALS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -879,6 +1196,7 @@ pub mod intelligence_config {
                 "DISABLED" => Some(Self::Disabled),
                 "STANDARD" => Some(Self::Standard),
                 "TRIAL" => Some(Self::Trial),
+                "ESSENTIALS" => Some(Self::Essentials),
                 _ => None,
             }
         }
@@ -886,12 +1204,6 @@ pub mod intelligence_config {
 }
 /// Request message to update the `IntelligenceConfig` resource associated with
 /// your organization.
-///
-/// **IAM Permissions**:
-///
-/// Requires `storage.intelligenceConfigs.update`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
-/// the organization.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateOrganizationIntelligenceConfigRequest {
     /// Required. The `IntelligenceConfig` resource to be updated.
@@ -909,12 +1221,6 @@ pub struct UpdateOrganizationIntelligenceConfigRequest {
 }
 /// Request message to update the `IntelligenceConfig` resource associated with
 /// your folder.
-///
-/// **IAM Permissions**:
-///
-/// Requires `storage.intelligenceConfigs.update`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
-/// the folder.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateFolderIntelligenceConfigRequest {
     /// Required. The `IntelligenceConfig` resource to be updated.
@@ -932,12 +1238,6 @@ pub struct UpdateFolderIntelligenceConfigRequest {
 }
 /// Request message to update the `IntelligenceConfig` resource associated with
 /// your project.
-///
-/// **IAM Permissions**:
-///
-/// Requires `storage.intelligenceConfigs.update`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
-/// the folder.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateProjectIntelligenceConfigRequest {
     /// Required. The `IntelligenceConfig` resource to be updated.
@@ -955,12 +1255,6 @@ pub struct UpdateProjectIntelligenceConfigRequest {
 }
 /// Request message to get the `IntelligenceConfig` resource associated with your
 /// organization.
-///
-/// **IAM Permissions**
-///
-/// Requires `storage.intelligenceConfigs.get`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
-/// the organization.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationIntelligenceConfigRequest {
     /// Required. The name of the `IntelligenceConfig` resource associated with
@@ -972,12 +1266,6 @@ pub struct GetOrganizationIntelligenceConfigRequest {
 }
 /// Request message to get the `IntelligenceConfig` resource associated with your
 /// folder.
-///
-/// **IAM Permissions**
-///
-/// Requires `storage.intelligenceConfigs.get`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
-/// the folder.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFolderIntelligenceConfigRequest {
     /// Required. The name of the `IntelligenceConfig` resource associated with
@@ -989,12 +1277,6 @@ pub struct GetFolderIntelligenceConfigRequest {
 }
 /// Request message to get the `IntelligenceConfig` resource associated with your
 /// project.
-///
-/// **IAM Permissions**:
-///
-/// Requires `storage.intelligenceConfigs.get`
-/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission
-/// on the project.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProjectIntelligenceConfigRequest {
     /// Required. The name of the `IntelligenceConfig` resource associated with
@@ -1393,7 +1675,7 @@ pub mod intelligence_finding {
 /// `IntelligenceFinding` resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntelligenceFindingRevision {
-    /// Identifier. The resource name of `IntelligenceFindingRevision`.
+    /// Output only. The resource name of `IntelligenceFindingRevision`.
     /// Format:
     /// `projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}`
     #[prost(string, tag = "1")]
@@ -1459,7 +1741,7 @@ pub struct ListIntelligenceFindingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to summarize the intelligence findings for the specified
-/// scope(org, folder or project).
+/// scope (organization, folder or project).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SummarizeIntelligenceFindingsRequest {
     /// Required. The scope to summarize the findings for.
@@ -1553,7 +1835,7 @@ pub mod summarize_intelligence_findings_request {
     }
 }
 /// Response message to summarize the intelligence findings for a specified
-/// scope(org, folder or project).
+/// scope (organization, folder or project).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizeIntelligenceFindingsResponse {
     /// The list of `FindingSummary` summaries.
@@ -2237,6 +2519,34 @@ pub mod storage_control_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates a managed folder. Currently, this RPC only supports updating the
+        /// `rapid_cache_config` field.
+        pub async fn update_managed_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateManagedFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::ManagedFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateManagedFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateManagedFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates an Anywhere Cache instance.
         pub async fn create_anywhere_cache(
             &mut self,
@@ -2435,6 +2745,123 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "ListAnywhereCaches",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Rapid Cache instance.
+        pub async fn create_rapid_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRapidCacheRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/CreateRapidCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "CreateRapidCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Rapid Cache instance.
+        pub async fn update_rapid_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRapidCacheRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateRapidCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateRapidCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Rapid Cache instance.
+        pub async fn get_rapid_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRapidCacheRequest>,
+        ) -> std::result::Result<tonic::Response<super::RapidCache>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetRapidCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetRapidCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Rapid Cache instances for a given bucket.
+        pub async fn list_rapid_caches(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRapidCachesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRapidCachesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ListRapidCaches",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ListRapidCaches",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2769,7 +3196,7 @@ pub mod storage_control_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists the `IntelligenceFinding` resources for the specified project.
+        /// Lists the `IntelligenceFinding` resources for the specified the project.
         pub async fn list_intelligence_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListIntelligenceFindingsRequest>,
@@ -2799,8 +3226,8 @@ pub mod storage_control_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Summarize the intelligence findings for the specified scope(org, folder or
-        /// project).
+        /// Summarizes the intelligence findings for the specified scope (organization,
+        /// folder or project).
         pub async fn summarize_intelligence_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::SummarizeIntelligenceFindingsRequest>,

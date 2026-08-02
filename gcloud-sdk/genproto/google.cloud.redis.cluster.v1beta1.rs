@@ -375,6 +375,12 @@ pub struct Cluster {
     /// Output only. Encryption information of the data at rest of the cluster.
     #[prost(message, optional, tag = "43")]
     pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// Optional. If true, cluster endpoints that are created and registered by
+    /// customers can be deleted asynchronously. That is, such a cluster endpoint
+    /// can be de-registered before the forwarding rules in the cluster endpoint
+    /// are deleted.
+    #[prost(bool, optional, tag = "44")]
+    pub async_cluster_endpoints_deletion_enabled: ::core::option::Option<bool>,
     /// Optional. Server CA mode for the cluster.
     #[prost(enumeration = "ServerCaMode", optional, tag = "53")]
     pub server_ca_mode: ::core::option::Option<i32>,

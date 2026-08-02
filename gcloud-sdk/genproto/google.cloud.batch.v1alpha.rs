@@ -1220,25 +1220,43 @@ pub struct AllocationPolicy {
     /// [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>).
     #[prost(string, repeated, tag = "11")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The instance flexibility policy for the job. This configuration
+    /// overrides the `instances` configuration. Only allowed in job level. Not
+    /// allowed in task group level.
+    #[prost(message, optional, tag = "12")]
+    pub instance_flexibility_policy: ::core::option::Option<
+        allocation_policy::InstanceFlexibilityPolicy,
+    >,
 }
 /// Nested message and enum types in `AllocationPolicy`.
 pub mod allocation_policy {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LocationPolicy {
-        /// A list of allowed location names represented by internal URLs.
+        /// A list of location names that are allowed for the job's VMs formatted
+        /// as URLs. Each location can be a region or a zone, but you can only
+        /// specify one region or multiple zones in one region per job. For example,
+        /// `\["regions/us-central1"\]` allow VMs in any zones in region
+        /// `us-central1`, and `\["zones/us-central1-a", "zones/us-central1-c"\]`
+        /// only allow VMs in zones `us-central1-a` and `us-central1-c`. However,
+        /// `\["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b",  "zones/us-west1-a"\]` causes an error because it contains multiple regions
+        /// (`us-central1` and `us-west1`).
         ///
-        /// Each location can be a region or a zone.
-        /// Only one region or multiple zones in one region is supported now.
-        /// For example,
-        /// \["regions/us-central1"\] allow VMs in any zones in region us-central1.
-        /// \["zones/us-central1-a", "zones/us-central1-c"\] only allow VMs
-        /// in zones us-central1-a and us-central1-c.
+        /// The specified region or zones must be in the same region in
+        /// which the job is created starting on the following dates:
         ///
-        /// Mixing locations from different regions would cause errors.
-        /// For example,
-        /// \["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b",
-        /// "zones/us-west1-a"\] contains locations from two distinct regions:
-        /// us-central1 and us-west1. This combination will trigger an error.
+        /// * For projects that have successfully submitted before
+        ///   July 31, 2026 at least one job that uses the
+        ///   `allowedLocations\[\]` field with any region or zones
+        ///   outside of the job's location, the changes are starting
+        ///   on *June 30, 2027*.
+        ///
+        /// * For all other projects, the changes are starting on
+        ///   *July 31, 2026*.
+        ///
+        /// For example, for job `projects/123/locations/us-central1/jobs/jobid`,
+        /// the specified region or zones must be in `us-central1`. Using a
+        /// different region (e.g. `regions/us-west1`) or a zone not in
+        /// `us-central1` (e.g. `zones/us-west1-a`) causes an error.
         #[prost(string, repeated, tag = "1")]
         pub allowed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// A list of denied location names.
@@ -1507,6 +1525,59 @@ pub mod allocation_policy {
         /// information.
         #[prost(bool, tag = "3")]
         pub no_external_ip_address: bool,
+        /// Optional. The NIC type of the network interface.
+        #[prost(enumeration = "network_interface::NicType", optional, tag = "7")]
+        pub nic_type: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `NetworkInterface`.
+    pub mod network_interface {
+        /// Compute Engine VM instance NIC type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum NicType {
+            /// No type specified.
+            Unspecified = 0,
+            /// GVNIC
+            Gvnic = 1,
+            /// IRDMA
+            Irdma = 2,
+            /// MRDMA
+            Mrdma = 3,
+        }
+        impl NicType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "NIC_TYPE_UNSPECIFIED",
+                    Self::Gvnic => "GVNIC",
+                    Self::Irdma => "IRDMA",
+                    Self::Mrdma => "MRDMA",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "NIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GVNIC" => Some(Self::Gvnic),
+                    "IRDMA" => Some(Self::Irdma),
+                    "MRDMA" => Some(Self::Mrdma),
+                    _ => None,
+                }
+            }
+        }
     }
     /// NetworkPolicy describes VM instance network configurations.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1532,6 +1603,44 @@ pub mod allocation_policy {
         /// Not yet implemented
         #[prost(int64, tag = "2")]
         pub max_distance: i64,
+    }
+    /// Allows creating VMs from multiple types of machines. Instance flexibility
+    /// configuration overrides instances configuration.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InstanceFlexibilityPolicy {
+        /// Required. Named instance selections configuring properties that the group
+        /// will use when creating new VMs. The map key is a user-specified name for
+        /// the instance selection. The key must be 1-63 characters long, and comply
+        /// with [RFC1035](<https://www.ietf.org/rfc/rfc1035.txt>). Specifically, the
+        /// key must consist of lowercase letters, numbers, and hyphens. The first
+        /// character must be a lowercase letter, and the last character must be a
+        /// lowercase letter or number.
+        /// The maximum number of instance selections is 50. Exceeding this limit
+        /// results in a validation error with code `INVALID_ARGUMENT`.
+        #[prost(map = "string, message", tag = "1")]
+        pub instance_selections: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            InstanceSelection,
+        >,
+    }
+    /// Defines an instance selection for a given instance flexibility policy.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct InstanceSelection {
+        /// Required. The Compute Engine machine type IDs.
+        /// Only the machine type ID is supported, such as `n1-standard-16`.
+        /// Full or partial URLs are not accepted.
+        /// The total maximum number of machine types across all instance selections
+        /// is 200. Exceeding this limit results in a validation error with code
+        /// `INVALID_ARGUMENT`.
+        #[prost(string, repeated, tag = "1")]
+        pub machine_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Indicates the preference of this instance selection. Lower
+        /// number means higher preference. First try is to create a VM based on the
+        /// machine-type with lowest rank and fallback to next rank based on
+        /// availability. Machine types and instance selections with the same rank
+        /// have the same preference.
+        #[prost(int32, optional, tag = "2")]
+        pub rank: ::core::option::Option<i32>,
     }
     /// Compute Engine VM instance provisioning model.
     #[derive(

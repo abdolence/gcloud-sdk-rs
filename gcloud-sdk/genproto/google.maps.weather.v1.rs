@@ -1040,6 +1040,7 @@ pub mod precipitation_segment {
         }
     }
     /// Precipitation intensity of the segment.
+    /// (-- Next available tag: 8 --)
     #[derive(
         Clone,
         Copy,
@@ -1063,6 +1064,12 @@ pub mod precipitation_segment {
         Moderate = 3,
         /// Heavy precipitation intensity.
         Heavy = 4,
+        /// Mid-light precipitation intensity.
+        MidLight = 5,
+        /// Mid-moderate precipitation intensity.
+        MidModerate = 6,
+        /// Mid-heavy precipitation intensity.
+        MidHeavy = 7,
     }
     impl PrecipitationIntensity {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1076,6 +1083,9 @@ pub mod precipitation_segment {
                 Self::Light => "LIGHT",
                 Self::Moderate => "MODERATE",
                 Self::Heavy => "HEAVY",
+                Self::MidLight => "MID_LIGHT",
+                Self::MidModerate => "MID_MODERATE",
+                Self::MidHeavy => "MID_HEAVY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1086,6 +1096,9 @@ pub mod precipitation_segment {
                 "LIGHT" => Some(Self::Light),
                 "MODERATE" => Some(Self::Moderate),
                 "HEAVY" => Some(Self::Heavy),
+                "MID_LIGHT" => Some(Self::MidLight),
+                "MID_MODERATE" => Some(Self::MidModerate),
+                "MID_HEAVY" => Some(Self::MidHeavy),
                 _ => None,
             }
         }

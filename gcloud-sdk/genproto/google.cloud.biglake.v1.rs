@@ -167,7 +167,11 @@ pub mod iceberg_catalog {
         /// the catalog's location.
         /// If the version is not specified, the latest version will be used.
         ///
-        /// This field is not used when `service_principal_application_id` is set.
+        /// This field is not used when
+        /// \[google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id\]\[google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id\]
+        /// or
+        /// \[google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role\]\[google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role\]
+        /// is set.
         #[prost(string, optional, tag = "1")]
         pub secret_name: ::core::option::Option<::prost::alloc::string::String>,
         /// Optional. The service directory resource name for routing traffic over a
@@ -189,7 +193,10 @@ pub mod iceberg_catalog {
             federated_catalog_options::RefreshStatus,
         >,
         /// Info specific to a remote Iceberg REST catalog.
-        #[prost(oneof = "federated_catalog_options::RemoteCatalogInfo", tags = "2, 4")]
+        #[prost(
+            oneof = "federated_catalog_options::RemoteCatalogInfo",
+            tags = "2, 4, 7"
+        )]
         pub remote_catalog_info: ::core::option::Option<
             federated_catalog_options::RemoteCatalogInfo,
         >,
@@ -210,7 +217,7 @@ pub mod iceberg_catalog {
             pub catalog_name: ::core::option::Option<::prost::alloc::string::String>,
             /// Optional. The application ID of the Databricks service principal that
             /// will be used to access the Unity Catalog in the OIDC authentication
-            /// flow. With OIDC, the secret_name field is not used.
+            /// flow.
             #[prost(string, optional, tag = "3")]
             pub service_principal_application_id: ::core::option::Option<
                 ::prost::alloc::string::String,
@@ -240,6 +247,37 @@ pub mod iceberg_catalog {
             /// updated.
             #[prost(string, optional, tag = "3")]
             pub aws_role_arn: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Snowflake Catalog info.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SnowflakeCatalogInfo {
+            /// Required. The account identifier in Snowflake (See:
+            /// <https://docs.snowflake.com/en/user-guide/admin-account-identifier>). It
+            /// is the prefix to log into your Snowflake deployment URL. For example:
+            /// <https://\<account_identifier>.snowflakecomputing.com.>
+            #[prost(string, optional, tag = "1")]
+            pub account_identifier: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Required. The warehouse to connect to in Snowflake REST Catalog.
+            /// <https://\<account_identifier>.snowflakecomputing.com/polaris/api/catalog/v1/config?warehouse=\<database_name>.>
+            ///
+            /// This is the Snowflake database name containing the Iceberg metadata to
+            /// be federated.
+            ///
+            /// Must be non-empty.
+            #[prost(string, optional, tag = "2")]
+            pub warehouse: ::core::option::Option<::prost::alloc::string::String>,
+            /// Optional. The specific Snowflake role name to request in the OAuth
+            /// token scope (via session:role:$ROLE) for the Iceberg REST Catalog
+            /// session. This role grants the GCP BigLake service account the necessary
+            /// permissions to interact with the Iceberg catalog, namespaces, and
+            /// tables.
+            ///
+            /// Note: The role provided here must be the DEFAULT_ROLE or be granted to,
+            /// the Snowflake service user mapped to the BigLake service account.
+            #[prost(string, optional, tag = "3")]
+            pub snowflake_role: ::core::option::Option<::prost::alloc::string::String>,
         }
         /// Schedule defines if and when metadata refresh should be scheduled.
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -305,6 +343,9 @@ pub mod iceberg_catalog {
             /// Optional. Info specific to an AWS Glue Catalog.
             #[prost(message, tag = "4")]
             GlueCatalogInfo(GlueCatalogInfo),
+            /// Optional. Info specific to a Snowflake Catalog.
+            #[prost(message, tag = "7")]
+            SnowflakeCatalogInfo(SnowflakeCatalogInfo),
         }
     }
     /// Determines the catalog type.
@@ -485,6 +526,18 @@ pub struct ListIcebergCatalogsRequest {
     /// call. Provide this to retrieve the subsequent page.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter expression.
+    /// The only parameter currently supported is filtering based on the
+    /// `IcebergCatalog.catalog_type` field.
+    ///
+    /// Examples:
+    ///
+    /// * `catalog_type = CATALOG_TYPE_BIGLAKE`
+    /// * `catalog_type != CATALOG_TYPE_GCS_BUCKET`
+    /// * `catalog_type = CATALOG_TYPE_BIGLAKE OR catalog_type =  CATALOG_TYPE_GCS_BUCKET`
+    /// * `NOT catalog_type = CATALOG_TYPE_GCS_BUCKET`
+    #[prost(string, tag = "6")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ListIcebergCatalogsRequest`.
 pub mod list_iceberg_catalogs_request {

@@ -1561,30 +1561,61 @@ pub struct Cvss {
     pub exploitability_score: f32,
     #[prost(float, tag = "3")]
     pub impact_score: f32,
-    /// Base Metrics
-    /// Represents the intrinsic characteristics of a vulnerability that are
-    /// constant over time and across user environments.
+    /// Attack Vector (AV). Defined in CVSS v2, v3, v4.
     #[prost(enumeration = "cvss::AttackVector", tag = "4")]
     pub attack_vector: i32,
+    /// Attack Complexity (AC). Defined in CVSS v2, v3, v4.
     #[prost(enumeration = "cvss::AttackComplexity", tag = "5")]
     pub attack_complexity: i32,
+    /// Authentication (Au). Defined in CVSS v2.
     #[prost(enumeration = "cvss::Authentication", tag = "6")]
     pub authentication: i32,
+    /// Privileges Required (PR). Defined in CVSS v3, v4.
     #[prost(enumeration = "cvss::PrivilegesRequired", tag = "7")]
     pub privileges_required: i32,
+    /// User Interaction (UI). Defined in CVSS v3, v4.
     #[prost(enumeration = "cvss::UserInteraction", tag = "8")]
     pub user_interaction: i32,
+    /// Scope (S). Defined in CVSS v3.
     #[prost(enumeration = "cvss::Scope", tag = "9")]
     pub scope: i32,
+    /// Confidentiality Impact (C). Defined in CVSS v2, v3.
     #[prost(enumeration = "cvss::Impact", tag = "10")]
     pub confidentiality_impact: i32,
+    /// Integrity Impact (I). Defined in CVSS v2, v3.
     #[prost(enumeration = "cvss::Impact", tag = "11")]
     pub integrity_impact: i32,
+    /// Availability Impact (A). Defined in CVSS v2, v3.
     #[prost(enumeration = "cvss::Impact", tag = "12")]
     pub availability_impact: i32,
+    /// Attack Requirements (AT). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::AttackRequirements", tag = "13")]
+    pub attack_requirements: i32,
+    /// Vulnerable System Confidentiality Impact (VC). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "14")]
+    pub vulnerable_system_confidentiality_impact: i32,
+    /// Vulnerable System Integrity Impact (VI). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "15")]
+    pub vulnerable_system_integrity_impact: i32,
+    /// Vulnerable System Availability Impact (VA). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "16")]
+    pub vulnerable_system_availability_impact: i32,
+    /// Subsequent System Confidentiality Impact (SC). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "17")]
+    pub subsequent_system_confidentiality_impact: i32,
+    /// Subsequent System Integrity Impact (SI). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "18")]
+    pub subsequent_system_integrity_impact: i32,
+    /// Subsequent System Availability Impact (SA). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::Impact", tag = "19")]
+    pub subsequent_system_availability_impact: i32,
+    /// Exploit Maturity (E). Defined in CVSS v4.
+    #[prost(enumeration = "cvss::ExploitMaturity", tag = "20")]
+    pub exploit_maturity: i32,
 }
 /// Nested message and enum types in `CVSS`.
 pub mod cvss {
+    /// Attack Vector.
     #[derive(
         Clone,
         Copy,
@@ -1598,10 +1629,15 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum AttackVector {
+        /// Unspecified.
         Unspecified = 0,
+        /// Attack Vector: Network (AV:N). Defined in CVSS v2, v3, v4.
         Network = 1,
+        /// Attack Vector: Adjacent (AV:A). Defined in CVSS v2, v3, v4.
         Adjacent = 2,
+        /// Attack Vector: Local (AV:L). Defined in CVSS v2, v3, v4.
         Local = 3,
+        /// Attack Vector: Physical (AV:P). Defined in CVSS v3, v4.
         Physical = 4,
     }
     impl AttackVector {
@@ -1630,6 +1666,7 @@ pub mod cvss {
             }
         }
     }
+    /// Attack Complexity.
     #[derive(
         Clone,
         Copy,
@@ -1643,9 +1680,13 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum AttackComplexity {
+        /// Unspecified.
         Unspecified = 0,
+        /// Low attack complexity (AC:L). Defined in CVSS v2, v3, v4.
         Low = 1,
+        /// High attack complexity (AC:H). Defined in CVSS v2, v3, v4.
         High = 2,
+        /// Medium attack complexity (AC:M). Defined in CVSS v2.
         Medium = 3,
     }
     impl AttackComplexity {
@@ -1672,6 +1713,7 @@ pub mod cvss {
             }
         }
     }
+    /// Authentication.
     #[derive(
         Clone,
         Copy,
@@ -1685,9 +1727,13 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum Authentication {
+        /// Unspecified.
         Unspecified = 0,
+        /// Multiple authentication required (Au:M). Defined in CVSS v2.
         Multiple = 1,
+        /// Single authentication required (Au:S). Defined in CVSS v2.
         Single = 2,
+        /// No authentication required (Au:N). Defined in CVSS v2.
         None = 3,
     }
     impl Authentication {
@@ -1714,6 +1760,7 @@ pub mod cvss {
             }
         }
     }
+    /// Privileges Required.
     #[derive(
         Clone,
         Copy,
@@ -1727,9 +1774,13 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum PrivilegesRequired {
+        /// Unspecified.
         Unspecified = 0,
+        /// No privileges required (PR:N). Defined in CVSS v3, v4.
         None = 1,
+        /// Low privileges required (PR:L). Defined in CVSS v3, v4.
         Low = 2,
+        /// High privileges required (PR:H). Defined in CVSS v3, v4.
         High = 3,
     }
     impl PrivilegesRequired {
@@ -1756,6 +1807,7 @@ pub mod cvss {
             }
         }
     }
+    /// User Interaction.
     #[derive(
         Clone,
         Copy,
@@ -1769,9 +1821,16 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum UserInteraction {
+        /// Unspecified.
         Unspecified = 0,
+        /// No user interaction required (UI:N). Defined in CVSS v3, v4.
         None = 1,
+        /// User interaction required (UI:R). Defined in CVSS v3.
         Required = 2,
+        /// Passive user interaction required (UI:P). Defined in CVSS v4.
+        Passive = 3,
+        /// Active user interaction required (UI:A). Defined in CVSS v4.
+        Active = 4,
     }
     impl UserInteraction {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1783,6 +1842,8 @@ pub mod cvss {
                 Self::Unspecified => "USER_INTERACTION_UNSPECIFIED",
                 Self::None => "USER_INTERACTION_NONE",
                 Self::Required => "USER_INTERACTION_REQUIRED",
+                Self::Passive => "USER_INTERACTION_PASSIVE",
+                Self::Active => "USER_INTERACTION_ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1791,10 +1852,13 @@ pub mod cvss {
                 "USER_INTERACTION_UNSPECIFIED" => Some(Self::Unspecified),
                 "USER_INTERACTION_NONE" => Some(Self::None),
                 "USER_INTERACTION_REQUIRED" => Some(Self::Required),
+                "USER_INTERACTION_PASSIVE" => Some(Self::Passive),
+                "USER_INTERACTION_ACTIVE" => Some(Self::Active),
                 _ => None,
             }
         }
     }
+    /// Scope.
     #[derive(
         Clone,
         Copy,
@@ -1808,8 +1872,11 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum Scope {
+        /// Unspecified.
         Unspecified = 0,
+        /// Scope: Unchanged (S:U). Defined in CVSS v3.
         Unchanged = 1,
+        /// Scope: Changed (S:C). Defined in CVSS v3.
         Changed = 2,
     }
     impl Scope {
@@ -1834,6 +1901,7 @@ pub mod cvss {
             }
         }
     }
+    /// Impact.
     #[derive(
         Clone,
         Copy,
@@ -1847,11 +1915,17 @@ pub mod cvss {
     )]
     #[repr(i32)]
     pub enum Impact {
+        /// Unspecified.
         Unspecified = 0,
+        /// High impact (H). Defined in CVSS v3, v4.
         High = 1,
+        /// Low impact (L). Defined in CVSS v3, v4.
         Low = 2,
+        /// No impact (N). Defined in CVSS v2, v3, v4.
         None = 3,
+        /// Partial impact (P). Defined in CVSS v2.
         Partial = 4,
+        /// Complete impact (C). Defined in CVSS v2.
         Complete = 5,
     }
     impl Impact {
@@ -1882,14 +1956,113 @@ pub mod cvss {
             }
         }
     }
+    /// Attack Requirements.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AttackRequirements {
+        /// Unspecified.
+        Unspecified = 0,
+        /// No attack requirements (AT:N). Defined in CVSS v4.
+        None = 1,
+        /// Attack requirements: Present (AT:P). Defined in CVSS v4.
+        Present = 2,
+    }
+    impl AttackRequirements {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ATTACK_REQUIREMENTS_UNSPECIFIED",
+                Self::None => "ATTACK_REQUIREMENTS_NONE",
+                Self::Present => "ATTACK_REQUIREMENTS_PRESENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_REQUIREMENTS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ATTACK_REQUIREMENTS_NONE" => Some(Self::None),
+                "ATTACK_REQUIREMENTS_PRESENT" => Some(Self::Present),
+                _ => None,
+            }
+        }
+    }
+    /// Exploit Maturity (E). Defined in CVSS v4.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExploitMaturity {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Exploit maturity: Not defined (E:X). Defined in CVSS v4.
+        NotDefined = 1,
+        /// Exploit maturity: Attacked (E:A). Defined in CVSS v4.
+        Attacked = 2,
+        /// Exploit maturity: Proof-of-concept (E:P). Defined in CVSS v4.
+        Poc = 3,
+        /// Exploit maturity: Unreported (E:U). Defined in CVSS v4.
+        Unreported = 4,
+    }
+    impl ExploitMaturity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EXPLOIT_MATURITY_UNSPECIFIED",
+                Self::NotDefined => "EXPLOIT_MATURITY_NOT_DEFINED",
+                Self::Attacked => "EXPLOIT_MATURITY_ATTACKED",
+                Self::Poc => "EXPLOIT_MATURITY_POC",
+                Self::Unreported => "EXPLOIT_MATURITY_UNREPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPLOIT_MATURITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXPLOIT_MATURITY_NOT_DEFINED" => Some(Self::NotDefined),
+                "EXPLOIT_MATURITY_ATTACKED" => Some(Self::Attacked),
+                "EXPLOIT_MATURITY_POC" => Some(Self::Poc),
+                "EXPLOIT_MATURITY_UNREPORTED" => Some(Self::Unreported),
+                _ => None,
+            }
+        }
+    }
 }
 /// CVSS Version.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CvssVersion {
+    /// Unspecified.
     Unspecified = 0,
+    /// CVSS v2.
     CvssVersion2 = 1,
+    /// CVSS v3.
     CvssVersion3 = 2,
+    /// CVSS v4.
+    CvssVersion4 = 3,
 }
 impl CvssVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1901,6 +2074,7 @@ impl CvssVersion {
             Self::Unspecified => "CVSS_VERSION_UNSPECIFIED",
             Self::CvssVersion2 => "CVSS_VERSION_2",
             Self::CvssVersion3 => "CVSS_VERSION_3",
+            Self::CvssVersion4 => "CVSS_VERSION_4",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1909,6 +2083,7 @@ impl CvssVersion {
             "CVSS_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
             "CVSS_VERSION_2" => Some(Self::CvssVersion2),
             "CVSS_VERSION_3" => Some(Self::CvssVersion3),
+            "CVSS_VERSION_4" => Some(Self::CvssVersion4),
             _ => None,
         }
     }
@@ -3462,6 +3637,9 @@ pub struct VulnerabilityNote {
     /// The time this advisory was published by the source.
     #[prost(message, optional, tag = "9")]
     pub advisory_publish_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The full description of the v4 CVSS for this vulnerability.
+    #[prost(message, optional, tag = "10")]
+    pub cvss_v4: ::core::option::Option<Cvss>,
 }
 /// Nested message and enum types in `VulnerabilityNote`.
 pub mod vulnerability_note {
@@ -3629,6 +3807,9 @@ pub struct VulnerabilityOccurrence {
     /// Risk information about the vulnerability, such as CISA, EPSS, etc.
     #[prost(message, optional, tag = "15")]
     pub risk: ::core::option::Option<Risk>,
+    /// The cvss v4 score for the vulnerability.
+    #[prost(message, optional, tag = "16")]
+    pub cvss_v4: ::core::option::Option<Cvss>,
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
 pub mod vulnerability_occurrence {

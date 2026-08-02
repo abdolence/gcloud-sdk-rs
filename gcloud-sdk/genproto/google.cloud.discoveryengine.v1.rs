@@ -2374,6 +2374,17 @@ pub struct SearchRequest {
     /// This feature is not supported for healthcare search.
     #[prost(enumeration = "search_request::RelevanceThreshold", tag = "44")]
     pub relevance_threshold: i32,
+    /// Optional. The granular relevance filtering specification.
+    ///
+    /// If not specified, the global `relevance_threshold` will be used for all
+    /// sub-searches. If specified, this overrides the global
+    /// `relevance_threshold` to use thresholds on a per sub-search basis.
+    ///
+    /// This feature is currently supported only for custom and site search.
+    #[prost(message, optional, tag = "86")]
+    pub relevance_filter_spec: ::core::option::Option<
+        search_request::RelevanceFilterSpec,
+    >,
     /// Optional. The specification for returning the relevance score.
     #[prost(message, optional, tag = "52")]
     pub relevance_score_spec: ::core::option::Option<search_request::RelevanceScoreSpec>,
@@ -3586,6 +3597,50 @@ pub mod search_request {
         /// The higher the score, the more relevant the document is to the query.
         #[prost(bool, tag = "1")]
         pub return_relevance_score: bool,
+    }
+    /// Relevance filtering specification.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct RelevanceFilterSpec {
+        /// Optional. Relevance filtering threshold specification for keyword search.
+        #[prost(message, optional, tag = "1")]
+        pub keyword_search_threshold: ::core::option::Option<
+            relevance_filter_spec::RelevanceThresholdSpec,
+        >,
+        /// Optional. Relevance filtering threshold specification for semantic
+        /// search.
+        #[prost(message, optional, tag = "2")]
+        pub semantic_search_threshold: ::core::option::Option<
+            relevance_filter_spec::RelevanceThresholdSpec,
+        >,
+    }
+    /// Nested message and enum types in `RelevanceFilterSpec`.
+    pub mod relevance_filter_spec {
+        /// Specification for relevance filtering on a specific sub-search.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct RelevanceThresholdSpec {
+            /// Configures how the relevance threshold is determined.
+            #[prost(
+                oneof = "relevance_threshold_spec::RelevanceThresholdSpec",
+                tags = "1, 2"
+            )]
+            pub relevance_threshold_spec: ::core::option::Option<
+                relevance_threshold_spec::RelevanceThresholdSpec,
+            >,
+        }
+        /// Nested message and enum types in `RelevanceThresholdSpec`.
+        pub mod relevance_threshold_spec {
+            /// Configures how the relevance threshold is determined.
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            pub enum RelevanceThresholdSpec {
+                /// Pre-defined relevance threshold for the sub-search.
+                #[prost(enumeration = "super::super::RelevanceThreshold", tag = "1")]
+                RelevanceThreshold(i32),
+                /// Custom relevance threshold for the sub-search.
+                /// The value must be in \[0.0, 1.0\].
+                #[prost(float, tag = "2")]
+                SemanticRelevanceThreshold(f32),
+            }
+        }
     }
     /// The backend to use for the ranking expression evaluation.
     #[derive(

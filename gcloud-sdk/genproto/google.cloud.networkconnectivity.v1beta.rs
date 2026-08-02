@@ -1253,6 +1253,29 @@ pub struct Hub {
     /// hub. The default value is false.
     #[prost(bool, optional, tag = "15")]
     pub export_psc: ::core::option::Option<bool>,
+    /// Optional. Config for more granular control of Private Service Connect
+    /// transitivity.
+    #[prost(message, optional, tag = "17")]
+    pub export_psc_config: ::core::option::Option<hub::ExportPscConfig>,
+}
+/// Nested message and enum types in `Hub`.
+pub mod hub {
+    /// Configuration for more granular control of Private Service Connect
+    /// connection propagation.
+    /// This allows enabling or disabling connection propagation for specific types
+    /// of Private Service Connect endpoints.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ExportPscConfig {
+        /// Optional. Controls whether Private Service Connect endpoints for regional
+        /// ILBs and regional Google APIs should be propagated. Default value is true
+        /// if export_psc is true. Otherwise, the default value is false.
+        #[prost(bool, optional, tag = "1")]
+        pub published_services_and_regional_google_apis: ::core::option::Option<bool>,
+        /// Optional. Controls whether Private Service Connect endpoints for global
+        /// Google APIs should be propagated. The default value is false.
+        #[prost(bool, optional, tag = "2")]
+        pub global_google_apis: ::core::option::Option<bool>,
+    }
 }
 /// RoutingVPC contains information about the VPC networks associated
 /// with the spokes of a Network Connectivity Center hub.
@@ -2467,6 +2490,18 @@ pub struct LinkedVpnTunnels {
     /// included during import from hub.
     #[prost(string, repeated, tag = "5")]
     pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Hub routes overlapped/encompassed by exclude import ranges are
+    /// excluded during import from hub.
+    #[prost(string, repeated, tag = "6")]
+    pub exclude_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes fully encompassed by include export ranges are
+    /// included during export to hub.
+    #[prost(string, repeated, tag = "7")]
+    pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes overlapped/encompassed by exclude export ranges
+    /// are excluded during export to hub.
+    #[prost(string, repeated, tag = "8")]
+    pub exclude_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A collection of VLAN attachment resources. These resources should
 /// be redundant attachments that all advertise the same prefixes to Google
@@ -2489,6 +2524,18 @@ pub struct LinkedInterconnectAttachments {
     /// included during import from hub.
     #[prost(string, repeated, tag = "5")]
     pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Hub routes overlapped/encompassed by exclude import ranges are
+    /// excluded during import from hub.
+    #[prost(string, repeated, tag = "6")]
+    pub exclude_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes fully encompassed by include export ranges are
+    /// included during export to hub.
+    #[prost(string, repeated, tag = "7")]
+    pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes overlapped/encompassed by exclude export ranges
+    /// are excluded during export to hub.
+    #[prost(string, repeated, tag = "8")]
+    pub exclude_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A collection of router appliance instances. If you configure multiple router
 /// appliance instances to receive data from the same set of sites outside of
@@ -2512,6 +2559,18 @@ pub struct LinkedRouterApplianceInstances {
     /// included during import from hub.
     #[prost(string, repeated, tag = "5")]
     pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Hub routes overlapped/encompassed by exclude import ranges are
+    /// excluded during import from hub.
+    #[prost(string, repeated, tag = "6")]
+    pub exclude_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes fully encompassed by include export ranges are
+    /// included during export to hub.
+    #[prost(string, repeated, tag = "7")]
+    pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Dynamic routes overlapped/encompassed by exclude export ranges
+    /// are excluded during export to hub.
+    #[prost(string, repeated, tag = "8")]
+    pub exclude_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// An existing VPC network.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3105,6 +3164,9 @@ pub enum RouteType {
     /// derived from Border Gateway Protocol (BGP) advertisements received from an
     /// NCC hybrid spoke.
     DynamicRoute = 3,
+    /// The route leads to a destination within the Private Service Connect
+    /// Global Google API range of the VPC network.
+    PscGlobalGapi = 4,
 }
 impl RouteType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3117,6 +3179,7 @@ impl RouteType {
             Self::VpcPrimarySubnet => "VPC_PRIMARY_SUBNET",
             Self::VpcSecondarySubnet => "VPC_SECONDARY_SUBNET",
             Self::DynamicRoute => "DYNAMIC_ROUTE",
+            Self::PscGlobalGapi => "PSC_GLOBAL_GAPI",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3126,6 +3189,7 @@ impl RouteType {
             "VPC_PRIMARY_SUBNET" => Some(Self::VpcPrimarySubnet),
             "VPC_SECONDARY_SUBNET" => Some(Self::VpcSecondarySubnet),
             "DYNAMIC_ROUTE" => Some(Self::DynamicRoute),
+            "PSC_GLOBAL_GAPI" => Some(Self::PscGlobalGapi),
             _ => None,
         }
     }
@@ -3329,6 +3393,8 @@ pub enum LocationFeature {
     SiteToSiteSpokes = 2,
     /// Gateway spokes are supported in this location.
     GatewaySpokes = 3,
+    /// Supports transports in this location.
+    Transports = 4,
 }
 impl LocationFeature {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3341,6 +3407,7 @@ impl LocationFeature {
             Self::SiteToCloudSpokes => "SITE_TO_CLOUD_SPOKES",
             Self::SiteToSiteSpokes => "SITE_TO_SITE_SPOKES",
             Self::GatewaySpokes => "GATEWAY_SPOKES",
+            Self::Transports => "TRANSPORTS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3350,6 +3417,7 @@ impl LocationFeature {
             "SITE_TO_CLOUD_SPOKES" => Some(Self::SiteToCloudSpokes),
             "SITE_TO_SITE_SPOKES" => Some(Self::SiteToSiteSpokes),
             "GATEWAY_SPOKES" => Some(Self::GatewaySpokes),
+            "TRANSPORTS" => Some(Self::Transports),
             _ => None,
         }
     }
@@ -4943,6 +5011,9 @@ pub struct RemoteTransportProfile {
     /// profile in the UI.
     #[prost(string, tag = "13")]
     pub display_name: ::prost::alloc::string::String,
+    /// Output only. Provider type for this profile.
+    #[prost(enumeration = "remote_transport_profile::ProviderType", tag = "14")]
+    pub provider_type: i32,
 }
 /// Nested message and enum types in `RemoteTransportProfile`.
 pub mod remote_transport_profile {
@@ -5172,6 +5243,49 @@ pub mod remote_transport_profile {
             }
         }
     }
+    /// Provider type for this profile.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProviderType {
+        /// Unspecified provider type.
+        Unspecified = 0,
+        /// Represents a Cloud service provider.
+        Cloud = 1,
+        /// Represents a Network service provider.
+        Network = 2,
+    }
+    impl ProviderType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVIDER_TYPE_UNSPECIFIED",
+                Self::Cloud => "CLOUD",
+                Self::Network => "NETWORK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD" => Some(Self::Cloud),
+                "NETWORK" => Some(Self::Network),
+                _ => None,
+            }
+        }
+    }
 }
 /// Message for requesting list of RemoteTransportProfiles.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5213,6 +5327,24 @@ pub struct GetRemoteTransportProfileRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Message for getting a RemoteTransportProfile from an activation key.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ParseFromActivationKeyRequest {
+    /// Required. Parent value for ParseFromActivationKeyRequest.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The activation key to get the RemoteTransportProfile for.
+    #[prost(string, tag = "2")]
+    pub activation_key: ::prost::alloc::string::String,
+}
+/// Message for response to getting a RemoteTransportProfile from an activation
+/// key.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParseFromActivationKeyResponse {
+    /// The RemoteTransportProfile that was parsed from the activation key.
+    #[prost(message, optional, tag = "1")]
+    pub remote_transport_profile: ::core::option::Option<RemoteTransportProfile>,
+}
 /// Message describing Transport object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Transport {
@@ -5234,13 +5366,13 @@ pub struct Transport {
     /// Optional. Description of the Transport.
     #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. Name of the remoteTransportProfile that this Transport is
-    /// connecting to.
+    /// Optional. Immutable. Name of the remoteTransportProfile that this Transport
+    /// is connecting to.
     #[prost(string, tag = "7")]
     pub remote_profile: ::prost::alloc::string::String,
-    /// Optional. Key used for establishing a connection with the remote transport.
-    /// This key can only be provided if the profile supports an INPUT key flow and
-    /// the resource is in the PENDING_KEY state.
+    /// Optional. Immutable. Key used for establishing a connection with the remote
+    /// transport. This key can only be provided if the profile supports an INPUT
+    /// key flow and the resource is in the PENDING_KEY state.
     #[prost(string, tag = "8")]
     pub provided_activation_key: ::prost::alloc::string::String,
     /// Output only. Google-generated activation key. This is only output if the
@@ -5272,17 +5404,17 @@ pub struct Transport {
     /// bandwidth associated with the connectivity.
     #[prost(bool, tag = "14")]
     pub admin_enabled: bool,
-    /// Optional. Resource URI of the Network that will be peered with this
-    /// Transport. This field must be provided during resource creation and cannot
-    /// be changed.
+    /// Optional. Immutable. Resource URI of the Network that will be peered with
+    /// this Transport. This field must be provided during resource creation and
+    /// cannot be changed.
     #[prost(string, tag = "15")]
     pub network: ::prost::alloc::string::String,
     /// Optional. List of IP Prefixes that will be advertised to the remote
     /// provider. Both IPv4 and IPv6 addresses are supported.
     #[prost(string, repeated, tag = "16")]
     pub advertised_routes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The user supplied account id for the CSP associated with the
-    /// remote profile.
+    /// Optional. Immutable. The user supplied account id for the CSP associated
+    /// with the remote profile.
     #[prost(string, tag = "17")]
     pub remote_account_id: ::prost::alloc::string::String,
     /// Output only. VPC Network URI that was created for the VPC Peering
@@ -5290,6 +5422,26 @@ pub struct Transport {
     /// can be used to re-establish.
     #[prost(string, tag = "18")]
     pub peering_network: ::prost::alloc::string::String,
+    /// Optional. Immutable. The NCC Hub that the Transport should attach to. The
+    /// hub must be in the same project as the Transport. Format:
+    /// `{hub}` or `projects/{project}/locations/global/hubs/{hub}`
+    #[prost(string, tag = "19")]
+    pub hub: ::prost::alloc::string::String,
+    /// Optional. Immutable. Controls whether a Routing VPC Spoke should be created
+    /// and attached to the NCC Hub. This will provide Private Service Connect
+    /// (PSC) connectivity through NCC. This can only be set when the Transport is
+    /// first created.
+    #[prost(bool, tag = "20")]
+    pub psc_routing_enabled: bool,
+    /// Optional. Immutable. Controls whether resources proposed by the Transport
+    /// are automatically accepted on behalf of the user. List of actions that can
+    /// be automatically accepted are:
+    ///
+    /// 1. VPC Peering creation
+    /// 1. Routing VPC Spoke creation
+    /// 1. Hybrid Spoke creation
+    #[prost(bool, tag = "21")]
+    pub auto_accept: bool,
 }
 /// Nested message and enum types in `Transport`.
 pub mod transport {
@@ -5540,6 +5692,10 @@ pub struct GetStatusRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, the response will bypass any caches and return
+    /// the freshest possible data.
+    #[prost(bool, tag = "2")]
+    pub skip_cache: bool,
 }
 /// Message for the response to getting a Transport's operational status.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5986,6 +6142,36 @@ pub mod transport_manager_client {
                     GrpcMethod::new(
                         "google.cloud.networkconnectivity.v1beta.TransportManager",
                         "GetRemoteTransportProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single RemoteTransportProfile given an activation key.
+        pub async fn parse_from_activation_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ParseFromActivationKeyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ParseFromActivationKeyResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1beta.TransportManager/ParseFromActivationKey",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1beta.TransportManager",
+                        "ParseFromActivationKey",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -120,6 +120,11 @@ pub mod agent_gateway {
         /// Location
         #[prost(string, tag = "1")]
         pub resource_uri: ::prost::alloc::string::String,
+        /// Optional. List of supported Google Cloud networking proxies in the Project and
+        /// Location.
+        /// resource_uris is mutually exclusive with resource_uri.
+        #[prost(string, repeated, tag = "2")]
+        pub resource_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// NetworkConfig contains network configurations for the AgentGateway.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2461,14 +2466,16 @@ pub struct EndpointPolicy {
     /// authentication is disabled(open) for this endpoint.
     #[prost(string, tag = "12")]
     pub server_tls_policy: ::prost::alloc::string::String,
-    /// Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy
-    /// can be set to specify the authentication for traffic from the proxy to the
-    /// actual endpoints. More specifically, it is applied to the outgoing traffic
-    /// from the proxy to the endpoint. This is typically used for sidecar model
-    /// where the proxy identifies itself as endpoint to the control plane, with
-    /// the connection between sidecar and endpoint requiring authentication. If
-    /// this field is not set, authentication is disabled(open). Applicable only
-    /// when EndpointPolicyType is SIDECAR_PROXY.
+    /// Optional. Deprecated: This field is not used and is a no-op.
+    /// A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy can be set
+    /// to specify the authentication for traffic from the proxy to the actual
+    /// endpoints. More specifically, it is applied to the outgoing traffic from
+    /// the proxy to the endpoint. This is typically used for sidecar model where
+    /// the proxy identifies itself as endpoint to the control plane, with the
+    /// connection between sidecar and endpoint requiring authentication. If this
+    /// field is not set, authentication is disabled(open). Applicable only when
+    /// EndpointPolicyType is SIDECAR_PROXY.
+    #[deprecated]
     #[prost(string, tag = "13")]
     pub client_tls_policy: ::prost::alloc::string::String,
 }

@@ -5,21 +5,21 @@
 pub struct QuotaInfo {
     /// Resource name of this QuotaInfo.
     /// The ID component following "locations/" must be "global".
-    /// Example:
+    /// For example,
     /// `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The id of the quota, which is unique within the service.
-    /// Example: `CpusPerProjectPerRegion`
+    /// For example, `CpusPerProjectPerRegion`
     #[prost(string, tag = "2")]
     pub quota_id: ::prost::alloc::string::String,
     /// The metric of the quota. It specifies the resources consumption the quota
     /// is defined for.
-    /// Example: `compute.googleapis.com/cpus`
+    /// For example, `compute.googleapis.com/cpus`
     #[prost(string, tag = "3")]
     pub metric: ::prost::alloc::string::String,
     /// The name of the service in which the quota is defined.
-    /// Example: `compute.googleapis.com`
+    /// For example, `compute.googleapis.com`
     #[prost(string, tag = "4")]
     pub service: ::prost::alloc::string::String,
     /// Whether this is a precise quota. A precise quota is tracked with absolute
@@ -28,8 +28,8 @@ pub struct QuotaInfo {
     pub is_precise: bool,
     /// The reset time interval for the quota. Refresh interval applies to rate
     /// quota only.
-    /// Example: "minute" for per minute, "day" for per day, or "10 seconds" for
-    /// every 10 seconds.
+    /// For example, "minute" for per minute, "day" for per day, or "10 seconds"
+    /// for every 10 seconds.
     #[prost(string, tag = "6")]
     pub refresh_interval: ::prost::alloc::string::String,
     /// The container type of the QuotaInfo.
@@ -191,25 +191,26 @@ pub mod quota_increase_eligibility {
 pub struct QuotaPreference {
     /// Required except in the CREATE requests.
     /// The resource name of the quota preference.
-    /// The ID component following "locations/" must be "global".
-    /// Example:
+    /// The path that follows `/locations` must be `/global`.
+    /// For example:
     /// `projects/123/locations/global/quotaPreferences/my-config-for-us-east1`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The dimensions that this quota preference applies to. The key of
-    /// the map entry is the name of a dimension, such as "region", "zone",
-    /// "network_id", and the value of the map entry is the dimension value.
+    /// the map entry is the name of a dimension, such as `region`, `zone`,
+    /// `network_id`, and the value of the map entry is the dimension value.
     ///
     /// If a dimension is missing from the map of dimensions, the quota preference
     /// applies to all the dimension values except for those that have other quota
     /// preferences configured for the specific value.
     ///
-    /// NOTE: QuotaPreferences can only be applied across all values of "user" and
-    /// "resource" dimension. Do not set values for "user" or "resource" in the
+    /// Note: QuotaPreferences can only be applied across all values of `user` and
+    /// `resource` dimension. Do not set values for `user` or `resource` in the
     /// dimension map.
     ///
-    /// Example: {"provider", "Foo Inc"} where "provider" is a service specific
-    /// dimension.
+    /// For example: `{"provider" : "Example Organization"}` where `provider` is a
+    /// service-specific quota dimension and `Example Organization` is the provider
+    /// name.
     #[prost(map = "string, string", tag = "2")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -234,7 +235,7 @@ pub struct QuotaPreference {
     #[prost(string, tag = "7")]
     pub service: ::prost::alloc::string::String,
     /// Required. The id of the quota to which the quota preference is applied. A
-    /// quota name is unique in the service. Example: `CpusPerProjectPerRegion`
+    /// quota name is unique in the service. For example, `CpusPerProjectPerRegion`
     #[prost(string, tag = "8")]
     pub quota_id: ::prost::alloc::string::String,
     /// Output only. Is the quota preference pending Google Cloud approval and
@@ -244,9 +245,9 @@ pub struct QuotaPreference {
     /// The reason / justification for this quota preference.
     #[prost(string, tag = "11")]
     pub justification: ::prost::alloc::string::String,
-    /// Input only. An email address that can be used to contact the the user, in
-    /// case Google Cloud needs more information to make a decision before
-    /// additional quota can be granted.
+    /// Input only. An email address that can be used to contact the user, in case
+    /// Google Cloud needs more information to make a decision before additional
+    /// quota can be granted.
     ///
     /// When requesting a quota increase, the email address is required.
     /// When requesting a quota decrease, the email address is optional.
@@ -338,14 +339,15 @@ pub mod quota_config {
 /// combination of dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionsInfo {
-    /// The map of dimensions for this dimensions info. The key of a map entry
-    /// is "region", "zone" or the name of a service specific dimension, and the
-    /// value of a map entry is the value of the dimension.  If a dimension does
+    /// The map of dimensions in key-value pairs. The key of a map entry
+    /// is "region", "zone", or the name of a service-specific dimension, and the
+    /// value of a map entry is the value of the dimension. If a dimension does
     /// not appear in the map of dimensions, the dimensions info applies to all
-    /// the dimension values except for those that have another DimenisonInfo
+    /// the dimension values except for those that have another DimensionInfo
     /// instance configured for the specific value.
-    /// Example: {"provider" : "Foo Inc"} where "provider" is a service specific
-    /// dimension of a quota.
+    /// For example: `{"provider" : "Example Organization"}` where `provider` is a
+    /// service-specific quota dimension and `Example Organization` is the provider
+    /// name.
     #[prost(map = "string, string", tag = "1")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -354,7 +356,7 @@ pub struct DimensionsInfo {
     /// Quota details for the specified dimensions.
     #[prost(message, optional, tag = "2")]
     pub details: ::core::option::Option<QuotaDetails>,
-    /// The applicable regions or zones of this dimensions info. The field will be
+    /// The applicable regions or zones of this dimension. The field is
     /// set to \['global'\] for quotas that are not per region or per zone.
     /// Otherwise, it will be set to the list of locations this dimension info is
     /// applicable to.
@@ -420,7 +422,7 @@ impl QuotaSafetyCheck {
 /// Message for requesting list of QuotaInfos
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaInfosRequest {
-    /// Required. Parent value of QuotaInfo resources.
+    /// Required. Identifier. Parent value of QuotaInfo resources.
     /// Listing across different resource containers (such as 'projects/-') is not
     /// allowed.
     ///
@@ -452,7 +454,7 @@ pub struct ListQuotaInfosResponse {
 /// Message for getting a QuotaInfo
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuotaInfoRequest {
-    /// Required. The resource name of the quota info.
+    /// Required. Identifier. The resource name of the quota info.
     ///
     /// An example name:
     /// `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
@@ -462,7 +464,7 @@ pub struct GetQuotaInfoRequest {
 /// Message for requesting list of QuotaPreferences
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaPreferencesRequest {
-    /// Required. Parent value of QuotaPreference resources.
+    /// Required. Identifier. Parent value of QuotaPreference resources.
     /// Listing across different resource containers (such as 'projects/-') is not
     /// allowed.
     ///
@@ -515,7 +517,7 @@ pub struct ListQuotaPreferencesResponse {
 /// Message for getting a QuotaPreference
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuotaPreferenceRequest {
-    /// Required. Name of the resource
+    /// Required. Identifier. Name of the resource
     ///
     /// Example name:
     /// `projects/123/locations/global/quota_preferences/my-config-for-us-east1`
@@ -525,7 +527,7 @@ pub struct GetQuotaPreferenceRequest {
 /// Message for creating a QuotaPreference
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateQuotaPreferenceRequest {
-    /// Required. Value for parent.
+    /// Required. Identifier. Value for parent.
     ///
     /// Example:
     /// `projects/123/locations/global`
@@ -840,6 +842,276 @@ pub mod cloud_quotas_client {
                     GrpcMethod::new(
                         "google.api.cloudquotas.v1.CloudQuotas",
                         "UpdateQuotaPreference",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request for getting QuotaAdjusterSettings
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetQuotaAdjusterSettingsRequest {
+    /// Required. Identifier. Name of the `quotaAdjusterSettings` configuration.
+    /// Only a single setting per project is supported.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for updating QuotaAdjusterSettings
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateQuotaAdjusterSettingsRequest {
+    /// Required. The QuotaAdjusterSettings to update.
+    #[prost(message, optional, tag = "1")]
+    pub quota_adjuster_settings: ::core::option::Option<QuotaAdjusterSettings>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If set to true, checks the syntax of the request but doesn't
+    /// update the quota adjuster settings value. Note that although a request can
+    /// be valid, that doesn't guarantee that the request will be fulfilled.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// The QuotaAdjusterSettings resource defines the settings for the Quota
+/// Adjuster.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QuotaAdjusterSettings {
+    /// Identifier. Name of the configuration, in the formats below:
+    ///
+    /// * For a project:
+    ///   projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
+    /// * For a folder:
+    ///   folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
+    /// * For an organization:
+    ///   organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The configured value of the enablement at the given resource.
+    #[prost(enumeration = "quota_adjuster_settings::Enablement", tag = "2")]
+    pub enablement: i32,
+    /// Output only. The timestamp when the QuotaAdjusterSettings resource was last
+    /// updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The current ETag of the QuotaAdjusterSettings. If an ETag is
+    /// provided on update and does not match the current server's ETag in the
+    /// QuotaAdjusterSettings, the request is blocked and returns an ABORTED error.
+    /// See <https://google.aip.dev/134#etags> for more details on ETags.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the setting is inherited or explicitly
+    /// specified.
+    #[prost(bool, tag = "7")]
+    pub inherited: bool,
+    /// Output only. The resource container from which the setting is inherited.
+    /// This refers to the  nearest ancestor with enablement set (either ENABLED or
+    /// DISABLED). The value can be an organizations/{organization_id},
+    /// folders/{folder_id}, or can be 'default' if no ancestor exists with
+    /// enablement set. The value will be empty when enablement is directly set on
+    /// this container.
+    #[prost(string, tag = "8")]
+    pub inherited_from: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `QuotaAdjusterSettings`.
+pub mod quota_adjuster_settings {
+    /// The enablement status of the quota adjuster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Enablement {
+        /// The quota adjuster is in an unknown state.
+        Unspecified = 0,
+        /// The quota adjuster is enabled.
+        Enabled = 2,
+        /// The quota adjuster is disabled.
+        Disabled = 3,
+    }
+    impl Enablement {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENABLEMENT_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENABLEMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+}
+/// Generated client implementations.
+pub mod quota_adjuster_settings_manager_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The Quotas Adjuster Settings API is an infrastructure service for Google
+    /// Cloud that lets service consumers view and update their quota adjuster
+    /// settings.
+    ///
+    /// * Update quota adjuster settings.
+    /// * Get the name of the configurations.
+    #[derive(Debug, Clone)]
+    pub struct QuotaAdjusterSettingsManagerClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl QuotaAdjusterSettingsManagerClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> QuotaAdjusterSettingsManagerClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> QuotaAdjusterSettingsManagerClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            QuotaAdjusterSettingsManagerClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Updates the QuotaAdjusterSettings for the specified resource.
+        pub async fn update_quota_adjuster_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateQuotaAdjusterSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QuotaAdjusterSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.cloudquotas.v1.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.cloudquotas.v1.QuotaAdjusterSettingsManager",
+                        "UpdateQuotaAdjusterSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the QuotaAdjusterSettings for the specified resource.
+        pub async fn get_quota_adjuster_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQuotaAdjusterSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QuotaAdjusterSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.cloudquotas.v1.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.cloudquotas.v1.QuotaAdjusterSettingsManager",
+                        "GetQuotaAdjusterSettings",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -1178,6 +1178,10 @@ pub struct InstallNpmPackagesRequest {
     /// Required. The workspace's name.
     #[prost(string, tag = "1")]
     pub workspace: ::prost::alloc::string::String,
+    /// Optional. The pipeline options which defines the pipeline type and path
+    /// within the Git repository.
+    #[prost(message, optional, tag = "3")]
+    pub pipeline_config: ::core::option::Option<PipelineConfig>,
 }
 /// `InstallNpmPackages` response message.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1205,9 +1209,9 @@ pub struct ReleaseConfig {
     #[prost(string, tag = "4")]
     pub cron_schedule: ::prost::alloc::string::String,
     /// Optional. Specifies the time zone to be used when interpreting
-    /// cron_schedule. Must be a time zone name from the time zone database
-    /// (<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>). If left
-    /// unspecified, the default is UTC.
+    /// cron_schedule. Must be a time zone name from the [time zone
+    /// database](<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>). If
+    /// left unspecified, the default is `UTC`.
     #[prost(string, tag = "7")]
     pub time_zone: ::prost::alloc::string::String,
     /// Output only. Records of the 10 most recent scheduled release attempts,
@@ -1378,6 +1382,12 @@ pub struct CompilationResult {
     /// from a workspace.
     #[prost(message, optional, tag = "12")]
     pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
+    /// Output only. Metadata about the repository snapshot used by scheduled
+    /// notebooks.
+    #[prost(message, optional, tag = "13")]
+    pub gcs_repository_snapshot_metadata: ::core::option::Option<
+        GcsRepositorySnapshotMetadata,
+    >,
     /// The source of the compilation result.
     #[prost(oneof = "compilation_result::Source", tags = "2, 3, 7")]
     pub source: ::core::option::Option<compilation_result::Source>,
@@ -1423,6 +1433,128 @@ pub mod compilation_result {
         ReleaseConfig(::prost::alloc::string::String),
     }
 }
+/// Represents a trigger configuration for a workflow.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkflowTriggerConfig {
+    /// Optional. The condition to use when triggering the workflow.
+    #[prost(enumeration = "workflow_trigger_config::Condition", tag = "1")]
+    pub condition: i32,
+    /// Required. The trigger definitions to invoke a workflow.
+    #[prost(message, repeated, tag = "2")]
+    pub workflow_triggers: ::prost::alloc::vec::Vec<WorkflowTrigger>,
+    /// Optional. Minimum duration between two consecutive executions. If not
+    /// specified, the workflow will be executed every time trigger conditions are
+    /// met and there is no ongoing workflow execution.
+    #[prost(message, optional, tag = "3")]
+    pub min_execution_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The effective maximum wait time duration for the trigger
+    /// condition to be met. If not specified, the workflow won't be triggered
+    /// until conditions are met.
+    #[prost(message, optional, tag = "4")]
+    pub max_wait_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. Records of the 10 most recent trigger evaluations, ordered
+    /// in descending order of `evaluation_time`. Updated whenever the service
+    /// evaluates the trigger conditions (via polling or upon receiving a push
+    /// event).
+    #[prost(message, repeated, tag = "5")]
+    pub recent_trigger_evaluation_records: ::prost::alloc::vec::Vec<
+        TriggerEvaluationRecord,
+    >,
+    /// Output only. The timestamp of the last successful trigger evaluation.
+    #[prost(message, optional, tag = "6")]
+    pub last_successful_evaluation_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
+}
+/// Nested message and enum types in `WorkflowTriggerConfig`.
+pub mod workflow_trigger_config {
+    /// The condition to use when triggering the workflow.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Condition {
+        /// If CONDITION_UNSPECIFIED, the default value is ANY.
+        Unspecified = 0,
+        /// If ALL, all the trigger config conditions must be met before a workflow
+        /// is invoked.
+        All = 1,
+        /// If ANY, at least one of the trigger config conditions must be met
+        /// before a workflow is invoked.
+        Any = 2,
+    }
+    impl Condition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONDITION_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::Any => "ANY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "ANY" => Some(Self::Any),
+                _ => None,
+            }
+        }
+    }
+}
+/// A record of an attempt to evaluate trigger conditions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TriggerEvaluationRecord {
+    /// Output only. The timestamp of this trigger evaluation attempt.
+    #[prost(message, optional, tag = "1")]
+    pub evaluation_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The status of the trigger evaluation.
+    /// Success is indicated by a code of 0 (OK). Message will only be present
+    /// if the status code is non-zero.
+    #[prost(message, optional, tag = "2")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// The trigger definition to invoke a workflow.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkflowTrigger {
+    /// The trigger defining the conditions to invoke a workflow.
+    #[prost(oneof = "workflow_trigger::Trigger", tags = "1")]
+    pub trigger: ::core::option::Option<workflow_trigger::Trigger>,
+}
+/// Nested message and enum types in `WorkflowTrigger`.
+pub mod workflow_trigger {
+    /// The trigger defining the conditions to invoke a workflow.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Trigger {
+        /// The table update trigger configuration.
+        #[prost(message, tag = "1")]
+        TableUpdateTrigger(super::TableUpdateTrigger),
+    }
+}
+/// Represents a table update trigger configuration.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TableUpdateTrigger {
+    /// The target table to trigger the workflow.
+    #[prost(message, optional, tag = "1")]
+    pub table: ::core::option::Option<Target>,
+    /// Output only. The modification time of this table that resulted
+    /// in an invocation of the workflow. This would be updated by the triggering
+    /// service after a successful workflow invocation.
+    #[prost(message, optional, tag = "2")]
+    pub trigger_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Configures various aspects of Dataform code compilation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CodeCompilationConfig {
@@ -1464,6 +1596,33 @@ pub struct CodeCompilationConfig {
     /// Optional. The default notebook runtime options.
     #[prost(message, optional, tag = "9")]
     pub default_notebook_runtime_options: ::core::option::Option<NotebookRuntimeOptions>,
+    /// Optional. The pipeline options which defines the pipeline type and path
+    /// within the Git repository.
+    #[prost(message, optional, tag = "12")]
+    pub pipeline_config: ::core::option::Option<PipelineConfig>,
+}
+/// Metadata about a repository snapshot stored in Google Cloud Storage.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GcsRepositorySnapshotMetadata {
+    /// Output only. The Google Cloud Storage URI of the repository snapshot.
+    #[prost(string, tag = "1")]
+    pub repository_snapshot_uri: ::prost::alloc::string::String,
+    /// Output only. The crc32c checksum of the repository snapshot, big-endian
+    /// base64 encoded.
+    #[prost(string, tag = "2")]
+    pub crc32c_checksum: ::prost::alloc::string::String,
+    /// Output only. The generation number of the Cloud Storage object. See
+    /// <https://cloud.google.com/storage/docs/metadata#generation-number.>
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+}
+/// Configures the destination for a repository snapshot.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GcsRepositorySnapshotDestination {
+    /// Optional. The Google Cloud Storage destination to upload the repository
+    /// snapshot to. Format: `gs://bucket-name/path/`.
+    #[prost(string, tag = "1")]
+    pub repository_snapshot_uri: ::prost::alloc::string::String,
 }
 /// Configures various aspects of Dataform notebook runtime.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1477,6 +1636,12 @@ pub struct NotebookRuntimeOptions {
     /// The location to store the notebook execution result.
     #[prost(oneof = "notebook_runtime_options::ExecutionSink", tags = "1")]
     pub execution_sink: ::core::option::Option<notebook_runtime_options::ExecutionSink>,
+    /// The destination of the snapshot of repository files to be available for
+    /// read-only access inside a notebook runtime
+    #[prost(oneof = "notebook_runtime_options::RepositorySnapshotStorage", tags = "3")]
+    pub repository_snapshot_storage: ::core::option::Option<
+        notebook_runtime_options::RepositorySnapshotStorage,
+    >,
 }
 /// Nested message and enum types in `NotebookRuntimeOptions`.
 pub mod notebook_runtime_options {
@@ -1487,6 +1652,79 @@ pub mod notebook_runtime_options {
         /// Format: `gs://bucket-name`.
         #[prost(string, tag = "1")]
         GcsOutputBucket(::prost::alloc::string::String),
+    }
+    /// The destination of the snapshot of repository files to be available for
+    /// read-only access inside a notebook runtime
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum RepositorySnapshotStorage {
+        /// Optional. The Google Cloud Storage destination to upload the snapshot to.
+        /// For empty URI it defaults to the provided gcs_output_bucket.
+        /// Format: `gs://bucket-name/path/`.
+        #[prost(message, tag = "3")]
+        GcsRepositorySnapshotDestination(super::GcsRepositorySnapshotDestination),
+    }
+}
+/// Defines the pipeline type and path within the Git repository.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PipelineConfig {
+    /// Required. The type of the pipeline.
+    #[prost(enumeration = "pipeline_config::PipelineType", tag = "1")]
+    pub pipeline_type: i32,
+    /// Required. The relative path within the Git repository where the pipeline is
+    /// defined. For example, for a Dataform pipeline, it is a path to the folder
+    /// where `workflow_settings.yaml` or `dataform.json` is located.
+    #[prost(string, tag = "2")]
+    pub path: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PipelineConfig`.
+pub mod pipeline_config {
+    /// The type of the pipeline. This may be extended in the future.
+    /// In case of UNSPECIFIED, the error will be thrown.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PipelineType {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Regular Dataform pipeline.
+        Dataform = 1,
+        /// SQL single file asset.
+        Sql = 3,
+        /// Notebook single file asset.
+        Notebook = 4,
+    }
+    impl PipelineType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PIPELINE_TYPE_UNSPECIFIED",
+                Self::Dataform => "DATAFORM",
+                Self::Sql => "SQL",
+                Self::Notebook => "NOTEBOOK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PIPELINE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATAFORM" => Some(Self::Dataform),
+                "SQL" => Some(Self::Sql),
+                "NOTEBOOK" => Some(Self::Notebook),
+                _ => None,
+            }
+        }
     }
 }
 /// `ListCompilationResults` request message.
@@ -2120,9 +2358,9 @@ pub struct WorkflowConfig {
     #[prost(string, tag = "4")]
     pub cron_schedule: ::prost::alloc::string::String,
     /// Optional. Specifies the time zone to be used when interpreting
-    /// cron_schedule. Must be a time zone name from the time zone database
-    /// (<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>). If left
-    /// unspecified, the default is UTC.
+    /// cron_schedule. Must be a time zone name from the [time zone
+    /// database](<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>). If
+    /// left unspecified, the default is `UTC`.
     #[prost(string, tag = "7")]
     pub time_zone: ::prost::alloc::string::String,
     /// Output only. Records of the 10 most recent scheduled execution attempts,
@@ -2146,6 +2384,10 @@ pub struct WorkflowConfig {
     /// format of this field is a JSON string.
     #[prost(string, optional, tag = "11")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Trigger configuration for this workflow.
+    /// If present, the workflow will be triggered based on the specified triggers.
+    #[prost(message, optional, tag = "12")]
+    pub workflow_trigger_config: ::core::option::Option<WorkflowTriggerConfig>,
 }
 /// Nested message and enum types in `WorkflowConfig`.
 pub mod workflow_config {
@@ -2366,6 +2608,10 @@ pub struct WorkflowInvocation {
     /// from a compilation result and the compilation result is user-scoped.
     #[prost(message, optional, tag = "10")]
     pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
+    /// Output only. The pipeline options which defines the pipeline type and path
+    /// within the Git repository.
+    #[prost(message, optional, tag = "11")]
+    pub pipeline_config: ::core::option::Option<PipelineConfig>,
     /// The source of the compilation result to use for this invocation.
     #[prost(oneof = "workflow_invocation::CompilationSource", tags = "2, 6")]
     pub compilation_source: ::core::option::Option<
@@ -2581,6 +2827,9 @@ pub mod workflow_invocation_action {
         /// started to run.
         #[prost(string, tag = "2")]
         pub job_id: ::prost::alloc::string::String,
+        /// Output only. The path to the notebook file in the repository.
+        #[prost(string, tag = "3")]
+        pub file_path: ::prost::alloc::string::String,
     }
     /// Represents a workflow action that will run a Data Preparation.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
