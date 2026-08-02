@@ -752,6 +752,46 @@ pub struct ListPartitionsResponse {
     #[prost(message, repeated, tag = "1")]
     pub partitions: ::prost::alloc::vec::Vec<Partition>,
 }
+/// Request message for FailoverHiveCatalog.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FailoverHiveCatalogRequest {
+    /// Required. The name of the catalog in the form
+    /// "projects/{project_id}/catalogs/{catalog_id}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The region being assigned as the new primary replica region. For
+    /// example "us-east1". This must be one of the replica regions in the
+    /// catalog's list of replicas marked as a "secondary".
+    #[prost(string, tag = "2")]
+    pub primary_replica: ::prost::alloc::string::String,
+    /// Optional. If set, only validate the request, but do not perform the update.
+    /// This can be used to inspect the replication_time at any time, including
+    /// before performing a fail-over.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+    /// Optional. If unset, wait for all data from the source region to replicate
+    /// to the new primary region before completing the failover, with no data loss
+    /// (also called "soft failover"). If set, failover immediately, accepting the
+    /// loss of any data committed in the source region after this timestamp, that
+    /// has not yet replicated. If any data committed before this time has not
+    /// replicated, the failover will not be performed and an error will be
+    /// returned (also called "hard failover").
+    #[prost(message, optional, tag = "4")]
+    pub conditional_failover_replication_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
+}
+/// Response message for FailoverHiveCatalog.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FailoverHiveCatalogResponse {
+    /// Output only. The min timestamp for which all namespaces and table metadata
+    /// have been replicated in the region specified as the new primary_replica.
+    /// Some resources may have been replicated more recently than this timestamp.
+    /// If empty, the replica has just been created and has not yet been fully
+    /// initialized.
+    #[prost(message, optional, tag = "1")]
+    pub replication_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Generated client implementations.
 pub mod hive_metastore_service_client {
     #![allow(
@@ -1389,6 +1429,36 @@ pub mod hive_metastore_service_client {
                     ),
                 );
             self.inner.server_streaming(req, path, codec).await
+        }
+        /// Failover the catalog to a new primary replica region.
+        pub async fn failover_hive_catalog(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FailoverHiveCatalogRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FailoverHiveCatalogResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.biglake.hive.v1beta.HiveMetastoreService/FailoverHiveCatalog",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "FailoverHiveCatalog",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -116,6 +116,19 @@ pub struct Secret {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Immutable. This defines the type of the secret.
+    /// Enforces certain structural requirements on the
+    /// \[SecretVersions\]\[google.cloud.secretmanager.v1.SecretVersion\].
+    /// For secret of type UNSPECIFIED, the SecretVersions can be of any type.
+    #[prost(enumeration = "secret::SecretType", tag = "17")]
+    pub secret_type: i32,
+    /// Output only. Defines the policy member for the secret.
+    /// This will be used to check if the caller has the permission to perform
+    /// certain operations on the typed secret.
+    #[prost(message, optional, tag = "18")]
+    pub policy_member: ::core::option::Option<
+        super::super::super::iam::v1::ResourcePolicyMember,
+    >,
     /// Expiration policy attached to the
     /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\]. If specified the
     /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\] and all
@@ -132,6 +145,64 @@ pub struct Secret {
 }
 /// Nested message and enum types in `Secret`.
 pub mod secret {
+    /// This defines the various values of the type of secret can be.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SecretType {
+        /// Applicable to all secrets which do not have any restriction on the
+        /// SecretVersions.
+        Unspecified = 0,
+        /// Applicable to secrets which are used for the managed rotation feature
+        /// for Cloud SQL Single User.
+        CloudSqlDbCredentials = 1,
+        /// Applicable to secrets where the payload contains an access key.
+        AccessKey = 2,
+        /// Applicable to secrets where the payload contains a certificate.
+        Certificate = 3,
+        /// Applicable to secrets where the payload contains database credentials.
+        OtherDbCredentials = 4,
+        /// Applicable to secrets whose type doesn't belong to any of the above
+        /// defined types.
+        Other = 50,
+    }
+    impl SecretType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SECRET_TYPE_UNSPECIFIED",
+                Self::CloudSqlDbCredentials => "CLOUD_SQL_DB_CREDENTIALS",
+                Self::AccessKey => "ACCESS_KEY",
+                Self::Certificate => "CERTIFICATE",
+                Self::OtherDbCredentials => "OTHER_DB_CREDENTIALS",
+                Self::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SECRET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_SQL_DB_CREDENTIALS" => Some(Self::CloudSqlDbCredentials),
+                "ACCESS_KEY" => Some(Self::AccessKey),
+                "CERTIFICATE" => Some(Self::Certificate),
+                "OTHER_DB_CREDENTIALS" => Some(Self::OtherDbCredentials),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
+    }
     /// Expiration policy attached to the
     /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\]. If specified the
     /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\] and all
@@ -484,7 +555,7 @@ pub struct Topic {
 /// Manager will send a Pub/Sub notification to the topics configured on the
 /// Secret. \[Secret.topics\]\[google.cloud.secretmanager.v1.Secret.topics\] must be
 /// set to configure rotation.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rotation {
     /// Optional. Timestamp in UTC at which the
     /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\] is scheduled to rotate.
@@ -510,6 +581,76 @@ pub struct Rotation {
     /// rotation notifications.
     #[prost(message, optional, tag = "2")]
     pub rotation_period: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The current status of the managed rotation.
+    /// This field is only applicable to Typed Secrets.
+    /// This field is set by the service and cannot be set by the user.
+    #[prost(message, optional, tag = "3")]
+    pub managed_rotation_status: ::core::option::Option<rotation::ManagedRotationStatus>,
+}
+/// Nested message and enum types in `Rotation`.
+pub mod rotation {
+    /// Represents the status of a managed rotation.
+    ///
+    /// This is applicable only to Typed Secrets. It indicates whether the
+    /// rotation is active and any errors that may have occurred during the
+    /// asynchronous managed rotation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ManagedRotationStatus {
+        /// Output only. Indicates whether the Managed Rotation is active or not.
+        #[prost(enumeration = "managed_rotation_status::State", tag = "1")]
+        pub state: i32,
+        /// Output only. Displays customer-facing issues that occurred during an
+        /// asynchronous managed rotation. For example, if there are some permission
+        /// errors.
+        #[prost(message, optional, tag = "2")]
+        pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    /// Nested message and enum types in `ManagedRotationStatus`.
+    pub mod managed_rotation_status {
+        /// This defines the various states in which the managed rotation can be.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Not specified. This value is unused and invalid.
+            Unspecified = 0,
+            /// Indicates that the Managed rotation is ACTIVE.
+            Active = 1,
+            /// Indicates that the Managed rotation is INACTIVE.
+            Inactive = 2,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Active => "ACTIVE",
+                    Self::Inactive => "INACTIVE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ACTIVE" => Some(Self::Active),
+                    "INACTIVE" => Some(Self::Inactive),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// Request message for
 /// \[SecretManagerService.ListSecrets\]\[google.cloud.secretmanager.v1.SecretManagerService.ListSecrets\].
@@ -592,6 +733,60 @@ pub struct AddSecretVersionRequest {
     /// \[SecretVersion\]\[google.cloud.secretmanager.v1.SecretVersion\].
     #[prost(message, optional, tag = "2")]
     pub payload: ::core::option::Option<crate::proto_ext::secretmanager::SecretPayload>,
+}
+/// Request message for
+/// \[SecretManagerService.EnableManagedRotation\]\[google.cloud.secretmanager.v1.SecretManagerService.EnableManagedRotation\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnableManagedRotationRequest {
+    /// Required. The resource name of the
+    /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\] to associate with the
+    /// \[SecretVersion\]\[google.cloud.secretmanager.v1.SecretVersion\] in the format
+    /// `projects/*/secrets/*` or `projects/*/locations/*/secrets/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The credentials required for Managed Rotation.
+    /// Right now, only Cloud SQL Single User credentials are supported.
+    #[prost(oneof = "enable_managed_rotation_request::Credentials", tags = "2")]
+    pub credentials: ::core::option::Option<
+        enable_managed_rotation_request::Credentials,
+    >,
+}
+/// Nested message and enum types in `EnableManagedRotationRequest`.
+pub mod enable_managed_rotation_request {
+    /// These are the credentials required for Cloud SQL DB for Single user
+    /// Managed Rotation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CloudSqlSingleUserCredentials {
+        /// Required. Instance ID of the Cloud SQL instance.
+        #[prost(string, tag = "1")]
+        pub instance_id: ::prost::alloc::string::String,
+        /// Required. Username of the Cloud SQL instance.
+        #[prost(string, tag = "2")]
+        pub username: ::prost::alloc::string::String,
+        /// Optional. Password of the Cloud SQL instance. If this is not provided,
+        /// a random password will be generated.
+        #[prost(string, tag = "3")]
+        pub password: ::prost::alloc::string::String,
+    }
+    /// The credentials required for Managed Rotation.
+    /// Right now, only Cloud SQL Single User credentials are supported.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Credentials {
+        /// Credentials required for Cloud SQL DB for Single user Managed Rotation.
+        #[prost(message, tag = "2")]
+        CloudSqlSingleUserCredentials(CloudSqlSingleUserCredentials),
+    }
+}
+/// Request message for
+/// \[SecretManagerService.RotateSecret\]\[google.cloud.secretmanager.v1.SecretManagerService.RotateSecret\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RotateSecretRequest {
+    /// Required. The resource name of the
+    /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\] to associate with the
+    /// \[SecretVersion\]\[google.cloud.secretmanager.v1.SecretVersion\] in the format
+    /// `projects/*/secrets/*` or `projects/*/locations/*/secrets/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[SecretManagerService.GetSecret\]\[google.cloud.secretmanager.v1.SecretManagerService.GetSecret\].
@@ -1339,6 +1534,66 @@ pub mod secret_manager_service_client {
                     GrpcMethod::new(
                         "google.cloud.secretmanager.v1.SecretManagerService",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Enables the managed rotation feature for a
+        /// \[Secret\]\[google.cloud.secretmanager.v1.Secret\]. This method can only be
+        /// triggered once for a secret. In order to do further rotations, RotateSecret
+        /// should be used. This method will add a secret version and update the
+        /// password in Cloud SQL.
+        pub async fn enable_managed_rotation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableManagedRotationRequest>,
+        ) -> std::result::Result<tonic::Response<super::SecretVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.secretmanager.v1.SecretManagerService/EnableManagedRotation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.secretmanager.v1.SecretManagerService",
+                        "EnableManagedRotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Do a managed rotation for a \[Secret\]\[google.cloud.secretmanager.v1.Secret\].
+        /// This can only be triggered after Managed rotation has been enabled.
+        /// This method will add a secret version and update the password in Cloud SQL.
+        pub async fn rotate_secret(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RotateSecretRequest>,
+        ) -> std::result::Result<tonic::Response<super::SecretVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.secretmanager.v1.SecretManagerService/RotateSecret",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.secretmanager.v1.SecretManagerService",
+                        "RotateSecret",
                     ),
                 );
             self.inner.unary(req, path, codec).await

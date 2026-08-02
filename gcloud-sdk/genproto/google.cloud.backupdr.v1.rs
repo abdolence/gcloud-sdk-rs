@@ -3194,11 +3194,9 @@ pub struct BackupVault {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. Note: This field is added for future use case and will not be
-    /// supported in the current release.
-    ///
-    /// Access restriction for the backup vault.
-    /// Default value is WITHIN_ORGANIZATION if not provided during creation.
+    /// Optional. Restricts access to certain sources and destinations for data
+    /// being sent into, or restored from, the backup vault.
+    /// Defaults to WITHIN_ORGANIZATION if not provided during creation.
     #[prost(enumeration = "backup_vault::AccessRestriction", tag = "24")]
     pub access_restriction: i32,
     /// Optional. The encryption config of the backup vault.

@@ -276,6 +276,12 @@ pub struct Repository {
     /// Input only. Initial configurations for the repository.
     #[prost(message, optional, tag = "10")]
     pub initial_config: ::core::option::Option<repository::InitialConfig>,
+    /// Optional. Repository level service account (BYOSA).
+    #[prost(string, tag = "11")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Optional. Provides configuration for scanning.
+    #[prost(message, optional, tag = "13")]
+    pub scan_config: ::core::option::Option<repository::ScanConfig>,
 }
 /// Nested message and enum types in `Repository`.
 pub mod repository {
@@ -432,6 +438,26 @@ pub mod repository {
         /// Valid template name(s) are: default.
         #[prost(string, tag = "4")]
         pub readme: ::prost::alloc::string::String,
+    }
+    /// Configuration for scanning.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ScanConfig {
+        /// Optional. Configuration for secret scanning.
+        #[prost(message, optional, tag = "1")]
+        pub secret_scan_config: ::core::option::Option<scan_config::SecretScanConfig>,
+    }
+    /// Nested message and enum types in `ScanConfig`.
+    pub mod scan_config {
+        /// Configuration for secret scanning.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SecretScanConfig {
+            /// Optional. Enables secret scanning for the repository.
+            #[prost(bool, tag = "1")]
+            pub enabled: bool,
+            /// Optional. The DLP inspect template to use for secret scanning.
+            #[prost(string, tag = "2")]
+            pub inspect_template: ::prost::alloc::string::String,
+        }
     }
 }
 /// Metadata of a Secure Source Manager Hook.

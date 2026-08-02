@@ -6142,6 +6142,856 @@ pub mod featured_content_native_dashboard_service_client {
         }
     }
 }
+/// Represents a set of logic conditions used to refine various types of
+/// findings such as curated rule detections.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindingsRefinement {
+    /// Full resource name for the findings refinement.
+    /// Format:
+    /// projects/{project}/locations/{region}/instances/{instance}/findingsRefinements/{findings_refinement}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Display name of the findings refinement.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The type of findings refinement.
+    #[prost(enumeration = "FindingsRefinementType", tag = "3")]
+    pub r#type: i32,
+    /// Output only. The timestamp of when the findings refinement was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp of when the findings refinement was last
+    /// updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The query for the findings refinement. Works in conjunction with the type
+    /// field to determine the findings refinement behavior. The syntax of this
+    /// query is the same as a UDM search string. See the following for more
+    /// information:
+    /// <https://cloud.google.com/chronicle/docs/investigation/udm-search>
+    #[prost(string, tag = "7")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. The outcome filters for the findings refinement. These allow you
+    /// to specify filters that are applied to the outcome variables in the
+    /// detection. All filters must be true for a detection to match the findings
+    /// refinement.
+    #[prost(message, repeated, tag = "8")]
+    pub outcome_filters: ::prost::alloc::vec::Vec<OutcomeFilter>,
+}
+/// The FindingsRefinementDeployment resource represents the deployment state of
+/// a findings refinement.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FindingsRefinementDeployment {
+    /// Required. The resource name of the findings refinement deployment.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}/deployment
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Whether the findings refinement is currently deployed continuously against
+    /// incoming findings.
+    #[prost(bool, tag = "2")]
+    pub enabled: bool,
+    /// The archive state of the findings refinement deployment.
+    /// Cannot be set to true unless enabled is set to false.
+    /// If currently set to true, enabled cannot be updated to true.
+    #[prost(bool, tag = "3")]
+    pub archived: bool,
+    /// Output only. The timestamp when the findings refinement deployment was last
+    /// updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The resources which the findings refinement is applied to. Corresponds to
+    /// the type of the findings refinement.
+    #[prost(
+        oneof = "findings_refinement_deployment::FindingsRefinementApplication",
+        tags = "5"
+    )]
+    pub findings_refinement_application: ::core::option::Option<
+        findings_refinement_deployment::FindingsRefinementApplication,
+    >,
+}
+/// Nested message and enum types in `FindingsRefinementDeployment`.
+pub mod findings_refinement_deployment {
+    /// The resources which the findings refinement is applied to. Corresponds to
+    /// the type of the findings refinement.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum FindingsRefinementApplication {
+        /// The resources which the detection exclusion is applied to.
+        #[prost(message, tag = "5")]
+        DetectionExclusionApplication(super::DetectionExclusionApplication),
+    }
+}
+/// Describes the detectors a detection exclusion is applied to.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DetectionExclusionApplication {
+    /// The CuratedRuleSets this detection exclusion applies to.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/curatedRuleSetCategories/{category}/curatedRuleSets/{rule_set}
+    #[prost(string, repeated, tag = "1")]
+    pub curated_rule_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The CuratedRules this detection exclusion applies to.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/curatedRules/{rule}
+    #[prost(string, repeated, tag = "2")]
+    pub curated_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The Rules this detection exclusion applies to.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/rules/{rule}
+    #[prost(string, repeated, tag = "3")]
+    pub rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The deleted CuratedRuleSets this detection exclusion applies
+    /// to. Indicates to the customer that the detection exclusion no longer
+    /// applies to the rule sets, so the detection exclusion should be updated.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/curatedRuleSetCategories/{category}/curatedRuleSets/{rule_set}
+    #[prost(string, repeated, tag = "4")]
+    pub deleted_curated_rule_sets: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+}
+/// The activity for a specific findings refinement.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindingsRefinementActivity {
+    /// Required. Full resource name for the findings refinement this activity
+    /// corresponds to. Format:
+    /// projects/{project}/locations/{region}/instances/{instance}/findingsRefinements/{findings_refinement}
+    #[prost(string, tag = "1")]
+    pub findings_refinement: ::prost::alloc::string::String,
+    /// The activity for the findings refinement.
+    #[prost(oneof = "findings_refinement_activity::Activity", tags = "2")]
+    pub activity: ::core::option::Option<findings_refinement_activity::Activity>,
+}
+/// Nested message and enum types in `FindingsRefinementActivity`.
+pub mod findings_refinement_activity {
+    /// The activity for the findings refinement.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Activity {
+        /// The activity for the detection exclusion.
+        #[prost(message, tag = "2")]
+        DetectionExclusionActivity(super::DetectionExclusionActivity),
+    }
+}
+/// The activity for a findings refinement that is a detection exclusion. The
+/// activity is broken down per detector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DetectionExclusionActivity {
+    /// The activity for the detection exclusion broken down by detector.
+    #[prost(message, repeated, tag = "1")]
+    pub detection_exclusion_detector_activities: ::prost::alloc::vec::Vec<
+        detection_exclusion_activity::DetectionExclusionDetectorActivity,
+    >,
+}
+/// Nested message and enum types in `DetectionExclusionActivity`.
+pub mod detection_exclusion_activity {
+    /// The activity for a findings refinement that is a detection exclusion broken
+    /// down for one specific detector.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DetectionExclusionDetectorActivity {
+        /// The number of detections for the detector that were excluded by the
+        /// detection exclusion.
+        #[prost(int64, tag = "3")]
+        pub excluded_detection_count: i64,
+        /// The total number of detections found by the detector. This includes both
+        /// excluded detections and non-excluded detections.
+        #[prost(int64, tag = "4")]
+        pub total_detection_count: i64,
+        #[prost(
+            oneof = "detection_exclusion_detector_activity::DetectorName",
+            tags = "1, 2, 5, 6"
+        )]
+        pub detector_name: ::core::option::Option<
+            detection_exclusion_detector_activity::DetectorName,
+        >,
+    }
+    /// Nested message and enum types in `DetectionExclusionDetectorActivity`.
+    pub mod detection_exclusion_detector_activity {
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum DetectorName {
+            /// Full resource name for the curated rule this activity corresponds to.
+            /// Format:
+            /// projects/{project}/locations/{location}/instances/{instance}/curatedRules/{rule}
+            #[prost(string, tag = "1")]
+            CuratedRule(::prost::alloc::string::String),
+            /// Full resource name for the curated rule set this activity corresponds
+            /// to. This field will only be set if the customer has access to the
+            /// curated rule set the exclusion is applied to.
+            /// Format:
+            /// projects/{project}/locations/{location}/instances/{instance}/curatedRuleSetCategories/{curated_rule_set_category}/curatedRuleSets/{curated_rule_set}
+            #[prost(string, tag = "2")]
+            CuratedRuleSet(::prost::alloc::string::String),
+            /// Full resource name for the rule this activity corresponds to.
+            /// Format:
+            /// projects/{project}/locations/{location}/instances/{instance}/rules/{rule}
+            #[prost(string, tag = "5")]
+            Rule(::prost::alloc::string::String),
+            /// Full resource name for the deleted curated rule set this activity
+            /// corresponds to. This field will only be set if the customer does
+            /// not have access to the curated rule set the exclusion is applied to.
+            /// Format:
+            /// projects/{project}/locations/{location}/instances/{instance}/curatedRuleSetCategories/{curated_rule_set_category}/curatedRuleSets/{curated_rule_set}
+            #[prost(string, tag = "6")]
+            DeletedCuratedRuleSet(::prost::alloc::string::String),
+        }
+    }
+}
+/// Request message for GetFindingsRefinement method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFindingsRefinementRequest {
+    /// Required. The name of the findings refinement to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListFindingsRefinements method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListFindingsRefinementsRequest {
+    /// Required. The parent, which owns this collection of findings refinements.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of findings refinements to return. The service may
+    /// return fewer than this value. If unspecified, at most 100 rules will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListFindingsRefinements` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListFindingsRefinements method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFindingsRefinementsResponse {
+    /// List of findings refinements.
+    #[prost(message, repeated, tag = "1")]
+    pub findings_refinements: ::prost::alloc::vec::Vec<FindingsRefinement>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateFindingsRefinement method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFindingsRefinementRequest {
+    /// Required. The parent resource where this findings refinement will be
+    /// created. Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The findings refinement to create.
+    #[prost(message, optional, tag = "2")]
+    pub findings_refinement: ::core::option::Option<FindingsRefinement>,
+}
+/// Request message for UpdateFindingsRefinement method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFindingsRefinementRequest {
+    /// Required. The findings refinement to update.
+    ///
+    /// The findings refinement's `name` field is used to identify the findings
+    /// refinement to update.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}
+    #[prost(message, optional, tag = "1")]
+    pub findings_refinement: ::core::option::Option<FindingsRefinement>,
+    /// Optional. The list of fields to update. If `*` is provided, all fields will
+    /// be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for GetFindingsRefinementDeployment method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFindingsRefinementDeploymentRequest {
+    /// Required. The name of the findings refinement to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}/deployment
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateFindingsRefinementDeployment method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateFindingsRefinementDeploymentRequest {
+    /// Required. The findings refinement deployment to update.
+    ///
+    /// The findings refinement deployment's `name` field is used to identify the
+    /// findings refinement deployment to update.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}/deployment
+    #[prost(message, optional, tag = "1")]
+    pub findings_refinement_deployment: ::core::option::Option<
+        FindingsRefinementDeployment,
+    >,
+    /// Required. The list of fields to update. If `*` is provided, all fields will
+    /// be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for ListAllFindingsRefinementDeployments method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListAllFindingsRefinementDeploymentsRequest {
+    /// Required. The name of the parent resource, which is the SecOps instance to
+    /// list all findings refinement deployments over. Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// The maximum number of findings refinement deployments to return. The
+    /// service may return fewer than this value. If unspecified, at most 100 rule
+    /// deployments will be returned. The maximum value is 1000; values above 1000
+    /// will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// `ListAllFindingsRefinementDeployments` call. Provide this to retrieve the
+    /// subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListAllFindingsRefinementDeployments` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter that can be used to retrieve specific findings refinement
+    /// deployments.
+    /// Only the following filters are allowed:
+    /// detection_exclusion_application.curated_rule_sets:"\<curated_rule_set_name>"",
+    /// detection_exclusion_application.curated_rules:"\<curated_rule_name>"
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for ListAllFindingsRefinementDeployments method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAllFindingsRefinementDeploymentsResponse {
+    /// List of all findings refinement deployments.
+    #[prost(message, repeated, tag = "1")]
+    pub all_findings_refinement_deployments: ::prost::alloc::vec::Vec<
+        FindingsRefinementDeployment,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Outcome filter for the findings refinement. This is used to filter the
+/// findings refinement based on the outcome variable values.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OutcomeFilter {
+    /// Required. The outcome variable name.
+    #[prost(string, tag = "1")]
+    pub outcome_variable: ::prost::alloc::string::String,
+    /// Required. The value of the outcome variable to match.
+    #[prost(string, tag = "2")]
+    pub outcome_value: ::prost::alloc::string::String,
+    /// Required. The operator to be applied to the outcome variable.
+    #[prost(enumeration = "outcome_filter::Operator", tag = "3")]
+    pub outcome_filter_operator: i32,
+}
+/// Nested message and enum types in `OutcomeFilter`.
+pub mod outcome_filter {
+    /// The operator to compare the outcome variable value with the outcome value
+    /// in the outcome filter.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operator {
+        /// The operator is unspecified.
+        Unspecified = 0,
+        /// The outcome variable value must be equal to the outcome value in the
+        /// outcome filter.
+        Equal = 1,
+        /// The outcome variable value must contain the outcome value in the
+        /// outcome filter.
+        Contains = 2,
+        /// The outcome variable value must match the outcome value regex in the
+        /// outcome filter.
+        MatchesRegex = 3,
+        /// The outcome variable value must be a valid IP address in the outcome
+        /// filter value CIDR range.
+        MatchesCidr = 4,
+    }
+    impl Operator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                Self::Equal => "EQUAL",
+                Self::Contains => "CONTAINS",
+                Self::MatchesRegex => "MATCHES_REGEX",
+                Self::MatchesCidr => "MATCHES_CIDR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "EQUAL" => Some(Self::Equal),
+                "CONTAINS" => Some(Self::Contains),
+                "MATCHES_REGEX" => Some(Self::MatchesRegex),
+                "MATCHES_CIDR" => Some(Self::MatchesCidr),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for ComputeFindingsRefinementActivity method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ComputeFindingsRefinementActivityRequest {
+    /// Required. Full resource name for the findings refinement to fetch the
+    /// activity for. Format:
+    /// projects/{project}/locations/{region}/instances/{instance}/findingsRefinements/{findings_refinement}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The time interval the activity is measured over.
+    #[prost(message, optional, tag = "2")]
+    pub interval: ::core::option::Option<super::super::super::r#type::Interval>,
+}
+/// Response message for ComputeFindingsRefinementActivity method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeFindingsRefinementActivityResponse {
+    /// The activity for the findings refinement.
+    #[prost(message, optional, tag = "1")]
+    pub activity: ::core::option::Option<FindingsRefinementActivity>,
+}
+/// Request message for ComputeAllFindingsRefinementActivities method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ComputeAllFindingsRefinementActivitiesRequest {
+    /// Required. The ID of the Instance to retrieve counts for.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// The time interval the activity is measured over.
+    #[prost(message, optional, tag = "2")]
+    pub interval: ::core::option::Option<super::super::super::r#type::Interval>,
+}
+/// Response message for ComputeAllFindingsRefinementActivities method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeAllFindingsRefinementActivitiesResponse {
+    /// The activities of all findings refinements.
+    #[prost(message, repeated, tag = "1")]
+    pub activities: ::prost::alloc::vec::Vec<FindingsRefinementActivity>,
+}
+/// The type of findings refinement, which determines what the findings
+/// refinement runs over and the mechanism by which it runs.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FindingsRefinementType {
+    /// The findings refinement type is unspecified.
+    Unspecified = 0,
+    /// Indicates that the findings refinement is a detection exclusion and
+    /// should exclude matching detections.
+    DetectionExclusion = 1,
+}
+impl FindingsRefinementType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FINDINGS_REFINEMENT_TYPE_UNSPECIFIED",
+            Self::DetectionExclusion => "DETECTION_EXCLUSION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FINDINGS_REFINEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DETECTION_EXCLUSION" => Some(Self::DetectionExclusion),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod findings_refinement_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// FindingsRefinementService provides an interface for filtering out
+    /// findings that are unlikely to be real threats to prevent them
+    /// from triggering alerts or notifications.
+    #[derive(Debug, Clone)]
+    pub struct FindingsRefinementServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FindingsRefinementServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FindingsRefinementServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FindingsRefinementServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            FindingsRefinementServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Gets a single findings refinement.
+        pub async fn get_findings_refinement(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFindingsRefinementRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FindingsRefinement>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/GetFindingsRefinement",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "GetFindingsRefinement",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists a collection of findings refinements.
+        pub async fn list_findings_refinements(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFindingsRefinementsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFindingsRefinementsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/ListFindingsRefinements",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "ListFindingsRefinements",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new findings refinement.
+        pub async fn create_findings_refinement(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFindingsRefinementRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FindingsRefinement>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/CreateFindingsRefinement",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "CreateFindingsRefinement",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a findings refinement.
+        pub async fn update_findings_refinement(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFindingsRefinementRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FindingsRefinement>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/UpdateFindingsRefinement",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "UpdateFindingsRefinement",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a findings refinement deployment.
+        pub async fn get_findings_refinement_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetFindingsRefinementDeploymentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::FindingsRefinementDeployment>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/GetFindingsRefinementDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "GetFindingsRefinementDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a findings refinement deployment.
+        pub async fn update_findings_refinement_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateFindingsRefinementDeploymentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::FindingsRefinementDeployment>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/UpdateFindingsRefinementDeployment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "UpdateFindingsRefinementDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all findings refinement deployments.
+        pub async fn list_all_findings_refinement_deployments(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListAllFindingsRefinementDeploymentsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAllFindingsRefinementDeploymentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/ListAllFindingsRefinementDeployments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "ListAllFindingsRefinementDeployments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns findings refinement activity for a specific findings refinement.
+        pub async fn compute_findings_refinement_activity(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ComputeFindingsRefinementActivityRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeFindingsRefinementActivityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/ComputeFindingsRefinementActivity",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "ComputeFindingsRefinementActivity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns findings refinement activity for all findings refinements.
+        pub async fn compute_all_findings_refinement_activities(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ComputeAllFindingsRefinementActivitiesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeAllFindingsRefinementActivitiesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FindingsRefinementService/ComputeAllFindingsRefinementActivities",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FindingsRefinementService",
+                        "ComputeAllFindingsRefinementActivities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A Instance represents an instantiation of the Instance product.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Instance {

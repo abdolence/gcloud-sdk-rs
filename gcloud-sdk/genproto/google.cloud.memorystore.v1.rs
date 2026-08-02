@@ -85,7 +85,7 @@ pub struct Instance {
     /// Optional. Endpoints for the instance.
     #[prost(message, repeated, tag = "25")]
     pub endpoints: ::prost::alloc::vec::Vec<instance::InstanceEndpoint>,
-    /// Optional. The mode config for the instance.
+    /// Optional. Immutable. The mode config for the instance.
     #[prost(enumeration = "instance::Mode", tag = "26")]
     pub mode: i32,
     /// Optional. Input only. Simulate a maintenance event.
@@ -165,6 +165,9 @@ pub struct Instance {
     /// Optional. Input only. Rotate the server certificates.
     #[prost(bool, optional, tag = "58")]
     pub rotate_server_certificate: ::core::option::Option<bool>,
+    /// Output only. Migration config for the instance.
+    #[prost(message, optional, tag = "59")]
+    pub migration_config: ::core::option::Option<MigrationConfig>,
     /// The source to import from.
     #[prost(oneof = "instance::ImportSources", tags = "23, 24")]
     pub import_sources: ::core::option::Option<instance::ImportSources>,
@@ -283,6 +286,8 @@ pub mod instance {
         Updating = 3,
         /// Instance is being deleted.
         Deleting = 4,
+        /// Instance is being migrated.
+        Migrating = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -296,6 +301,7 @@ pub mod instance {
                 Self::Active => "ACTIVE",
                 Self::Updating => "UPDATING",
                 Self::Deleting => "DELETING",
+                Self::Migrating => "MIGRATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -306,6 +312,7 @@ pub mod instance {
                 "ACTIVE" => Some(Self::Active),
                 "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
+                "MIGRATING" => Some(Self::Migrating),
                 _ => None,
             }
         }
@@ -330,6 +337,8 @@ pub mod instance {
         AuthDisabled = 1,
         /// IAM basic authorization.
         IamAuth = 2,
+        /// Token based authorization.
+        TokenAuth = 3,
     }
     impl AuthorizationMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -341,6 +350,7 @@ pub mod instance {
                 Self::Unspecified => "AUTHORIZATION_MODE_UNSPECIFIED",
                 Self::AuthDisabled => "AUTH_DISABLED",
                 Self::IamAuth => "IAM_AUTH",
+                Self::TokenAuth => "TOKEN_AUTH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -349,6 +359,7 @@ pub mod instance {
                 "AUTHORIZATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "AUTH_DISABLED" => Some(Self::AuthDisabled),
                 "IAM_AUTH" => Some(Self::IamAuth),
+                "TOKEN_AUTH" => Some(Self::TokenAuth),
                 _ => None,
             }
         }
@@ -430,7 +441,7 @@ pub mod instance {
         HighcpuMedium = 7,
         /// Standard large.
         StandardLarge = 8,
-        /// High memory 2x large.
+        /// High memory 2xlarge.
         Highmem2xlarge = 9,
         /// Custom pico.
         CustomPico = 10,
@@ -584,6 +595,153 @@ pub mod instance {
         /// service.
         #[prost(message, tag = "24")]
         ManagedBackupSource(ManagedBackupSource),
+    }
+}
+/// Request for `StartMigration`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StartMigrationRequest {
+    /// Required. The resource name of the instance to start migration on.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Defines the source of the migration.
+    #[prost(oneof = "start_migration_request::Source", tags = "2")]
+    pub source: ::core::option::Option<start_migration_request::Source>,
+}
+/// Nested message and enum types in `StartMigrationRequest`.
+pub mod start_migration_request {
+    /// Defines the source of the migration.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Required. Configuration for migrating from a self-managed Valkey/Redis
+        /// instance
+        #[prost(message, tag = "2")]
+        SelfManagedSource(super::SelfManagedSource),
+    }
+}
+/// Request for `FinishMigration`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FinishMigrationRequest {
+    /// Required. The resource name of the instance to finalize migration on.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. By default, the `FinishMigration` operation ensures the target
+    /// replication offset to catch up to the source offset as of the time of the
+    /// call. Set this field to `true` to bypass this offset verification check.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Details of the self-managed source instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelfManagedSource {
+    /// Required. The IP address of the source instance.
+    /// This IP address should be a stable IP address that can be accessed by the
+    /// Memorystore instance throughout the migration process.
+    #[prost(string, tag = "1")]
+    pub ip_address: ::prost::alloc::string::String,
+    /// Required. The port of the source instance.
+    /// This port should be a stable port that can be accessed by the Memorystore
+    /// instance throughout the migration process.
+    #[prost(int32, tag = "2")]
+    pub port: i32,
+    /// Required. The resource name of the Private Service Connect Network
+    /// Attachment used to establish connectivity to the source instance. This
+    /// network attachment has the following requirements:
+    ///
+    /// 1. It must be in the same project as the Memorystore instance.
+    /// 1. It must be in the same region as the Memorystore instance.
+    /// 1. The subnet attached to the network attachment must be in the same VPC
+    ///    network as the source instance nodes.
+    ///
+    /// Format:
+    /// projects/{project}/regions/{region}/networkAttachments/{network_attachment}
+    #[prost(string, tag = "3")]
+    pub network_attachment: ::prost::alloc::string::String,
+}
+/// Configuration for the migration of an instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MigrationConfig {
+    /// Output only. Migration state of the instance.
+    #[prost(enumeration = "migration_config::State", tag = "1")]
+    pub state: i32,
+    /// Output only. Represents a boolean flag to force migration finalization
+    /// without offset catch up validation between source and target before
+    /// stopping replication.
+    #[prost(bool, tag = "4")]
+    pub force_finish_migration: bool,
+    /// Details about the migration source.
+    #[prost(oneof = "migration_config::Source", tags = "2")]
+    pub source: ::core::option::Option<migration_config::Source>,
+}
+/// Nested message and enum types in `MigrationConfig`.
+pub mod migration_config {
+    /// Migration state of the instance.
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Instance has no migration related activity. This is the initial state.
+        Unspecified = 0,
+        /// Instance is not currently migrating. The instance underwent a migration
+        /// attempt that failed, and the subsequent rollback was successful. The
+        /// instance is now ready for a new migration attempt if desired.
+        RolledBack = 1,
+        /// Indicates a previous migration attempt failed. The high-level instance
+        /// state will be `MIGRATING`. The instance is not ready for a new migration
+        /// attempt. Rollback is in progress to restore the instance to its original
+        /// state. The instance will remain in this state until rollback is
+        /// successful.
+        RollingBack = 5,
+        /// Instance is in the process of migration. Instance has established
+        /// successful replication and is ready for cutover.
+        ReplicationEstablished = 6,
+        /// Instance is successfully migrated.
+        Migrated = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::RolledBack => "ROLLED_BACK",
+                Self::RollingBack => "ROLLING_BACK",
+                Self::ReplicationEstablished => "REPLICATION_ESTABLISHED",
+                Self::Migrated => "MIGRATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ROLLED_BACK" => Some(Self::RolledBack),
+                "ROLLING_BACK" => Some(Self::RollingBack),
+                "REPLICATION_ESTABLISHED" => Some(Self::ReplicationEstablished),
+                "MIGRATED" => Some(Self::Migrated),
+                _ => None,
+            }
+        }
+    }
+    /// Details about the migration source.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Source {
+        /// Output only. Configuration for migrating from a self-managed Valkey/Redis
+        /// instance
+        #[prost(message, tag = "2")]
+        SelfManagedSource(super::SelfManagedSource),
     }
 }
 /// The automated backup config for an instance.
@@ -984,6 +1142,138 @@ pub mod cross_instance_replication_config {
         }
     }
 }
+/// Token based auth user for the instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TokenAuthUser {
+    /// Identifier. Token based auth user name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The state of the token based auth user.
+    #[prost(enumeration = "token_auth_user::State", tag = "2")]
+    pub state: i32,
+}
+/// Nested message and enum types in `TokenAuthUser`.
+pub mod token_auth_user {
+    /// Represents the different states of a token based auth user.
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Not set.
+        Unspecified = 0,
+        /// The auth user is active.
+        Active = 1,
+        /// The auth user is being created.
+        Creating = 2,
+        /// The auth user is being updated.
+        Updating = 3,
+        /// The auth user is being deleted.
+        Deleting = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+}
+/// Auth token for the instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AuthToken {
+    /// Identifier. Name of the auth token.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The auth token.
+    #[prost(string, tag = "2")]
+    pub token: ::prost::alloc::string::String,
+    /// Output only. Create time of the auth token.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The state of the auth token.
+    #[prost(enumeration = "auth_token::State", tag = "4")]
+    pub state: i32,
+}
+/// Nested message and enum types in `AuthToken`.
+pub mod auth_token {
+    /// Represents the different states of an auth token.
+    /// New values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Not set.
+        Unspecified = 0,
+        /// The auth token is active.
+        Active = 1,
+        /// The auth token is being created.
+        Creating = 2,
+        /// The auth token is being deleted.
+        Deleting = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+}
 /// Maintenance policy per instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
@@ -1054,7 +1344,7 @@ pub struct PscAutoConnection {
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The network where the PSC endpoints are created, in the form of
-    /// projects/{project_id}/global/networks/{network_id}.
+    /// projects/{project_id}/global/networks/{network_name}.
     #[prost(string, tag = "5")]
     pub network: ::prost::alloc::string::String,
     /// Output only. The service attachment which is the target of the PSC
@@ -1106,7 +1396,7 @@ pub struct PscConnection {
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The consumer network where the IP address resides, in the form of
-    /// projects/{project_id}/global/networks/{network_id}.
+    /// projects/{project_id}/global/networks/{network_name}.
     #[prost(string, tag = "5")]
     pub network: ::prost::alloc::string::String,
     /// Required. The service attachment which is the target of the PSC connection,
@@ -1148,7 +1438,7 @@ pub struct DiscoveryEndpoint {
     pub port: i32,
     /// Output only. The network where the IP address of the discovery endpoint
     /// will be reserved, in the form of
-    /// projects/{network_project}/global/networks/{network_id}.
+    /// projects/{network_project}/global/networks/{network_name}.
     #[prost(string, tag = "4")]
     pub network: ::prost::alloc::string::String,
 }
@@ -1490,7 +1780,7 @@ pub struct ListInstancesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[ListInstances\]\[\].
+/// Response message for `ListInstances`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// If the {location} requested was "-" the response contains a list of
@@ -1601,7 +1891,7 @@ pub struct DeleteInstanceRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for \[ListBackupCollections\]
+/// Request for `ListBackupCollections`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupCollectionsRequest {
     /// Required. The resource name of the backupCollection location using the
@@ -1615,16 +1905,16 @@ pub struct ListBackupCollectionsRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// \[`next_page_token`\]\[google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token\]
+    /// `next_page_token`
     /// to determine if there are more clusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The `next_page_token` value returned from a previous
-    /// \[ListBackupCollections\] request, if any.
+    /// `ListBackupCollections` request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for \[ListBackupCollections\].
+/// Response for `ListBackupCollections`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupCollectionsResponse {
     /// A list of backupCollections in the project.
@@ -1647,7 +1937,7 @@ pub struct ListBackupCollectionsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for \[GetBackupCollection\].
+/// Request for `GetBackupCollection`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupCollectionRequest {
     /// Required. Instance backupCollection resource name using the form:
@@ -1656,7 +1946,7 @@ pub struct GetBackupCollectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[ListBackups\].
+/// Request for `ListBackups`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The resource name of the backupCollection using the form:
@@ -1668,16 +1958,16 @@ pub struct ListBackupsRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// \[`next_page_token`\]\[google.cloud.memorystore.v1.ListBackupsResponse.next_page_token\]
+    /// `next_page_token`
     /// to determine if there are more clusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The `next_page_token` value returned from a previous
-    /// \[ListBackupCollections\] request, if any.
+    /// `ListBackupCollections` request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for \[ListBackups\].
+/// Response for `ListBackups`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// A list of backups in the project.
@@ -1691,7 +1981,7 @@ pub struct ListBackupsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for \[GetBackup\].
+/// Request for `GetBackup`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Instance backup resource name using the form:
@@ -1699,7 +1989,7 @@ pub struct GetBackupRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[DeleteBackup\].
+/// Request for `DeleteBackup`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Instance backup resource name using the form:
@@ -1710,7 +2000,7 @@ pub struct DeleteBackupRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for \[ExportBackup\].
+/// Request for `ExportBackup`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportBackupRequest {
     /// Required. Instance backup resource name using the form:
@@ -1731,7 +2021,7 @@ pub mod export_backup_request {
         GcsBucket(::prost::alloc::string::String),
     }
 }
-/// Request for \[BackupInstance\].
+/// Request for `BackupInstance`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupInstanceRequest {
     /// Required. Instance resource name using the form:
@@ -1748,12 +2038,173 @@ pub struct BackupInstanceRequest {
     #[prost(string, optional, tag = "3")]
     pub backup_id: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// Request message for \[GetCertificateAuthority\]\[\].
+/// Request message for `GetCertificateAuthority`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCertificateAuthorityRequest {
     /// Required. The name of the certificate authority.
     /// Format:
     /// projects/{project}/locations/{location}/instances/{instance}/certificateAuthority
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for `ListTokenAuthUsers`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListTokenAuthUsersRequest {
+    /// Required. The parent to list token auth users from.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return. The maximum value is 1000;
+    /// values above 1000 will be coerced to 1000. If not specified, a default
+    /// value of 1000 will be used by the service. Regardless of the page_size
+    /// value, the response may include a partial list and a caller should only
+    /// rely on response's `next_page_token` to determine if there are more token
+    /// auth users left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// `ListTokenAuthUsers` request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Expression for filtering results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort results by a defined order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for `ListTokenAuthUsers`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTokenAuthUsersResponse {
+    /// A list of token auth users in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub token_auth_users: ::prost::alloc::vec::Vec<TokenAuthUser>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Token auth users that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for `GetTokenAuthUser`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetTokenAuthUserRequest {
+    /// Required. The name of token auth user for a basic auth enabled instance.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for `ListAuthTokens`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListAuthTokensRequest {
+    /// Required. The parent to list auth tokens from.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return. The maximum value is 1000;
+    /// values above 1000 will be coerced to 1000.
+    ///
+    /// If not specified, a default value of 1000 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// `next_page_token`
+    /// to determine if there are more auth tokens left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// `ListAuthTokens` request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Expression for filtering results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort results by a defined order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for `ListAuthTokens`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuthTokensResponse {
+    /// A list of auth tokens in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub auth_tokens: ::prost::alloc::vec::Vec<AuthToken>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Auth tokens that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for `GetAuthToken`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAuthTokenRequest {
+    /// Required. The name of token auth user for a token auth enabled instance.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{auth_token}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for `AddTokenAuthUser`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AddTokenAuthUserRequest {
+    /// Required. The instance resource that this token auth user will be added
+    /// for. Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. The name of the token auth user to add.
+    #[prost(string, tag = "2")]
+    pub token_auth_user: ::prost::alloc::string::String,
+}
+/// Request message for `DeleteTokenAuthUser`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteTokenAuthUserRequest {
+    /// Required. The name of the token auth user to delete.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, any auth tokens from this user will also be
+    /// deleted. Otherwise, the request will only work if the user has no auth
+    /// tokens.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
+}
+/// Request message for `AddAuthToken`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AddAuthTokenRequest {
+    /// Required. The name of the token auth user resource that this token will be
+    /// added for.
+    #[prost(string, tag = "1")]
+    pub token_auth_user: ::prost::alloc::string::String,
+    /// Required. The auth token to add.
+    #[prost(message, optional, tag = "2")]
+    pub auth_token: ::core::option::Option<AuthToken>,
+}
+/// Request message for `DeleteAuthToken`.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteAuthTokenRequest {
+    /// Required. The name of the token auth user resource that this token will be
+    /// deleted from. Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{name}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1840,8 +2291,7 @@ pub mod shared_regional_certificate_authority {
         ManagedServerCa(RegionalManagedCertificateAuthority),
     }
 }
-/// Request for
-/// \[GetSharedRegionalCertificateAuthority\]\[google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority\].
+/// Request for `GetSharedRegionalCertificateAuthority`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSharedRegionalCertificateAuthorityRequest {
     /// Required. Regional certificate authority resource name using the form:
@@ -2633,6 +3083,314 @@ pub mod memorystore_client {
                     GrpcMethod::new(
                         "google.cloud.memorystore.v1.Memorystore",
                         "BackupInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates the migration of a source instance to the target Memorystore
+        /// instance.
+        ///
+        /// After the successful completion of this operation, the target instance
+        /// will:
+        ///
+        /// 1. Set up replication with the source instance and replicate any writes to
+        ///   the source instance.
+        /// 1. Only allow reads.
+        pub async fn start_migration(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartMigrationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/StartMigration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "StartMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Finalizes the migration process.
+        ///
+        /// After the successful completion of this operation, the target instance
+        /// will:
+        ///
+        /// 1. Stop replicating from the source instance.
+        /// 1. Allow both reads and writes.
+        pub async fn finish_migration(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FinishMigrationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/FinishMigration",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "FinishMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the token auth users for a token based auth enabled instance.
+        pub async fn list_token_auth_users(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTokenAuthUsersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTokenAuthUsersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/ListTokenAuthUsers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "ListTokenAuthUsers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a specific token auth user for a token based auth enabled instance.
+        pub async fn get_token_auth_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTokenAuthUserRequest>,
+        ) -> std::result::Result<tonic::Response<super::TokenAuthUser>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/GetTokenAuthUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "GetTokenAuthUser",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the auth tokens for a specific token auth user.
+        pub async fn list_auth_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAuthTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAuthTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/ListAuthTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "ListAuthTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a token based auth enabled instance's auth token for a given user.
+        pub async fn get_auth_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAuthTokenRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuthToken>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/GetAuthToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "GetAuthToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds a token auth user for a token based auth enabled instance.
+        pub async fn add_token_auth_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddTokenAuthUserRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/AddTokenAuthUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "AddTokenAuthUser",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a token auth user for a token based auth enabled instance.
+        pub async fn delete_token_auth_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTokenAuthUserRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/DeleteTokenAuthUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "DeleteTokenAuthUser",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds a token for a user of a token based auth enabled instance.
+        pub async fn add_auth_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddAuthTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/AddAuthToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "AddAuthToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a token for a user of a token based auth enabled instance.
+        pub async fn delete_auth_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAuthTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/DeleteAuthToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "DeleteAuthToken",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -33,6 +33,9 @@ pub struct Document {
     /// document.
     #[prost(enumeration = "DocumentView", tag = "8")]
     pub view: i32,
+    /// Output only. The length of the `content` field in bytes.
+    #[prost(int32, tag = "9")]
+    pub content_length_bytes: i32,
 }
 /// Request message for
 /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.SearchDocumentChunks\].
@@ -47,8 +50,7 @@ pub struct SearchDocumentChunksRequest {
     ///
     /// If unspecified, at most 5 results will be returned.
     ///
-    /// The maximum value is 20; values above 20 will result in an INVALID_ARGUMENT
-    /// error.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Contains a page token, received from a previous
@@ -81,16 +83,20 @@ pub struct SearchDocumentChunksRequest {
     /// TIMESTAMP fields support `=`, `<`, `<=`, `>`, and `>=` operators.
     /// Timestamps must be in RFC-3339 format, e.g., `"2025-01-01T00:00:00Z"`.
     ///
+    /// Note: Field names must be in `snake_case` (e.g., `data_source`). Values on
+    /// the right-hand side of filtering expressions must be string literals
+    /// enclosed in double quotes (e.g., `"docs.cloud.google.com"`).
+    ///
     /// You can combine expressions using `AND`, `OR`, and `NOT` (or `-`) logical
     /// operators. `OR` has higher precedence than `AND`. Use parentheses for
     /// explicit precedence grouping.
     ///
     /// Examples:
     ///
-    /// * `data_source = "docs.cloud.google.com" OR data_source =  "firebase.google.com"`
+    /// * `data_source = "docs.cloud.google.com" OR data_source = "firebase.google.com"`
     /// * `data_source != "firebase.google.com"`
     /// * `update_time < "2024-01-01T00:00:00Z"`
-    /// * `update_time >= "2025-01-22T00:00:00Z" AND (data_source =  "developer.chrome.com" OR data_source = "web.dev")`
+    /// * `update_time >= "2025-01-22T00:00:00Z" AND (data_source = "developer.chrome.com" OR data_source = "web.dev")`
     /// * `uri = "<https://docs.cloud.google.com/release-notes"`>
     ///
     /// The `filter` string must not exceed 500 characters; values longer than 500
@@ -173,18 +179,80 @@ pub struct AnswerQueryRequest {
 }
 /// Response message for
 /// \[DeveloperKnowledge.AnswerQuery\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.AnswerQuery\].
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnswerQueryResponse {
     /// The answer to the query.
     #[prost(message, optional, tag = "1")]
     pub answer: ::core::option::Option<Answer>,
 }
 /// An answer to a query.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Answer {
-    /// The text of the answer.
+    /// Contains the text of the answer.
     #[prost(string, tag = "1")]
     pub answer_text: ::prost::alloc::string::String,
+    /// Output only. Contains citations for the answer.
+    #[prost(message, repeated, tag = "2")]
+    pub citations: ::prost::alloc::vec::Vec<answer::AnswerCitation>,
+    /// Output only. Contains references for the answer.
+    #[prost(message, repeated, tag = "3")]
+    pub references: ::prost::alloc::vec::Vec<answer::AnswerReference>,
+}
+/// Nested message and enum types in `Answer`.
+pub mod answer {
+    /// Citation info for a segment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerCitation {
+        /// Output only. Indicates the start of the segment, measured in bytes (UTF-8
+        /// unicode), inclusive. If there are multi-byte characters, such as
+        /// non-ASCII characters, the index measurement is longer than the string
+        /// length.
+        #[prost(int32, tag = "1")]
+        pub start_index: i32,
+        /// Output only. Indicates the end of the segment, measured in bytes (UTF-8
+        /// unicode), exclusive. If there are multi-byte characters, such as
+        /// non-ASCII characters, the index measurement is longer than the string
+        /// length.
+        #[prost(int32, tag = "2")]
+        pub end_index: i32,
+        /// Output only. Contains citation sources for the attributed segment.
+        #[prost(message, repeated, tag = "3")]
+        pub sources: ::prost::alloc::vec::Vec<CitationSource>,
+    }
+    /// Citation source.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CitationSource {
+        /// Output only. Contains the index of the
+        /// \[Answer.AnswerReference\]\[google.developers.knowledge.v1alpha.Answer.AnswerReference\]
+        /// in the `references` repeated field.
+        #[prost(int32, tag = "1")]
+        pub reference_index: i32,
+    }
+    /// Represents a reference to a source.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AnswerReference {
+        /// Contains the content of the reference.
+        #[prost(oneof = "answer_reference::Content", tags = "1")]
+        pub content: ::core::option::Option<answer_reference::Content>,
+    }
+    /// Nested message and enum types in `AnswerReference`.
+    pub mod answer_reference {
+        /// Contains the content of the reference.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Content {
+            /// Output only. The reference document.
+            #[prost(message, tag = "1")]
+            DocumentReference(super::DocumentReference),
+        }
+    }
+    /// Represents a reference to a document.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DocumentReference {
+        /// Output only. Contains the document chunk. The `document_chunk.id` field
+        /// is not set and will be empty.
+        #[prost(message, optional, tag = "1")]
+        pub document_chunk: ::core::option::Option<super::DocumentChunk>,
+    }
 }
 /// A DocumentChunk represents a piece of content from a
 /// \[Document\]\[google.developers.knowledge.v1alpha.Document\] in the
@@ -243,6 +311,7 @@ pub enum DocumentView {
     /// * `description`
     /// * `update_time`
     /// * `view`
+    /// * `content_length_bytes`
     ///
     /// This is the default of view for
     /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1alpha.DeveloperKnowledge.SearchDocumentChunks\].

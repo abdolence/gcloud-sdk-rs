@@ -5615,6 +5615,10 @@ pub struct DatabaseInstance {
     /// Output only. The list of DNS names used by this instance.
     #[prost(message, repeated, tag = "67")]
     pub dns_names: ::prost::alloc::vec::Vec<DnsNameMapping>,
+    /// Optional. If true, instance metadata is sent to the Database Center. If
+    /// false, instance metadata is not sent to the Database Center.
+    #[prost(message, optional, tag = "72")]
+    pub database_center_integration_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
@@ -6542,6 +6546,10 @@ pub struct OnPremisesConfiguration {
     /// Optional. SSL option for replica connection to the on-premises source.
     #[prost(enumeration = "on_premises_configuration::SslOption", tag = "18")]
     pub ssl_option: i32,
+    /// Output only. Indicates whether the resource is managed by Database
+    /// Migration Service.
+    #[prost(bool, tag = "20")]
+    pub dms_managed: bool,
 }
 /// Nested message and enum types in `OnPremisesConfiguration`.
 pub mod on_premises_configuration {
@@ -6663,7 +6671,7 @@ pub struct ExecuteSqlPayload {
     #[prost(string, tag = "16")]
     pub application: ::prost::alloc::string::String,
     /// Credentials for the database connection.
-    #[prost(oneof = "execute_sql_payload::UserPassword", tags = "11")]
+    #[prost(oneof = "execute_sql_payload::UserPassword", tags = "5, 11")]
     pub user_password: ::core::option::Option<execute_sql_payload::UserPassword>,
 }
 /// Nested message and enum types in `ExecuteSqlPayload`.
@@ -6716,8 +6724,18 @@ pub mod execute_sql_payload {
         }
     }
     /// Credentials for the database connection.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum UserPassword {
+        /// Optional. The resource name of the Secret Manager secret holding the
+        /// password for the user to log into the database. The secret should be
+        /// created using the regional endpoint (for API) or from the Regional
+        /// Secrets page (for UI), and stored in the same region as the Cloud SQL
+        /// instance. The expected resource name format is
+        /// `projects/{project}/locations/{location}/secrets/{secret}/versions/{secret_version}`.
+        /// Used together with the `user` field.
+        /// The secret resource name will not be stored.
+        #[prost(string, tag = "5")]
+        PasswordSecretVersion(::prost::alloc::string::String),
         /// Optional. When set to `true`, the API caller identity associated with the
         /// request is used for database authentication. The API caller must be an
         /// IAM user in the database.
@@ -10291,6 +10309,9 @@ pub struct SqlOperationsGetRequest {
     /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Operations list request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -10308,6 +10329,9 @@ pub struct SqlOperationsListRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "6")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Operations list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10332,6 +10356,9 @@ pub struct SqlOperationsCancelRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod sql_operations_service_client {
@@ -11111,6 +11138,16 @@ pub struct SqlUsersUpdateRequest {
     /// specified in `database_roles` are added to the user's existing roles.
     #[prost(bool, optional, tag = "6")]
     pub revoke_existing_roles: ::core::option::Option<bool>,
+    /// Optional. The server roles to grant to the SQL Server login. Existing
+    /// server roles will not be revoked if revoke_existing_roles is false.
+    /// body.server_roles will be ignored for update request.
+    #[prost(string, repeated, tag = "7")]
+    pub server_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Specifies whether to revoke existing roles that are not present
+    /// in the `server_roles` field. If `false` or unset, the server roles
+    /// specified in `server_roles` are added to the user's existing server roles.
+    #[prost(bool, optional, tag = "8")]
+    pub revoke_existing_server_roles: ::core::option::Option<bool>,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
 }
@@ -11198,6 +11235,9 @@ pub struct User {
     /// Optional. Role memberships of the user
     #[prost(string, repeated, tag = "15")]
     pub database_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The server roles for the SQL Server login.
+    #[prost(string, repeated, tag = "16")]
+    pub server_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// User details for specific database type
     #[prost(oneof = "user::UserDetails", tags = "9")]
     pub user_details: ::core::option::Option<user::UserDetails>,

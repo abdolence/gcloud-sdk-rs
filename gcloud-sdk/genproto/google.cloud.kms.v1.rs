@@ -181,6 +181,9 @@ pub mod crypto_key {
         /// \[GetPublicKey\]\[google.cloud.kms.v1.KeyManagementService.GetPublicKey\]
         /// and \[Decapsulate\]\[google.cloud.kms.v1.KeyManagementService.Decapsulate\].
         KeyEncapsulation = 10,
+        /// \[CryptoKeys\]\[google.cloud.kms.v1.CryptoKey\] with this purpose may be used
+        /// for AES key
+        AesWrapping = 11,
     }
     impl CryptoKeyPurpose {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -196,6 +199,7 @@ pub mod crypto_key {
                 Self::RawEncryptDecrypt => "RAW_ENCRYPT_DECRYPT",
                 Self::Mac => "MAC",
                 Self::KeyEncapsulation => "KEY_ENCAPSULATION",
+                Self::AesWrapping => "AES_WRAPPING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -208,6 +212,7 @@ pub mod crypto_key {
                 "RAW_ENCRYPT_DECRYPT" => Some(Self::RawEncryptDecrypt),
                 "MAC" => Some(Self::Mac),
                 "KEY_ENCAPSULATION" => Some(Self::KeyEncapsulation),
+                "AES_WRAPPING" => Some(Self::AesWrapping),
                 _ => None,
             }
         }
@@ -448,6 +453,24 @@ pub struct CryptoKeyVersion {
     /// \[ImportCryptoKeyVersionRequest.crypto_key_version\]\[google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version\].
     #[prost(bool, tag = "18")]
     pub reimport_eligible: bool,
+    /// Immutable. Field indicating that the key may be wrapped by a trusted key.
+    /// This field can be set for all key purposes except
+    /// \[ENCRYPT_DECRYPT\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\],
+    /// and is only valid for keys with protection level
+    /// \[HSM_SINGLE_TENANT\]\[google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT\].
+    /// This field can only be set at creation or import time via
+    /// \[CreateCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion\],
+    /// or
+    /// \[ImportCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion\].
+    #[prost(bool, tag = "21")]
+    pub trusted_wrapping_enabled: bool,
+    /// Output only. Field indicating that the key wrapping key is trusted.
+    /// This field is only valid for key purpose
+    /// \[AES_256_WRAPPING\]\[CryptoKey.CryptoKeyPurpose.AES_256_WRAPPING\], and
+    /// protection level
+    /// \[HSM_SINGLE_TENANT\]\[google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT\].
+    #[prost(bool, tag = "23")]
+    pub hsm_trusted: bool,
 }
 /// Nested message and enum types in `CryptoKeyVersion`.
 pub mod crypto_key_version {
@@ -624,6 +647,9 @@ pub mod crypto_key_version {
         /// security level 5. Randomized version supporting externally-computed
         /// message representatives.
         PqSignMlDsa87ExternalMu = 71,
+        /// AES key wrap with zero padding algorithm (RFC 5649). Can only be used
+        /// by keys with purpose AES_WRAPPING.
+        Aes256Kwp = 73,
     }
     impl CryptoKeyVersionAlgorithm {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -681,6 +707,7 @@ pub mod crypto_key_version {
                 Self::PqSignMlDsa44ExternalMu => "PQ_SIGN_ML_DSA_44_EXTERNAL_MU",
                 Self::PqSignMlDsa65ExternalMu => "PQ_SIGN_ML_DSA_65_EXTERNAL_MU",
                 Self::PqSignMlDsa87ExternalMu => "PQ_SIGN_ML_DSA_87_EXTERNAL_MU",
+                Self::Aes256Kwp => "AES_256_KWP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -737,6 +764,7 @@ pub mod crypto_key_version {
                 "PQ_SIGN_ML_DSA_44_EXTERNAL_MU" => Some(Self::PqSignMlDsa44ExternalMu),
                 "PQ_SIGN_ML_DSA_65_EXTERNAL_MU" => Some(Self::PqSignMlDsa65ExternalMu),
                 "PQ_SIGN_ML_DSA_87_EXTERNAL_MU" => Some(Self::PqSignMlDsa87ExternalMu),
+                "AES_256_KWP" => Some(Self::Aes256Kwp),
                 _ => None,
             }
         }
@@ -2975,7 +3003,7 @@ pub struct SingleTenantHsmInstance {
     /// Optional. Immutable. Indicates whether key portability is enabled for the
     /// \[SingleTenantHsmInstance\]\[google.cloud.kms.v1.SingleTenantHsmInstance\].
     /// This can only be set at creation time. Key portability features are
-    /// disabled by default and not yet available in GA.
+    /// disabled by default.
     #[prost(bool, tag = "8")]
     pub key_portability_enabled: bool,
 }
@@ -3163,7 +3191,7 @@ pub struct SingleTenantHsmInstanceProposal {
     /// \[SingleTenantHsmInstance\]\[google.cloud.kms.v1.SingleTenantHsmInstance\].
     #[prost(
         oneof = "single_tenant_hsm_instance_proposal::Operation",
-        tags = "8, 9, 10, 11, 12, 13, 17"
+        tags = "8, 9, 10, 11, 12, 13, 17, 18"
     )]
     pub operation: ::core::option::Option<
         single_tenant_hsm_instance_proposal::Operation,
@@ -3320,6 +3348,21 @@ pub mod single_tenant_hsm_instance_proposal {
     /// perform this operation.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RefreshSingleTenantHsmInstance {}
+    /// Promotes a key with the AES_WRAPPING purpose to a trusted wrapping key.
+    /// The key must be in the
+    /// \[ACTIVE\]\[CryptoKeyVersion.CryptoKeyVersionState.ACTIVE\] state to perform
+    /// this operation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct UpgradeKeyTrust {
+        /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKeyVersion.name\] of the
+        /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] to promote.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. The public key associated with the 2FA key that will sign the
+        /// login nonce for this operation.
+        #[prost(string, tag = "2")]
+        pub two_factor_public_key_pem: ::prost::alloc::string::String,
+    }
     /// The set of states of a
     /// \[SingleTenantHsmInstanceProposal\]\[google.cloud.kms.v1.SingleTenantHsmInstanceProposal\].
     #[derive(
@@ -3512,6 +3555,12 @@ pub mod single_tenant_hsm_instance_proposal {
         /// to perform this operation.
         #[prost(message, tag = "17")]
         RefreshSingleTenantHsmInstance(RefreshSingleTenantHsmInstance),
+        /// Promotes a key with the AES_WRAPPING purpose to a trusted wrapping key.
+        /// The key must be in the
+        /// \[ACTIVE\]\[CryptoKeyVersion.CryptoKeyVersionState.ACTIVE\] state to perform
+        /// this operation.
+        #[prost(message, tag = "18")]
+        UpgradeKeyTrust(UpgradeKeyTrust),
     }
 }
 /// A challenge to be signed by a 2FA key.
@@ -4641,6 +4690,17 @@ pub struct CreateCryptoKeyRequest {
     /// before you can use this \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
     #[prost(bool, tag = "5")]
     pub skip_initial_version_creation: bool,
+    /// Optional. Whether trusted wrapping will be enabled on the first
+    /// \[CryptoKeyVersions\]\[google.cloud.kms.v1.CryptoKeyVersion\] created for this
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. This field is only supported
+    /// for keys with
+    /// \[CryptoKeyVersionTemplate.protection_level\]\[google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\]
+    /// \[HSM_SINGLE_TENANT\]\[google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT\].
+    /// This field is supported for all
+    /// \[CryptoKeyPurposes\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\] except
+    /// \[ENCRYPT_DECRYPT\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\].
+    #[prost(bool, tag = "6")]
+    pub trusted_wrapping_enabled: bool,
 }
 /// Request message for
 /// \[KeyManagementService.CreateCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion\].
@@ -4763,6 +4823,15 @@ pub struct ImportCryptoKeyVersionRequest {
     /// with SHA-256, MGF1 with SHA-256, and an empty label.
     #[prost(bytes = "vec", tag = "8")]
     pub wrapped_key: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Whether trusted wrapping will be enabled on the imported
+    /// \[CryptoKeyVersion\]. This field is only supported for keys with
+    /// \[CryptoKeyVersionTemplate.protection_level\]\[google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\]
+    /// \[HSM_SINGLE_TENANT\]\[google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT\].
+    /// This field is supported for all
+    /// \[CryptoKeyPurposes\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\] besides
+    /// \[ENCRYPT_DECRYPT\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\].
+    #[prost(bool, tag = "9")]
+    pub trusted_wrapping_enabled: bool,
     /// This field is legacy. Use the field
     /// \[wrapped_key\]\[google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key\]
     /// instead.
@@ -4785,6 +4854,96 @@ pub mod import_crypto_key_version_request {
         #[prost(bytes, tag = "5")]
         RsaAesWrappedKey(::prost::alloc::vec::Vec<u8>),
     }
+}
+/// Request message for
+/// \[KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ImportTrustedKeyWrappedCryptoKeyVersionRequest {
+    /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKey.name\] of the
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] to be imported into.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Required - the CKV of the trusted key used to import.
+    /// This can be the name of a CryptoKeyVersion or a CryptoKey.
+    #[prost(string, tag = "2")]
+    pub importing_key: ::prost::alloc::string::String,
+    /// Optional. The optional \[name\]\[google.cloud.kms.v1.CryptoKeyVersion.name\] of
+    /// an existing \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] to
+    /// target for an import operation. If this field is not present, a new
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] containing the
+    /// supplied key material is created.
+    ///
+    /// If this field is present, the supplied key material is imported into
+    /// the existing \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\]. To
+    /// import into an existing
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\], the
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] must be a child of
+    /// \[ImportTrustedKeyWrappedCryptoKeyVersionRequest.parent\]\[google.cloud.kms.v1.ImportTrustedKeyWrappedCryptoKeyVersionRequest.parent\],
+    /// have been previously created via
+    /// \[ImportTrustedKeyWrappedCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion\],
+    /// and be in
+    /// \[DESTROYED\]\[google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED\]
+    /// or
+    /// \[IMPORT_FAILED\]\[google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED\]
+    /// state. The key material and algorithm must match the previous
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] exactly if the
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] has ever contained
+    /// key material
+    #[prost(string, tag = "3")]
+    pub crypto_key_version: ::prost::alloc::string::String,
+    /// Required. The target key pre-wrapped on premises.
+    #[prost(bytes = "vec", tag = "4")]
+    pub wrapped_key: ::prost::alloc::vec::Vec<u8>,
+    /// Required. Required - The
+    /// \[algorithm\]\[google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
+    /// of the key being imported. This does not need to match the
+    /// \[version_template\]\[google.cloud.kms.v1.CryptoKey.version_template\] of the
+    /// \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\] this version imports into.
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionAlgorithm", tag = "5")]
+    pub algorithm: i32,
+}
+/// Request message for
+/// \[KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportTrustedKeyWrappedCryptoKeyVersionRequest {
+    /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKeyVersion.name\] of the
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] to export. The
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] must have
+    /// \[trusted_wrapping_enabled\]\[google.cloud.kms.v1.CryptoKeyVersion.trusted_wrapping_enabled\]
+    /// set to true.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The \[name\]\[google.cloud.kms.v1.CryptoKeyVersion.name\] of the
+    /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] to use as a
+    /// wrapping key. The \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\]
+    /// must have \[hsm_trusted\]\[google.cloud.kms.v1.CryptoKeyVersion.hsm_trusted\]
+    /// set to true.
+    #[prost(string, tag = "2")]
+    pub wrapping_key: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion\]\[google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ExportTrustedKeyWrappedCryptoKeyVersionResponse {
+    /// The wrapped key material.
+    #[prost(bytes = "vec", tag = "1")]
+    pub wrapped_key: ::prost::alloc::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// \[ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\]\[google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\].
+    /// An integrity check of
+    /// \[ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\]\[google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\]
+    /// can be performed by computing the CRC32C checksum of
+    /// \[ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\]\[google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key\]
+    /// and comparing your results to this field. Discard the response in case of
+    /// non-matching checksum values, and perform a limited number of retries. A
+    /// persistent mismatch may indicate an issue in your computation of the CRC32C
+    /// checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "2")]
+    pub wrapped_key_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
 /// \[KeyManagementService.CreateImportJob\]\[google.cloud.kms.v1.KeyManagementService.CreateImportJob\].
@@ -6583,6 +6742,91 @@ pub mod key_management_service_client {
                     GrpcMethod::new(
                         "google.cloud.kms.v1.KeyManagementService",
                         "ImportCryptoKeyVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Import wrapped key material into a
+        /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] with a trusted
+        /// key.
+        ///
+        /// All requests must specify a \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\]. If
+        /// a \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] is additionally
+        /// specified in the request, key material will be reimported into that
+        /// version. Otherwise, a new version will be created, and will be assigned the
+        /// next sequential id within the \[CryptoKey\]\[google.cloud.kms.v1.CryptoKey\].
+        ///
+        /// The \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] will have
+        /// trusted_wrapping_enabled set to true.
+        pub async fn import_trusted_key_wrapped_crypto_key_version(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::CryptoKeyVersion>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/ImportTrustedKeyWrappedCryptoKeyVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "ImportTrustedKeyWrappedCryptoKeyVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports a \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] with a
+        /// trusted key.
+        ///
+        /// The \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] must have
+        /// trusted_wrapping_enabled set to true. The
+        /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] of the
+        /// \[wrapping_key\] must have the
+        /// \[AES_WRAPPING\]\[google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.AES_WRAPPING\]
+        /// purpose. The \[wrapping_key\] must have the
+        /// \[AES_256_KWP\]\[google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm.AES_256_KWP\]
+        /// algorithm.
+        pub async fn export_trusted_key_wrapped_crypto_key_version(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ExportTrustedKeyWrappedCryptoKeyVersionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/ExportTrustedKeyWrappedCryptoKeyVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "ExportTrustedKeyWrappedCryptoKeyVersion",
                     ),
                 );
             self.inner.unary(req, path, codec).await
