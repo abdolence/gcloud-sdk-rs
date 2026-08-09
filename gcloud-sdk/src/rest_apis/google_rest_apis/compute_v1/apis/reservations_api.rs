@@ -877,7 +877,7 @@ pub async fn compute_reservations_get_iam_policy(
         local_var_configuration.base_path,
         project = crate::google_rest_apis::compute_v1::apis::urlencode(project),
         zone = crate::google_rest_apis::compute_v1::apis::urlencode(zone),
-        resource = crate::google_rest_apis::compute_v1::apis::urlencode(resource)
+        resource = crate::google_rest_apis::compute_v1::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -1369,7 +1369,7 @@ pub async fn compute_reservations_set_iam_policy(
         local_var_configuration.base_path,
         project = crate::google_rest_apis::compute_v1::apis::urlencode(project),
         zone = crate::google_rest_apis::compute_v1::apis::urlencode(zone),
-        resource = crate::google_rest_apis::compute_v1::apis::urlencode(resource)
+        resource = crate::google_rest_apis::compute_v1::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -1487,7 +1487,7 @@ pub async fn compute_reservations_test_iam_permissions(
         local_var_configuration.base_path,
         project = crate::google_rest_apis::compute_v1::apis::urlencode(project),
         zone = crate::google_rest_apis::compute_v1::apis::urlencode(zone),
-        resource = crate::google_rest_apis::compute_v1::apis::urlencode(resource)
+        resource = crate::google_rest_apis::compute_v1::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());

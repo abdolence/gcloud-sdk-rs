@@ -373,7 +373,7 @@ pub async fn dns_resource_record_sets_delete(
 
     let local_var_client = &local_var_configuration.client;
 
-    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
+    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode_path(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
@@ -481,7 +481,7 @@ pub async fn dns_resource_record_sets_get(
 
     let local_var_client = &local_var_configuration.client;
 
-    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
+    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode_path(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
@@ -717,7 +717,7 @@ pub async fn dns_resource_record_sets_patch(
 
     let local_var_client = &local_var_configuration.client;
 
-    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
+    let local_var_uri_str = format!("{}/dns/v1/projects/{project}/managedZones/{managedZone}/rrsets/{name}/{type}", local_var_configuration.base_path, project=crate::google_rest_apis::dns_v1::apis::urlencode(project), managedZone=crate::google_rest_apis::dns_v1::apis::urlencode(managed_zone), name=crate::google_rest_apis::dns_v1::apis::urlencode_path(name), type=crate::google_rest_apis::dns_v1::apis::urlencode(r#type));
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 

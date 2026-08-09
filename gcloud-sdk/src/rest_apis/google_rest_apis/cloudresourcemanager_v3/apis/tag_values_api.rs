@@ -565,7 +565,7 @@ pub async fn cloudresourcemanager_tag_values_get(
     let local_var_uri_str = format!(
         "{}/v3/{name}",
         local_var_configuration.base_path,
-        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(name)
+        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -670,7 +670,7 @@ pub async fn cloudresourcemanager_tag_values_get_iam_policy(
     let local_var_uri_str = format!(
         "{}/v3/{resource}:getIamPolicy",
         local_var_configuration.base_path,
-        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(resource)
+        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -1000,7 +1000,7 @@ pub async fn cloudresourcemanager_tag_values_patch(
     let local_var_uri_str = format!(
         "{}/v3/{name}",
         local_var_configuration.base_path,
-        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(name)
+        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
@@ -1114,7 +1114,7 @@ pub async fn cloudresourcemanager_tag_values_set_iam_policy(
     let local_var_uri_str = format!(
         "{}/v3/{resource}:setIamPolicy",
         local_var_configuration.base_path,
-        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(resource)
+        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -1224,7 +1224,7 @@ pub async fn cloudresourcemanager_tag_values_tag_holds_create(
     let local_var_uri_str = format!(
         "{}/v3/{parent}/tagHolds",
         local_var_configuration.base_path,
-        parent = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(parent)
+        parent = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(parent)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -1338,7 +1338,7 @@ pub async fn cloudresourcemanager_tag_values_tag_holds_delete(
     let local_var_uri_str = format!(
         "{}/v3/{name}",
         local_var_configuration.base_path,
-        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(name)
+        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
@@ -1453,7 +1453,7 @@ pub async fn cloudresourcemanager_tag_values_tag_holds_list(
     let local_var_uri_str = format!(
         "{}/v3/{parent}/tagHolds",
         local_var_configuration.base_path,
-        parent = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(parent)
+        parent = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(parent)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -1574,7 +1574,7 @@ pub async fn cloudresourcemanager_tag_values_test_iam_permissions(
     let local_var_uri_str = format!(
         "{}/v3/{resource}:testIamPermissions",
         local_var_configuration.base_path,
-        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(resource)
+        resource = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(resource)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
