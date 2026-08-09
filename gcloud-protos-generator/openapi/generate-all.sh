@@ -54,6 +54,11 @@ do
     sed -i "s/\#\[derive(Clone, Debug, PartialEq, Serialize, Deserialize)\]/\#\[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
     sed -i "s/\#\[derive(Clone, Debug, PartialEq, Serialize, Deserialize)\]/\#\[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
 
+    # Full AIP resource names (parent/name/resource) contain '/' that must remain path separators
+    # and not be encoded as %2F (https://github.com/abdolence/gcloud-sdk-rs/issues/251)
+    sed -i "s/urlencode(parent)/urlencode_path(parent)/g; s/urlencode(name)/urlencode_path(name)/g; s/urlencode(resource)/urlencode_path(resource)/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
+    cat "$TEMPLATES_DIR/urlencode-path.rs" >> "$TEMP_OUTPUT/$API_NAME/src/apis/mod.rs"
+
     rm -fr "${GLOBAL_OUTPUT_DIR:?}/${API_NAME:?}"
     mkdir -p "$GLOBAL_OUTPUT_DIR/$API_NAME"
 

@@ -452,7 +452,7 @@ pub async fn cloudresourcemanager_projects_move(
     let local_var_uri_str = format!(
         "{}/v3/{name}:move",
         local_var_configuration.base_path,
-        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(name)
+        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -675,7 +675,7 @@ pub async fn cloudresourcemanager_projects_undelete(
     let local_var_uri_str = format!(
         "{}/v3/{name}:undelete",
         local_var_configuration.base_path,
-        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode(name)
+        name = crate::google_rest_apis::cloudresourcemanager_v3::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());

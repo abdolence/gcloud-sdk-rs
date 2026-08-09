@@ -364,7 +364,7 @@ pub async fn sql_users_get(
         local_var_configuration.base_path,
         project = crate::google_rest_apis::sqladmin_v1::apis::urlencode(project),
         instance = crate::google_rest_apis::sqladmin_v1::apis::urlencode(instance),
-        name = crate::google_rest_apis::sqladmin_v1::apis::urlencode(name)
+        name = crate::google_rest_apis::sqladmin_v1::apis::urlencode_path(name)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());

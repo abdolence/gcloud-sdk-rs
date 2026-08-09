@@ -77,7 +77,7 @@ pub async fn fcm_projects_messages_send(
     let local_var_uri_str = format!(
         "{}/v1/{parent}/messages:send",
         local_var_configuration.base_path,
-        parent = crate::google_rest_apis::fcm_v1::apis::urlencode(parent)
+        parent = crate::google_rest_apis::fcm_v1::apis::urlencode_path(parent)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
