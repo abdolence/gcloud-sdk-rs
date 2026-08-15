@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use chrono::prelude::*;
+use jiff::{SignedDuration, Timestamp};
 use tokio::sync::RwLock;
 
 use crate::token_source::*;
@@ -35,11 +35,11 @@ impl GoogleAuthTokenGenerator {
             read_state.clone()
         };
 
-        let now = Utc::now();
+        let now = Timestamp::now();
 
         match existing_token {
             // Give a bit more time for network call
-            Some(token) if token.expiry.gt(&now.add(chrono::Duration::seconds(15))) => Ok(token),
+            Some(token) if token.expiry.gt(&now.add(SignedDuration::from_secs(15))) => Ok(token),
             _ => {
                 let new_token = {
                     let mut write_token = self.cached_token.write().await;

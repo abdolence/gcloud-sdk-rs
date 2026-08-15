@@ -1,6 +1,6 @@
 use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
-use chrono::Utc;
 use futures::{Future, TryFutureExt};
+use jiff::Timestamp;
 use std::pin::Pin;
 use std::sync::Arc;
 use std::task::{Context, Poll};
@@ -93,9 +93,9 @@ where
         if let Some(mut google_service) = self.google_service.take() {
             self.google_service = Some(google_service.clone());
             Box::pin(async move {
-                let begin_time = Utc::now();
+                let begin_time = Timestamp::now();
                 let token = generator.create_token().await.map_err(Box::new)?;
-                let token_generated_time = Utc::now();
+                let token_generated_time = Timestamp::now();
                 let headers = req.headers_mut();
                 headers.insert("authorization", token.header_value().parse()?);
                 if let Some(cloud_resource_prefix_value) = cloud_resource_prefix {
@@ -117,31 +117,23 @@ where
                 google_service
                     .call(req)
                     .map_ok(|x| {
-                        let finished_time = Utc::now();
+                        let finished_time = Timestamp::now();
                         debug!(
                             "OK: {} took {}ms (incl. token gen: {}ms)",
                             req_uri_str,
-                            finished_time
-                                .signed_duration_since(begin_time)
-                                .num_milliseconds(),
-                            token_generated_time
-                                .signed_duration_since(begin_time)
-                                .num_milliseconds()
+                            finished_time.duration_since(begin_time).as_millis(),
+                            token_generated_time.duration_since(begin_time).as_millis()
                         );
                         x
                     })
                     .await
                     .map_err(|e| {
-                        let finished_time = Utc::now();
+                        let finished_time = Timestamp::now();
                         error!(
                             "Err: {} took {}ms (incl. token gen: {}ms)",
                             req_uri_str,
-                            finished_time
-                                .signed_duration_since(begin_time)
-                                .num_milliseconds(),
-                            token_generated_time
-                                .signed_duration_since(begin_time)
-                                .num_milliseconds()
+                            finished_time.duration_since(begin_time).as_millis(),
+                            token_generated_time.duration_since(begin_time).as_millis()
                         );
                         e.into()
                     })
@@ -214,6 +206,7 @@ mod tests {
     use crate::token_source::{Source, Token, TokenSourceType};
     use async_trait::async_trait;
     use hyper::{Request, Response};
+    use jiff::{SignedDuration, Timestamp};
     use secret_vault_value::SecretValue;
     use std::convert::Infallible;
 
@@ -225,7 +218,7 @@ mod tests {
             Ok(Token {
                 token_type: "Bearer".to_string(),
                 token: SecretValue::from("dummy-token"),
-                expiry: Utc::now() + chrono::Duration::hours(1),
+                expiry: Timestamp::now() + SignedDuration::from_hours(1),
             })
         }
     }

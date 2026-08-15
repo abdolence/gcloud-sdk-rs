@@ -6,6 +6,7 @@ use std::{
 use crate::token_source::ext_creds_source::ExternalCredentialSource;
 use crate::token_source::{BoxSource, Source, Token};
 use async_trait::async_trait;
+use jiff::Timestamp;
 use secret_vault_value::SecretValue;
 use tracing::debug;
 
@@ -241,7 +242,7 @@ struct IamCredentialsGenerateAccessToken {
 struct IamCredentialsTokenResponse {
     access_token: SecretValue,
     #[allow(unused)]
-    expire_time: chrono::DateTime<chrono::Utc>,
+    expire_time: Timestamp,
 }
 
 mod jwt {

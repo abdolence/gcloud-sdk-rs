@@ -326,7 +326,7 @@ mod aws {
 
         use aws_config::Region;
         use aws_credential_types::Credentials;
-        use chrono::NaiveDateTime;
+        use jiff::{civil::DateTime, Timestamp};
 
         use super::subject_token_aws;
         #[tokio::test]
@@ -340,11 +340,11 @@ mod aws {
                 None,
                 "test",
             );
-            let sign_at: SystemTime =
-                NaiveDateTime::parse_from_str("2022-12-31 00:00:00", "%Y-%m-%d %H:%M:%S")
-                    .unwrap()
-                    .and_utc()
-                    .into();
+            let sign_at: SystemTime = {
+                let ts = Timestamp::strptime("%Y-%m-%d %H:%M:%S", "2022-12-31 00:00:00").unwrap();
+                std::time::UNIX_EPOCH
+                    + std::time::Duration::new(ts.as_second() as u64, ts.subsec_nanosecond() as u32)
+            };
             let region = Region::from_static("ap-northeast-1b");
             let audience = "//iam.googleapis.com/projects/myprojectnumber/locations/global/workloadIdentityPools/aws-test/providers/aws-test";
             let regional_cred_verification_url =
