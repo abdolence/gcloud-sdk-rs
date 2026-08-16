@@ -43,7 +43,11 @@ async fn services_check(client: GoogleRestApi, service_name: impl ToString) -> R
             service_name: service_name.to_string(),
             check_request: Some(servicecontrol_v1::CheckRequest {
                 operation: Some(Box::new(servicecontrol_v1::Operation {
-                    start_time: Some(chrono::Utc::now().to_rfc3339()),
+                    start_time: Some(
+                        jiff::Timestamp::now()
+                            .display_with_offset(jiff::tz::Offset::UTC)
+                            .to_string(),
+                    ),
                     operation_id: Some(uuid::Uuid::new_v4().to_string()),
                     operation_name: Some("Whatever".to_string()),
                     consumer_id: GoogleEnvironment::detect_google_project_id()
