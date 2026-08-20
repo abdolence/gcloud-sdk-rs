@@ -4,7 +4,7 @@ use std::ops::Add;
 use std::path::PathBuf;
 
 use async_trait::async_trait;
-use chrono::prelude::*;
+use jiff::{SignedDuration, Timestamp};
 use secret_vault_value::SecretValue;
 
 pub mod auth_token_generator;
@@ -80,11 +80,11 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
 pub struct Token {
     pub token_type: String,
     pub token: SecretValue,
-    pub expiry: DateTime<Utc>,
+    pub expiry: Timestamp,
 }
 
 impl Token {
-    pub fn new(token_type: String, token: SecretValue, expiry: DateTime<Utc>) -> Self {
+    pub fn new(token_type: String, token: SecretValue, expiry: Timestamp) -> Self {
         Self {
             token_type,
             token,
@@ -117,7 +117,8 @@ impl TryFrom<TokenResponse> for Token {
             Ok(Token {
                 token_type: v.token_type,
                 token: v.access_token,
-                expiry: Utc::now().add(chrono::Duration::seconds(v.expires_in.try_into().unwrap())),
+                expiry: Timestamp::now()
+                    .add(SignedDuration::from_secs(v.expires_in.try_into().unwrap())),
             })
         }
     }
