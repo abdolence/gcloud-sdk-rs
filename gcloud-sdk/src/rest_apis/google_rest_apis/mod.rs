@@ -1,3 +1,7 @@
+
+#[cfg(any(feature = "google-rest-artifactregistry-v1"))]
+pub mod artifactregistry_v1;
+
 #[cfg(any(feature = "google-rest-bigquery-v2"))]
 pub mod bigquery_v2;
 
