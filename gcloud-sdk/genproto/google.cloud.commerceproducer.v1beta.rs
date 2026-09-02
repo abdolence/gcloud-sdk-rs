@@ -515,6 +515,12 @@ pub mod private_offer {
         /// Not included for `PRIVATE_OFFER_VIEW_BASIC`.
         #[prost(message, optional, tag = "12")]
         pub revenue_share: ::core::option::Option<single_product_offer::RevenueShare>,
+        /// Optional. Additional contract value that the customer is legally
+        /// obligated to spend on the product over the duration of the offer.
+        #[prost(message, optional, tag = "13")]
+        pub additional_contract_value: ::core::option::Option<
+            single_product_offer::AdditionalContractValue,
+        >,
         /// An existing offer to be superseded by this private offer.
         #[prost(oneof = "single_product_offer::AmendedOffer", tags = "3, 4")]
         pub amended_offer: ::core::option::Option<single_product_offer::AmendedOffer>,
@@ -1019,6 +1025,55 @@ pub mod private_offer {
             pub renewal_term_vendor_net_revenue_percent: ::core::option::Option<
                 super::super::super::super::super::r#type::Decimal,
             >,
+        }
+        /// Additional contract value that represents a spend obligation or target
+        /// contract value tracked out-of-band by the partner.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct AdditionalContractValue {
+            /// Optional. The absolute, cumulative contract value of the customer's
+            /// spend obligation that is added on top of the automatically billed fees
+            /// from Google. This amount is not automatically billed or invoiced by
+            /// Google; instead, it is tracked as a legal spend guarantee to be met via
+            /// usage reporting and manually trued-up by partners.
+            ///
+            /// The overall total contract value of the offer is calculated as the
+            /// sum of Google-billed fees (from installments), plus this additional
+            /// contract value.
+            ///
+            /// For amendments, this field must be set to the new cumulative
+            /// additional total.
+            ///
+            /// For example:
+            ///
+            /// * Initial Offer: 3 installments of $15 (total $45 billed by Google)
+            ///   plus an `additional_contract_value` of $100 (billed by Partner, with
+            ///   true-ups happening at the end of the offer's term).
+            ///   The overall total contract value of the offer is $145 ($45 + $100).
+            /// * Amended Offer: 6 installments of $15 (total $90 billed by Google)
+            ///   plus an `additional_contract_value` of $70 (billed by Partner, with
+            ///   true-ups happening at the end of the offer's term).
+            ///   The overall total contract value of the amended offer is $160
+            /// ($90 + $70).
+            ///
+            /// Must be non-negative. The maximum allowed value is 1,000,000,000 USD.
+            #[prost(message, optional, tag = "1")]
+            pub contract_value: ::core::option::Option<
+                super::super::super::super::super::r#type::Money,
+            >,
+            /// Optional. The resource names of the SKUs whose tracked usage is
+            /// eligible to contribute toward satisfying this additional contract value
+            /// obligation.
+            ///
+            /// This list explicitly separates core spend obligations from exclusions
+            /// like overage fees, which do not count toward meeting the customer's
+            /// legal spend commitment.
+            ///
+            /// Must be non-empty for the offer to be published.
+            ///
+            /// Format:
+            /// projects/{project}/locations/{location}/services/{service}/skus/{sku}
+            #[prost(string, repeated, tag = "2")]
+            pub eligible_skus: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// An existing offer to be superseded by this private offer.
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]

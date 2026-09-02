@@ -7,6 +7,7 @@ pub struct AirPressure {
     pub mean_sea_level_millibars: ::core::option::Option<f32>,
 }
 /// Represents the events related to the sun (e.g. sunrise, sunset).
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SunEvents {
     /// The time when the sun rises.
@@ -23,10 +24,15 @@ pub struct SunEvents {
     pub sunset_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents the events related to the moon (e.g. moonrise, moonset).
+/// (-- Next available tag: 6 --)
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoonEvents {
     /// The moon phase (a.k.a. lunar phase).
-    #[prost(enumeration = "MoonPhase", tag = "3")]
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "moon_events::Phase", tag = "3")]
     pub moon_phase: i32,
     /// The time when the upper limb of the moon appears above the horizon
     /// (see <https://en.wikipedia.org/wiki/Moonrise_and_moonset>).
@@ -51,7 +57,87 @@ pub struct MoonEvents {
     #[prost(message, repeated, tag = "5")]
     pub moonset_times: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `MoonEvents`.
+pub mod moon_events {
+    /// Marks the moon phase (a.k.a. lunar phase).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Phase {
+        /// Unspecified moon phase.
+        Unspecified = 0,
+        /// The moon is not illuminated by the sun.
+        NewMoon = 1,
+        /// The moon is lit by 0%-50% on its right side in the northern hemisphere 🌒
+        /// and on its left side in the southern hemisphere 🌘.
+        WaxingCrescent = 2,
+        /// The moon is lit by 50.1% on its right side in the northern hemisphere 🌓
+        /// and on its left side in the southern hemisphere 🌗.
+        FirstQuarter = 3,
+        /// The moon is lit by 50%-100% on its right side in the northern hemisphere
+        /// 🌔 and on its left side in the southern hemisphere 🌖.
+        WaxingGibbous = 4,
+        /// The moon is fully illuminated.
+        FullMoon = 5,
+        /// The moon is lit by 50%-100% on its left side in the northern hemisphere
+        /// 🌖 and on its right side in the southern hemisphere 🌔.
+        WaningGibbous = 6,
+        /// The moon is lit by 50.1% on its left side in the northern hemisphere 🌗
+        /// and on its right side in the southern hemisphere 🌓.
+        LastQuarter = 7,
+        /// The moon is lit by 0%-50% on its left side in the northern hemisphere 🌘
+        /// and on its right side in the southern hemisphere 🌒.
+        WaningCrescent = 8,
+    }
+    impl Phase {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PHASE_UNSPECIFIED",
+                Self::NewMoon => "NEW_MOON",
+                Self::WaxingCrescent => "WAXING_CRESCENT",
+                Self::FirstQuarter => "FIRST_QUARTER",
+                Self::WaxingGibbous => "WAXING_GIBBOUS",
+                Self::FullMoon => "FULL_MOON",
+                Self::WaningGibbous => "WANING_GIBBOUS",
+                Self::LastQuarter => "LAST_QUARTER",
+                Self::WaningCrescent => "WANING_CRESCENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHASE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW_MOON" => Some(Self::NewMoon),
+                "WAXING_CRESCENT" => Some(Self::WaxingCrescent),
+                "FIRST_QUARTER" => Some(Self::FirstQuarter),
+                "WAXING_GIBBOUS" => Some(Self::WaxingGibbous),
+                "FULL_MOON" => Some(Self::FullMoon),
+                "WANING_GIBBOUS" => Some(Self::WaningGibbous),
+                "LAST_QUARTER" => Some(Self::LastQuarter),
+                "WANING_CRESCENT" => Some(Self::WaningCrescent),
+                _ => None,
+            }
+        }
+    }
+}
 /// Marks the moon phase (a.k.a. lunar phase).
+/// (-- This is a generic (shared) definition because it maybe used as a
+/// standalone field for other endpoints/new features in the future and it
+/// already contains all the possible moon phases. --)
+/// (-- Next available tag: 9 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MoonPhase {
@@ -171,38 +257,124 @@ pub mod ice_thickness {
     }
 }
 /// Represents a set of precipitation values at a given location.
+/// (-- Next available tag: 5 --)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Precipitation {
     /// The probability of precipitation (values from 0 to 100).
     #[prost(message, optional, tag = "1")]
     pub probability: ::core::option::Option<PrecipitationProbability>,
     /// The amount of snow, measured as liquid water equivalent, that has
-    /// accumulated over a period of time. Note: QPF is an abbreviation for
-    /// Quantitative Precipitation Forecast (please see the
-    /// QuantitativePrecipitationForecast definition for more details).
+    /// accumulated over a period of time.
+    /// Note: QPF is an abbreviation for Quantitative Precipitation Forecast
+    /// (please see the QuantitativePrecipitationForecast definition for more
+    /// details).
     #[prost(message, optional, tag = "3")]
     pub snow_qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
-    /// The amount of rain, measured as liquid water equivalent, that has
-    /// accumulated over a period of time. Note: QPF is an abbreviation for
-    /// Quantitative Precipitation Forecast (please see the
+    /// The amount of precipitation rain, measured as liquid water
+    /// equivalent, that has accumulated over a period of time. Note: QPF is an
+    /// abbreviation for Quantitative Precipitation Forecast (please see the
     /// QuantitativePrecipitationForecast definition for more details).
     #[prost(message, optional, tag = "4")]
     pub qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
 }
 /// Represents the probability of precipitation at a given location.
+/// (-- This is a generic (shared) definition because it might be used as a
+/// standalone field for other endpoints/new features in the future. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrecipitationProbability {
     /// A percentage from 0 to 100 that indicates the chances of precipitation.
     #[prost(int32, optional, tag = "1")]
     pub percent: ::core::option::Option<i32>,
     /// A code that indicates the type of precipitation.
-    #[prost(enumeration = "PrecipitationType", tag = "2")]
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "precipitation_probability::Type", tag = "2")]
     pub r#type: i32,
+}
+/// Nested message and enum types in `PrecipitationProbability`.
+pub mod precipitation_probability {
+    /// Represents the type of precipitation at a given location.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified precipitation type.
+        Unspecified = 0,
+        /// No precipitation.
+        None = 8,
+        /// Snow precipitation.
+        Snow = 1,
+        /// Rain precipitation.
+        Rain = 2,
+        /// Light rain precipitation.
+        LightRain = 3,
+        /// Heavy rain precipitation.
+        HeavyRain = 4,
+        /// Both rain and snow precipitations.
+        RainAndSnow = 5,
+        /// Sleet precipitation.
+        Sleet = 6,
+        /// Freezing rain precipitation.
+        FreezingRain = 7,
+        /// Hail precipitation.
+        PrecipitationTypeHail = 9,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Snow => "SNOW",
+                Self::Rain => "RAIN",
+                Self::LightRain => "LIGHT_RAIN",
+                Self::HeavyRain => "HEAVY_RAIN",
+                Self::RainAndSnow => "RAIN_AND_SNOW",
+                Self::Sleet => "SLEET",
+                Self::FreezingRain => "FREEZING_RAIN",
+                Self::PrecipitationTypeHail => "PRECIPITATION_TYPE_HAIL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "SNOW" => Some(Self::Snow),
+                "RAIN" => Some(Self::Rain),
+                "LIGHT_RAIN" => Some(Self::LightRain),
+                "HEAVY_RAIN" => Some(Self::HeavyRain),
+                "RAIN_AND_SNOW" => Some(Self::RainAndSnow),
+                "SLEET" => Some(Self::Sleet),
+                "FREEZING_RAIN" => Some(Self::FreezingRain),
+                "PRECIPITATION_TYPE_HAIL" => Some(Self::PrecipitationTypeHail),
+                _ => None,
+            }
+        }
+    }
 }
 /// Represents the expected amount of melted precipitation accumulated over a
 /// specified time period over a specified area (reference:
 /// <https://en.wikipedia.org/wiki/Quantitative_precipitation_forecast>) -
 /// usually abbreviated QPF for short.
+/// (-- This is a generic (shared) definition because it is used also as a
+/// standalone field in the CurrentConditionsHistory message. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuantitativePrecipitationForecast {
     /// The amount of precipitation, measured as liquid water equivalent, that has
@@ -218,6 +390,10 @@ pub struct QuantitativePrecipitationForecast {
 pub mod quantitative_precipitation_forecast {
     /// Represents the unit used to measure the amount of accumulated
     /// precipitation.
+    /// (-- These units are private to this definition to avoid conflicts with
+    /// similar length units used in other definitions (i.e.: QPF is measured in
+    /// millimeters while visibility is measured in kilometers). --)
+    /// (-- Next available tag: 4 --)
     #[derive(
         Clone,
         Copy,
@@ -262,6 +438,9 @@ pub mod quantitative_precipitation_forecast {
     }
 }
 /// Represents the type of precipitation at a given location.
+/// (-- This is a generic (shared) definition because it might be used as a
+/// standalone field for other endpoints/new features in the future. --)
+/// (-- Next available tag: 10 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PrecipitationType {
@@ -323,16 +502,71 @@ impl PrecipitationType {
     }
 }
 /// Represents a temperature value.
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Temperature {
     /// The temperature value (in degrees) in the specified unit.
     #[prost(float, optional, tag = "1")]
     pub degrees: ::core::option::Option<f32>,
     /// The code for the unit used to measure the temperature value.
-    #[prost(enumeration = "TemperatureUnit", tag = "2")]
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "temperature::Unit", tag = "2")]
     pub unit: i32,
 }
+/// Nested message and enum types in `Temperature`.
+pub mod temperature {
+    /// Represents a unit used to measure temperatures.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Unit {
+        /// The temperature unit is unspecified.
+        Unspecified = 0,
+        /// The temperature is measured in Celsius.
+        Celsius = 1,
+        /// The temperature is measured in Fahrenheit.
+        Fahrenheit = 2,
+    }
+    impl Unit {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNIT_UNSPECIFIED",
+                Self::Celsius => "CELSIUS",
+                Self::Fahrenheit => "FAHRENHEIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CELSIUS" => Some(Self::Celsius),
+                "FAHRENHEIT" => Some(Self::Fahrenheit),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents a unit used to measure temperatures.
+/// (-- This is a generic (shared) definition because it maybe used as a
+/// standalone field for other endpoints/new features in the future and it
+/// already contains all the possible temperature units. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TemperatureUnit {
@@ -593,6 +827,7 @@ pub mod weather_condition {
     }
 }
 /// Represents a set of wind properties.
+/// (-- Next available tag: 4 --)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Wind {
     /// The direction of the wind, the angle it is coming from.
@@ -606,6 +841,9 @@ pub struct Wind {
     pub gust: ::core::option::Option<WindSpeed>,
 }
 /// Represents the direction from which the wind originates.
+/// (-- This is a generic (shared) definition because it might be used as a
+/// standalone field for other endpoints/new features in the future. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WindDirection {
     /// The direction of the wind in degrees (values from 0 to 360).
@@ -613,20 +851,183 @@ pub struct WindDirection {
     pub degrees: ::core::option::Option<i32>,
     /// The code that represents the cardinal direction from which the wind is
     /// blowing.
-    #[prost(enumeration = "CardinalDirection", tag = "2")]
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "wind_direction::Cardinal", tag = "2")]
     pub cardinal: i32,
 }
+/// Nested message and enum types in `WindDirection`.
+pub mod wind_direction {
+    /// Represents a cardinal direction (including ordinal directions).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Cardinal {
+        /// The cardinal direction is unspecified.
+        Unspecified = 0,
+        /// The north cardinal direction.
+        North = 1,
+        /// The north-northeast secondary intercardinal direction.
+        NorthNortheast = 2,
+        /// The northeast intercardinal direction.
+        Northeast = 3,
+        /// The east-northeast secondary intercardinal direction.
+        EastNortheast = 4,
+        /// The east cardinal direction.
+        East = 5,
+        /// The east-southeast secondary intercardinal direction.
+        EastSoutheast = 6,
+        /// The southeast intercardinal direction.
+        Southeast = 7,
+        /// The south-southeast secondary intercardinal direction.
+        SouthSoutheast = 8,
+        /// The south cardinal direction.
+        South = 9,
+        /// The south-southwest secondary intercardinal direction.
+        SouthSouthwest = 10,
+        /// The southwest intercardinal direction.
+        Southwest = 11,
+        /// The west-southwest secondary intercardinal direction.
+        WestSouthwest = 12,
+        /// The west cardinal direction.
+        West = 13,
+        /// The west-northwest secondary intercardinal direction.
+        WestNorthwest = 14,
+        /// The northwest intercardinal direction.
+        Northwest = 15,
+        /// The north-northwest secondary intercardinal direction.
+        NorthNorthwest = 16,
+    }
+    impl Cardinal {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CARDINAL_UNSPECIFIED",
+                Self::North => "NORTH",
+                Self::NorthNortheast => "NORTH_NORTHEAST",
+                Self::Northeast => "NORTHEAST",
+                Self::EastNortheast => "EAST_NORTHEAST",
+                Self::East => "EAST",
+                Self::EastSoutheast => "EAST_SOUTHEAST",
+                Self::Southeast => "SOUTHEAST",
+                Self::SouthSoutheast => "SOUTH_SOUTHEAST",
+                Self::South => "SOUTH",
+                Self::SouthSouthwest => "SOUTH_SOUTHWEST",
+                Self::Southwest => "SOUTHWEST",
+                Self::WestSouthwest => "WEST_SOUTHWEST",
+                Self::West => "WEST",
+                Self::WestNorthwest => "WEST_NORTHWEST",
+                Self::Northwest => "NORTHWEST",
+                Self::NorthNorthwest => "NORTH_NORTHWEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CARDINAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORTH" => Some(Self::North),
+                "NORTH_NORTHEAST" => Some(Self::NorthNortheast),
+                "NORTHEAST" => Some(Self::Northeast),
+                "EAST_NORTHEAST" => Some(Self::EastNortheast),
+                "EAST" => Some(Self::East),
+                "EAST_SOUTHEAST" => Some(Self::EastSoutheast),
+                "SOUTHEAST" => Some(Self::Southeast),
+                "SOUTH_SOUTHEAST" => Some(Self::SouthSoutheast),
+                "SOUTH" => Some(Self::South),
+                "SOUTH_SOUTHWEST" => Some(Self::SouthSouthwest),
+                "SOUTHWEST" => Some(Self::Southwest),
+                "WEST_SOUTHWEST" => Some(Self::WestSouthwest),
+                "WEST" => Some(Self::West),
+                "WEST_NORTHWEST" => Some(Self::WestNorthwest),
+                "NORTHWEST" => Some(Self::Northwest),
+                "NORTH_NORTHWEST" => Some(Self::NorthNorthwest),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents the speed of the wind.
+/// (-- This is a generic (shared) definition because it might be used as a
+/// standalone field for other endpoints/new features in the future. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WindSpeed {
     /// The value of the wind speed.
     #[prost(float, optional, tag = "1")]
     pub value: ::core::option::Option<f32>,
     /// The code that represents the unit used to measure the wind speed.
-    #[prost(enumeration = "SpeedUnit", tag = "2")]
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "wind_speed::Unit", tag = "2")]
     pub unit: i32,
 }
+/// Nested message and enum types in `WindSpeed`.
+pub mod wind_speed {
+    /// Represents the unit used to measure speed.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Unit {
+        /// The speed unit is unspecified.
+        Unspecified = 0,
+        /// The speed is measured in kilometers per hour.
+        KilometersPerHour = 1,
+        /// The speed is measured in miles per hour.
+        MilesPerHour = 2,
+    }
+    impl Unit {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNIT_UNSPECIFIED",
+                Self::KilometersPerHour => "KILOMETERS_PER_HOUR",
+                Self::MilesPerHour => "MILES_PER_HOUR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "KILOMETERS_PER_HOUR" => Some(Self::KilometersPerHour),
+                "MILES_PER_HOUR" => Some(Self::MilesPerHour),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents a cardinal direction (including ordinal directions).
+/// (-- This is a generic (shared) definition because it maybe used as a
+/// standalone field for other endpoints/new features in the future and it
+/// already contains all the possible cardinal directions. --)
+/// (-- Next available tag: 17 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CardinalDirection {
@@ -716,6 +1117,10 @@ impl CardinalDirection {
     }
 }
 /// Represents the unit used to measure speed.
+/// (-- This is a generic (shared) definition because it maybe used as a
+/// standalone field for other endpoints/new features in the future and it
+/// already contains all the possible speed units. --)
+/// (-- Next available tag: 3 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SpeedUnit {
@@ -1390,6 +1795,828 @@ impl MapType {
         }
     }
 }
+/// Represents a link to a data source.
+/// (-- api-linter: core::0123::resource-annotation=disabled
+/// aip.dev/not-precedent: DataSource is not an AIP resource message;
+/// name represents the official publisher name. --)
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataSource {
+    /// The publisher of the alert.
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "data_source::Publisher", tag = "1")]
+    pub publisher: i32,
+    /// Official publisher name. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// The URL of the authority's website.
+    #[prost(string, tag = "3")]
+    pub authority_uri: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DataSource`.
+pub mod data_source {
+    /// The publisher of the alert.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Publisher {
+        /// Publisher unspecified.
+        Unspecified = 0,
+        /// Australia Australian Capital Territory
+        AustraliaActEsa = 1,
+        /// New South Wales
+        AustraliaNswRfs = 2,
+        /// Queensland
+        AustraliaQldQfes = 3,
+        /// South Australia
+        AustraliaSaCfs = 4,
+        /// Meteoalarm / EUMETNET Austria
+        MeteoAlarmAt = 5,
+        /// Bosnia
+        MeteoAlarmBs = 6,
+        /// Disaster Agency in Brazil
+        BrazilCenad = 7,
+        /// Meteorological Agency in Brazil
+        BrazilInmet = 8,
+        /// Bulgaria
+        MeteoAlarmBg = 10,
+        /// Croatia
+        MeteoAlarmCr = 11,
+        /// Cyprus
+        MeteoAlarmCy = 12,
+        /// Czechia
+        MeteoAlarmCs = 13,
+        /// Denmark
+        MeteoAlarmDk = 14,
+        /// Ecuador
+        EcInamhi = 15,
+        /// Finland
+        MeteoAlarmFi = 16,
+        /// France
+        MeteoAlarmFr = 17,
+        /// Germany
+        DeDwd = 18,
+        /// Great Britain
+        MeteoAlarmGb = 19,
+        /// Greece
+        MeteoAlarmGr = 20,
+        /// Hungary
+        MeteoAlarmHu = 21,
+        /// Iceland
+        MeteoAlarmIs = 22,
+        /// Ireland
+        MeteoAlarmIe = 23,
+        /// Italy
+        MeteoAlarmIt = 24,
+        /// Jamaica
+        JmJms = 25,
+        /// Japan
+        Jma = 26,
+        /// Netherlands
+        MeteoAlarmNl = 27,
+        /// Latvia
+        MeteoAlarmLv = 28,
+        /// Lithuania
+        MeteoAlarmLt = 29,
+        /// Luxembourg
+        MeteoAlarmLu = 30,
+        /// Mexico CIRES
+        MexicoCires = 31,
+        /// New Zealand GeoNet
+        NzGeonet = 32,
+        /// MetService
+        NzNms = 33,
+        /// North Macedonia
+        MeteoAlarmMk = 34,
+        /// Norway
+        MeteoAlarmNo = 35,
+        /// Philippines
+        PhilippinesPagasa = 36,
+        /// Poland
+        MeteoAlarmPl = 37,
+        /// Portugal
+        MeteoAlarmPt = 38,
+        /// Romania
+        MeteoAlarmRo = 39,
+        /// Serbia
+        MeteoAlarmRs = 40,
+        /// Singapore
+        SgMss = 41,
+        /// Slovakia
+        MeteoAlarmSk = 42,
+        /// Slovenia
+        MeteoAlarmSi = 43,
+        /// Solomon Islands
+        SbMet = 44,
+        /// Spain
+        MeteoAlarmEs = 45,
+        /// Sweden
+        MeteoAlarmSe = 46,
+        /// Switzerland
+        MeteoAlarmCh = 47,
+        /// Taiwan
+        TaiwanNcdr = 48,
+        /// NOAA
+        Noaa = 49,
+        /// National Tsunami Warning Center
+        Wcatwc = 50,
+    }
+    impl Publisher {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PUBLISHER_UNSPECIFIED",
+                Self::AustraliaActEsa => "AUSTRALIA_ACT_ESA",
+                Self::AustraliaNswRfs => "AUSTRALIA_NSW_RFS",
+                Self::AustraliaQldQfes => "AUSTRALIA_QLD_QFES",
+                Self::AustraliaSaCfs => "AUSTRALIA_SA_CFS",
+                Self::MeteoAlarmAt => "METEO_ALARM_AT",
+                Self::MeteoAlarmBs => "METEO_ALARM_BS",
+                Self::BrazilCenad => "BRAZIL_CENAD",
+                Self::BrazilInmet => "BRAZIL_INMET",
+                Self::MeteoAlarmBg => "METEO_ALARM_BG",
+                Self::MeteoAlarmCr => "METEO_ALARM_CR",
+                Self::MeteoAlarmCy => "METEO_ALARM_CY",
+                Self::MeteoAlarmCs => "METEO_ALARM_CS",
+                Self::MeteoAlarmDk => "METEO_ALARM_DK",
+                Self::EcInamhi => "EC_INAMHI",
+                Self::MeteoAlarmFi => "METEO_ALARM_FI",
+                Self::MeteoAlarmFr => "METEO_ALARM_FR",
+                Self::DeDwd => "DE_DWD",
+                Self::MeteoAlarmGb => "METEO_ALARM_GB",
+                Self::MeteoAlarmGr => "METEO_ALARM_GR",
+                Self::MeteoAlarmHu => "METEO_ALARM_HU",
+                Self::MeteoAlarmIs => "METEO_ALARM_IS",
+                Self::MeteoAlarmIe => "METEO_ALARM_IE",
+                Self::MeteoAlarmIt => "METEO_ALARM_IT",
+                Self::JmJms => "JM_JMS",
+                Self::Jma => "JMA",
+                Self::MeteoAlarmNl => "METEO_ALARM_NL",
+                Self::MeteoAlarmLv => "METEO_ALARM_LV",
+                Self::MeteoAlarmLt => "METEO_ALARM_LT",
+                Self::MeteoAlarmLu => "METEO_ALARM_LU",
+                Self::MexicoCires => "MEXICO_CIRES",
+                Self::NzGeonet => "NZ_GEONET",
+                Self::NzNms => "NZ_NMS",
+                Self::MeteoAlarmMk => "METEO_ALARM_MK",
+                Self::MeteoAlarmNo => "METEO_ALARM_NO",
+                Self::PhilippinesPagasa => "PHILIPPINES_PAGASA",
+                Self::MeteoAlarmPl => "METEO_ALARM_PL",
+                Self::MeteoAlarmPt => "METEO_ALARM_PT",
+                Self::MeteoAlarmRo => "METEO_ALARM_RO",
+                Self::MeteoAlarmRs => "METEO_ALARM_RS",
+                Self::SgMss => "SG_MSS",
+                Self::MeteoAlarmSk => "METEO_ALARM_SK",
+                Self::MeteoAlarmSi => "METEO_ALARM_SI",
+                Self::SbMet => "SB_MET",
+                Self::MeteoAlarmEs => "METEO_ALARM_ES",
+                Self::MeteoAlarmSe => "METEO_ALARM_SE",
+                Self::MeteoAlarmCh => "METEO_ALARM_CH",
+                Self::TaiwanNcdr => "TAIWAN_NCDR",
+                Self::Noaa => "NOAA",
+                Self::Wcatwc => "WCATWC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PUBLISHER_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUSTRALIA_ACT_ESA" => Some(Self::AustraliaActEsa),
+                "AUSTRALIA_NSW_RFS" => Some(Self::AustraliaNswRfs),
+                "AUSTRALIA_QLD_QFES" => Some(Self::AustraliaQldQfes),
+                "AUSTRALIA_SA_CFS" => Some(Self::AustraliaSaCfs),
+                "METEO_ALARM_AT" => Some(Self::MeteoAlarmAt),
+                "METEO_ALARM_BS" => Some(Self::MeteoAlarmBs),
+                "BRAZIL_CENAD" => Some(Self::BrazilCenad),
+                "BRAZIL_INMET" => Some(Self::BrazilInmet),
+                "METEO_ALARM_BG" => Some(Self::MeteoAlarmBg),
+                "METEO_ALARM_CR" => Some(Self::MeteoAlarmCr),
+                "METEO_ALARM_CY" => Some(Self::MeteoAlarmCy),
+                "METEO_ALARM_CS" => Some(Self::MeteoAlarmCs),
+                "METEO_ALARM_DK" => Some(Self::MeteoAlarmDk),
+                "EC_INAMHI" => Some(Self::EcInamhi),
+                "METEO_ALARM_FI" => Some(Self::MeteoAlarmFi),
+                "METEO_ALARM_FR" => Some(Self::MeteoAlarmFr),
+                "DE_DWD" => Some(Self::DeDwd),
+                "METEO_ALARM_GB" => Some(Self::MeteoAlarmGb),
+                "METEO_ALARM_GR" => Some(Self::MeteoAlarmGr),
+                "METEO_ALARM_HU" => Some(Self::MeteoAlarmHu),
+                "METEO_ALARM_IS" => Some(Self::MeteoAlarmIs),
+                "METEO_ALARM_IE" => Some(Self::MeteoAlarmIe),
+                "METEO_ALARM_IT" => Some(Self::MeteoAlarmIt),
+                "JM_JMS" => Some(Self::JmJms),
+                "JMA" => Some(Self::Jma),
+                "METEO_ALARM_NL" => Some(Self::MeteoAlarmNl),
+                "METEO_ALARM_LV" => Some(Self::MeteoAlarmLv),
+                "METEO_ALARM_LT" => Some(Self::MeteoAlarmLt),
+                "METEO_ALARM_LU" => Some(Self::MeteoAlarmLu),
+                "MEXICO_CIRES" => Some(Self::MexicoCires),
+                "NZ_GEONET" => Some(Self::NzGeonet),
+                "NZ_NMS" => Some(Self::NzNms),
+                "METEO_ALARM_MK" => Some(Self::MeteoAlarmMk),
+                "METEO_ALARM_NO" => Some(Self::MeteoAlarmNo),
+                "PHILIPPINES_PAGASA" => Some(Self::PhilippinesPagasa),
+                "METEO_ALARM_PL" => Some(Self::MeteoAlarmPl),
+                "METEO_ALARM_PT" => Some(Self::MeteoAlarmPt),
+                "METEO_ALARM_RO" => Some(Self::MeteoAlarmRo),
+                "METEO_ALARM_RS" => Some(Self::MeteoAlarmRs),
+                "SG_MSS" => Some(Self::SgMss),
+                "METEO_ALARM_SK" => Some(Self::MeteoAlarmSk),
+                "METEO_ALARM_SI" => Some(Self::MeteoAlarmSi),
+                "SB_MET" => Some(Self::SbMet),
+                "METEO_ALARM_ES" => Some(Self::MeteoAlarmEs),
+                "METEO_ALARM_SE" => Some(Self::MeteoAlarmSe),
+                "METEO_ALARM_CH" => Some(Self::MeteoAlarmCh),
+                "TAIWAN_NCDR" => Some(Self::TaiwanNcdr),
+                "NOAA" => Some(Self::Noaa),
+                "WCATWC" => Some(Self::Wcatwc),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents a safety recommendation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SafetyRecommendation {
+    /// A directive to the user. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, tag = "1")]
+    pub directive: ::prost::alloc::string::String,
+    /// An optional subtext for the directive, which may contain additional
+    /// context for the user. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, optional, tag = "2")]
+    pub subtext: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Represents the public weather alerts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PublicAlerts {
+    /// The unique identifier for this alert.
+    #[prost(string, tag = "1")]
+    pub alert_id: ::prost::alloc::string::String,
+    /// The localized title for the alert.
+    #[prost(message, optional, tag = "2")]
+    pub alert_title: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The type of weather event.
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "public_alerts::EventType", tag = "3")]
+    pub event_type: i32,
+    /// The name of the area where the alert is issued.
+    /// (-- api-linter: core::0122::name-suffix=disabled
+    /// aip.dev/not-precedent: We need to use the \_name suffix
+    /// to be consistent with the rest of the API. --)
+    #[prost(string, tag = "4")]
+    pub area_name: ::prost::alloc::string::String,
+    /// A GeoJSON representation of the areas where the alert is issued.
+    ///
+    /// The GeoJSON data must be in RFC 7946 format and represent either a
+    /// Polygon (for a single contiguous area) or a MultiPolygon (for multiple
+    /// distinct areas).
+    ///
+    /// Example:
+    ///
+    /// {
+    /// "type": "Polygon",
+    /// "coordinates": \[
+    /// \[
+    /// \[-1, -1\], \[-1, 0\], \[0, 0\], \[-1, -1\]
+    /// \]
+    /// \]
+    /// }
+    ///
+    /// A sample MultiPolygon GeoJson string looks like:
+    ///
+    /// {
+    /// "type": "MultiPolygon",
+    /// "coordinates": \[
+    /// \[
+    /// \[0, 0\], \[-1, 0\], \[-1, 1\], \[0, 0\]
+    /// \],
+    /// \[
+    /// \[0, 0\], \[-2, 0\], \[-2, 2\], \[0, 0\]
+    /// \]
+    /// \]
+    /// }
+    #[prost(string, optional, tag = "5")]
+    pub polygon: ::core::option::Option<::prost::alloc::string::String>,
+    /// The latest text describing the alert as issued by the official authority.
+    /// Please note that while this field should be localized, it is not guaranteed
+    /// that it will be.
+    #[prost(string, optional, tag = "6")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// The severity level of the alert.
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "public_alerts::Severity", optional, tag = "7")]
+    pub severity: ::core::option::Option<i32>,
+    /// The certainty of the alert.
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "public_alerts::Certainty", optional, tag = "8")]
+    pub certainty: ::core::option::Option<i32>,
+    /// The urgency of the alert.
+    /// (-- aip.dev/not-precedent: Field type changed to nested enum per atomic
+    /// transition strategy. Wire-compatible; external consumers
+    /// rely exclusively on HTTP REST/JSON where enum strings remain identical.
+    /// --)
+    #[prost(enumeration = "public_alerts::Urgency", optional, tag = "9")]
+    pub urgency: ::core::option::Option<i32>,
+    /// Instructions recommended by the publisher. Please note that while this
+    /// field should be localized, it is not guaranteed that it will be.
+    #[prost(string, repeated, tag = "10")]
+    pub instruction: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Safety recommendations directive to the user, these can be provided by the
+    /// publisher or other authorities.
+    #[prost(message, repeated, tag = "11")]
+    pub safety_recommendations: ::prost::alloc::vec::Vec<SafetyRecommendation>,
+    /// The time zone offset from UTC for the location of the alert.
+    /// The value is formatted as a string ending in 's', e.g., "-14400s" for 4
+    /// hours behind UTC.
+    #[prost(string, tag = "12")]
+    pub timezone_offset: ::prost::alloc::string::String,
+    /// The start time of the event.
+    #[prost(message, optional, tag = "13")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The expiration time of the event.
+    #[prost(message, optional, tag = "14")]
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Details of the publisher that issued the alert.
+    #[prost(message, optional, tag = "15")]
+    pub data_source: ::core::option::Option<DataSource>,
+}
+/// Nested message and enum types in `PublicAlerts`.
+pub mod public_alerts {
+    /// The type of the weather event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// Unspecified weather event type.
+        Unspecified = 0,
+        /// Acid rain event.
+        AcidRain = 1,
+        /// Aftershock event.
+        Aftershock = 2,
+        /// Avalanche event.
+        Avalanche = 3,
+        /// Blizzard event.
+        Blizzard = 4,
+        /// Blowing snow event.
+        BlowingSnow = 5,
+        /// Bushfire event.
+        Bushfire = 6,
+        /// Coastal flood event.
+        CoastalFlood = 7,
+        /// Coastal hazard event.
+        CoastalHazard = 8,
+        /// Cold event.
+        Cold = 9,
+        /// Cyclone event.
+        Cyclone = 10,
+        /// Drought event.
+        Drought = 11,
+        /// Dust storm event.
+        DustStorm = 12,
+        /// Earthquake event.
+        Earthquake = 13,
+        /// Extra tropical cyclone event.
+        ExtratropicalCyclone = 14,
+        /// Fire event.
+        Fire = 15,
+        /// Fire weather event.
+        FireWeather = 16,
+        /// Flash flood event.
+        FlashFlood = 17,
+        /// Flood event.
+        Flood = 18,
+        /// Fog event.
+        Fog = 19,
+        /// Freezing event.
+        Freezing = 20,
+        /// Freezing air temperature event.
+        FreezingAirTemperature = 21,
+        /// Freezing drizzle event.
+        FreezingDrizzle = 22,
+        /// Freezing rain event.
+        FreezingRainEvent = 23,
+        /// Frost event.
+        Frost = 24,
+        /// Gale event.
+        Gale = 25,
+        /// Glaze event.
+        Glaze = 26,
+        /// Hail event.
+        Hail = 27,
+        /// Hazardous seas event.
+        HazardousSeas = 28,
+        /// Heat event.
+        Heat = 29,
+        /// Humidity event.
+        Humidity = 30,
+        /// Hurricane event.
+        Hurricane = 31,
+        /// Ice storm event.
+        IceStorm = 32,
+        /// Industrial fire event.
+        IndustrialFire = 33,
+        /// Lake effect snow event.
+        LakeEffectSnow = 34,
+        /// Landslide event.
+        Landslide = 35,
+        /// Monsoon event.
+        Monsoon = 36,
+        /// Muddy flood event.
+        MuddyFlood = 37,
+        /// Outflow event.
+        Outflow = 38,
+        /// Radiation event.
+        Radiation = 39,
+        /// Rain event.
+        RainEvent = 40,
+        /// River flooding event.
+        RiverFlooding = 41,
+        /// Severe thunderstorm warning event.
+        SevereThunderstormWarning = 42,
+        /// Snowsquall event.
+        Snowsquall = 43,
+        /// Snow event.
+        SnowEvent = 44,
+        /// Storm event.
+        Storm = 45,
+        /// Storm surge event.
+        StormSurge = 46,
+        /// Thunder event.
+        Thunder = 47,
+        /// Thunderstorm event.
+        Thunderstorm = 48,
+        /// Tornado event.
+        Tornado = 49,
+        /// Tornado warning event.
+        TornadoWarning = 50,
+        /// Tropical cyclone event.
+        TropicalCyclone = 51,
+        /// Tropical cyclone warnings and watches event.
+        TropicalCycloneWarningsAndWatches = 52,
+        /// Tropical disturbance event.
+        TropicalDisturbance = 53,
+        /// Tropical storm event.
+        TropicalStorm = 54,
+        /// Tsunami event.
+        Tsunami = 55,
+        /// Typhoon event.
+        Typhoon = 56,
+        /// Volcanic ash event.
+        VolcanicAsh = 57,
+        /// Volcanic eruption event.
+        VolcanicEruption = 58,
+        /// Wildfire event.
+        Wildfire = 59,
+        /// Wind event.
+        Wind = 60,
+        /// Wind chill event.
+        WindChill = 61,
+        /// Wind wave event.
+        WindWave = 62,
+        /// Winter storm event.
+        WinterStorm = 63,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::AcidRain => "ACID_RAIN",
+                Self::Aftershock => "AFTERSHOCK",
+                Self::Avalanche => "AVALANCHE",
+                Self::Blizzard => "BLIZZARD",
+                Self::BlowingSnow => "BLOWING_SNOW",
+                Self::Bushfire => "BUSHFIRE",
+                Self::CoastalFlood => "COASTAL_FLOOD",
+                Self::CoastalHazard => "COASTAL_HAZARD",
+                Self::Cold => "COLD",
+                Self::Cyclone => "CYCLONE",
+                Self::Drought => "DROUGHT",
+                Self::DustStorm => "DUST_STORM",
+                Self::Earthquake => "EARTHQUAKE",
+                Self::ExtratropicalCyclone => "EXTRATROPICAL_CYCLONE",
+                Self::Fire => "FIRE",
+                Self::FireWeather => "FIRE_WEATHER",
+                Self::FlashFlood => "FLASH_FLOOD",
+                Self::Flood => "FLOOD",
+                Self::Fog => "FOG",
+                Self::Freezing => "FREEZING",
+                Self::FreezingAirTemperature => "FREEZING_AIR_TEMPERATURE",
+                Self::FreezingDrizzle => "FREEZING_DRIZZLE",
+                Self::FreezingRainEvent => "FREEZING_RAIN_EVENT",
+                Self::Frost => "FROST",
+                Self::Gale => "GALE",
+                Self::Glaze => "GLAZE",
+                Self::Hail => "HAIL",
+                Self::HazardousSeas => "HAZARDOUS_SEAS",
+                Self::Heat => "HEAT",
+                Self::Humidity => "HUMIDITY",
+                Self::Hurricane => "HURRICANE",
+                Self::IceStorm => "ICE_STORM",
+                Self::IndustrialFire => "INDUSTRIAL_FIRE",
+                Self::LakeEffectSnow => "LAKE_EFFECT_SNOW",
+                Self::Landslide => "LANDSLIDE",
+                Self::Monsoon => "MONSOON",
+                Self::MuddyFlood => "MUDDY_FLOOD",
+                Self::Outflow => "OUTFLOW",
+                Self::Radiation => "RADIATION",
+                Self::RainEvent => "RAIN_EVENT",
+                Self::RiverFlooding => "RIVER_FLOODING",
+                Self::SevereThunderstormWarning => "SEVERE_THUNDERSTORM_WARNING",
+                Self::Snowsquall => "SNOWSQUALL",
+                Self::SnowEvent => "SNOW_EVENT",
+                Self::Storm => "STORM",
+                Self::StormSurge => "STORM_SURGE",
+                Self::Thunder => "THUNDER",
+                Self::Thunderstorm => "THUNDERSTORM",
+                Self::Tornado => "TORNADO",
+                Self::TornadoWarning => "TORNADO_WARNING",
+                Self::TropicalCyclone => "TROPICAL_CYCLONE",
+                Self::TropicalCycloneWarningsAndWatches => {
+                    "TROPICAL_CYCLONE_WARNINGS_AND_WATCHES"
+                }
+                Self::TropicalDisturbance => "TROPICAL_DISTURBANCE",
+                Self::TropicalStorm => "TROPICAL_STORM",
+                Self::Tsunami => "TSUNAMI",
+                Self::Typhoon => "TYPHOON",
+                Self::VolcanicAsh => "VOLCANIC_ASH",
+                Self::VolcanicEruption => "VOLCANIC_ERUPTION",
+                Self::Wildfire => "WILDFIRE",
+                Self::Wind => "WIND",
+                Self::WindChill => "WIND_CHILL",
+                Self::WindWave => "WIND_WAVE",
+                Self::WinterStorm => "WINTER_STORM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACID_RAIN" => Some(Self::AcidRain),
+                "AFTERSHOCK" => Some(Self::Aftershock),
+                "AVALANCHE" => Some(Self::Avalanche),
+                "BLIZZARD" => Some(Self::Blizzard),
+                "BLOWING_SNOW" => Some(Self::BlowingSnow),
+                "BUSHFIRE" => Some(Self::Bushfire),
+                "COASTAL_FLOOD" => Some(Self::CoastalFlood),
+                "COASTAL_HAZARD" => Some(Self::CoastalHazard),
+                "COLD" => Some(Self::Cold),
+                "CYCLONE" => Some(Self::Cyclone),
+                "DROUGHT" => Some(Self::Drought),
+                "DUST_STORM" => Some(Self::DustStorm),
+                "EARTHQUAKE" => Some(Self::Earthquake),
+                "EXTRATROPICAL_CYCLONE" => Some(Self::ExtratropicalCyclone),
+                "FIRE" => Some(Self::Fire),
+                "FIRE_WEATHER" => Some(Self::FireWeather),
+                "FLASH_FLOOD" => Some(Self::FlashFlood),
+                "FLOOD" => Some(Self::Flood),
+                "FOG" => Some(Self::Fog),
+                "FREEZING" => Some(Self::Freezing),
+                "FREEZING_AIR_TEMPERATURE" => Some(Self::FreezingAirTemperature),
+                "FREEZING_DRIZZLE" => Some(Self::FreezingDrizzle),
+                "FREEZING_RAIN_EVENT" => Some(Self::FreezingRainEvent),
+                "FROST" => Some(Self::Frost),
+                "GALE" => Some(Self::Gale),
+                "GLAZE" => Some(Self::Glaze),
+                "HAIL" => Some(Self::Hail),
+                "HAZARDOUS_SEAS" => Some(Self::HazardousSeas),
+                "HEAT" => Some(Self::Heat),
+                "HUMIDITY" => Some(Self::Humidity),
+                "HURRICANE" => Some(Self::Hurricane),
+                "ICE_STORM" => Some(Self::IceStorm),
+                "INDUSTRIAL_FIRE" => Some(Self::IndustrialFire),
+                "LAKE_EFFECT_SNOW" => Some(Self::LakeEffectSnow),
+                "LANDSLIDE" => Some(Self::Landslide),
+                "MONSOON" => Some(Self::Monsoon),
+                "MUDDY_FLOOD" => Some(Self::MuddyFlood),
+                "OUTFLOW" => Some(Self::Outflow),
+                "RADIATION" => Some(Self::Radiation),
+                "RAIN_EVENT" => Some(Self::RainEvent),
+                "RIVER_FLOODING" => Some(Self::RiverFlooding),
+                "SEVERE_THUNDERSTORM_WARNING" => Some(Self::SevereThunderstormWarning),
+                "SNOWSQUALL" => Some(Self::Snowsquall),
+                "SNOW_EVENT" => Some(Self::SnowEvent),
+                "STORM" => Some(Self::Storm),
+                "STORM_SURGE" => Some(Self::StormSurge),
+                "THUNDER" => Some(Self::Thunder),
+                "THUNDERSTORM" => Some(Self::Thunderstorm),
+                "TORNADO" => Some(Self::Tornado),
+                "TORNADO_WARNING" => Some(Self::TornadoWarning),
+                "TROPICAL_CYCLONE" => Some(Self::TropicalCyclone),
+                "TROPICAL_CYCLONE_WARNINGS_AND_WATCHES" => {
+                    Some(Self::TropicalCycloneWarningsAndWatches)
+                }
+                "TROPICAL_DISTURBANCE" => Some(Self::TropicalDisturbance),
+                "TROPICAL_STORM" => Some(Self::TropicalStorm),
+                "TSUNAMI" => Some(Self::Tsunami),
+                "TYPHOON" => Some(Self::Typhoon),
+                "VOLCANIC_ASH" => Some(Self::VolcanicAsh),
+                "VOLCANIC_ERUPTION" => Some(Self::VolcanicEruption),
+                "WILDFIRE" => Some(Self::Wildfire),
+                "WIND" => Some(Self::Wind),
+                "WIND_CHILL" => Some(Self::WindChill),
+                "WIND_WAVE" => Some(Self::WindWave),
+                "WINTER_STORM" => Some(Self::WinterStorm),
+                _ => None,
+            }
+        }
+    }
+    /// The code denoting the severity of the subject event of the alert message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Severity {
+        /// Severity not known.
+        Unknown = 0,
+        /// Extraordinary threat to life or property.
+        Extreme = 1,
+        /// Significant threat to life or property.
+        Severe = 2,
+        /// Possible threat to life or property.
+        Moderate = 3,
+        /// Minor threat to life or property.
+        Minor = 4,
+    }
+    impl Severity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "SEVERITY_UNKNOWN",
+                Self::Extreme => "EXTREME",
+                Self::Severe => "SEVERE",
+                Self::Moderate => "MODERATE",
+                Self::Minor => "MINOR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNKNOWN" => Some(Self::Unknown),
+                "EXTREME" => Some(Self::Extreme),
+                "SEVERE" => Some(Self::Severe),
+                "MODERATE" => Some(Self::Moderate),
+                "MINOR" => Some(Self::Minor),
+                _ => None,
+            }
+        }
+    }
+    /// The code denoting the certainty of the subject event of the alert message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Certainty {
+        /// Certainty not known.
+        Unknown = 0,
+        /// Determined to have occurred or to be ongoing.
+        Observed = 1,
+        /// Very likely.
+        VeryLikely = 2,
+        /// Likely (p > ~50%).
+        Likely = 3,
+        /// Possible but not likely (p \<= ~50%).
+        Possible = 4,
+        /// Unlikely (p ~ 0%).
+        Unlikely = 5,
+    }
+    impl Certainty {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "CERTAINTY_UNKNOWN",
+                Self::Observed => "OBSERVED",
+                Self::VeryLikely => "VERY_LIKELY",
+                Self::Likely => "LIKELY",
+                Self::Possible => "POSSIBLE",
+                Self::Unlikely => "UNLIKELY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CERTAINTY_UNKNOWN" => Some(Self::Unknown),
+                "OBSERVED" => Some(Self::Observed),
+                "VERY_LIKELY" => Some(Self::VeryLikely),
+                "LIKELY" => Some(Self::Likely),
+                "POSSIBLE" => Some(Self::Possible),
+                "UNLIKELY" => Some(Self::Unlikely),
+                _ => None,
+            }
+        }
+    }
+    /// The code denoting the urgency of the subject event of the alert message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Urgency {
+        /// Urgency not known.
+        Unknown = 0,
+        /// Responsive action SHOULD be taken immediately.
+        Immediate = 1,
+        /// Responsive action SHOULD be taken soon (within next hour).
+        Expected = 2,
+        /// Responsive action SHOULD be taken in the near future.
+        Future = 3,
+        /// Responsive action is no longer required.
+        Past = 4,
+    }
+    impl Urgency {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "URGENCY_UNKNOWN",
+                Self::Immediate => "IMMEDIATE",
+                Self::Expected => "EXPECTED",
+                Self::Future => "FUTURE",
+                Self::Past => "PAST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "URGENCY_UNKNOWN" => Some(Self::Unknown),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "EXPECTED" => Some(Self::Expected),
+                "FUTURE" => Some(Self::Future),
+                "PAST" => Some(Self::Past),
+                _ => None,
+            }
+        }
+    }
+}
 /// The type of the weather event.
 /// (-- Next available tag: 64 --)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2037,114 +3264,6 @@ impl Certainty {
             _ => None,
         }
     }
-}
-/// Represents a link to a data source.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DataSource {
-    /// The publisher of the alert.
-    #[prost(enumeration = "Publisher", tag = "1")]
-    pub publisher: i32,
-    /// Official publisher name. Please note that while this field should be
-    /// localized, it is not guaranteed that it will be.
-    #[prost(string, tag = "2")]
-    pub name: ::prost::alloc::string::String,
-    /// The URL of the authority's website.
-    #[prost(string, tag = "3")]
-    pub authority_uri: ::prost::alloc::string::String,
-}
-/// Represents a safety recommendation.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct SafetyRecommendation {
-    /// A directive to the user. Please note that while this field should be
-    /// localized, it is not guaranteed that it will be.
-    #[prost(string, tag = "1")]
-    pub directive: ::prost::alloc::string::String,
-    /// An optional subtext for the directive, which may contain additional
-    /// context for the user. Please note that while this field should be
-    /// localized, it is not guaranteed that it will be.
-    #[prost(string, optional, tag = "2")]
-    pub subtext: ::core::option::Option<::prost::alloc::string::String>,
-}
-/// Represents the public weather alerts.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PublicAlerts {
-    /// The unique identifier for this alert.
-    #[prost(string, tag = "1")]
-    pub alert_id: ::prost::alloc::string::String,
-    /// The localized title for the alert.
-    #[prost(message, optional, tag = "2")]
-    pub alert_title: ::core::option::Option<super::super::super::r#type::LocalizedText>,
-    /// The type of weather event.
-    #[prost(enumeration = "WeatherEventType", tag = "3")]
-    pub event_type: i32,
-    /// The name of the area where the alert is issued.
-    #[prost(string, tag = "4")]
-    pub area_name: ::prost::alloc::string::String,
-    /// A GeoJSON representation of the areas where the alert is issued.
-    ///
-    /// The GeoJSON data must be in RFC 7946 format and represent either a
-    /// Polygon (for a single contiguous area) or a MultiPolygon (for multiple
-    /// distinct areas).
-    ///
-    /// Example:
-    ///
-    /// {
-    /// "type": "Polygon",
-    /// "coordinates": \[
-    /// \[
-    /// \[-1, -1\], \[-1, 0\], \[0, 0\], \[-1, -1\]
-    /// \]
-    /// \]
-    /// }
-    ///
-    /// A sample MultiPolygon GeoJson string looks like:
-    ///
-    /// {
-    /// "type": "MultiPolygon",
-    /// "coordinates": \[
-    /// \[
-    /// \[0, 0\], \[-1, 0\], \[-1, 1\], \[0, 0\]
-    /// \],
-    /// \[
-    /// \[0, 0\], \[-2, 0\], \[-2, 2\], \[0, 0\]
-    /// \]
-    /// \]
-    #[prost(string, optional, tag = "5")]
-    pub polygon: ::core::option::Option<::prost::alloc::string::String>,
-    /// The latest text describing the alert as issued by the official authority.
-    /// Please note that while this field should be localized, it is not guaranteed
-    /// that it will be.
-    #[prost(string, optional, tag = "6")]
-    pub description: ::core::option::Option<::prost::alloc::string::String>,
-    /// The severity level of the alert.
-    #[prost(enumeration = "Severity", tag = "7")]
-    pub severity: i32,
-    /// The certainty of the alert.
-    #[prost(enumeration = "Certainty", optional, tag = "8")]
-    pub certainty: ::core::option::Option<i32>,
-    /// The urgency of the alert.
-    #[prost(enumeration = "Urgency", optional, tag = "9")]
-    pub urgency: ::core::option::Option<i32>,
-    /// Instructions recommended by the publisher. Please note that while this
-    /// field should be localized, it is not guaranteed that it will be.
-    #[prost(string, repeated, tag = "10")]
-    pub instruction: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Safety recommendations directive to the user, these can be provided by the
-    /// publisher or other authorities.
-    #[prost(message, repeated, tag = "11")]
-    pub safety_recommendations: ::prost::alloc::vec::Vec<SafetyRecommendation>,
-    /// The timezone offset of the event, in +/-HH:MM format.
-    #[prost(string, tag = "12")]
-    pub timezone_offset: ::prost::alloc::string::String,
-    /// The start time of the event.
-    #[prost(message, optional, tag = "13")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The expiration time of the event.
-    #[prost(message, optional, tag = "14")]
-    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Details of the publisher that issued the alert.
-    #[prost(message, optional, tag = "15")]
-    pub data_source: ::core::option::Option<DataSource>,
 }
 /// Represents the units system used to measure values.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

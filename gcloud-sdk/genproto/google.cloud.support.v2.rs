@@ -1390,6 +1390,17 @@ pub mod comment_service_client {
     }
 }
 /// A support event subscription.
+///
+/// You can also manage support event subscriptions using other tools:
+///
+/// * [`gcloud support  support-event-subscriptions`](/sdk/gcloud/reference/support/support-event-subscriptions)
+///   (or [`gcloud  beta`](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+///   for beta)
+/// * [Terraform
+///   `google_cloud_support_support_event_subscription`](<https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>)
+///   (or [google-beta
+///   provider](<https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>)
+///   for beta)
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SupportEventSubscription {
     /// Identifier. The resource name of the support event subscription.

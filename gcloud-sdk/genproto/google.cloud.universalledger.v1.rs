@@ -1433,6 +1433,20 @@ pub struct Fields {
     #[prost(map = "string, message", tag = "1")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
+/// Information about a redacted field in the response.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RedactedField {
+    /// Output only. The fully qualified field paths that were redacted from the
+    /// payload.
+    #[prost(message, optional, tag = "1")]
+    pub redacted_path: ::core::option::Option<::prost_types::FieldMask>,
+    /// Output only. A human-readable explanation of why the fields were redacted.
+    #[prost(string, tag = "2")]
+    pub reason: ::prost::alloc::string::String,
+    /// Output only. A machine readable code for why the fields were redacted.
+    #[prost(enumeration = "super::super::super::rpc::Code", tag = "3")]
+    pub reason_code: i32,
+}
 /// Represents an event in the processing of a transaction as observed by a
 /// single validator.
 ///
@@ -1810,8 +1824,8 @@ pub struct RoundCertificate {
     /// Output only. The ID of the round for which the certificate is for.
     #[prost(int64, tag = "1")]
     pub round_id: i64,
-    /// Output only. The human readable validator identifier. This is used to
-    /// lookup the public key against which the `validator_signatures` is verified.
+    /// Output only. The human readable validator identifier. This is used to look
+    /// up the public key against which the `validator_signatures` is verified.
     #[prost(string, tag = "2")]
     pub validator_id: ::prost::alloc::string::String,
     /// Output only. The hex representation of the homomorphic digest over the
@@ -1875,13 +1889,16 @@ pub struct TransactionStatus {
     #[prost(bytes = "vec", tag = "2")]
     pub message: ::prost::alloc::vec::Vec<u8>,
 }
-/// Effects of the execution of a transaction in the world state.
+/// Effects of the execution of a transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionEffects {
     /// Output only. The resulting status of the transaction execution.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<TransactionStatus>,
-    /// Output only. The effects of the transaction in the world state.
+    /// Output only. Deprecated: Query the network state instead to determine any
+    /// changes to the world state. The effects of the transaction in the world
+    /// state.
+    #[deprecated]
     #[prost(message, repeated, tag = "2")]
     pub effects: ::prost::alloc::vec::Vec<TransactionEffect>,
 }
@@ -1920,7 +1937,7 @@ pub struct TransactionCertificate {
     /// executed in.
     #[prost(int64, tag = "2")]
     pub round_id: i64,
-    /// Output only. The effects of the transaction in the world state.
+    /// Output only. The effects from the transaction execution.
     #[prost(message, optional, tag = "3")]
     pub transaction_effects: ::core::option::Option<TransactionEffects>,
     /// Output only. Events produced by the transaction.
@@ -2066,6 +2083,14 @@ pub mod transaction_attempt {
             }
         }
     }
+}
+/// The state of a transaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransactionState {
+    /// One entry per each known submission of the transaction to the validator
+    /// handling the request.
+    #[prost(message, repeated, tag = "1")]
+    pub transaction_attempts: ::prost::alloc::vec::Vec<TransactionAttempt>,
 }
 /// Represents a Universal Ledger endpoint.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2217,6 +2242,44 @@ pub struct QueryTransactionStateResponse {
     /// handling the request.
     #[prost(message, repeated, tag = "1")]
     pub transaction_attempts: ::prost::alloc::vec::Vec<TransactionAttempt>,
+}
+/// Request message for QueryData.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryDataRequest {
+    /// Required. The endpoint to serve the request.
+    /// Format: `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    /// The location is a region.
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. A protobuf serialized
+    /// \[SignedQueryRequest\]\[google.cloud.universalledger.v1.SignedQueryRequest\] to
+    /// query the Universal Ledger network.
+    #[prost(bytes = "vec", tag = "2")]
+    pub serialized_signed_query_request: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for QueryData.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDataResponse {
+    /// Indicates which fields have been redacted from the response due to
+    /// permission restrictions.
+    #[prost(message, repeated, tag = "3")]
+    pub redacted_fields: ::prost::alloc::vec::Vec<RedactedField>,
+    /// The query-specific result.
+    #[prost(oneof = "query_data_response::Kind", tags = "1, 2")]
+    pub kind: ::core::option::Option<query_data_response::Kind>,
+}
+/// Nested message and enum types in `QueryDataResponse`.
+pub mod query_data_response {
+    /// The query-specific result.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        /// The account information, if the query was for an account.
+        #[prost(message, tag = "1")]
+        Account(super::Account),
+        /// The state of a transaction, if the query was for a transaction.
+        #[prost(message, tag = "2")]
+        TransactionState(super::TransactionState),
+    }
 }
 /// Generated client implementations.
 pub mod universal_ledger_client {
@@ -2505,6 +2568,42 @@ pub mod universal_ledger_client {
                     GrpcMethod::new(
                         "google.cloud.universalledger.v1.UniversalLedger",
                         "QueryAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries the network for information stored on the ledger,
+        /// such as accounts and transactions.
+        ///
+        /// Access to certain sensitive fields, such as account balances, may be
+        /// restricted based on the identity of the sender derived from the signature
+        /// in the request. If the sender lacks permission, sensitive fields will be
+        /// redacted from the response and reported in the `redacted_fields` field.
+        pub async fn query_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.universalledger.v1.UniversalLedger/QueryData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.universalledger.v1.UniversalLedger",
+                        "QueryData",
                     ),
                 );
             self.inner.unary(req, path, codec).await

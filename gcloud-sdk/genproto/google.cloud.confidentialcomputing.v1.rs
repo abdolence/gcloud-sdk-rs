@@ -577,6 +577,10 @@ pub struct VerifyConfidentialGkeRequest {
     pub options: ::core::option::Option<
         verify_confidential_gke_request::ConfidentialGkeOptions,
     >,
+    /// Optional. Optional platform security architecture hint for the verifier
+    /// engine. Defaults to `VIRTUALIZED_CVM` behavior if unspecified.
+    #[prost(enumeration = "verify_confidential_gke_request::PlatformType", tag = "4")]
+    pub platform_type: i32,
     /// Required. A tee attestation report, used to populate hardware rooted
     /// claims.
     #[prost(oneof = "verify_confidential_gke_request::TeeAttestation", tags = "2")]
@@ -602,6 +606,50 @@ pub mod verify_confidential_gke_request {
         /// Defaults to SIGNATURE_TYPE_OIDC if unspecified.
         #[prost(enumeration = "super::SignatureType", tag = "4")]
         pub signature_type: i32,
+    }
+    /// Platform types supported by Confidential GKE.
+    /// This enum is not frozen, and new values may be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PlatformType {
+        /// Unspecified platform type, defaults to `VIRTUALIZED_CVM`.
+        Unspecified = 0,
+        /// Standard virtualized Confidential GKE VM.
+        VirtualizedCvm = 1,
+        /// Bare Metal host using a vTPM.
+        BareMetalVtpm = 2,
+    }
+    impl PlatformType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PLATFORM_TYPE_UNSPECIFIED",
+                Self::VirtualizedCvm => "VIRTUALIZED_CVM",
+                Self::BareMetalVtpm => "BARE_METAL_VTPM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VIRTUALIZED_CVM" => Some(Self::VirtualizedCvm),
+                "BARE_METAL_VTPM" => Some(Self::BareMetalVtpm),
+                _ => None,
+            }
+        }
     }
     /// Required. A tee attestation report, used to populate hardware rooted
     /// claims.

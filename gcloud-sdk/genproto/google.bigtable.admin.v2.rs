@@ -3285,6 +3285,8 @@ pub mod table {
         Unspecified = 0,
         /// The table keeps data versioned at a granularity of 1ms.
         Millis = 1,
+        /// The table keeps data versioned at a granularity of 1us.
+        Micros = 2,
     }
     impl TimestampGranularity {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3295,6 +3297,7 @@ pub mod table {
             match self {
                 Self::Unspecified => "TIMESTAMP_GRANULARITY_UNSPECIFIED",
                 Self::Millis => "MILLIS",
+                Self::Micros => "MICROS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3302,6 +3305,7 @@ pub mod table {
             match value {
                 "TIMESTAMP_GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
                 "MILLIS" => Some(Self::Millis),
+                "MICROS" => Some(Self::Micros),
                 _ => None,
             }
         }
@@ -3925,7 +3929,7 @@ pub mod tiered_storage_rule {
         IncludeIfOlderThan(::prost_types::Duration),
     }
 }
-/// Represents a protobuf schema.
+/// Represents a collection of protobuf schemas.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProtoSchema {
     /// Required. Contains a protobuf-serialized
@@ -3948,6 +3952,17 @@ pub struct ProtoSchema {
     #[prost(bytes = "vec", tag = "2")]
     pub proto_descriptors: ::prost::alloc::vec::Vec<u8>,
 }
+/// Represents a collection of Avro schemas.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AvroSchema {
+    /// Required. The Avro schemas in JSON format.
+    /// Each element must be the content of a valid, self-contained Avro schema
+    /// file (.avsc), as described in <https://avro.apache.org/docs/1.8.1/spec.html.>
+    /// Use repeated elements to include multiple Avro schema files in a single
+    /// bundle.
+    #[prost(string, repeated, tag = "1")]
+    pub json_schemas: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A named collection of related schemas.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchemaBundle {
@@ -3964,7 +3979,7 @@ pub struct SchemaBundle {
     pub etag: ::prost::alloc::string::String,
     /// The type of this schema bundle. The oneof case cannot change after
     /// creation.
-    #[prost(oneof = "schema_bundle::Type", tags = "2")]
+    #[prost(oneof = "schema_bundle::Type", tags = "2, 6")]
     pub r#type: ::core::option::Option<schema_bundle::Type>,
 }
 /// Nested message and enum types in `SchemaBundle`.
@@ -3976,6 +3991,9 @@ pub mod schema_bundle {
         /// Schema for Protobufs.
         #[prost(message, tag = "2")]
         ProtoSchema(super::ProtoSchema),
+        /// Optional. Schema for Avros.
+        #[prost(message, tag = "6")]
+        AvroSchema(super::AvroSchema),
     }
 }
 /// Indicates the type of the restore source.

@@ -66,7 +66,10 @@ pub mod o_auth_credentials {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasourceReferences {
     /// The datasources to use.
-    #[prost(oneof = "datasource_references::References", tags = "1, 2, 3, 8, 9, 10")]
+    #[prost(
+        oneof = "datasource_references::References",
+        tags = "1, 2, 3, 8, 9, 10, 11, 13"
+    )]
     pub references: ::core::option::Option<datasource_references::References>,
 }
 /// Nested message and enum types in `DatasourceReferences`.
@@ -95,6 +98,12 @@ pub mod datasource_references {
         /// method.
         #[prost(message, tag = "10")]
         CloudSqlReference(super::CloudSqlReference),
+        /// Reference to a Bigtable instance.
+        #[prost(message, tag = "11")]
+        BigtableReference(super::BigtableReference),
+        /// Reference to a Firestore database.
+        #[prost(message, tag = "13")]
+        FirestoreReference(super::FirestoreReference),
     }
 }
 /// Message representing references to BigQuery tables and property graphs.
@@ -113,6 +122,9 @@ pub struct BigQueryTableReferences {
     pub property_graph_references: ::prost::alloc::vec::Vec<
         BigQueryPropertyGraphReference,
     >,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "4")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -218,6 +230,64 @@ pub struct AlloyDbDatabaseReference {
     /// specifies a table and can optionally include the table's schema to provide
     /// context for the query.
     #[prost(message, repeated, tag = "7")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+}
+/// Message representing reference to a Bigtable instance and agent context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigtableReference {
+    /// Required. Singular proto that supports specifying which database and tables
+    /// to include.
+    #[prost(message, optional, tag = "1")]
+    pub database_reference: ::core::option::Option<BigtableDatabaseReference>,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "2")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
+}
+/// Message representing reference to Bigtable database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigtableDatabaseReference {
+    /// Required. The project the instance belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The instance id.
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Optional. The table ids. Denotes all tables if unset.
+    #[prost(string, repeated, tag = "3")]
+    pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "4")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+}
+/// Message representing reference to a Firestore database and agent context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FirestoreReference {
+    /// Required. Singular proto that supports specifying which database and tables
+    /// to include.
+    #[prost(message, optional, tag = "1")]
+    pub database_reference: ::core::option::Option<FirestoreDatabaseReference>,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "2")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
+}
+/// Message representing a reference to a single Firestore database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FirestoreDatabaseReference {
+    /// Required. Project the firestore database belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The database id.
+    #[prost(string, tag = "2")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Optional. The collection ids. Denotes all collections if unset.
+    #[prost(string, repeated, tag = "3")]
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to collections within the database. Each reference
+    /// specifies a collection and can optionally include the collection's schema
+    /// to provide context for the query.
+    #[prost(message, repeated, tag = "4")]
     pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
 }
 /// Message representing reference to a Spanner database and agent context.
@@ -489,7 +559,7 @@ pub struct Datasource {
     #[prost(message, optional, tag = "10")]
     pub struct_schema: ::core::option::Option<::prost_types::Struct>,
     /// The reference to the datasource.
-    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14, 16")]
+    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14, 15, 16, 17")]
     pub reference: ::core::option::Option<datasource::Reference>,
 }
 /// Nested message and enum types in `Datasource`.
@@ -515,9 +585,15 @@ pub mod datasource {
         /// A reference to a CloudSQL database.
         #[prost(message, tag = "14")]
         CloudSqlReference(super::CloudSqlReference),
+        /// A reference to a Bigtable instance.
+        #[prost(message, tag = "15")]
+        BigtableReference(super::BigtableReference),
         /// A reference to a BigQuery property graph.
         #[prost(message, tag = "16")]
         BigqueryPropertyGraphReference(super::BigQueryPropertyGraphReference),
+        /// A reference to a Firestore database.
+        #[prost(message, tag = "17")]
+        FirestoreReference(super::FirestoreReference),
     }
 }
 /// The schema of a Datasource or QueryResult instance.
@@ -2102,6 +2178,10 @@ pub struct GenerationOptions {
     /// clarifying_question if the input query is ambiguous.
     #[prost(bool, tag = "4")]
     pub generate_disambiguation_question: bool,
+    /// Optional. If true (default to false), returns internal debugging
+    /// information.
+    #[prost(bool, tag = "5")]
+    pub generate_debug_info: bool,
 }
 /// References to data sources and context to use for the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2169,6 +2249,14 @@ pub struct QueryDataResponse {
     pub disambiguation_question: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Detailed step-by-step pipeline execution information.
+    /// Populated only if generation_options.generate_debug_info was true.
+    /// Provided for debugging and transparency purposes only.
+    /// The structure and content of this object is not guaranteed and may
+    /// change at any time without notice. Do not write production code or
+    /// business logic depending on the fields in this object.
+    #[prost(message, optional, tag = "9")]
+    pub pipeline_debug_info: ::core::option::Option<::prost_types::Struct>,
 }
 /// The result of a query execution. The design is generic for all dialects.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2181,6 +2269,10 @@ pub struct ExecutedQueryResult {
     pub rows: ::prost::alloc::vec::Vec<executed_query_result::Row>,
     /// The total number of rows in the full result set, if known.
     /// This may be an estimate or an exact count.
+    ///
+    /// Note: if an internal limit (such as LIMIT 1000) was applied during query
+    /// execution to guard against excessive data transfer, this count reflects the
+    /// truncated result size rather than the unrestricted table result size.
     #[prost(int64, tag = "3")]
     pub total_row_count: i64,
     /// Set to true if the returned rows in `query_result` are a subset of the

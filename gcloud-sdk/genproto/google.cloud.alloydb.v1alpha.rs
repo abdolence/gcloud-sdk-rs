@@ -1154,6 +1154,10 @@ pub struct Instance {
     /// instance.
     #[prost(message, optional, tag = "28")]
     pub psc_instance_config: ::core::option::Option<instance::PscInstanceConfig>,
+    /// Output only. Information about the Private Service Connect (PSC) for the
+    /// instance.
+    #[prost(message, optional, tag = "46")]
+    pub psc_instance_info: ::core::option::Option<instance::PscInstanceInfo>,
     /// Optional. Instance-level network configuration.
     #[prost(message, optional, tag = "29")]
     pub network_config: ::core::option::Option<instance::InstanceNetworkConfig>,
@@ -1446,6 +1450,85 @@ pub mod instance {
         /// Optional. Configurations for setting up PSC service automation.
         #[prost(message, repeated, tag = "9")]
         pub psc_auto_connections: ::prost::alloc::vec::Vec<PscAutoConnectionConfig>,
+        /// Optional. Configuration for setting up PSC auto DNS for the instance.
+        #[prost(enumeration = "PscAutoDnsState", tag = "11")]
+        pub psc_auto_dns_state: i32,
+        /// Optional. Configuration for setting up PSC auto connection for the
+        /// instance.
+        #[prost(
+            enumeration = "psc_instance_config::PscAutoConnectionPolicyState",
+            tag = "13"
+        )]
+        pub psc_auto_connection_policy_state: i32,
+    }
+    /// Nested message and enum types in `PscInstanceConfig`.
+    pub mod psc_instance_config {
+        /// The state of the PSC auto connection policy.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum PscAutoConnectionPolicyState {
+            /// The state is unspecified. For old instances, this means the PSC auto
+            /// connection is disabled. For new instances, this means the PSC auto
+            /// connection is enabled by default.
+            Unspecified = 0,
+            /// Enables the PSC auto connection for the instance.
+            Enabled = 1,
+            /// Disables the PSC auto connection for the instance.
+            Disabled = 2,
+        }
+        impl PscAutoConnectionPolicyState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED",
+                    Self::Enabled => "ENABLED",
+                    Self::Disabled => "DISABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED" => {
+                        Some(Self::Unspecified)
+                    }
+                    "ENABLED" => Some(Self::Enabled),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Information about the Private Service Connect (PSC) for the instance.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PscInstanceInfo {
+        /// Output only. The effective state of the PSC auto DNS for the instance.
+        #[prost(bool, tag = "1")]
+        pub effective_psc_auto_dns_enabled: bool,
+        /// Output only. Specifies the auto DNS names for the instance.
+        #[prost(string, repeated, tag = "2")]
+        pub psc_auto_dns_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Output only. Indicates if the PSC auto connection policy is enabled for
+        /// the instance. For older instances, this will be off by default, but for
+        /// newer instances, this will be auto-enabled.
+        #[prost(bool, tag = "3")]
+        pub effective_psc_auto_connection_policy: bool,
+        /// Output only. The PSC service connection policy name. The format is
+        /// "projects/\<PROJECT_ID>/regions/\<REGION_ID>/serviceConnectionPolicies/\<alloydb-$NETWORK-$RANDOM-scp>"
+        #[prost(string, tag = "4")]
+        pub service_connection_policy: ::prost::alloc::string::String,
     }
     /// Metadata related to instance-level network configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1679,6 +1762,52 @@ pub mod instance {
             }
         }
     }
+    /// The state of the PSC auto DNS.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PscAutoDnsState {
+        /// The state is unspecified. For old instances, this means the PSC auto DNS
+        /// is disabled. For new instances, this means the PSC auto DNS is enabled
+        /// by default. Use `effective_psc_auto_dns_enabled` to check the
+        /// effective state of the PSC auto DNS.
+        Unspecified = 0,
+        /// Enables the PSC auto DNS for the instance.
+        Enabled = 1,
+        /// Disables the PSC auto DNS for the instance.
+        Disabled = 2,
+    }
+    impl PscAutoDnsState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PSC_AUTO_DNS_STATE_UNSPECIFIED",
+                Self::Enabled => "PSC_AUTO_DNS_STATE_ENABLED",
+                Self::Disabled => "PSC_AUTO_DNS_STATE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PSC_AUTO_DNS_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PSC_AUTO_DNS_STATE_ENABLED" => Some(Self::Enabled),
+                "PSC_AUTO_DNS_STATE_DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
     /// Specifies whether an instance needs to spin up.
     #[derive(
         Clone,
@@ -1753,6 +1882,10 @@ pub struct ConnectionInfo {
     /// Output only. The DNS name to use with PSC for the Instance.
     #[prost(string, tag = "6")]
     pub psc_dns_name: ::prost::alloc::string::String,
+    /// Output only. Specifies the DNS name to use with PSC service automation for
+    /// the Instance.
+    #[prost(string, tag = "9")]
+    pub psc_auto_dns_name: ::prost::alloc::string::String,
 }
 /// Message describing Backup object
 #[derive(Clone, PartialEq, ::prost::Message)]

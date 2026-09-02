@@ -380,12 +380,24 @@ impl PolylineEncoding {
 /// `PolylineDetails` defines an interval and associated metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolylineDetails {
+    /// Tunnel details along the polyline. This field is populated if the request
+    /// specifies the `avoid_tunnels` route modifier and the resultant route fails
+    /// to avoid them, OR if `TUNNEL_INFO_ON_POLYLINE` is specified in
+    /// `extra_computations` and the route contains tunnels.
+    #[prost(message, repeated, tag = "8")]
+    pub tunnel_info: ::prost::alloc::vec::Vec<polyline_details::TunnelInfo>,
     /// Flyover details along the polyline.
     #[prost(message, repeated, tag = "12")]
     pub flyover_info: ::prost::alloc::vec::Vec<polyline_details::FlyoverInfo>,
     /// Narrow road details along the polyline.
     #[prost(message, repeated, tag = "13")]
     pub narrow_road_info: ::prost::alloc::vec::Vec<polyline_details::NarrowRoadInfo>,
+    /// Bridge details along the polyline.
+    #[prost(message, repeated, tag = "14")]
+    pub bridge_info: ::prost::alloc::vec::Vec<polyline_details::BridgeInfo>,
+    /// Skyway details along the polyline.
+    #[prost(message, repeated, tag = "15")]
+    pub skyway_info: ::prost::alloc::vec::Vec<polyline_details::SkywayInfo>,
 }
 /// Nested message and enum types in `PolylineDetails`.
 pub mod polyline_details {
@@ -400,6 +412,36 @@ pub mod polyline_details {
         /// The end index of this detail in the polyline.
         #[prost(int32, optional, tag = "2")]
         pub end_index: ::core::option::Option<i32>,
+    }
+    /// Encapsulates information about tunnels along the polyline.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TunnelInfo {
+        /// Denotes whether a tunnel exists for a given stretch of the polyline.
+        #[prost(enumeration = "RoadFeatureState", tag = "1")]
+        pub tunnel_presence: i32,
+        /// The location of tunnel related information along the polyline.
+        #[prost(message, optional, tag = "2")]
+        pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
+    }
+    /// Encapsulates information about bridges along the polyline.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BridgeInfo {
+        /// Denotes whether a bridge exists for a given stretch of the polyline.
+        #[prost(enumeration = "RoadFeatureState", tag = "1")]
+        pub bridge_presence: i32,
+        /// The location of bridge related information along the polyline.
+        #[prost(message, optional, tag = "2")]
+        pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
+    }
+    /// Encapsulates information about skyways along the polyline.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SkywayInfo {
+        /// Denotes whether a skyway exists for a given stretch of the polyline.
+        #[prost(enumeration = "RoadFeatureState", tag = "1")]
+        pub skyway_presence: i32,
+        /// The location of skyway related information along the polyline.
+        #[prost(message, optional, tag = "2")]
+        pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about flyovers along the polyline.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1415,6 +1457,8 @@ pub enum TollPass {
     /// MI, USA.
     UsMiBcpass = 94,
     /// MI, USA.
+    UsMiBreakaway = 101,
+    /// MI, USA.
     UsMiGrosseIleTollBridgePassTag = 37,
     /// MI, USA.
     /// Deprecated as this pass type no longer exists.
@@ -1571,6 +1615,7 @@ impl TollPass {
                 "US_MI_AMBASSADOR_BRIDGE_PREMIER_COMMUTER_CARD"
             }
             Self::UsMiBcpass => "US_MI_BCPASS",
+            Self::UsMiBreakaway => "US_MI_BREAKAWAY",
             Self::UsMiGrosseIleTollBridgePassTag => {
                 "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG"
             }
@@ -1688,6 +1733,7 @@ impl TollPass {
                 Some(Self::UsMiAmbassadorBridgePremierCommuterCard)
             }
             "US_MI_BCPASS" => Some(Self::UsMiBcpass),
+            "US_MI_BREAKAWAY" => Some(Self::UsMiBreakaway),
             "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG" => {
                 Some(Self::UsMiGrosseIleTollBridgePassTag)
             }
@@ -1823,6 +1869,15 @@ pub struct RouteModifiers {
     /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(enumeration = "TollPass", repeated, tag = "6")]
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. When set to true, avoids tunnels where reasonable, giving
+    /// preference to routes not containing tunnels. Applies only to the `DRIVE`
+    /// and `TWO_WHEELER`
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
+    /// \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\]
+    /// must be set to `TRAFFIC_AWARE_OPTIMAL`.
+    /// This field is not supported in ComputeRouteMatrix.
+    #[prost(bool, tag = "7")]
+    pub avoid_tunnels: bool,
 }
 /// A set of values that specify factors to take into consideration when
 /// calculating the route.
@@ -2133,7 +2188,7 @@ pub mod waypoint {
         #[prost(string, tag = "7")]
         Address(::prost::alloc::string::String),
         /// A token that identifies a
-        /// [`NavigationPoint`](<https://developers.google.com/maps/documentation/geocoding/reference/rest/v4alpha/geocode.destinations/searchDestinations#navigationpoint>),
+        /// [`NavigationPoint`](/maps/documentation/geocoding/reference/rest/v4alpha/geocode.destinations/searchDestinations#navigationpoint),
         /// obtained from the `SearchDestinations` method of the Geocoding API.
         #[prost(string, tag = "8")]
         NavigationPointToken(::prost::alloc::string::String),
@@ -2219,9 +2274,9 @@ pub struct ComputeRoutesRequest {
     /// Optional. If set to true, the service attempts to minimize the overall cost
     /// of the route by re-ordering the specified intermediate waypoints. The
     /// request fails if any of the intermediate waypoints is a `via` waypoint. Use
-    /// `ComputeRoutesResponse.Routes.optimized_intermediate_waypoint_index` to
+    /// `ComputeRoutesResponse.routes.optimized_intermediate_waypoint_index` to
     /// find the new ordering.
-    /// If `ComputeRoutesResponseroutes.optimized_intermediate_waypoint_index` is
+    /// If `ComputeRoutesResponse.routes.optimized_intermediate_waypoint_index` is
     /// not requested in the `X-Goog-FieldMask` header, the request fails.
     /// If `optimize_waypoint_order` is set to false,
     /// `ComputeRoutesResponse.optimized_intermediate_waypoint_index` will be
@@ -2334,6 +2389,7 @@ pub mod compute_routes_request {
         }
     }
     /// Extra computations to perform while completing the request.
+    /// Additional values may be added in the future.
     #[derive(
         Clone,
         Copy,
@@ -2355,23 +2411,35 @@ pub mod compute_routes_request {
         FuelConsumption = 2,
         /// Traffic aware polylines for the route(s).
         TrafficOnPolyline = 3,
-        /// [`NavigationInstructions`](google.maps.routing.v2.NavigationInstructions.instructions)
+        /// \[`NavigationInstruction`\]\[google.maps.routing.v2.NavigationInstruction\]
         /// presented as a formatted HTML text string. This content
         /// is meant to be read as-is. This content is for display only.
         /// Do not programmatically parse it.
         HtmlFormattedNavigationInstructions = 4,
         /// Flyover information for the route(s). The
         /// `routes.polyline_details.flyover_info` fieldmask must be specified to
-        /// return this information. This data will only currently be populated for
+        /// return this information. This data will currently only be populated for
         /// certain metros in India. This feature is experimental, and the
         /// SKU/charge is subject to change.
         FlyoverInfoOnPolyline = 7,
         /// Narrow road information for the route(s). The
         /// `routes.polyline_details.narrow_road_info` fieldmask must be specified
-        /// to return this information. This data will only currently be populated
+        /// to return this information. This data will currently only be populated
         /// for certain metros in India. This feature is experimental, and the
         /// SKU/charge is subject to change.
         NarrowRoadInfoOnPolyline = 8,
+        /// Tunnel information for the route(s). The
+        /// `routes.polyline_details.tunnel_info` fieldmask must be specified to
+        /// return this information.
+        TunnelInfoOnPolyline = 9,
+        /// Bridge information for the route(s). The
+        /// `routes.polyline_details.bridge_info` fieldmask must be specified to
+        /// return this information.
+        BridgeInfoOnPolyline = 10,
+        /// Skyway information for the route(s). The
+        /// `routes.polyline_details.skyway_info` fieldmask must be specified to
+        /// return this information.
+        SkywayInfoOnPolyline = 11,
     }
     impl ExtraComputation {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2389,6 +2457,9 @@ pub mod compute_routes_request {
                 }
                 Self::FlyoverInfoOnPolyline => "FLYOVER_INFO_ON_POLYLINE",
                 Self::NarrowRoadInfoOnPolyline => "NARROW_ROAD_INFO_ON_POLYLINE",
+                Self::TunnelInfoOnPolyline => "TUNNEL_INFO_ON_POLYLINE",
+                Self::BridgeInfoOnPolyline => "BRIDGE_INFO_ON_POLYLINE",
+                Self::SkywayInfoOnPolyline => "SKYWAY_INFO_ON_POLYLINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2403,6 +2474,9 @@ pub mod compute_routes_request {
                 }
                 "FLYOVER_INFO_ON_POLYLINE" => Some(Self::FlyoverInfoOnPolyline),
                 "NARROW_ROAD_INFO_ON_POLYLINE" => Some(Self::NarrowRoadInfoOnPolyline),
+                "TUNNEL_INFO_ON_POLYLINE" => Some(Self::TunnelInfoOnPolyline),
+                "BRIDGE_INFO_ON_POLYLINE" => Some(Self::BridgeInfoOnPolyline),
+                "SKYWAY_INFO_ON_POLYLINE" => Some(Self::SkywayInfoOnPolyline),
                 _ => None,
             }
         }

@@ -1002,6 +1002,29 @@ pub struct ReadRowsRequest {
     /// from offset zero.
     #[prost(int64, tag = "2")]
     pub offset: i64,
+    /// Specifies output serialization options. Only job \_default streams are
+    /// supported.
+    ///
+    /// This feature is not yet available.
+    #[prost(oneof = "read_rows_request::OutputFormatSerializationOptions", tags = "5")]
+    pub output_format_serialization_options: ::core::option::Option<
+        read_rows_request::OutputFormatSerializationOptions,
+    >,
+}
+/// Nested message and enum types in `ReadRowsRequest`.
+pub mod read_rows_request {
+    /// Specifies output serialization options. Only job \_default streams are
+    /// supported.
+    ///
+    /// This feature is not yet available.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum OutputFormatSerializationOptions {
+        /// Optional. Options specific to the Apache Arrow output format.
+        ///
+        /// This feature is not yet available.
+        #[prost(message, tag = "5")]
+        ArrowSerializationOptions(super::ArrowSerializationOptions),
+    }
 }
 /// Information on if the current connection is being throttled.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1071,6 +1094,12 @@ pub struct ReadRowsResponse {
     /// greater than 0, the client should skip decompression.
     #[prost(int64, optional, tag = "9")]
     pub uncompressed_byte_size: ::core::option::Option<i64>,
+    /// Output only. The total estimated number of rows in the query results.
+    /// Only populated when reading data from a BigQuery job.
+    ///
+    /// This feature is not yet available.
+    #[prost(int64, optional, tag = "10")]
+    pub total_estimated_row_count: ::core::option::Option<i64>,
     /// Row data is returned in format specified during session creation.
     #[prost(oneof = "read_rows_response::Rows", tags = "3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
@@ -1156,7 +1185,7 @@ pub struct CreateWriteStreamRequest {
 /// switching table destinations. You can also switch table destinations within
 /// the same connection for the default stream.
 ///
-/// The size of a single AppendRowsRequest must be less than 10 MB in size.
+/// The size of a single AppendRowsRequest must be less than 20 MB in size.
 /// Requests larger than this return an error, typically `INVALID_ARGUMENT`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsRequest {
@@ -1241,6 +1270,9 @@ pub struct AppendRowsRequest {
     /// time, set `missing_value_interpretations` to `NULL_VALUE` on those columns.
     #[prost(enumeration = "append_rows_request::MissingValueInterpretation", tag = "8")]
     pub default_missing_value_interpretation: i32,
+    /// Optional. Stats and telemetry data gathered on the client side.
+    #[prost(message, optional, tag = "9")]
+    pub client_stats: ::core::option::Option<ClientStats>,
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
@@ -1642,6 +1674,68 @@ pub mod row_error {
                 _ => None,
             }
         }
+    }
+}
+/// Stats and telemetry data gathered on the client side about requests
+/// being sent to the BigQuery Storage service, for internal use only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClientStats {
+    /// Optional. Per-request stats.
+    #[prost(message, optional, tag = "1")]
+    pub request_stats: ::core::option::Option<client_stats::RequestStats>,
+    /// Optional. Windowed stats.
+    #[prost(message, optional, tag = "2")]
+    pub window_stats: ::core::option::Option<client_stats::WindowStats>,
+}
+/// Nested message and enum types in `ClientStats`.
+pub mod client_stats {
+    /// Stats and telemetry data gathered on the client side about a single
+    /// request.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RequestStats {
+        /// Optional. Timestamp indicating when the request was sent over the
+        /// network, expressed in epoch milliseconds.
+        #[prost(int64, optional, tag = "1")]
+        pub send_time_millis: ::core::option::Option<i64>,
+        /// Optional. Number of pending requests at the moment this request was sent.
+        /// This includes requests waiting to be sent, and those that are inflight.
+        #[prost(int64, optional, tag = "2")]
+        pub queued_requests_count: ::core::option::Option<i64>,
+    }
+    /// Aggregate connection metrics over a window interval.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct WindowStats {
+        /// Optional. The maximum response latency observed in the window, expressed
+        /// in milliseconds.
+        #[prost(int64, optional, tag = "1")]
+        pub max_response_latency_millis: ::core::option::Option<i64>,
+        /// Optional. The average response latency observed in the window, expressed
+        /// in milliseconds.
+        #[prost(int64, optional, tag = "2")]
+        pub avg_response_latency_millis: ::core::option::Option<i64>,
+        /// Optional. The longest time spent waiting without receiving a response in
+        /// the window. This could exceed max_response_latency_millis because the
+        /// latter is evaluated only when a response is received. Expressed in
+        /// milliseconds.
+        #[prost(int64, optional, tag = "3")]
+        pub longest_wait_no_response_millis: ::core::option::Option<i64>,
+        /// Optional. How many requests were sent in the window.
+        #[prost(int64, optional, tag = "4")]
+        pub requests_sent_count: ::core::option::Option<i64>,
+        /// Optional. How many responses were received in the window.
+        #[prost(int64, optional, tag = "5")]
+        pub responses_received_count: ::core::option::Option<i64>,
+        /// Optional. How many bytes were sent in the window.
+        #[prost(int64, optional, tag = "6")]
+        pub bytes_sent_count: ::core::option::Option<i64>,
+        /// Optional. Start time of the window interval for which these stats are
+        /// aggregated, expressed in epoch milliseconds.
+        #[prost(int64, optional, tag = "7")]
+        pub window_start_time_epoch_millis: ::core::option::Option<i64>,
+        /// Optional. Duration of the window interval for which these stats are
+        /// aggregated, expressed in milliseconds.
+        #[prost(int64, optional, tag = "8")]
+        pub window_millis: ::core::option::Option<i64>,
     }
 }
 /// Generated client implementations.

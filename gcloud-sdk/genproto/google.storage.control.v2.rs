@@ -279,6 +279,9 @@ pub struct StorageLayout {
     pub hierarchical_namespace: ::core::option::Option<
         storage_layout::HierarchicalNamespace,
     >,
+    /// Output only. The Rapid Cache configuration for the bucket.
+    #[prost(message, optional, tag = "6")]
+    pub rapid_cache_info: ::core::option::Option<storage_layout::RapidCacheInfo>,
 }
 /// Nested message and enum types in `StorageLayout`.
 pub mod storage_layout {
@@ -297,6 +300,14 @@ pub mod storage_layout {
         /// Enables the hierarchical namespace feature.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
+    }
+    /// The Rapid Cache configuration for the bucket.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RapidCacheInfo {
+        /// Output only. The type of cache in the bucket. Set to `rapid-cache` or
+        /// `rapid-cache-ultra`, only if there is a cache present.
+        #[prost(string, tag = "1")]
+        pub cache_type: ::prost::alloc::string::String,
     }
 }
 /// Request message for GetStorageLayout.
@@ -671,6 +682,24 @@ pub struct UpdateRapidCacheMetadata {
     #[prost(string, optional, tag = "7")]
     pub cache_type: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Message returned in the metadata field of the Operation resource for
+/// DeleteRapidCache operation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisableRapidCacheMetadata {
+    /// Generic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonLongRunningOperationMetadata>,
+    /// Rapid Cache ID.
+    #[prost(string, optional, tag = "2")]
+    pub rapid_cache_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, optional, tag = "3")]
+    pub zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The type of cache. Either rapid cache or rapid cache ultra.
+    #[prost(string, optional, tag = "4")]
+    pub cache_type: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// An Anywhere Cache Instance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnywhereCache {
@@ -921,6 +950,19 @@ pub struct UpdateRapidCacheRequest {
     /// format, but other formats are still accepted. This request is only
     /// idempotent if a `request_id` is provided.
     #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for DisableRapidCache.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisableRapidCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for GetRapidCache.
@@ -1997,6 +2039,89 @@ pub mod finding_summary {
         }
     }
 }
+/// A full representation of an object context.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ObjectFullContext {
+    /// The type of the object context.
+    #[prost(enumeration = "object_full_context::Type", tag = "1")]
+    pub r#type: i32,
+    /// The key of the object context, which is unique among contexts of an object.
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// The value of the object context.
+    #[prost(string, tag = "3")]
+    pub value: ::prost::alloc::string::String,
+    /// The time at which the object context was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the object context was updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The extended data of the object context.
+    #[prost(message, optional, tag = "6")]
+    pub extended_data: ::core::option::Option<::prost_types::Any>,
+}
+/// Nested message and enum types in `ObjectFullContext`.
+pub mod object_full_context {
+    /// Types of object contexts.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// The type is not specified.
+        Unspecified = 0,
+        /// Custom context.
+        Custom = 1,
+        /// Google context.
+        Google = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Custom => "CUSTOM",
+                Self::Google => "GOOGLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOM" => Some(Self::Custom),
+                "GOOGLE" => Some(Self::Google),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for ViewObjectFullContext.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ViewObjectFullContextRequest {
+    /// Optional. If present, selects a specific revision of this object (as
+    /// opposed to the latest version, the default).
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+    /// Required. The key of the object context to retrieve.
+    #[prost(string, tag = "4")]
+    pub context_key: ::prost::alloc::string::String,
+    /// Required. The name of the object.
+    /// Format: `projects/{project}/buckets/{bucket}/objects/{object}`
+    #[prost(string, tag = "5")]
+    pub name: ::prost::alloc::string::String,
+}
 /// List the finding types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2809,6 +2934,36 @@ pub mod storage_control_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Disables a Rapid Cache instance.
+        pub async fn disable_rapid_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableRapidCacheRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/DisableRapidCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "DisableRapidCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets a Rapid Cache instance.
         pub async fn get_rapid_cache(
             &mut self,
@@ -3317,6 +3472,44 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "ListIntelligenceFindingRevisions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the full content of an object context, including its key, value,
+        /// and any associated extended data for a given context key.
+        ///
+        /// Object contexts can optionally contain extended data. If an object context
+        /// contains extended data, the metadata payload structure will contain only
+        /// its type URL. To retrieve the full extended data, call this method.
+        ///
+        /// Returns the complete representation of the context as an
+        /// \[`ObjectFullContext`\]\[google.storage.control.v2.ObjectFullContext\].
+        pub async fn view_object_full_context(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ViewObjectFullContextRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ObjectFullContext>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ViewObjectFullContext",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ViewObjectFullContext",
                     ),
                 );
             self.inner.unary(req, path, codec).await

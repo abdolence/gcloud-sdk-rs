@@ -73,6 +73,12 @@ pub struct BdrBackupRestoreJobLog {
     pub restore_resource_location: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
+    /// Recovery point time.
+    #[prost(message, optional, tag = "22")]
+    pub recovery_point_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Canonical Data Source Name
+    #[prost(string, tag = "23")]
+    pub data_source_name: ::prost::alloc::string::String,
 }
 /// Log entry for BDRProtectedResource Log for resources using BackupPlan based
 /// protection.
