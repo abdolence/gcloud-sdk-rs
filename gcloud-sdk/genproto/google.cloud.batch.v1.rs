@@ -1315,6 +1315,59 @@ pub mod allocation_policy {
         /// information.
         #[prost(bool, tag = "3")]
         pub no_external_ip_address: bool,
+        /// Optional. The NIC type of the network interface.
+        #[prost(enumeration = "network_interface::NicType", optional, tag = "7")]
+        pub nic_type: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `NetworkInterface`.
+    pub mod network_interface {
+        /// Compute Engine VM instance NIC type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum NicType {
+            /// No type specified.
+            Unspecified = 0,
+            /// GVNIC
+            Gvnic = 1,
+            /// IRDMA
+            Irdma = 2,
+            /// MRDMA
+            Mrdma = 3,
+        }
+        impl NicType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "NIC_TYPE_UNSPECIFIED",
+                    Self::Gvnic => "GVNIC",
+                    Self::Irdma => "IRDMA",
+                    Self::Mrdma => "MRDMA",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "NIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GVNIC" => Some(Self::Gvnic),
+                    "IRDMA" => Some(Self::Irdma),
+                    "MRDMA" => Some(Self::Mrdma),
+                    _ => None,
+                }
+            }
+        }
     }
     /// NetworkPolicy describes VM instance network configurations.
     #[derive(Clone, PartialEq, ::prost::Message)]

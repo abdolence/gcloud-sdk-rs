@@ -963,6 +963,12 @@ pub mod dependency {
         /// Required. Where should the files be placed on the worker.
         #[prost(string, tag = "5")]
         pub dest_path: ::prost::alloc::string::String,
+        /// Optional. True if remote tags should be fetched too (default false).
+        /// Note: when depth is 1 (default), git fetch only retrieves tags pointing
+        /// to commits within the shallow boundary. Set depth to -1 to fetch all
+        /// historical tags.
+        #[prost(bool, tag = "6")]
+        pub fetch_tags: bool,
     }
     /// A repository for a git source.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

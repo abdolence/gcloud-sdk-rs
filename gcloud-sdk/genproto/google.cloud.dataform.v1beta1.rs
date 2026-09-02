@@ -628,10 +628,33 @@ pub struct Workspace {
     /// Repository is moved. Instead, it will be deleted.
     #[prost(bool, optional, tag = "6")]
     pub disable_moves: ::core::option::Option<bool>,
+    /// Optional. Input only. Immutable. The name of the default upstream branch
+    /// for all pull/push operations in the remote repository for this workspace.
+    /// If empty, the HEAD branch from repository will be used.
+    #[prost(string, optional, tag = "7")]
+    pub original_branch: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. Metadata indicating whether this resource is user-scoped. For
     /// `Workspace` resources, the `user_scoped` field is always `true`.
     #[prost(message, optional, tag = "8")]
     pub private_resource_metadata: ::core::option::Option<PrivateResourceMetadata>,
+    /// Immutable. Controls the enablement of branch checkout for the
+    /// workspace.
+    ///
+    /// When set to True, the workspace will be allowed to checkout branches.
+    #[prost(bool, optional, tag = "9")]
+    pub enable_branch_management: ::core::option::Option<bool>,
+    /// Optional. Input only. Immutable. The maximum depth of the Git repository to
+    /// checkout for this workspace. If defined and greater than 0, the Git
+    /// repository will be created as a shallow clone with the given depth,
+    /// otherwise a full clone will be performed. This field is available only for
+    /// GitHub, Gitlab and 1p repositories with enabled branch management.
+    #[prost(int32, tag = "10")]
+    pub depth: i32,
+    /// Output only. If set to true, the workspace was created as a shallow clone.
+    /// Will be set to true if the depth field is set to a value greater than 0,
+    /// otherwise it will be set to false.
+    #[prost(bool, optional, tag = "11")]
+    pub shallow: ::core::option::Option<bool>,
 }
 /// `ListWorkspaces` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -733,6 +756,70 @@ pub struct PullGitCommitsRequest {
 /// `PullGitCommits` response message.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PullGitCommitsResponse {}
+/// `CheckoutWorkspaceBranch` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CheckoutWorkspaceBranchRequest {
+    /// Required. The workspace resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the branch in the Git repository to which the
+    /// workspace should be checked out.
+    #[prost(string, tag = "2")]
+    pub branch: ::prost::alloc::string::String,
+    /// Optional. If set to true and the branch does not exist, it will be created.
+    /// Otherwise, an error will be thrown.
+    #[prost(bool, tag = "3")]
+    pub create_if_not_exists: bool,
+    /// Optional. The name of the branch in the Git repository from which the new
+    /// branch should be created. If left unset, the workspace's current branch
+    /// name will be used. Accepts only branch names from FetchWorkspaceBranches
+    /// response, and can only be set if `create_if_not_exists` is true. Oherwise,
+    /// an error will be thrown.
+    #[prost(string, tag = "4")]
+    pub source_branch: ::prost::alloc::string::String,
+}
+/// `SyncWorkspaceRefs` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SyncWorkspaceRefsRequest {
+    /// Required. The workspace resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the branch in the Git remote to which the refs should
+    /// be fetched for. If left unset, all remote branches will be fetched.
+    #[prost(string, tag = "2")]
+    pub remote_branch_name: ::prost::alloc::string::String,
+    /// Optional. Can be used to deepen the commit history of shallow clones.
+    /// Git documentation:
+    /// <https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---deependepth>
+    #[prost(int32, tag = "3")]
+    pub deepen: i32,
+}
+/// `SyncWorkspaceRefs` response message.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SyncWorkspaceRefsResponse {}
+/// `DeleteBranch` request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteBranchRequest {
+    /// Required. The workspace resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the branch in the Git repository to delete.
+    #[prost(string, tag = "2")]
+    pub branch: ::prost::alloc::string::String,
+    /// Optional. If set to true, any non-pushed commits on the branch will be
+    /// deleted. Upstream branch name will be the same as the branch to delete.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
+}
+/// `DeleteBranch` response message.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteBranchResponse {}
 /// `PushGitCommits` request message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PushGitCommitsRequest {
@@ -1600,6 +1687,11 @@ pub struct CodeCompilationConfig {
     /// within the Git repository.
     #[prost(message, optional, tag = "12")]
     pub pipeline_config: ::core::option::Option<PipelineConfig>,
+    /// Output only. Whether OpenLineage events are emitted for actions in this
+    /// workflow. Reflects the `lineage.enabled` setting from
+    /// `workflow_settings.yaml`.
+    #[prost(bool, optional, tag = "14")]
+    pub lineage_enabled: ::core::option::Option<bool>,
 }
 /// Metadata about a repository snapshot stored in Google Cloud Storage.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3863,6 +3955,119 @@ pub mod delete_repository_long_running_metadata {
         }
     }
 }
+/// Request message for `FetchWorkspaceBranches` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchWorkspaceBranchesRequest {
+    /// Required. The workspace resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Filter for the returned list.
+    #[prost(enumeration = "fetch_workspace_branches_request::BranchFilter", tag = "2")]
+    pub filter: i32,
+    /// Optional. Maximum number of branches to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `FetchWorkspaceBranches`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `FetchWorkspaceBranches`,
+    /// with the exception of `page_size`, must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `FetchWorkspaceBranchesRequest`.
+pub mod fetch_workspace_branches_request {
+    /// Filter for the returned list.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BranchFilter {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Returns local branches.
+        LocalOnly = 1,
+        /// Returns remote branches.
+        RemoteOnly = 2,
+        /// Returns all branches.
+        All = 3,
+    }
+    impl BranchFilter {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BRANCH_FILTER_UNSPECIFIED",
+                Self::LocalOnly => "LOCAL_ONLY",
+                Self::RemoteOnly => "REMOTE_ONLY",
+                Self::All => "ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BRANCH_FILTER_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCAL_ONLY" => Some(Self::LocalOnly),
+                "REMOTE_ONLY" => Some(Self::RemoteOnly),
+                "ALL" => Some(Self::All),
+                _ => None,
+            }
+        }
+    }
+}
+/// Contains metadata about a branch.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BranchMetadata {
+    /// The branch name.
+    #[prost(string, tag = "1")]
+    pub branch_name: ::prost::alloc::string::String,
+    /// The last commit on the branch.
+    #[prost(message, optional, tag = "2")]
+    pub last_commit: ::core::option::Option<CommitLogEntry>,
+}
+/// Response message for `FetchWorkspaceBranches` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchWorkspaceBranchesResponse {
+    /// The branches in the workspace.
+    #[prost(message, repeated, tag = "1")]
+    pub branches: ::prost::alloc::vec::Vec<BranchMetadata>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for `FetchCurrentWorkspaceBranch` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchCurrentWorkspaceBranchRequest {
+    /// Required. The workspace resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for `FetchCurrentWorkspaceBranch` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchCurrentWorkspaceBranchResponse {
+    /// The name of the current branch for the workspace.
+    #[prost(string, tag = "1")]
+    pub branch_name: ::prost::alloc::string::String,
+}
 /// Represents the level of detail to return for directory contents.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4982,6 +5187,153 @@ pub mod dataform_client {
                     GrpcMethod::new(
                         "google.cloud.dataform.v1beta1.Dataform",
                         "PullGitCommits",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Syncs the refs of a Workspace.
+        pub async fn sync_workspace_refs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SyncWorkspaceRefsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SyncWorkspaceRefsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/SyncWorkspaceRefs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "SyncWorkspaceRefs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches branches in a Workspace.
+        pub async fn fetch_workspace_branches(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchWorkspaceBranchesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchWorkspaceBranchesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/FetchWorkspaceBranches",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "FetchWorkspaceBranches",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a branch in a Workspace.
+        pub async fn delete_branch(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBranchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteBranchResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteBranch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "DeleteBranch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Checkout a branch in a Workspace.
+        pub async fn checkout_workspace_branch(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CheckoutWorkspaceBranchRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/CheckoutWorkspaceBranch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "CheckoutWorkspaceBranch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches the current branch of a Workspace.
+        pub async fn fetch_current_workspace_branch(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchCurrentWorkspaceBranchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchCurrentWorkspaceBranchResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataform.v1beta1.Dataform/FetchCurrentWorkspaceBranch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataform.v1beta1.Dataform",
+                        "FetchCurrentWorkspaceBranch",
                     ),
                 );
             self.inner.unary(req, path, codec).await

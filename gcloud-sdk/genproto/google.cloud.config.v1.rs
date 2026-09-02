@@ -52,8 +52,8 @@ pub struct Deployment {
     /// Format: `gs://{bucket}/{object}`.
     #[prost(string, tag = "14")]
     pub error_logs: ::prost::alloc::string::String,
-    /// Optional. User-defined location of Cloud Build logs and artifacts in Google
-    /// Cloud Storage. Format: `gs://{bucket}/{folder}`
+    /// User-defined location of Cloud Build logs and artifacts in Google Cloud
+    /// Storage. Format: `gs://{bucket}/{folder}`
     ///
     /// A default bucket will be bootstrapped if the field is not set or empty.
     /// Default bucket format: `gs://<project number>-<region>-blueprint-config`
@@ -78,8 +78,8 @@ pub struct Deployment {
     /// Not all resource types are supported, refer to documentation.
     #[prost(bool, optional, tag = "17")]
     pub import_existing_resources: ::core::option::Option<bool>,
-    /// Optional. The user-specified Cloud Build worker pool resource in which the
-    /// Cloud Build job will execute. Format:
+    /// The user-specified Cloud Build worker pool resource in which the Cloud
+    /// Build job will execute. Format:
     /// `projects/{project}/locations/{location}/workerPools/{workerPoolId}`.
     /// If this field is unspecified, the default Cloud Build worker pool will be
     /// used.
@@ -88,7 +88,7 @@ pub struct Deployment {
     /// Output only. Current lock state of the deployment.
     #[prost(enumeration = "deployment::LockState", tag = "20")]
     pub lock_state: i32,
-    /// Optional. The user-specified Terraform version constraint.
+    /// The user-specified Terraform version constraint.
     /// Example: "=1.3.10".
     #[prost(string, optional, tag = "21")]
     pub tf_version_constraint: ::core::option::Option<::prost::alloc::string::String>,
@@ -1204,15 +1204,15 @@ pub struct TerraformError {
 /// A set of files in a Git repository.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitSource {
-    /// Optional. Repository URL.
+    /// Repository URL.
     /// Example: '<https://github.com/kubernetes/examples.git'>
     #[prost(string, optional, tag = "1")]
     pub repo: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. Subdirectory inside the repository.
+    /// Subdirectory inside the repository.
     /// Example: 'staging/my-package'
     #[prost(string, optional, tag = "2")]
     pub directory: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. Git reference (e.g. branch or tag).
+    /// Git reference (e.g. branch or tag).
     #[prost(string, optional, tag = "3")]
     pub r#ref: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -1232,6 +1232,9 @@ pub struct DeploymentOperationMetadata {
     /// `gs://{bucket}/{object}` format.
     #[prost(string, tag = "4")]
     pub logs: ::prost::alloc::string::String,
+    /// Output only. Indicating if early apply results are available.
+    #[prost(bool, tag = "5")]
+    pub apply_results_available: bool,
 }
 /// Nested message and enum types in `DeploymentOperationMetadata`.
 pub mod deployment_operation_metadata {
@@ -1671,10 +1674,10 @@ pub struct Preview {
     /// Output only. Current state of the preview.
     #[prost(enumeration = "preview::State", tag = "4")]
     pub state: i32,
-    /// Optional. Optional deployment reference. If specified, the preview will be
-    /// performed using the provided deployment's current state and use any
-    /// relevant fields from the deployment unless explicitly specified in the
-    /// preview create request.
+    /// Optional. Deployment reference. If specified, the preview will be performed
+    /// using the provided deployment's current state and use any relevant fields
+    /// from the deployment unless explicitly specified in the preview create
+    /// request.
     #[prost(string, tag = "5")]
     pub deployment: ::prost::alloc::string::String,
     /// Optional. Current mode of preview.
@@ -1685,7 +1688,7 @@ pub struct Preview {
     /// Format: `projects/{projectID}/serviceAccounts/{serviceAccount}`
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
-    /// Optional. User-defined location of Cloud Build logs, artifacts, and
+    /// User-defined location of Cloud Build logs, artifacts, and
     /// in Google Cloud Storage.
     /// Format: `gs://{bucket}/{folder}`
     /// A default bucket will be bootstrapped if the field is not set or empty
@@ -1698,12 +1701,12 @@ pub struct Preview {
     ///   defined, that artifact bucket is used.
     #[prost(string, optional, tag = "8")]
     pub artifacts_gcs_bucket: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. The user-specified Worker Pool resource in which the Cloud Build
-    /// job will execute. Format
-    /// projects/{project}/locations/{location}/workerPools/{workerPoolId} If this
-    /// field is unspecified, the default Cloud Build worker pool will be used. If
-    /// omitted and deployment resource ref provided has worker_pool defined, that
-    /// worker pool is used.
+    /// The user-specified Worker Pool resource in which the Cloud Build job will
+    /// execute.
+    /// Format projects/{project}/locations/{location}/workerPools/{workerPoolId}
+    /// If this field is unspecified, the default Cloud Build worker pool will be
+    /// used. If omitted and deployment resource ref provided has worker_pool
+    /// defined, that worker pool is used.
     #[prost(string, optional, tag = "9")]
     pub worker_pool: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. Code describing any errors that may have occurred.
@@ -1734,7 +1737,7 @@ pub struct Preview {
     /// It is in the format of "Major.Minor.Patch", for example, "1.3.10".
     #[prost(string, tag = "18")]
     pub tf_version: ::prost::alloc::string::String,
-    /// Optional. The user-specified Terraform version constraint.
+    /// The user-specified Terraform version constraint.
     /// Example: "=1.3.10".
     #[prost(string, optional, tag = "19")]
     pub tf_version_constraint: ::core::option::Option<::prost::alloc::string::String>,

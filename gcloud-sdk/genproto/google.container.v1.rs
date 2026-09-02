@@ -39,6 +39,7 @@ pub struct LinuxNodeConfig {
     /// kernel.shmmni
     /// kernel.shmmax
     /// kernel.shmall
+    /// kernel.core_pattern
     /// kernel.perf_event_paranoid
     /// kernel.sched_rt_runtime_us
     /// kernel.softlockup_panic
@@ -113,6 +114,12 @@ pub struct LinuxNodeConfig {
     pub accurate_time_config: ::core::option::Option<
         linux_node_config::AccurateTimeConfig,
     >,
+    /// Optional. Contains VFIO-related configurations for this node.
+    #[prost(message, optional, tag = "15")]
+    pub node_vfio_config: ::core::option::Option<linux_node_config::NodeVfioConfig>,
+    /// Optional. Controls the configuration for the disk IO scheduler.
+    #[prost(message, optional, tag = "16")]
+    pub disk_io_scheduler: ::core::option::Option<DiskIoScheduler>,
 }
 /// Nested message and enum types in `LinuxNodeConfig`.
 pub mod linux_node_config {
@@ -332,6 +339,22 @@ pub mod linux_node_config {
         /// Enables enhanced time synchronization using PTP-KVM.
         #[prost(bool, optional, tag = "1")]
         pub enable_ptp_kvm_time_sync: ::core::option::Option<bool>,
+    }
+    /// Configuration settings for VFIO (Virtual Function I/O) on a node.
+    /// VFIO allows safe, unprivileged, userspace drivers to access I/O devices.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NodeVfioConfig {
+        /// Optional. Specifies the maximum number of DMA entries (pages) that can be
+        /// mapped by the VFIO IOMMU type 1 driver for a container. This limit
+        /// affects the total amount of host memory that can be pinned for direct
+        /// device access, which is often critical for high-performance devices like
+        /// TPUs and GPUs. This setting corresponds to the kernel parameter at:
+        /// `/sys/module/vfio_iommu_type1/parameters/dma_entry_limit`.
+        /// The default value in the kernel is `65535`. Higher values may be
+        /// needed for workloads mapping large memory regions.
+        /// Supported values are integers between `65535` and `4194304`.
+        #[prost(int32, optional, tag = "1")]
+        pub dma_entry_limit: ::core::option::Option<i32>,
     }
     /// Possible cgroup modes that can be used.
     #[derive(
@@ -778,9 +801,13 @@ pub mod node_kubelet_config {
         pub max_container_restart_period: ::prost::alloc::string::String,
     }
 }
-/// TopologyManager defines the configuration options for Topology Manager
-/// feature. See
-/// <https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/>
+/// TopologyManager defines the configuration options for the
+/// [`kubelet` Topology Manager
+/// component](<https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/>).
+/// For more information about the supported machine types and versions for the
+/// Topology Manager in GKE, see
+/// [Customizing node system
+/// configuration](<https://docs.cloud.google.com/kubernetes-engine/docs/how-to/node-system-config#kubelet-resource-managers>).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TopologyManager {
     /// Configures the strategy for resource alignment.
@@ -1798,6 +1825,9 @@ pub mod reservation_affinity {
         /// Must consume from a specific reservation. Must specify key value fields
         /// for specifying the reservations.
         SpecificReservation = 3,
+        /// Consume any reservation available. If no reservation is available, fail
+        /// the node creation.
+        AnyReservationThenFail = 4,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1810,6 +1840,7 @@ pub mod reservation_affinity {
                 Self::NoReservation => "NO_RESERVATION",
                 Self::AnyReservation => "ANY_RESERVATION",
                 Self::SpecificReservation => "SPECIFIC_RESERVATION",
+                Self::AnyReservationThenFail => "ANY_RESERVATION_THEN_FAIL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1819,6 +1850,7 @@ pub mod reservation_affinity {
                 "NO_RESERVATION" => Some(Self::NoReservation),
                 "ANY_RESERVATION" => Some(Self::AnyReservation),
                 "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                "ANY_RESERVATION_THEN_FAIL" => Some(Self::AnyReservationThenFail),
                 _ => None,
             }
         }
@@ -3332,6 +3364,15 @@ pub struct Cluster {
     /// Output only. The current software version of the master endpoint.
     #[prost(string, tag = "104")]
     pub current_master_version: ::prost::alloc::string::String,
+    /// Output only. The current emulated version of the master endpoint.
+    /// The version is in minor version format, e.g. 1.30.
+    /// No value or empty string means the cluster has no emulated version.
+    #[prost(string, tag = "167")]
+    pub current_emulated_version: ::prost::alloc::string::String,
+    /// Optional. The rollback safe upgrade information of the cluster.
+    /// This field is used when user manually triggers a rollback safe upgrade.
+    #[prost(message, optional, tag = "170")]
+    pub rollback_safe_upgrade: ::core::option::Option<RollbackSafeUpgrade>,
     /// Output only. Deprecated, use
     /// [NodePools.version](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools>)
     /// instead. The current version of the node software components. If they are
@@ -4436,6 +4477,9 @@ pub struct ClusterUpdate {
     /// The desired control plane egress control config for the cluster.
     #[prost(message, optional, tag = "160")]
     pub desired_control_plane_egress: ::core::option::Option<ControlPlaneEgress>,
+    /// Optional. The desired rollback safe upgrade configuration.
+    #[prost(message, optional, tag = "161")]
+    pub desired_rollback_safe_upgrade: ::core::option::Option<RollbackSafeUpgrade>,
     /// The desired managed open telemetry configuration.
     #[prost(message, optional, tag = "163")]
     pub desired_managed_opentelemetry_config: ::core::option::Option<
@@ -4454,6 +4498,9 @@ pub struct ClusterUpdate {
     /// Optional. The desired NodeCreationConfig for the cluster.
     #[prost(message, optional, tag = "171")]
     pub desired_node_creation_config: ::core::option::Option<NodeCreationConfig>,
+    /// Optional. The desired emulated version for the cluster.
+    #[prost(string, optional, tag = "182")]
+    pub desired_emulated_version: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -5224,6 +5271,10 @@ pub struct UpdateNodePoolRequest {
     /// The taint configuration for the node pool.
     #[prost(message, optional, tag = "51")]
     pub taint_config: ::core::option::Option<TaintConfig>,
+    /// Optional. Specifies the maintenance policy for the node pool, including
+    /// maintenance exclusion options.
+    #[prost(message, optional, tag = "52")]
+    pub maintenance_policy: ::core::option::Option<node_pool::NodePoolMaintenancePolicy>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5985,7 +6036,7 @@ pub struct NodePool {
     /// simultaneously on a node in the node pool.
     #[prost(message, optional, tag = "6")]
     pub max_pods_constraint: ::core::option::Option<MaxPodsConstraint>,
-    /// Which conditions caused the current node pool state.
+    /// Output only. Which conditions caused the current node pool state.
     #[prost(message, repeated, tag = "105")]
     pub conditions: ::prost::alloc::vec::Vec<StatusCondition>,
     /// Output only. The pod CIDR block size per node in this node pool.
@@ -6001,9 +6052,9 @@ pub struct NodePool {
     /// pool update.
     #[prost(message, optional, tag = "109")]
     pub update_info: ::core::option::Option<node_pool::UpdateInfo>,
-    /// This checksum is computed by the server based on the value of node pool
-    /// fields, and may be sent on update requests to ensure the client has an
-    /// up-to-date value before proceeding.
+    /// Output only. This checksum is computed by the server based on the value of
+    /// node pool fields, and may be sent on update requests to ensure the client
+    /// has an up-to-date value before proceeding.
     #[prost(string, tag = "110")]
     pub etag: ::prost::alloc::string::String,
     /// Specifies the configuration of queued provisioning.
@@ -6018,6 +6069,9 @@ pub struct NodePool {
     /// Optional. Specifies the maintenance policy for the node pool.
     #[prost(message, optional, tag = "118")]
     pub maintenance_policy: ::core::option::Option<node_pool::NodePoolMaintenancePolicy>,
+    /// Output only. Contains expiry information about the kubelet certificate.
+    #[prost(message, optional, tag = "119")]
+    pub kubelet_cert_info: ::core::option::Option<node_pool::KubeletCertInfo>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -6299,6 +6353,20 @@ pub mod node_pool {
         #[prost(message, optional, tag = "1")]
         pub exclusion_until_end_of_support: ::core::option::Option<
             ExclusionUntilEndOfSupport,
+        >,
+    }
+    /// Contains expiry information about the kubelet certificate.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct KubeletCertInfo {
+        /// Output only.
+        #[prost(message, optional, tag = "1")]
+        pub tpm_bootstrap_cert_expire_time: ::core::option::Option<
+            ::prost_types::Timestamp,
+        >,
+        /// Output only.
+        #[prost(message, optional, tag = "2")]
+        pub non_tpm_bootstrap_cert_expire_time: ::core::option::Option<
+            ::prost_types::Timestamp,
         >,
     }
     /// The current status of the node pool instance.
@@ -8024,7 +8092,9 @@ pub mod release_channel {
     )]
     #[repr(i32)]
     pub enum Channel {
-        /// No channel specified.
+        /// Deprecated: No channel specified. it will be removed in the future, use
+        /// RAPID, REGULAR, STABLE or EXTENDED instead.
+        #[deprecated]
         Unspecified = 0,
         /// RAPID channel is offered on an early access basis for customers who want
         /// to test new releases.
@@ -8051,6 +8121,7 @@ pub mod release_channel {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "UNSPECIFIED",
                 Self::Rapid => "RAPID",
                 Self::Regular => "REGULAR",
@@ -8061,7 +8132,7 @@ pub mod release_channel {
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNSPECIFIED" => Some(#[allow(deprecated)] Self::Unspecified),
                 "RAPID" => Some(Self::Rapid),
                 "REGULAR" => Some(Self::Regular),
                 "STABLE" => Some(Self::Stable),
@@ -8852,6 +8923,12 @@ pub struct UpgradeEvent {
     /// The target version for the upgrade.
     #[prost(string, tag = "5")]
     pub target_version: ::prost::alloc::string::String,
+    /// Output only. The current emulated version before the upgrade.
+    #[prost(string, tag = "7")]
+    pub current_emulated_version: ::prost::alloc::string::String,
+    /// Output only. The target emulated version for the upgrade.
+    #[prost(string, tag = "8")]
+    pub target_emulated_version: ::prost::alloc::string::String,
     /// Optional relative path to the resource. For example in node pool upgrades,
     /// the relative path of the node pool.
     #[prost(string, tag = "6")]
@@ -8879,6 +8956,12 @@ pub struct UpgradeInfoEvent {
     /// The target version for the upgrade.
     #[prost(string, tag = "6")]
     pub target_version: ::prost::alloc::string::String,
+    /// Output only. The current emulated version before the upgrade.
+    #[prost(string, tag = "15")]
+    pub current_emulated_version: ::prost::alloc::string::String,
+    /// Output only. The target emulated version for the upgrade.
+    #[prost(string, tag = "16")]
+    pub target_emulated_version: ::prost::alloc::string::String,
     /// Optional relative path to the resource. For example in node pool upgrades,
     /// the relative path of the node pool.
     #[prost(string, tag = "7")]
@@ -9275,6 +9358,8 @@ pub mod logging_component_config {
         KcpConnection = 8,
         /// horizontal pod autoscaler decision logs
         KcpHpa = 9,
+        /// vertical pod autoscaler decision logs
+        KcpVpa = 10,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -9292,6 +9377,7 @@ pub mod logging_component_config {
                 Self::KcpSshd => "KCP_SSHD",
                 Self::KcpConnection => "KCP_CONNECTION",
                 Self::KcpHpa => "KCP_HPA",
+                Self::KcpVpa => "KCP_VPA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9306,6 +9392,7 @@ pub mod logging_component_config {
                 "KCP_SSHD" => Some(Self::KcpSshd),
                 "KCP_CONNECTION" => Some(Self::KcpConnection),
                 "KCP_HPA" => Some(Self::KcpHpa),
+                "KCP_VPA" => Some(Self::KcpVpa),
                 _ => None,
             }
         }
@@ -9915,6 +10002,19 @@ pub struct LocalNvmeSsdBlockConfig {
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
+/// DiskIoScheduler contains the configuration for the disk IO scheduler.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DiskIoScheduler {
+    /// Optional. Configures the IO scheduler for the boot disk or ephemeral lssd
+    /// that runs node system workloads. Supported values are `mq-deadline`, `bfq`,
+    /// `kyber`, `none`.
+    #[prost(string, tag = "1")]
+    pub node_system_io_scheduler: ::prost::alloc::string::String,
+    /// Optional. Configures the IO scheduler for the attached disks.
+    /// Supported values are `mq-deadline`, `bfq`, `kyber`, `none`.
+    #[prost(string, tag = "2")]
+    pub node_attached_disk_io_scheduler: ::prost::alloc::string::String,
+}
 /// EphemeralStorageLocalSsdConfig contains configuration for the node ephemeral
 /// storage using Local SSDs.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -10125,6 +10225,14 @@ pub mod secondary_boot_disk {
 /// in the future to define different options for updating secondary boot disks.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecondaryBootDiskUpdateStrategy {}
+/// RollbackSafeUpgrade is the configuration for the rollback safe upgrade.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RollbackSafeUpgrade {
+    /// Optional. A user-defined period for the cluster remains in the rollbackable
+    /// state. ex: {seconds: 21600}.
+    #[prost(message, optional, tag = "1")]
+    pub control_plane_soak_duration: ::core::option::Option<::prost_types::Duration>,
+}
 /// FetchClusterUpgradeInfoRequest fetches the upgrade information of a cluster.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchClusterUpgradeInfoRequest {
@@ -10173,6 +10281,9 @@ pub struct ClusterUpgradeInfo {
     pub end_of_extended_support_timestamp: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
+    /// Output only. The cluster's rollback-safe upgrade status.
+    #[prost(message, optional, tag = "9")]
+    pub rollback_safe_upgrade_status: ::core::option::Option<RollbackSafeUpgradeStatus>,
 }
 /// Nested message and enum types in `ClusterUpgradeInfo`.
 pub mod cluster_upgrade_info {
@@ -10302,6 +10413,70 @@ pub mod cluster_upgrade_info {
         }
     }
 }
+/// RollbackSafeUpgradeStatus contains the rollback-safe upgrade status of a
+/// cluster.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RollbackSafeUpgradeStatus {
+    /// Output only. The mode of the rollback-safe upgrade.
+    #[prost(enumeration = "rollback_safe_upgrade_status::Mode", tag = "1")]
+    pub mode: i32,
+    /// Output only. The rollback-safe mode expiration time.
+    #[prost(message, optional, tag = "2")]
+    pub control_plane_upgrade_rollback_end_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
+    /// Output only. The GKE version that the cluster previously used before
+    /// step-one upgrade.
+    #[prost(string, tag = "3")]
+    pub previous_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `RollbackSafeUpgradeStatus`.
+pub mod rollback_safe_upgrade_status {
+    /// Mode indicates the mode of the rollback-safe upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// MODE_UNSPECIFIED means it's in regular upgrade mode.
+        Unspecified = 0,
+        /// KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE means it's in rollback-safe mode
+        /// after a KCP minor version step-one upgrade.
+        KcpMinorUpgradeRollbackSafeMode = 1,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::KcpMinorUpgradeRollbackSafeMode => {
+                    "KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE" => {
+                    Some(Self::KcpMinorUpgradeRollbackSafeMode)
+                }
+                _ => None,
+            }
+        }
+    }
+}
 /// UpgradeDetails contains detailed information of each individual upgrade
 /// operation.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -10324,6 +10499,12 @@ pub struct UpgradeDetails {
     /// The start type of the upgrade.
     #[prost(enumeration = "upgrade_details::StartType", tag = "6")]
     pub start_type: i32,
+    /// Output only. The emulated version before the upgrade.
+    #[prost(string, tag = "7")]
+    pub initial_emulated_version: ::prost::alloc::string::String,
+    /// Output only. The emulated version after the upgrade.
+    #[prost(string, tag = "8")]
+    pub target_emulated_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `UpgradeDetails`.
 pub mod upgrade_details {
@@ -10472,6 +10653,10 @@ pub struct NodePoolUpgradeInfo {
     pub end_of_extended_support_timestamp: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
+    /// Output only. Upgrade info for the node pool specific to the usage of custom
+    /// images.
+    #[prost(message, optional, tag = "8")]
+    pub custom_image_info: ::core::option::Option<CustomImageInfo>,
 }
 /// Nested message and enum types in `NodePoolUpgradeInfo`.
 pub mod node_pool_upgrade_info {
@@ -10586,6 +10771,25 @@ pub mod node_pool_upgrade_info {
             }
         }
     }
+}
+/// Contains the custom image info for a node pool.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomImageInfo {
+    /// Output only. The human-readable upgrade message for the custom image.
+    #[prost(string, tag = "1")]
+    pub upgrade_message: ::prost::alloc::string::String,
+}
+/// CompleteControlPlaneUpgradeRequest sets the name of target cluster to
+/// complete upgrade.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CompleteControlPlaneUpgradeRequest {
+    /// Required. The name (project, location, cluster) of the cluster to complete
+    /// upgrade. Specified in the format `projects/*/locations/*/clusters/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. API request version that initiates this operation.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
 }
 /// Configuration for scheduled upgrades on the cluster.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -12176,6 +12380,34 @@ pub mod cluster_manager_client {
                     GrpcMethod::new(
                         "google.container.v1.ClusterManager",
                         "FetchNodePoolUpgradeInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// CompleteControlPlaneUpgrade completes the rollback-safe upgrade by
+        /// performing the step two upgrade for a specific cluster.
+        pub async fn complete_control_plane_upgrade(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CompleteControlPlaneUpgradeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1.ClusterManager/CompleteControlPlaneUpgrade",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1.ClusterManager",
+                        "CompleteControlPlaneUpgrade",
                     ),
                 );
             self.inner.unary(req, path, codec).await

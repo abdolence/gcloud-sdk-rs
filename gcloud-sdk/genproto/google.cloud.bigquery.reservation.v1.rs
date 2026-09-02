@@ -165,6 +165,13 @@ pub struct Reservation {
     /// This feature is not yet generally available.
     #[prost(message, optional, tag = "27")]
     pub scheduling_policy: ::core::option::Option<SchedulingPolicy>,
+    /// Output only. The reservation group path of the reservation from root to
+    /// leaf. The order of elements matters: the first element is the top level
+    /// group and the last element is the direct parent reservation group. For
+    /// example, if a reservation is under group-1 -> group-2 -> group-3, then the
+    /// reservation group path is \["group-1", "group-2", "group-3"\].
+    #[prost(string, repeated, tag = "28")]
+    pub reservation_group_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Reservation`.
 pub mod reservation {
@@ -331,6 +338,21 @@ pub struct ReservationGroup {
     /// dash. Its maximum length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The parent reservation group of the reservation group.
+    /// Format: `projects/*/locations/*/reservationGroups/team1-prod` for non-root
+    /// reservation groups, or `projects/*/locations/*` for root reservation
+    /// groups.
+    #[prost(string, tag = "2")]
+    pub parent_group: ::prost::alloc::string::String,
+    /// Output only. Creation time of the reservation group.
+    #[prost(message, optional, tag = "3")]
+    pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last update time of the reservation group via a user
+    /// operation. This timestamp is updated only when an update operation
+    /// explicitly targets this reservation group directly. It is not updated when
+    /// parent or child groups are created, updated, or deleted.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
 /// (in the form of slots) with some committed period of usage. Annual
@@ -422,9 +444,12 @@ pub mod capacity_commitment {
         /// Invalid plan value. Requests with this value will be rejected with
         /// error code `google.rpc.Code.INVALID_ARGUMENT`.
         Unspecified = 0,
+        /// Deprecated: Flex commitments are deprecated. Please use Edition-based
+        /// capacity commitments.
         /// Flex commitments have committed period of 1 minute after becoming ACTIVE.
         /// After that, they are not in a committed period anymore and can be removed
         /// any time.
+        #[deprecated]
         Flex = 3,
         /// Same as FLEX, should only be used if flat-rate commitments are still
         /// available.
@@ -472,6 +497,7 @@ pub mod capacity_commitment {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "COMMITMENT_PLAN_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::Flex => "FLEX",
                 #[allow(deprecated)]
                 Self::FlexFlatRate => "FLEX_FLAT_RATE",
@@ -491,7 +517,7 @@ pub mod capacity_commitment {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "COMMITMENT_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
-                "FLEX" => Some(Self::Flex),
+                "FLEX" => Some(#[allow(deprecated)] Self::Flex),
                 "FLEX_FLAT_RATE" => Some(#[allow(deprecated)] Self::FlexFlatRate),
                 "TRIAL" => Some(#[allow(deprecated)] Self::Trial),
                 "MONTHLY" => Some(Self::Monthly),
@@ -704,6 +730,17 @@ pub struct DeleteReservationGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
+/// \[ReservationService.UpdateReservationGroup\]\[google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservationGroup\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateReservationGroupRequest {
+    /// Required. Content of the reservation group to update.
+    #[prost(message, optional, tag = "1")]
+    pub reservation_group: ::core::option::Option<ReservationGroup>,
+    /// Optional. Standard field mask for the set of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request for
 /// \[ReservationService.CreateCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
@@ -871,10 +908,10 @@ pub struct Assignment {
     #[prost(message, optional, tag = "11")]
     pub scheduling_policy: ::core::option::Option<SchedulingPolicy>,
     /// Optional. Represents the principal for this assignment. If not empty, jobs
-    /// run by this principal will utilize the associated reservation. Otherwise,
-    /// jobs will fall back to using the reservation assigned to the project,
-    /// folder, or organization (in that order). If no reservation is assigned at
-    /// any of these levels, on-demand capacity will be used.
+    /// run by this principal utilize the associated reservation. Otherwise, jobs
+    /// fall back to using the reservation assigned to the project, folder,
+    /// or organization, in that order. If no reservation is assigned at any of
+    /// these levels, on-demand capacity is used.
     ///
     /// The supported formats are:
     ///
@@ -884,9 +921,23 @@ pub struct Assignment {
     /// * `principal://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/subject/SUBJECT_ID`
     ///   for workload identity pool identities.
     /// * The special value `unknown_or_deleted_user` represents principals which
-    ///   cannot be read from the user info service, for example deleted users.
+    ///   cannot be read from the user info service, for example, deleted users.
     #[prost(string, tag = "12")]
     pub principal: ::prost::alloc::string::String,
+    /// Optional. Specifies the priority precedence for this assignment. Used to
+    /// resolve ambiguity when multiple assignments match a single job. Higher
+    /// numerical values represent higher priority (e.g., 20 is higher than 10). If
+    /// unspecified, it defaults to 0. Multiple assignments can share the same
+    /// precedence, but it is recommended to use unique precedence values for
+    /// assignments within the same assignee scope.
+    #[prost(int64, tag = "13")]
+    pub precedence: i64,
+    /// Optional. Common Expression Language (CEL) condition that defines the
+    /// matching criteria for this assignment.
+    /// The condition must resolve to a boolean value.
+    /// Supported variables will be added later.
+    #[prost(message, optional, tag = "14")]
+    pub condition: ::core::option::Option<super::super::super::super::r#type::Expr>,
 }
 /// Nested message and enum types in `Assignment`.
 pub mod assignment {
@@ -933,6 +984,10 @@ pub mod assignment {
         /// take priority over a default BACKGROUND reservation assignment (if it
         /// exists).
         BackgroundSearchIndexRefresh = 9,
+        /// Automated materialized view refresh jobs will use the reservation.
+        /// Reservations with this job type will take priority over a default QUERY
+        /// reservation assignment (if it exists).
+        AutomaticMaterializedViewRefresh = 10,
     }
     impl JobType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -950,6 +1005,9 @@ pub mod assignment {
                 Self::BackgroundChangeDataCapture => "BACKGROUND_CHANGE_DATA_CAPTURE",
                 Self::BackgroundColumnMetadataIndex => "BACKGROUND_COLUMN_METADATA_INDEX",
                 Self::BackgroundSearchIndexRefresh => "BACKGROUND_SEARCH_INDEX_REFRESH",
+                Self::AutomaticMaterializedViewRefresh => {
+                    "AUTOMATIC_MATERIALIZED_VIEW_REFRESH"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -969,6 +1027,9 @@ pub mod assignment {
                 }
                 "BACKGROUND_SEARCH_INDEX_REFRESH" => {
                     Some(Self::BackgroundSearchIndexRefresh)
+                }
+                "AUTOMATIC_MATERIALIZED_VIEW_REFRESH" => {
+                    Some(Self::AutomaticMaterializedViewRefresh)
                 }
                 _ => None,
             }
@@ -2454,6 +2515,36 @@ pub mod reservation_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.reservation.v1.ReservationService",
                         "ListReservationGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an existing reservation group resource.
+        pub async fn update_reservation_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateReservationGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReservationGroup>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateReservationGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "UpdateReservationGroup",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -1449,6 +1449,11 @@ pub struct CodeCompilationConfig {
     /// within the Git repository.
     #[prost(message, optional, tag = "12")]
     pub pipeline_config: ::core::option::Option<PipelineConfig>,
+    /// Output only. Whether OpenLineage events are emitted for actions in this
+    /// workflow. Reflects the `lineage.enabled` setting from
+    /// `workflow_settings.yaml`.
+    #[prost(bool, optional, tag = "14")]
+    pub lineage_enabled: ::core::option::Option<bool>,
 }
 /// Metadata about a repository snapshot stored in Google Cloud Storage.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

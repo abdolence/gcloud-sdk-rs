@@ -592,7 +592,7 @@ pub struct Assessment {
     /// assessment event must include a token and site key to use this feature.
     #[prost(message, optional, tag = "5")]
     pub account_verification: ::core::option::Option<AccountVerificationInfo>,
-    /// Output only. Assessment returned by account defender when an account
+    /// Output only. Assessment returned by Account defense when an account
     /// identifier is provided.
     #[prost(message, optional, tag = "6")]
     pub account_defender_assessment: ::core::option::Option<AccountDefenderAssessment>,
@@ -616,8 +616,7 @@ pub struct Assessment {
     #[prost(message, optional, tag = "13")]
     pub fraud_signals: ::core::option::Option<FraudSignals>,
     /// Output only. Assessment returned when a site key, a token, and a phone
-    /// number as `user_id` are provided. Account defender and SMS toll fraud
-    /// protection need to be enabled.
+    /// number as `user_id` are provided. SMS defense needs to be enabled.
     #[prost(message, optional, tag = "12")]
     pub phone_fraud_assessment: ::core::option::Option<PhoneFraudAssessment>,
     /// Optional. The environment creating the assessment. This describes your
@@ -625,6 +624,10 @@ pub struct Assessment {
     /// your user.
     #[prost(message, optional, tag = "14")]
     pub assessment_environment: ::core::option::Option<AssessmentEnvironment>,
+    /// Output only. Provides information about the policy evaluation for this
+    /// assessment.
+    #[prost(message, optional, tag = "16")]
+    pub policy_evaluation: ::core::option::Option<PolicyEvaluation>,
 }
 /// The event being assessed.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -647,7 +650,7 @@ pub struct Event {
     pub user_ip_address: ::prost::alloc::string::String,
     /// Optional. The expected action for this type of event. This should be the
     /// same action provided at token generation time on client-side platforms
-    /// already integrated with recaptcha enterprise.
+    /// already integrated with recaptcha enterprise. Required for Universal keys.
     #[prost(string, tag = "5")]
     pub expected_action: ::prost::alloc::string::String,
     /// Optional. Deprecated: use `user_info.account_id` instead.
@@ -839,8 +842,8 @@ pub mod transaction_data {
     /// Details about a user's account involved in the transaction.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct User {
-        /// Optional. Unique account identifier for this user. If using account
-        /// defender, this should match the hashed_account_id field. Otherwise, a
+        /// Optional. Unique account identifier for this user. If using Account
+        /// defense, this should match the hashed_account_id field. Otherwise, a
         /// unique and persistent identifier for this account.
         #[prost(string, tag = "6")]
         pub account_id: ::prost::alloc::string::String,
@@ -958,14 +961,21 @@ pub struct RiskAnalysis {
         tag = "2"
     )]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
-    /// Output only. Extended verdict reasons to be used for experimentation only.
-    /// The set of possible reasons is subject to change.
+    /// Output only. Additional reasons contributing to the risk analysis verdict.
+    /// These reasons are available to Enterprise tier projects only. Contact sales
+    /// for more information.
+    /// The set of reasons is subject to change.
     #[prost(string, repeated, tag = "3")]
     pub extended_verdict_reasons: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-    /// Output only. Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE
-    /// keys.
+    /// Output only. Type of the last challenge presented to the user for
+    /// Universal, `POLICY_BASED_CHALLENGE` and `INVISIBLE` keys. The field is only
+    /// set when a challenge was presented to the user.
+    #[prost(enumeration = "ChallengeType", tag = "6")]
+    pub last_challenge_type: i32,
+    /// Output only. Challenge information for Universal, `POLICY_BASED_CHALLENGE`
+    /// and `INVISIBLE` keys.
     #[prost(enumeration = "risk_analysis::Challenge", tag = "4")]
     pub challenge: i32,
     /// Output only. Bots with identities that have been verified by reCAPTCHA and
@@ -1004,9 +1014,19 @@ pub mod risk_analysis {
         /// Too little traffic has been received from this site thus far to generate
         /// quality risk analysis.
         LowConfidenceScore = 5,
-        /// The request matches behavioral characteristics of a carding attack.
+        /// Deprecated: Use
+        /// \[FraudPreventionAssessment.transaction_risk\]\[google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.transaction_risk\]
+        /// and
+        /// \[FraudPreventionAssessment.RiskReason.Reason.EXCESSIVE_ENUMERATION_PATTERN\]\[google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.RiskReason.Reason.EXCESSIVE_ENUMERATION_PATTERN\]
+        /// instead.
+        #[deprecated]
         SuspectedCarding = 6,
-        /// The request matches behavioral characteristics of chargebacks for fraud.
+        /// Deprecated: Use
+        /// \[FraudPreventionAssessment.transaction_risk\]\[google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.transaction_risk\]
+        /// and
+        /// \[FraudPreventionAssessment.RiskReason.Reason.ASSOCIATED_WITH_FRAUD_CLUSTER\]\[google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.RiskReason.Reason.ASSOCIATED_WITH_FRAUD_CLUSTER\]
+        /// instead.
+        #[deprecated]
         SuspectedChargeback = 7,
     }
     impl ClassificationReason {
@@ -1022,7 +1042,9 @@ pub mod risk_analysis {
                 Self::TooMuchTraffic => "TOO_MUCH_TRAFFIC",
                 Self::UnexpectedUsagePatterns => "UNEXPECTED_USAGE_PATTERNS",
                 Self::LowConfidenceScore => "LOW_CONFIDENCE_SCORE",
+                #[allow(deprecated)]
                 Self::SuspectedCarding => "SUSPECTED_CARDING",
+                #[allow(deprecated)]
                 Self::SuspectedChargeback => "SUSPECTED_CHARGEBACK",
             }
         }
@@ -1035,14 +1057,17 @@ pub mod risk_analysis {
                 "TOO_MUCH_TRAFFIC" => Some(Self::TooMuchTraffic),
                 "UNEXPECTED_USAGE_PATTERNS" => Some(Self::UnexpectedUsagePatterns),
                 "LOW_CONFIDENCE_SCORE" => Some(Self::LowConfidenceScore),
-                "SUSPECTED_CARDING" => Some(Self::SuspectedCarding),
-                "SUSPECTED_CHARGEBACK" => Some(Self::SuspectedChargeback),
+                "SUSPECTED_CARDING" => Some(#[allow(deprecated)] Self::SuspectedCarding),
+                "SUSPECTED_CHARGEBACK" => {
+                    Some(#[allow(deprecated)] Self::SuspectedChargeback)
+                }
                 _ => None,
             }
         }
     }
-    /// Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE keys.
-    /// Ensure that applications can handle values not explicitly listed.
+    /// Challenge information for Universal, `POLICY_BASED_CHALLENGE` and
+    /// `INVISIBLE` keys. Ensure that applications can handle values not explicitly
+    /// listed.
     #[derive(
         Clone,
         Copy,
@@ -1095,7 +1120,30 @@ pub mod risk_analysis {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Bot {
     /// Optional. Enumerated string value that indicates the identity of the bot,
-    /// formatted in kebab-case.
+    /// formatted in kebab-case. Current example values include the following:
+    ///
+    /// * google-agent - AI_AGENT
+    /// * browser-base - AI_AGENT
+    /// * chat-gpt - AI_AGENT
+    /// * aws-bedrock - AI_AGENT
+    /// * cybaa-bot - AI_AGENT
+    /// * cloudflare - AI_AGENT
+    /// * payhawk - AI_AGENT
+    /// * duck-duck-go - SEARCH_INDEXER
+    /// * mediaboard - CONTENT_SCRAPER
+    /// * marker-io - AI_AGENT
+    /// * broadcom - AI_AGENT
+    /// * anchor-browser - AI_AGENT
+    /// * shopify - AI_AGENT
+    /// * stackscope - CONTENT_SCRAPER
+    /// * manus - AI_AGENT
+    /// * kernel-sh - AI_AGENT
+    /// * zvelo - SEARCH_INDEXER
+    ///
+    /// Ensure that your applications can handle identifier values not explicitly
+    /// listed here. Deprecated values might take some time to stop showing
+    /// up in responses. New values can be pushed so this list should be taken
+    /// as non exhaustive.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Enumerated field representing the type of bot.
@@ -1158,11 +1206,9 @@ pub mod bot {
 /// Properties of the provided event token.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TokenProperties {
-    /// Output only. Whether the provided user response token is valid. When valid
-    /// = false, the reason could be specified in invalid_reason or it could also
-    /// be due to a user failing to solve a challenge or a sitekey mismatch (i.e
-    /// the sitekey used to generate the token was different than the one specified
-    /// in the assessment).
+    /// Output only. Indicates whether the provided user response token is valid.
+    /// If `false`, the token is invalid, either because the user failed the
+    /// challenge or for a reason provided in the `invalid_reason` field.
     #[prost(bool, tag = "1")]
     pub valid: bool,
     /// Output only. Reason associated with the response when valid = false.
@@ -1228,6 +1274,11 @@ pub mod token_properties {
         /// * you set an action score threshold higher than 0.0
         /// * you provided a non-empty `expected_action`
         UnexpectedAction = 7,
+        /// The key used to generate the token does not match the `site_key`.
+        KeyMismatch = 8,
+        /// The domain of the page on which the token was generated does not match
+        /// the `allowed_domains` configured in the `site_key`.
+        DomainMismatch = 9,
     }
     impl InvalidReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1244,6 +1295,8 @@ pub mod token_properties {
                 Self::Missing => "MISSING",
                 Self::BrowserError => "BROWSER_ERROR",
                 Self::UnexpectedAction => "UNEXPECTED_ACTION",
+                Self::KeyMismatch => "KEY_MISMATCH",
+                Self::DomainMismatch => "DOMAIN_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1257,6 +1310,8 @@ pub mod token_properties {
                 "MISSING" => Some(Self::Missing),
                 "BROWSER_ERROR" => Some(Self::BrowserError),
                 "UNEXPECTED_ACTION" => Some(Self::UnexpectedAction),
+                "KEY_MISMATCH" => Some(Self::KeyMismatch),
+                "DOMAIN_MISMATCH" => Some(Self::DomainMismatch),
                 _ => None,
             }
         }
@@ -1556,8 +1611,8 @@ pub struct PhoneFraudAssessment {
     #[prost(message, optional, tag = "1")]
     pub sms_toll_fraud_verdict: ::core::option::Option<SmsTollFraudVerdict>,
 }
-/// Account defender risk assessment.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+/// Account defense risk assessment.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountDefenderAssessment {
     /// Output only. Labels for this request.
     #[prost(
@@ -1567,10 +1622,178 @@ pub struct AccountDefenderAssessment {
         tag = "1"
     )]
     pub labels: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Account takeover risk assessment for this request.
+    #[prost(message, optional, tag = "4")]
+    pub account_takeover_verdict: ::core::option::Option<
+        account_defender_assessment::AccountTakeoverVerdict,
+    >,
 }
 /// Nested message and enum types in `AccountDefenderAssessment`.
 pub mod account_defender_assessment {
-    /// Labels returned by account defender for this request.
+    /// Account takeover risk assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AccountTakeoverVerdict {
+        /// Output only. Account takeover attempt probability.
+        /// Values are from 0.0 (lowest risk) to 1.0 (highest risk).
+        #[prost(float, tag = "1")]
+        pub risk: f32,
+        /// Output only. Unordered list. Reasons why the request appears risky. Risk
+        /// reasons can be returned even if the risk is low, as trustworthy requests
+        /// can still have some risk signals.
+        #[prost(message, repeated, tag = "4")]
+        pub risk_reasons: ::prost::alloc::vec::Vec<AccountRiskReason>,
+        /// Output only. Unordered list. Reasons why the request appears trustworthy.
+        /// Trust reasons can be returned even if the risk is high, as risky requests
+        /// can still have some trust signals.
+        #[prost(message, repeated, tag = "5")]
+        pub trust_reasons: ::prost::alloc::vec::Vec<AccountTrustReason>,
+    }
+    /// Risk explainability reasons for Account defense.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccountRiskReason {
+        /// Output only. A risk reason associated with this request.
+        #[prost(enumeration = "account_risk_reason::RiskReason", tag = "1")]
+        pub reason: i32,
+    }
+    /// Nested message and enum types in `AccountRiskReason`.
+    pub mod account_risk_reason {
+        /// Risk explainability reasons for Account defense.
+        /// Ensure that applications can handle values not explicitly listed.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum RiskReason {
+            /// Default unspecified type.
+            Unspecified = 0,
+            /// The client has been observed sending bot-like traffic to this site in
+            /// the past. This reason incorporates historical reputation and indicates
+            /// that the client is known to use bots, even if the current request is
+            /// being made by a human.
+            ClientHistoricalBotActivity = 1,
+            /// The account is part of a large group of related accounts, indicating
+            /// that it may be part of a fraudulent network. Related accounts are
+            /// identified based on having similar traffic patterns and request
+            /// characteristics.
+            AccountInLargeRelatedGroup = 2,
+            /// The client has been observed accessing many accounts on this site.
+            ClientAccessedManyAccounts = 3,
+            /// This email domain is a suspected provider of disposable email
+            /// addresses.
+            DisposableEmailDomain = 4,
+        }
+        impl RiskReason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "RISK_REASON_UNSPECIFIED",
+                    Self::ClientHistoricalBotActivity => "CLIENT_HISTORICAL_BOT_ACTIVITY",
+                    Self::AccountInLargeRelatedGroup => "ACCOUNT_IN_LARGE_RELATED_GROUP",
+                    Self::ClientAccessedManyAccounts => "CLIENT_ACCESSED_MANY_ACCOUNTS",
+                    Self::DisposableEmailDomain => "DISPOSABLE_EMAIL_DOMAIN",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RISK_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CLIENT_HISTORICAL_BOT_ACTIVITY" => {
+                        Some(Self::ClientHistoricalBotActivity)
+                    }
+                    "ACCOUNT_IN_LARGE_RELATED_GROUP" => {
+                        Some(Self::AccountInLargeRelatedGroup)
+                    }
+                    "CLIENT_ACCESSED_MANY_ACCOUNTS" => {
+                        Some(Self::ClientAccessedManyAccounts)
+                    }
+                    "DISPOSABLE_EMAIL_DOMAIN" => Some(Self::DisposableEmailDomain),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Trust explainability reasons for Account defense.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AccountTrustReason {
+        /// Output only. A trust reason associated with this request.
+        #[prost(enumeration = "account_trust_reason::TrustReason", tag = "1")]
+        pub reason: i32,
+    }
+    /// Nested message and enum types in `AccountTrustReason`.
+    pub mod account_trust_reason {
+        /// Trust explainability reasons for Account defense.
+        /// Ensure that applications can handle values not explicitly listed.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TrustReason {
+            /// Default unspecified type.
+            Unspecified = 0,
+            /// The request matches a trusted profile associated with this account.
+            /// Equivalent to `AccountDefenderLabel.PROFILE_MATCH`.
+            ProfileMatch = 1,
+            /// The account's historical activity is reputable. It is unlikely that the
+            /// account has been compromised in the past.
+            AccountHistoryReputable = 2,
+            /// The identity shows a global pattern of reputable activity based on
+            /// `userInfo` and associated identifiers.
+            IdentityGlobalActivityReputable = 3,
+            /// The identity shows a long-standing history of reputable activity based
+            /// on `userInfo` and associated identifiers.
+            IdentityHistoryReputable = 4,
+        }
+        impl TrustReason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TRUST_REASON_UNSPECIFIED",
+                    Self::ProfileMatch => "PROFILE_MATCH",
+                    Self::AccountHistoryReputable => "ACCOUNT_HISTORY_REPUTABLE",
+                    Self::IdentityGlobalActivityReputable => {
+                        "IDENTITY_GLOBAL_ACTIVITY_REPUTABLE"
+                    }
+                    Self::IdentityHistoryReputable => "IDENTITY_HISTORY_REPUTABLE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TRUST_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PROFILE_MATCH" => Some(Self::ProfileMatch),
+                    "ACCOUNT_HISTORY_REPUTABLE" => Some(Self::AccountHistoryReputable),
+                    "IDENTITY_GLOBAL_ACTIVITY_REPUTABLE" => {
+                        Some(Self::IdentityGlobalActivityReputable)
+                    }
+                    "IDENTITY_HISTORY_REPUTABLE" => Some(Self::IdentityHistoryReputable),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Labels returned by Account defense for this request.
     /// Ensure that applications can handle values not explicitly listed.
     #[derive(
         Clone,
@@ -1587,7 +1810,7 @@ pub mod account_defender_assessment {
     pub enum AccountDefenderLabel {
         /// Default unspecified type.
         Unspecified = 0,
-        /// The request matches a known good profile for the user.
+        /// The request matches a trusted profile associated with this account.
         ProfileMatch = 1,
         /// The request is potentially a suspicious login event and must be further
         /// verified either through multi-factor authentication or another system.
@@ -1867,7 +2090,7 @@ pub struct Key {
     pub waf_settings: ::core::option::Option<WafSettings>,
     /// Platform-specific settings for this key. The key can only be used on a
     /// platform for which the settings are enabled.
-    #[prost(oneof = "key::PlatformSettings", tags = "3, 4, 5, 11")]
+    #[prost(oneof = "key::PlatformSettings", tags = "3, 4, 5, 11, 13")]
     pub platform_settings: ::core::option::Option<key::PlatformSettings>,
 }
 /// Nested message and enum types in `Key`.
@@ -1888,6 +2111,9 @@ pub mod key {
         /// Settings for keys that can be used by reCAPTCHA Express.
         #[prost(message, tag = "11")]
         ExpressSettings(super::ExpressKeySettings),
+        /// Settings for keys that are configured through their Policy.
+        #[prost(message, tag = "13")]
+        UniversalSettings(super::UniversalKeySettings),
     }
 }
 /// Options for user acceptance testing.
@@ -2172,6 +2398,9 @@ pub struct IosKeySettings {
 /// Settings specific to keys that can be used for reCAPTCHA Express.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpressKeySettings {}
+/// Settings for keys that are configured through their Policy.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UniversalKeySettings {}
 /// Contains fields that are required to perform Apple-specific integrity checks.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppleDeveloperId {
@@ -2705,6 +2934,18 @@ pub struct AssessmentEnvironment {
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
+/// Information about the policy evaluation.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PolicyEvaluation {
+    /// Output only. Populated if one or more Challenge rules were matched.
+    /// Its presence in the assessment indicates that at least one challenge rule
+    /// was matched and determined whether a challenge was presented to the user.
+    #[prost(message, optional, tag = "1")]
+    pub challenge_rule_evaluation: ::core::option::Option<ChallengeRuleEvaluation>,
+}
+/// Information about the evaluation of a `ChallengeRule`.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeRuleEvaluation {}
 /// Information about the IP or IP range override.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IpOverrideData {
@@ -2762,6 +3003,210 @@ pub mod ip_override_data {
                 "ALLOW" => Some(Self::Allow),
                 _ => None,
             }
+        }
+    }
+}
+/// The request message to get a policy.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetPolicyRequest {
+    /// Required. The name of the policy to get, in the format
+    /// `projects/{project}/keys/{key}/policy`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message to update a policy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePolicyRequest {
+    /// Required. The Policy's name is used to identify the policy to update, in
+    /// the format `projects/{project}/keys/{key}/policy`.
+    #[prost(message, optional, tag = "1")]
+    pub policy: ::core::option::Option<Policy>,
+    /// Optional. The mask to control which fields of the policy get updated. If
+    /// the mask is not present, all fields are updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// A complete configuration set containing multiple grouped rules defining the
+/// behavior of reCAPTCHA for fraud detection and prevention.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Policy {
+    /// Identifier. Resource name for this policy.
+    /// Format: "projects/{project}/keys/{key}/policy" for a policy under a key.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Configuration for clients protected by this policy.
+    #[prost(message, optional, tag = "4")]
+    pub client_settings: ::core::option::Option<ClientSettings>,
+    /// Optional. Rules to configure the behavior of reCAPTCHA for showing a
+    /// challenge. Rule groups are evaluated in order. Evaluation stops when the
+    /// first matching rule group is found.
+    #[prost(message, repeated, tag = "2")]
+    pub challenge_rule_groups: ::prost::alloc::vec::Vec<ChallengeRuleGroup>,
+}
+/// A collection of challenge rules that applies to one or more actions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChallengeRuleGroup {
+    /// Required. Action name provided at token generation. The action name is not
+    /// case-sensitive and can only contain alphanumeric characters, slashes, and
+    /// underscores. If "\*" is provided, the rule group applies to all actions. If
+    /// multiple actions are provided, the rule group is applied to all of
+    /// them. This field is required.
+    #[prost(string, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. A list of rules that configure when and how reCAPTCHA presents a
+    /// challenge. reCAPTCHA evaluates these rules in order and applies the first
+    /// one that matches.
+    #[prost(message, repeated, tag = "2")]
+    pub challenge_rules: ::prost::alloc::vec::Vec<ChallengeRule>,
+}
+/// A rule to configure the behavior of reCAPTCHA for conditionally presenting a
+/// challenge.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeRule {
+    /// Optional. A CEL condition that must be met for this rule to apply.
+    /// If unspecified, the rule applies unconditionally.
+    /// The following fields can be referenced in the condition:
+    ///
+    /// * `score`
+    /// * `user_ip_address`
+    /// * `user_asn`
+    /// * `user_agent`
+    /// * `verified_bots.name`
+    /// * `verified_bots.bot_type`
+    ///
+    /// Examples:
+    ///
+    /// * `score < 0.5`
+    /// * `user_ip_address == "123.45.67.89"`
+    /// * `user_agent.contains("Chrome")`
+    /// * `score < 0.5 && user_ip_address == "123.45.67.89"`
+    #[prost(string, tag = "1")]
+    pub condition: ::prost::alloc::string::String,
+    /// Required. The outcome to apply when this challenge rule matches.
+    #[prost(oneof = "challenge_rule::Outcome", tags = "2, 3")]
+    pub outcome: ::core::option::Option<challenge_rule::Outcome>,
+}
+/// Nested message and enum types in `ChallengeRule`.
+pub mod challenge_rule {
+    /// An outcome that indicates that no challenge should be presented to the
+    /// user.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NoChallengeOutcome {}
+    /// An outcome that indicates that a challenge of a specified difficulty should
+    /// be presented to the user.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ChallengeOutcome {
+        /// Optional. The difficulty of the challenge to present to the user.
+        /// If unspecified, `BALANCE` is used.
+        #[prost(
+            enumeration = "super::web_key_settings::ChallengeSecurityPreference",
+            tag = "1"
+        )]
+        pub difficulty: i32,
+    }
+    /// Required. The outcome to apply when this challenge rule matches.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Outcome {
+        /// Do not present a challenge to the user.
+        #[prost(message, tag = "2")]
+        NoChallenge(NoChallengeOutcome),
+        /// Present a challenge to the user.
+        #[prost(message, tag = "3")]
+        Challenge(ChallengeOutcome),
+    }
+}
+/// Configuration for clients to protect with reCAPTCHA.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClientSettings {
+    /// Optional. Domains or subdomains of websites allowed to use the policy. All
+    /// subdomains of an allowed domain are automatically allowed. A valid domain
+    /// requires a host and must not include any path, port, query or fragment.
+    /// Examples: 'example.com' or 'subdomain.example.com'
+    /// Each policy supports a maximum of 250 domains. To use a policy on more
+    /// domains, set `allow_all_domains` to true. When this is set, you are
+    /// responsible for validating the hostname by checking the
+    /// `token_properties.hostname` field in each assessment response against your
+    /// list of allowed domains.
+    #[prost(string, repeated, tag = "1")]
+    pub allowed_domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. If set to true, it means allowed_domains are not enforced.
+    #[prost(bool, tag = "2")]
+    pub allow_all_domains: bool,
+    /// Optional. Configuration for all API endpoints to protect with reCAPTCHA. If
+    /// this field is not set, reCAPTCHA will not automatically request tokens on
+    /// any API endpoints.
+    #[prost(message, optional, tag = "3")]
+    pub protected_endpoint_group: ::core::option::Option<ProtectedEndpointGroup>,
+}
+/// Configuration for API endpoints to protect with reCAPTCHA.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProtectedEndpointGroup {
+    /// Optional. List of API endpoints to automatically protect with reCAPTCHA. If
+    /// any of these endpoints is invoked from a page where a key bound to this
+    /// policy is installed, a reCAPTCHA token is automatically generated and
+    /// attached to the request. If multiple protected endpoints match a given API
+    /// endpoint, the first one in the list is used.
+    #[prost(message, repeated, tag = "1")]
+    pub protected_endpoints: ::prost::alloc::vec::Vec<ProtectedEndpoint>,
+}
+/// Configuration for an API endpoint to protect with reCAPTCHA.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ProtectedEndpoint {
+    /// Required. URI path of the API endpoint to protect. Must start with '/'.
+    /// Supports glob characters '*' to match a single path segment and '\*\*' to
+    /// match multiple path segments. Standalone root catch-alls ('/*' and '/\*\*')
+    /// are invalid because it can negatively impact performance to trigger
+    /// reCAPTCHA on every single request to your backend.
+    ///
+    /// Matching is evaluated against the URL path only (domain, scheme, and query
+    /// parameters are ignored).
+    ///
+    /// Examples:
+    ///
+    /// * `/login` matches `/login`, `<https://example.com/login`,> and
+    ///   `/login?query=1`, but not `/login/step1`.
+    /// * `/products/*` matches `/products/123`, but not `/products/123/456`.
+    /// * `/content/**` matches `/content/articles/2024/01/01`.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    /// Required. Action name to be used for token generation for this endpoint.
+    /// The action name can only contain alphanumeric characters, slashes, and
+    /// underscores.
+    #[prost(string, tag = "2")]
+    pub action: ::prost::alloc::string::String,
+}
+/// Enum of challenge types for Universal, `POLICY_BASED_CHALLENGE` and
+/// `INVISIBLE` keys. Ensure that applications can handle values not explicitly
+/// listed.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ChallengeType {
+    /// Default unspecified type.
+    Unspecified = 0,
+    /// A visual challenge.
+    Visual = 1,
+    /// An audio challenge.
+    Audio = 2,
+}
+impl ChallengeType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CHALLENGE_TYPE_UNSPECIFIED",
+            Self::Visual => "CHALLENGE_TYPE_VISUAL",
+            Self::Audio => "CHALLENGE_TYPE_AUDIO",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CHALLENGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CHALLENGE_TYPE_VISUAL" => Some(Self::Visual),
+            "CHALLENGE_TYPE_AUDIO" => Some(Self::Audio),
+            _ => None,
         }
     }
 }
@@ -3242,6 +3687,60 @@ pub mod recaptcha_enterprise_service_client {
                     GrpcMethod::new(
                         "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
                         "GetMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get the policy for a key.
+        pub async fn get_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                        "GetPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the policy for a key.
+        pub async fn update_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdatePolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                        "UpdatePolicy",
                     ),
                 );
             self.inner.unary(req, path, codec).await

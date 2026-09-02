@@ -30,6 +30,15 @@ pub struct BigQueryTableReferences {
     /// Optional. References to BigQuery tables.
     #[prost(message, repeated, tag = "1")]
     pub table_references: ::prost::alloc::vec::Vec<BigQueryTableReference>,
+    /// Optional. References to BigQuery graphs.
+    ///
+    /// Note: "property graph" is the former name for BigQuery Graph. The field and
+    /// message names retain the original term for backward compatibility; both
+    /// refer to the same resource.
+    #[prost(message, repeated, tag = "2")]
+    pub property_graph_references: ::prost::alloc::vec::Vec<
+        BigQueryPropertyGraphReference,
+    >,
 }
 /// Message representing a reference to a single BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]

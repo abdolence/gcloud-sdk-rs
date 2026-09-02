@@ -2376,6 +2376,48 @@ pub mod deletion_metadata {
         }
     }
 }
+/// Specifies the markup syntax used to format the Chat message text.
+/// Applies to the `text` field of the `Message` resource.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MarkupSyntax {
+    /// Represents the unspecified value.
+    Unspecified = 0,
+    /// Uses Google Chat's markup syntax.
+    /// See
+    /// <https://developers.google.com/workspace/chat/format-messages#format-texts>
+    /// for more information.
+    Chat = 1,
+    /// Uses Markdown syntax. This syntax is based on the
+    /// [CommonMark](<https://commonmark.org/help/>) specification, with additional
+    /// extensions.
+    /// See
+    /// <https://developers.google.com/workspace/chat/format-messages#format-texts>
+    /// for more information.
+    Markdown = 2,
+}
+impl MarkupSyntax {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MARKUP_SYNTAX_UNSPECIFIED",
+            Self::Chat => "MARKUP_SYNTAX_CHAT",
+            Self::Markdown => "MARKUP_SYNTAX_MARKDOWN",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MARKUP_SYNTAX_UNSPECIFIED" => Some(Self::Unspecified),
+            "MARKUP_SYNTAX_CHAT" => Some(Self::Chat),
+            "MARKUP_SYNTAX_MARKDOWN" => Some(Self::Markdown),
+            _ => None,
+        }
+    }
+}
 /// A matched URL in a Chat message. Chat apps can preview matched URLs. For more
 /// information, see [Preview
 /// links](<https://developers.google.com/chat/how-tos/preview-links>).
@@ -3320,9 +3362,6 @@ pub struct SearchSpacesRequest {
     /// Requires either the `chat.admin.spaces.readonly` or `chat.admin.spaces`
     /// [OAuth 2.0
     /// scope](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>).
-    ///
-    /// This method currently only supports admin access, thus only `true` is
-    /// accepted for this field.
     #[prost(bool, tag = "1")]
     pub use_admin_access: bool,
     /// The maximum number of spaces to return. The service may return fewer than
@@ -3344,7 +3383,8 @@ pub struct SearchSpacesRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Required. A search query.
     ///
-    /// You can search by using the following parameters:
+    /// You can search by using the following parameters when `useAdminAccess`
+    /// is set to `true`:
     ///
     /// * `create_time`
     /// * `customer`
@@ -3354,17 +3394,26 @@ pub struct SearchSpacesRequest {
     /// * `space_history_state`
     /// * `space_type`
     ///
+    /// When `useAdminAccess` is set to `false`:
+    ///
+    /// * `display_name`
+    /// * `external_user_allowed`
+    /// * `space_type`
+    ///
     /// `create_time` and `last_active_time` accept a timestamp in
     /// [RFC-3339](<https://www.rfc-editor.org/rfc/rfc3339>) format and the supported
     /// comparison operators are: `=`, `<`, `>`, `<=`, `>=`.
     ///
-    /// `customer` is required and is used to indicate which customer
-    /// to fetch spaces from. `customers/my_customer` is the only supported value.
+    /// `customer` is required when `useAdminAccess` is set to `true`, and is
+    /// used to indicate which customer to fetch spaces from.
+    /// `customers/my_customer` is the only supported value.
     ///
     /// `display_name` only accepts the `HAS` (`:`) operator. The text to
     /// match is first tokenized into tokens and each token is prefix-matched
     /// case-insensitively and independently as a substring anywhere in the space's
-    /// `display_name`. For example, `Fun Eve` matches `Fun event` or `The  evening was fun`, but not `notFun event` or `even`.
+    /// `display_name`. For example, `Fun Eve` matches `Fun event` or `The  evening was fun`, but not `notFun event` or `even`. When `useAdminAccess`
+    /// is set to `false`, `display_name` is required to retrieve meaningful
+    /// results. Otherwise, the default behavior is to return an empty response.
     ///
     /// `external_user_allowed` accepts either `true` or `false`.
     ///
@@ -3385,7 +3434,8 @@ pub struct SearchSpacesRequest {
     /// `last_active_time` and `create_time` support both `AND` and `OR` operators.
     /// `AND` can only be used to represent an interval, such as `last_active_time  < "2022-01-01T00:00:00+00:00" AND last_active_time >  "2023-01-01T00:00:00+00:00"`.
     ///
-    /// The following example queries are valid:
+    /// The following example queries are valid when `useAdminAccess` is set to
+    /// `true`:
     ///
     /// ```text,
     /// customer = "customers/my_customer" AND space_type = "SPACE"
@@ -3407,6 +3457,21 @@ pub struct SearchSpacesRequest {
     /// "2020-01-01T00:00:00+00:00") AND (external_user_allowed = "true") AND
     /// (space_history_state = "HISTORY_ON" OR space_history_state = "HISTORY_OFF")
     /// ```
+    ///
+    /// The following example queries are valid when `useAdminAccess` is set to
+    /// `false`:
+    ///
+    /// ```text,
+    /// display_name:"Hello World" AND space_type = "SPACE"
+    ///
+    /// (display_name:"Hello" OR display_name:"Fun") AND space_type = "SPACE"
+    ///
+    /// (external_user_allowed = "true" AND space_type = "SPACE") // Returns an
+    /// empty response.
+    ///
+    /// (external_user_allowed = "true" AND display_name:"Hello" AND space_type =
+    /// "SPACE")
+    /// ```
     #[prost(string, tag = "4")]
     pub query: ::prost::alloc::string::String,
     /// Optional. How the list of spaces is ordered.
@@ -3419,13 +3484,17 @@ pub struct SearchSpacesRequest {
     ///   any topic of this space.
     /// * `create_time` — Denotes the time of the space creation.
     ///
+    /// When `useAdminAccess` is `false`, only `create_time` and `relevance` are
+    /// supported for ordering. Only `DESC` is supported for these fields in
+    /// non-admin searches.
+    ///
     /// Valid ordering operation values are:
     ///
     /// * `ASC` for ascending. Default value.
     ///
     /// * `DESC` for descending.
     ///
-    /// The supported syntax are:
+    /// The supported syntax are when `useAdminAccess` is set to `true`:
     ///
     /// * `membership_count.joined_direct_human_user_count DESC`
     /// * `membership_count.joined_direct_human_user_count ASC`
@@ -3433,13 +3502,23 @@ pub struct SearchSpacesRequest {
     /// * `last_active_time ASC`
     /// * `create_time DESC`
     /// * `create_time ASC`
+    ///
+    /// When `useAdminAccess` is set to `false`:
+    ///
+    /// * `create_time DESC`
+    /// * `relevance DESC`
+    ///   [Developer Preview](<https://developers.google.com/workspace/preview>).
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response with a list of spaces corresponding to the search spaces request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSpacesResponse {
-    /// A page of the requested spaces.
+    /// Deprecated: Please use the new `results` field instead.
+    /// A page of the requested spaces. This field will be populated only when
+    /// `useAdminAccess` is set to `true` and deprecated in favor of the new
+    /// `results` field.
+    #[deprecated]
     #[prost(message, repeated, tag = "1")]
     pub spaces: ::prost::alloc::vec::Vec<Space>,
     /// A token that can be used to retrieve the next page. If this field is empty,
@@ -3450,6 +3529,19 @@ pub struct SearchSpacesResponse {
     /// result is over 10,000 spaces, this value is an estimate.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
+    /// Output only. The list of search results that matched the query.
+    #[prost(message, repeated, tag = "4")]
+    pub results: ::prost::alloc::vec::Vec<search_spaces_response::SearchSpaceResult>,
+}
+/// Nested message and enum types in `SearchSpacesResponse`.
+pub mod search_spaces_response {
+    /// A single result item from a space search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchSpaceResult {
+        /// Output only. The matched space.
+        #[prost(message, optional, tag = "1")]
+        pub space: ::core::option::Option<super::Space>,
+    }
 }
 /// Request for deleting a space.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3780,9 +3872,14 @@ pub struct Message {
     /// Optional. An array of
     /// [cards](<https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>).
     ///
-    /// Only Chat apps can create cards. If your Chat app [authenticates as a
+    /// Chat apps can create cards with [app
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
+    /// As part of the [Developer Preview
+    /// Program](<https://developers.google.com/workspace/preview>), if your Chat app
+    /// [authenticates as a
     /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
-    /// the messages can't contain cards.
+    /// it can create card messages. If your Chat app is not part of Developer
+    /// Preview Program, it can't create cards with user authentication.
     ///
     /// To learn how to create a message that contains cards, see [Send a
     /// message](<https://developers.google.com/workspace/chat/create-messages>).
@@ -3897,6 +3994,10 @@ pub struct Message {
     /// (<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
     #[prost(message, repeated, tag = "44")]
     pub accessory_widgets: ::prost::alloc::vec::Vec<AccessoryWidget>,
+    /// Optional. Specifies how the server interprets the message `text` field
+    /// content.
+    #[prost(enumeration = "MarkupSyntax", tag = "47")]
+    pub markup_syntax: i32,
 }
 /// A GIF image that's specified by a URL.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4211,6 +4312,10 @@ pub struct GetMessageRequest {
     /// (<https://developers.google.com/workspace/chat/create-messages#name_a_created_message>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Specifies the desired output syntax for the Chat message
+    /// `formatted_text` field.
+    #[prost(enumeration = "MarkupSyntax", tag = "3")]
+    pub markup_syntax: i32,
 }
 /// Request to delete a message.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4540,6 +4645,10 @@ pub struct ListMessagesRequest {
     /// unavailable.
     #[prost(bool, tag = "6")]
     pub show_deleted: bool,
+    /// Optional. Specifies the desired output syntax for the Chat message
+    /// `formatted_text` field.
+    #[prost(enumeration = "MarkupSyntax", tag = "9")]
+    pub markup_syntax: i32,
 }
 /// Response message for listing messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4592,9 +4701,17 @@ pub struct Dialog {
 /// [card](<https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>)
 /// in a Google Chat message.
 ///
-/// Only Chat apps can create cards. If your Chat app [authenticates as a
+/// Chat apps can create cards with [app
+/// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
+/// As part of the [Developer Preview
+/// Program](<https://developers.google.com/workspace/preview>), if your Chat app
+/// [authenticates as a
 /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
-/// the message can't contain cards.
+/// it can create card messages. If your Chat app is not part of Developer
+/// Preview Program, it can't create cards with user authentication.
+///
+/// To learn how to create a message that contains cards, see [Send a
+/// message](<https://developers.google.com/workspace/chat/create-messages>).
 ///
 /// [Card builder](<https://addons.gsuite.google.com/uikit/builder>)
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4771,6 +4888,10 @@ pub struct SearchMessagesRequest {
     /// is supported, and it must be specified after the order attribute.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
+    /// Optional. Specifies the desired output syntax for the Chat message
+    /// `formatted_text` field.
+    #[prost(enumeration = "MarkupSyntax", tag = "6")]
+    pub markup_syntax: i32,
     /// Optional. Specifies what kind of search results view to return. The default
     /// is `SEARCH_MESSAGES_VIEW_BASIC`.
     #[prost(enumeration = "search_messages_request::SearchMessagesView", tag = "7")]
@@ -6465,19 +6586,31 @@ pub mod chat_service_client {
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "ListSpaces"));
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of spaces in a Google Workspace organization based on an
-        /// administrator's search. In the request, set `use_admin_access` to `true`.
-        /// For an example, see [Search for and manage
+        /// Returns a list of spaces in a Google Workspace organization. For an
+        /// example, see [Search for and manage
         /// spaces](https://developers.google.com/workspace/chat/search-manage-admin).
         ///
-        /// Requires [user
-        /// authentication with administrator
-        /// privileges](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges)
-        /// and one of the following [authorization
-        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        /// When `use_admin_access` is set to `false`, the results are limited to
+        /// spaces where the calling user is a joined member. To search with
+        /// administrator privileges, set `use_admin_access` to `true`.
         ///
-        /// * `https://www.googleapis.com/auth/chat.admin.spaces.readonly`
-        /// * `https://www.googleapis.com/auth/chat.admin.spaces`
+        /// Supports the following types of
+        /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize):
+        ///
+        /// * [User
+        ///  authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        ///  with one of the following authorization scopes:
+        ///
+        ///  * `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///  * `https://www.googleapis.com/auth/chat.spaces`
+        /// * [User
+        ///  authentication with administrator
+        ///  privileges](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges)
+        ///  and one of the following [authorization
+        ///  scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///  * `https://www.googleapis.com/auth/chat.admin.spaces.readonly`
+        ///  * `https://www.googleapis.com/auth/chat.admin.spaces`
         pub async fn search_spaces(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchSpacesRequest>,

@@ -20,6 +20,12 @@ pub struct Schema {
     /// Output only. The timestamp that the revision was created.
     #[prost(message, optional, tag = "6")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The configuration of the schema.
+    /// This field is mutually exclusive with the `definition` field above, meaning
+    /// either `definition` or one of the fields below can be set in a valid Schema
+    /// object.
+    #[prost(oneof = "schema::Configuration", tags = "8")]
+    pub configuration: ::core::option::Option<schema::Configuration>,
 }
 /// Nested message and enum types in `Schema`.
 pub mod schema {
@@ -65,6 +71,18 @@ pub mod schema {
                 _ => None,
             }
         }
+    }
+    /// The configuration of the schema.
+    /// This field is mutually exclusive with the `definition` field above, meaning
+    /// either `definition` or one of the fields below can be set in a valid Schema
+    /// object.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Configuration {
+        /// Optional. Configuration for a schema provided as a pre-compiled Protocol
+        /// Buffer FileDescriptorSet. The `type` field above must be set to
+        /// PROTOCOL_BUFFER.
+        #[prost(message, tag = "8")]
+        CompiledProtoSchema(super::CompiledProtoSchema),
     }
 }
 /// Request for the CreateSchema method.
@@ -260,6 +278,16 @@ pub mod validate_message_request {
 /// Empty for now.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateMessageResponse {}
+/// Configuration specific to compiled Protocol Buffer schemas.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CompiledProtoSchema {
+    /// Required. The name of the root message type in the schema.
+    #[prost(string, tag = "1")]
+    pub root_message: ::prost::alloc::string::String,
+    /// Required. The compiled FileDescriptorSet binary.
+    #[prost(bytes = "vec", tag = "2")]
+    pub compiled_bytes: ::prost::alloc::vec::Vec<u8>,
+}
 /// View of Schema object fields to be returned by GetSchema and ListSchemas.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -800,6 +828,11 @@ pub mod ingestion_data_source_settings {
             StreamNotFound = 4,
             /// The Kinesis consumer does not exist.
             ConsumerNotFound = 5,
+            /// Indicates an error state where the ingestion source cannot be
+            /// processed because the selected ingestion region is not permitted
+            /// by the Regional Access Boundary (RAB) restrictions on the project's
+            /// service account.
+            ConflictingRegionConstraints = 6,
         }
         impl State {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -814,6 +847,9 @@ pub mod ingestion_data_source_settings {
                     Self::PublishPermissionDenied => "PUBLISH_PERMISSION_DENIED",
                     Self::StreamNotFound => "STREAM_NOT_FOUND",
                     Self::ConsumerNotFound => "CONSUMER_NOT_FOUND",
+                    Self::ConflictingRegionConstraints => {
+                        "CONFLICTING_REGION_CONSTRAINTS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -825,6 +861,9 @@ pub mod ingestion_data_source_settings {
                     "PUBLISH_PERMISSION_DENIED" => Some(Self::PublishPermissionDenied),
                     "STREAM_NOT_FOUND" => Some(Self::StreamNotFound),
                     "CONSUMER_NOT_FOUND" => Some(Self::ConsumerNotFound),
+                    "CONFLICTING_REGION_CONSTRAINTS" => {
+                        Some(Self::ConflictingRegionConstraints)
+                    }
                     _ => None,
                 }
             }
@@ -913,6 +952,11 @@ pub mod ingestion_data_source_settings {
             /// The Cloud Storage bucket has too many objects, ingestion will be
             /// paused.
             TooManyObjects = 5,
+            /// Indicates an error state where the ingestion source cannot be
+            /// processed because the selected ingestion region is not permitted
+            /// by the Regional Access Boundary (RAB) restrictions on the project's
+            /// service account.
+            ConflictingRegionConstraints = 8,
         }
         impl State {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -929,6 +973,9 @@ pub mod ingestion_data_source_settings {
                     Self::PublishPermissionDenied => "PUBLISH_PERMISSION_DENIED",
                     Self::BucketNotFound => "BUCKET_NOT_FOUND",
                     Self::TooManyObjects => "TOO_MANY_OBJECTS",
+                    Self::ConflictingRegionConstraints => {
+                        "CONFLICTING_REGION_CONSTRAINTS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -942,6 +989,9 @@ pub mod ingestion_data_source_settings {
                     "PUBLISH_PERMISSION_DENIED" => Some(Self::PublishPermissionDenied),
                     "BUCKET_NOT_FOUND" => Some(Self::BucketNotFound),
                     "TOO_MANY_OBJECTS" => Some(Self::TooManyObjects),
+                    "CONFLICTING_REGION_CONSTRAINTS" => {
+                        Some(Self::ConflictingRegionConstraints)
+                    }
                     _ => None,
                 }
             }
@@ -1028,6 +1078,11 @@ pub mod ingestion_data_source_settings {
             SubscriptionNotFound = 6,
             /// The provided Event Hubs resource group couldn't be found.
             ResourceGroupNotFound = 7,
+            /// Indicates an error state where the ingestion source cannot be
+            /// processed because the selected ingestion region is not permitted
+            /// by the Regional Access Boundary (RAB) restrictions on the project's
+            /// service account.
+            ConflictingRegionConstraints = 8,
         }
         impl State {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1044,6 +1099,9 @@ pub mod ingestion_data_source_settings {
                     Self::EventHubNotFound => "EVENT_HUB_NOT_FOUND",
                     Self::SubscriptionNotFound => "SUBSCRIPTION_NOT_FOUND",
                     Self::ResourceGroupNotFound => "RESOURCE_GROUP_NOT_FOUND",
+                    Self::ConflictingRegionConstraints => {
+                        "CONFLICTING_REGION_CONSTRAINTS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1059,6 +1117,9 @@ pub mod ingestion_data_source_settings {
                     "EVENT_HUB_NOT_FOUND" => Some(Self::EventHubNotFound),
                     "SUBSCRIPTION_NOT_FOUND" => Some(Self::SubscriptionNotFound),
                     "RESOURCE_GROUP_NOT_FOUND" => Some(Self::ResourceGroupNotFound),
+                    "CONFLICTING_REGION_CONSTRAINTS" => {
+                        Some(Self::ConflictingRegionConstraints)
+                    }
                     _ => None,
                 }
             }
@@ -1119,6 +1180,11 @@ pub mod ingestion_data_source_settings {
             ClusterNotFound = 4,
             /// The provided topic wasn't found.
             TopicNotFound = 5,
+            /// Indicates an error state where the ingestion source cannot be
+            /// processed because the selected ingestion region is not permitted
+            /// by the Regional Access Boundary (RAB) restrictions on the project's
+            /// service account.
+            ConflictingRegionConstraints = 6,
         }
         impl State {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1133,6 +1199,9 @@ pub mod ingestion_data_source_settings {
                     Self::PublishPermissionDenied => "PUBLISH_PERMISSION_DENIED",
                     Self::ClusterNotFound => "CLUSTER_NOT_FOUND",
                     Self::TopicNotFound => "TOPIC_NOT_FOUND",
+                    Self::ConflictingRegionConstraints => {
+                        "CONFLICTING_REGION_CONSTRAINTS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1144,6 +1213,9 @@ pub mod ingestion_data_source_settings {
                     "PUBLISH_PERMISSION_DENIED" => Some(Self::PublishPermissionDenied),
                     "CLUSTER_NOT_FOUND" => Some(Self::ClusterNotFound),
                     "TOPIC_NOT_FOUND" => Some(Self::TopicNotFound),
+                    "CONFLICTING_REGION_CONSTRAINTS" => {
+                        Some(Self::ConflictingRegionConstraints)
+                    }
                     _ => None,
                 }
             }
@@ -1207,6 +1279,11 @@ pub mod ingestion_data_source_settings {
             ClusterNotFound = 5,
             /// The provided topic wasn't found.
             TopicNotFound = 6,
+            /// Indicates an error state where the ingestion source cannot be
+            /// processed because the selected ingestion region is not permitted
+            /// by the Regional Access Boundary (RAB) restrictions on the project's
+            /// service account.
+            ConflictingRegionConstraints = 7,
         }
         impl State {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1224,6 +1301,9 @@ pub mod ingestion_data_source_settings {
                     Self::UnreachableBootstrapServer => "UNREACHABLE_BOOTSTRAP_SERVER",
                     Self::ClusterNotFound => "CLUSTER_NOT_FOUND",
                     Self::TopicNotFound => "TOPIC_NOT_FOUND",
+                    Self::ConflictingRegionConstraints => {
+                        "CONFLICTING_REGION_CONSTRAINTS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1240,6 +1320,9 @@ pub mod ingestion_data_source_settings {
                     }
                     "CLUSTER_NOT_FOUND" => Some(Self::ClusterNotFound),
                     "TOPIC_NOT_FOUND" => Some(Self::TopicNotFound),
+                    "CONFLICTING_REGION_CONSTRAINTS" => {
+                        Some(Self::ConflictingRegionConstraints)
+                    }
                     _ => None,
                 }
             }
@@ -1626,6 +1709,102 @@ pub struct JavaScriptUdf {
     #[prost(string, tag = "2")]
     pub code: ::prost::alloc::string::String,
 }
+/// Configuration for compressing/decompressing message data using a
+/// user-specified compression algorithm.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Compression {
+    /// Required. Specifies the compression algorithm to use.
+    #[prost(enumeration = "compression::CompressionAlgorithm", tag = "1")]
+    pub compression_algorithm: i32,
+    /// Required. Specifies whether to compress or decompress the message.
+    #[prost(enumeration = "compression::CompressionMode", tag = "2")]
+    pub compression_mode: i32,
+}
+/// Nested message and enum types in `Compression`.
+pub mod compression {
+    /// The compression algorithm to use.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CompressionAlgorithm {
+        /// Unspecified algorithm.
+        Unspecified = 0,
+        /// ZLIB compression.
+        Zlib = 1,
+    }
+    impl CompressionAlgorithm {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPRESSION_ALGORITHM_UNSPECIFIED",
+                Self::Zlib => "ZLIB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPRESSION_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ZLIB" => Some(Self::Zlib),
+                _ => None,
+            }
+        }
+    }
+    /// The mode of the compression SMT.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CompressionMode {
+        /// Unspecified mode.
+        Unspecified = 0,
+        /// Compress.
+        Compress = 1,
+        /// Decompress.
+        Decompress = 2,
+    }
+    impl CompressionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMPRESSION_MODE_UNSPECIFIED",
+                Self::Compress => "COMPRESS",
+                Self::Decompress => "DECOMPRESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPRESSION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPRESS" => Some(Self::Compress),
+                "DECOMPRESS" => Some(Self::Decompress),
+                _ => None,
+            }
+        }
+    }
+}
 /// Configuration for making inference requests against Vertex AI models.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AiInference {
@@ -1679,7 +1858,7 @@ pub struct MessageTransform {
     #[prost(bool, tag = "4")]
     pub disabled: bool,
     /// The type of transform to apply to messages.
-    #[prost(oneof = "message_transform::Transform", tags = "2, 6")]
+    #[prost(oneof = "message_transform::Transform", tags = "2, 7, 6")]
     pub transform: ::core::option::Option<message_transform::Transform>,
 }
 /// Nested message and enum types in `MessageTransform`.
@@ -1691,6 +1870,9 @@ pub mod message_transform {
         /// are specified on a resource, each must have a unique `function_name`.
         #[prost(message, tag = "2")]
         JavascriptUdf(super::JavaScriptUdf),
+        /// Optional. Compression/Decompression.
+        #[prost(message, tag = "7")]
+        Compression(super::Compression),
         /// Optional. AI Inference. Specifies the Vertex AI endpoint that inference
         /// requests built from the Pub/Sub message data and provided parameters will
         /// be sent to.
@@ -1761,8 +1943,9 @@ pub struct Topic {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
-    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
-    /// using tags with Pub/Sub resources.
+    /// See
+    /// <https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags>
+    /// for more information on using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "14")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2007,9 +2190,10 @@ pub struct DetachSubscriptionRequest {
 /// Reserved for future use.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetachSubscriptionResponse {}
-/// A subscription resource. If none of `push_config`, `bigquery_config`, or
-/// `cloud_storage_config` is set, then the subscriber will pull and ack messages
-/// using API methods. At most one of these fields may be set.
+/// A subscription resource. If none of `push_config`, `bigquery_config`,
+/// `cloud_storage_config`, or `bigtable_config` is set, then the subscriber will
+/// pull and ack messages using API methods. At most one of these fields may be
+/// set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// Required. Identifier. The name of the subscription. It must have the format
@@ -2175,8 +2359,9 @@ pub struct Subscription {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
-    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
-    /// using tags with Pub/Sub resources.
+    /// See
+    /// <https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags>
+    /// for more information on using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "26")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2445,11 +2630,13 @@ pub struct BigQueryConfig {
     /// a JSON object in the attributes column.
     #[prost(bool, tag = "3")]
     pub write_metadata: bool,
-    /// Optional. When true and use_topic_schema is true, any fields that are a
-    /// part of the topic schema that are not part of the BigQuery table schema are
-    /// dropped when writing to BigQuery. Otherwise, the schemas must be kept in
-    /// sync and any messages with extra fields are not written and remain in the
-    /// subscription's backlog.
+    /// Optional. If true and `use_topic_schema` is true, drops any fields that are
+    /// part of the topic schema that are not part of the BigQuery table schema
+    /// when writing to BigQuery. Otherwise, the schemas must be kept in sync and
+    /// any messages with extra fields are not written and remain in the
+    /// subscription's backlog. If true and `use_table_schema` is true, drops any
+    /// fields in the message that are not part of the BigQuery table schema when
+    /// writing to BigQuery. Otherwise, the write to BigQuery will fail.
     #[prost(bool, tag = "4")]
     pub drop_unknown_fields: bool,
     /// Output only. An output-only field that indicates whether or not the
@@ -2548,8 +2735,9 @@ pub mod big_query_config {
 /// Configuration for a Bigtable subscription. The Pub/Sub message will be
 /// written to a Bigtable row as follows:
 ///
-/// * row key: subscription name and message ID delimited by #.
-/// * columns: message bytes written to a single column family "data" with an
+/// * row key: subscription name, message ID hash, and message ID delimited by
+///   `#`.
+/// * columns: message bytes written to a single column family `data` with an
 ///   empty-string column qualifier.
 /// * cell timestamp: the message publish timestamp.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2607,23 +2795,23 @@ pub mod bigtable_config {
         Unspecified = 0,
         /// The subscription can actively send messages to Bigtable.
         Active = 1,
-        /// Cannot write to Bigtable because the instance, table, or app profile
-        /// does not exist.
+        /// Unused in the current implementation. Placeholder for future use.
         NotFound = 2,
-        /// Cannot write to Bigtable because the app profile is not configured for
-        /// single-cluster routing.
+        /// Unused in the current implementation. Placeholder for future use.
         AppProfileMisconfigured = 3,
         /// Cannot write to Bigtable because of permission denied errors.
         /// This can happen if:
         ///
+        /// * The Bigtable instance, table, or app profile does not exist.
         /// * The Pub/Sub service agent has not been granted the
         ///   [appropriate Bigtable IAM permission
         ///   bigtable.tables.mutateRows]({$universe.dns_names.final_documentation_domain}/bigtable/docs/access-control#permissions)
         /// * The bigtable.googleapis.com API is not enabled for the project
         ///   ([instructions]({$universe.dns_names.final_documentation_domain}/service-usage/docs/enable-disable))
         PermissionDenied = 4,
-        /// Cannot write to Bigtable because of a missing column family ("data") or
-        /// if there is no structured row key for the subscription name + message ID.
+        /// Cannot write to Bigtable because of a missing column family (`data`), or
+        /// if there is no structured row key for the subscription name + message ID,
+        /// if because the app profile is not configured for single-cluster routing.
         SchemaMismatch = 5,
         /// Cannot write to the destination because enforce_in_transit is set to true
         /// and the destination locations are not in the allowed regions.
@@ -3188,8 +3376,9 @@ pub struct CreateSnapshotRequest {
     /// resource. For example:
     /// "123/environment": "production",
     /// "123/costCenter": "marketing"
-    /// See <https://docs.cloud.google.com/pubsub/docs/tags> for more information on
-    /// using tags with Pub/Sub resources.
+    /// See
+    /// <https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags>
+    /// for more information on using tags with Pub/Sub resources.
     #[prost(map = "string, string", tag = "4")]
     pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,

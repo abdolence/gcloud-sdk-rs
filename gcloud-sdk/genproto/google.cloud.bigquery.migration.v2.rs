@@ -1162,6 +1162,12 @@ pub mod migration_subtask {
 /// The migration task result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationTaskResult {
+    /// The map of task output types to the task outputs, e.g. "LINEAGE".
+    #[prost(map = "string, message", tag = "3")]
+    pub task_outputs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        TaskOutput,
+    >,
     /// Details specific to the task type.
     #[prost(oneof = "migration_task_result::Details", tags = "2")]
     pub details: ::core::option::Option<migration_task_result::Details>,
@@ -1188,6 +1194,312 @@ pub struct TranslationTaskResult {
     /// The Cloud Console URI for the migration workflow.
     #[prost(string, tag = "3")]
     pub console_uri: ::prost::alloc::string::String,
+}
+/// The task output for a task type including the status and any errors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskOutput {
+    /// Output only. The current state of the task output.
+    #[prost(enumeration = "task_output::State", tag = "1")]
+    pub state: i32,
+    /// An explanation that may be populated when the task output is in FAILED
+    /// state.
+    #[prost(message, optional, tag = "2")]
+    pub processing_error: ::core::option::Option<
+        super::super::super::super::rpc::ErrorInfo,
+    >,
+    /// The detailed output of the task.
+    #[prost(oneof = "task_output::Output", tags = "3")]
+    pub output: ::core::option::Option<task_output::Output>,
+}
+/// Nested message and enum types in `TaskOutput`.
+pub mod task_output {
+    /// Possible task output states.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Task output state is unspecified.
+        Unspecified = 0,
+        /// Task output is pending.
+        Pending = 1,
+        /// Task output is succeeded.
+        Succeeded = 2,
+        /// Task output is failed. This does not mean that there is no useful
+        /// information in the output; partial outputs or failure details may be
+        /// available.
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The detailed output of the task.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Output {
+        /// The output of the task with output type "LINEAGE".
+        #[prost(message, tag = "3")]
+        LineageOutput(super::LineageOutput),
+    }
+}
+/// The output of a task with output type "LINEAGE".
+///
+/// Actual generated lineage can be queried separately (see
+/// \[webapp_uri\]\[google.cloud.bigquery.migration.v2.LineageOutput.webapp_uri\]),
+/// this message contains only metadata: processing status, errors, etc.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LineageOutput {
+    /// The URI of the webapp that visualizes the lineage.
+    /// The user needs the `bigquerymigration.googleapis.com/lineageDbs.query` IAM
+    /// permission to use the webapp.
+    #[prost(string, tag = "1")]
+    pub webapp_uri: ::prost::alloc::string::String,
+    /// Output only. Recognized lineage inputs.
+    ///
+    /// All inputs are processed only if the task succeeds and all work is in state
+    /// [SUCCEEDED](ProgressReport.WorkSummary.State.SUCCEEDED) (in particular,
+    /// nothing is [SKIPPED](ProgressReport.WorkSummary.State.SKIPPED)).
+    ///
+    /// Even with all inputs processed successfully, there may be transpiler errors
+    /// present leading to inaccurate lineage.
+    #[prost(message, repeated, tag = "2")]
+    pub recognized_inputs: ::prost::alloc::vec::Vec<lineage_output::RecognizedInput>,
+    /// Output only. Work processing progress reports broken up by processing
+    /// stage.
+    #[prost(message, repeated, tag = "3")]
+    pub processing_progress_reports: ::prost::alloc::vec::Vec<
+        lineage_output::ProgressReport,
+    >,
+}
+/// Nested message and enum types in `LineageOutput`.
+pub mod lineage_output {
+    /// Information about lineage input of the given type that lineage generation
+    /// recognized.
+    ///
+    /// If you expected to process more of the given input, verify your input was
+    /// uploaded and is in the correct format and the request to generate lineage
+    /// correctly specified the input location.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RecognizedInput {
+        /// Output only. The type of the input.
+        #[prost(enumeration = "recognized_input::Type", tag = "1")]
+        pub r#type: i32,
+        /// Output only. The uncompressed size of the recognized input of the given
+        /// type.
+        #[prost(int64, tag = "2")]
+        pub uncompressed_size_bytes: i64,
+    }
+    /// Nested message and enum types in `RecognizedInput`.
+    pub mod recognized_input {
+        /// Input type recognized by the lineage processing.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// The type is not specified.
+            Unspecified = 0,
+            /// The input is metadata.
+            Metadata = 1,
+            /// The input is a query log.
+            QueryLog = 2,
+            /// The input is a SQL script.
+            Script = 3,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::Metadata => "METADATA",
+                    Self::QueryLog => "QUERY_LOG",
+                    Self::Script => "SCRIPT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "METADATA" => Some(Self::Metadata),
+                    "QUERY_LOG" => Some(Self::QueryLog),
+                    "SCRIPT" => Some(Self::Script),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Breaks down processing progress of work.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProgressReport {
+        /// Output only. The processing stage this progress report describes.
+        #[prost(enumeration = "progress_report::ProcessingStage", tag = "1")]
+        pub processing_stage: i32,
+        /// Output only. Summaries of work broken up by the state of the work. Each
+        /// work summary describes how much work is in the given state.
+        ///
+        /// To get numbers for the total work covered, aggregate the numbers from all
+        /// summaries.
+        #[prost(message, repeated, tag = "2")]
+        pub work_summaries: ::prost::alloc::vec::Vec<progress_report::WorkSummary>,
+    }
+    /// Nested message and enum types in `ProgressReport`.
+    pub mod progress_report {
+        /// Summary of work in the given state.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct WorkSummary {
+            /// Output only. The state of the work this summary describes.
+            #[prost(enumeration = "work_summary::State", tag = "1")]
+            pub state: i32,
+            /// Output only. Size of the work in the given State.
+            ///
+            /// Size counts "units of work". Units represent arbitrary division of
+            /// work; there's no expectation each unit takes similar time to process.
+            #[prost(int64, tag = "2")]
+            pub size: i64,
+            /// Output only. Human-readable comment.
+            #[prost(string, tag = "3")]
+            pub comment: ::prost::alloc::string::String,
+        }
+        /// Nested message and enum types in `WorkSummary`.
+        pub mod work_summary {
+            /// States of work. Each piece of work is in exactly one state.
+            /// \[SUCCEEDED\], \[FAILED\] and \[SKIPPED\] are terminal states; work in the
+            /// \[IN_PROGRESS\] will eventually transition to one of the terminal states.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum State {
+                /// The state is not specified.
+                Unspecified = 0,
+                /// Work that was processed successfully.
+                Succeeded = 1,
+                /// Work that failed processing.
+                Failed = 2,
+                /// Work that is currently being processed or queued for processing.
+                InProgress = 3,
+                /// Work that was recognised as necessary to fully process inputs but was
+                /// skipped due to system limitations.
+                Skipped = 4,
+            }
+            impl State {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "STATE_UNSPECIFIED",
+                        Self::Succeeded => "SUCCEEDED",
+                        Self::Failed => "FAILED",
+                        Self::InProgress => "IN_PROGRESS",
+                        Self::Skipped => "SKIPPED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "SUCCEEDED" => Some(Self::Succeeded),
+                        "FAILED" => Some(Self::Failed),
+                        "IN_PROGRESS" => Some(Self::InProgress),
+                        "SKIPPED" => Some(Self::Skipped),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// The processing stage the progress report describes.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ProcessingStage {
+            /// The stage is not specified.
+            Unspecified = 0,
+            /// The input ingestion stage.
+            InputIngestion = 1000,
+            /// The lineage DB postprocessing stage.
+            Postprocessing = 2000,
+        }
+        impl ProcessingStage {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "PROCESSING_STAGE_UNSPECIFIED",
+                    Self::InputIngestion => "INPUT_INGESTION",
+                    Self::Postprocessing => "POSTPROCESSING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PROCESSING_STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INPUT_INGESTION" => Some(Self::InputIngestion),
+                    "POSTPROCESSING" => Some(Self::Postprocessing),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// Request to create a migration workflow resource.
 #[derive(Clone, PartialEq, ::prost::Message)]

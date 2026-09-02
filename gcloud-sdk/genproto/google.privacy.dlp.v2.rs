@@ -5,7 +5,7 @@ pub struct InfoType {
     /// Name of the information type. Either a name of your choosing when
     /// creating a CustomInfoType, or one of the names listed
     /// at
-    /// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference>
     /// when specifying a built-in type.  When sending Cloud DLP results to Data
     /// Catalog, infoType names should conform to the pattern
     /// `\[A-Za-z0-9$_-\]{1,64}`.
@@ -138,7 +138,7 @@ pub struct CustomInfoType {
     #[prost(message, optional, tag = "9")]
     pub sensitivity_score: ::core::option::Option<SensitivityScore>,
     /// Type of custom detector.
-    #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5, 10")]
+    #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5, 10, 12")]
     pub r#type: ::core::option::Option<custom_info_type::Type>,
 }
 /// Nested message and enum types in `CustomInfoType`.
@@ -162,9 +162,9 @@ pub mod custom_info_type {
     /// Dictionary words containing a large number of characters that are not
     /// letters or digits may result in unexpected findings because such characters
     /// are treated as whitespace. The
-    /// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page
-    /// contains details about the size limits of dictionaries. For dictionaries
-    /// that do not fit within these constraints, consider using
+    /// [limits](<https://docs.cloud.google.com/sensitive-data-protection/limits>)
+    /// page contains details about the size limits of dictionaries. For
+    /// dictionaries that do not fit within these constraints, consider using
     /// `LargeCustomDictionaryConfig` in the `StoredInfoType` API.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Dictionary {
@@ -210,7 +210,7 @@ pub mod custom_info_type {
     }
     /// Message for detecting output from deidentification transformations
     /// such as
-    /// [`CryptoReplaceFfxFpeConfig`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
+    /// [`CryptoReplaceFfxFpeConfig`](<https://docs.cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
     /// These types of transformations are
     /// those that perform pseudonymization, thereby producing a "surrogate" as
     /// output. This should be used in conjunction with a field on the
@@ -229,6 +229,60 @@ pub mod custom_info_type {
         /// The regular expression for the value. Value should be non-empty.
         #[prost(string, tag = "2")]
         pub value_regex: ::prost::alloc::string::String,
+    }
+    /// Configuration for a custom infoType that detects file labels.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FileLabelInfoType {
+        /// The type of file label to detect.
+        #[prost(oneof = "file_label_info_type::Type", tags = "1, 2")]
+        pub r#type: ::core::option::Option<file_label_info_type::Type>,
+    }
+    /// Nested message and enum types in `FileLabelInfoType`.
+    pub mod file_label_info_type {
+        /// Sensitivity labels published by Microsoft.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct SensitivityLabel {
+            /// The GUID of the sensitivity label.
+            #[prost(string, tag = "1")]
+            pub guid: ::prost::alloc::string::String,
+        }
+        /// Google Drive labels published by Google.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GoogleDriveLabel {
+            /// The [label
+            /// ID](<https://developers.google.com/workspace/drive/labels/guides/overview>)
+            /// of the Google Drive label.
+            #[prost(string, tag = "1")]
+            pub label_id: ::prost::alloc::string::String,
+            /// The field values of the Google Drive label to match.
+            #[prost(message, repeated, tag = "2")]
+            pub label_fields_to_match: ::prost::alloc::vec::Vec<
+                google_drive_label::LabelField,
+            >,
+        }
+        /// Nested message and enum types in `GoogleDriveLabel`.
+        pub mod google_drive_label {
+            /// The field values of the Google Drive label to match.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct LabelField {
+                /// The identifier of the Label Field.
+                #[prost(string, tag = "1")]
+                pub id: ::prost::alloc::string::String,
+                /// The value of the Label Field to match.
+                #[prost(string, tag = "2")]
+                pub value: ::prost::alloc::string::String,
+            }
+        }
+        /// The type of file label to detect.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Type {
+            /// Sensitivity labels published by Microsoft.
+            #[prost(message, tag = "1")]
+            SensitivityLabel(SensitivityLabel),
+            /// Google Drive labels published by Google.
+            #[prost(message, tag = "2")]
+            GoogleDriveLabel(GoogleDriveLabel),
+        }
     }
     /// Deprecated; use `InspectionRuleSet` instead. Rule for modifying a
     /// `CustomInfoType` to alter behavior under certain circumstances, depending
@@ -250,7 +304,7 @@ pub mod custom_info_type {
             /// if you want to modify the likelihood of an entire column of findngs,
             /// set this to 1. For more information, see
             /// \[Hotword example: Set the match likelihood of a table column\]
-            /// (<https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
+            /// (<https://docs.cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(int32, tag = "1")]
             pub window_before: i32,
             /// Number of characters after the finding to consider.
@@ -304,7 +358,7 @@ pub mod custom_info_type {
             /// For tabular data, if you want to modify the likelihood of an entire
             /// column of findngs, see
             /// \[Hotword example: Set the match likelihood of a table column\]
-            /// (<https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
+            /// (<https://docs.cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(message, optional, tag = "2")]
             pub proximity: ::core::option::Option<Proximity>,
             /// Likelihood adjustment to apply to all matching findings.
@@ -360,7 +414,7 @@ pub mod custom_info_type {
         }
     }
     /// Type of custom detector.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A list of phrases to detect as a CustomInfoType.
         #[prost(message, tag = "2")]
@@ -378,6 +432,9 @@ pub mod custom_info_type {
         /// Key-value pair to detect in the metadata.
         #[prost(message, tag = "10")]
         MetadataKeyValueExpression(MetadataKeyValueExpression),
+        /// File label to detect.
+        #[prost(message, tag = "12")]
+        FileLabelInfoType(FileLabelInfoType),
     }
 }
 /// General identifier of a data field in a storage service.
@@ -489,7 +546,7 @@ pub struct CloudStorageOptions {
     /// This field can't be set if de-identification is requested. For certain file
     /// types, setting this field has no effect. For more information, see [Limits
     /// on bytes scanned per
-    /// file](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
+    /// file](<https://docs.cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
     #[prost(int64, tag = "4")]
     pub bytes_limit_per_file: i64,
     /// Max percentage of bytes to scan from a file. The rest are omitted. The
@@ -499,7 +556,7 @@ pub struct CloudStorageOptions {
     /// This field can't be set if de-identification is requested. For certain file
     /// types, setting this field has no effect. For more information, see [Limits
     /// on bytes scanned per
-    /// file](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
+    /// file](<https://docs.cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
     #[prost(int32, tag = "8")]
     pub bytes_limit_per_file_percent: i32,
     /// List of file type groups to include in the scan.
@@ -631,7 +688,7 @@ pub struct BigQueryOptions {
     /// TimespanConfig.
     ///
     /// Caution: A [known
-    /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-sampling>)
+    /// issue](<https://docs.cloud.google.com/sensitive-data-protection/docs/known-issues#bq-sampling>)
     /// is causing the `rowsLimitPercent` field to behave unexpectedly. We
     /// recommend using `rowsLimit` instead.
     #[prost(int32, tag = "6")]
@@ -741,7 +798,7 @@ pub mod storage_config {
         /// `TIMESTAMP`, and `DATETIME`.
         ///
         /// If your BigQuery table is [partitioned at ingestion
-        /// time](<https://cloud.google.com/bigquery/docs/partitioned-tables#ingestion_time>),
+        /// time](<https://docs.cloud.google.com/bigquery/docs/partitioned-tables#ingestion_time>),
         /// you can use any of the following pseudo-columns as your timestamp field.
         /// When used with Cloud DLP, these pseudo-column names are case sensitive.
         ///
@@ -758,7 +815,7 @@ pub mod storage_config {
         ///
         /// See the
         /// [known
-        /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-timespan>)
+        /// issue](<https://docs.cloud.google.com/sensitive-data-protection/docs/known-issues#bq-timespan>)
         /// related to this operation.
         #[prost(message, optional, tag = "3")]
         pub timestamp_field: ::core::option::Option<super::FieldId>,
@@ -776,7 +833,7 @@ pub mod storage_config {
         /// timestamp will result in skipped rows.
         ///
         /// See the [known
-        /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#recently-streamed-data>)
+        /// issue](<https://docs.cloud.google.com/sensitive-data-protection/docs/known-issues#recently-streamed-data>)
         /// related to this operation.
         #[prost(bool, tag = "4")]
         pub enable_auto_population_of_timespan_config: bool,
@@ -1026,7 +1083,7 @@ pub struct TableOptions {
 ///
 /// For more information about each likelihood level
 /// and how likelihood works, see [Match
-/// likelihood](<https://cloud.google.com/sensitive-data-protection/docs/likelihood>).
+/// likelihood](<https://docs.cloud.google.com/sensitive-data-protection/docs/likelihood>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Likelihood {
@@ -1205,7 +1262,7 @@ pub struct ExcludeByHotword {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExcludeByImageFindings {
     /// A list of image-supported infoTypes—excluding [document
-    /// infoTypes](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
+    /// infoTypes](<https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
     /// be used as context for the exclusion rule. A finding is excluded if
     /// its bounding box has the specified spatial relationship (defined by
     /// `image_containment_type`) with a finding of an infoType in this list.
@@ -1295,7 +1352,7 @@ pub struct AdjustByMatchingInfoTypes {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdjustByImageFindings {
     /// A list of image-supported infoTypes—excluding [document
-    /// infoTypes](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
+    /// infoTypes](<https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents>)—to
     /// be used as context for the adjustment rule. Sensitive Data Protection
     /// adjusts the likelihood of an image finding if its bounding box has the
     /// specified spatial relationship (defined by `image_containment_type`) with a
@@ -1391,7 +1448,7 @@ pub struct InspectionRuleSet {
 pub struct InspectConfig {
     /// Restricts what info_types to look for. The values must correspond to
     /// InfoType values returned by ListInfoTypes or listed at
-    /// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference.>
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference.>
     ///
     /// When no InfoTypes or CustomInfoTypes are specified in a request, the
     /// system may automatically choose a default list of detectors to run, which
@@ -1408,7 +1465,7 @@ pub struct InspectConfig {
     /// In general, the highest likelihood setting yields the fewest findings in
     /// results and the lowest chance of a false positive. For more information,
     /// see [Match
-    /// likelihood](<https://cloud.google.com/sensitive-data-protection/docs/likelihood>).
+    /// likelihood](<https://docs.cloud.google.com/sensitive-data-protection/docs/likelihood>).
     #[prost(enumeration = "Likelihood", tag = "2")]
     pub min_likelihood: i32,
     /// Minimum likelihood per infotype. For each infotype, a user can specify a
@@ -1447,7 +1504,7 @@ pub struct InspectConfig {
     #[prost(bool, tag = "5")]
     pub exclude_info_types: bool,
     /// CustomInfoTypes provided by the user. See
-    /// <https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes>
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes>
     /// to learn more.
     #[prost(message, repeated, tag = "6")]
     pub custom_info_types: ::prost::alloc::vec::Vec<CustomInfoType>,
@@ -1553,7 +1610,7 @@ pub struct ByteContentItem {
 pub mod byte_content_item {
     /// The type of data being sent for inspection. To learn more, see
     /// [Supported file
-    /// types](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types>).
+    /// types](<https://docs.cloud.google.com/sensitive-data-protection/docs/supported-file-types>).
     ///
     /// Only the first frame of each multiframe image is inspected. Metadata and
     /// other frames aren't inspected.
@@ -1679,7 +1736,7 @@ pub mod content_item {
         #[prost(string, tag = "3")]
         Value(::prost::alloc::string::String),
         /// Structured content for inspection. See
-        /// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-text#inspecting_a_table>
+        /// <https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-text#inspecting_a_table>
         /// to learn more.
         #[prost(message, tag = "4")]
         Table(super::Table),
@@ -1702,6 +1759,9 @@ pub struct ContentMetadata {
     /// User provided key-value pairs of content metadata.
     #[prost(message, repeated, tag = "2")]
     pub properties: ::prost::alloc::vec::Vec<KeyValueMetadataProperty>,
+    /// Optional. The file labels associated with the content.
+    #[prost(message, repeated, tag = "3")]
+    pub file_labels: ::prost::alloc::vec::Vec<FileLabel>,
 }
 /// Complete conversation or slice of a conversation.
 /// It is assumed that all included messages are contiguous and ordered in
@@ -1806,7 +1866,7 @@ pub struct StringValueBatch {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
-/// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
@@ -1836,6 +1896,60 @@ pub struct KeyValueMetadataProperty {
     /// The value of the property.
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
+}
+/// Represents a file label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileLabel {
+    /// The type of file label.
+    #[prost(oneof = "file_label::Type", tags = "1, 2")]
+    pub r#type: ::core::option::Option<file_label::Type>,
+}
+/// Nested message and enum types in `FileLabel`.
+pub mod file_label {
+    /// Sensitivity labels published by Microsoft.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SensitivityLabelMetadata {
+        /// Required. The GUID of the sensitivity label.
+        #[prost(string, tag = "1")]
+        pub guid: ::prost::alloc::string::String,
+    }
+    /// Google Drive labels published by Google.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GoogleDriveLabelMetadata {
+        /// The [label
+        /// ID](<https://developers.google.com/workspace/drive/labels/guides/overview>)
+        /// of the Google Drive label.
+        #[prost(string, tag = "1")]
+        pub label_id: ::prost::alloc::string::String,
+        /// The field values of the Google Drive label
+        #[prost(message, repeated, tag = "2")]
+        pub label_fields: ::prost::alloc::vec::Vec<
+            google_drive_label_metadata::LabelFieldMetadata,
+        >,
+    }
+    /// Nested message and enum types in `GoogleDriveLabelMetadata`.
+    pub mod google_drive_label_metadata {
+        /// The field values of the Google Drive label
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct LabelFieldMetadata {
+            /// The identifier of the Label Field.
+            #[prost(string, tag = "1")]
+            pub id: ::prost::alloc::string::String,
+            /// The value of the Label Field.
+            #[prost(message, optional, tag = "2")]
+            pub value: ::core::option::Option<super::super::Value>,
+        }
+    }
+    /// The type of file label.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Type {
+        /// Sensitivity labels published by Microsoft.
+        #[prost(message, tag = "1")]
+        SensitivityLabel(SensitivityLabelMetadata),
+        /// Google Drive labels published by Google.
+        #[prost(message, tag = "2")]
+        GoogleDriveLabel(GoogleDriveLabelMetadata),
+    }
 }
 /// All the findings for a single scanned item.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2172,7 +2286,8 @@ pub struct ImageLocation {
     #[prost(message, repeated, tag = "1")]
     pub bounding_boxes: ::prost::alloc::vec::Vec<BoundingBox>,
 }
-/// Bounding box encompassing detected text within an image.
+/// Bounding box encompassing detected text within an image. Coordinates are in
+/// pixels and strictly within the image or frame bounds.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoundingBox {
     /// Top coordinate of the bounding box. (0,0) is upper left.
@@ -2196,7 +2311,7 @@ pub struct RedactImageRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -2316,7 +2431,7 @@ pub struct DeidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -2387,7 +2502,7 @@ pub struct ReidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -2458,7 +2573,7 @@ pub struct InspectContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -2631,7 +2746,7 @@ pub struct InspectDataSourceDetails {
     pub requested_options: ::core::option::Option<
         inspect_data_source_details::RequestedOptions,
     >,
-    /// A summary of the outcome of this inspection job.
+    /// Output only. A summary of the outcome of this inspection job.
     #[prost(message, optional, tag = "3")]
     pub result: ::core::option::Option<inspect_data_source_details::Result>,
 }
@@ -2640,8 +2755,8 @@ pub mod inspect_data_source_details {
     /// Snapshot of the inspection configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestedOptions {
-        /// If run with an InspectTemplate, a snapshot of its state at the time of
-        /// this run.
+        /// Output only. If run with an InspectTemplate, a snapshot of its state at
+        /// the time of this run.
         #[prost(message, optional, tag = "1")]
         pub snapshot_inspect_template: ::core::option::Option<super::InspectTemplate>,
         /// Inspect config.
@@ -3366,7 +3481,7 @@ pub struct ListInfoTypesResponse {
     pub info_types: ::prost::alloc::vec::Vec<InfoTypeDescription>,
 }
 /// Configuration for a risk analysis job. See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-risk-analysis>
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-risk-analysis>
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RiskAnalysisJobConfig {
@@ -3962,22 +4077,22 @@ pub mod analyze_data_source_risk_details {
     /// Values associated with this metric.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
-        /// Numerical stats result
+        /// Output only. Numerical stats result
         #[prost(message, tag = "3")]
         NumericalStatsResult(NumericalStatsResult),
-        /// Categorical stats result
+        /// Output only. Categorical stats result
         #[prost(message, tag = "4")]
         CategoricalStatsResult(CategoricalStatsResult),
-        /// K-anonymity result
+        /// Output only. K-anonymity result
         #[prost(message, tag = "5")]
         KAnonymityResult(KAnonymityResult),
-        /// L-divesity result
+        /// Output only. L-divesity result
         #[prost(message, tag = "6")]
         LDiversityResult(LDiversityResult),
-        /// K-map result
+        /// Output only. K-map result
         #[prost(message, tag = "7")]
         KMapEstimationResult(KMapEstimationResult),
-        /// Delta-presence result
+        /// Output only. Delta-presence result
         #[prost(message, tag = "9")]
         DeltaPresenceEstimationResult(DeltaPresenceEstimationResult),
     }
@@ -4336,7 +4451,8 @@ pub mod time_part_config {
 /// Outputs a base64 encoded representation of the hashed output
 /// (for example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=).
 /// Currently, only string and integer values can be hashed.
-/// See <https://cloud.google.com/sensitive-data-protection/docs/pseudonymization>
+/// See
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/pseudonymization>
 /// to learn more.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CryptoHashConfig {
@@ -4429,8 +4545,8 @@ pub mod replace_dictionary_config {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// A list of words to select from for random replacement. The
-        /// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page
-        /// contains details about the size limits of dictionaries.
+        /// [limits](<https://docs.cloud.google.com/sensitive-data-protection/limits>)
+        /// page contains details about the size limits of dictionaries.
         #[prost(message, tag = "1")]
         WordList(super::custom_info_type::dictionary::WordList),
     }
@@ -4583,8 +4699,8 @@ pub struct CharacterMaskConfig {
 /// be transformed to match the type of the bound before comparing.
 ///
 /// See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-bucketing> to
-/// learn more.
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-bucketing>
+/// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
     /// Required. Lower bound value of buckets. All values less than `lower_bound`
@@ -4614,8 +4730,8 @@ pub struct FixedSizeBucketingConfig {
 /// will first attempt converting the type of the data to be transformed to match
 /// the type of the bound before comparing.
 /// See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-bucketing> to
-/// learn more.
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-bucketing>
+/// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketingConfig {
     /// Set of buckets. Ranges must be non-overlapping.
@@ -4647,8 +4763,8 @@ pub mod bucketing_config {
 /// will be replaced with the same surrogate. Identifiers must be at least two
 /// characters long. In the case that the identifier is the empty string, it will
 /// be skipped. See
-/// <https://cloud.google.com/sensitive-data-protection/docs/pseudonymization> to
-/// learn more.
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/pseudonymization>
+/// to learn more.
 ///
 /// Note: We recommend using  CryptoDeterministicConfig for all use cases which
 /// do not require preserving the input alphabet space and size, plus warrant
@@ -4692,7 +4808,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     ///
     /// This annotation identifies the surrogate when inspecting content using the
     /// custom infoType
-    /// [`SurrogateType`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/InspectConfig#surrogatetype>).
+    /// [`SurrogateType`](<https://docs.cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/InspectConfig#surrogatetype>).
     /// This facilitates reversal of the surrogate when it occurs in free text.
     ///
     /// In order for inspection to work properly, the name of this infoType must
@@ -4844,7 +4960,7 @@ pub struct UnwrappedCryptoKey {
 /// dlp.kms.encrypt
 ///
 /// For more information, see \[Creating a wrapped key\]
-/// (<https://cloud.google.com/sensitive-data-protection/docs/create-wrapped-key>).
+/// (<https://docs.cloud.google.com/sensitive-data-protection/docs/create-wrapped-key>).
 ///
 /// Note: When you use Cloud KMS for cryptographic operations,
 /// [charges apply](<https://cloud.google.com/kms/pricing>).
@@ -4859,7 +4975,7 @@ pub struct KmsWrappedCryptoKey {
 }
 /// Shifts dates by random number of days, with option to be consistent for the
 /// same context. See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-date-shifting>
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-date-shifting>
 /// to learn more.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateShiftConfig {
@@ -5364,8 +5480,8 @@ pub struct Manual {}
 /// The inspectTemplate contains a configuration (set of types of sensitive data
 /// to be detected) to be used anywhere you otherwise would normally specify
 /// InspectConfig. See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-templates> to
-/// learn more.
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-templates>
+/// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectTemplate {
     /// Output only. The template name.
@@ -5390,11 +5506,17 @@ pub struct InspectTemplate {
     /// The core content of the template. Configuration of the scanning process.
     #[prost(message, optional, tag = "6")]
     pub inspect_config: ::core::option::Option<InspectConfig>,
+    /// Optional. Enables the use of [limited-availability built-in
+    /// infoTypes](<https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#limited-availability-infotypes>)
+    /// in inspect_config. These infoTypes are supported only in specific regions
+    /// and can cause scanning errors if used elsewhere.
+    #[prost(bool, tag = "8")]
+    pub allow_limited_availability_info_types: bool,
 }
 /// DeidentifyTemplates contains instructions on how to de-identify content.
 /// See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-templates> to
-/// learn more.
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-templates>
+/// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyTemplate {
     /// Output only. The template name.
@@ -5487,12 +5609,12 @@ pub mod error {
 }
 /// Contains a configuration to make API calls on a repeating basis.
 /// See
-/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers>
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers>
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobTrigger {
-    /// Unique resource name for the triggeredJob, assigned by the service when the
-    /// triggeredJob is created, for example
+    /// Output only. Unique resource name for the triggeredJob, assigned by the
+    /// service when the triggeredJob is created, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -5610,7 +5732,8 @@ pub mod job_trigger {
     }
 }
 /// A task to execute on the completion of a job.
-/// See <https://cloud.google.com/sensitive-data-protection/docs/concepts-actions>
+/// See
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-actions>
 /// to learn more.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Action {
@@ -5633,7 +5756,7 @@ pub mod action {
     /// Publish a message into a given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
     /// finished job's
-    /// [`DlpJob.name`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
+    /// [`DlpJob.name`](<https://docs.cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
     /// Compatible with: Inspect, Risk
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PublishToPubSub {
@@ -5677,7 +5800,7 @@ pub mod action {
     /// Publish findings of a DlpJob to Dataplex Universal Catalog as a
     /// `sensitive-data-protection-job-result` aspect. For more information,
     /// see [Send inspection results to Dataplex Universal Catalog as
-    /// aspects](<https://cloud.google.com/sensitive-data-protection/docs/add-aspects-inspection-job>).
+    /// aspects](<https://docs.cloud.google.com/sensitive-data-protection/docs/add-aspects-inspection-job>).
     ///
     /// Aspects are stored in Dataplex Universal Catalog storage and are
     /// governed by service-specific policies for Dataplex Universal Catalog. For
@@ -5796,7 +5919,7 @@ pub mod action {
     }
     /// Sends an email when the job completes. The email goes to IAM project owners
     /// and technical [Essential
-    /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
+    /// Contacts](<https://docs.cloud.google.com/resource-manager/docs/managing-notification-contacts>).
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct JobNotificationEmails {}
     /// Enable Stackdriver metric dlp.googleapis.com/finding_count. This
@@ -5831,7 +5954,7 @@ pub mod action {
         Deidentify(Deidentify),
         /// Sends an email when the job completes. The email goes to IAM project
         /// owners and technical [Essential
-        /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
+        /// Contacts](<https://docs.cloud.google.com/resource-manager/docs/managing-notification-contacts>).
         #[prost(message, tag = "8")]
         JobNotificationEmails(JobNotificationEmails),
         /// Enable Stackdriver metric dlp.googleapis.com/finding_count.
@@ -5875,7 +5998,7 @@ pub struct CreateInspectTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -5939,7 +6062,7 @@ pub struct ListInspectTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -6013,7 +6136,7 @@ pub struct CreateJobTriggerRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -6194,7 +6317,7 @@ pub struct CreateDlpJobRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -6244,7 +6367,7 @@ pub struct ListJobTriggersRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -6380,9 +6503,9 @@ pub mod data_profile_action {
         ///   generated and the dataset and table are created, the discovery scan
         ///   configuration will be updated with the dataset and table names.
         /// * See [Analyze data profiles stored in
-        ///   BigQuery](<https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles>).
+        ///   BigQuery](<https://docs.cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles>).
         /// * See [Sample queries for your BigQuery
-        ///   table](<https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#sample_sql_queries>).
+        ///   table](<https://docs.cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#sample_sql_queries>).
         /// * Data is inserted using [streaming
         ///   insert](<https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>)
         ///   and so data may be in the buffer for a period of time after the
@@ -6393,7 +6516,7 @@ pub mod data_profile_action {
         ///   notification.
         /// * The best practice is to use the same table for an entire organization
         ///   so that you can take advantage of the [provided Data Studio
-        ///   reports](<https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report>).
+        ///   reports](<https://docs.cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report>).
         ///   If you use VPC Service Controls to define security perimeters, then
         ///   you must use a separate table for each boundary.
         #[prost(message, optional, tag = "1")]
@@ -6490,7 +6613,8 @@ pub mod data_profile_action {
     pub struct PublishToSecurityCommandCenter {}
     /// Create Dataplex Universal Catalog aspects for profiled resources with the
     /// aspect type Sensitive Data Protection Profile. To learn more about aspects,
-    /// see <https://cloud.google.com/sensitive-data-protection/docs/add-aspects.>
+    /// see
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/add-aspects.>
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PublishToDataplexCatalog {
         /// Whether creating a Dataplex Universal Catalog aspect for a profiled
@@ -6503,10 +6627,10 @@ pub mod data_profile_action {
         pub lower_data_risk_to_low: bool,
     }
     /// If set, attaches the \[tags\]
-    /// (<https://cloud.google.com/resource-manager/docs/tags/tags-overview>)
+    /// (<https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview>)
     /// provided to profiled resources. Tags support [access
-    /// control](<https://cloud.google.com/iam/docs/tags-access-control>). You can
-    /// conditionally grant or deny access to a resource based on whether the
+    /// control](<https://docs.cloud.google.com/iam/docs/tags-access-control>). You
+    /// can conditionally grant or deny access to a resource based on whether the
     /// resource has a specific tag.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TagResources {
@@ -6523,11 +6647,11 @@ pub mod data_profile_action {
         pub profile_generations_to_tag: ::prost::alloc::vec::Vec<i32>,
         /// Whether applying a tag to a resource should lower the risk of the profile
         /// for that resource. For example, in conjunction with an [IAM deny
-        /// policy](<https://cloud.google.com/iam/docs/deny-overview>), you can deny
-        /// all principals a permission if a tag value is present, mitigating the
-        /// risk of the resource. This also lowers the data risk of resources at the
-        /// lower levels of the resource hierarchy. For example, reducing the data
-        /// risk of a table data profile also reduces the data risk of the
+        /// policy](<https://docs.cloud.google.com/iam/docs/deny-overview>), you can
+        /// deny all principals a permission if a tag value is present, mitigating
+        /// the risk of the resource. This also lowers the data risk of resources at
+        /// the lower levels of the resource hierarchy. For example, reducing the
+        /// data risk of a table data profile also reduces the data risk of the
         /// constituent column data profiles.
         #[prost(bool, tag = "3")]
         pub lower_data_risk_to_low: bool,
@@ -6642,7 +6766,7 @@ pub mod data_profile_action {
         /// Publishes generated data profiles to Google Security Operations.
         /// For more information, see [Use Sensitive Data Protection data in
         /// context-aware
-        /// analytics](<https://cloud.google.com/chronicle/docs/detection/usecase-dlp-high-risk-user-download>).
+        /// analytics](<https://docs.cloud.google.com/chronicle/docs/detection/usecase-dlp-high-risk-user-download>).
         #[prost(message, tag = "3")]
         PublishToChronicle(PublishToChronicle),
         /// Publishes findings to Security Command Center for each data profile.
@@ -6667,7 +6791,7 @@ pub struct DataProfileFinding {
     #[prost(string, tag = "1")]
     pub quote: ::prost::alloc::string::String,
     /// The [type of
-    /// content](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>)
+    /// content](<https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference>)
     /// that might have been found.
     #[prost(message, optional, tag = "2")]
     pub infotype: ::core::option::Option<InfoType>,
@@ -6744,7 +6868,7 @@ pub struct DataProfileFindingRecordLocation {
 ///
 /// The generated data profiles are retained according to the
 /// \[data retention policy\]
-/// (<https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
+/// (<https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileJobConfig {
     /// The data to scan.
@@ -6775,7 +6899,7 @@ pub struct DataProfileJobConfig {
     /// scanned.
     ///
     /// For more information, see
-    /// <https://cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
     #[prost(string, repeated, tag = "7")]
     pub inspect_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Actions to execute at the completion of the job.
@@ -6845,11 +6969,11 @@ pub mod data_profile_location {
 ///
 /// The generated data profiles are retained according to the
 /// \[data retention policy\]
-/// (<https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
+/// (<https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryConfig {
-    /// Unique resource name for the DiscoveryConfig, assigned by the service when
-    /// the DiscoveryConfig is created, for example
+    /// Output only. Unique resource name for the DiscoveryConfig, assigned by the
+    /// service when the DiscoveryConfig is created, for example
     /// `projects/dlp-test-project/locations/global/discoveryConfigs/53234423`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -6879,7 +7003,7 @@ pub struct DiscoveryConfig {
     /// scanned.
     ///
     /// For more information, see
-    /// <https://cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
+    /// <https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
     #[prost(string, repeated, tag = "3")]
     pub inspect_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Actions to execute at the completion of scanning.
@@ -7586,7 +7710,7 @@ pub mod discovery_cloud_sql_generation_cadence {
 /// No inspect template should be included in the discovery config for a
 /// security benchmarks scan. Instead, the built-in list of secrets and
 /// credentials infoTypes will be used (see
-/// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#credentials_and_secrets>).
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#credentials_and_secrets>).
 ///
 /// Credentials and secrets discovered will be reported as vulnerabilities to
 /// Security Command Center.
@@ -7671,7 +7795,7 @@ pub struct FileStoreCollection {
     /// For a resource to match the tag filters, the resource must have all of the
     /// provided tags attached. Tags refer to Resource Manager tags bound to the
     /// resource or its ancestors. For more information, see [Manage
-    /// schedules](<https://cloud.google.com/sensitive-data-protection/docs/profile-project-cloud-storage#manage-schedules>).
+    /// schedules](<https://docs.cloud.google.com/sensitive-data-protection/docs/profile-project-cloud-storage#manage-schedules>).
     #[prost(message, optional, tag = "2")]
     pub include_tags: ::core::option::Option<TagFilters>,
     /// The first filter containing a pattern that matches a file store will be
@@ -7792,8 +7916,8 @@ pub struct DiscoveryCloudStorageConditions {
 /// Nested message and enum types in `DiscoveryCloudStorageConditions`.
 pub mod discovery_cloud_storage_conditions {
     /// The attribute of an object. See
-    /// <https://cloud.google.com/storage/docs/storage-classes> for more information
-    /// on storage classes.
+    /// <https://docs.cloud.google.com/storage/docs/storage-classes> for more
+    /// information on storage classes.
     #[derive(
         Clone,
         Copy,
@@ -7882,11 +8006,13 @@ pub mod discovery_cloud_storage_conditions {
         Unspecified = 0,
         /// Scan buckets regardless of the attribute.
         AllSupportedBuckets = 1,
-        /// Buckets with [Autoclass](<https://cloud.google.com/storage/docs/autoclass>)
+        /// Buckets with
+        /// [Autoclass](<https://docs.cloud.google.com/storage/docs/autoclass>)
         /// disabled. Only one of
         /// AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
         AutoclassDisabled = 2,
-        /// Buckets with [Autoclass](<https://cloud.google.com/storage/docs/autoclass>)
+        /// Buckets with
+        /// [Autoclass](<https://docs.cloud.google.com/storage/docs/autoclass>)
         /// enabled. Only one of
         /// AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set. Scanning
         /// Autoclass-enabled buckets can affect object storage classes.
@@ -7946,7 +8072,7 @@ pub mod discovery_file_store_conditions {
 }
 /// Target used to match against for discovery of resources from other clouds.
 /// An [AWS connector in Security Command Center
-/// (Enterprise](<https://cloud.google.com/security-command-center/docs/connect-scc-to-aws>)
+/// (Enterprise](<https://docs.cloud.google.com/security-command-center/docs/connect-scc-to-aws>)
 /// is required to use this feature.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OtherCloudDiscoveryTarget {
@@ -8498,35 +8624,35 @@ pub struct DiscoveryVertexDatasetGenerationCadence {
 /// Combines all of the information about a DLP job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DlpJob {
-    /// The server-assigned name.
+    /// Output only. The server-assigned name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The type of job.
     #[prost(enumeration = "DlpJobType", tag = "2")]
     pub r#type: i32,
-    /// State of a job.
+    /// Output only. State of a job.
     #[prost(enumeration = "dlp_job::JobState", tag = "3")]
     pub state: i32,
-    /// Time when the job was created.
+    /// Output only. Time when the job was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time when the job started.
+    /// Output only. Time when the job started.
     #[prost(message, optional, tag = "7")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time when the job finished.
+    /// Output only. Time when the job finished.
     #[prost(message, optional, tag = "8")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time when the job was last modified by the system.
+    /// Output only. Time when the job was last modified by the system.
     #[prost(message, optional, tag = "15")]
     pub last_modified: ::core::option::Option<::prost_types::Timestamp>,
-    /// If created by a job trigger, the resource name of the trigger that
-    /// instantiated the job.
+    /// Output only. If created by a job trigger, the resource name of the trigger
+    /// that instantiated the job.
     #[prost(string, tag = "10")]
     pub job_trigger_name: ::prost::alloc::string::String,
-    /// A stream of errors encountered running the job.
+    /// Output only. A stream of errors encountered running the job.
     #[prost(message, repeated, tag = "11")]
     pub errors: ::prost::alloc::vec::Vec<Error>,
-    /// Events that should occur after the job has completed.
+    /// Output only. Events that should occur after the job has completed.
     #[prost(message, repeated, tag = "12")]
     pub action_details: ::prost::alloc::vec::Vec<ActionDetails>,
     /// Job details.
@@ -8624,7 +8750,7 @@ pub struct ListDlpJobsRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -8738,7 +8864,7 @@ pub struct CreateDeidentifyTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -8803,7 +8929,7 @@ pub struct ListDeidentifyTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -8874,10 +9000,10 @@ pub struct DeleteDeidentifyTemplateRequest {
 }
 /// Configuration for a custom dictionary created from a data source of any size
 /// up to the maximum size defined in the
-/// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page. The
-/// artifacts of dictionary creation are stored in the specified Cloud Storage
-/// location. Consider using `CustomInfoType.Dictionary` for smaller dictionaries
-/// that satisfy the size requirements.
+/// [limits](<https://docs.cloud.google.com/sensitive-data-protection/limits>)
+/// page. The artifacts of dictionary creation are stored in the specified Cloud
+/// Storage location. Consider using `CustomInfoType.Dictionary` for smaller
+/// dictionaries that satisfy the size requirements.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LargeCustomDictionaryConfig {
     /// Location to store dictionary artifacts in Cloud Storage. These files
@@ -8912,7 +9038,7 @@ pub struct LargeCustomDictionaryStats {
 }
 /// Configuration for stored infoTypes. All fields and subfield are provided
 /// by the user. For more information, see
-/// <https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes.>
+/// <https://docs.cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes.>
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoredInfoTypeConfig {
     /// Display name of the StoredInfoType (max 256 characters).
@@ -8965,18 +9091,18 @@ pub struct StoredInfoTypeVersion {
     /// StoredInfoType configuration.
     #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<StoredInfoTypeConfig>,
-    /// Create timestamp of the version. Read-only, determined by the system
-    /// when the version is created.
+    /// Output only. Create timestamp of the version. Read-only, determined by the
+    /// system when the version is created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Stored info type version state. Read-only, updated by the system
-    /// during dictionary creation.
+    /// Output only. Stored info type version state. Read-only, updated by the
+    /// system during dictionary creation.
     #[prost(enumeration = "StoredInfoTypeState", tag = "3")]
     pub state: i32,
-    /// Errors that occurred when creating this storedInfoType version, or
-    /// anomalies detected in the storedInfoType data that render it unusable. Only
-    /// the five most recent errors will be displayed, with the most recent error
-    /// appearing first.
+    /// Output only. Errors that occurred when creating this storedInfoType
+    /// version, or anomalies detected in the storedInfoType data that render it
+    /// unusable. Only the five most recent errors will be displayed, with the most
+    /// recent error appearing first.
     ///
     /// For example, some of the data for stored custom dictionaries is put in
     /// the user's Cloud Storage bucket, and if this data is modified or
@@ -8988,7 +9114,7 @@ pub struct StoredInfoTypeVersion {
     /// not the source of the error.
     #[prost(message, repeated, tag = "4")]
     pub errors: ::prost::alloc::vec::Vec<Error>,
-    /// Statistics about this storedInfoType version.
+    /// Output only. Statistics about this storedInfoType version.
     #[prost(message, optional, tag = "5")]
     pub stats: ::core::option::Option<StoredInfoTypeStats>,
 }
@@ -8996,7 +9122,7 @@ pub struct StoredInfoTypeVersion {
 /// version and any pending updates.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoType {
-    /// Resource name.
+    /// Output only. Resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Current version of the stored info type.
@@ -9014,7 +9140,7 @@ pub struct CreateStoredInfoTypeRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -9080,7 +9206,7 @@ pub struct ListStoredInfoTypesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
+    /// location](<https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// * Projects scope, location specified:
     ///   `projects/{project_id}/locations/{location_id}`
@@ -9650,7 +9776,7 @@ pub struct TableDataProfile {
     #[prost(string, tag = "24")]
     pub dataset_project_id: ::prost::alloc::string::String,
     /// If supported, the location where the dataset's data is stored.
-    /// See <https://cloud.google.com/bigquery/docs/locations> for supported
+    /// See <https://docs.cloud.google.com/bigquery/docs/locations> for supported
     /// locations.
     #[prost(string, tag = "29")]
     pub dataset_location: ::prost::alloc::string::String,
@@ -9852,7 +9978,7 @@ pub struct ColumnDataProfile {
     #[prost(string, tag = "19")]
     pub dataset_project_id: ::prost::alloc::string::String,
     /// If supported, the location where the dataset's data is stored.
-    /// See <https://cloud.google.com/bigquery/docs/locations> for supported
+    /// See <https://docs.cloud.google.com/bigquery/docs/locations> for supported
     /// BigQuery locations.
     #[prost(string, tag = "20")]
     pub dataset_location: ::prost::alloc::string::String,
@@ -10116,7 +10242,7 @@ pub struct FileStoreDataProfile {
     /// The location of the file store.
     ///
     /// * Cloud Storage:
-    ///   <https://cloud.google.com/storage/docs/locations#available-locations>
+    ///   <https://docs.cloud.google.com/storage/docs/locations#available-locations>
     /// * Amazon S3:
     ///   <https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints>
     #[prost(string, tag = "5")]
@@ -10830,8 +10956,8 @@ pub struct SecretManagerCredential {
 }
 /// Use IAM authentication to connect. This requires the Cloud SQL IAM feature
 /// to be enabled on the instance, which is not the default for Cloud SQL.
-/// See <https://cloud.google.com/sql/docs/postgres/authentication> and
-/// <https://cloud.google.com/sql/docs/mysql/authentication.>
+/// See <https://docs.cloud.google.com/sql/docs/postgres/authentication> and
+/// <https://docs.cloud.google.com/sql/docs/mysql/authentication.>
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudSqlIamCredential {}
 /// Cloud SQL connection properties.
@@ -11176,11 +11302,11 @@ pub mod domain {
         /// the table contains text embeddings.
         Embedding = 7,
         /// The [Cloud SQL Vertex
-        /// AI](<https://cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>)
+        /// AI](<https://docs.cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>)
         /// plugin is installed on the database.
         VertexPlugin = 3,
         /// Support for [Cloud SQL vector
-        /// embeddings](<https://cloud.google.com/sql/docs/mysql/enable-vector-search>)
+        /// embeddings](<https://docs.cloud.google.com/sql/docs/mysql/enable-vector-search>)
         /// is enabled on the database.
         VectorPlugin = 4,
         /// Source code is present.
@@ -11219,6 +11345,291 @@ pub mod domain {
                 "SERVICE" => Some(Self::Service),
                 _ => None,
             }
+        }
+    }
+}
+/// Request message for CreateContentPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateContentPolicyRequest {
+    /// Required. Parent resource name.
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project):
+    ///
+    /// * Projects scope:
+    ///   `projects/{project_id}/locations/{location_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The content_policy resource.
+    #[prost(message, optional, tag = "2")]
+    pub content_policy: ::core::option::Option<ContentPolicy>,
+    /// Optional. The content policy ID can contain uppercase and lowercase
+    /// letters, numbers, and hyphens; that is, it must match the regular
+    /// expression:
+    /// `\[a-zA-Z\d-_\]+`.
+    /// The maximum length is 100 characters. If empty, the system will generate
+    /// a random id.
+    #[prost(string, tag = "3")]
+    pub content_policy_id: ::prost::alloc::string::String,
+}
+/// Request message for GetContentPolicy.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetContentPolicyRequest {
+    /// Required. Resource name in the format:
+    /// `projects/{project}/locations/{location}/contentPolicies/{content_policy}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListContentPolicies.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListContentPoliciesRequest {
+    /// Required. Resource name of the project,
+    /// for example, `projects/project-id/locations/asia`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Number of results per page, max 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token from a previous page to return the next set of
+    /// results. If set, all other request fields must match the original request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListContentPolicies.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListContentPoliciesResponse {
+    /// List of content policies.
+    #[prost(message, repeated, tag = "1")]
+    pub content_policies: ::prost::alloc::vec::Vec<ContentPolicy>,
+    /// Token to retrieve the next page of results. An empty value means there are
+    /// no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateContentPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateContentPolicyRequest {
+    /// Required. Resource name in the format:
+    /// `projects/{project}/locations/{location}/contentPolicies/{content_policy}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The content_policy with new values for the relevant fields.
+    #[prost(message, optional, tag = "2")]
+    pub content_policy: ::core::option::Option<ContentPolicy>,
+    /// Optional. Mask to control which fields get updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteContentPolicy.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteContentPolicyRequest {
+    /// Required. Resource name of the ContentPolicy to be deleted, in the format:
+    /// `projects/{project}/locations/{location}/contentPolicies/{content_policy}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A policy to apply to content based on its inspection findings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentPolicy {
+    /// Output only. Resource name of the policy.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The creation timestamp of a contentPolicy; output-only field.
+    #[prost(message, optional, tag = "12")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last update timestamp of a contentPolicy; output-only
+    /// field.
+    #[prost(message, optional, tag = "13")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Display name (max 63 chars)
+    #[prost(string, tag = "4")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. InspectConfig to use to produce findings.
+    #[prost(message, optional, tag = "7")]
+    pub inspect_config: ::core::option::Option<InspectConfig>,
+    /// Required. Policies to apply, based on the findings returned by inspection.
+    /// The first rule to match applies.
+    #[prost(message, repeated, tag = "3")]
+    pub rules: ::prost::alloc::vec::Vec<content_policy::PolicyRule>,
+    /// Optional. Action to take if the content is an unsupported file type.
+    #[prost(message, optional, tag = "8")]
+    pub unsupported_file_type: ::core::option::Option<content_policy::PolicyAction>,
+    /// Optional. Action to take if the content is a supported file type but is too
+    /// large to be scanned.
+    #[prost(message, optional, tag = "9")]
+    pub input_too_large: ::core::option::Option<content_policy::PolicyAction>,
+    /// Optional. Action to take if the content is a supported file type and size
+    /// but fails to be scanned, for example because the file is encrypted or
+    /// corrupted.
+    #[prost(message, optional, tag = "10")]
+    pub failed_to_scan_supported_file_type: ::core::option::Option<
+        content_policy::PolicyAction,
+    >,
+    /// Action to take if the content is scanned and no rules match.
+    /// Defaults to returning an ALLOW verdict if not set.
+    #[prost(message, optional, tag = "11")]
+    pub default_action: ::core::option::Option<content_policy::PolicyAction>,
+    /// Optional. Log the actions taken by the content policy to external systems.
+    #[prost(message, repeated, tag = "5")]
+    pub logging_configs: ::prost::alloc::vec::Vec<content_policy::LoggingConfig>,
+    /// Output only. A stream of errors encountered when the policy was applied.
+    /// Output only field. Will return the last 100 errors. Whenever the policy is
+    /// modified this list will be cleared.
+    #[prost(message, repeated, tag = "6")]
+    pub errors: ::prost::alloc::vec::Vec<Error>,
+}
+/// Nested message and enum types in `ContentPolicy`.
+pub mod content_policy {
+    /// A possible action to take when applying a content policy.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PolicyAction {
+        #[prost(oneof = "policy_action::Action", tags = "1")]
+        pub action: ::core::option::Option<policy_action::Action>,
+    }
+    /// Nested message and enum types in `PolicyAction`.
+    pub mod policy_action {
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Action {
+            /// Optional. If set, the verdict will be returned to the user.
+            #[prost(enumeration = "super::super::ContentPolicyVerdict", tag = "1")]
+            ReturnVerdict(i32),
+        }
+    }
+    /// A single policy rule. The first rule to match from the list above controls
+    /// the result.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PolicyRule {
+        /// Optional. Conditions that must match for this rule to apply.
+        /// All conditions must match (`AND`). For `OR` conditions, use multiple
+        /// rules.
+        #[prost(message, repeated, tag = "2")]
+        pub conditions: ::prost::alloc::vec::Vec<policy_rule::PolicyCondition>,
+        /// Required. Action to take if this rule applies.
+        #[prost(message, optional, tag = "5")]
+        pub action: ::core::option::Option<PolicyAction>,
+    }
+    /// Nested message and enum types in `PolicyRule`.
+    pub mod policy_rule {
+        /// A condition that must match for this rule to apply.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct PolicyCondition {
+            /// A condition.
+            #[prost(oneof = "policy_condition::Condition", tags = "1")]
+            pub condition: ::core::option::Option<policy_condition::Condition>,
+        }
+        /// Nested message and enum types in `PolicyCondition`.
+        pub mod policy_condition {
+            /// A info type based condition.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+            pub struct InfoTypeCondition {
+                /// Optional. The minimum total number of findings of all matching info
+                /// types required for this condition to evaluate to true. Defaults to 1
+                /// if unset.
+                #[prost(int64, tag = "3")]
+                pub min_count: i64,
+                /// A condition based on info types.
+                #[prost(oneof = "info_type_condition::InfoTypeCondition", tags = "1, 2")]
+                pub info_type_condition: ::core::option::Option<
+                    info_type_condition::InfoTypeCondition,
+                >,
+            }
+            /// Nested message and enum types in `InfoTypeCondition`.
+            pub mod info_type_condition {
+                /// Info types to match.
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+                pub struct InfoTypes {
+                    /// Required. A list of info types to match.
+                    #[prost(string, repeated, tag = "1")]
+                    pub info_type_names: ::prost::alloc::vec::Vec<
+                        ::prost::alloc::string::String,
+                    >,
+                }
+                /// A condition based on info types.
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+                pub enum InfoTypeCondition {
+                    /// match any of these info types.
+                    #[prost(message, tag = "1")]
+                    InfoTypes(InfoTypes),
+                    /// match any info types.
+                    #[prost(message, tag = "2")]
+                    AnyInfoType(()),
+                }
+            }
+            /// A condition.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum Condition {
+                /// A condition based on info types.
+                #[prost(message, tag = "1")]
+                InfoTypeCondition(InfoTypeCondition),
+            }
+        }
+    }
+    /// A single logging configuration.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LoggingConfig {
+        /// The destination for the action logs.
+        #[prost(oneof = "logging_config::Destination", tags = "1")]
+        pub destination: ::core::option::Option<logging_config::Destination>,
+    }
+    /// Nested message and enum types in `LoggingConfig`.
+    pub mod logging_config {
+        /// Configuration for logging content policy actions to BigQuery.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct LogToBigQuery {
+            /// Required. The ID of the project containing the BigQuery table to write
+            /// to.
+            #[prost(string, tag = "1")]
+            pub project_id: ::prost::alloc::string::String,
+            /// Required. The ID of the dataset containing the BigQuery table to write
+            /// to.
+            #[prost(string, tag = "2")]
+            pub dataset_id: ::prost::alloc::string::String,
+            /// Required. The ID of the BigQuery table to write to.
+            #[prost(string, tag = "3")]
+            pub table_id: ::prost::alloc::string::String,
+        }
+        /// The destination for the action logs.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Destination {
+            /// Optional. Log the actions taken to a BigQuery table.
+            #[prost(message, tag = "1")]
+            LogToBigQuery(LogToBigQuery),
+        }
+    }
+}
+/// Possible results of applying a content policy. This may expand to include
+/// additional result types in the future.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ContentPolicyVerdict {
+    /// Not used.
+    Unspecified = 0,
+    /// The policy allows the provided content to be used.
+    Allow = 1,
+    /// The policy prevents the provided content from being used. This should
+    /// result in a blocked file upload, exclusion from training dataset, or
+    /// other similar block action. (specific action will depend on the caller).
+    Block = 2,
+}
+impl ContentPolicyVerdict {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CONTENT_POLICY_VERDICT_UNSPECIFIED",
+            Self::Allow => "ALLOW",
+            Self::Block => "BLOCK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_POLICY_VERDICT_UNSPECIFIED" => Some(Self::Unspecified),
+            "ALLOW" => Some(Self::Allow),
+            "BLOCK" => Some(Self::Block),
+            _ => None,
         }
     }
 }
@@ -12125,7 +12536,7 @@ pub mod dlp_service_client {
     /// inspection, classification, and de-identification platform that works
     /// on text, images, and Google Cloud storage repositories.
     /// To learn more about concepts and find how-to guides see
-    /// https://cloud.google.com/sensitive-data-protection/docs/.
+    /// https://docs.cloud.google.com/sensitive-data-protection/docs/.
     #[derive(Debug, Clone)]
     pub struct DlpServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -12214,9 +12625,9 @@ pub mod dlp_service_client {
         /// be all types, but may change over time as detectors are updated.
         ///
         /// For how to guides, see
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-images
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-images
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-text,
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-text,
         pub async fn inspect_content(
             &mut self,
             request: impl tonic::IntoRequest<super::InspectContentRequest>,
@@ -12246,7 +12657,7 @@ pub mod dlp_service_client {
         /// Redacts potentially sensitive info from an image.
         /// This method has limits on input size, processing time, and output size.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data-images
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data-images
         /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in this request, the
@@ -12284,7 +12695,7 @@ pub mod dlp_service_client {
         /// De-identifies potentially sensitive info from a ContentItem.
         /// This method has limits on input size and output size.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data
         /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in this request, the
@@ -12321,7 +12732,7 @@ pub mod dlp_service_client {
         }
         /// Re-identifies content that has been de-identified.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         /// to learn more.
         pub async fn reidentify_content(
             &mut self,
@@ -12354,7 +12765,7 @@ pub mod dlp_service_client {
         }
         /// Returns a list of the sensitive information types that the DLP API
         /// supports. See
-        /// https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference
         /// to learn more.
         pub async fn list_info_types(
             &mut self,
@@ -12385,7 +12796,7 @@ pub mod dlp_service_client {
         /// Creates an InspectTemplate for reusing frequently used configuration
         /// for inspecting content, images, and storage.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates
         /// to learn more.
         pub async fn create_inspect_template(
             &mut self,
@@ -12418,7 +12829,7 @@ pub mod dlp_service_client {
         }
         /// Updates the InspectTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates
         /// to learn more.
         pub async fn update_inspect_template(
             &mut self,
@@ -12451,7 +12862,7 @@ pub mod dlp_service_client {
         }
         /// Gets an InspectTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates
         /// to learn more.
         pub async fn get_inspect_template(
             &mut self,
@@ -12484,7 +12895,7 @@ pub mod dlp_service_client {
         }
         /// Lists InspectTemplates.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates
         /// to learn more.
         pub async fn list_inspect_templates(
             &mut self,
@@ -12517,7 +12928,7 @@ pub mod dlp_service_client {
         }
         /// Deletes an InspectTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates
         /// to learn more.
         pub async fn delete_inspect_template(
             &mut self,
@@ -12548,7 +12959,7 @@ pub mod dlp_service_client {
         /// Creates a DeidentifyTemplate for reusing frequently used configuration
         /// for de-identifying content, images, and storage.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         /// to learn more.
         pub async fn create_deidentify_template(
             &mut self,
@@ -12581,7 +12992,7 @@ pub mod dlp_service_client {
         }
         /// Updates the DeidentifyTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         /// to learn more.
         pub async fn update_deidentify_template(
             &mut self,
@@ -12614,7 +13025,7 @@ pub mod dlp_service_client {
         }
         /// Gets a DeidentifyTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         /// to learn more.
         pub async fn get_deidentify_template(
             &mut self,
@@ -12647,7 +13058,7 @@ pub mod dlp_service_client {
         }
         /// Lists DeidentifyTemplates.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         /// to learn more.
         pub async fn list_deidentify_templates(
             &mut self,
@@ -12680,7 +13091,7 @@ pub mod dlp_service_client {
         }
         /// Deletes a DeidentifyTemplate.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         /// to learn more.
         pub async fn delete_deidentify_template(
             &mut self,
@@ -12711,7 +13122,7 @@ pub mod dlp_service_client {
         /// Creates a job trigger to run DLP actions such as scanning storage for
         /// sensitive information on a set schedule.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         /// to learn more.
         pub async fn create_job_trigger(
             &mut self,
@@ -12741,7 +13152,7 @@ pub mod dlp_service_client {
         }
         /// Updates a job trigger.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         /// to learn more.
         pub async fn update_job_trigger(
             &mut self,
@@ -12803,7 +13214,7 @@ pub mod dlp_service_client {
         }
         /// Gets a job trigger.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         /// to learn more.
         pub async fn get_job_trigger(
             &mut self,
@@ -12830,7 +13241,7 @@ pub mod dlp_service_client {
         }
         /// Lists job triggers.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         /// to learn more.
         pub async fn list_job_triggers(
             &mut self,
@@ -12863,7 +13274,7 @@ pub mod dlp_service_client {
         }
         /// Deletes a job trigger.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         /// to learn more.
         pub async fn delete_job_trigger(
             &mut self,
@@ -13068,9 +13479,9 @@ pub mod dlp_service_client {
         }
         /// Creates a new job to inspect storage or calculate risk metrics.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in inspect jobs, the
@@ -13101,9 +13512,9 @@ pub mod dlp_service_client {
         }
         /// Lists DlpJobs that match the specified filter in the request.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         /// to learn more.
         pub async fn list_dlp_jobs(
             &mut self,
@@ -13133,9 +13544,9 @@ pub mod dlp_service_client {
         }
         /// Gets the latest state of a long-running DlpJob.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         /// to learn more.
         pub async fn get_dlp_job(
             &mut self,
@@ -13164,9 +13575,9 @@ pub mod dlp_service_client {
         /// no longer interested in the DlpJob result. The job will be canceled if
         /// possible.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         /// to learn more.
         pub async fn delete_dlp_job(
             &mut self,
@@ -13195,9 +13606,9 @@ pub mod dlp_service_client {
         /// makes a best effort to cancel the DlpJob, but success is not
         /// guaranteed.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         /// and
-        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         /// to learn more.
         pub async fn cancel_dlp_job(
             &mut self,
@@ -13224,7 +13635,7 @@ pub mod dlp_service_client {
         }
         /// Creates a pre-built stored infoType to be used for inspection.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         /// to learn more.
         pub async fn create_stored_info_type(
             &mut self,
@@ -13255,7 +13666,7 @@ pub mod dlp_service_client {
         /// Updates the stored infoType by creating a new version. The existing version
         /// will continue to be used until the new version is ready.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         /// to learn more.
         pub async fn update_stored_info_type(
             &mut self,
@@ -13285,7 +13696,7 @@ pub mod dlp_service_client {
         }
         /// Gets a stored infoType.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         /// to learn more.
         pub async fn get_stored_info_type(
             &mut self,
@@ -13315,7 +13726,7 @@ pub mod dlp_service_client {
         }
         /// Lists stored infoTypes.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         /// to learn more.
         pub async fn list_stored_info_types(
             &mut self,
@@ -13348,7 +13759,7 @@ pub mod dlp_service_client {
         }
         /// Deletes a stored infoType.
         /// See
-        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// https://docs.cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         /// to learn more.
         pub async fn delete_stored_info_type(
             &mut self,
@@ -13891,6 +14302,144 @@ pub mod dlp_service_client {
                     GrpcMethod::new(
                         "google.privacy.dlp.v2.DlpService",
                         "UpdateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a ContentPolicy.
+        pub async fn create_content_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateContentPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::ContentPolicy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/CreateContentPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateContentPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a ContentPolicy.
+        pub async fn update_content_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateContentPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::ContentPolicy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/UpdateContentPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateContentPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a ContentPolicy.
+        pub async fn get_content_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetContentPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::ContentPolicy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetContentPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetContentPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ContentPolicies in a parent.
+        pub async fn list_content_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListContentPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListContentPoliciesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListContentPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListContentPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a ContentPolicy.
+        pub async fn delete_content_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteContentPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/DeleteContentPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteContentPolicy",
                     ),
                 );
             self.inner.unary(req, path, codec).await
