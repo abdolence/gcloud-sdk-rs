@@ -71,7 +71,8 @@ where
         let token_generator =
             GoogleAuthTokenGenerator::new(token_source_type, token_scopes).await?;
 
-        let mut middleware = GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix);
+        let mut middleware =
+            GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix)?;
         middleware.set_additional_headers(additional_headers);
 
         Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
@@ -90,7 +91,7 @@ where
         Ok(Self {
             builder,
             service,
-            _ph: PhantomData::default(),
+            _ph: PhantomData,
         })
     }
 
@@ -98,14 +99,17 @@ where
         self.builder.create_client(self.service.clone())
     }
 
-    pub fn amend_user_agent(mut self, user_agent: String) -> Self {
-        self.service.append_user_agent(user_agent);
-        self
+    pub fn amend_user_agent(mut self, user_agent: String) -> crate::error::Result<Self> {
+        self.service.append_user_agent(user_agent)?;
+        Ok(self)
     }
 
-    pub fn amend_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
-        self.service.append_x_goog_api_client(x_goog_api_client);
-        self
+    pub fn amend_x_goog_api_client(
+        mut self,
+        x_goog_api_client: String,
+    ) -> crate::error::Result<Self> {
+        self.service.append_x_goog_api_client(x_goog_api_client)?;
+        Ok(self)
     }
 }
 

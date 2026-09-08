@@ -41,8 +41,8 @@ impl GoogleRestApi {
         &self,
         request: RequestBuilder,
     ) -> crate::error::Result<RequestBuilder> {
-        let token = self.token_generator.create_token().await?;
-        Ok(request.header(reqwest::header::AUTHORIZATION, token.header_value()))
+        let authorization = self.token_generator.authorization_header().await?;
+        Ok(request.header(reqwest::header::AUTHORIZATION, authorization))
     }
 
     pub async fn get<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {

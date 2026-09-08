@@ -2,6 +2,7 @@ use std::{convert::From, fmt};
 
 /// Represents the details of the [`Error`](struct.Error.html)
 #[derive(Debug)]
+#[non_exhaustive]
 pub enum ErrorKind {
     /// Errors that can possibly occur while accessing an HTTP server.
     Http(reqwest::Error),
@@ -28,8 +29,9 @@ pub enum ErrorKind {
     GrpcStatus(tonic::transport::Error),
     UrlError(hyper::http::uri::InvalidUri),
     ExternalCredsSourceError(String),
-    #[doc(hidden)]
-    __Nonexhaustive,
+    /// A header value built from user input (user agent, headers, the token itself)
+    /// failed HTTP header validation (e.g. contained a control character).
+    HeaderValue(hyper::header::InvalidHeaderValue),
 }
 
 /// Details of an authentication failure (see [`ErrorKind::Auth`]).
@@ -116,7 +118,7 @@ impl fmt::Display for Error {
             TonicMetadata(ref e) => write!(f, "Tonic metadata error: {}", e),
             UrlError(ref e) => write!(f, "Url error: {}", e),
             ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
-            __Nonexhaustive => write!(f, "unknown error"),
+            HeaderValue(ref e) => write!(f, "invalid header value: {}", e),
         }
     }
 }
@@ -156,6 +158,12 @@ impl From<tonic::metadata::errors::InvalidMetadataValue> for Error {
 impl From<hyper::http::uri::InvalidUri> for Error {
     fn from(e: hyper::http::uri::InvalidUri) -> Self {
         ErrorKind::UrlError(e).into()
+    }
+}
+
+impl From<hyper::header::InvalidHeaderValue> for Error {
+    fn from(e: hyper::header::InvalidHeaderValue) -> Self {
+        ErrorKind::HeaderValue(e).into()
     }
 }
 

@@ -445,7 +445,7 @@ mod external_account {
                 } else {
                     let status = iam_generate_token_response.status();
                     let err_body = iam_generate_token_response.text().await?;
-                    let err_text = format!("Unable to receive subject using external impersonation url: {}. HTTP: {} {}", &external_account.token_url, status, err_body);
+                    let err_text = format!("Unable to receive subject using external impersonation url: {}. HTTP: {} {}", external_account.token_url, status, err_body);
                     Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
                 }
             } else {
@@ -456,7 +456,7 @@ mod external_account {
             let err_body = sts_http_response.text().await?;
             let err_text = format!(
                 "Unable to receive subject using external url: {}. HTTP: {} {}",
-                &external_account.token_url, status, err_body
+                external_account.token_url, status, err_body
             );
             Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
         }
@@ -600,7 +600,7 @@ mod impersonate_account {
             let err_body = iam_generate_token_response.text().await?;
             let err_text = format!(
                 "Unable to receive subject using impersonation url: {}. HTTP: {} {}",
-                &impersonate_account.service_account_impersonation_url, status, err_body
+                impersonate_account.service_account_impersonation_url, status, err_body
             );
             Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
         }

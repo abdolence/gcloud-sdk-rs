@@ -131,7 +131,7 @@ pub async fn subject_token_url(
         let err_body = response.text().await?;
         let err_text = format!(
             "Unable to receive subject using external credential url: {}. HTTP: {} {}",
-            &url_creds.url, status, err_body
+            url_creds.url, status, err_body
         );
         Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
     }

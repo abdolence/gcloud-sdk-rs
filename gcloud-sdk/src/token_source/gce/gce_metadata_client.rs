@@ -81,7 +81,7 @@ impl GceMetadataClient {
                 if !resolved {
                     // Last resort, try to use IP address with HTTP call
                     match client
-                        .get(&format!("http://{}/", GCE_METADATA_IP))
+                        .get(format!("http://{}/", GCE_METADATA_IP))
                         .send()
                         .await
                     {

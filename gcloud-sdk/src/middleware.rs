@@ -1,5 +1,6 @@
 use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
 use futures::{Future, TryFutureExt};
+use hyper::header::{HeaderMap, HeaderName, HeaderValue, USER_AGENT};
 use jiff::Timestamp;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -9,56 +10,98 @@ use tower::Service;
 use tower_layer::Layer;
 use tracing::*;
 
-#[derive(Clone)]
-pub struct GoogleAuthMiddlewareService<T>
-where
-    T: Clone,
-{
-    google_service: Option<T>,
-    token_generator: Arc<GoogleAuthTokenGenerator>,
-    cloud_resource_prefix: Option<String>,
-    user_agent: String,
-    x_goog_api_client: String,
-    additional_headers: hyper::header::HeaderMap,
+const X_GOOG_API_CLIENT: HeaderName = HeaderName::from_static("x-goog-api-client");
+const GOOGLE_CLOUD_RESOURCE_PREFIX: HeaderName =
+    HeaderName::from_static("google-cloud-resource-prefix");
+
+fn default_headers(cloud_resource_prefix: Option<String>) -> crate::error::Result<HeaderMap> {
+    let mut headers = HeaderMap::new();
+    let default_agent =
+        HeaderValue::from_static(concat!("gcloud-sdk-rs/", env!("CARGO_PKG_VERSION")));
+    headers.insert(USER_AGENT, default_agent.clone());
+    headers.insert(X_GOOG_API_CLIENT, default_agent);
+    if let Some(prefix) = cloud_resource_prefix {
+        headers.insert(
+            GOOGLE_CLOUD_RESOURCE_PREFIX,
+            HeaderValue::from_str(&prefix)?,
+        );
+    }
+    Ok(headers)
 }
 
-impl<T> GoogleAuthMiddlewareService<T>
-where
-    T: Clone,
-{
+/// Appends `extra` to whatever `name` currently holds in `headers` (space separated),
+/// or sets it outright if absent.
+fn append_header_value(
+    headers: &HeaderMap,
+    name: &HeaderName,
+    extra: &str,
+) -> crate::error::Result<HeaderValue> {
+    let combined = match headers.get(name).and_then(|v| v.to_str().ok()) {
+        Some(current) => format!("{current} {extra}"),
+        None => extra.to_string(),
+    };
+    Ok(HeaderValue::from_str(&combined)?)
+}
+
+#[derive(Clone)]
+pub struct GoogleAuthMiddlewareService<T> {
+    inner: T,
+    token_generator: Arc<GoogleAuthTokenGenerator>,
+    /// Every header added to each request except `authorization`, already validated.
+    headers: Arc<HeaderMap>,
+}
+
+impl<T> GoogleAuthMiddlewareService<T> {
     pub fn new(
         service: T,
         token_generator: Arc<GoogleAuthTokenGenerator>,
         cloud_resource_prefix: Option<String>,
-    ) -> GoogleAuthMiddlewareService<T> {
-        GoogleAuthMiddlewareService {
-            google_service: Some(service),
+    ) -> crate::error::Result<GoogleAuthMiddlewareService<T>> {
+        Ok(GoogleAuthMiddlewareService {
+            inner: service,
             token_generator,
-            cloud_resource_prefix,
-            user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
-            x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
-            additional_headers: hyper::header::HeaderMap::new(),
-        }
+            headers: Arc::new(default_headers(cloud_resource_prefix)?),
+        })
     }
 
-    pub fn set_user_agent(&mut self, user_agent: String) {
-        self.user_agent = user_agent;
+    pub fn set_user_agent(&mut self, user_agent: String) -> crate::error::Result<()> {
+        let value = HeaderValue::from_str(&user_agent)?;
+        Arc::make_mut(&mut self.headers).insert(USER_AGENT, value);
+        Ok(())
     }
 
-    pub fn set_x_goog_api_client(&mut self, x_goog_api_client: String) {
-        self.x_goog_api_client = x_goog_api_client;
+    pub fn set_x_goog_api_client(&mut self, x_goog_api_client: String) -> crate::error::Result<()> {
+        let value = HeaderValue::from_str(&x_goog_api_client)?;
+        Arc::make_mut(&mut self.headers).insert(X_GOOG_API_CLIENT, value);
+        Ok(())
     }
 
-    pub fn append_user_agent(&mut self, user_agent: String) {
-        self.user_agent = format!("{} {}", self.user_agent, user_agent);
+    pub fn set_cloud_resource_prefix(
+        &mut self,
+        cloud_resource_prefix: String,
+    ) -> crate::error::Result<()> {
+        let value = HeaderValue::from_str(&cloud_resource_prefix)?;
+        Arc::make_mut(&mut self.headers).insert(GOOGLE_CLOUD_RESOURCE_PREFIX, value);
+        Ok(())
     }
 
-    pub fn append_x_goog_api_client(&mut self, x_goog_api_client: String) {
-        self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
+    pub fn append_user_agent(&mut self, user_agent: String) -> crate::error::Result<()> {
+        let value = append_header_value(&self.headers, &USER_AGENT, &user_agent)?;
+        Arc::make_mut(&mut self.headers).insert(USER_AGENT, value);
+        Ok(())
     }
 
-    pub fn set_additional_headers(&mut self, additional_headers: hyper::HeaderMap) {
-        self.additional_headers = additional_headers;
+    pub fn append_x_goog_api_client(
+        &mut self,
+        x_goog_api_client: String,
+    ) -> crate::error::Result<()> {
+        let value = append_header_value(&self.headers, &X_GOOG_API_CLIENT, &x_goog_api_client)?;
+        Arc::make_mut(&mut self.headers).insert(X_GOOG_API_CLIENT, value);
+        Ok(())
+    }
+
+    pub fn set_additional_headers(&mut self, additional_headers: HeaderMap) {
+        Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
 }
 
@@ -76,127 +119,111 @@ where
         Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + Send + 'static>>;
 
     fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
-        if let Some(ref mut google_service) = self.google_service.as_mut() {
-            google_service.poll_ready(cx).map_err(|e| e.into())
-        } else {
-            Poll::Pending
-        }
+        self.inner.poll_ready(cx).map_err(Into::into)
     }
 
     fn call(&mut self, mut req: hyper::Request<RequestBody>) -> Self::Future {
-        let generator = self.token_generator.clone();
-        let cloud_resource_prefix = self.cloud_resource_prefix.clone();
-        let user_agent = self.user_agent.clone();
-        let x_goog_api_client = self.x_goog_api_client.clone();
-        let additional_headers = self.additional_headers.clone();
+        let generator = Arc::clone(&self.token_generator);
+        let headers = Arc::clone(&self.headers);
 
-        if let Some(mut google_service) = self.google_service.take() {
-            self.google_service = Some(google_service.clone());
-            Box::pin(async move {
-                let begin_time = Timestamp::now();
-                let token = generator.create_token().await.map_err(Box::new)?;
-                let token_generated_time = Timestamp::now();
-                let headers = req.headers_mut();
-                headers.insert("authorization", token.header_value().parse()?);
-                if let Some(cloud_resource_prefix_value) = cloud_resource_prefix {
-                    headers.insert(
-                        "google-cloud-resource-prefix",
-                        cloud_resource_prefix_value.parse()?,
+        // tower's documented idiom for a `Clone` inner service: the instance we already
+        // polled ready goes into the future, and the service keeps a fresh clone.
+        let clone = self.inner.clone();
+        let mut inner = std::mem::replace(&mut self.inner, clone);
+
+        Box::pin(async move {
+            let begin_time = Timestamp::now();
+            let authorization = generator.authorization_header().await.map_err(Box::new)?;
+            let token_generated_time = Timestamp::now();
+
+            let req_headers = req.headers_mut();
+            req_headers.insert(hyper::header::AUTHORIZATION, authorization);
+            // Each name in `headers` fully replaces whatever the request already carries
+            // under it (multi-valued or not); `iter()` yields one pair per value, so the
+            // names are cleared first and then appended rather than repeatedly `insert`ed,
+            // which would silently drop every value but the last for a repeated name.
+            for name in headers.keys() {
+                req_headers.remove(name);
+            }
+            req_headers.extend(
+                headers
+                    .iter()
+                    .map(|(name, value)| (name.clone(), value.clone())),
+            );
+
+            let req_uri = req.uri().clone();
+            inner
+                .call(req)
+                .map_ok(|x| {
+                    let finished_time = Timestamp::now();
+                    debug!(
+                        %req_uri,
+                        "OK: took {}ms (incl. token gen: {}ms)",
+                        finished_time.duration_since(begin_time).as_millis(),
+                        token_generated_time.duration_since(begin_time).as_millis()
                     );
-                }
-                headers.insert(hyper::header::USER_AGENT, user_agent.parse()?);
-                headers.insert("x-goog-api-client", x_goog_api_client.parse()?);
-
-                for (maybe_k, v) in additional_headers.into_iter() {
-                    if let Some(k) = maybe_k {
-                        headers.insert(k, v);
-                    }
-                }
-
-                let req_uri_str = req.uri().to_string();
-                google_service
-                    .call(req)
-                    .map_ok(|x| {
-                        let finished_time = Timestamp::now();
-                        debug!(
-                            "OK: {} took {}ms (incl. token gen: {}ms)",
-                            req_uri_str,
-                            finished_time.duration_since(begin_time).as_millis(),
-                            token_generated_time.duration_since(begin_time).as_millis()
-                        );
-                        x
-                    })
-                    .await
-                    .map_err(|e| {
-                        let finished_time = Timestamp::now();
-                        error!(
-                            "Err: {} took {}ms (incl. token gen: {}ms)",
-                            req_uri_str,
-                            finished_time.duration_since(begin_time).as_millis(),
-                            token_generated_time.duration_since(begin_time).as_millis()
-                        );
-                        e.into()
-                    })
-            })
-        } else {
-            panic!("Should never happen, system error");
-        }
+                    x
+                })
+                .await
+                .map_err(|e| {
+                    let finished_time = Timestamp::now();
+                    error!(
+                        %req_uri,
+                        "Err: took {}ms (incl. token gen: {}ms)",
+                        finished_time.duration_since(begin_time).as_millis(),
+                        token_generated_time.duration_since(begin_time).as_millis()
+                    );
+                    e.into()
+                })
+        })
     }
 }
 
 pub struct GoogleAuthMiddlewareLayer {
-    pub token_generator: Arc<GoogleAuthTokenGenerator>,
-    pub cloud_resource_prefix: Option<String>,
-    pub user_agent: String,
-    pub x_goog_api_client: String,
-    pub additional_headers: hyper::header::HeaderMap,
+    token_generator: Arc<GoogleAuthTokenGenerator>,
+    headers: Arc<HeaderMap>,
 }
 
 impl GoogleAuthMiddlewareLayer {
     pub fn new(
         token_generator: GoogleAuthTokenGenerator,
         cloud_resource_prefix: Option<String>,
-    ) -> Self {
-        GoogleAuthMiddlewareLayer {
+    ) -> crate::error::Result<Self> {
+        Ok(GoogleAuthMiddlewareLayer {
             token_generator: Arc::new(token_generator),
-            cloud_resource_prefix,
-            user_agent: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
-            x_goog_api_client: format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION")),
-            additional_headers: hyper::header::HeaderMap::new(),
-        }
+            headers: Arc::new(default_headers(cloud_resource_prefix)?),
+        })
     }
 
-    pub fn amend_user_agent(mut self, user_agent: String) -> Self {
-        self.user_agent = format!("{} {}", self.user_agent, user_agent);
-        self
+    pub fn amend_user_agent(mut self, user_agent: String) -> crate::error::Result<Self> {
+        let value = append_header_value(&self.headers, &USER_AGENT, &user_agent)?;
+        Arc::make_mut(&mut self.headers).insert(USER_AGENT, value);
+        Ok(self)
     }
 
-    pub fn amend_x_goog_api_client(mut self, x_goog_api_client: String) -> Self {
-        self.x_goog_api_client = format!("{} {}", self.x_goog_api_client, x_goog_api_client);
-        self
+    pub fn amend_x_goog_api_client(
+        mut self,
+        x_goog_api_client: String,
+    ) -> crate::error::Result<Self> {
+        let value = append_header_value(&self.headers, &X_GOOG_API_CLIENT, &x_goog_api_client)?;
+        Arc::make_mut(&mut self.headers).insert(X_GOOG_API_CLIENT, value);
+        Ok(self)
     }
 
-    pub fn set_additional_headers(&mut self, additional_headers: hyper::HeaderMap) {
-        self.additional_headers = additional_headers;
+    pub fn set_additional_headers(&mut self, additional_headers: HeaderMap) {
+        Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
 }
 
-impl<S> Layer<S> for GoogleAuthMiddlewareLayer
-where
-    S: Clone,
-{
+impl<S> Layer<S> for GoogleAuthMiddlewareLayer {
     type Service = GoogleAuthMiddlewareService<S>;
 
     fn layer(&self, service: S) -> GoogleAuthMiddlewareService<S> {
-        let mut middleware_service = GoogleAuthMiddlewareService::new(
-            service,
-            self.token_generator.clone(),
-            self.cloud_resource_prefix.clone(),
-        );
-        middleware_service.set_user_agent(self.user_agent.clone());
-        middleware_service.set_x_goog_api_client(self.x_goog_api_client.clone());
-        middleware_service.set_additional_headers(self.additional_headers.clone());
-        middleware_service
+        GoogleAuthMiddlewareService {
+            inner: service,
+            token_generator: Arc::clone(&self.token_generator),
+            headers: Arc::clone(&self.headers),
+        }
     }
 }
 
@@ -261,7 +288,8 @@ mod tests {
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
         let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
 
         let req = Request::builder()
             .uri("http://example.com")
@@ -290,6 +318,36 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn authorization_header_is_marked_sensitive() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        assert!(captured_req
+            .headers()
+            .get("authorization")
+            .unwrap()
+            .is_sensitive());
+    }
+
+    #[tokio::test]
     async fn test_headers_amend() {
         let token_generator = GoogleAuthTokenGenerator::new(
             TokenSourceType::ExternalSource(Box::new(DummySource)),
@@ -302,8 +360,11 @@ mod tests {
         let dummy_service = DummyService { tx: Arc::new(tx) };
 
         let layer = GoogleAuthMiddlewareLayer::new(token_generator, None)
+            .unwrap()
             .amend_user_agent("extra-ua".to_string())
-            .amend_x_goog_api_client("extra-client".to_string());
+            .unwrap()
+            .amend_x_goog_api_client("extra-client".to_string())
+            .unwrap();
 
         let mut service = layer.layer(dummy_service);
 
@@ -332,6 +393,66 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn invalid_user_agent_is_rejected_at_setter() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let layer_result = GoogleAuthMiddlewareLayer::new(token_generator, None)
+            .unwrap()
+            .amend_user_agent("bad\nvalue".to_string());
+
+        match layer_result {
+            Err(e) => assert!(matches!(
+                e.into_kind(),
+                crate::error::ErrorKind::HeaderValue(_)
+            )),
+            Ok(_) => panic!("expected an invalid header value to be rejected"),
+        }
+    }
+
+    #[tokio::test]
+    async fn amended_clone_does_not_change_sibling() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let base_service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
+
+        let mut amended = base_service.clone();
+        amended.append_user_agent("extra".to_string()).unwrap();
+
+        let mut sibling = base_service.clone();
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut sibling, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        let expected_default = format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION"));
+        assert_eq!(
+            captured_req
+                .headers()
+                .get(hyper::header::USER_AGENT)
+                .unwrap(),
+            expected_default.as_str()
+        );
+    }
+
+    #[tokio::test]
     async fn test_additional_headers() {
         let token_generator = GoogleAuthTokenGenerator::new(
             TokenSourceType::ExternalSource(Box::new(DummySource)),
@@ -343,7 +464,8 @@ mod tests {
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
         let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None);
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
         let mut test_headers = hyper::HeaderMap::new();
         test_headers.insert("x-test-header", "test-value".parse().unwrap());
         service.set_additional_headers(test_headers);
@@ -360,5 +482,42 @@ mod tests {
             captured_req.headers().get("x-test-header").unwrap(),
             "test-value"
         );
+    }
+
+    #[tokio::test]
+    async fn additional_headers_keep_every_value_of_a_repeated_name() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
+
+        let mut test_headers = hyper::HeaderMap::new();
+        test_headers.append("x-multi", "first".parse().unwrap());
+        test_headers.append("x-multi", "second".parse().unwrap());
+        service.set_additional_headers(test_headers);
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        let values: Vec<&str> = captured_req
+            .headers()
+            .get_all("x-multi")
+            .iter()
+            .map(|v| v.to_str().unwrap())
+            .collect();
+        assert_eq!(values, vec!["first", "second"]);
     }
 }
