@@ -7,7 +7,6 @@ use tracing::*;
 
 /// A token together with its pre-validated `authorization` header value, so that
 /// serving a cache hit never re-parses or re-allocates the header.
-#[derive(Clone)]
 struct CachedToken {
     token: Token,
     authorization: HeaderValue,
@@ -48,54 +47,54 @@ impl GoogleAuthTokenGenerator {
     }
 
     pub async fn create_token(&self) -> crate::error::Result<Token> {
-        self.refreshed().await.map(|cached| cached.token)
+        self.with_cached(|cached| cached.token.clone()).await
     }
 
     /// The `authorization` header value for the current token, already validated
     /// and marked sensitive; cloning it is a `Bytes` refcount bump, not an allocation.
     pub async fn authorization_header(&self) -> crate::error::Result<HeaderValue> {
-        self.refreshed().await.map(|cached| cached.authorization)
+        self.with_cached(|cached| cached.authorization.clone())
+            .await
     }
 
-    async fn refreshed(&self) -> crate::error::Result<CachedToken> {
-        let existing_token: Option<CachedToken> = {
-            let read_state = self.cached_token.read().await;
-            read_state.clone()
-        };
-
+    /// Runs the double-checked refresh and applies `pick` to the resulting cached
+    /// token by reference, so a cache hit clones only what the caller asks for
+    /// instead of the whole `CachedToken`.
+    async fn with_cached<R>(
+        &self,
+        pick: impl FnOnce(&CachedToken) -> R,
+    ) -> crate::error::Result<R> {
         let now = Timestamp::now();
 
-        match existing_token {
+        {
+            let read_state = self.cached_token.read().await;
             // Give a bit more time for network call
-            Some(cached)
+            if let Some(cached) = read_state.as_ref() {
                 if cached
                     .token
                     .expiry
-                    .gt(&now.add(SignedDuration::from_secs(15))) =>
-            {
-                Ok(cached)
+                    .gt(&now.add(SignedDuration::from_secs(15)))
+                {
+                    return Ok(pick(cached));
+                }
+            }
+        }
+
+        let mut write_token = self.cached_token.write().await;
+        match write_token.as_ref() {
+            Some(updated_cached) if updated_cached.token.expiry.gt(&now) => {
+                Ok(pick(updated_cached))
             }
             _ => {
-                let new_cached = {
-                    let mut write_token = self.cached_token.write().await;
-
-                    match write_token.as_ref() {
-                        Some(updated_cached) if updated_cached.token.expiry.gt(&now) => {
-                            updated_cached.clone()
-                        }
-                        _ => {
-                            let new_token = self.token_source.token().await?;
-                            debug!(
-                                "Created a new Google OAuth token. Type: {}. Expiring: {}.",
-                                new_token.token_type, new_token.expiry,
-                            );
-                            let new_cached = CachedToken::from_token(new_token)?;
-                            *write_token = Some(new_cached.clone());
-                            new_cached
-                        }
-                    }
-                };
-                Ok(new_cached)
+                let new_token = self.token_source.token().await?;
+                debug!(
+                    "Created a new Google OAuth token. Type: {}. Expiring: {}.",
+                    new_token.token_type, new_token.expiry,
+                );
+                let new_cached = CachedToken::from_token(new_token)?;
+                let result = pick(&new_cached);
+                *write_token = Some(new_cached);
+                Ok(result)
             }
         }
     }
