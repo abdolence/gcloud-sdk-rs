@@ -433,6 +433,7 @@ pub mod google {
                 feature = "google-cloud-securitycenter-v2",
                 feature = "google-cloud-securitycentermanagement-v1",
                 feature = "google-cloud-securityposture-v1",
+                feature = "google-cloud-sensitiveaction-logging-v1",
                 feature = "google-cloud-servicedirectory-v1",
                 feature = "google-cloud-servicedirectory-v1beta1",
                 feature = "google-cloud-servicehealth-v1",
@@ -535,6 +536,7 @@ pub mod google {
                 feature = "google-iam-admin-v1",
                 feature = "google-iam-credentials-v1",
                 feature = "google-iam-v1",
+                feature = "google-iam-v1-logging",
                 feature = "google-iam-v1beta",
                 feature = "google-iam-v2",
                 feature = "google-iam-v2beta",
@@ -587,6 +589,9 @@ pub mod google {
                 feature = "google-watcher-v1",
                 feature = "grafeas-v1",
                 feature = "grafeas-v1beta1",
+                feature = "grafeas-v1beta1-attestation",
+                feature = "grafeas-v1beta1-discovery",
+                feature = "grafeas-v1beta1-vulnerability",
                 feature = "maps-fleetengine-delivery-v1",
                 feature = "maps-fleetengine-v1",
             )
@@ -3335,6 +3340,7 @@ pub mod google {
                     feature = "google-cloud-securitycenter-v1p1beta1",
                     feature = "google-cloud-securitycenter-v2",
                     feature = "google-cloud-securitycentermanagement-v1",
+                    feature = "google-cloud-sensitiveaction-logging-v1",
                     feature = "google-cloud-servicedirectory-v1",
                     feature = "google-cloud-servicedirectory-v1beta1",
                     feature = "google-cloud-tasks-v2",
@@ -3465,6 +3471,8 @@ pub mod google {
                 feature = "google-cloud-apphub-v1",
                 feature = "google-cloud-appoptimize-v1beta",
                 feature = "google-cloud-asset-v1",
+                feature = "google-cloud-asset-v1p2beta1",
+                feature = "google-cloud-asset-v1p5beta1",
                 feature = "google-cloud-asset-v1p7beta1",
                 feature = "google-cloud-assuredworkloads-v1",
                 feature = "google-cloud-assuredworkloads-v1beta1",
@@ -3508,6 +3516,7 @@ pub mod google {
                 feature = "google-cloud-datalabeling-v1beta1",
                 feature = "google-cloud-dataplex-v1",
                 feature = "google-cloud-dataproc-v1",
+                feature = "google-cloud-datastream-logging-v1",
                 feature = "google-cloud-datastream-v1",
                 feature = "google-cloud-datastream-v1alpha1",
                 feature = "google-cloud-deploy-v1",
@@ -3541,6 +3550,7 @@ pub mod google {
                 feature = "google-cloud-hypercomputecluster-v1beta",
                 feature = "google-cloud-iamconnectorcredentials-v1alpha",
                 feature = "google-cloud-ids-v1",
+                feature = "google-cloud-kms-inventory-v1",
                 feature = "google-cloud-kms-v1",
                 feature = "google-cloud-licensemanager-v1",
                 feature = "google-cloud-lifesciences-v2beta",
@@ -3602,6 +3612,7 @@ pub mod google {
                 feature = "google-cloud-securitycenter-v1p1beta1",
                 feature = "google-cloud-securitycenter-v2",
                 feature = "google-cloud-securityposture-v1",
+                feature = "google-cloud-sensitiveaction-logging-v1",
                 feature = "google-cloud-shell-v1",
                 feature = "google-cloud-speech-v1",
                 feature = "google-cloud-speech-v1p1beta1",
@@ -3622,6 +3633,7 @@ pub mod google {
                 feature = "google-cloud-translation-v3beta1",
                 feature = "google-cloud-vectorsearch-v1",
                 feature = "google-cloud-vectorsearch-v1beta",
+                feature = "google-cloud-video-livestream-logging-v1",
                 feature = "google-cloud-video-livestream-v1",
                 feature = "google-cloud-video-stitcher-v1",
                 feature = "google-cloud-videointelligence-v1",
@@ -3979,6 +3991,7 @@ pub mod google {
                 feature = "google-cloud-osconfig-v1",
                 feature = "google-cloud-osconfig-v1alpha",
                 feature = "google-cloud-osconfig-v1beta",
+                feature = "google-cloud-parametermanager-v1",
                 feature = "google-cloud-policysimulator-v1",
                 feature = "google-cloud-policytroubleshooter-iam-v3",
                 feature = "google-cloud-policytroubleshooter-iam-v3beta",
@@ -4005,6 +4018,7 @@ pub mod google {
                 feature = "google-cloud-securitycenter-v2",
                 feature = "google-cloud-securitycentermanagement-v1",
                 feature = "google-cloud-securityposture-v1",
+                feature = "google-cloud-sensitiveaction-logging-v1",
                 feature = "google-cloud-servicedirectory-v1",
                 feature = "google-cloud-servicedirectory-v1beta1",
                 feature = "google-cloud-sql-v1",
@@ -4130,6 +4144,8 @@ pub mod google {
                 feature = "google-cloud-apphub-v1",
                 feature = "google-cloud-appoptimize-v1beta",
                 feature = "google-cloud-asset-v1",
+                feature = "google-cloud-asset-v1p2beta1",
+                feature = "google-cloud-asset-v1p5beta1",
                 feature = "google-cloud-asset-v1p7beta1",
                 feature = "google-cloud-assuredworkloads-v1",
                 feature = "google-cloud-assuredworkloads-v1beta1",
@@ -4155,6 +4171,7 @@ pub mod google {
                 feature = "google-cloud-bigquery-reservation-v1",
                 feature = "google-cloud-bigquery-storage-v1",
                 feature = "google-cloud-bigquery-storage-v1beta2",
+                feature = "google-cloud-binaryauthorization-v1",
                 feature = "google-cloud-blockchainnodeengine-v1",
                 feature = "google-cloud-capacityplanner-v1beta",
                 feature = "google-cloud-certificatemanager-v1",
@@ -4187,6 +4204,7 @@ pub mod google {
                 feature = "google-cloud-dataplex-v1",
                 feature = "google-cloud-dataproc-v1",
                 feature = "google-cloud-dataqna-v1alpha",
+                feature = "google-cloud-datastream-logging-v1",
                 feature = "google-cloud-datastream-v1",
                 feature = "google-cloud-datastream-v1alpha1",
                 feature = "google-cloud-deploy-v1",
@@ -4227,6 +4245,7 @@ pub mod google {
                 feature = "google-cloud-identitytoolkit-logging",
                 feature = "google-cloud-ids-v1",
                 feature = "google-cloud-iot-v1",
+                feature = "google-cloud-kms-inventory-v1",
                 feature = "google-cloud-kms-logging-v1",
                 feature = "google-cloud-kms-v1",
                 feature = "google-cloud-licensemanager-v1",
@@ -4299,6 +4318,7 @@ pub mod google {
                 feature = "google-cloud-securitycenter-v2",
                 feature = "google-cloud-securitycentermanagement-v1",
                 feature = "google-cloud-securityposture-v1",
+                feature = "google-cloud-sensitiveaction-logging-v1",
                 feature = "google-cloud-shell-v1",
                 feature = "google-cloud-speech-v1",
                 feature = "google-cloud-speech-v1p1beta1",
@@ -4363,10 +4383,12 @@ pub mod google {
                 feature = "google-devtools-cloudbuild-v1",
                 feature = "google-devtools-cloudbuild-v2",
                 feature = "google-devtools-cloudtrace-v2",
+                feature = "google-devtools-containeranalysis-v1",
                 feature = "google-devtools-remoteworkers-v1test2",
                 feature = "google-firestore-admin-v1",
                 feature = "google-firestore-admin-v1beta1",
                 feature = "google-firestore-admin-v1beta2",
+                feature = "google-firestore-bundle",
                 feature = "google-firestore-v1",
                 feature = "google-firestore-v1beta1",
                 feature = "google-iam-v1beta",
@@ -4398,7 +4420,9 @@ pub mod google {
                 feature = "google-streetview-publish-v1",
                 feature = "grafeas-v1",
                 feature = "grafeas-v1beta1",
+                feature = "grafeas-v1beta1-attestation",
                 feature = "grafeas-v1beta1-discovery",
+                feature = "grafeas-v1beta1-vulnerability",
             )
         )]
         include_proto!("google.rpc");
@@ -4560,34 +4584,68 @@ pub mod grafeas {
         include_proto!("grafeas.v1beta1");
         pub mod attestation {
             #[cfg(
-                any(feature = "grafeas-v1beta1", feature = "grafeas-v1beta1-attestation")
+                any(
+                    feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-discovery",
+                    feature = "grafeas-v1beta1-vulnerability",
+                )
             )]
             include_proto!("grafeas.v1beta1.attestation");
         }
         pub mod build {
-            #[cfg(any(feature = "grafeas-v1beta1", feature = "grafeas-v1beta1-build"))]
+            #[cfg(
+                any(
+                    feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-build",
+                    feature = "grafeas-v1beta1-discovery",
+                    feature = "grafeas-v1beta1-vulnerability",
+                )
+            )]
             include_proto!("grafeas.v1beta1.build");
         }
         pub mod deployment {
             #[cfg(
-                any(feature = "grafeas-v1beta1", feature = "grafeas-v1beta1-deployment")
+                any(
+                    feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-deployment",
+                    feature = "grafeas-v1beta1-discovery",
+                    feature = "grafeas-v1beta1-vulnerability",
+                )
             )]
             include_proto!("grafeas.v1beta1.deployment");
         }
         pub mod discovery {
             #[cfg(
-                any(feature = "grafeas-v1beta1", feature = "grafeas-v1beta1-discovery")
+                any(
+                    feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-discovery",
+                    feature = "grafeas-v1beta1-vulnerability",
+                )
             )]
             include_proto!("grafeas.v1beta1.discovery");
         }
         pub mod image {
-            #[cfg(any(feature = "grafeas-v1beta1", feature = "grafeas-v1beta1-image"))]
+            #[cfg(
+                any(
+                    feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-discovery",
+                    feature = "grafeas-v1beta1-image",
+                    feature = "grafeas-v1beta1-vulnerability",
+                )
+            )]
             include_proto!("grafeas.v1beta1.image");
         }
         pub mod package {
             #[cfg(
                 any(
                     feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-discovery",
                     feature = "grafeas-v1beta1-package",
                     feature = "grafeas-v1beta1-vulnerability",
                 )
@@ -4598,8 +4656,11 @@ pub mod grafeas {
             #[cfg(
                 any(
                     feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
                     feature = "grafeas-v1beta1-build",
+                    feature = "grafeas-v1beta1-discovery",
                     feature = "grafeas-v1beta1-provenance",
+                    feature = "grafeas-v1beta1-vulnerability",
                 )
             )]
             include_proto!("grafeas.v1beta1.provenance");
@@ -4608,9 +4669,12 @@ pub mod grafeas {
             #[cfg(
                 any(
                     feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
                     feature = "grafeas-v1beta1-build",
+                    feature = "grafeas-v1beta1-discovery",
                     feature = "grafeas-v1beta1-provenance",
                     feature = "grafeas-v1beta1-source",
+                    feature = "grafeas-v1beta1-vulnerability",
                 )
             )]
             include_proto!("grafeas.v1beta1.source");
@@ -4619,6 +4683,8 @@ pub mod grafeas {
             #[cfg(
                 any(
                     feature = "grafeas-v1beta1",
+                    feature = "grafeas-v1beta1-attestation",
+                    feature = "grafeas-v1beta1-discovery",
                     feature = "grafeas-v1beta1-vulnerability",
                 )
             )]
