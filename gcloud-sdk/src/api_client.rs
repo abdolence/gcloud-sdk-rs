@@ -73,7 +73,7 @@ where
 
         let mut middleware =
             GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix)?;
-        middleware.set_additional_headers(additional_headers)?;
+        middleware.set_additional_headers(additional_headers);
 
         Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
     }

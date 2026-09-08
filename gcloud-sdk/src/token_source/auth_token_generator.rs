@@ -58,8 +58,7 @@ impl GoogleAuthTokenGenerator {
     }
 
     /// Runs the double-checked refresh and applies `pick` to the resulting cached
-    /// token by reference, so a cache hit clones only what the caller asks for
-    /// instead of the whole `CachedToken`.
+    /// token by reference, so a cache hit clones only what the caller asks for.
     async fn with_cached<R>(
         &self,
         pick: impl FnOnce(&CachedToken) -> R,

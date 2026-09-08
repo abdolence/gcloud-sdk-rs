@@ -30,7 +30,7 @@ fn default_headers(cloud_resource_prefix: Option<String>) -> crate::error::Resul
 }
 
 /// Appends `extra` to whatever `name` currently holds in `headers` (space separated),
-/// or sets it outright if absent, matching the historical "amend" behaviour.
+/// or sets it outright if absent.
 fn append_header_value(
     headers: &HeaderMap,
     name: &HeaderName,
@@ -41,16 +41,6 @@ fn append_header_value(
         None => extra.to_string(),
     };
     Ok(HeaderValue::from_str(&combined)?)
-}
-
-/// Merges headers whose name survived the http crate's multi-value iteration
-/// (i.e. `insert`, last value per name wins), matching historical behaviour.
-fn merge_headers(target: &mut HeaderMap, additional_headers: HeaderMap) {
-    for (maybe_name, value) in additional_headers {
-        if let Some(name) = maybe_name {
-            target.insert(name, value);
-        }
-    }
 }
 
 #[derive(Clone)]
@@ -110,12 +100,8 @@ impl<T> GoogleAuthMiddlewareService<T> {
         Ok(())
     }
 
-    pub fn set_additional_headers(
-        &mut self,
-        additional_headers: HeaderMap,
-    ) -> crate::error::Result<()> {
-        merge_headers(Arc::make_mut(&mut self.headers), additional_headers);
-        Ok(())
+    pub fn set_additional_headers(&mut self, additional_headers: HeaderMap) {
+        Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
 }
 
@@ -152,9 +138,18 @@ where
 
             let req_headers = req.headers_mut();
             req_headers.insert(hyper::header::AUTHORIZATION, authorization);
-            for (name, value) in headers.iter() {
-                req_headers.insert(name.clone(), value.clone());
+            // Each name in `headers` fully replaces whatever the request already carries
+            // under it (multi-valued or not); `iter()` yields one pair per value, so the
+            // names are cleared first and then appended rather than repeatedly `insert`ed,
+            // which would silently drop every value but the last for a repeated name.
+            for name in headers.keys() {
+                req_headers.remove(name);
             }
+            req_headers.extend(
+                headers
+                    .iter()
+                    .map(|(name, value)| (name.clone(), value.clone())),
+            );
 
             let req_uri = req.uri().clone();
             inner
@@ -215,12 +210,8 @@ impl GoogleAuthMiddlewareLayer {
         Ok(self)
     }
 
-    pub fn set_additional_headers(
-        &mut self,
-        additional_headers: HeaderMap,
-    ) -> crate::error::Result<()> {
-        merge_headers(Arc::make_mut(&mut self.headers), additional_headers);
-        Ok(())
+    pub fn set_additional_headers(&mut self, additional_headers: HeaderMap) {
+        Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
 }
 
@@ -477,7 +468,7 @@ mod tests {
                 .unwrap();
         let mut test_headers = hyper::HeaderMap::new();
         test_headers.insert("x-test-header", "test-value".parse().unwrap());
-        service.set_additional_headers(test_headers).unwrap();
+        service.set_additional_headers(test_headers);
 
         let req = Request::builder()
             .uri("http://example.com")
@@ -491,5 +482,42 @@ mod tests {
             captured_req.headers().get("x-test-header").unwrap(),
             "test-value"
         );
+    }
+
+    #[tokio::test]
+    async fn additional_headers_keep_every_value_of_a_repeated_name() {
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(DummySource)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service =
+            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
+                .unwrap();
+
+        let mut test_headers = hyper::HeaderMap::new();
+        test_headers.append("x-multi", "first".parse().unwrap());
+        test_headers.append("x-multi", "second".parse().unwrap());
+        service.set_additional_headers(test_headers);
+
+        let req = Request::builder()
+            .uri("http://example.com")
+            .body("".to_string())
+            .unwrap();
+
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        let values: Vec<&str> = captured_req
+            .headers()
+            .get_all("x-multi")
+            .iter()
+            .map(|v| v.to_str().unwrap())
+            .collect();
+        assert_eq!(values, vec!["first", "second"]);
     }
 }
