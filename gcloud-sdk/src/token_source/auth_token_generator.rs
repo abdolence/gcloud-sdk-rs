@@ -64,16 +64,17 @@ impl GoogleAuthTokenGenerator {
         pick: impl FnOnce(&CachedToken) -> R,
     ) -> crate::error::Result<R> {
         let now = Timestamp::now();
+        // Give a bit more time for the network call than the token strictly has left;
+        // both the read-only fast path and the write-lock recheck below must use this
+        // same threshold, or a token can sit inside the margin forever, with every
+        // caller taking the write lock and getting the stale token back without ever
+        // triggering the refresh the margin exists to trigger.
+        let refresh_after = now.add(SignedDuration::from_secs(15));
 
         {
             let read_state = self.cached_token.read().await;
-            // Give a bit more time for network call
             if let Some(cached) = read_state.as_ref() {
-                if cached
-                    .token
-                    .expiry
-                    .gt(&now.add(SignedDuration::from_secs(15)))
-                {
+                if cached.token.expiry.gt(&refresh_after) {
                     return Ok(pick(cached));
                 }
             }
@@ -81,7 +82,7 @@ impl GoogleAuthTokenGenerator {
 
         let mut write_token = self.cached_token.write().await;
         match write_token.as_ref() {
-            Some(updated_cached) if updated_cached.token.expiry.gt(&now) => {
+            Some(updated_cached) if updated_cached.token.expiry.gt(&refresh_after) => {
                 Ok(pick(updated_cached))
             }
             _ => {
@@ -143,5 +144,42 @@ mod tests {
         assert_eq!(first, second);
         assert!(first.is_sensitive());
         assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
+
+    struct FixedExpirySource {
+        calls: Arc<AtomicUsize>,
+        expires_in: SignedDuration,
+    }
+
+    #[async_trait]
+    impl Source for FixedExpirySource {
+        async fn token(&self) -> crate::error::Result<Token> {
+            self.calls.fetch_add(1, Ordering::SeqCst);
+            Ok(Token {
+                token_type: "Bearer".to_string(),
+                token: SecretValue::from("margin-token"),
+                expiry: Timestamp::now() + self.expires_in,
+            })
+        }
+    }
+
+    #[tokio::test]
+    async fn token_inside_refresh_margin_is_refreshed() {
+        let calls = Arc::new(AtomicUsize::new(0));
+        let source = FixedExpirySource {
+            calls: calls.clone(),
+            expires_in: SignedDuration::from_secs(10),
+        };
+        let generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(source)),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        generator.authorization_header().await.unwrap();
+        generator.authorization_header().await.unwrap();
+
+        assert_eq!(calls.load(Ordering::SeqCst), 2);
     }
 }
