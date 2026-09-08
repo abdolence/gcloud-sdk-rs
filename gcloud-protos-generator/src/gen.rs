@@ -324,21 +324,59 @@ fn proto_rec(root: PathBuf, path: PathBuf, map: &mut HashMap<PathBuf, Proto>) ->
     }
 }
 
-fn add_deps_rec(src: &Proto, proto: &Proto, map: &mut HashMap<Package, HashSet<Package>>) {
-    let e = map
-        .entry(proto.package.clone())
-        .or_insert_with(HashSet::new);
-    e.insert(src.package.clone());
-
-    for import in proto.imports.iter() {
-        add_deps_rec(src, import, map);
+// prost compiles every file of a package into a single module, so importing
+// one file of a package pulls in whatever every other file of that package
+// imports too. Gate computation has to work over the package-level import
+// graph, not the per-file one, or a package reached only through a file with
+// few imports will miss what its sibling files need.
+fn package_imports(protos: &[Proto]) -> HashMap<Package, HashSet<Package>> {
+    let mut imports: HashMap<Package, HashSet<Package>> = HashMap::new();
+    let mut visited: HashSet<&Path> = HashSet::new();
+    let mut stack: Vec<&Proto> = protos.iter().collect();
+    while let Some(proto) = stack.pop() {
+        if !visited.insert(proto.path.as_path()) {
+            continue;
+        }
+        let entry = imports.entry(proto.package.clone()).or_default();
+        for import in proto.imports.iter() {
+            entry.insert(import.package.clone());
+            stack.push(import);
+        }
     }
+    imports
+}
+
+fn transitive_closure(
+    start: &Package,
+    imports: &HashMap<Package, HashSet<Package>>,
+) -> HashSet<Package> {
+    let mut visited = HashSet::new();
+    let mut stack = vec![start.clone()];
+    visited.insert(start.clone());
+    while let Some(cur) = stack.pop() {
+        if let Some(next) = imports.get(&cur) {
+            for pkg in next {
+                if visited.insert(pkg.clone()) {
+                    stack.push(pkg.clone());
+                }
+            }
+        }
+    }
+    visited
 }
 
 fn deps_resolver(protos: &[Proto]) -> HashMap<Package, HashSet<Package>> {
-    let mut map = HashMap::new();
-    for p in protos.iter() {
-        add_deps_rec(p, p, &mut map);
+    let imports = package_imports(protos);
+    let sources = protos
+        .iter()
+        .map(|p| p.package.clone())
+        .collect::<HashSet<_>>();
+
+    let mut map: HashMap<Package, HashSet<Package>> = HashMap::new();
+    for src in &sources {
+        for target in transitive_closure(src, &imports) {
+            map.entry(target).or_default().insert(src.clone());
+        }
     }
     map
 }
@@ -483,7 +521,11 @@ mod tests {
                         imports: vec![Proto {
                             path: PathBuf::from("/c/e.proto"),
                             package: "c".into(),
-                            imports: Vec::new(),
+                            imports: vec![Proto {
+                                path: PathBuf::from("/d/f.proto"),
+                                package: "d".into(),
+                                imports: Vec::new(),
+                            }],
                         }],
                     },
                 ],
@@ -521,24 +563,20 @@ mod tests {
                 imports: vec![Proto {
                     path: PathBuf::from("/c/e.proto"),
                     package: "c".into(),
-                    imports: Vec::new(),
+                    imports: vec![Proto {
+                        path: PathBuf::from("/d/f.proto"),
+                        package: "d".into(),
+                        imports: Vec::new(),
+                    }],
                 }],
-            },
-            Proto {
-                path: PathBuf::from("/c/e.proto"),
-                package: "c".into(),
-                imports: Vec::new(),
             },
         ]
     }
 
     #[test]
-    fn test_add_deps_rec() {
+    fn test_deps_resolver() {
         let protos = protos();
-        let mut map = HashMap::new();
-        for proto in protos {
-            add_deps_rec(&proto, &proto, &mut map);
-        }
+        let map = deps_resolver(&protos);
 
         assert_eq!(map, {
             let mut map = HashMap::new();
@@ -563,6 +601,7 @@ mod tests {
             map.insert("d".into(), {
                 let mut set = HashSet::new();
                 set.insert("a".into());
+                set.insert("b".into());
                 set.insert("c".into());
                 set.insert("d".into());
                 set
@@ -627,6 +666,7 @@ mod tests {
                     imported_by: {
                         let mut set = HashSet::new();
                         set.insert("a".into());
+                        set.insert("b".into());
                         set.insert("c".into());
                         set.insert("d".into());
                         set
@@ -636,6 +676,39 @@ mod tests {
             );
             RootModule(map)
         });
+    }
+
+    #[test]
+    fn package_dependency_covers_every_file_of_an_imported_package() {
+        let c = Proto {
+            path: PathBuf::from("/c/c.proto"),
+            package: "c".into(),
+            imports: Vec::new(),
+        };
+        let b1 = Proto {
+            path: PathBuf::from("/b/b1.proto"),
+            package: "b".into(),
+            imports: vec![c.clone()],
+        };
+        let b2 = Proto {
+            path: PathBuf::from("/b/b2.proto"),
+            package: "b".into(),
+            imports: Vec::new(),
+        };
+        let a = Proto {
+            path: PathBuf::from("/a/a.proto"),
+            package: "a".into(),
+            imports: vec![b2.clone()],
+        };
+
+        let root = from_protos(vec![a, b1, b2, c]);
+
+        let c_module = root.0.get("c").expect("package c should be present");
+        assert!(
+            c_module.imported_by.contains(&Package::from("a")),
+            "a imports b2, which shares package b with b1, and b1 imports c; \
+             prost compiles all of a package's files into one module, so a needs c too"
+        );
     }
 
     #[test]
@@ -652,7 +725,7 @@ include_proto!("b");
 pub mod c { #[cfg(any(feature = "a",feature = "b",feature = "c",))]
 include_proto!("c");
   }
-pub mod d { #[cfg(any(feature = "a",feature = "c",feature = "d",))]
+pub mod d { #[cfg(any(feature = "a",feature = "b",feature = "c",feature = "d",))]
 include_proto!("d");
   }
 "###

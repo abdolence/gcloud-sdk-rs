@@ -44,6 +44,7 @@ features=(
   google-appengine-v1
   google-appengine-v1beta
   google-apps-alertcenter-v1beta1
+  google-apps-card-v1
   google-apps-drive-activity-v2
   google-apps-script-type
   google-apps-script-type-calendar
@@ -86,15 +87,13 @@ features=(
   google-cloud-audit
   google-cloud-automl-v1
   google-cloud-automl-v1beta1
+  google-cloud-backupdr-v1
   google-cloud-bigquery-connection-v1
   google-cloud-bigquery-connection-v1beta1
   google-cloud-bigquery-datatransfer-v1
   google-cloud-bigquery-logging-v1
-  google-cloud-bigquery-migration-tasks-assessment-v2alpha
-  google-cloud-bigquery-migration-tasks-translation-v2alpha
   google-cloud-bigquery-migration-v2alpha
   google-cloud-bigquery-reservation-v1
-  google-cloud-bigquery-reservation-v1beta1
   google-cloud-bigquery-storage-v1
   google-cloud-bigquery-storage-v1beta1
   google-cloud-bigquery-storage-v1beta2
@@ -122,12 +121,8 @@ features=(
   google-cloud-datastream-v1alpha1
   google-cloud-deploy-v1
   google-cloud-dialogflow-cx-v3
-  google-cloud-dialogflow-cx-v3beta1
   google-cloud-dialogflow-v2
-  google-cloud-dialogflow-v2beta1
   google-cloud-documentai-v1
-  google-cloud-documentai-v1beta1
-  google-cloud-documentai-v1beta2
   google-cloud-documentai-v1beta3
   google-cloud-domains-v1
   google-cloud-domains-v1alpha2
@@ -137,28 +132,9 @@ features=(
   google-cloud-filestore-v1
   google-cloud-filestore-v1beta1
   google-cloud-functions-v1
-  google-cloud-gaming-allocationendpoint-v1alpha
-  google-cloud-gaming-v1
-  google-cloud-gaming-v1beta
   google-cloud-gkebackup-logging-v1
   google-cloud-gkeconnect-gateway-v1
-  google-cloud-gkeconnect-gateway-v1alpha1
   google-cloud-gkeconnect-gateway-v1beta1
-  google-cloud-gkehub-cloudauditlogging-v1alpha
-  google-cloud-gkehub-configmanagement-v1
-  google-cloud-gkehub-configmanagement-v1alpha
-  google-cloud-gkehub-configmanagement-v1beta
-  google-cloud-gkehub-metering-v1alpha
-  google-cloud-gkehub-metering-v1beta
-  google-cloud-gkehub-multiclusteringress-v1
-  google-cloud-gkehub-multiclusteringress-v1alpha
-  google-cloud-gkehub-multiclusteringress-v1beta
-  google-cloud-gkehub-servicemesh-v1alpha
-  google-cloud-gkehub-v1
-  google-cloud-gkehub-v1alpha
-  google-cloud-gkehub-v1alpha2
-  google-cloud-gkehub-v1beta
-  google-cloud-gkehub-v1beta1
   google-cloud-gsuiteaddons-logging-v1
   google-cloud-gsuiteaddons-v1
   google-cloud-iap-v1
@@ -173,6 +149,7 @@ features=(
   google-cloud-language-v1beta2
   google-cloud-lifesciences-v2beta
   google-cloud-location
+  google-cloud-lustre-v1
   google-cloud-managedidentities-v1
   google-cloud-managedidentities-v1beta1
   google-cloud-mediatranslation-v1alpha1
@@ -183,7 +160,6 @@ features=(
   google-cloud-metastore-v1
   google-cloud-metastore-v1alpha
   google-cloud-metastore-v1beta
-  google-cloud-ml-v1
   google-cloud-networkconnectivity-v1
   google-cloud-networkconnectivity-v1alpha1
   google-cloud-networkmanagement-v1
@@ -205,6 +181,7 @@ features=(
   google-cloud-oslogin-v1
   google-cloud-oslogin-v1alpha
   google-cloud-oslogin-v1beta
+  google-cloud-parametermanager-v1
   google-cloud-phishingprotection-v1beta1
   google-cloud-policytroubleshooter-v1
   google-cloud-privatecatalog-v1beta1
@@ -220,11 +197,6 @@ features=(
   google-cloud-redis-v1beta1
   google-cloud-resourcemanager-v2
   google-cloud-resourcemanager-v3
-  google-cloud-resourcesettings-v1
-  google-cloud-retail-logging
-  google-cloud-retail-v2
-  google-cloud-retail-v2alpha
-  google-cloud-retail-v2beta
   google-cloud-runtimeconfig-v1beta1
   google-cloud-saasaccelerator-management-logs-v1
   google-cloud-scheduler-v1
@@ -245,8 +217,6 @@ features=(
   google-cloud-speech-v1p1beta1
   google-cloud-sql-v1
   google-cloud-sql-v1beta4
-  google-cloud-support-common
-  google-cloud-support-v1alpha1
   google-cloud-talent-v4
   google-cloud-talent-v4beta1
   google-cloud-tasks-v2
@@ -260,7 +230,6 @@ features=(
   google-cloud-translation-v3beta1
   google-cloud-video-livestream-v1
   google-cloud-video-transcoder-v1
-  google-cloud-video-transcoder-v1beta1
   google-cloud-videointelligence-v1
   google-cloud-videointelligence-v1beta2
   google-cloud-videointelligence-v1p1beta1
@@ -295,7 +264,6 @@ features=(
   google-devtools-artifactregistry-v1beta2
   google-devtools-build-v1
   google-devtools-cloudbuild-v1
-  google-devtools-clouddebugger-v2
   google-devtools-clouderrorreporting-v1beta1
   google-devtools-cloudprofiler-v2
   google-devtools-cloudtrace-v1
@@ -307,12 +275,7 @@ features=(
   google-devtools-source-v1
   google-devtools-sourcerepo-v1
   google-devtools-testing-v1
-  google-example-endpointsapis-v1
   google-example-library-v1
-  google-example-showcase-v1
-  google-example-showcase-v1beta1
-  google-example-showcase-v1beta2
-  google-example-showcase-v1beta3
   google-firebase-fcm-connection-v1alpha1
   google-firestore-admin-v1
   google-firestore-admin-v1beta1
@@ -321,8 +284,6 @@ features=(
   google-firestore-v1
   google-firestore-v1beta1
   google-gapic-metadata
-  google-genomics-v1
-  google-genomics-v1alpha2
   google-geo-type
   google-home-enterprise-sdm-v1
   google-home-graph-v1
