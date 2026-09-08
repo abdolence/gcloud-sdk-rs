@@ -42,6 +42,7 @@ async fn read_stream(
     let read_rows_request = ReadRowsRequest {
         read_stream: stream_name.clone(),
         offset: 0,
+        ..Default::default()
     };
 
     let messages = read_client
@@ -95,7 +96,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             None,
         )
         .await?
-        .amend_user_agent("gcloud-sdk-rs-example/0.1.0".to_string());
+        .amend_user_agent("gcloud-sdk-rs-example/0.1.0".to_string())?;
 
     let read_session = ReadSession {
         data_format: DataFormat::Arrow as i32,
