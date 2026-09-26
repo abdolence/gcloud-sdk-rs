@@ -99,6 +99,13 @@ where
         self.builder.create_client(self.service.clone())
     }
 
+    /// Builds a client of another API on this client's authenticated channel: same
+    /// connection, token source and headers, for an API served from the same endpoint
+    /// (Firestore's admin and long-running operations services, for example).
+    pub fn get_with<C2>(&self, f: impl FnOnce(GoogleAuthMiddlewareService<Channel>) -> C2) -> C2 {
+        f(self.service.clone())
+    }
+
     pub fn amend_user_agent(mut self, user_agent: String) -> crate::error::Result<Self> {
         self.service.append_user_agent(user_agent)?;
         Ok(self)
@@ -376,3 +383,77 @@ impl GoogleEnvironment {
 
 pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
     Lazy::new(|| vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::token_source::{Source, Token, TokenSourceType};
+    use secret_vault_value::SecretValue;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
+
+    struct CountingSource {
+        calls: Arc<AtomicUsize>,
+    }
+
+    #[async_trait]
+    impl Source for CountingSource {
+        async fn token(&self) -> crate::error::Result<Token> {
+            self.calls.fetch_add(1, Ordering::SeqCst);
+            Ok(Token {
+                token_type: "Bearer".to_string(),
+                token: SecretValue::from("counted-token"),
+                expiry: jiff::Timestamp::now() + jiff::SignedDuration::from_hours(1),
+            })
+        }
+    }
+
+    // Neither address is dialed: the middleware fetches the token before handing the
+    // request to the channel, and a closed loopback port fails the connection quickly
+    // without ever reaching the network.
+    async fn probe(service: &mut GoogleAuthMiddlewareService<Channel>) {
+        let req = hyper::Request::builder()
+            .uri("http://127.0.0.1:1/")
+            .body(tonic::body::Body::empty())
+            .unwrap();
+        let ready = tower::ServiceExt::ready(service).await.unwrap();
+        let _ = tower::Service::call(ready, req).await;
+    }
+
+    #[tokio::test]
+    async fn get_with_shares_the_authenticated_channel() {
+        let calls = Arc::new(AtomicUsize::new(0));
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(CountingSource {
+                calls: calls.clone(),
+            })),
+            vec![],
+        )
+        .await
+        .unwrap();
+        let middleware = GoogleAuthMiddlewareLayer::new(token_generator, None).unwrap();
+        let channel = Channel::from_static("http://127.0.0.1:1").connect_lazy();
+        let service: GoogleAuthMiddlewareService<Channel> =
+            ServiceBuilder::new().layer(middleware).service(channel);
+
+        let client: GoogleApiClient<
+            GoogleApiClientBuilderFunction<GoogleAuthMiddlewareService<Channel>>,
+            GoogleAuthMiddlewareService<Channel>,
+        > = GoogleApiClient {
+            builder: GoogleApiClientBuilderFunction { f: |svc| svc },
+            service,
+            _ph: PhantomData,
+        };
+
+        let mut from_get = client.get();
+        let mut from_get_with = client.get_with(|svc| svc);
+
+        probe(&mut from_get).await;
+        probe(&mut from_get_with).await;
+
+        // A client built with `get_with` reuses the same `Arc<GoogleAuthTokenGenerator>`
+        // as one built with `get`, so its token cache is shared: the source is asked for
+        // a token once, not once per client.
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
+}
