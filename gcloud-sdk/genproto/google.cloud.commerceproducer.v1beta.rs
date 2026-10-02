@@ -1316,8 +1316,11 @@ pub mod private_offer {
 /// is immutable. Existing documents cannot be updated or deleted, and new
 /// documents cannot be added.
 ///
-/// A private offer must include a EULA, either by assigning a standard EULA
-/// or attaching a custom EULA document, or a statement of work document.
+/// A private offer may have at most one document of each type, and may not have
+/// both a standard EULA and a custom EULA.
+///
+/// Which document types are required, optional, or not permitted depends on the
+/// service the offer is for, and is returned in `Service.document_requirement`.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivateOfferDocument {
     /// Identifier. Name of the resource.
@@ -1368,31 +1371,39 @@ pub mod private_offer_document {
         /// The default / unset value. Do not use.
         Unspecified = 0,
         /// The document is a custom EULA used in place of the standard product EULA.
-        /// A private offer may not have more than one custom EULA document.
+        /// A private offer may not have more than one custom EULA document, and may
+        /// not have both a custom EULA and a standard EULA.
         ///
         /// If this enum value is set, then mime_type and inline_content must
         /// be set.
         CustomEndUserLicenseAgreement = 1,
-        /// The document is the statement of work required by the [Cloud Marketplace
+        /// The document is the statement of work described by the [Cloud Marketplace
         /// Product Specific
-        /// Terms](<https://cloud.google.com/terms/marketplace-product-terms>) for all
-        /// Professional Services product private offers.
-        /// This document type is not permitted for private offers of any other
-        /// product type.
+        /// Terms](<https://cloud.google.com/terms/marketplace-product-terms>).
         /// A private offer may not have more than one statement of work document.
+        ///
+        /// Whether this document type is required, optional, or not permitted
+        /// depends on the service; see `Service.document_requirement`.
         ///
         /// The mime_type and inline_content fields must be set.
         StatementOfWork = 2,
         /// The document is the Marketplace standard EULA, with the following link:
         /// <https://cloud.google.com/terms/marketplace/eula-standard-v1-12102020.>
-        /// Existing offers may have this document type, but this is not permitted
-        /// for new offers.
+        ///
+        /// This edition has been superseded by
+        /// STANDARD_END_USER_LICENSE_AGREEMENT_V2. Offers created before that
+        /// edition was published may have this document type, but it is not
+        /// permitted on any service for new offers.
         StandardEndUserLicenseAgreementV1 = 3,
         /// The document is the Marketplace standard EULA, with the following link:
         /// <https://cloud.google.com/terms/marketplace/eula-standard-v2-01272021>
         ///
-        /// New offers using Standard EULAs should set this enum value. This is not
-        /// permitted for Professional Services products.
+        /// New offers using Standard EULAs should set this enum value. A private
+        /// offer may not have more than one standard EULA document, and may not
+        /// have both a standard EULA and a custom EULA.
+        ///
+        /// Whether this document type is required, optional, or not permitted
+        /// depends on the service; see `Service.document_requirement`.
         ///
         /// The mime_type and inline_content fields must not be set.
         StandardEndUserLicenseAgreementV2 = 4,
@@ -1445,7 +1456,7 @@ pub mod private_offer_document {
     }
 }
 /// Message describing Service resource.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Identifier. Name of resource.
     #[prost(string, tag = "1")]
@@ -1455,6 +1466,166 @@ pub struct Service {
     /// Not included for `SERVICE_VIEW_BASIC`.
     #[prost(string, tag = "2")]
     pub title: ::prost::alloc::string::String,
+    /// Output only. Document requirement for private offers on this service.
+    ///
+    /// Constraints that apply to every service, such as the restriction against
+    /// attaching both a standard and a custom EULA, are documented on
+    /// `PrivateOfferDocument` and are not represented here.
+    #[prost(message, optional, tag = "3")]
+    pub document_requirement: ::core::option::Option<service::DocumentRequirement>,
+    /// Output only. Type of the product this service commercializes.
+    #[prost(enumeration = "service::ProductType", tag = "4")]
+    pub product_type: i32,
+}
+/// Nested message and enum types in `Service`.
+pub mod service {
+    /// Requirements and constraints for documents attached to private offers.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DocumentRequirement {
+        /// Document requirements for private offers on this service.
+        ///
+        /// Each document type appears at most once. The order of entries is not
+        /// significant. A document type that is not present in this list is not
+        /// permitted for private offers on this service.
+        #[prost(message, repeated, tag = "1")]
+        pub document_type_requirements: ::prost::alloc::vec::Vec<
+            document_requirement::DocumentTypeRequirement,
+        >,
+    }
+    /// Nested message and enum types in `DocumentRequirement`.
+    pub mod document_requirement {
+        /// Requirement specification for a specific document type.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DocumentTypeRequirement {
+            /// The document type.
+            #[prost(
+                enumeration = "super::super::private_offer_document::DocumentType",
+                tag = "1"
+            )]
+            pub document_type: i32,
+            /// The requirement level for this document type.
+            #[prost(
+                enumeration = "document_type_requirement::RequirementLevel",
+                tag = "2"
+            )]
+            pub requirement_level: i32,
+        }
+        /// Nested message and enum types in `DocumentTypeRequirement`.
+        pub mod document_type_requirement {
+            /// Requirement level for the document type.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum RequirementLevel {
+                /// Unspecified requirement level. Do not use.
+                Unspecified = 0,
+                /// The document type is mandatory for private offers on this service.
+                /// Exactly one document of this type must be attached.
+                Required = 1,
+                /// The document type is optional for private offers on this service.
+                /// At most one document of this type may be attached.
+                Optional = 2,
+                /// The document type is not permitted for private offers on this
+                /// service. No document of this type may be attached.
+                ///
+                /// A document type omitted from `document_type_requirements` is also
+                /// not permitted. This value is used to state the restriction
+                /// explicitly.
+                NotAllowed = 3,
+            }
+            impl RequirementLevel {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "REQUIREMENT_LEVEL_UNSPECIFIED",
+                        Self::Required => "REQUIRED",
+                        Self::Optional => "OPTIONAL",
+                        Self::NotAllowed => "NOT_ALLOWED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "REQUIREMENT_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                        "REQUIRED" => Some(Self::Required),
+                        "OPTIONAL" => Some(Self::Optional),
+                        "NOT_ALLOWED" => Some(Self::NotAllowed),
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
+    /// The type of the product this service commercializes.
+    ///
+    /// Every service has a type, but only the types listed below are exposed. A
+    /// service whose type is not one of the listed values reports
+    /// `PRODUCT_TYPE_UNSPECIFIED`.
+    ///
+    /// Values may be added over time. Clients must handle unrecognized values.
+    /// When new values are added, the ProductType for an existing service may
+    /// change. Clients must also be able to handle a change in ProductType.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProductType {
+        /// The service has a type, but it is not one of the types exposed below.
+        Unspecified = 0,
+        /// Represents a software-as-a-service product. See
+        /// <https://docs.cloud.google.com/marketplace/docs/partners/integrated-saas>
+        SoftwareAsAService = 1,
+        /// Represents a data product on BigQuery sharing (formerly Analytics Hub).
+        /// See <https://docs.cloud.google.com/marketplace/docs/partners/data>
+        AnalyticsHubListing = 2,
+        /// Represents a professional services product. See
+        /// <https://docs.cloud.google.com/marketplace/docs/partners/professional-services>
+        ProfessionalServices = 3,
+    }
+    impl ProductType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PRODUCT_TYPE_UNSPECIFIED",
+                Self::SoftwareAsAService => "SOFTWARE_AS_A_SERVICE",
+                Self::AnalyticsHubListing => "ANALYTICS_HUB_LISTING",
+                Self::ProfessionalServices => "PROFESSIONAL_SERVICES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRODUCT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SOFTWARE_AS_A_SERVICE" => Some(Self::SoftwareAsAService),
+                "ANALYTICS_HUB_LISTING" => Some(Self::AnalyticsHubListing),
+                "PROFESSIONAL_SERVICES" => Some(Self::ProfessionalServices),
+                _ => None,
+            }
+        }
+    }
 }
 /// Message describing the Sku resource.
 ///

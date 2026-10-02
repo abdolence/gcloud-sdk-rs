@@ -1405,16 +1405,25 @@ pub mod import_job {
 /// levels.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalProtectionLevelOptions {
-    /// The URI for an external resource that this
+    /// Optional. The URI for an external resource that this
     /// \[CryptoKeyVersion\]\[google.cloud.kms.v1.CryptoKeyVersion\] represents.
     #[prost(string, tag = "1")]
     pub external_key_uri: ::prost::alloc::string::String,
-    /// The path to the external key material on the EKM when using
+    /// Optional. The path to the external key material on the EKM when using
     /// \[EkmConnection\]\[google.cloud.kms.v1.EkmConnection\] e.g., "v0/my/key". Set
     /// this field instead of external_key_uri when using an
     /// \[EkmConnection\]\[google.cloud.kms.v1.EkmConnection\].
     #[prost(string, tag = "2")]
     pub ekm_connection_key_path: ::prost::alloc::string::String,
+    /// Optional. The resource name of the backend environment where the key
+    /// material of \[CryptoKeyVersions\]\[google.cloud.kms.v1.CryptoKeyVersion\] is
+    /// associated with. Setting this field overrides the \[CryptoKeyBackend\]\[\].
+    /// This field may be set when
+    /// \[CryptoKeyVersions\]\[google.cloud.kms.v1.CryptoKeyVersion\] is set to
+    /// \[EXTERNAL_VPC\]\[google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC\]. Format:
+    /// `projects/*/locations/*/ekmConnections/*`.
+    #[prost(string, tag = "3")]
+    pub ekm_connection_backend_override: ::prost::alloc::string::String,
 }
 /// A
 /// \[KeyAccessJustificationsPolicy\]\[google.cloud.kms.v1.KeyAccessJustificationsPolicy\]

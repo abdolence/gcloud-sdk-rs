@@ -3510,6 +3510,41 @@ pub mod seek_request {
 /// Response for the `Seek` method (this response is empty).
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SeekResponse {}
+/// Client-side telemetry about Pub/Sub requests, useful for debugging purposes.
+/// If the client opts to provide this information, it will be passed as a
+/// serialized proto in the `x-goog-pubsub-client-telemetry` header.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PubsubClientTelemetry {
+    /// Operation-specific telemetry.
+    #[prost(oneof = "pubsub_client_telemetry::Operation", tags = "1")]
+    pub operation: ::core::option::Option<pubsub_client_telemetry::Operation>,
+}
+/// Nested message and enum types in `PubsubClientTelemetry`.
+pub mod pubsub_client_telemetry {
+    /// Telemetry about a `Publish` operation which may or may not be common across
+    /// individual RPCs.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PublishOperation {
+        /// Optional. If the publisher client is using publish hedging, provides the
+        /// attempt count for the hedge (starting at 1). A value of 0 indicates that
+        /// the request was not hedged.
+        #[prost(int32, tag = "1")]
+        pub hedged_attempt_count: i32,
+        /// Optional. Time at which the `publish()` call was initiated in the client
+        /// library, meaning across all RPC retry attempts, see [grpc
+        /// retries](<https://grpc.io/docs/guides/retry/>). Provides a sense of the
+        /// end-to-end publish duration from the client perspective, across retries.
+        #[prost(message, optional, tag = "2")]
+        pub publish_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Operation-specific telemetry.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Operation {
+        /// Optional. Telemetry about a `Publish` operation.
+        #[prost(message, tag = "1")]
+        PublishOperation(PublishOperation),
+    }
+}
 /// Generated client implementations.
 pub mod publisher_client {
     #![allow(

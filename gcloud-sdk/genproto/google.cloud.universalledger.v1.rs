@@ -112,16 +112,6 @@ impl ContractPermission {
         }
     }
 }
-/// An entity in the Universal Ledger network. All accounts are attached to an
-/// entity. The entity ID, also often referred to as the account ID, is unique
-/// and immutable across the network.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct Entity {
-    /// Output only. The ID assigned to the entity. This is assigned by the network
-    /// on account creation.
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-}
 /// Represents an amount of currency (i.e. money). Note that the denominated
 /// currency is not included in this message. The relevant currency is decided by
 /// the account that sends the transaction. Each account has a unique immutable
@@ -170,12 +160,17 @@ pub struct Int64List {
     #[prost(int64, repeated, packed = "false", tag = "1")]
     pub values: ::prost::alloc::vec::Vec<i64>,
 }
-/// A list of account IDs.
+/// A reference to an account on the ledger.
+///
+/// This reference is swapped out for a full `gcul.Account` object by the
+/// ledger's runtime. For more details, see the [`gcul.Account`
+/// class](<https://docs.cloud.google.com/universal-ledger/reference/gculpy-language#account-class>)
+/// in the GCULpy language reference.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct AccountIdList {
-    /// Optional. The account ID values.
-    #[prost(string, repeated, tag = "1")]
-    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+pub struct AccountValue {
+    /// Required. The account ID.
+    #[prost(string, tag = "1")]
+    pub account_id: ::prost::alloc::string::String,
 }
 /// A list of booleans.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -184,28 +179,27 @@ pub struct BoolList {
     #[prost(bool, repeated, packed = "false", tag = "1")]
     pub values: ::prost::alloc::vec::Vec<bool>,
 }
-/// A list of dictionaries.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DictList {
-    /// Optional. The DictValue values. All nested dicts must have the same
-    /// concrete type.
-    #[prost(message, repeated, tag = "1")]
-    pub values: ::prost::alloc::vec::Vec<DictValue>,
+/// Represents a contract reference.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContractValue {
+    /// Required. The contract ID.
+    #[prost(string, tag = "1")]
+    pub contract_id: ::prost::alloc::string::String,
 }
 /// Indices map key to value. For example, `keys\[0\]` key maps to `values\[0\]`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DictValue {
     /// Each key can be exactly one kind.
-    #[prost(oneof = "dict_value::Keys", tags = "1, 2, 3, 8")]
+    #[prost(oneof = "dict_value::Keys", tags = "1, 2, 3, 13")]
     pub keys: ::core::option::Option<dict_value::Keys>,
     /// Each value can be exactly one kind.
-    #[prost(oneof = "dict_value::Values", tags = "4, 5, 6, 7")]
+    #[prost(oneof = "dict_value::Values", tags = "4, 5, 6, 14")]
     pub values: ::core::option::Option<dict_value::Values>,
 }
 /// Nested message and enum types in `DictValue`.
 pub mod dict_value {
     /// Each key can be exactly one kind.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Keys {
         /// Optional. A list of boolean keys.
         #[prost(message, tag = "1")]
@@ -216,9 +210,9 @@ pub mod dict_value {
         /// Optional. A list of int64 keys.
         #[prost(message, tag = "3")]
         Int64Keys(super::Int64List),
-        /// Optional. A list of account ID keys.
-        #[prost(message, tag = "8")]
-        AccountIdKeys(super::AccountIdList),
+        /// Optional. A generic list of keys.
+        #[prost(message, tag = "13")]
+        GenericKeys(super::RepeatedValue),
     }
     /// Each value can be exactly one kind.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -232,16 +226,49 @@ pub mod dict_value {
         /// Optional. A list of int64 values.
         #[prost(message, tag = "6")]
         Int64Values(super::Int64List),
-        /// Optional. Values are a list of nested dictionaries.
-        #[prost(message, tag = "7")]
-        DictValues(super::DictList),
+        /// Optional. A generic list of values as values.
+        #[prost(message, tag = "14")]
+        GenericValues(super::RepeatedValue),
     }
+}
+/// A list of values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListValue {
+    /// Each value can be exactly one kind.
+    #[prost(oneof = "list_value::Values", tags = "1, 2, 3, 8")]
+    pub values: ::core::option::Option<list_value::Values>,
+}
+/// Nested message and enum types in `ListValue`.
+pub mod list_value {
+    /// Each value can be exactly one kind.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Values {
+        /// Optional. A list of boolean values.
+        #[prost(message, tag = "1")]
+        BoolValues(super::BoolList),
+        /// Optional. A list of string values.
+        #[prost(message, tag = "2")]
+        StringValues(super::StringList),
+        /// Optional. A list of int64 values.
+        #[prost(message, tag = "3")]
+        Int64Values(super::Int64List),
+        /// Optional. A generic list of values.
+        #[prost(message, tag = "8")]
+        GenericValues(super::RepeatedValue),
+    }
+}
+/// A generic list of values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RepeatedValue {
+    /// Optional. The values in the list.
+    #[prost(message, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A concrete value of some type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// The actual value.
-    #[prost(oneof = "value::Value", tags = "1, 2, 3, 4, 5, 6, 9, 11")]
+    #[prost(oneof = "value::Value", tags = "1, 2, 3, 4, 6, 7, 8, 9, 10, 11")]
     pub value: ::core::option::Option<value::Value>,
 }
 /// Nested message and enum types in `Value`.
@@ -261,15 +288,21 @@ pub mod value {
         /// Optional. A string value.
         #[prost(string, tag = "4")]
         StringValue(::prost::alloc::string::String),
-        /// Optional. An account ID.
-        #[prost(string, tag = "5")]
-        AccountId(::prost::alloc::string::String),
         /// Optional. A dictionary value.
         #[prost(message, tag = "6")]
         DictValue(super::DictValue),
+        /// Optional. A contract reference.
+        #[prost(message, tag = "7")]
+        ContractValue(super::ContractValue),
+        /// Optional. A list value.
+        #[prost(message, tag = "8")]
+        ListValue(super::ListValue),
         /// Optional. A qualified currency value.
         #[prost(message, tag = "9")]
         QualifiedCurrencyValue(super::QualifiedCurrencyValue),
+        /// Optional. An account value.
+        #[prost(message, tag = "10")]
+        AccountValue(super::AccountValue),
         /// Optional. An amount value.
         #[prost(message, tag = "11")]
         AmountValue(super::AmountValue),
@@ -343,24 +376,12 @@ impl KeySlot {
 /// token managers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SettlementRequest {
-    /// Optional. Immutable. Deprecated: Use
-    /// \[payer_id\]\[google.cloud.universalledger.v1.SettlementRequest.payer_id\]
-    /// instead. The account ID of the party that needs to make the fund transfer.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub payer: ::core::option::Option<Entity>,
-    /// Optional. Immutable. The account ID of the party that needs to make the
-    /// fund transfer. One of `payer` or `payer_id` must be specified.
+    /// Required. Immutable. The account ID of the party that needs to make the
+    /// fund transfer.
     #[prost(string, tag = "6")]
     pub payer_id: ::prost::alloc::string::String,
-    /// Optional. Immutable. Deprecated: Use
-    /// \[beneficiary_id\]\[google.cloud.universalledger.v1.SettlementRequest.beneficiary_id\]
-    /// instead. The account ID of the party that needs to be paid.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub beneficiary: ::core::option::Option<Entity>,
-    /// Optional. Immutable. The account ID of the party that will receive the
-    /// funds. One of `beneficiary` or `beneficiary_id` must be specified.
+    /// Required. Immutable. The account ID of the party that will receive the
+    /// funds.
     #[prost(string, tag = "7")]
     pub beneficiary_id: ::prost::alloc::string::String,
     /// Required. Immutable. The balance of issued tokens that need to be
@@ -409,14 +430,6 @@ pub struct CreateAccount {
     /// created, the field is immutable.
     #[prost(string, tag = "4")]
     pub account_comment: ::prost::alloc::string::String,
-    /// Optional. Deprecated: Use
-    /// \[token_manager_id\]\[google.cloud.universalledger.v1.CreateAccount.token_manager_id\]
-    /// instead. The token manager for this account. This field is optional and if
-    /// not supplied, the default token manager associated to the account manager
-    /// (that is, the sender of this transaction) will be used.
-    #[deprecated]
-    #[prost(message, optional, tag = "5")]
-    pub token_manager: ::core::option::Option<Entity>,
     /// Optional. The ID of the token manager for this account. This field is
     /// optional and if not supplied, the default token manager associated to the
     /// account manager (that is, the sender of this transaction) will be used. The
@@ -431,14 +444,8 @@ pub struct CreateAccount {
 /// on the account regardless of the roles.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeactivateAccount {
-    /// Optional. Deprecated: Use
-    /// \[account_id\]\[google.cloud.universalledger.v1.DeactivateAccount.account_id\]
-    /// instead. The ID of the account to be deactivated.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account to be deactivated. One of `account` or
-    /// `account_id` must be specified. The value is limited to 60 characters.
+    /// Required. The ID of the account to be deactivated.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
 }
@@ -449,14 +456,8 @@ pub struct DeactivateAccount {
 /// account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActivateAccount {
-    /// Optional. Deprecated: Use
-    /// \[account_id\]\[google.cloud.universalledger.v1.ActivateAccount.account_id\]
-    /// instead. The ID of the account to be activated.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account to be activated. One of `account` or
-    /// `account_id` must be specified. The value is limited to 60 characters.
+    /// Required. The ID of the account to be activated.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
 }
@@ -464,14 +465,8 @@ pub struct ActivateAccount {
 /// manager of the account to modify.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddRoles {
-    /// Optional. Deprecated: Use
-    /// \[account_id\]\[google.cloud.universalledger.v1.AddRoles.account_id\] instead.
-    /// The ID of the account to be modified.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account to be modified. One of `account` or
-    /// `account_id` must be specified. The value is limited to 60 characters.
+    /// Required. The ID of the account to be modified.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "3")]
     pub account_id: ::prost::alloc::string::String,
     /// Required. The roles to be added.
@@ -482,14 +477,8 @@ pub struct AddRoles {
 /// manager of the account to modify.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRoles {
-    /// Optional. Deprecated: Use
-    /// \[account_id\]\[google.cloud.universalledger.v1.RemoveRoles.account_id\]
-    /// instead. The ID of the account to be modified.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account to be modified. One of `account` or
-    /// `account_id` must be specified. The value is limited to 60 characters.
+    /// Required. The ID of the account to be modified.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "3")]
     pub account_id: ::prost::alloc::string::String,
     /// Required. The roles to be removed.
@@ -501,27 +490,12 @@ pub struct RemoveRoles {
 /// to provide consent, the new manager must also sign this transaction.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChangeAccountManager {
-    /// Optional. Deprecated: Use
-    /// \[account_id\]\[google.cloud.universalledger.v1.ChangeAccountManager.account_id\]
-    /// instead. The ID of the account whose manager is to be changed.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account whose manager is to be changed. One of
-    /// `account` or `account_id` must be specified. The value is limited to 60
-    /// characters.
+    /// Required. The ID of the account whose manager is to be changed.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "3")]
     pub account_id: ::prost::alloc::string::String,
-    /// Optional. Deprecated: Use
-    /// \[next_manager_id\]\[google.cloud.universalledger.v1.ChangeAccountManager.next_manager_id\]
-    /// instead. The ID of the new proposed account manager. Validation requires
-    /// that the new manager has also signed this transaction.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub next_manager: ::core::option::Option<Entity>,
-    /// Optional. The ID of the new proposed account manager. Validation requires
-    /// that the new manager has also signed this transaction. One of
-    /// `next_manager` or `next_manager_id` must be specified. The value is limited
+    /// Required. The ID of the new proposed account manager. Validation requires
+    /// that the new manager has also signed this transaction. The value is limited
     /// to 60 characters.
     #[prost(string, tag = "4")]
     pub next_manager_id: ::prost::alloc::string::String,
@@ -532,17 +506,9 @@ pub struct ChangeAccountManager {
 /// account.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IncreaseTokenIssuanceLimit {
-    /// Optional. Deprecated: Use
-    /// \[token_manager_id\]\[google.cloud.universalledger.v1.IncreaseTokenIssuanceLimit.token_manager_id\]
-    /// instead. The ID of the institutional account whose mint limit is to be
+    /// Required. The ID of the institutional account whose mint limit is to be
     /// raised. This account must be a token manager for the transaction to be
     /// valid.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub token_manager: ::core::option::Option<Entity>,
-    /// Optional. The ID of the institutional account whose mint limit is to be
-    /// raised. This account must be a token manager for the transaction to be
-    /// valid. One of `token_manager` or `token_manager_id` must be specified.
     #[prost(string, tag = "3")]
     pub token_manager_id: ::prost::alloc::string::String,
     /// Required. The amount by which to raise the limit. The amount must be
@@ -560,18 +526,9 @@ pub struct IncreaseTokenIssuanceLimit {
 /// the requested reduced limit).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecreaseTokenIssuanceLimit {
-    /// Optional. Deprecated: Use
-    /// \[token_manager_id\]\[google.cloud.universalledger.v1.DecreaseTokenIssuanceLimit.token_manager_id\]
-    /// instead. The ID of the institutional account whose mint limit is to be
+    /// Required. The ID of the institutional account whose mint limit is to be
     /// lowered. This account must be a token manager for the transaction to be
     /// valid.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub token_manager: ::core::option::Option<Entity>,
-    /// Optional. The ID of the institutional account whose mint limit is to be
-    /// lowered. This account must be a token manager for the transaction to be
-    /// valid. One of `token_manager_id` (preferred) or `token_manager`
-    /// (deprecated) must be specified.
     #[prost(string, tag = "3")]
     pub token_manager_id: ::prost::alloc::string::String,
     /// Required. The amount by which to lower the limit. The amount must be
@@ -589,16 +546,9 @@ pub struct Mint {
     /// higher than that, the transaction must be rejected
     #[prost(message, optional, tag = "1")]
     pub mint_amount: ::core::option::Option<CurrencyValue>,
-    /// Optional. Deprecated: Use
-    /// \[beneficiary_id\]\[google.cloud.universalledger.v1.Mint.beneficiary_id\]
-    /// instead. The account to which the minted amount should be transferred. The
-    /// beneficiary account must have the `ROLE_RECEIVER` enabled on it.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub beneficiary: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account to which the minted amount should be
+    /// Required. The ID of the account to which the minted amount should be
     /// transferred. The receiving account must have the `ROLE_RECEIVER` enabled on
-    /// it. One of `beneficiary` or `beneficiary_id` must be specified.
+    /// it.
     #[prost(string, tag = "3")]
     pub beneficiary_id: ::prost::alloc::string::String,
 }
@@ -614,16 +564,8 @@ pub struct Burn {
     /// Required. The amount to burn.
     #[prost(message, optional, tag = "1")]
     pub burn_amount: ::core::option::Option<CurrencyValue>,
-    /// Optional. Deprecated: Use
-    /// \[payer_id\]\[google.cloud.universalledger.v1.Burn.payer_id\] instead. The
-    /// account supplying the tokens to burn. The account must have the
-    /// `ROLE_PAYER` enabled on it.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub payer: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account supplying the tokens to burn. The payer
-    /// account must have the `ROLE_PAYER` enabled on it. One of `payer` or
-    /// `payer_id` must be specified.
+    /// Required. The ID of the account supplying the tokens to burn. The payer
+    /// account must have the `ROLE_PAYER` enabled on it.
     #[prost(string, tag = "3")]
     pub payer_id: ::prost::alloc::string::String,
 }
@@ -635,14 +577,7 @@ pub struct Burn {
 /// it, while the receiver must have the `ROLE_RECEIVER` enabled on it.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Transfer {
-    /// Optional. Deprecated: Use
-    /// \[beneficiary_id\]\[google.cloud.universalledger.v1.Transfer.beneficiary_id\]
-    /// instead. The account that receives the tokens.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub beneficiary: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account that receives the tokens. One of
-    /// `beneficiary` or `beneficiary_id` must be specified.
+    /// Required. The ID of the account that receives the tokens.
     #[prost(string, tag = "4")]
     pub beneficiary_id: ::prost::alloc::string::String,
     /// Required. The amount to transfer. The amount must be positive.
@@ -704,13 +639,6 @@ pub struct CreateAccountManager {
     /// Considered public information.
     #[prost(enumeration = "KeyFormat", tag = "5")]
     pub key_format: i32,
-    /// Optional. Deprecated: Use
-    /// \[default_token_manager_id\]\[google.cloud.universalledger.v1.CreateAccountManager.default_token_manager_id\]
-    /// instead. The default token manager for the accounts that will be created by
-    /// this manager.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub default_token_manager: ::core::option::Option<Entity>,
     /// Optional. The ID of the default token manager for the accounts that will be
     /// created by this manager. The value is limited to 60 characters.
     #[prost(string, tag = "3")]
@@ -821,16 +749,7 @@ pub struct CreateCurrencyOperator {
     /// created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
-    /// Optional. Deprecated: Use
-    /// \[currency_code\]\[google.cloud.universalledger.v1.CreateCurrencyOperator.currency_code\]
-    /// instead.
-    /// The fiat currency associated with this operator, represented as a
-    /// 3-capital-letter ISO 4217 code.
-    /// Considered public information.
-    #[deprecated]
-    #[prost(string, tag = "3")]
-    pub currency: ::prost::alloc::string::String,
-    /// Optional. The fiat currency associated with this operator, represented as a
+    /// Required. The fiat currency associated with this operator, represented as a
     /// 3-capital-letter ISO 4217 code.
     /// Considered public information.
     #[prost(string, tag = "5")]
@@ -866,15 +785,8 @@ pub struct TransferCurrencyOperator {
     /// created, the field is immutable.
     #[prost(string, tag = "2")]
     pub account_comment: ::prost::alloc::string::String,
-    /// Optional. Deprecated: Use
-    /// \[currency_operator_id\]\[google.cloud.universalledger.v1.TransferCurrencyOperator.currency_operator_id\]
-    /// instead. The currency operator to be replaced. Must be active.
-    #[deprecated]
-    #[prost(message, optional, tag = "4")]
-    pub currency_operator: ::core::option::Option<Entity>,
-    /// Optional. The ID of the currency operator to be replaced. Must be active.
-    /// One of `currency_operator` or `currency_operator_id` must be specified. The
-    /// value is limited to 60 characters.
+    /// Required. The ID of the currency operator to be replaced. Must be active.
+    /// The value is limited to 60 characters.
     #[prost(string, tag = "6")]
     pub currency_operator_id: ::prost::alloc::string::String,
 }
@@ -888,11 +800,6 @@ pub struct CreateContract {
     /// Serialised contract bytes.
     #[prost(bytes = "vec", tag = "1")]
     pub contract_bytes: ::prost::alloc::vec::Vec<u8>,
-    /// Optional. Immutable. Deprecated: Use
-    /// \[init_arguments\]\[google.cloud.universalledger.v1.CreateContract.init_arguments\]
-    /// instead. Arguments for the `__init__` method.
-    #[prost(map = "string, message", tag = "2")]
-    pub arguments: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
     /// Optional. Immutable. Contains arguments for the `__init__` method.
     #[prost(map = "string, message", tag = "4")]
     pub init_arguments: ::std::collections::HashMap<
@@ -914,14 +821,7 @@ pub struct CreateContract {
 /// Note that there is no support for revoking permissions.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrantContractPermissions {
-    /// Optional. Deprecated: Use
-    /// \[contract_id\]\[google.cloud.universalledger.v1.GrantContractPermissions.contract_id\]
-    /// instead. ID of the contract to which permissions are being granted.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub contract: ::core::option::Option<Entity>,
-    /// Optional. The ID of the contract to which permissions are being granted.
-    /// One of `contract` or `contract_id` must be specified.
+    /// Required. The ID of the contract to which permissions are being granted.
     #[prost(string, tag = "3")]
     pub contract_id: ::prost::alloc::string::String,
     /// The permissions to be granted.
@@ -935,24 +835,12 @@ pub struct GrantContractPermissions {
 /// Invokes the execution of a contract method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvokeContractMethod {
-    /// Optional. Deprecated: Use
-    /// \[contract_id\]\[google.cloud.universalledger.v1.InvokeContractMethod.contract_id\]
-    /// instead. ID of the contract to run.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub contract: ::core::option::Option<Entity>,
-    /// Optional. The ID of the contract to run. One of `contract` or `contract_id`
-    /// must be specified.
+    /// Required. The ID of the contract to run.
     #[prost(string, tag = "5")]
     pub contract_id: ::prost::alloc::string::String,
     /// Name of the method to run.
     #[prost(string, tag = "2")]
     pub method_name: ::prost::alloc::string::String,
-    /// Optional. Immutable. Deprecated: Use
-    /// \[method_arguments\]\[google.cloud.universalledger.v1.InvokeContractMethod.method_arguments\]
-    /// instead. Arguments for the method.
-    #[prost(map = "string, message", tag = "3")]
-    pub arguments: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
     /// Optional. Immutable. Contains arguments to pass to the method.
     #[prost(map = "string, message", tag = "6")]
     pub method_arguments: ::std::collections::HashMap<
@@ -1114,8 +1002,10 @@ pub enum KeyFormat {
     /// The key format is unspecified. This value is invalid and should not be
     /// used.
     Unspecified = 0,
+    /// Deprecated: Use `KEY_FORMAT_PEM_EC_P256_SHA256` instead.
     /// A binary serialized keyset in [Tink wire
     /// format](<https://developers.google.com/tink/wire-format#keyset_serialization>).
+    #[deprecated]
     TinkWireFormat = 1,
     /// A PEM-encoded elliptic curve signing key using the P-256 curve with
     /// SHA256 digest. Signatures must be provided in DER format.
@@ -1129,6 +1019,7 @@ impl KeyFormat {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "KEY_FORMAT_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::TinkWireFormat => "KEY_FORMAT_TINK_WIRE_FORMAT",
             Self::PemEcP256Sha256 => "KEY_FORMAT_PEM_EC_P256_SHA256",
         }
@@ -1137,7 +1028,9 @@ impl KeyFormat {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "KEY_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
-            "KEY_FORMAT_TINK_WIRE_FORMAT" => Some(Self::TinkWireFormat),
+            "KEY_FORMAT_TINK_WIRE_FORMAT" => {
+                Some(#[allow(deprecated)] Self::TinkWireFormat)
+            }
             "KEY_FORMAT_PEM_EC_P256_SHA256" => Some(Self::PemEcP256Sha256),
             _ => None,
         }
@@ -1199,11 +1092,6 @@ pub mod account {
 /// Details specific to an Account Manager.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountManagerDetails {
-    /// Output only. Deprecated: Use `token_manager_id` instead.
-    /// The default token manager for accounts created by this account manager.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub token_manager: ::core::option::Option<Entity>,
     /// Output only. The number of accounts created by this account manager.
     #[prost(int32, tag = "2")]
     pub num_accounts: i32,
@@ -1253,19 +1141,9 @@ pub struct ContractTokenManagerDetails {
 /// Details specific to a User account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserDetails {
-    /// Output only. Deprecated: Use `account_manager_id` instead.
-    /// The account manager for this user.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub account_manager: ::core::option::Option<Entity>,
     /// Output only. The ID of the account manager for this user.
     #[prost(string, tag = "7")]
     pub account_manager_id: ::prost::alloc::string::String,
-    /// Output only. Deprecated: Use `token_manager_id` instead.
-    /// The token manager for this user.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub token_manager: ::core::option::Option<Entity>,
     /// Output only. The ID of the token manager for this user.
     #[prost(string, tag = "8")]
     pub token_manager_id: ::prost::alloc::string::String,
@@ -1278,13 +1156,6 @@ pub struct UserDetails {
     /// Output only. The token balance of this user account.
     #[prost(message, optional, tag = "5")]
     pub balance: ::core::option::Option<CurrencyValue>,
-    /// Output only. Deprecated: Use `contract_account_fields` instead.
-    /// The contract account fields (contract ID -> fields) for this user.
-    #[prost(map = "string, message", tag = "6")]
-    pub account_fields: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        Fields,
-    >,
     /// Output only. The contract account fields (contract ID -> fields) for this
     /// user.
     #[prost(map = "string, message", tag = "16")]
@@ -1296,12 +1167,6 @@ pub struct UserDetails {
 /// Details specific to a Currency Operator.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CurrencyOperatorDetails {
-    /// Output only. Deprecated: Use `currency_code` instead.
-    /// The currency associated with this account, represented by the 3-letter
-    /// ISO 4217 code.
-    #[deprecated]
-    #[prost(string, tag = "1")]
-    pub currency: ::prost::alloc::string::String,
     /// Output only. The ID of the currency associated with this account,
     /// represented by the 3-letter ISO 4217 code.
     #[prost(string, tag = "9")]
@@ -1309,32 +1174,15 @@ pub struct CurrencyOperatorDetails {
     /// Output only. The status of this account.
     #[prost(enumeration = "AccountStatus", tag = "2")]
     pub account_status: i32,
-    /// Output only. Deprecated: Use `previous_currency_operator_id` instead.
-    /// The previous currency operator which transferred ownership of the currency
-    /// operator role to this account. If this is the first currency operator for
-    /// the currency, this will be empty.
-    #[deprecated]
-    #[prost(message, optional, tag = "3")]
-    pub previous_entity_id: ::core::option::Option<Entity>,
     /// Output only. The ID of the previous currency operator which transferred
     /// ownership of the currency operator role to this account. If this is the
     /// first currency operator for the currency, this will be empty.
     #[prost(string, tag = "10")]
     pub previous_currency_operator_id: ::prost::alloc::string::String,
-    /// Output only. Deprecated: Use `platform_operator_id` instead.
-    /// The platform operator which created this currency operator.
-    #[deprecated]
-    #[prost(message, optional, tag = "4")]
-    pub platform_operator_entity_id: ::core::option::Option<Entity>,
     /// Output only. The ID of the platform operator which created this currency
     /// operator.
     #[prost(string, tag = "11")]
     pub platform_operator_id: ::prost::alloc::string::String,
-    /// Output only. Deprecated: Use `contract_token_manager_id` instead.
-    /// The contract token manager associated with this currency operator.
-    #[deprecated]
-    #[prost(message, optional, tag = "5")]
-    pub contract_token_manager: ::core::option::Option<Entity>,
     /// Output only. The ID of the contract token manager associated with this
     /// currency operator.
     #[prost(string, tag = "8")]
@@ -1350,13 +1198,6 @@ pub struct PlatformOperatorDetails {
     /// Output only. The status of this account.
     #[prost(enumeration = "AccountStatus", tag = "1")]
     pub account_status: i32,
-    /// Output only. Deprecated: Use `previous_platform_operator_id` instead.
-    /// The previous platform operator which transferred ownership of the platform
-    /// operator role to this account. If this is the first platform operator, this
-    /// will be empty.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub previous_entity_id: ::core::option::Option<Entity>,
     /// Output only. The ID of the previous platform operator which transferred
     /// ownership of the platform operator role to this account. If this is the
     /// first platform operator, this will be empty.
@@ -1380,11 +1221,6 @@ pub struct ClearingHouseDetails {
 /// Details specific to a Smart Contract.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContractDetails {
-    /// Output only. Deprecated: Use `owner_id` instead.
-    /// The owner of the contract.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub owner: ::core::option::Option<Entity>,
     /// Output only. The ID of the owner of the contract.
     #[prost(string, tag = "5")]
     pub owner_id: ::prost::alloc::string::String,
@@ -1405,19 +1241,9 @@ pub struct ContractDetails {
 /// A balance to settle between two token managers.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BalanceToSettle {
-    /// Output only. Deprecated: Use `balance_payer_id` instead.
-    /// The account which owes the balance to be settled.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub balance_payer: ::core::option::Option<Entity>,
     /// Output only. The ID of the account which owes the balance to be settled.
     #[prost(string, tag = "4")]
     pub balance_payer_id: ::prost::alloc::string::String,
-    /// Output only. Deprecated: Use `balance_receiver_id` instead.
-    /// The account which is owed the balance to be settled.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub balance_receiver: ::core::option::Option<Entity>,
     /// Output only. The ID of the account which is owed the balance to be settled.
     #[prost(string, tag = "5")]
     pub balance_receiver_id: ::prost::alloc::string::String,
@@ -1541,24 +1367,9 @@ impl EventType {
 /// Represents a transaction initiated by a client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientTransaction {
-    /// Optional. The transaction sender.
-    /// Deprecated: Use
-    /// \[sender_id\]\[google.cloud.universalledger.v1.ClientTransaction.sender_id\]
-    /// instead.
-    #[deprecated]
-    #[prost(message, optional, tag = "1")]
-    pub source: ::core::option::Option<Entity>,
-    /// Optional. The ID of the account that is sending this transaction.
-    /// One of `source` or `sender_id` must be set.
+    /// Required. The ID of the account that is sending this transaction.
     #[prost(string, tag = "11")]
     pub sender_id: ::prost::alloc::string::String,
-    /// Optional. Accounts that, in addition to the sender, have signed this
-    /// transaction. Deprecated: Use
-    /// \[other_signatory_ids\]\[google.cloud.universalledger.v1.ClientTransaction.other_signatory_ids\]
-    /// instead.
-    #[deprecated]
-    #[prost(message, repeated, tag = "2")]
-    pub signatories: ::prost::alloc::vec::Vec<Entity>,
     /// Optional. The IDs of accounts that, in addition to the sender, have signed
     /// this transaction.
     #[prost(string, repeated, tag = "12")]
@@ -1580,10 +1391,15 @@ pub struct ClientTransaction {
     /// chain from being submitted on its own.
     #[prost(bool, tag = "7")]
     pub chained_unit: bool,
+    /// Required. The name of the network this transaction is intended for, such as
+    /// `user-testing`. The transaction will be rejected if the name does not
+    /// match that of the network processing the transaction.
+    #[prost(string, tag = "9")]
+    pub network: ::prost::alloc::string::String,
     /// The client transaction-specific message.
     #[prost(
         oneof = "client_transaction::Kind",
-        tags = "5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 8"
+        tags = "6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 8"
     )]
     pub kind: ::core::option::Option<client_transaction::Kind>,
 }
@@ -1592,43 +1408,6 @@ pub mod client_transaction {
     /// The client transaction-specific message.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
-        /// Optional. Deprecated: Use one of the message specific fields instead.
-        /// A client transaction-specific message. Should be any one of:
-        ///
-        /// <!--
-        /// clang-format off
-        /// -->
-        ///
-        /// * \[TransferPlatformOperator\]\[google.cloud.universalledger.v1.TransferPlatformOperator\]
-        /// * \[CreateCurrencyOperator\]\[google.cloud.universalledger.v1.CreateCurrencyOperator\]
-        /// * \[TransferCurrencyOperator\]\[google.cloud.universalledger.v1.TransferCurrencyOperator\]
-        /// * \[CreateAccountManager\]\[google.cloud.universalledger.v1.CreateAccountManager\]
-        /// * \[CreateTokenManager\]\[google.cloud.universalledger.v1.CreateTokenManager\]
-        /// * \[CreateClearinghouse\]\[google.cloud.universalledger.v1.CreateClearinghouse\]
-        /// * \[IncreaseTokenIssuanceLimit\]\[google.cloud.universalledger.v1.IncreaseTokenIssuanceLimit\]
-        /// * \[DecreaseTokenIssuanceLimit\]\[google.cloud.universalledger.v1.DecreaseTokenIssuanceLimit\]
-        /// * \[SettlementRequest\]\[google.cloud.universalledger.v1.SettlementRequest\]
-        /// * \[Mint\]\[google.cloud.universalledger.v1.Mint\]
-        /// * \[Burn\]\[google.cloud.universalledger.v1.Burn\]
-        /// * \[CreateAccount\]\[google.cloud.universalledger.v1.CreateAccount\]
-        /// * \[DeactivateAccount\]\[google.cloud.universalledger.v1.DeactivateAccount\]
-        /// * \[ActivateAccount\]\[google.cloud.universalledger.v1.ActivateAccount\]
-        /// * \[AddRoles\]\[google.cloud.universalledger.v1.AddRoles\]
-        /// * \[RemoveRoles\]\[google.cloud.universalledger.v1.RemoveRoles\]
-        /// * \[ChangeAccountManager\]\[google.cloud.universalledger.v1.ChangeAccountManager\]
-        /// * \[Transfer\]\[google.cloud.universalledger.v1.Transfer\]
-        /// * \[CreateContract\]\[google.cloud.universalledger.v1.CreateContract\]
-        /// * \[GrantContractPermissions\]\[google.cloud.universalledger.v1.GrantContractPermissions\]
-        /// * \[InvokeContractMethod\]\[google.cloud.universalledger.v1.InvokeContractMethod\]
-        /// * \[CreateContractTokenManager\]\[google.cloud.universalledger.v1.CreateContractTokenManager\]
-        /// * \[TransferContractTokenManager\]\[google.cloud.universalledger.v1.TransferContractTokenManager\]
-        ///
-        /// <!--
-        /// clang-format on
-        /// -->
-        #[deprecated]
-        #[prost(message, tag = "5")]
-        App(::prost_types::Any),
         /// Optional. An operational transaction message. Note this can only be sent
         /// by the platform operator. Should be any one of:
         ///
@@ -1754,7 +1533,8 @@ pub struct SignedTransaction {
     /// * A digest of the serialized client transaction of the entire chain.
     /// * A digest of the serialized signed transaction of each unit in the chain,
     ///   in the order they appear in the chain.
-    ///   The digests are computed using SHA-256.
+    ///
+    /// The digests are computed using SHA-256.
     #[prost(bytes = "vec", tag = "3")]
     pub sender_signature: ::prost::alloc::vec::Vec<u8>,
     /// Optional. The key slot of the sender used to sign the transaction. Uses the
@@ -1803,13 +1583,6 @@ pub struct TransactionChain {
 /// A Merkle tree with a cryptographic digest of the root node.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MerkleTree {
-    /// Output only. The cryptographic digest of the root node.
-    /// Deprecated: Use
-    /// \[root_digest_hex\]\[google.cloud.universalledger.v1.MerkleTree.root_digest_hex\]
-    /// instead.
-    #[deprecated]
-    #[prost(string, tag = "1")]
-    pub root_hash_hex: ::prost::alloc::string::String,
     /// Output only. The hexadecimal representation of the digest of the root node.
     /// Format: A 64-character hexadecimal string.
     #[prost(string, tag = "3")]
@@ -1999,20 +1772,6 @@ pub mod proof_of_inclusion {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MerkleTreeNode {
         /// Output only. The hexadecimal representation of the digest of the left
-        /// child of a node. Deprecated: Use
-        /// \[left_child_digest_hex\]\[google.cloud.universalledger.v1.ProofOfInclusion.MerkleTreeNode.left_child_digest_hex\]
-        /// instead.
-        #[deprecated]
-        #[prost(string, tag = "1")]
-        pub left_child_hash_hex: ::prost::alloc::string::String,
-        /// Output only. The hexadecimal representation of the digest of the right
-        /// child of a node. Deprecated: Use
-        /// \[right_child_digest_hex\]\[google.cloud.universalledger.v1.ProofOfInclusion.MerkleTreeNode.right_child_digest_hex\]
-        /// instead.
-        #[deprecated]
-        #[prost(string, tag = "2")]
-        pub right_child_hash_hex: ::prost::alloc::string::String,
-        /// Output only. The hexadecimal representation of the digest of the left
         /// child of a node. Format: A 64-character hexadecimal string.
         #[prost(string, tag = "3")]
         pub left_child_digest_hex: ::prost::alloc::string::String,
@@ -2083,6 +1842,82 @@ pub mod transaction_attempt {
             }
         }
     }
+}
+/// A signed query request from the client.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SignedQueryRequest {
+    /// Required. A protobuf serialized
+    /// \[ClientQuery\]\[google.cloud.universalledger.v1.ClientQuery\] to query the
+    /// Universal Ledger network.
+    #[prost(bytes = "vec", tag = "1")]
+    pub serialized_client_query: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The signature of the sender of the query request, computed over
+    /// the `serialized_client_query` bytes. If this field is omitted, the query is
+    /// treated as anonymous, and only public information will be returned.
+    ///
+    /// The signature is verified by the server only if the sender identifier is
+    /// provided in the \[ClientQuery\]\[google.cloud.universalledger.v1.ClientQuery\].
+    /// The signature is rejected if expiry time in the serialized
+    /// \[ClientQuery\]\[google.cloud.universalledger.v1.ClientQuery\] is missing, is
+    /// in the past, or more than 5 minutes in the future.
+    #[prost(bytes = "vec", tag = "2")]
+    pub sender_signature: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The key slot of the sender used to sign the query request. Uses
+    /// the primary slot of the sender account if not specified.
+    #[prost(enumeration = "KeySlot", tag = "3")]
+    pub sender_signing_key_slot: i32,
+}
+/// Represents a query request from a client.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClientQuery {
+    /// Optional. The sender of the query request.
+    #[prost(string, tag = "1")]
+    pub sender_id: ::prost::alloc::string::String,
+    /// Optional. The time at which the query will expire. This helps to limit the
+    /// exposure to replay attacks. This field is required if the
+    /// \[SignedQueryRequest\]\[google.cloud.universalledger.v1.SignedQueryRequest\]
+    /// contains a signature and is optional otherwise. The expiration time must be
+    /// in the future and at most 5 minutes from the current time, that is
+    /// `now <= expire_time <= now + 5 min`.
+    #[prost(message, optional, tag = "2")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The query request specific message.
+    #[prost(oneof = "client_query::Kind", tags = "3, 4")]
+    pub kind: ::core::option::Option<client_query::Kind>,
+}
+/// Nested message and enum types in `ClientQuery`.
+pub mod client_query {
+    /// The query request specific message.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Kind {
+        /// Optional. Query for the details of an account.
+        #[prost(message, tag = "3")]
+        AccountQuery(super::AccountQuery),
+        /// Optional. Query for the state of a transaction.
+        #[prost(message, tag = "4")]
+        TransactionStateQuery(super::TransactionStateQuery),
+    }
+}
+/// A request to query information about an account.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AccountQuery {
+    /// Required. The ID of the account to get information about.
+    #[prost(string, tag = "1")]
+    pub account_id: ::prost::alloc::string::String,
+    /// Optional. The ID of the execution round (similar to block "height") at
+    /// which to request data. The returned account information will be accurate
+    /// for the world state at this execution round. If unspecified, uses the
+    /// latest finalized round as known by the serving validator. The state at a
+    /// given round ID is always consistent and canonical.
+    #[prost(int64, tag = "2")]
+    pub round_id: i64,
+}
+/// A request to query the state of a transaction.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TransactionStateQuery {
+    /// Required. The transaction ID to get the state of.
+    #[prost(string, tag = "1")]
+    pub transaction_digest_hex: ::prost::alloc::string::String,
 }
 /// The state of a transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2504,11 +2339,14 @@ pub mod universal_ledger_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Queries the state of a transaction. This method can be called for any
-        /// transaction submitted to the network. The returned transaction details may
-        /// vary between calls, because an endpoint may route requests to different
-        /// validators within the network and region, and the validators may not be at
-        /// the same round ID at any given time.
+        /// Deprecated: Use the
+        /// \[QueryData\]\[google.cloud.universalledger.v1.UniversalLedger.QueryData\]
+        /// method instead. Queries the state of a transaction. This method can be
+        /// called for any transaction submitted to the network. The returned
+        /// transaction details may vary between calls, because an endpoint may route
+        /// requests to different validators within the network and region, and the
+        /// validators may not be at the same round ID at any given time.
+        #[deprecated]
         pub async fn query_transaction_state(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryTransactionStateRequest>,
@@ -2538,11 +2376,14 @@ pub mod universal_ledger_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Queries all the information stored about an account in the network.
-        /// The returned account details may vary between calls, because an
+        /// Deprecated: Use the
+        /// \[QueryData\]\[google.cloud.universalledger.v1.UniversalLedger.QueryData\]
+        /// method instead. Queries all the information stored about an account in the
+        /// network. The returned account details may vary between calls, because an
         /// endpoint may route requests to different validators within the network and
         /// region, and the validators may not be at the same round ID at any given
         /// time.
+        #[deprecated]
         pub async fn query_account(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryAccountRequest>,

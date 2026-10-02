@@ -19,9 +19,20 @@ pub struct FindClosestBuildingInsightsRequest {
     /// imagery is returned if `required_quality` is set to `MEDIUM`.
     #[prost(bool, tag = "4")]
     pub exact_quality_required: bool,
-    /// Optional. Specifies the pre-GA features to enable.
+    /// Optional. Specifies the pre-GA experiments to enable. Requests using this
+    /// field are classified as a pre-GA offering under the [Google Maps Platform
+    /// Service Specific
+    /// Terms](<https://cloud.google.com/maps-platform/terms/maps-service-terms>).
+    /// See [launch stage
+    /// descriptions](<https://cloud.google.com/maps-platform/terms/launch-stages>)
+    /// for more details.
     #[prost(enumeration = "Experiment", repeated, packed = "false", tag = "5")]
     pub experiments: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. A list of
+    /// \[additional_insights\]\[google.maps.solar.v1.FindClosestBuildingInsightsRequest.additional_insights\]
+    /// to be included in the response.
+    #[prost(enumeration = "AdditionalInsights", repeated, packed = "false", tag = "6")]
+    pub additional_insights: ::prost::alloc::vec::Vec<i32>,
 }
 /// A bounding box in lat/lng coordinates.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -74,6 +85,76 @@ pub struct BuildingInsights {
     /// The quality of the imagery used to compute the data for this building.
     #[prost(enumeration = "ImageryQuality", tag = "10")]
     pub imagery_quality: i32,
+    /// Solar arrays detected on the building. This field is only populated if
+    /// DETECTED_ARRAYS is included in the request's
+    /// \[FindClosestBuildingInsightsRequest.additional_insights\]\[google.maps.solar.v1.FindClosestBuildingInsightsRequest.additional_insights\].
+    #[prost(message, optional, tag = "12")]
+    pub detected_arrays: ::core::option::Option<building_insights::DetectedArrays>,
+}
+/// Nested message and enum types in `BuildingInsights`.
+pub mod building_insights {
+    /// Information about solar arrays detected on the building.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DetectedArrays {
+        /// Indicates the detection status of solar arrays for this building.
+        #[prost(enumeration = "detected_arrays::DetectionStatus", tag = "1")]
+        pub detection_status: i32,
+        /// The date indicating when the latest solar array data was captured.
+        #[prost(message, optional, tag = "3")]
+        pub latest_capture_date: ::core::option::Option<
+            super::super::super::super::r#type::Date,
+        >,
+    }
+    /// Nested message and enum types in `DetectedArrays`.
+    pub mod detected_arrays {
+        /// Indicates the detection status of solar arrays for this building.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DetectionStatus {
+            /// Unspecified status.
+            Unspecified = 0,
+            /// Detected solar array data is unavailable for this building.
+            DataUnavailable = 1,
+            /// At least one solar array has been detected for this building.
+            ArraysDetected = 2,
+            /// No solar arrays detected for this building.
+            NoArraysDetected = 3,
+        }
+        impl DetectionStatus {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "DETECTION_STATUS_UNSPECIFIED",
+                    Self::DataUnavailable => "DETECTION_STATUS_DATA_UNAVAILABLE",
+                    Self::ArraysDetected => "DETECTION_STATUS_ARRAYS_DETECTED",
+                    Self::NoArraysDetected => "DETECTION_STATUS_NO_ARRAYS_DETECTED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DETECTION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DETECTION_STATUS_DATA_UNAVAILABLE" => Some(Self::DataUnavailable),
+                    "DETECTION_STATUS_ARRAYS_DETECTED" => Some(Self::ArraysDetected),
+                    "DETECTION_STATUS_NO_ARRAYS_DETECTED" => Some(Self::NoArraysDetected),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// Information about the solar potential of a building. A number of
 /// fields in this are defined in terms of "panels". The fields
@@ -141,7 +222,7 @@ pub struct SolarPotential {
     /// Size and sunlight quantiles for each roof segment.
     #[prost(message, repeated, tag = "6")]
     pub roof_segment_stats: ::prost::alloc::vec::Vec<RoofSegmentSizeAndSunshineStats>,
-    /// Each \[SolarPanel\] \[google.maps.solar.v1.SolarPanel\]
+    /// Each \[SolarPanel\]\[google.maps.solar.v1.SolarPanel\]
     /// describes a single solar panel. They are listed in the order that
     /// the panel layout algorithm placed this. This is usually, though
     /// not always, in decreasing order of annual energy production.
@@ -525,7 +606,12 @@ pub struct GetDataLayersRequest {
     /// imagery is returned if `required_quality` is set to `MEDIUM`.
     #[prost(bool, tag = "7")]
     pub exact_quality_required: bool,
-    /// Optional. Specifies the pre-GA experiments to enable.
+    /// Optional. Specifies the pre-GA experiments to enable. Requests using this
+    /// field are classified as a pre-GA offering under the [Google Maps Platform
+    /// Service Specific
+    /// Terms](<https://cloud.google.com/maps-platform/terms/maps-service-terms>).
+    /// See [launch stage descriptions](<https://cloud.google.com/maps-platform/terms/launch-stages>) for more
+    /// details.
     #[prost(enumeration = "Experiment", repeated, packed = "false", tag = "8")]
     pub experiments: ::prost::alloc::vec::Vec<i32>,
 }
@@ -622,6 +708,41 @@ pub struct GetGeoTiffRequest {
     /// Required. The ID of the asset being requested.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
+}
+/// Additional building information such as roof geometry and
+/// solar panel arrays that can be returned in BuildingInsights.
+///
+/// New values may be added to this enum in the future.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AdditionalInsights {
+    /// The default value. The default BuildingInsights will be returned.
+    Unspecified = 0,
+    /// Determines whether the response will include the detected arrays.
+    ///
+    /// If specified, the `detected_arrays` field will be populated in the
+    /// response.
+    DetectedArrays = 2,
+}
+impl AdditionalInsights {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ADDITIONAL_INSIGHTS_UNSPECIFIED",
+            Self::DetectedArrays => "DETECTED_ARRAYS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ADDITIONAL_INSIGHTS_UNSPECIFIED" => Some(Self::Unspecified),
+            "DETECTED_ARRAYS" => Some(Self::DetectedArrays),
+            _ => None,
+        }
+    }
 }
 /// What subset of the solar information to return.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

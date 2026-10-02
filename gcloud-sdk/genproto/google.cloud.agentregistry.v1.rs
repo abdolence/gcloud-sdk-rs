@@ -273,7 +273,7 @@ pub struct Binding {
     /// Can have a maximum length of `2048` characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Required. The target Agent of the Binding.
+    /// Optional. The source Agent of the Binding.
     #[prost(message, optional, tag = "4")]
     pub source: ::core::option::Option<binding::Source>,
     /// Required. The target Agent Registry Resource of the Binding.
@@ -1088,7 +1088,7 @@ pub struct FetchAvailableBindingsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
-    /// The reference of the source Agent.
+    /// Required. The reference of the source Agent Registry resource.
     #[prost(oneof = "fetch_available_bindings_request::Source", tags = "2")]
     pub source: ::core::option::Option<fetch_available_bindings_request::Source>,
     /// The reference of the target Agent Registry resource.
@@ -1097,7 +1097,7 @@ pub struct FetchAvailableBindingsRequest {
 }
 /// Nested message and enum types in `FetchAvailableBindingsRequest`.
 pub mod fetch_available_bindings_request {
-    /// The reference of the source Agent.
+    /// Required. The reference of the source Agent Registry resource.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The identifier of the source Agent.

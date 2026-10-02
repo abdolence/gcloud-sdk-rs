@@ -11172,7 +11172,7 @@ pub struct GenerateHlsUriResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssetsRequest {
     /// Required. The parent corpus to search.
-    /// Format: \`projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
+    /// Format: `projects/{project_id}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub corpus: ::prost::alloc::string::String,
     /// The number of results to be returned in this page. If it's 0, the server
@@ -11231,7 +11231,7 @@ pub mod search_assets_request {
 pub struct SearchIndexEndpointRequest {
     /// Required. The index endpoint to search.
     /// Format:
-    /// \`projects/{project_id}/locations/{location_id}/indexEndpoints/{index_endpoint_id}'
+    /// `projects/{project_id}/locations/{location_id}/indexEndpoints/{index_endpoint_id}`
     #[prost(string, tag = "1")]
     pub index_endpoint: ::prost::alloc::string::String,
     /// Criteria applied to search results.

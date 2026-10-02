@@ -6142,6 +6142,4068 @@ pub mod featured_content_native_dashboard_service_client {
         }
     }
 }
+/// FeedPack is a logical container for related LogTypes for which feeds can be
+/// configured.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeedPack {
+    /// Identifier. The resource name of the feed pack.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feedPacks/{feed_pack}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The display name of the feed pack.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The description of the feed pack.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The icon image of the content pack in base64 in png format.
+    #[prost(bytes = "vec", tag = "4")]
+    pub icon: ::prost::alloc::vec::Vec<u8>,
+    /// Output only. Categories the featured content is associated with. In case of
+    /// product feed packs, there will be only one category.
+    #[prost(string, repeated, tag = "5")]
+    pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Type of pack.
+    #[prost(enumeration = "feed_pack::PackType", tag = "6")]
+    pub pack_type: i32,
+    /// Output only. Log types featured in the pack.
+    #[prost(message, repeated, tag = "7")]
+    pub pack_log_types: ::prost::alloc::vec::Vec<PackLogType>,
+    /// Output only. Whether the feed pack should be displayed in the Feeds Page.
+    #[prost(bool, tag = "8")]
+    pub hidden: bool,
+    /// Output only. Pack specific documentation in markdown format.
+    #[prost(string, tag = "9")]
+    pub pack_documentation: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `FeedPack`.
+pub mod feed_pack {
+    /// Type of feed pack. Feeds Page currently only lists PRODUCT_BASED packs.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PackType {
+        /// Unspecified feed pack type.
+        Unspecified = 0,
+        /// Product based feed pack type.
+        ProductBased = 1,
+        /// Use case based feed pack type.
+        UsecaseBased = 2,
+        /// Onboarding feed pack type.
+        Onboarding = 3,
+    }
+    impl PackType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PACK_TYPE_UNSPECIFIED",
+                Self::ProductBased => "PRODUCT_BASED",
+                Self::UsecaseBased => "USECASE_BASED",
+                Self::Onboarding => "ONBOARDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRODUCT_BASED" => Some(Self::ProductBased),
+                "USECASE_BASED" => Some(Self::UsecaseBased),
+                "ONBOARDING" => Some(Self::Onboarding),
+                _ => None,
+            }
+        }
+    }
+}
+/// PackLogtype is a log type featured in the feed pack.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PackLogType {
+    /// Log Type featured in the feed pack.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/logTypes/{log_type}
+    #[prost(string, tag = "1")]
+    pub log_type: ::prost::alloc::string::String,
+    /// Whether the logtype is required to deploy a feed pack.
+    #[prost(bool, tag = "2")]
+    pub required: bool,
+    /// Whether a default(prebuilt) parser is available for the given log type.
+    #[prost(bool, tag = "3")]
+    pub has_default_parser: bool,
+    /// The recommended source type for the log type.
+    #[prost(enumeration = "feed_details::FeedSourceType", tag = "4")]
+    pub recommended_source_type: i32,
+    /// The display name of the log type.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Documentation to define steps on how to configure a log type.
+    #[prost(string, tag = "6")]
+    pub configuration_documentation: ::prost::alloc::string::String,
+    /// Documentation to share any CTAs for more reference.
+    #[prost(string, tag = "7")]
+    pub additional_documentation: ::prost::alloc::string::String,
+}
+/// Feed is a resource that contains feed information needed to create a feed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Feed {
+    /// The resource name of the feed.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Unique identifier for the feed.
+    #[prost(string, tag = "9")]
+    pub uid: ::prost::alloc::string::String,
+    /// Customer-provided feed name.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Additional details of the feed, these details are dynamic and will be
+    /// different for each of the feeds.
+    #[prost(message, optional, tag = "3")]
+    pub details: ::core::option::Option<FeedDetails>,
+    /// Output only. State of the feed.
+    #[prost(enumeration = "feed::State", tag = "4")]
+    pub state: i32,
+    /// Output only. Details about the most recent failure when feed state is
+    /// FAILED.
+    #[prost(string, tag = "5")]
+    pub failure_msg: ::prost::alloc::string::String,
+    /// Output only. Whether this feed can be updated or deleted.
+    #[prost(bool, tag = "6")]
+    pub read_only: bool,
+    /// Output only. Latest timestamp when the transfer was successful for the
+    /// feed.
+    #[prost(message, optional, tag = "7")]
+    pub last_feed_initiation_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Failure details for the feed. If the feed is in the failure
+    /// state, this field will contain the details of the error cause and actions.
+    #[prost(message, optional, tag = "8")]
+    pub failure_details: ::core::option::Option<FeedFailureDetails>,
+    /// Output only. Reference ID, this field will contain the legacy id of the
+    /// feed.
+    #[prost(string, tag = "10")]
+    pub reference_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Feed`.
+pub mod feed {
+    /// List of states a feed can have.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified feed state.
+        Unspecified = 0,
+        /// Feed is configured and ready to ingest data. Newly created feeds have
+        /// this state. Once ingestion begins the feed will transition out of this
+        /// state and will not transition back.
+        Active = 1,
+        /// Feed is Disabled. When a user disables a feed it will transition to this
+        /// state regardless of its current state. Once enabled a feed will
+        /// transition to its previous state.
+        Inactive = 2,
+        /// Feed is enabled and currently ingesting data. A feed will transition to
+        /// this state from an ACTIVE or COMPLETED state when Chronicle has begun
+        /// fetching data for this feed.
+        Running = 3,
+        /// Feed is enabled and has recently successfully ingested data. A feed will
+        /// transition to this state from RUNNING or FAILED once a fetch has
+        /// completed successfully.
+        Succeeded = 4,
+        /// Feed is enabled, but has recently failed to ingest data. A feed will
+        /// transition to this state only from RUNNING once a fetch has failed. It
+        /// will remain in this state until a subsequent fetch has succeeded.
+        Failed = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// FeedFailureDetails contains details about the errors thrown by chronicle for
+/// the feeds. These are user visible details. These details help user identify
+/// the root cause and take appropriate action for the feed errors.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FeedFailureDetails {
+    /// Output only. error_code contains the error code for the feed. The field is
+    /// populated for the feeds with failed status.
+    #[prost(string, tag = "1")]
+    pub error_code: ::prost::alloc::string::String,
+    /// Output only. http_error_code contains the HTTP error code for the feed
+    /// failure. feed transfer failure may or may not result in http error code.
+    #[prost(int32, tag = "2")]
+    pub http_error_code: i32,
+    /// Output only. error_cause contains the information regarding the failure
+    /// cause.
+    #[prost(string, tag = "3")]
+    pub error_cause: ::prost::alloc::string::String,
+    /// Output only. error_action contains the user action prescribed for
+    /// remediation of feed error.
+    #[prost(string, tag = "4")]
+    pub error_action: ::prost::alloc::string::String,
+}
+/// FeedServiceAccount is a resource that wraps the feed service account's name.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FeedServiceAccount {
+    /// The resource name of the feedServiceAccount.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feedServiceAccounts/{feedserviceaccount}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Unique identifier for the service account.
+    #[prost(string, tag = "2")]
+    pub subject_id: ::prost::alloc::string::String,
+}
+/// Additional details of the feed, these details are dynamic and will be
+/// different for each of the feeds.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeedDetails {
+    /// Source Type of the feed.
+    #[prost(enumeration = "feed_details::FeedSourceType", tag = "1")]
+    pub feed_source_type: i32,
+    /// LogType.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/logTypes/{log_type}
+    #[prost(string, tag = "2")]
+    pub log_type: ::prost::alloc::string::String,
+    /// The asset namespace to apply to all logs ingested through this feed.
+    #[prost(string, tag = "51")]
+    pub asset_namespace: ::prost::alloc::string::String,
+    /// The ingestion metadata labels to apply to all logs ingested through this
+    /// feed, and the resulting normalized data.
+    #[prost(map = "string, string", tag = "52")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The status of the feed's migration to STS.
+    #[prost(enumeration = "feed_details::StsMigrationReadiness", tag = "81")]
+    pub sts_migration_readiness: i32,
+    /// Optional. The time of the last attempt to migrate the feed to STS V2.
+    #[prost(message, optional, tag = "84")]
+    pub last_v2_migration_attempt_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Additional details of the feed. Depends on the feed type.
+    #[prost(
+        oneof = "feed_details::Details",
+        tags = "3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 85"
+    )]
+    pub details: ::core::option::Option<feed_details::Details>,
+}
+/// Nested message and enum types in `FeedDetails`.
+pub mod feed_details {
+    /// Different types of feed sources.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FeedSourceType {
+        /// Unspecified feed source type.
+        Unspecified = 0,
+        /// Cloud Storage.
+        GoogleCloudStorage = 1,
+        /// HTTP.
+        Http = 2,
+        /// SFTP.
+        Sftp = 3,
+        /// S3.
+        AmazonS3 = 4,
+        /// Azure Blobstore.
+        AzureBlobstore = 5,
+        /// API.
+        Api = 6,
+        /// SQS.
+        AmazonSqs = 7,
+        /// Pub/Sub.
+        Pubsub = 8,
+        /// AMAZON_KINESIS_FIREHOSE.
+        AmazonKinesisFirehose = 9,
+        /// WEBHOOK.
+        Webhook = 10,
+        /// HTTPS GCloud Pub/Sub.
+        HttpsPushGoogleCloudPubsub = 11,
+        /// HTTPS Amazon Kinesis Firehose.
+        HttpsPushAmazonKinesisFirehose = 12,
+        /// HTTPS Webhook.
+        HttpsPushWebhook = 13,
+        /// Microsoft Azure native ingestion for event hub.
+        AzureEventHub = 17,
+        /// Google Cloud Storage Feed backed by Omniflow STS
+        GoogleCloudStorageV2 = 18,
+        /// Amazon S3 Feed backed by Omniflow STS.
+        AmazonS3V2 = 19,
+        /// Amazon SQS Feed backed by Omniflow STS.
+        AmazonSqsV2 = 20,
+        /// Azure Blobstore Feed backed by Omniflow STS.
+        AzureBlobstoreV2 = 21,
+        /// Google Cloud Storage Feed backed by Omniflow STS driven by pubsub events.
+        GoogleCloudStorageEventDriven = 22,
+        /// A customized, declarative, configuration-driven connector for
+        /// ingesting JSON data from third-party REST APIs.
+        CustomApi = 23,
+    }
+    impl FeedSourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FEED_SOURCE_TYPE_UNSPECIFIED",
+                Self::GoogleCloudStorage => "GOOGLE_CLOUD_STORAGE",
+                Self::Http => "HTTP",
+                Self::Sftp => "SFTP",
+                Self::AmazonS3 => "AMAZON_S3",
+                Self::AzureBlobstore => "AZURE_BLOBSTORE",
+                Self::Api => "API",
+                Self::AmazonSqs => "AMAZON_SQS",
+                Self::Pubsub => "PUBSUB",
+                Self::AmazonKinesisFirehose => "AMAZON_KINESIS_FIREHOSE",
+                Self::Webhook => "WEBHOOK",
+                Self::HttpsPushGoogleCloudPubsub => "HTTPS_PUSH_GOOGLE_CLOUD_PUBSUB",
+                Self::HttpsPushAmazonKinesisFirehose => {
+                    "HTTPS_PUSH_AMAZON_KINESIS_FIREHOSE"
+                }
+                Self::HttpsPushWebhook => "HTTPS_PUSH_WEBHOOK",
+                Self::AzureEventHub => "AZURE_EVENT_HUB",
+                Self::GoogleCloudStorageV2 => "GOOGLE_CLOUD_STORAGE_V2",
+                Self::AmazonS3V2 => "AMAZON_S3_V2",
+                Self::AmazonSqsV2 => "AMAZON_SQS_V2",
+                Self::AzureBlobstoreV2 => "AZURE_BLOBSTORE_V2",
+                Self::GoogleCloudStorageEventDriven => {
+                    "GOOGLE_CLOUD_STORAGE_EVENT_DRIVEN"
+                }
+                Self::CustomApi => "CUSTOM_API",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEED_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_CLOUD_STORAGE" => Some(Self::GoogleCloudStorage),
+                "HTTP" => Some(Self::Http),
+                "SFTP" => Some(Self::Sftp),
+                "AMAZON_S3" => Some(Self::AmazonS3),
+                "AZURE_BLOBSTORE" => Some(Self::AzureBlobstore),
+                "API" => Some(Self::Api),
+                "AMAZON_SQS" => Some(Self::AmazonSqs),
+                "PUBSUB" => Some(Self::Pubsub),
+                "AMAZON_KINESIS_FIREHOSE" => Some(Self::AmazonKinesisFirehose),
+                "WEBHOOK" => Some(Self::Webhook),
+                "HTTPS_PUSH_GOOGLE_CLOUD_PUBSUB" => {
+                    Some(Self::HttpsPushGoogleCloudPubsub)
+                }
+                "HTTPS_PUSH_AMAZON_KINESIS_FIREHOSE" => {
+                    Some(Self::HttpsPushAmazonKinesisFirehose)
+                }
+                "HTTPS_PUSH_WEBHOOK" => Some(Self::HttpsPushWebhook),
+                "AZURE_EVENT_HUB" => Some(Self::AzureEventHub),
+                "GOOGLE_CLOUD_STORAGE_V2" => Some(Self::GoogleCloudStorageV2),
+                "AMAZON_S3_V2" => Some(Self::AmazonS3V2),
+                "AMAZON_SQS_V2" => Some(Self::AmazonSqsV2),
+                "AZURE_BLOBSTORE_V2" => Some(Self::AzureBlobstoreV2),
+                "GOOGLE_CLOUD_STORAGE_EVENT_DRIVEN" => {
+                    Some(Self::GoogleCloudStorageEventDriven)
+                }
+                "CUSTOM_API" => Some(Self::CustomApi),
+                _ => None,
+            }
+        }
+    }
+    /// Whether the feed is ready for STS migration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StsMigrationReadiness {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The feed needs some work for STS migration.
+        NotReady = 1,
+        /// The feed is ready for STS migration.
+        Ready = 2,
+        /// Need to recreate feed with updated auth.
+        AuthReconfigRequired = 3,
+    }
+    impl StsMigrationReadiness {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STS_MIGRATION_READINESS_UNSPECIFIED",
+                Self::NotReady => "NOT_READY",
+                Self::Ready => "READY",
+                Self::AuthReconfigRequired => "AUTH_RECONFIG_REQUIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STS_MIGRATION_READINESS_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_READY" => Some(Self::NotReady),
+                "READY" => Some(Self::Ready),
+                "AUTH_RECONFIG_REQUIRED" => Some(Self::AuthReconfigRequired),
+                _ => None,
+            }
+        }
+    }
+    /// Additional details of the feed. Depends on the feed type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Details {
+        /// Anomali IOC settings.
+        #[prost(message, tag = "3")]
+        AnomaliSettings(super::AnomaliIocSettings),
+        /// Azure AD Context settings.
+        #[prost(message, tag = "4")]
+        AzureAdContextSettings(super::AzureAdContextSettings),
+        /// Cloud Passage settings.
+        #[prost(message, tag = "5")]
+        CloudPassageSettings(super::CloudPassageSettings),
+        /// Cortex XDR settings.
+        #[prost(message, tag = "6")]
+        CortexXdrSettings(super::CortexXdrSettings),
+        /// Duo Auth settings.
+        #[prost(message, tag = "7")]
+        DuoAuthSettings(super::DuoAuthSettings),
+        /// Duo User Context settings.
+        #[prost(message, tag = "8")]
+        DuoUserContextSettings(super::DuoUserContextSettings),
+        /// Microsoft Graph Alert settings.
+        #[prost(message, tag = "9")]
+        MicrosoftGraphAlertSettings(super::MicrosoftGraphAlertSettings),
+        /// Microsoft Security center alert settings.
+        #[prost(message, tag = "10")]
+        MicrosoftSecurityCenterAlertSettings(
+            super::MicrosoftSecurityCenterAlertSettings,
+        ),
+        /// Mimecast mail settings.
+        #[prost(message, tag = "11")]
+        MimecastMailSettings(super::MimecastMailSettings),
+        /// Office 365 settings.
+        #[prost(message, tag = "12")]
+        Office365Settings(super::Office365Settings),
+        /// Proofpoint mail settings.
+        #[prost(message, tag = "13")]
+        ProofpointMailSettings(super::ProofpointMailSettings),
+        /// Recorded Future IOC settings.
+        #[prost(message, tag = "14")]
+        RecordedFutureIocSettings(super::RecordedFutureIocSettings),
+        /// Workday settings.
+        #[prost(message, tag = "15")]
+        WorkdaySettings(super::WorkdaySettings),
+        /// PAN IOC settings.
+        #[prost(message, tag = "16")]
+        PanIocSettings(super::PanIocSettings),
+        /// Okta settings.
+        #[prost(message, tag = "17")]
+        OktaSettings(super::OktaSettings),
+        /// Okta user context settings.
+        #[prost(message, tag = "18")]
+        OktaUserContextSettings(super::OktaUserContextSettings),
+        /// Fox-IT STIX settings.
+        #[prost(message, tag = "19")]
+        FoxItStixSettings(super::FoxItStixSettings),
+        /// ThreatConnect IOC settings.
+        #[prost(message, tag = "20")]
+        ThreatConnectIocSettings(super::ThreatConnectIoCSettings),
+        /// ServiceNow CMDB settings.
+        #[prost(message, tag = "21")]
+        ServiceNowCmdbSettings(super::ServiceNowCmdbSettings),
+        /// Imperva WAF settings.
+        #[prost(message, tag = "22")]
+        ImpervaWafSettings(super::ImpervaWafSettings),
+        /// Thinkst Canary settings.
+        #[prost(message, tag = "23")]
+        ThinkstCanarySettings(super::ThinkstCanarySettings),
+        /// RH-ISAC IOC settings.
+        #[prost(message, tag = "24")]
+        RhIsacIocSettings(super::RhIsacIocSettings),
+        /// Rapid7 Insight settings.
+        #[prost(message, tag = "25")]
+        Rapid7InsightSettings(super::Rapid7InsightSettings),
+        /// Salesforce settings.
+        #[prost(message, tag = "26")]
+        SalesforceSettings(super::SalesforceSettings),
+        /// Netskope alert settings.
+        #[prost(message, tag = "27")]
+        NetskopeAlertSettings(super::NetskopeAlertSettings),
+        /// Azure MDM Intune settings.
+        #[prost(message, tag = "28")]
+        AzureMdmIntuneSettings(super::AzureMdmIntuneSettings),
+        /// Azure AD settings.
+        #[prost(message, tag = "29")]
+        AzureAdSettings(super::AzureAdSettings),
+        /// Proofpoint On-Demand settings.
+        #[prost(message, tag = "30")]
+        ProofpointOnDemandSettings(super::ProofpointOnDemandSettings),
+        /// Workspace users settings.
+        #[prost(message, tag = "31")]
+        WorkspaceUsersSettings(super::WorkspaceUsersSettings),
+        /// Workspace activity settings.
+        #[prost(message, tag = "32")]
+        WorkspaceActivitySettings(super::WorkspaceActivitySettings),
+        /// Workspace alerts settings.
+        #[prost(message, tag = "33")]
+        WorkspaceAlertsSettings(super::WorkspaceAlertsSettings),
+        /// Workspace privileges settings.
+        #[prost(message, tag = "34")]
+        WorkspacePrivilegesSettings(super::WorkspacePrivilegesSettings),
+        /// Workspace mobile settings.
+        #[prost(message, tag = "35")]
+        WorkspaceMobileSettings(super::WorkspaceMobileSettings),
+        /// Workspace ChromeOS settings.
+        #[prost(message, tag = "36")]
+        WorkspaceChromeOsSettings(super::WorkspaceChromeOsSettings),
+        /// Workspace Groups settings.
+        #[prost(message, tag = "37")]
+        WorkspaceGroupsSettings(super::WorkspaceGroupsSettings),
+        /// Azure AD Audit settings.
+        #[prost(message, tag = "38")]
+        AzureAdAuditSettings(super::AzureAdAuditSettings),
+        /// Symantec Event Export settings.
+        #[prost(message, tag = "39")]
+        SymantecEventExportSettings(super::SymantecEventExportSettings),
+        /// Qualys VM settings
+        #[prost(message, tag = "40")]
+        QualysVmSettings(super::QualysVmSettings),
+        /// PAN Prisma Cloud settings.
+        #[prost(message, tag = "41")]
+        PanPrismaCloudSettings(super::PanPrismaCloudSettings),
+        /// Google Cloud Storage settings.
+        #[prost(message, tag = "42")]
+        GcsSettings(super::GoogleCloudStorageSettings),
+        /// HTTP settings.
+        #[prost(message, tag = "43")]
+        HttpSettings(super::HttpSettings),
+        /// SFTP settings.
+        #[prost(message, tag = "44")]
+        SftpSettings(super::SftpSettings),
+        /// Amazon S3 settings.
+        #[prost(message, tag = "45")]
+        AmazonS3Settings(super::AmazonS3Settings),
+        /// Azure Blob Storage settings.
+        #[prost(message, tag = "46")]
+        AzureBlobStoreSettings(super::AzureBlobStoreSettings),
+        /// Amazon SQS settings.
+        #[prost(message, tag = "47")]
+        AmazonSqsSettings(super::AmazonSqsSettings),
+        /// Google Cloud Identity Devices settings.
+        #[prost(message, tag = "48")]
+        GoogleCloudIdentityDevicesSettings(super::GoogleCloudIdentityDevicesSettings),
+        /// Google Cloud Identity Device Users settings.
+        #[prost(message, tag = "49")]
+        GoogleCloudIdentityDeviceUsersSettings(
+            super::GoogleCloudIdentityDeviceUsersSettings,
+        ),
+        /// CrowdStrike Detects API settings.
+        #[prost(message, tag = "50")]
+        CrowdstrikeDetectsSettings(super::CrowdStrikeDetectsSettings),
+        /// Mandiant IOC settings.
+        #[prost(message, tag = "53")]
+        MandiantIocSettings(super::MandiantIoCSettings),
+        /// SentinelOne Alert settings.
+        #[prost(message, tag = "54")]
+        SentineloneAlertSettings(super::SentineloneAlertSettings),
+        /// Qualys Scan Settings
+        #[prost(message, tag = "55")]
+        QualysScanSettings(super::QualysScanSettings),
+        /// Pub/Sub settings.
+        #[prost(message, tag = "56")]
+        PubsubSettings(super::PubsubSettings),
+        /// Amazon Kinesis Firehose settings.
+        #[prost(message, tag = "57")]
+        AmazonKinesisFirehoseSettings(super::AmazonKinesisFirehoseSettings),
+        /// Webhook settings.
+        #[prost(message, tag = "58")]
+        WebhookSettings(super::WebhookSettings),
+        /// DummyLogType Settings.
+        #[prost(message, tag = "59")]
+        DummyLogTypeSettings(super::DummyLogTypeSettings),
+        /// Https push Google Pub/Sub settings.
+        #[prost(message, tag = "60")]
+        HttpsPushGoogleCloudPubsubSettings(super::HttpsPushGoogleCloudPubSubSettings),
+        /// Https push Amazon Kinesis Firehose settings.
+        #[prost(message, tag = "61")]
+        HttpsPushAmazonKinesisFirehoseSettings(
+            super::HttpsPushAmazonKinesisFirehoseSettings,
+        ),
+        /// Https push Webhook settings.
+        #[prost(message, tag = "62")]
+        HttpsPushWebhookSettings(super::HttpsPushWebhookSettings),
+        /// AWS EC2 Hosts settings.
+        #[prost(message, tag = "63")]
+        AwsEc2HostsSettings(super::Awsec2HostsSettings),
+        /// AWS EC2 Instances settings.
+        #[prost(message, tag = "64")]
+        AwsEc2InstancesSettings(super::Awsec2InstancesSettings),
+        /// AWS EC2 Vpcs settings.
+        #[prost(message, tag = "65")]
+        AwsEc2VpcsSettings(super::Awsec2VpcsSettings),
+        /// AWS IAM settings.
+        #[prost(message, tag = "66")]
+        AwsIamSettings(super::AwsiamSettings),
+        /// Netskope alert V2 settings.
+        #[prost(message, tag = "70")]
+        NetskopeAlertV2Settings(super::NetskopeAlertV2Settings),
+        /// Settings for Google Cloud Storage Omniflow feeds.
+        #[prost(message, tag = "71")]
+        GcsV2Settings(super::GoogleCloudStorageV2Settings),
+        /// Settings for S3 Omniflow feeds.
+        #[prost(message, tag = "72")]
+        AmazonS3V2Settings(super::AmazonS3v2Settings),
+        /// Settings for SQS Omniflow feeds.
+        #[prost(message, tag = "73")]
+        AmazonSqsV2Settings(super::AmazonSqsv2Settings),
+        /// Settings for Omniflow based native ingestion from azure event hub.
+        #[prost(message, tag = "74")]
+        AzureEventHubSettings(super::AzureEventHubSettings),
+        /// Settings for Trellix HX Host Metadata.
+        #[prost(message, tag = "75")]
+        TrellixHxHostsSettings(super::TrellixHxHostsSettings),
+        /// Settings for Azure Blobstore Omniflow feeds.
+        #[prost(message, tag = "76")]
+        AzureBlobStoreV2Settings(super::AzureBlobStoreV2Settings),
+        /// Settings for Trellix HX Alerts Metadata.
+        #[prost(message, tag = "77")]
+        TrellixHxAlertsSettings(super::TrellixHxAlertsSettings),
+        /// Settings for Omniflow based Google Cloud Storage event driven feeds.
+        #[prost(message, tag = "78")]
+        GoogleCloudStorageEventDrivenSettings(
+            super::GoogleCloudStorageEventDrivenSettings,
+        ),
+        /// CrowdStrike Alerts API settings.
+        #[prost(message, tag = "79")]
+        CrowdstrikeAlertsSettings(super::CrowdStrikeAlertsSettings),
+        /// Settings for Trellix HX Bulk Acquisitions Metadata.
+        #[prost(message, tag = "80")]
+        TrellixHxBulkAcqsSettings(super::TrellixHxBulkAcqsSettings),
+        /// Required. Mimecast mail v2 settings.
+        #[prost(message, tag = "82")]
+        MimecastMailV2Settings(super::MimecastMailV2Settings),
+        /// Threat Connect IOC V3 settings.
+        #[prost(message, tag = "83")]
+        ThreatConnectIocV3Settings(super::ThreatConnectIoCv3Settings),
+        /// Settings for Custom API (Codeless) Feeds.
+        #[prost(message, tag = "85")]
+        CustomApiSettings(super::CustomApiSettings),
+    }
+}
+/// Settings required by Feeds of DummyLogType(used for testing purposes).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DummyLogTypeSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// Full API Endpoint.
+    #[prost(string, tag = "2")]
+    pub api_endpoint: ::prost::alloc::string::String,
+}
+/// Settings required by Google Cloud Platform Pub/Sub Feeds(HTTPS-Push V2).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpsPushGoogleCloudPubSubSettings {
+    /// Optional. Delimiter to split on for the feed.
+    #[prost(string, tag = "1")]
+    pub split_delimiter: ::prost::alloc::string::String,
+}
+/// Settings required by Amazon Kinesis Firehose Feeds(HTTPS-Push V2).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpsPushAmazonKinesisFirehoseSettings {
+    /// Optional. Delimiter to split on for the feed.
+    #[prost(string, tag = "1")]
+    pub split_delimiter: ::prost::alloc::string::String,
+}
+/// Settings required by Webhook Feeds(HTTPS-Push V2).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpsPushWebhookSettings {
+    /// Optional. Delimiter to split on for the feed.
+    #[prost(string, tag = "1")]
+    pub split_delimiter: ::prost::alloc::string::String,
+}
+/// SentinelOne Alert settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SentineloneAlertSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// Hostname of SentinelOne alert settings.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// initialStartTime from when to fetch the alerts
+    #[prost(string, tag = "3")]
+    pub initial_start_time: ::prost::alloc::string::String,
+    /// Is the customer subscribed to Alerts Api
+    #[prost(bool, tag = "4")]
+    pub is_alert_api_subscribed: bool,
+}
+/// Qualys Scan settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QualysScanSettings {
+    /// Input only. Authentication
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Supported Qualys Scan api type.
+    #[prost(enumeration = "qualys_scan_settings::ApiType", tag = "3")]
+    pub api_type: i32,
+}
+/// Nested message and enum types in `QualysScanSettings`.
+pub mod qualys_scan_settings {
+    /// API Type
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ApiType {
+        /// Unspecified API Type
+        Unspecified = 0,
+        /// Scan Summaries
+        ScanSummaryOutput = 1,
+        /// Scan Compliance
+        ScanComplianceOutput = 2,
+        /// Scan Compliance Control
+        ScanComplianceControlOutput = 3,
+    }
+    impl ApiType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "API_TYPE_UNSPECIFIED",
+                Self::ScanSummaryOutput => "SCAN_SUMMARY_OUTPUT",
+                Self::ScanComplianceOutput => "SCAN_COMPLIANCE_OUTPUT",
+                Self::ScanComplianceControlOutput => "SCAN_COMPLIANCE_CONTROL_OUTPUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "API_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCAN_SUMMARY_OUTPUT" => Some(Self::ScanSummaryOutput),
+                "SCAN_COMPLIANCE_OUTPUT" => Some(Self::ScanComplianceOutput),
+                "SCAN_COMPLIANCE_CONTROL_OUTPUT" => {
+                    Some(Self::ScanComplianceControlOutput)
+                }
+                _ => None,
+            }
+        }
+    }
+}
+/// Settings required by Google Cloud Pub/Sub Feeds(HTTP-Push).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PubsubSettings {
+    /// Google Service Account Email.
+    #[prost(string, tag = "1")]
+    pub google_service_account_email: ::prost::alloc::string::String,
+}
+/// Settings required by Amazon Kinesis Firehose Feeds(HTTP-Push).
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonKinesisFirehoseSettings {}
+/// Settings required by Webhook Feeds(HTTP-Push).
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WebhookSettings {}
+/// Amazon SQS settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonSqsSettings {
+    /// S3 Region.
+    #[prost(enumeration = "S3Region", tag = "1")]
+    pub region: i32,
+    /// Name of the queue.
+    #[prost(string, tag = "2")]
+    pub queue: ::prost::alloc::string::String,
+    /// Account number of the owner of the queue.
+    #[prost(string, tag = "3")]
+    pub account_number: ::prost::alloc::string::String,
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "4")]
+    pub authentication: ::core::option::Option<SqsAuth>,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "5")]
+    pub source_deletion_option: i32,
+}
+/// Anomali IOC settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AnomaliIocSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// Optional. The hostname of the Anomali ThreatStream instance.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Azure AD settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureAdSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "4")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Azure AD Audit settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureAdAuditSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "4")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Azure AD Context settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureAdContextSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Whether to retrieve device information in user context.
+    #[prost(bool, tag = "2")]
+    pub retrieve_devices: bool,
+    /// Whether to retrieve group information in user context.
+    #[prost(bool, tag = "3")]
+    pub retrieve_groups: bool,
+    /// Tenant ID.
+    #[prost(string, tag = "4")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "5")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "6")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// CloudPassage settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CloudPassageSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// Event types filter for the events API.
+    #[prost(string, repeated, tag = "2")]
+    pub event_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// PAN Cortex XDR settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CortexXdrSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Endpoint.
+    #[prost(string, tag = "3")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// CrowdStrike Detects settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CrowdStrikeDetectsSettings {
+    /// Input only. OAuthClientCredentials.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthClientCredentials>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. Ingestion Type.
+    #[prost(enumeration = "crowd_strike_detects_settings::IngestionType", tag = "3")]
+    pub ingestion_type: i32,
+}
+/// Nested message and enum types in `CrowdStrikeDetectsSettings`.
+pub mod crowd_strike_detects_settings {
+    /// Ingestion Type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IngestionType {
+        /// For the feeds in which this field is not set
+        Unspecified = 0,
+        /// Ingests only new detections to be ingested.
+        BringOnlyNewDetections = 1,
+        /// Ingests both new as well as old detections which are updated
+        BringAllDetections = 2,
+    }
+    impl IngestionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INGESTION_TYPE_UNSPECIFIED",
+                Self::BringOnlyNewDetections => "BRING_ONLY_NEW_DETECTIONS",
+                Self::BringAllDetections => "BRING_ALL_DETECTIONS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INGESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BRING_ONLY_NEW_DETECTIONS" => Some(Self::BringOnlyNewDetections),
+                "BRING_ALL_DETECTIONS" => Some(Self::BringAllDetections),
+                _ => None,
+            }
+        }
+    }
+}
+/// CrowdStrike Alerts settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CrowdStrikeAlertsSettings {
+    /// Required. OAuthClientCredentials.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthClientCredentials>,
+    /// Required. API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. Ingestion Type.
+    #[prost(enumeration = "crowd_strike_alerts_settings::IngestionType", tag = "3")]
+    pub ingestion_type: i32,
+}
+/// Nested message and enum types in `CrowdStrikeAlertsSettings`.
+pub mod crowd_strike_alerts_settings {
+    /// Ingestion Type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IngestionType {
+        /// For the feeds in which this field is not set
+        Unspecified = 0,
+        /// Ingests both new as well as old alerts which are updated
+        BringAllAlerts = 1,
+        /// Ingests only new alerts to be ingested.
+        BringOnlyNewAlerts = 2,
+    }
+    impl IngestionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INGESTION_TYPE_UNSPECIFIED",
+                Self::BringAllAlerts => "BRING_ALL_ALERTS",
+                Self::BringOnlyNewAlerts => "BRING_ONLY_NEW_ALERTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INGESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BRING_ALL_ALERTS" => Some(Self::BringAllAlerts),
+                "BRING_ONLY_NEW_ALERTS" => Some(Self::BringOnlyNewAlerts),
+                _ => None,
+            }
+        }
+    }
+}
+/// Duo Authentication settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DuoAuthSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Duo User Context settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DuoUserContextSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// API hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Microsoft Graph Alert settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MicrosoftGraphAlertSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "4")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Microsoft Security Center alert settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MicrosoftSecurityCenterAlertSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Subscription ID of the Microsoft security center alert settings alert.
+    #[prost(string, tag = "2")]
+    pub subscription_id: ::prost::alloc::string::String,
+    /// Tenant ID.
+    #[prost(string, tag = "3")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "4")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "5")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Mimecast Mail settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MimecastMailSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Mimecast Mail V2 Settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MimecastMailV2Settings {
+    /// Required. Mimecast OAuthClientCredentials.
+    #[prost(message, optional, tag = "1")]
+    pub auth_credentials: ::core::option::Option<MimecastV2oAuthClientCredentials>,
+}
+/// Office 365 settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Office365Settings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// Supported office 365 content type.
+    #[prost(enumeration = "office365_settings::ContentType", tag = "3")]
+    pub content_type: i32,
+    /// API Hostname.
+    #[prost(string, tag = "4")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "5")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Office365Settings`.
+pub mod office365_settings {
+    /// Office 365 supported content types:
+    /// <https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#working-with-the-office-365-management-activity-api>
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ContentType {
+        /// Unspecified content type.
+        Unspecified = 0,
+        /// Audit.AzureActiveDirectory.
+        AuditAzureActiveDirectory = 1,
+        /// Audit.Exchange.
+        AuditExchange = 2,
+        /// Audit.SharePoint.
+        AuditSharePoint = 3,
+        /// Audit.General.
+        AuditGeneral = 4,
+        /// DLP.All.
+        DlpAll = 5,
+    }
+    impl ContentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
+                Self::AuditAzureActiveDirectory => "AUDIT_AZURE_ACTIVE_DIRECTORY",
+                Self::AuditExchange => "AUDIT_EXCHANGE",
+                Self::AuditSharePoint => "AUDIT_SHARE_POINT",
+                Self::AuditGeneral => "AUDIT_GENERAL",
+                Self::DlpAll => "DLP_ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIT_AZURE_ACTIVE_DIRECTORY" => Some(Self::AuditAzureActiveDirectory),
+                "AUDIT_EXCHANGE" => Some(Self::AuditExchange),
+                "AUDIT_SHARE_POINT" => Some(Self::AuditSharePoint),
+                "AUDIT_GENERAL" => Some(Self::AuditGeneral),
+                "DLP_ALL" => Some(Self::DlpAll),
+                _ => None,
+            }
+        }
+    }
+}
+/// Proofpoint Mail settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ProofpointMailSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+}
+/// Proofpoint On-demand settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProofpointOnDemandSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// Cluster ID.
+    #[prost(string, tag = "2")]
+    pub cluster_id: ::prost::alloc::string::String,
+}
+/// Recorded Future IOC settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecordedFutureIocSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+}
+/// Workday settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkdaySettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<WorkdayAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Tenant ID.
+    #[prost(string, tag = "3")]
+    pub tenant_id: ::prost::alloc::string::String,
+}
+/// PAN IOC settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PanIocSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// PAN IOC feed ID.
+    #[prost(string, tag = "2")]
+    pub feed_id: ::prost::alloc::string::String,
+    /// PAN IOC feed name.
+    #[prost(string, tag = "3")]
+    pub feed: ::prost::alloc::string::String,
+}
+/// Okta settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OktaSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Okta user context settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OktaUserContextSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Manager id reference field.
+    #[prost(string, tag = "3")]
+    pub manager_id_reference_field: ::prost::alloc::string::String,
+}
+/// Fox-IT STIX settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FoxItStixSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// SSL client key pair.
+    #[prost(message, optional, tag = "2")]
+    pub ssl: ::core::option::Option<SslClientKeypair>,
+    /// TAXII poll service URI.
+    #[prost(string, tag = "3")]
+    pub poll_service_uri: ::prost::alloc::string::String,
+    /// Collection available at the poll service.
+    #[prost(string, tag = "4")]
+    pub collection: ::prost::alloc::string::String,
+}
+/// ThreatConnect IOC Settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ThreatConnectIoCSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Owners.
+    #[prost(string, repeated, tag = "3")]
+    pub owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// ThreatConnectIoCV3Settings
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ThreatConnectIoCv3Settings {
+    /// Required. Input only. UsernameSecretAuth.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// Required. hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Required. Owners.
+    #[prost(string, repeated, tag = "3")]
+    pub owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. ThreatConnect Query Language filter.
+    #[prost(string, tag = "4")]
+    pub tql_query: ::prost::alloc::string::String,
+    /// Optional. Fields
+    #[prost(string, repeated, tag = "5")]
+    pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Schedule
+    #[prost(int32, tag = "6")]
+    pub schedule: i32,
+}
+/// ServiceNow CMDB settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ServiceNowCmdbSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Feedname.
+    #[prost(string, tag = "3")]
+    pub feedname: ::prost::alloc::string::String,
+}
+/// Imperva WAF settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImpervaWafSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+}
+/// Thinkst Canary settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ThinkstCanarySettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// RH-ISAC settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RhIsacIocSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthClientCredentials>,
+}
+/// Rapid7 Insight settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Rapid7InsightSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// Rapid7 API endpoint. Should be "vulnerabilities" or "assets".
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// Salesforce settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SalesforceSettings {
+    /// API hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Possible types of authentication.
+    #[prost(oneof = "salesforce_settings::Authentication", tags = "1, 2")]
+    pub authentication: ::core::option::Option<salesforce_settings::Authentication>,
+}
+/// Nested message and enum types in `SalesforceSettings`.
+pub mod salesforce_settings {
+    /// Possible types of authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Authentication {
+        /// Input only. OAuthPasswordGrantCredentials auth.
+        #[prost(message, tag = "1")]
+        OauthPasswordGrantAuth(super::OAuthPasswordGrantCredentials),
+        /// Input only. OAuthJWTCredentials auth.
+        #[prost(message, tag = "2")]
+        OauthJwtCredentials(super::OAuthJwtCredentials),
+    }
+}
+/// Mandiant IOC settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MandiantIoCSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// time since when to start fetching the IOCs
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Netskope Alert settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetskopeAlertSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Feedname.
+    #[prost(string, tag = "3")]
+    pub feedname: ::prost::alloc::string::String,
+    /// Content type.
+    #[prost(string, tag = "4")]
+    pub content_type: ::prost::alloc::string::String,
+}
+/// Netskope Alert V2 settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetskopeAlertV2Settings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<HttpHeaderAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Content Category.
+    #[prost(string, tag = "3")]
+    pub content_category: ::prost::alloc::string::String,
+    /// Content type.
+    #[prost(string, repeated, tag = "4")]
+    pub content_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Azure MDM Intune settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureMdmIntuneSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<MicrosoftOAuthClientCredentials>,
+    /// Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// API Hostname.
+    #[prost(string, tag = "3")]
+    pub hostname: ::prost::alloc::string::String,
+    /// API Auth Endpoint.
+    #[prost(string, tag = "4")]
+    pub auth_endpoint: ::prost::alloc::string::String,
+}
+/// Workspace Users settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceUsersSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+    /// Optional. Projection Type.
+    #[prost(enumeration = "workspace_users_settings::ProjectionType", tag = "3")]
+    pub projection_type: i32,
+}
+/// Nested message and enum types in `WorkspaceUsersSettings`.
+pub mod workspace_users_settings {
+    /// Projection Type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProjectionType {
+        /// For the feeds in which this field is not set.
+        Unspecified = 0,
+        /// Do not include any custom fields for the user.
+        BasicProjection = 1,
+        /// Include both basic and custom fields associated with this user.
+        FullProjection = 2,
+    }
+    impl ProjectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROJECTION_TYPE_UNSPECIFIED",
+                Self::BasicProjection => "BASIC_PROJECTION",
+                Self::FullProjection => "FULL_PROJECTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROJECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC_PROJECTION" => Some(Self::BasicProjection),
+                "FULL_PROJECTION" => Some(Self::FullProjection),
+                _ => None,
+            }
+        }
+    }
+}
+/// Workspace Activity settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceActivitySettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+    /// Applications.
+    #[prost(string, repeated, tag = "3")]
+    pub applications: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Workspace Alert settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceAlertsSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+}
+/// Workspace Privileges settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspacePrivilegesSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+}
+/// Workspace Mobile settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceMobileSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+}
+/// Workspace Chrome OS settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceChromeOsSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+}
+/// Workspace Groups settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkspaceGroupsSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// Customer ID.
+    #[prost(string, tag = "2")]
+    pub workspace_customer_id: ::prost::alloc::string::String,
+}
+/// Google Cloud Identity Devices settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudIdentityDevicesSettings {
+    /// Input only. Authentication
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+    /// API Version
+    #[prost(string, tag = "2")]
+    pub api_version: ::prost::alloc::string::String,
+}
+/// Google Cloud Identity Device Users settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudIdentityDeviceUsersSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthJwtCredentials>,
+}
+/// Symantec Event Export settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SymantecEventExportSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<OAuthRefreshToken>,
+}
+/// Qualys VM settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QualysVmSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// PAN Prisma Cloud settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PanPrismaCloudSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<PanPrismaAuth>,
+    /// API Hostname.
+    #[prost(string, tag = "2")]
+    pub hostname: ::prost::alloc::string::String,
+}
+/// SFTP settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SftpSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<SftpAuth>,
+    /// SFTP URI.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// The URI source type.
+    #[prost(enumeration = "UriSourceType", tag = "3")]
+    pub source_type: i32,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "4")]
+    pub source_deletion_option: i32,
+}
+/// Google Cloud Storage settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudStorageSettings {
+    /// Bucket URI.
+    #[prost(string, tag = "1")]
+    pub bucket_uri: ::prost::alloc::string::String,
+    /// The URI source type.
+    #[prost(enumeration = "UriSourceType", tag = "2")]
+    pub source_type: i32,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "3")]
+    pub source_deletion_option: i32,
+    /// Output only. Service Account Chronicle will be using to pull data.
+    #[prost(string, tag = "4")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+}
+/// HTTP settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpSettings {
+    /// HTTP URI.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// The URI source type.
+    #[prost(enumeration = "UriSourceType", tag = "2")]
+    pub source_type: i32,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "3")]
+    pub source_deletion_option: i32,
+}
+/// Amazon S3 settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonS3Settings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<S3Auth>,
+    /// S3 URI.
+    #[prost(string, tag = "2")]
+    pub s3_uri: ::prost::alloc::string::String,
+    /// The URI source type.
+    #[prost(enumeration = "UriSourceType", tag = "3")]
+    pub source_type: i32,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "4")]
+    pub source_deletion_option: i32,
+}
+/// Azure Blob Storage settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureBlobStoreSettings {
+    /// Input only. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<AzureAuth>,
+    /// Azure URI.
+    #[prost(string, tag = "2")]
+    pub azure_uri: ::prost::alloc::string::String,
+    /// The URI source type.
+    #[prost(enumeration = "UriSourceType", tag = "3")]
+    pub source_type: i32,
+    /// Source deletion option.
+    #[prost(enumeration = "SourceDeletionOption", tag = "4")]
+    pub source_deletion_option: i32,
+}
+/// AWS EC2 Hosts Settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Awsec2HostsSettings {
+    /// Input only. UsernameSecretAuth.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+}
+/// AWS EC2 Instances Settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Awsec2InstancesSettings {
+    /// Input only. UsernameSecretAuth.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+}
+/// AWS EC2 Vpcs Settings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Awsec2VpcsSettings {
+    /// Input only. UsernameSecretAuth.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+}
+/// AWSIAMSettings contains details needed for creating an AWS IAM feed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AwsiamSettings {
+    /// Input only. Authentication
+    #[prost(message, optional, tag = "2")]
+    pub authentication: ::core::option::Option<UsernameSecretAuth>,
+    /// Supported AWS IAM api type.
+    #[prost(enumeration = "awsiam_settings::ApiType", tag = "3")]
+    pub api_type: i32,
+}
+/// Nested message and enum types in `AWSIAMSettings`.
+pub mod awsiam_settings {
+    /// API Type
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ApiType {
+        /// API Type Unspecified
+        Unspecified = 0,
+        /// Users.
+        Users = 1,
+        /// Roles.
+        Roles = 2,
+        /// Groups.
+        Groups = 3,
+    }
+    impl ApiType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "API_TYPE_UNSPECIFIED",
+                Self::Users => "USERS",
+                Self::Roles => "ROLES",
+                Self::Groups => "GROUPS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "API_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USERS" => Some(Self::Users),
+                "ROLES" => Some(Self::Roles),
+                "GROUPS" => Some(Self::Groups),
+                _ => None,
+            }
+        }
+    }
+}
+/// Azure auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureAuth {
+    /// Type of auth used with Azure.
+    #[prost(oneof = "azure_auth::AuthType", tags = "1, 2")]
+    pub auth_type: ::core::option::Option<azure_auth::AuthType>,
+}
+/// Nested message and enum types in `AzureAuth`.
+pub mod azure_auth {
+    /// Type of auth used with Azure.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AuthType {
+        /// Shared Key.
+        #[prost(string, tag = "1")]
+        SharedKey(::prost::alloc::string::String),
+        /// SAS Token.
+        #[prost(string, tag = "2")]
+        SasToken(::prost::alloc::string::String),
+    }
+}
+/// Amazon SQS auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqsAuth {
+    /// SQS access key secret auth.
+    #[prost(message, optional, tag = "1")]
+    pub sqs_access_key_secret_auth: ::core::option::Option<SqsAccessKeySecretAuth>,
+    /// Authentication for the S3 bucket referred to by the items in the SQS queue.
+    /// This is only required if it is different from the authentication for the
+    /// queue.
+    #[prost(message, optional, tag = "2")]
+    pub additional_s3_access_key_secret_auth: ::core::option::Option<
+        AdditionalS3AccessKeySecretAuth,
+    >,
+}
+/// A message containing fields used to authenticate with Amazon SQS.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqsAuthV2 {
+    /// auth tyoe for the SQS queue.
+    #[prost(oneof = "sqs_auth_v2::AuthType", tags = "3, 5")]
+    pub auth_type: ::core::option::Option<sqs_auth_v2::AuthType>,
+}
+/// Nested message and enum types in `SQSAuthV2`.
+pub mod sqs_auth_v2 {
+    /// auth tyoe for the SQS queue.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AuthType {
+        /// Required. Auth key and secret for the SQS queue.
+        #[prost(message, tag = "3")]
+        SqsV2AccessKeySecretAuth(super::Sqsv2AccessKeySecretAuth),
+        /// Required. AWS IAM Role for Identity Federation.
+        #[prost(message, tag = "5")]
+        AwsIamRoleAuth(super::Sqsv2AwsIamRoleAuth),
+    }
+}
+/// AWS IAM Role Auth for SQS V2.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Sqsv2AwsIamRoleAuth {
+    /// AWS IAM Role for Identity Federation.
+    #[prost(string, tag = "1")]
+    pub aws_iam_role_arn: ::prost::alloc::string::String,
+    /// Subject ID to use for SQS.
+    #[prost(string, tag = "2")]
+    pub subject_id: ::prost::alloc::string::String,
+}
+/// SQS V2 access key and secret auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Sqsv2AccessKeySecretAuth {
+    /// Access key ID of the S3 bucket.  Ex: AKIABCDEFGHIJKL.
+    #[prost(string, tag = "1")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Secret access key to access the S3 bucket.
+    #[prost(string, tag = "2")]
+    pub secret_access_key: ::prost::alloc::string::String,
+}
+/// Amazon SQS access key and secret auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SqsAccessKeySecretAuth {
+    /// Access key ID.
+    #[prost(string, tag = "1")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Secret access key.
+    #[prost(string, tag = "2")]
+    pub secret_access_key: ::prost::alloc::string::String,
+}
+/// Additional S3 access key secret auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AdditionalS3AccessKeySecretAuth {
+    /// Access key ID.
+    #[prost(string, tag = "1")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Secret access key.
+    #[prost(string, tag = "2")]
+    pub secret_access_key: ::prost::alloc::string::String,
+}
+/// Amazon S3 auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct S3Auth {
+    /// Access key ID. Used when using access key auth.
+    #[prost(string, tag = "1")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Secret access key. Used when using access key auth.
+    #[prost(string, tag = "2")]
+    pub secret_access_key: ::prost::alloc::string::String,
+    /// Client ID. Used when using OAuth auth.
+    #[prost(string, tag = "3")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client secret. Used when using OAuth auth.
+    #[prost(string, tag = "4")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Refresh URI. Used when using OAuth auth.
+    #[prost(string, tag = "5")]
+    pub refresh_uri: ::prost::alloc::string::String,
+    /// S3 Region.
+    #[prost(enumeration = "S3Region", tag = "6")]
+    pub region: i32,
+}
+/// OAuth 2.0 refresh token grant. See <https://tools.ietf.org/html/rfc6749.>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OAuthRefreshToken {
+    /// Token endpoint to get the OAuth token from.
+    #[prost(string, tag = "1")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Client ID.
+    #[prost(string, tag = "2")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client secret.
+    #[prost(string, tag = "3")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Refresh token.
+    #[prost(string, tag = "4")]
+    pub refresh_token: ::prost::alloc::string::String,
+}
+/// SFTP Auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SftpAuth {
+    /// Username. Used for username and password authentication.
+    #[prost(string, tag = "1")]
+    pub username: ::prost::alloc::string::String,
+    /// Password. Used for username and password authentication.
+    #[prost(string, tag = "2")]
+    pub password: ::prost::alloc::string::String,
+    /// Private key. Used for private key authentication.
+    #[prost(string, tag = "3")]
+    pub private_key: ::prost::alloc::string::String,
+    /// Private key passphrase. Used for private key authentication.
+    #[prost(string, tag = "4")]
+    pub private_key_passphrase: ::prost::alloc::string::String,
+}
+/// HTTP header based authentication.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpHeaderAuth {
+    /// Header key-value pairs.
+    #[prost(message, repeated, tag = "1")]
+    pub header_key_values: ::prost::alloc::vec::Vec<HeaderKeyValue>,
+}
+/// Header key-value pairs.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HeaderKeyValue {
+    /// Key.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Value.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// Info for username and secret based authentication.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UsernameSecretAuth {
+    /// Username of an identity used for authentication.
+    #[prost(string, tag = "1")]
+    pub user: ::prost::alloc::string::String,
+    /// Secret of the account identified by user_name.
+    #[prost(string, tag = "2")]
+    pub secret: ::prost::alloc::string::String,
+}
+/// Microsoft OAuth 2.0 client credentials grant.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MicrosoftOAuthClientCredentials {
+    /// Client ID.
+    #[prost(string, tag = "1")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client secret.
+    #[prost(string, tag = "2")]
+    pub client_secret: ::prost::alloc::string::String,
+}
+/// OAuth 2.0 client credentials grant. See <https://tools.ietf.org/html/rfc6749.>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OAuthClientCredentials {
+    /// Token endpoint.
+    #[prost(string, tag = "1")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Client ID.
+    #[prost(string, tag = "2")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client secret.
+    #[prost(string, tag = "3")]
+    pub client_secret: ::prost::alloc::string::String,
+}
+/// OAuth 2.0 password grant. See <https://tools.ietf.org/html/rfc6749.>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OAuthPasswordGrantCredentials {
+    /// Token endpoint to get the OAuth token from.
+    #[prost(string, tag = "1")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Client ID.
+    #[prost(string, tag = "2")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client secret.
+    #[prost(string, tag = "3")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Username.
+    #[prost(string, tag = "4")]
+    pub user: ::prost::alloc::string::String,
+    /// Password.
+    #[prost(string, tag = "5")]
+    pub password: ::prost::alloc::string::String,
+}
+/// PAN Prisma Cloud auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PanPrismaAuth {
+    /// Username.
+    #[prost(string, tag = "1")]
+    pub user: ::prost::alloc::string::String,
+    /// Password.
+    #[prost(string, tag = "2")]
+    pub password: ::prost::alloc::string::String,
+}
+/// OAuth 2.0 JWT grant. See, <https://tools.ietf.org/html/rfc7519>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OAuthJwtCredentials {
+    /// Token endpoint to get the OAuth token from.
+    #[prost(string, tag = "1")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Claims.
+    #[prost(message, optional, tag = "2")]
+    pub claims: ::core::option::Option<Claims>,
+    /// Credentials.
+    #[prost(oneof = "o_auth_jwt_credentials::Credentials", tags = "3")]
+    pub credentials: ::core::option::Option<o_auth_jwt_credentials::Credentials>,
+}
+/// Nested message and enum types in `OAuthJWTCredentials`.
+pub mod o_auth_jwt_credentials {
+    /// Credentials.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Credentials {
+        /// RS credentials.
+        #[prost(message, tag = "3")]
+        RsCredentials(super::RsCredentials),
+    }
+}
+/// RS credentials.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RsCredentials {
+    /// Private key in PEM format.
+    #[prost(string, tag = "1")]
+    pub private_key: ::prost::alloc::string::String,
+}
+/// Claims identifying a specific customer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Claims {
+    /// Issuer. Usually the client_id.
+    #[prost(string, tag = "1")]
+    pub issuer: ::prost::alloc::string::String,
+    /// Subject. Usually the email.
+    #[prost(string, tag = "2")]
+    pub subject: ::prost::alloc::string::String,
+    /// Audience.
+    #[prost(string, tag = "3")]
+    pub audience: ::prost::alloc::string::String,
+}
+/// An SSL client certificate keypair.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SslClientKeypair {
+    /// The encoded private key. The string should be a private key in PEM format,
+    /// and should include the begin header and end footer lines. It may also
+    /// include newlines.
+    ///
+    /// Example:
+    /// -----BEGIN RSA PRIVATE KEY-----
+    /// Proc-Type: 4,ENCRYPTED
+    /// DEK-Info: DES-EDE3-CBC,F23074E02CF47304
+    ///
+    /// <REDACTED>
+    /// -----END RSA PRIVATE KEY-----
+    #[prost(string, tag = "1")]
+    pub encoded_private_key: ::prost::alloc::string::String,
+    /// The encoded SSL certificate. The string should be an SSL certificate in
+    /// PEM format, and should include the begin header and end footer lines. It
+    /// may also include newlines.
+    ///
+    /// Example:
+    /// -----BEGIN CERTIFICATE-----
+    /// <REDACTED>
+    /// -----END CERTIFICATE-----
+    #[prost(string, tag = "2")]
+    pub ssl_certificate: ::prost::alloc::string::String,
+}
+/// Authentication for Workday.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct WorkdayAuth {
+    /// Username. This is unused: Workday feeds were originally configured using a
+    /// username and secret authentication method, but only the secret field was
+    /// used, and it was used to supply the OAuth access token.
+    #[prost(string, tag = "1")]
+    pub user: ::prost::alloc::string::String,
+    /// The access token used to authenticate against Workday. This field is called
+    /// "secret" to maintain backwards compatibility. Workday was (only) configured
+    /// using username (which was unused) and secret (which is used as the access
+    /// token). Either this field or all of the other OAuth fields below must be
+    /// specified.
+    #[prost(string, tag = "2")]
+    pub secret: ::prost::alloc::string::String,
+    /// Token endpoint to get the OAuth token from.
+    #[prost(string, tag = "3")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Client ID.
+    #[prost(string, tag = "4")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Client Secret.
+    #[prost(string, tag = "5")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Refresh Token.
+    #[prost(string, tag = "6")]
+    pub refresh_token: ::prost::alloc::string::String,
+}
+/// GoogleCloudStorageV2Settings is the settings proto for Omniflow Google Cloud
+/// Storage feeds.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudStorageV2Settings {
+    /// Required. Google Cloud Storage Bucket URI for the feed.
+    #[prost(string, tag = "1")]
+    pub bucket_uri: ::prost::alloc::string::String,
+    /// Optional. Source deletion option determines if the data from the source is
+    /// to be deleted after ingestion.
+    #[prost(enumeration = "SourceDeletionOptionV2", tag = "2")]
+    pub source_deletion_option: i32,
+    /// Output only. SA that will read data, this is Storage Transfer Service SA of
+    /// Customer's Tenancy Project.
+    #[prost(string, tag = "3")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+    /// Optional. Maximum File Age to ingest in days.
+    #[prost(int32, tag = "4")]
+    pub max_lookback_days: i32,
+    /// Optional. Optional list of object prefixes to include.
+    #[prost(string, repeated, tag = "5")]
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// GoogleCloudStorageEventDrivenSettings is the settings proto for Omniflow
+/// Google Cloud Storage feeds driven by pubsub events.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleCloudStorageEventDrivenSettings {
+    /// Required. Google Cloud Storage Bucket URI for the feed.
+    #[prost(string, tag = "1")]
+    pub bucket_uri: ::prost::alloc::string::String,
+    /// Required. Subscription name for pubsub topic.
+    #[prost(string, tag = "2")]
+    pub pubsub_subscription: ::prost::alloc::string::String,
+    /// Optional. Source deletion option determines if the data from the source is
+    /// to be deleted after ingestion.
+    #[prost(enumeration = "SourceDeletionOptionV2", tag = "3")]
+    pub source_deletion_option: i32,
+    /// Output only. SA that will read data, this is Storage Transfer Service SA of
+    /// Customer's Tenancy Project.
+    #[prost(string, tag = "4")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+    /// Optional. Maximum File Age to ingest in days.
+    #[prost(int32, tag = "5")]
+    pub max_lookback_days: i32,
+    /// Optional. Optional list of object prefixes to include.
+    #[prost(string, repeated, tag = "6")]
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A message containing fields used to authenticate with Amazon S3.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct S3AuthV2 {
+    /// auth type for S3.
+    #[prost(oneof = "s3_auth_v2::AuthType", tags = "3, 5")]
+    pub auth_type: ::core::option::Option<s3_auth_v2::AuthType>,
+}
+/// Nested message and enum types in `S3AuthV2`.
+pub mod s3_auth_v2 {
+    /// auth type for S3.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AuthType {
+        /// Access Key ID and Secret Access Key for an AWS account.
+        #[prost(message, tag = "3")]
+        AccessKeySecretAuth(super::S3v2AccessKeySecretAuth),
+        /// AWS IAM Role Auth for Identity Federation.
+        #[prost(message, tag = "5")]
+        AwsIamRoleAuth(super::S3v2AwsIamRoleAuth),
+    }
+}
+/// AWS IAM Role Auth for S3 V2.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct S3v2AwsIamRoleAuth {
+    /// AWS IAM Role for Identity Federation.
+    #[prost(string, tag = "1")]
+    pub aws_iam_role_arn: ::prost::alloc::string::String,
+    /// Subject ID to use for S3.
+    #[prost(string, tag = "2")]
+    pub subject_id: ::prost::alloc::string::String,
+}
+/// S3 V2 access key and secret auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct S3v2AccessKeySecretAuth {
+    /// Required. Access Key ID for an AWS account (a 20-character, alphanumeric
+    /// string).
+    #[prost(string, tag = "1")]
+    pub access_key_id: ::prost::alloc::string::String,
+    /// Required. Secret Access Key for an AWS account (a 40-character string).
+    #[prost(string, tag = "2")]
+    pub secret_access_key: ::prost::alloc::string::String,
+}
+/// AmazonS3V2Settings is the settings proto for Omniflow S3 feeds.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonS3v2Settings {
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<S3AuthV2>,
+    /// Required. S3 URI.
+    #[prost(string, tag = "2")]
+    pub s3_uri: ::prost::alloc::string::String,
+    /// Optional. Source deletion option.
+    #[prost(enumeration = "SourceDeletionOptionV2", tag = "3")]
+    pub source_deletion_option: i32,
+    /// Optional. Maximum File Age to ingest in days.
+    #[prost(int32, tag = "4")]
+    pub max_lookback_days: i32,
+    /// Output only. SA that will read data, this is Storage Transfer Service SA of
+    /// Customer's Tenancy Project.
+    #[prost(string, tag = "5")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+    /// Optional. Optional list of object prefixes to include.
+    #[prost(string, repeated, tag = "6")]
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Info for MssoAuthentication using a username, password, and login api
+/// endpoint.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MssoAuthentication {
+    /// Required. Username for MSSO authentication.
+    /// There are no restrictions on the format of the username. It has no default,
+    /// specifically enforced min / max length or character set. The username
+    /// will have been provided by an MSSO administrator and it is assumed that
+    /// they have provided a username that is internally consistent with MSSO
+    /// authentication requirements / validation.
+    #[prost(string, tag = "1")]
+    pub username: ::prost::alloc::string::String,
+    /// Required. Password of the account identified by username.
+    /// There are no restrictions on the format of the password. It has no default,
+    /// specifically enforced min / max length or character set. The password
+    /// will have been provided by an MSSO administrator and it is assumed that
+    /// they have provided a password that is internally consistent with MSSO
+    /// authentication requirements / validation.
+    #[prost(string, tag = "2")]
+    pub password: ::prost::alloc::string::String,
+    /// Required. The login api endpoint url.
+    /// This must be a valid URL with an http or https scheme. It has no default.
+    #[prost(string, tag = "3")]
+    pub api_endpoint: ::prost::alloc::string::String,
+}
+/// OAuth 2.0 client credentials grant. See <https://tools.ietf.org/html/rfc6749.>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MimecastV2oAuthClientCredentials {
+    /// Required. Client ID.
+    #[prost(string, tag = "1")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Required. Client Secret.
+    #[prost(string, tag = "2")]
+    pub client_secret: ::prost::alloc::string::String,
+}
+/// Settings for TrellixIAMAuthentication.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixIamAuthentication {
+    /// Required. Client ID generated in Trellix IAM.
+    /// This is a unique identifier for the user that is generated in Trellix IAM.
+    /// It has no default, specifically enforced min / max length or character set.
+    /// It is assumed that the Client ID generated in Trellix IAM is internally
+    /// consistent with Trellix IAM authentication requirements / validation.
+    #[prost(string, tag = "1")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Required. Secret associated with the Client ID.
+    /// This is the secret generated in Trellix IAM for the Client ID. It has no
+    /// default, specifically enforced min / max length or character set. It is
+    /// assumed that the secret generated in Trellix IAM is internally
+    /// consistent with Trellix IAM authentication requirements / validation.
+    #[prost(string, tag = "2")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Required. OAUTH 2 scope to request for the authentication token.
+    /// This is the OAUTH 2 scope to request for the authentication token. It has
+    /// no default, specifically enforced min / max length or character set. It is
+    /// assumed that the scope provided is internally consistent with Trellix IAM
+    /// authentication requirements / validation.
+    #[prost(string, tag = "3")]
+    pub scope: ::prost::alloc::string::String,
+}
+/// Info for TrellixLocalAuthentication using a username, password, endpoint,
+/// and header name.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixLocalAuthentication {
+    /// Required. Username for Trellix Local authentication.
+    /// This is a unique username for the user that is generated on a Trellix
+    /// device. It has no default, specifically enforced min / max length,
+    /// or character set.
+    #[prost(string, tag = "1")]
+    pub username: ::prost::alloc::string::String,
+    /// Required. Password of the account identified by username.
+    /// There are no restrictions on the format of the password. It has no default,
+    /// specifically enforced min / max length or character set. The password
+    /// will have been provided by the Trellix administrator.
+    #[prost(string, tag = "2")]
+    pub password: ::prost::alloc::string::String,
+    /// Required. The endpoint to fetch the token from.
+    /// This must be a valid URL with an http or https scheme. It has no default.
+    #[prost(string, tag = "3")]
+    pub token_endpoint: ::prost::alloc::string::String,
+    /// Required. The HTTP header name to use for the token for authentcated
+    /// requests. It varies per Trellix product. Refer to the Trellix API
+    /// documentation for the correct value. It has no default.
+    #[prost(string, tag = "4")]
+    pub token_header: ::prost::alloc::string::String,
+}
+/// TrellixStarXAuthentication contains a oneof with all of the authentication
+/// types supported by Trellix \*X devices.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixStarXAuthentication {
+    /// One of multiple potential auth types.
+    #[prost(oneof = "trellix_star_x_authentication::AuthType", tags = "1, 2, 3")]
+    pub auth_type: ::core::option::Option<trellix_star_x_authentication::AuthType>,
+}
+/// Nested message and enum types in `TrellixStarXAuthentication`.
+pub mod trellix_star_x_authentication {
+    /// One of multiple potential auth types.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AuthType {
+        /// Input only. MssoAuthentication auth type.
+        #[prost(message, tag = "1")]
+        Msso(super::MssoAuthentication),
+        /// Input only. TrellixIAMAuthentication auth type.
+        #[prost(message, tag = "2")]
+        TrellixIam(super::TrellixIamAuthentication),
+        /// Input only. TrellixLocalAuthentication auth type.
+        #[prost(message, tag = "3")]
+        TrellixLocal(super::TrellixLocalAuthentication),
+    }
+}
+/// Settings required by Feeds of TrellixHxHosts.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixHxHostsSettings {
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<TrellixStarXAuthentication>,
+    /// Required. Trellix HX Device URL.
+    /// This must be a valid URL with an http or https scheme. It has no default.
+    /// Usually a device URL is in the form of either:
+    /// <https://xxx.trellix.com/hx/id/<hx> id>/
+    ///
+    /// * or -
+    ///   <https://htapdeviceproxy.md.mandiant.net/dphb/hx/<device> uuid>/
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// Settings required by Feeds of TrellixHxAlerts.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixHxAlertsSettings {
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<TrellixStarXAuthentication>,
+    /// Required. Trellix HX Device URL.
+    /// This must be a valid URL with an http or https scheme. It has no default.
+    /// Usually a device URL is in the form of either:
+    /// <https://xxx.trellix.com/hx/id/<hx> id>/
+    ///
+    /// * or -
+    ///   <https://htapdeviceproxy.md.mandiant.net/dphb/hx/<device> uuid>/
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// Settings required by Feeds of TrellixHxBulkAcqs.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrellixHxBulkAcqsSettings {
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "1")]
+    pub authentication: ::core::option::Option<TrellixStarXAuthentication>,
+    /// Required. Trellix HX Device URL.
+    /// This must be a valid URL with an http or https scheme. It has no default.
+    /// Usually a device URL is in the form of either:
+    /// <https://xxx.trellix.com/hx/id/<hx> id>/
+    ///
+    /// * or -
+    ///   <https://htapdeviceproxy.md.mandiant.net/dphb/hx/<device> uuid>/
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// Settings required by Azure Event Hub Feeds.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureEventHubSettings {
+    /// Required. Event hub to read from.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Event hub consumer group to read from.
+    #[prost(string, tag = "2")]
+    pub consumer_group: ::prost::alloc::string::String,
+    /// Required. Event hub connection string for authentication.
+    #[prost(string, tag = "3")]
+    pub event_hub_connection_string: ::prost::alloc::string::String,
+    /// Optional. Blob store connection string for authentication.
+    #[prost(string, tag = "4")]
+    pub azure_storage_connection_string: ::prost::alloc::string::String,
+    /// Optional. Blob storage container name.
+    #[prost(string, tag = "5")]
+    pub azure_storage_container: ::prost::alloc::string::String,
+    /// Optional. SAS token
+    #[prost(string, tag = "6")]
+    pub azure_sas_token: ::prost::alloc::string::String,
+    /// Output only. Event hub namespace
+    #[prost(string, tag = "7")]
+    pub event_hub_namespace: ::prost::alloc::string::String,
+}
+/// AmazonSQSV2Settings is the settings proto for Omniflow SQS feeds.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AmazonSqsv2Settings {
+    /// Required. Amazon Resource Name(ARN) of the queue.
+    #[prost(string, tag = "1")]
+    pub queue: ::prost::alloc::string::String,
+    /// Required. S3 URI.
+    #[prost(string, tag = "2")]
+    pub s3_uri: ::prost::alloc::string::String,
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "3")]
+    pub authentication: ::core::option::Option<SqsAuthV2>,
+    /// Optional. Source deletion option.
+    #[prost(enumeration = "SourceDeletionOptionV2", tag = "4")]
+    pub source_deletion_option: i32,
+    /// Optional. Maximum File Age to ingest in days.
+    #[prost(int32, tag = "5")]
+    pub max_lookback_days: i32,
+    /// Output only. SA that will read data, this is Storage Transfer Service SA of
+    /// Customer's Tenancy Project.
+    #[prost(string, tag = "6")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+    /// Optional. Optional list of object prefixes to include.
+    #[prost(string, repeated, tag = "7")]
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// AzureBlobStoreV2Settings is the settings proto for Azure Blob Storage feeds.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureBlobStoreV2Settings {
+    /// Required. Azure URI.
+    #[prost(string, tag = "1")]
+    pub azure_uri: ::prost::alloc::string::String,
+    /// Required. Authentication.
+    #[prost(message, optional, tag = "3")]
+    pub authentication: ::core::option::Option<AzureAuthV2>,
+    /// Optional. Source deletion option.
+    #[prost(enumeration = "SourceDeletionOptionV2", tag = "4")]
+    pub source_deletion_option: i32,
+    /// Optional. Maximum File Age to ingest in days.
+    #[prost(int32, tag = "5")]
+    pub max_lookback_days: i32,
+    /// Output only. SA that will read data, this is Storage Transfer Service SA of
+    /// Customer's Tenancy Project.
+    #[prost(string, tag = "6")]
+    pub chronicle_service_account: ::prost::alloc::string::String,
+    /// Optional. Optional list of object prefixes to include.
+    #[prost(string, repeated, tag = "7")]
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Azure V2 Workload Identity Federation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureV2WorkloadIdentityFederation {
+    /// Required. OAuth client ID.
+    #[prost(string, tag = "1")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Required. Tenant ID.
+    #[prost(string, tag = "2")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// Required. Subject ID of the Azure subscription.
+    #[prost(string, tag = "3")]
+    pub subject_id: ::prost::alloc::string::String,
+}
+/// A message containing fields used to authenticate with Azure Blob Storage.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AzureAuthV2 {
+    /// Possible types of authentication.
+    #[prost(oneof = "azure_auth_v2::AuthType", tags = "1, 2, 3")]
+    pub auth_type: ::core::option::Option<azure_auth_v2::AuthType>,
+}
+/// Nested message and enum types in `AzureAuthV2`.
+pub mod azure_auth_v2 {
+    /// Possible types of authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AuthType {
+        /// Required. Access Key also known as shared key.
+        #[prost(string, tag = "1")]
+        AccessKey(::prost::alloc::string::String),
+        /// Required. SAS Token.
+        #[prost(string, tag = "2")]
+        SasToken(::prost::alloc::string::String),
+        /// Required. Azure V2 Workload Identity Federation.
+        #[prost(message, tag = "3")]
+        AzureV2WorkloadIdentityFederation(super::AzureV2WorkloadIdentityFederation),
+    }
+}
+/// Metadata that pertains to feed source types (see
+/// Feed.FeedDetails.FeedSourceType) that is useful for building interfaces to
+/// construct valid Feed messages.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FeedSourceTypeSchema {
+    /// The resource name for this FeedSourceTypeSchema.
+    /// Format:
+    /// "projects/{project}/locations/{location}/instances/{instance}/feedSourceTypeSchemas/{feed_source_type}".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A human-readable name for this feed source type.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// A human-readable description for this feed source type.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Whether feeds having this source type, while they are expected to exist,
+    /// should not be modified (created, edited, or deleted).
+    #[prost(bool, tag = "4")]
+    pub read_only: bool,
+    /// The value to be used in the `details.feed_source_type` field in the Feed
+    /// message.
+    #[prost(enumeration = "feed_details::FeedSourceType", tag = "5")]
+    pub feed_source_type: i32,
+}
+/// Metadata that pertains to a log type in the context of Feeds, and is useful
+/// for building interfaces to construct valid Feed messages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogTypeSchema {
+    /// The resource name.
+    /// Format:
+    /// "projects/{project}/locations/{location}/instances/{instance}/feedSourceTypeSchemas/{feed_source_type}/logTypeSchemas/{log_type}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A human-readable name for this log type.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The log type to be used in the `details.log_type` field.
+    #[prost(string, tag = "3")]
+    pub log_type: ::prost::alloc::string::String,
+    /// Whether this log type schema represents a feed configuration that may
+    /// exist, but should not be modified (created, edited, or deleted).
+    #[prost(bool, tag = "4")]
+    pub read_only: bool,
+    /// A description that is displayed when users create or edit feeds.
+    #[prost(string, tag = "5")]
+    pub supporting_documentation: ::prost::alloc::string::String,
+    /// The schemas for `detail` fields that are compatible with this log
+    /// type and feed source type. All fields for this log type and feed source
+    /// type are either contained here or within
+    /// details_field_schema_alternatives.
+    #[prost(message, repeated, tag = "6")]
+    pub details_field_schemas: ::prost::alloc::vec::Vec<
+        log_type_schema::DetailsFieldSchema,
+    >,
+    /// There are sets of fields which represent alternatives to one another. A
+    /// user would only fill in one set of fields for any one alternative.
+    #[prost(message, repeated, tag = "7")]
+    pub details_field_schema_alternatives: ::prost::alloc::vec::Vec<
+        log_type_schema::DetailsFieldSchemaAlternative,
+    >,
+}
+/// Nested message and enum types in `LogTypeSchema`.
+pub mod log_type_schema {
+    /// A collection of `details` field schema sets. The user must provide values
+    /// for only one set of fields within an alternative.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DetailsFieldSchemaAlternative {
+        /// The schemas for each alternative set of fields.
+        #[prost(message, repeated, tag = "1")]
+        pub details_field_schema_sets: ::prost::alloc::vec::Vec<DetailsFieldSchemaSet>,
+    }
+    /// A collection of schemas for related fields within `details`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DetailsFieldSchemaSet {
+        /// A human-readable name for this collection of `details` fields.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// A human-readable description for this collection of `details` fields.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+        /// Schemas for the fields in this set.
+        #[prost(message, repeated, tag = "3")]
+        pub details_field_schemas: ::prost::alloc::vec::Vec<DetailsFieldSchema>,
+    }
+    /// A schema for a particular `details` field on the Feed proto message.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DetailsFieldSchema {
+        /// The protocol buffer field path. For example,
+        /// "details.azure_ad_context_settings.authentication.token_endpoint".
+        #[prost(string, tag = "1")]
+        pub field_path: ::prost::alloc::string::String,
+        /// A human-readable name for this field.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// A human-readable description for this field.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+        /// A type that represents both the encoding and the semantics of this field.
+        #[prost(enumeration = "super::SemanticType", tag = "4")]
+        pub r#type: i32,
+        /// If a field has an enum type, this is the schema describing the possible
+        /// values.
+        #[prost(message, repeated, tag = "5")]
+        pub enum_field_schemas: ::prost::alloc::vec::Vec<EnumFieldSchema>,
+        /// Whether this field must be specified to have a valid feed configuration.
+        #[prost(bool, tag = "6")]
+        pub required: bool,
+        /// For those fields with input requirements that aren't adequately expressed
+        /// by the SemanticType it is often useful to supply an example input.
+        #[prost(string, tag = "7")]
+        pub example_input: ::prost::alloc::string::String,
+        /// For those fields which are read only.
+        #[prost(bool, tag = "8")]
+        pub read_only: bool,
+    }
+    /// A schema for a particular value, for a particular enum `details` field on
+    /// the Feed proto message.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EnumFieldSchema {
+        /// The value to assign to the field.
+        #[prost(string, tag = "1")]
+        pub value: ::prost::alloc::string::String,
+        /// A human-readable name for this value.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// A human-readable description for this value.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+    }
+}
+/// Request message for FetchServiceAccountForCustomer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchServiceAccountForCustomerRequest {
+    /// Required. The parent resource where this FeedServiceAccount will be
+    /// created. Format:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// ListFeedSourceTypeSchemas request message. Note that Feed schemas do not
+/// contain customer data, so are not scoped to a particular customer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListFeedSourceTypeSchemasRequest {
+    /// Required. The parent, which owns this collection of FeedSourceTypeSchemas.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of FeedSourceTypeSchemas to return. The service may
+    /// return fewer than this value. If unspecified all FeedSourceTypeSchemas will
+    /// be returned, meaning one FeedSourceTypeSchema for each
+    /// FeedDetails.FeedSourceType.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListFeedSourceTypeSchemas` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListFeedSourceTypeSchemas response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeedSourceTypeSchemasResponse {
+    /// Schemas describing each FeedSourceType.
+    #[prost(message, repeated, tag = "1")]
+    pub feed_source_type_schemas: ::prost::alloc::vec::Vec<FeedSourceTypeSchema>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// ListLogTypeSchemas request message. Note that feed schemas do not contain
+/// customer data, so are not scoped to a particular customer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListLogTypeSchemasRequest {
+    /// Required. The parent, which owns this collection of LogTypeSchemas.
+    /// Format: Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feedSourceTypeSchemas/{feed_source_type}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of LogTypeSchemas to return. The service may return
+    /// fewer than this value.
+    /// If unspecified, at most 5000 LogTypeSchemas will be returned.
+    /// The maximum value is 10000; values above 10000 will be coerced to 10000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListLogTypeSchemas` call. Provide
+    /// this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListLogTypeSchemas response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLogTypeSchemasResponse {
+    /// LogTypeSchemas.
+    #[prost(message, repeated, tag = "1")]
+    pub log_type_schemas: ::prost::alloc::vec::Vec<LogTypeSchema>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// ImportPushLogsRequest request message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportPushLogsRequest {
+    /// Required. The parent, which owns this collection of logs.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The raw HTTP body is bound to this field.
+    /// All log entries must be valid UTF-8. A single invalid event will cause the
+    /// entire request to be rejected.
+    #[prost(message, optional, tag = "2")]
+    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+    /// Immutable. The secret for the feed.
+    #[prost(string, tag = "3")]
+    pub secret: ::prost::alloc::string::String,
+}
+/// Request message for UpdateFeed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeedRequest {
+    /// Required. Feed to update. Updates full feed object.
+    #[prost(message, optional, tag = "1")]
+    pub feed: ::core::option::Option<Feed>,
+    /// Optional. Specifies which fields to update. If empty, update the full feed.
+    /// To update the display name, pass only `displayName` and no other
+    /// fields. To update other fields, pass a comma-separated list of fields to
+    /// update and omit `displayName`. The update fails if an existing
+    /// `displayName` is sent in the update request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for ListFeed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListFeedsRequest {
+    /// Required. The parent resource where this Feed will be created.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of feeds to return. The service may return fewer than
+    /// this value.
+    /// If unspecified, at most 100 feeds will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListFeeds` call. Provide this to
+    /// retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListFeed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeedsResponse {
+    /// List of feeds.
+    #[prost(message, repeated, tag = "1")]
+    pub feeds: ::prost::alloc::vec::Vec<Feed>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for ListFeedPacks.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListFeedPacksRequest {
+    /// Required. The parent resource where this content pack will be created.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of feed content packs to return. The service
+    /// may return fewer than this value. If unspecified, at most 50 feed content
+    /// packs will be returned. The maximum value is 1000; values above 1000 will
+    /// be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListFeedPacks` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListFeedPacks` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListFeedPacks.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeedPacksResponse {
+    /// List of feeds packs.
+    #[prost(message, repeated, tag = "1")]
+    pub feed_packs: ::prost::alloc::vec::Vec<FeedPack>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for GetFeedPack.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFeedPackRequest {
+    /// Required. The ID of the feed pack to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feedPacks/{feedPack}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateFeed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeedRequest {
+    /// Required. The parent resource where this Feed will be created.
+    /// Format: projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Feed to create.
+    #[prost(message, optional, tag = "2")]
+    pub feed: ::core::option::Option<Feed>,
+}
+/// Request message to retrieve a feed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFeedRequest {
+    /// Required. The ID of the feed to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to delete a feed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteFeedRequest {
+    /// Required. The ID of the feed to retrieve.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If true, delete the uningested backlog in OOB retry queue for the
+    /// feed.
+    #[prost(bool, tag = "2")]
+    pub delete_backlog: bool,
+}
+/// EnableFeed request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnableFeedRequest {
+    /// Required. The name of the feed to enable.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// GenerateSecret request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenerateSecretRequest {
+    /// Required. The name of the feed to for which to generate secret.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// GenerateSecret response message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GenerateSecretResponse {
+    /// The generated secret. Store the secret value at a safe place and use it
+    /// while configuring your https push feed.
+    #[prost(string, tag = "1")]
+    pub secret: ::prost::alloc::string::String,
+}
+/// DisableFeed request message.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DisableFeedRequest {
+    /// Required. The name of the feed to disable.
+    /// Format:
+    /// projects/{project}/locations/{location}/instances/{instance}/feeds/{feed}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CustomAPIHeaderKeyValue defines dynamic headers key-values for Custom API.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiHeaderKeyValue {
+    /// Required. Enter the name of the HTTP Request header (e.g., Authorization or
+    /// X-API-Key).
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Required. Enter the API Key, Bearer Token, or credential value associated
+    /// with the header.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// CustomAPIHeaderAuth lists HTTP headers for custom API auth.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiHeaderAuth {
+    /// Optional. Add HTTP request header key-value pairs.
+    #[prost(message, repeated, tag = "1")]
+    pub header_key_values: ::prost::alloc::vec::Vec<CustomApiHeaderKeyValue>,
+}
+/// CustomAPIQueryKeyValue defines dynamic query parameters key-values for Custom
+/// API Auth.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiQueryKeyValue {
+    /// Required. Enter the name of the URL Query Parameter (e.g., api_key or
+    /// token).
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Required. Enter the API Key or credential value associated with the query
+    /// parameter.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// CustomAPIQueryAuth lists URL Query parameters for custom API auth.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiQueryAuth {
+    /// Optional. Add URL Query parameter key-value pairs.
+    #[prost(message, repeated, tag = "1")]
+    pub query_key_values: ::prost::alloc::vec::Vec<CustomApiQueryKeyValue>,
+}
+/// Info for No-Authentication custom API feeds.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiNoAuth {}
+/// Settings required by Feeds of Custom API (Codeless).
+/// Supports fetching data from third-party APIs with configurable pagination,
+/// authentication, and response parsing.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiSettings {
+    /// Required. Enter the primary web address of the third-party API (e.g.,
+    /// <https://api.vendor.com>).
+    #[prost(string, tag = "1")]
+    pub base_url: ::prost::alloc::string::String,
+    /// Optional. Specify how often the platform checks the API for new data in
+    /// minutes (default is 15 minutes).
+    #[prost(int32, tag = "2")]
+    pub polling_frequency: i32,
+    /// Required. Configure the initial API call used to fetch the main list of
+    /// logs or events.
+    #[prost(message, optional, tag = "6")]
+    pub primary_request: ::core::option::Option<CustomApiTransferNode>,
+    /// Choose the method and credentials used to securely authorize access to the
+    /// API.
+    #[prost(oneof = "custom_api_settings::Authentication", tags = "8, 3, 4, 5, 9")]
+    pub authentication: ::core::option::Option<custom_api_settings::Authentication>,
+}
+/// Nested message and enum types in `CustomAPISettings`.
+pub mod custom_api_settings {
+    /// Choose the method and credentials used to securely authorize access to the
+    /// API.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Authentication {
+        /// Authenticate without credentials or secrets.
+        #[prost(message, tag = "8")]
+        NoAuth(super::CustomApiNoAuth),
+        /// Authenticate using Username/Password credentials.
+        #[prost(message, tag = "3")]
+        BasicAuth(super::UsernameSecretAuth),
+        /// Authenticate using OAuth 2.0 Client Credentials Grant flow.
+        #[prost(message, tag = "4")]
+        OauthClientCredentials(super::OAuthClientCredentials),
+        /// Authenticate using custom API Keys injected into request headers.
+        #[prost(message, tag = "5")]
+        HeaderAuth(super::CustomApiHeaderAuth),
+        /// Authenticate using custom API Keys injected into URL query parameters.
+        #[prost(message, tag = "9")]
+        QueryAuth(super::CustomApiQueryAuth),
+    }
+}
+/// Container for a specific API interaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiTransferNode {
+    /// Required. Define the technical parameters for the outgoing API call,
+    /// including paths, headers, and payloads.
+    #[prost(message, optional, tag = "1")]
+    pub request_settings: ::core::option::Option<CustomApiRequestConfig>,
+    /// Required. Provide rules that tell the platform how to locate and extract
+    /// the relevant security data from the API's reply.
+    #[prost(message, optional, tag = "2")]
+    pub response_mapping: ::core::option::Option<CustomApiResponseConfig>,
+    /// Required. Select how the connector should request subsequent pages when the
+    /// data is too large for a single response.
+    #[prost(message, optional, tag = "3")]
+    pub pagination_strategy: ::core::option::Option<CustomApiPagination>,
+    /// Required. Configure settings that allow the connector to remember where it
+    /// left off in the previous poll (e.g., tracking the last fetched timestamp).
+    #[prost(message, optional, tag = "4")]
+    pub checkpointing: ::core::option::Option<CustomApiCheckpointConfig>,
+    /// Optional. Configuration for dependent requests (child chaining).
+    #[prost(message, optional, tag = "8")]
+    pub dependent_requests_config: ::core::option::Option<
+        CustomApiDependentRequestsConfig,
+    >,
+}
+/// Configuration for dependent requests (child chaining).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiDependentRequestsConfig {
+    /// Required. Enter the specific field in the response that uniquely identifies
+    /// an individual record or alert.
+    #[prost(string, tag = "1")]
+    pub item_id_json_path: ::prost::alloc::string::String,
+    /// Optional. Specify a custom variable name to hold the extracted ID, which
+    /// can be linked as a placeholder in dependent requests.
+    #[prost(string, tag = "2")]
+    pub item_id_variable: ::prost::alloc::string::String,
+    /// Optional. Add follow-up API calls triggered for each item found in the
+    /// primary request (e.g., fetching full event details for a list of basic
+    /// alert IDs). Note: In MVP, the child depth fan-out limit is capped at 1.
+    #[prost(message, repeated, tag = "3")]
+    pub dependent_requests: ::prost::alloc::vec::Vec<CustomApiTransferNode>,
+}
+/// Configuration for the outgoing API request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomApiRequestConfig {
+    /// Required. Enter the specific API route appended to the Base URL to fetch
+    /// the data (e.g., /v1/alerts).
+    #[prost(string, tag = "1")]
+    pub endpoint_path: ::prost::alloc::string::String,
+    /// Required. Select the type of action to perform on the API endpoint (usually
+    /// GET to retrieve data or POST to submit a query).
+    #[prost(enumeration = "custom_api_request_config::HttpMethod", tag = "2")]
+    pub http_method: i32,
+    /// Optional. Provide the data payload sent to the API to specify what
+    /// information you want, typically formatted in JSON.
+    #[prost(string, tag = "3")]
+    pub request_body: ::prost::alloc::string::String,
+    /// Optional. Add extra filters or settings appended to the end of the URL
+    /// (e.g., ?status=critical).
+    #[prost(message, repeated, tag = "4")]
+    pub query_parameters: ::prost::alloc::vec::Vec<HeaderKeyValue>,
+    /// Optional. Define specialized key-value pairs sent with the request, often
+    /// used for custom API versioning or specific vendor requirements.
+    #[prost(message, repeated, tag = "5")]
+    pub custom_headers: ::prost::alloc::vec::Vec<HeaderKeyValue>,
+    /// Optional. Set a safety limit to ensure the connector does not exceed the
+    /// third-party vendor's API rate limits.
+    #[prost(int32, tag = "6")]
+    pub max_requests_per_minute: i32,
+}
+/// Nested message and enum types in `CustomAPIRequestConfig`.
+pub mod custom_api_request_config {
+    /// HTTPS methods supported.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HttpMethod {
+        /// Unspecified method.
+        Unspecified = 0,
+        /// HTTP GET method.
+        Get = 1,
+        /// HTTP POST method.
+        Post = 2,
+    }
+    impl HttpMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HTTP_METHOD_UNSPECIFIED",
+                Self::Get => "GET",
+                Self::Post => "POST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HTTP_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "GET" => Some(Self::Get),
+                "POST" => Some(Self::Post),
+                _ => None,
+            }
+        }
+    }
+}
+/// Configuration for handling the API response.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiResponseConfig {
+    /// Required. Enter the exact path in the API's response payload where the list
+    /// of target log entries is located.
+    #[prost(string, repeated, tag = "1")]
+    pub target_data_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Checkpoint configuration to enable sequential (cursor-based) polling.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiCheckpointConfig {
+    /// Select the specific checkpointing mechanism the third-party API requires.
+    #[prost(oneof = "custom_api_checkpoint_config::Strategy", tags = "1, 2, 3, 4")]
+    pub strategy: ::core::option::Option<custom_api_checkpoint_config::Strategy>,
+}
+/// Nested message and enum types in `CustomAPICheckpointConfig`.
+pub mod custom_api_checkpoint_config {
+    /// Fetch all available data in one go without tracking progress.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NoneStrategy {}
+    /// Track the timestamp of the newest record to fetch newer ones next.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LatestTimestampStrategy {
+        /// Required. Enter the exact location within a log record where the
+        /// checkpoint value (like a timestamp or ID) is found.
+        #[prost(string, tag = "1")]
+        pub checkpoint_value_path: ::prost::alloc::string::String,
+        /// Required. Specify a custom name you assign to store and reference the
+        /// checkpoint value between polling cycles.
+        #[prost(string, tag = "2")]
+        pub checkpoint_variable: ::prost::alloc::string::String,
+    }
+    /// Track the highest record ID to fetch only new records next.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LatestRecordStrategy {
+        /// Required. Enter the exact location within a log record where the
+        /// checkpoint value (like a timestamp or ID) is found.
+        #[prost(string, tag = "1")]
+        pub checkpoint_value_path: ::prost::alloc::string::String,
+        /// Required. Specify a custom name you assign to store and reference the
+        /// checkpoint value between polling cycles.
+        #[prost(string, tag = "2")]
+        pub checkpoint_variable: ::prost::alloc::string::String,
+    }
+    /// Use progress tokens provided by the API.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct IteratorStrategy {
+        /// Required. Enter the exact location within a log record where the
+        /// checkpoint value (like a timestamp or ID) is found.
+        #[prost(string, tag = "1")]
+        pub checkpoint_value_path: ::prost::alloc::string::String,
+        /// Required. Specify a custom name you assign to store and reference the
+        /// checkpoint value between polling cycles.
+        #[prost(string, tag = "2")]
+        pub checkpoint_variable: ::prost::alloc::string::String,
+    }
+    /// Select the specific checkpointing mechanism the third-party API requires.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Strategy {
+        /// Fetch all available data in one go without tracking progress.
+        #[prost(message, tag = "1")]
+        NoneStrategy(NoneStrategy),
+        /// Track the timestamp of the newest record to fetch newer ones next.
+        #[prost(message, tag = "2")]
+        LatestTimestampStrategy(LatestTimestampStrategy),
+        /// Track the highest record ID to fetch only new records next.
+        #[prost(message, tag = "3")]
+        LatestRecordStrategy(LatestRecordStrategy),
+        /// Use progress tokens provided by the API.
+        #[prost(message, tag = "4")]
+        IteratorStrategy(IteratorStrategy),
+    }
+}
+/// Pagination strategy for the request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CustomApiPagination {
+    /// Select the specific paging mechanism the third-party API requires.
+    #[prost(oneof = "custom_api_pagination::PaginationStrategy", tags = "4, 5, 6, 7, 8")]
+    pub pagination_strategy: ::core::option::Option<
+        custom_api_pagination::PaginationStrategy,
+    >,
+}
+/// Nested message and enum types in `CustomAPIPagination`.
+pub mod custom_api_pagination {
+    /// Fetch data in a single request without paging.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct NonePagination {}
+    /// Use tokens (custom keys) to get the next page of data.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TokenPagination {
+        /// Required. Enter the field in the API response that contains the URL or
+        /// token needed to fetch the next page of data.
+        #[prost(string, tag = "1")]
+        pub next_page_token_json_path: ::prost::alloc::string::String,
+        /// Required. Specify the name of the query parameter for next page token in
+        /// request.
+        #[prost(string, tag = "2")]
+        pub query_param: ::prost::alloc::string::String,
+    }
+    /// Follow links provided in the response to get more data.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct LinkPagination {
+        /// Required. Enter the field in the API response that contains the URL or
+        /// token needed to fetch the next page of data.
+        #[prost(string, tag = "1")]
+        pub next_page_link_json_path: ::prost::alloc::string::String,
+    }
+    /// Skip a set number of records to get the next set.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct OffsetPagination {
+        /// Required. Specify the name of the query parameter for offset in request.
+        #[prost(string, tag = "1")]
+        pub offset_query_param: ::prost::alloc::string::String,
+    }
+    /// Go to the next page number (e.g., page 2).
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct PageNumberPagination {
+        /// Required. Specify the name of the query parameter for page number in
+        /// request.
+        #[prost(string, tag = "1")]
+        pub page_number_query_param: ::prost::alloc::string::String,
+    }
+    /// Select the specific paging mechanism the third-party API requires.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum PaginationStrategy {
+        /// Fetch data in a single request without paging.
+        #[prost(message, tag = "4")]
+        None(NonePagination),
+        /// Use tokens (custom keys) to get the next page of data.
+        #[prost(message, tag = "5")]
+        Token(TokenPagination),
+        /// Follow links provided in the response to get more data.
+        #[prost(message, tag = "6")]
+        Link(LinkPagination),
+        /// Skip a set number of records to get the next set.
+        #[prost(message, tag = "7")]
+        Offset(OffsetPagination),
+        /// Go to the next page number (e.g., page 2).
+        #[prost(message, tag = "8")]
+        PageNumber(PageNumberPagination),
+    }
+}
+/// The type of URIs specified in the source URIs.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum UriSourceType {
+    /// If encountered, will throw an `INVALID_ARGUMENT` error.
+    Unspecified = 0,
+    /// The type of files pointed to by `source_uris` are files.
+    Files = 1,
+    /// The type of files pointed to by `source_uris` are folders and Xenon
+    /// should not descend into subfolders of those folders.
+    Folders = 2,
+    /// The type of files pointed to by `source_uris` are folders and Xenon
+    /// should descend into subfolders of those folders.
+    FoldersRecursive = 3,
+}
+impl UriSourceType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "URI_SOURCE_TYPE_UNSPECIFIED",
+            Self::Files => "FILES",
+            Self::Folders => "FOLDERS",
+            Self::FoldersRecursive => "FOLDERS_RECURSIVE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "URI_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FILES" => Some(Self::Files),
+            "FOLDERS" => Some(Self::Folders),
+            "FOLDERS_RECURSIVE" => Some(Self::FoldersRecursive),
+            _ => None,
+        }
+    }
+}
+/// Source deletion option controls whether source files should be deleted after
+/// transferring.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SourceDeletionOption {
+    /// If encountered, will be treated as `SOURCE_DELETION_NEVER`.
+    Unspecified = 0,
+    /// Never delete files from the source.
+    SourceDeletionNever = 1,
+    /// After the fetch completes, if there are no errors, delete files and any
+    /// directories made empty by the file deletion from the source.
+    SourceDeletionOnSuccess = 2,
+    /// After the fetch completes, if there are no errors, delete files (leaving
+    /// any directories) from the source.
+    SourceDeletionOnSuccessFilesOnly = 3,
+}
+impl SourceDeletionOption {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SOURCE_DELETION_OPTION_UNSPECIFIED",
+            Self::SourceDeletionNever => "SOURCE_DELETION_NEVER",
+            Self::SourceDeletionOnSuccess => "SOURCE_DELETION_ON_SUCCESS",
+            Self::SourceDeletionOnSuccessFilesOnly => {
+                "SOURCE_DELETION_ON_SUCCESS_FILES_ONLY"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SOURCE_DELETION_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOURCE_DELETION_NEVER" => Some(Self::SourceDeletionNever),
+            "SOURCE_DELETION_ON_SUCCESS" => Some(Self::SourceDeletionOnSuccess),
+            "SOURCE_DELETION_ON_SUCCESS_FILES_ONLY" => {
+                Some(Self::SourceDeletionOnSuccessFilesOnly)
+            }
+            _ => None,
+        }
+    }
+}
+/// Source deletion option determines whether source files should be deleted
+/// after transferring.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SourceDeletionOptionV2 {
+    /// If encountered, will be treated as `SOURCE_DELETION_NEVER`.
+    Unspecified = 0,
+    /// Never delete files from the source.
+    Never = 1,
+    /// After the fetch completes, if there are no errors, delete files and any
+    /// directories made empty by the file deletion from the source.
+    OnSuccess = 2,
+}
+impl SourceDeletionOptionV2 {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SOURCE_DELETION_OPTION_V2_UNSPECIFIED",
+            Self::Never => "NEVER",
+            Self::OnSuccess => "ON_SUCCESS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SOURCE_DELETION_OPTION_V2_UNSPECIFIED" => Some(Self::Unspecified),
+            "NEVER" => Some(Self::Never),
+            "ON_SUCCESS" => Some(Self::OnSuccess),
+            _ => None,
+        }
+    }
+}
+/// AWS S3 regions:
+/// <https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region.>
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum S3Region {
+    /// Unspecified region means Auto detect.
+    /// Auto detect does not successfully detect GOV Cloud.
+    Unspecified = 0,
+    /// US.
+    /// N. Virginia (previously known as US_STANDARD).
+    UsEast1 = 1,
+    /// Ohio.
+    UsEast2 = 2,
+    /// N. California.
+    UsWest1 = 3,
+    /// Oregon.
+    UsWest2 = 4,
+    /// Not accessible unless AWS US Govt. account.
+    UsGovCloud = 5,
+    /// Not accessible unless AWS US Govt. account.
+    UsGovEast1 = 6,
+    /// Europe.
+    /// Ireland.
+    EuWest1 = 7,
+    /// London.
+    EuWest2 = 8,
+    /// Paris.
+    EuWest3 = 9,
+    /// Frankfurt.
+    EuCentral1 = 10,
+    /// Stockholm.
+    EuNorth1 = 11,
+    /// Milan.
+    EuSouth1 = 21,
+    /// Asia Pacific
+    /// Mumbai.
+    ApSouth1 = 12,
+    /// Singapore.
+    ApSoutheast1 = 13,
+    /// Sydney.
+    ApSoutheast2 = 14,
+    /// Jakarta.
+    ApSoutheast3 = 22,
+    /// Tokyo.
+    ApNortheast1 = 15,
+    /// Seoul.
+    ApNortheast2 = 16,
+    /// Osaka.
+    ApNortheast3 = 23,
+    /// Hong Kong.
+    ApEast1 = 24,
+    /// South America.
+    /// Sao Paulo.
+    SaEast1 = 17,
+    /// China - Not accessible unless AWS China account.
+    /// China - Beijing.
+    CnNorth1 = 18,
+    /// China - Ningxia.
+    CnNorthwest1 = 19,
+    /// Canada.
+    /// Canada Central.
+    CaCentral1 = 20,
+    /// Africa.
+    /// Capetown.
+    AfSouth1 = 25,
+    /// Middle East.
+    /// Bahrain.
+    MeSouth1 = 26,
+    /// Asia Pacific (Hyderabad).
+    ApSouth2 = 27,
+    /// Asia Pacific (Melbourne).
+    ApSoutheast4 = 28,
+    /// Canada West (Calgary).
+    CaWest1 = 29,
+    /// Europe (Spain).
+    EuSouth2 = 30,
+    /// Europe (Zurich).
+    EuCentral2 = 31,
+    /// Israel (Tel Aviv).
+    IlCentral1 = 32,
+    /// Middle East (UAE).
+    MeCentral1 = 33,
+}
+impl S3Region {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "S3_REGION_UNSPECIFIED",
+            Self::UsEast1 => "US_EAST_1",
+            Self::UsEast2 => "US_EAST_2",
+            Self::UsWest1 => "US_WEST_1",
+            Self::UsWest2 => "US_WEST_2",
+            Self::UsGovCloud => "US_GOV_CLOUD",
+            Self::UsGovEast1 => "US_GOV_EAST_1",
+            Self::EuWest1 => "EU_WEST_1",
+            Self::EuWest2 => "EU_WEST_2",
+            Self::EuWest3 => "EU_WEST_3",
+            Self::EuCentral1 => "EU_CENTRAL_1",
+            Self::EuNorth1 => "EU_NORTH_1",
+            Self::EuSouth1 => "EU_SOUTH_1",
+            Self::ApSouth1 => "AP_SOUTH_1",
+            Self::ApSoutheast1 => "AP_SOUTHEAST_1",
+            Self::ApSoutheast2 => "AP_SOUTHEAST_2",
+            Self::ApSoutheast3 => "AP_SOUTHEAST_3",
+            Self::ApNortheast1 => "AP_NORTHEAST_1",
+            Self::ApNortheast2 => "AP_NORTHEAST_2",
+            Self::ApNortheast3 => "AP_NORTHEAST_3",
+            Self::ApEast1 => "AP_EAST_1",
+            Self::SaEast1 => "SA_EAST_1",
+            Self::CnNorth1 => "CN_NORTH_1",
+            Self::CnNorthwest1 => "CN_NORTHWEST_1",
+            Self::CaCentral1 => "CA_CENTRAL_1",
+            Self::AfSouth1 => "AF_SOUTH_1",
+            Self::MeSouth1 => "ME_SOUTH_1",
+            Self::ApSouth2 => "AP_SOUTH_2",
+            Self::ApSoutheast4 => "AP_SOUTHEAST_4",
+            Self::CaWest1 => "CA_WEST_1",
+            Self::EuSouth2 => "EU_SOUTH_2",
+            Self::EuCentral2 => "EU_CENTRAL_2",
+            Self::IlCentral1 => "IL_CENTRAL_1",
+            Self::MeCentral1 => "ME_CENTRAL_1",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "S3_REGION_UNSPECIFIED" => Some(Self::Unspecified),
+            "US_EAST_1" => Some(Self::UsEast1),
+            "US_EAST_2" => Some(Self::UsEast2),
+            "US_WEST_1" => Some(Self::UsWest1),
+            "US_WEST_2" => Some(Self::UsWest2),
+            "US_GOV_CLOUD" => Some(Self::UsGovCloud),
+            "US_GOV_EAST_1" => Some(Self::UsGovEast1),
+            "EU_WEST_1" => Some(Self::EuWest1),
+            "EU_WEST_2" => Some(Self::EuWest2),
+            "EU_WEST_3" => Some(Self::EuWest3),
+            "EU_CENTRAL_1" => Some(Self::EuCentral1),
+            "EU_NORTH_1" => Some(Self::EuNorth1),
+            "EU_SOUTH_1" => Some(Self::EuSouth1),
+            "AP_SOUTH_1" => Some(Self::ApSouth1),
+            "AP_SOUTHEAST_1" => Some(Self::ApSoutheast1),
+            "AP_SOUTHEAST_2" => Some(Self::ApSoutheast2),
+            "AP_SOUTHEAST_3" => Some(Self::ApSoutheast3),
+            "AP_NORTHEAST_1" => Some(Self::ApNortheast1),
+            "AP_NORTHEAST_2" => Some(Self::ApNortheast2),
+            "AP_NORTHEAST_3" => Some(Self::ApNortheast3),
+            "AP_EAST_1" => Some(Self::ApEast1),
+            "SA_EAST_1" => Some(Self::SaEast1),
+            "CN_NORTH_1" => Some(Self::CnNorth1),
+            "CN_NORTHWEST_1" => Some(Self::CnNorthwest1),
+            "CA_CENTRAL_1" => Some(Self::CaCentral1),
+            "AF_SOUTH_1" => Some(Self::AfSouth1),
+            "ME_SOUTH_1" => Some(Self::MeSouth1),
+            "AP_SOUTH_2" => Some(Self::ApSouth2),
+            "AP_SOUTHEAST_4" => Some(Self::ApSoutheast4),
+            "CA_WEST_1" => Some(Self::CaWest1),
+            "EU_SOUTH_2" => Some(Self::EuSouth2),
+            "EU_CENTRAL_2" => Some(Self::EuCentral2),
+            "IL_CENTRAL_1" => Some(Self::IlCentral1),
+            "ME_CENTRAL_1" => Some(Self::MeCentral1),
+            _ => None,
+        }
+    }
+}
+/// An enumeration of the possible types of a `Feed.details` field, where type
+/// implies both encoding and semantics. This is used in constructing a schema in
+/// order to construct a UI for creating well formed feeds.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SemanticType {
+    /// No semantic type. All fields must specify a semantic type.
+    Unspecified = 0,
+    /// A boolean (with no special semantics).
+    Bool = 1,
+    /// An enum (with no special semantics).
+    Enum = 2,
+    /// A repeated field with a Message type where the Message contains two
+    /// fields: `key` and `value`.
+    KeyValueList = 3,
+    /// A `map<string, string>` (with no special semantics).
+    MapStringString = 4,
+    /// A string (with no special semantics).
+    String = 5,
+    /// A repeated string (with no special semantics).
+    StringList = 6,
+    /// A string that may contain any whitespace characters (with no special
+    /// semantics).
+    StringMultiline = 7,
+    /// A string that may contain any whitespace characters and that encodes a
+    /// secret.
+    StringMultilineSecret = 8,
+    /// A string which encodes a secret.
+    StringSecret = 9,
+    /// A string which encodes a URI.
+    StringUri = 10,
+    /// A repeated string which encodes URIs.
+    StringUriList = 11,
+}
+impl SemanticType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SEMANTIC_TYPE_UNSPECIFIED",
+            Self::Bool => "BOOL",
+            Self::Enum => "ENUM",
+            Self::KeyValueList => "KEY_VALUE_LIST",
+            Self::MapStringString => "MAP_STRING_STRING",
+            Self::String => "STRING",
+            Self::StringList => "STRING_LIST",
+            Self::StringMultiline => "STRING_MULTILINE",
+            Self::StringMultilineSecret => "STRING_MULTILINE_SECRET",
+            Self::StringSecret => "STRING_SECRET",
+            Self::StringUri => "STRING_URI",
+            Self::StringUriList => "STRING_URI_LIST",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEMANTIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BOOL" => Some(Self::Bool),
+            "ENUM" => Some(Self::Enum),
+            "KEY_VALUE_LIST" => Some(Self::KeyValueList),
+            "MAP_STRING_STRING" => Some(Self::MapStringString),
+            "STRING" => Some(Self::String),
+            "STRING_LIST" => Some(Self::StringList),
+            "STRING_MULTILINE" => Some(Self::StringMultiline),
+            "STRING_MULTILINE_SECRET" => Some(Self::StringMultilineSecret),
+            "STRING_SECRET" => Some(Self::StringSecret),
+            "STRING_URI" => Some(Self::StringUri),
+            "STRING_URI_LIST" => Some(Self::StringUriList),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod feeds_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// FeedsService contains procedures for managing Chronicle third-party feeds.
+    #[derive(Debug, Clone)]
+    pub struct FeedsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FeedsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FeedsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FeedsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            FeedsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Fetch Chronicle's service account used for ingesting data from Cloud
+        /// Storage buckets.
+        pub async fn fetch_service_account_for_customer(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::FetchServiceAccountForCustomerRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::FeedServiceAccount>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/FetchServiceAccountForCustomer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "FetchServiceAccountForCustomer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a feed.
+        pub async fn create_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/CreateFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "CreateFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a feed.
+        pub async fn get_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/GetFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.chronicle.v1.FeedsService", "GetFeed"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a feed.
+        pub async fn delete_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeedRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/DeleteFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "DeleteFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Enable feed for ingestion.
+        pub async fn enable_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/EnableFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "EnableFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Disable feed for ingestion. Make FeedState ARCHIVED.
+        pub async fn disable_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/DisableFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "DisableFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all feeds for the customer.
+        pub async fn list_feeds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeedsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/ListFeeds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "ListFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Packs for which feeds can be configured.
+        pub async fn list_feed_packs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeedPacksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedPacksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/ListFeedPacks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "ListFeedPacks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a feed pack.
+        pub async fn get_feed_pack(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeedPackRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeedPack>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/GetFeedPack",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "GetFeedPack",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the full feed.
+        pub async fn update_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/UpdateFeed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "UpdateFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all FeedSourceTypeSchemas.
+        pub async fn list_feed_source_type_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeedSourceTypeSchemasRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedSourceTypeSchemasResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/ListFeedSourceTypeSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "ListFeedSourceTypeSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all LogTypeSchemas compatible with a given
+        /// FeedSourceType.
+        pub async fn list_log_type_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLogTypeSchemasRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLogTypeSchemasResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/ListLogTypeSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "ListLogTypeSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Import logs coming from https push feeds.
+        /// All log entries must be valid UTF-8. A single invalid event will cause the
+        /// entire request to be rejected.
+        pub async fn import_push_logs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportPushLogsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::api::HttpBody>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/ImportPushLogs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "ImportPushLogs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates a new secret for https push feeds which do not support jwt
+        /// tokens. Secrets once generated should be copied and stored in safe place
+        /// to be used while configuring https push feeds.Please note that you can
+        /// always generate a new secret again for a feed using this API but it will
+        /// invalidate the previously generated secret for the feed.
+        pub async fn generate_secret(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateSecretRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateSecretResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.chronicle.v1.FeedsService/GenerateSecret",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.chronicle.v1.FeedsService",
+                        "GenerateSecret",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Represents a set of logic conditions used to refine various types of
 /// findings such as curated rule detections.
 #[derive(Clone, PartialEq, ::prost::Message)]

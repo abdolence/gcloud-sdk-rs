@@ -615,6 +615,382 @@ pub struct DeleteLbRouteExtensionRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// `ExtensionBinding` is a resource representing the attachment of an extension
+/// to a service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExtensionBinding {
+    /// Identifier. Name of the `ExtensionBinding` resource in the following
+    /// format:
+    /// `projects/{project}/locations/{location}/extensionBindings/{extension_binding}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A human-readable description of the resource.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set of labels associated with the `ExtensionBinding` resource.
+    ///
+    /// The format must comply with [the following
+    /// requirements](<https://cloud.google.com/compute/docs/labeling-resources#requirements>).
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Etag of the resource.
+    /// If provided, it must match the server's etag. If the provided etag
+    /// does not match the server's etag, the request will fail with a 409 ABORTED
+    /// error.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Required. The name of the extension that this binding should attach to
+    /// target resources.
+    ///
+    /// Format:
+    /// For Google-provided extensions, specify the service endpoint (see
+    /// [Model Armor
+    /// integration](<https://docs.cloud.google.com/model-armor/integrations>))
+    #[prost(string, tag = "7")]
+    pub producer_extension: ::prost::alloc::string::String,
+    /// Required. Specifies a target to which this `ExtensionBinding` should be
+    /// attached. The target can be either a single resource or a scope of
+    /// resources.
+    #[prost(message, optional, tag = "8")]
+    pub target: ::core::option::Option<extension_binding::Target>,
+    /// Optional. A list of match conditions to match against the incoming
+    /// request. The extension will be invoked if at least one condition matches
+    /// the request, or if no match conditions are specified. Limited to 5
+    /// conditions.
+    #[prost(message, repeated, tag = "9")]
+    pub match_conditions: ::prost::alloc::vec::Vec<extension_binding::MatchCondition>,
+    /// Optional. Determines the behavior of the extension binding when the call to
+    /// the extension fails or times out. Default value is `FALSE`.
+    ///
+    /// When set to `TRUE`, failures of the extension are silently ignored.
+    #[prost(bool, tag = "10")]
+    pub fail_open: bool,
+    /// Optional. Additional metadata that should be passed to the attached
+    /// extension with each request.
+    #[prost(map = "string, string", tag = "11")]
+    pub producer_metadata: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Priority of the extension binding. Lower numbers indicate higher
+    /// priority. Priority of extension bindings are used to determine the order in
+    /// which extension bindings are applied to a request.
+    #[prost(int32, tag = "12")]
+    pub priority: i32,
+}
+/// Nested message and enum types in `ExtensionBinding`.
+pub mod extension_binding {
+    /// Specifies a list of targets to which this `ExtensionBinding` should attach.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Target {
+        /// Optional. The reference to the target resource, to which this binding
+        /// should attach. Exactly one of `resources` or `scope` must be set.
+        #[prost(string, repeated, tag = "1")]
+        pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Specifies the scope of resources to which this binding should
+        /// attach. Exactly one of `resources` or `scope` must be set.
+        #[prost(message, optional, tag = "2")]
+        pub scope: ::core::option::Option<target::Scope>,
+    }
+    /// Nested message and enum types in `Target`.
+    pub mod target {
+        /// Specifies the scope of resources to which this binding should attach.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct Scope {
+            /// Required. Parent resource name specification, in the format:
+            /// `projects/{project_number}`.
+            #[prost(string, tag = "1")]
+            pub parent: ::prost::alloc::string::String,
+            /// Required. Type of the resource to which the binding should attach.
+            /// Limited to 1 resource type.
+            #[prost(
+                enumeration = "scope::ResourceType",
+                repeated,
+                packed = "false",
+                tag = "2"
+            )]
+            pub resource_types: ::prost::alloc::vec::Vec<i32>,
+        }
+        /// Nested message and enum types in `Scope`.
+        pub mod scope {
+            /// Resource types that should be targeted by the binding.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ResourceType {
+                /// Default value. Should not be used.
+                Unspecified = 0,
+                /// AI Application resources.
+                AiApplication = 1,
+                /// Agent Gateway resources.
+                AgentGateway = 2,
+            }
+            impl ResourceType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+                        Self::AiApplication => "AI_APPLICATION",
+                        Self::AgentGateway => "AGENT_GATEWAY",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "AI_APPLICATION" => Some(Self::AiApplication),
+                        "AGENT_GATEWAY" => Some(Self::AgentGateway),
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
+    /// Conditions to match against the incoming request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MatchCondition {
+        /// Optional. Describes properties of a destination of a request. If
+        /// specified, the extension will only be invoked on requests to destinations
+        /// that match the specified criteria.
+        #[prost(message, optional, tag = "2")]
+        pub to: ::core::option::Option<match_condition::To>,
+    }
+    /// Nested message and enum types in `MatchCondition`.
+    pub mod match_condition {
+        /// Specifies matching logic for string values.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct StringMatch {
+            /// Optional. If true, indicates the exact/prefix/suffix/contains matching
+            /// should be case insensitive. For example, the matcher `data` will
+            /// match both input string `Data` and `data` if set to true.
+            #[prost(bool, tag = "5")]
+            pub ignore_case: bool,
+            /// Determines how a string value should be matched against the
+            /// pattern.
+            #[prost(oneof = "string_match::MatchPattern", tags = "1, 2, 3, 4")]
+            pub match_pattern: ::core::option::Option<string_match::MatchPattern>,
+        }
+        /// Nested message and enum types in `StringMatch`.
+        pub mod string_match {
+            /// Determines how a string value should be matched against the
+            /// pattern.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+            pub enum MatchPattern {
+                /// Optional. The input string must match exactly the string specified
+                /// here.
+                ///
+                /// Examples:
+                ///
+                /// * `abc` only matches the value `abc`.
+                #[prost(string, tag = "1")]
+                Exact(::prost::alloc::string::String),
+                /// Optional. The input string must have the prefix specified here.
+                /// Note: empty prefix is not allowed.
+                ///
+                /// Examples:
+                ///
+                /// * `abc` matches the value `abc.xyz`
+                #[prost(string, tag = "2")]
+                Prefix(::prost::alloc::string::String),
+                /// Optional. The input string must have the suffix specified here.
+                /// Note: empty prefix is not allowed, please use regex instead.
+                ///
+                /// Examples:
+                ///
+                /// * `abc` matches the value `xyz.abc`
+                #[prost(string, tag = "3")]
+                Suffix(::prost::alloc::string::String),
+                /// Optional. The input string must have the substring specified here.
+                /// Note: empty contains match is not allowed, please use regex instead.
+                ///
+                /// Examples:
+                ///
+                /// * `abc` matches the value `xyz.abc.def`
+                #[prost(string, tag = "4")]
+                Contains(::prost::alloc::string::String),
+            }
+        }
+        /// Determines how an HTTP header should be matched.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct HeaderMatch {
+            /// Required. Specifies the name of the header in the request.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// Optional. Specifies how the header match will be performed.
+            #[prost(message, optional, tag = "2")]
+            pub value: ::core::option::Option<StringMatch>,
+        }
+        /// Describes properties of one or more destinations of a request.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct To {
+            /// Optional. Describes properties of destination of a request. Within a
+            /// destination, the match follows AND semantics across fields and OR
+            /// semantics within a field, i.e. a match occurs when ANY path matches AND
+            /// ANY header matches and ANY method matches. At least one of destination
+            /// or not_destination must be specified.
+            #[prost(message, optional, tag = "1")]
+            pub destination: ::core::option::Option<to::Destination>,
+            /// Optional. Describes the negated properties of the request destination.
+            /// Extension will not be invoked on requests that match the criteria
+            /// specified in this field. At least one of destination or not_destination
+            /// must be specified.
+            #[prost(message, optional, tag = "2")]
+            pub not_destination: ::core::option::Option<to::Destination>,
+        }
+        /// Nested message and enum types in `To`.
+        pub mod to {
+            /// Describes properties of a single destination.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Destination {
+                /// Optional. A set of HTTP headers to match against. If not specified,
+                /// requests with any headers are matched.
+                #[prost(message, optional, tag = "1")]
+                pub header_set: ::core::option::Option<destination::HeaderSet>,
+                /// Optional. A list of non-empty strings whose value is matched against
+                /// the resource to which a request is sent (e.g., an Agent in
+                /// AiApplication). If not specified, any resource is allowed.
+                /// If specified, a match occurs if any of the resources
+                /// matches the resource value in the request. Limited to 5 resources.
+                /// When matching against resources in the AgentRegistry, use the URNs
+                /// of the registry resources.
+                #[prost(message, repeated, tag = "2")]
+                pub resources: ::prost::alloc::vec::Vec<super::StringMatch>,
+                /// Optional. A list of HTTP Hosts to match against. Limited to 10 hosts.
+                /// If not specified, any host is allowed. If specified, a match occurs
+                /// if any of the hosts matches the host value in the request.
+                #[prost(message, repeated, tag = "3")]
+                pub hosts: ::prost::alloc::vec::Vec<super::StringMatch>,
+                /// Optional. A list of paths to match against. Limited to 10
+                /// paths. If not specified, any path is allowed.
+                ///
+                /// Note that this path match includes the query parameters. For gRPC
+                /// services, this should be a fully-qualified name of the form
+                /// /package.service/method.
+                #[prost(message, repeated, tag = "4")]
+                pub paths: ::prost::alloc::vec::Vec<super::StringMatch>,
+            }
+            /// Nested message and enum types in `Destination`.
+            pub mod destination {
+                /// Describes a set of HTTP headers to match against.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct HeaderSet {
+                    /// Required. A list of headers to match against in http header.
+                    /// If multiple header matches are provided, they will be evaluated as
+                    /// an AND, i.e. all header matches must match for the request to
+                    /// match.
+                    #[prost(message, repeated, tag = "1")]
+                    pub headers: ::prost::alloc::vec::Vec<super::super::HeaderMatch>,
+                }
+            }
+        }
+    }
+}
+/// Request used with the `ListExtensionBindings` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListExtensionBindingsRequest {
+    /// Required. The project and location from which the `ExtensionBinding`
+    /// resources should be listed, specified in the format
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of `ExtensionBinding` resources to return per
+    /// call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListExtensionBindingsResponse`
+    /// Indicates that this is a continuation of a prior `ListExtensionBindings`
+    /// call, and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response returned by the `ListExtensionBindings` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExtensionBindingsResponse {
+    /// List of `ExtensionBinding` resources.
+    #[prost(message, repeated, tag = "1")]
+    pub extension_bindings: ::prost::alloc::vec::Vec<ExtensionBinding>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results, call this
+    /// method again using the value of `next_page_token` as `page_token`.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Unreachable resources. Populated when the request attempts
+    /// to list all resources across all supported locations, while some locations
+    /// are temporarily unavailable. The resource names are in the format
+    /// `projects/{project}/locations/{location}/extensionBindings/{extension_binding}`.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request used by the `GetExtensionBinding` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetExtensionBindingRequest {
+    /// Required. A name of the `ExtensionBinding` resource to get. Must be in the
+    /// format
+    /// `projects/{project}/locations/{location}/extensionBindings/{extension_binding}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used by the `CreateExtensionBinding` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExtensionBindingRequest {
+    /// Required. The parent resource of the `ExtensionBinding` resource. Must be
+    /// in the format `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Short name of the `ExtensionBinding` resource to be created.
+    #[prost(string, tag = "2")]
+    pub extension_binding_id: ::prost::alloc::string::String,
+    /// Required. `ExtensionBinding` resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub extension_binding: ::core::option::Option<ExtensionBinding>,
+}
+/// Request used by the `UpdateExtensionBinding` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExtensionBindingRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// `ExtensionBinding` resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Updated `ExtensionBinding` resource.
+    #[prost(message, optional, tag = "2")]
+    pub extension_binding: ::core::option::Option<ExtensionBinding>,
+}
+/// Request used by the `DeleteExtensionBinding` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteExtensionBindingRequest {
+    /// Required. A name of the `ExtensionBinding` resource to delete. Must be in
+    /// the format
+    /// `projects/{project}/locations/{location}/extensionBindings/{extension_binding}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag of the ExtensionBinding to delete.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
 /// The part of the request or response for which the extension is called.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1096,6 +1472,156 @@ pub mod dep_service_client {
                     GrpcMethod::new(
                         "google.cloud.networkservices.v1beta1.DepService",
                         "DeleteLbRouteExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists `ExtensionBinding` resources in a given project and location.
+        pub async fn list_extension_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListExtensionBindingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListExtensionBindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1beta1.DepService/ListExtensionBindings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.DepService",
+                        "ListExtensionBindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specified `ExtensionBinding` resource.
+        pub async fn get_extension_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetExtensionBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExtensionBinding>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1beta1.DepService/GetExtensionBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.DepService",
+                        "GetExtensionBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `ExtensionBinding` resource in a given project and location.
+        pub async fn create_extension_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateExtensionBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1beta1.DepService/CreateExtensionBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.DepService",
+                        "CreateExtensionBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of the specified `ExtensionBinding` resource.
+        pub async fn update_extension_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExtensionBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1beta1.DepService/UpdateExtensionBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.DepService",
+                        "UpdateExtensionBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified `ExtensionBinding` resource.
+        pub async fn delete_extension_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteExtensionBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1beta1.DepService/DeleteExtensionBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.DepService",
+                        "DeleteExtensionBinding",
                     ),
                 );
             self.inner.unary(req, path, codec).await

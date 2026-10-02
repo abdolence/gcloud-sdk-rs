@@ -301,6 +301,9 @@ pub struct Context {
     /// Why: Business jargon (e.g., YTD revenue is calculated as…, Retirement Age
     /// is 65 in the USA, etc) and system instructions (e.g., answer like a Pirate)
     /// can help the model understand the business context around a user question.
+    ///
+    /// Must be at most 250,000 bytes (approx. 250,000 characters for English
+    /// text).
     #[prost(string, tag = "1")]
     pub system_instruction: ::prost::alloc::string::String,
     /// Required. Data sources that are available for answering the question.
@@ -465,6 +468,8 @@ pub struct BigQueryRoutineReference {
 pub struct ExampleQuery {
     /// Optional. A natural language question that a user might ask.
     /// For example: "How many orders were placed last month?"
+    ///
+    /// Must be at most 2,000 bytes (approx. 2,000 characters).
     #[prost(string, tag = "1")]
     pub natural_language_question: ::prost::alloc::string::String,
     /// Optional. The list of query parameters.
@@ -487,6 +492,8 @@ pub mod example_query {
         /// Optional. The SQL query that should be generated to answer the natural
         /// language question. For example: "SELECT COUNT(\*) FROM orders WHERE
         /// order_date BETWEEN '2024-01-01' AND '2024-01-31'"
+        ///
+        /// Must be at most 50,000 bytes (approx. 50,000 characters).
         #[prost(string, tag = "101")]
         SqlQuery(::prost::alloc::string::String),
     }
@@ -540,6 +547,8 @@ pub struct QueryParameterValues {
 pub struct LookerGoldenQuery {
     /// Optional. Natural language questions that a user might ask.
     /// For example: "How many orders were placed last month?"
+    ///
+    /// Must be at most 2,000 bytes per question (approx. 2,000 characters).
     #[prost(string, repeated, tag = "4")]
     pub natural_language_questions: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -547,6 +556,69 @@ pub struct LookerGoldenQuery {
     /// Optional. The Looker Query corresponding to the natural language questions.
     #[prost(message, optional, tag = "5")]
     pub looker_query: ::core::option::Option<LookerQuery>,
+}
+/// A dynamic field in Looker (Custom Dimension, Custom Measure, or Table
+/// Calculation).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DynamicField {
+    /// Optional. The type of dynamic field: dimension, measure, table_calculation.
+    /// Looker can use the category type to specify the name of the dynamic field.
+    /// However, Looker Conversational Analytics keeps the category separate from
+    /// the name of the dynamic field. For more details, see
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#dynamic_fields.>
+    #[prost(string, optional, tag = "1")]
+    pub category: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The name of the dynamic field in LookML.
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The label defines the display name of the dynamic field.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. For custom measures, this identifies the measure the field is
+    /// based on.
+    #[prost(string, optional, tag = "4")]
+    pub based_on: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. For custom measures, this identifies the type of aggregation
+    /// (e.g. sum).
+    #[prost(string, optional, tag = "5")]
+    pub r#type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Description of the dynamic field.
+    #[prost(string, optional, tag = "6")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Looker expression to create a table calculation.
+    #[prost(string, optional, tag = "7")]
+    pub expression: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Looker expression to filter a base measure.
+    #[prost(string, optional, tag = "8")]
+    pub filter_expression: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Value format for the dynamic field.
+    #[prost(string, optional, tag = "9")]
+    pub value_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Value format name for the dynamic field if using a default named
+    /// format.
+    #[prost(string, optional, tag = "10")]
+    pub value_format_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Calculation type for table calculations. Refer to
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#calculation_type>
+    /// for all possible values depending on the `category` of dynamic field.
+    #[prost(string, optional, tag = "11")]
+    pub calculation_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Arguments for custom groups, custom bins, or shortcut
+    /// calculations. For more details, refer to
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#args_for_custom_groups>
+    #[prost(string, repeated, tag = "12")]
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Identifies whether the dynamic field returns a dimension or
+    /// measure.
+    #[prost(string, optional, tag = "13")]
+    pub kind_hint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Identifies the data type the dynamic field's expression should
+    /// produce.
+    #[prost(string, optional, tag = "14")]
+    pub type_hint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Whether the dynamic field is disabled.
+    #[prost(bool, optional, tag = "15")]
+    pub is_disabled: ::core::option::Option<bool>,
 }
 /// Looker Query Object
 /// [Looker API
@@ -571,6 +643,9 @@ pub struct LookerQuery {
     /// Optional. Limit in the query.
     #[prost(string, optional, tag = "6")]
     pub limit: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The dynamic fields used in the query.
+    #[prost(message, repeated, tag = "9")]
+    pub dynamic_fields: ::prost::alloc::vec::Vec<DynamicField>,
     /// Optional. The primary identifier for the query resource in Looker, used for
     /// API operations. Maps to `id` (or `slug`) in the Looker API `Query`
     /// resource.
@@ -602,11 +677,15 @@ pub mod looker_query {
 pub struct GlossaryTerm {
     /// Required. User friendly display name of the glossary term being defined.
     /// For example: "CTR", "conversion rate", "pending"
+    ///
+    /// Must be at most 256 bytes.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
     /// Required. The description or meaning of the term.
     /// For example: "Click-through rate", "The percentage of users who complete a
     /// desired action", "An order that is waiting to be processed."
+    ///
+    /// Must be at most 5,000 bytes (approx. 5,000 characters).
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Optional. A list of general purpose labels associated to this term.
@@ -644,13 +723,10 @@ pub mod conversation_options {
     #[repr(i32)]
     pub enum Model {
         /// No model specified. The model may be set on the chat request, or the
-        /// default model will be used. Currently, this is
-        /// `gemini-3.0-flash-preview`.
+        /// default model will be used.
         Unspecified = 0,
-        /// Use the most up-to-date non-preview model. Currently, this is
-        /// `gemini-2.5-flash`. This constrains the request level settings. The
-        /// default will change to `gemini-2.5-flash`, and setting `thinking_mode`
-        /// will not be supported.
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
         LatestGaModel = 1,
     }
     impl Model {
@@ -819,6 +895,9 @@ pub struct Conversation {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The display name for the conversation (max 63 chars).
+    #[prost(string, tag = "6")]
+    pub title: ::prost::alloc::string::String,
     /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
     /// Conversation resources. Encryption will happen at Titan layer, we will pass
     /// the KMS key to Titan.
@@ -827,9 +906,6 @@ pub struct Conversation {
     /// projects/{project_id}/locations/{location}/keyRings/{key_ring_name}/cryptoKeys/{key_name}.
     #[prost(string, optional, tag = "10")]
     pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. Whether memory is paused for this conversation.
-    #[prost(bool, optional, tag = "11")]
-    pub memory_paused: ::core::option::Option<bool>,
 }
 /// Request for creating a conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -852,6 +928,28 @@ pub struct CreateConversationRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for updating a conversation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversationRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub conversation: ::core::option::Option<Conversation>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// Conversation resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields with non-default values
+    /// present in the request will be overwritten. If a wildcard mask is provided,
+    /// all fields will be overwritten.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for getting a conversation based on parent and conversation id.
@@ -1038,6 +1136,57 @@ pub struct DataAgent {
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, optional, tag = "14")]
     pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Controls whether BigQuery Agent Analytics trace logging is
+    /// enabled for the agent.
+    ///
+    /// BigQuery Agent Analytics is in Preview and is delivered to enrolled
+    /// projects only. In a project that is not enrolled this field is accepted
+    /// and stored, but no trace rows are written and no error is returned.
+    ///
+    /// Trace logging is additionally suppressed for the entire turn, without
+    /// error, when any table in the agent's datasource carries row-level
+    /// security, column-level security or policy tags. It is also suppressed
+    /// when that determination cannot be made, for example when the caller
+    /// lacks permission to list a table's row access policies.
+    ///
+    /// Trace rows are written only when this is `true` and
+    /// `bigquery_agent_analytics_table` is set. On a BigQuery agent, enabling
+    /// this without a table has no effect: no table is created for the agent
+    /// and no rows are written. On an agent whose datasource is not BigQuery,
+    /// `CreateDataAgent` rejects either field with `INVALID_ARGUMENT`.
+    ///
+    /// This setting is independent of the project-level BigQuery Agent Analytics
+    /// setting configured through `SetAgentOpsObservability`. An agent does not
+    /// inherit that setting.
+    #[prost(bool, optional, tag = "18")]
+    pub bigquery_agent_analytics_enabled: ::core::option::Option<bool>,
+    /// Optional. The BigQuery table that BigQuery Agent Analytics trace rows are
+    /// written to. Has no effect unless `bigquery_agent_analytics_enabled` is
+    /// `true`. The Preview enrollment described on that field applies here too.
+    ///
+    /// The trace table is validated when it is set on `CreateDataAgent`, or when
+    /// it is included in the `update_mask` of an `UpdateDataAgent` call. The
+    /// following are rejected with `INVALID_ARGUMENT`:
+    ///
+    /// * The table must belong to the same project as the agent.
+    /// * The agent's datasource must be BigQuery. BigQuery Agent Analytics is not
+    ///   supported for Looker, Looker Studio or AlloyDB agents.
+    ///
+    /// These are validated against the agent as sent in the request. An agent
+    /// that carries no datasource is not validated, and an agent switched to a
+    /// non-BigQuery datasource is not re-validated; in the latter case no trace
+    /// rows are written.
+    ///
+    /// The destination dataset must already exist and must grant write access to
+    /// the project's Gemini Data Analytics service agent, whose address is
+    /// `service-PROJECT_NUMBER@gcp-sa-geminidataanalytics.iam.gserviceaccount.com`
+    /// (that grant is not performed on your behalf). Without it the agent answers
+    /// normally and no trace rows are written.
+    ///
+    /// Changing the table on an existing agent affects subsequent turns only. Rows
+    /// already written to the previous table are left in place.
+    #[prost(message, optional, tag = "19")]
+    pub bigquery_agent_analytics_table: ::core::option::Option<BigQueryTableReference>,
     /// The type of the agent. Can be one of the following:
     ///
     /// * Data analytics agent.
@@ -1087,6 +1236,12 @@ pub struct ListDataAgentsRequest {
     /// Defaults to false.
     #[prost(bool, tag = "6")]
     pub show_deleted: bool,
+    /// Optional. Filter for the creator of the agent.
+    #[prost(
+        enumeration = "list_accessible_data_agents_request::CreatorFilter",
+        tag = "8"
+    )]
+    pub creator_filter: i32,
 }
 /// Message for response to listing DataAgents.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1318,6 +1473,92 @@ pub struct OperationMetadata {
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// Request for SetAgentOpsObservability.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityRequest {
+    /// Required. Parent value for SetAgentOpsObservabilityRequest.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Whether to enable or disable AgentOps observability.
+    /// When update_mask is provided, this field is ignored unless specified in the
+    /// mask.
+    #[prost(bool, tag = "2")]
+    pub telemetry_enabled: bool,
+    /// Required. The data source type for which to set observability settings.
+    /// Examples: "bigquery", "looker"
+    #[prost(string, tag = "3")]
+    pub data_source_type: ::prost::alloc::string::String,
+    /// Optional. Whether BigQuery Agent Analytics is enabled.
+    /// Note: An explicit `update_mask` containing "bqaa_enabled" is required to
+    /// modify this field. If `update_mask` is omitted, this field is ignored and
+    /// an existing enabled setting cannot be disabled.
+    ///
+    /// This is a project-level setting and does not by itself enable trace
+    /// logging for any individual agent. Per-agent trace logging is controlled
+    /// by `DataAgent.bigquery_agent_analytics_enabled` together with
+    /// `DataAgent.bigquery_agent_analytics_table`; an agent does not inherit
+    /// this setting.
+    #[prost(bool, tag = "4")]
+    pub bqaa_enabled: bool,
+    /// Optional. Field mask is used to specify the fields to be overwritten by the
+    /// update. The fields specified in the update_mask are relative to the
+    /// resource. A field will be overwritten if it is in the mask.
+    ///
+    /// If the user does not provide a mask, only `telemetry_enabled` will be
+    /// updated (for backward compatibility with legacy callers). Note that
+    /// disabling BigQuery Agent Analytics (`bqaa_enabled = false`) requires
+    /// providing an explicit `update_mask` containing "bqaa_enabled".
+    ///
+    /// Per AIP-161:
+    ///
+    /// * The special wildcard value '\*' is supported to update all fields.
+    /// * Field paths should use snake_case, though camelCase equivalents
+    ///   (`telemetryEnabled`, `bqaaEnabled`) are accepted for REST/JSON
+    ///   transcoding compatibility.
+    #[prost(message, optional, tag = "5")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Response for SetAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityResponse {}
+/// Metadata for SetAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityMetadata {}
+/// Request for RetrieveAgentOpsObservability.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetrieveAgentOpsObservabilityRequest {
+    /// Required. Parent value for RetrieveAgentOpsObservabilityRequest.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The data source type for which to retrieve observability
+    /// settings. Examples: "bigquery", "looker"
+    #[prost(string, tag = "2")]
+    pub data_source_type: ::prost::alloc::string::String,
+}
+/// Response for RetrieveAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetrieveAgentOpsObservabilityResponse {
+    /// Output only. Whether AgentOps observability telemetry is enabled.
+    #[prost(bool, tag = "1")]
+    pub telemetry_enabled: bool,
+    /// Output only. Whether BigQuery API is enabled.
+    #[prost(bool, tag = "3")]
+    pub bigquery_enabled: bool,
+    /// Output only. Whether Cloud Trace API is enabled.
+    #[prost(bool, tag = "4")]
+    pub cloud_trace_enabled: bool,
+    /// Output only. Whether Cloud Monitoring API is enabled.
+    #[prost(bool, tag = "5")]
+    pub cloud_monitoring_enabled: bool,
+    /// Output only. Whether Cloud Logging API is enabled.
+    #[prost(bool, tag = "6")]
+    pub cloud_logging_enabled: bool,
+    /// Output only. Whether BigQuery Agent Analytics is enabled.
+    #[prost(bool, tag = "7")]
+    pub bqaa_enabled: bool,
 }
 /// Generated client implementations.
 pub mod data_agent_service_client {
@@ -1734,6 +1975,68 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Enables/Disables required GCP services and configures AgentOps
+        /// observability settings calling the Admin Settings executable node to
+        /// update the AgentOps Observability feature.
+        pub async fn set_agent_ops_observability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetAgentOpsObservabilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1.DataAgentService/SetAgentOpsObservability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "SetAgentOpsObservability",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets AgentOps observability settings and status of required services.
+        pub async fn retrieve_agent_ops_observability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveAgentOpsObservabilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RetrieveAgentOpsObservabilityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1.DataAgentService/RetrieveAgentOpsObservability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1.DataAgentService",
+                        "RetrieveAgentOpsObservability",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Request for listing chat messages based on parent and conversation_id.
@@ -1840,7 +2143,8 @@ pub mod chat_request {
     )]
     #[repr(i32)]
     pub enum ThinkingMode {
-        /// Unspecified thinking mode, agent will use THINKING mode by default.
+        /// Unspecified thinking mode, agent will use THINKING mode by default except
+        /// for BigQuery user defaulting to FAST mode by default.
         Unspecified = 0,
         /// Fast mode, answers quickly.
         Fast = 1,
@@ -1869,7 +2173,7 @@ pub mod chat_request {
             }
         }
     }
-    /// Model selection for the agent.
+    /// Model selection for the agent for BigQuery users.
     #[derive(
         Clone,
         Copy,
@@ -1883,13 +2187,10 @@ pub mod chat_request {
     )]
     #[repr(i32)]
     pub enum Model {
-        /// No model specified. The default model will be used. Currently, this is
-        /// `gemini-3.0-flash-preview`.
+        /// No model specified. Either preview or non preview model can be used.
         Unspecified = 0,
-        /// Use the most up-to-date non-preview model. Currently, this is
-        /// `gemini-2.5-flash`. This constrains the request level settings. The
-        /// default will change to `gemini-2.5-flash`, and setting `thinking_mode`
-        /// will not be supported.
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
         LatestGaModel = 1,
     }
     impl Model {
@@ -2710,6 +3011,33 @@ pub mod data_chat_service_client {
                     GrpcMethod::new(
                         "google.cloud.geminidataanalytics.v1.DataChatService",
                         "DeleteConversation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a conversation.
+        pub async fn update_conversation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Conversation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1.DataChatService/UpdateConversation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1.DataChatService",
+                        "UpdateConversation",
                     ),
                 );
             self.inner.unary(req, path, codec).await

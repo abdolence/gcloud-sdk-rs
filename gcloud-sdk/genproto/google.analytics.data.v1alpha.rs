@@ -762,6 +762,11 @@ pub struct ResponseMetaData {
     /// Identifies the type of data in the report.
     #[prost(enumeration = "Section", tag = "10")]
     pub section: i32,
+    /// If set, indicate there is data truncation in the report.
+    #[prost(message, repeated, tag = "11")]
+    pub data_truncation_reasons: ::prost::alloc::vec::Vec<
+        response_meta_data::DataTruncationReason,
+    >,
 }
 /// Nested message and enum types in `ResponseMetaData`.
 pub mod response_meta_data {
@@ -794,6 +799,139 @@ pub mod response_meta_data {
                 tag = "2"
             )]
             pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
+        }
+    }
+    /// Describes a reason for data truncation in the report.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataTruncationReason {
+        /// The type of data truncation.
+        #[prost(
+            enumeration = "data_truncation_reason::DataTruncationType",
+            optional,
+            tag = "1"
+        )]
+        pub data_truncation_type: ::core::option::Option<i32>,
+        /// A descriptive message explaining the data truncation.
+        #[prost(string, optional, tag = "2")]
+        pub data_truncation_message: ::core::option::Option<
+            ::prost::alloc::string::String,
+        >,
+        /// The data truncation date in the format YYYY-MM-DD.
+        /// Indicates data before this date is truncated.
+        #[prost(string, optional, tag = "3")]
+        pub data_truncation_date: ::core::option::Option<::prost::alloc::string::String>,
+        /// The truncated date ranges.
+        #[prost(message, repeated, tag = "4")]
+        pub data_truncation_date_ranges: ::prost::alloc::vec::Vec<
+            data_truncation_reason::DataTruncationDateRange,
+        >,
+    }
+    /// Nested message and enum types in `DataTruncationReason`.
+    pub mod data_truncation_reason {
+        /// Define the truncated date range from start_date to end_date.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct DataTruncationDateRange {
+            /// The start date in the format YYYY-MM-DD (inclusive).
+            #[prost(string, optional, tag = "1")]
+            pub start_date: ::core::option::Option<::prost::alloc::string::String>,
+            /// The end date in the format YYYY-MM-DD (inclusive).
+            #[prost(string, optional, tag = "2")]
+            pub end_date: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// The type of data truncation.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DataTruncationType {
+            /// Unspecified type.
+            Unspecified = 0,
+            /// Data is truncated in attribution report for rules-based models golden
+            /// date.
+            RulesBasedModels = 1,
+            /// Data is truncated in attribution report for data driven attribution
+            /// golden date.
+            DataDrivenAttribution = 2,
+            /// Data is truncated because DV360 policy does not permit data older than
+            /// 2 years from being returned.
+            Dv360 = 3,
+            /// Data is truncated because CM360 policy does not permit data older than
+            /// 2 years from being returned.
+            Cm360 = 4,
+            /// New item-scoped ecommerce metrics only have data after a specific date.
+            ItemScopedEcommerceMetrics = 5,
+            /// New event-scoped ecommerce metrics only have data after a specific
+            /// date.
+            EventScopedEcommerceMetrics = 6,
+            /// Query date range may not be fully served.
+            DateRange = 7,
+            /// Data truncated because the query attempts to read event data prior
+            /// to its retention date.
+            Property = 8,
+            /// Data is truncated in conversions report.
+            Conversions = 9,
+            /// Data is truncated due to Google Ads 36 month retention policy.
+            GoogleAds = 10,
+        }
+        impl DataTruncationType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "DATA_TRUNCATION_TYPE_UNSPECIFIED",
+                    Self::RulesBasedModels => "DATA_TRUNCATION_TYPE_RULES_BASED_MODELS",
+                    Self::DataDrivenAttribution => {
+                        "DATA_TRUNCATION_TYPE_DATA_DRIVEN_ATTRIBUTION"
+                    }
+                    Self::Dv360 => "DATA_TRUNCATION_TYPE_DV360",
+                    Self::Cm360 => "DATA_TRUNCATION_TYPE_CM360",
+                    Self::ItemScopedEcommerceMetrics => {
+                        "DATA_TRUNCATION_TYPE_ITEM_SCOPED_ECOMMERCE_METRICS"
+                    }
+                    Self::EventScopedEcommerceMetrics => {
+                        "DATA_TRUNCATION_TYPE_EVENT_SCOPED_ECOMMERCE_METRICS"
+                    }
+                    Self::DateRange => "DATA_TRUNCATION_TYPE_DATE_RANGE",
+                    Self::Property => "DATA_TRUNCATION_TYPE_PROPERTY",
+                    Self::Conversions => "DATA_TRUNCATION_TYPE_CONVERSIONS",
+                    Self::GoogleAds => "DATA_TRUNCATION_TYPE_GOOGLE_ADS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DATA_TRUNCATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DATA_TRUNCATION_TYPE_RULES_BASED_MODELS" => {
+                        Some(Self::RulesBasedModels)
+                    }
+                    "DATA_TRUNCATION_TYPE_DATA_DRIVEN_ATTRIBUTION" => {
+                        Some(Self::DataDrivenAttribution)
+                    }
+                    "DATA_TRUNCATION_TYPE_DV360" => Some(Self::Dv360),
+                    "DATA_TRUNCATION_TYPE_CM360" => Some(Self::Cm360),
+                    "DATA_TRUNCATION_TYPE_ITEM_SCOPED_ECOMMERCE_METRICS" => {
+                        Some(Self::ItemScopedEcommerceMetrics)
+                    }
+                    "DATA_TRUNCATION_TYPE_EVENT_SCOPED_ECOMMERCE_METRICS" => {
+                        Some(Self::EventScopedEcommerceMetrics)
+                    }
+                    "DATA_TRUNCATION_TYPE_DATE_RANGE" => Some(Self::DateRange),
+                    "DATA_TRUNCATION_TYPE_PROPERTY" => Some(Self::Property),
+                    "DATA_TRUNCATION_TYPE_CONVERSIONS" => Some(Self::Conversions),
+                    "DATA_TRUNCATION_TYPE_GOOGLE_ADS" => Some(Self::GoogleAds),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1059,6 +1197,61 @@ pub struct FunnelSubReport {
     /// Metadata for the funnel report.
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<FunnelResponseMetadata>,
+}
+/// One block of structured data in chat response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResponseBlock {
+    /// One block of structured data.
+    #[prost(oneof = "response_block::Block", tags = "1, 2")]
+    pub block: ::core::option::Option<response_block::Block>,
+}
+/// Nested message and enum types in `ResponseBlock`.
+pub mod response_block {
+    /// A cell in a data table.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DataTableCell {
+        /// The value of the cell.
+        #[prost(string, tag = "1")]
+        pub value: ::prost::alloc::string::String,
+    }
+    /// Describes a column header in a DataTable.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct DataTableHeader {
+        /// The header name.
+        #[prost(string, tag = "1")]
+        pub header: ::prost::alloc::string::String,
+        /// The data type.
+        #[prost(string, tag = "2")]
+        pub data_type: ::prost::alloc::string::String,
+    }
+    /// A row in a DataTable.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataTableRow {
+        /// The cell values in the row.
+        #[prost(message, repeated, tag = "1")]
+        pub columns: ::prost::alloc::vec::Vec<DataTableCell>,
+    }
+    /// A table of data.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataTable {
+        /// Describes dimension columns. The number of headers and ordering of
+        /// headers matches the dimensions present in rows.
+        #[prost(message, repeated, tag = "1")]
+        pub headers: ::prost::alloc::vec::Vec<DataTableHeader>,
+        /// Rows of dimension value combinations and metric values in the report.
+        #[prost(message, repeated, tag = "2")]
+        pub rows: ::prost::alloc::vec::Vec<DataTableRow>,
+    }
+    /// One block of structured data.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Block {
+        /// A block of text.
+        #[prost(string, tag = "1")]
+        Text(::prost::alloc::string::String),
+        /// A block of table data.
+        #[prost(message, tag = "2")]
+        Table(DataTable),
+    }
 }
 /// User segments are subsets of users who engaged with your site or app. For
 /// example, users who have previously purchased; users who added items to their
@@ -2018,6 +2211,16 @@ pub struct ConversionMetadata {
     /// This conversion's name within the Google Analytics user interface.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
+}
+/// Property quota for chatbot specific fields.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PropertyChatQuota {
+    /// Chat tokens consumed per day.
+    #[prost(message, optional, tag = "1")]
+    pub tokens_per_day: ::core::option::Option<QuotaStatus>,
+    /// Chat tokens consumed per hour.
+    #[prost(message, optional, tag = "2")]
+    pub tokens_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Identifies if the report data is from the standard report data or
 /// conversion data
@@ -3419,6 +3622,42 @@ pub struct ListReportTasksResponse {
     #[prost(string, optional, tag = "2")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Request message for the Chat method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChatRequest {
+    /// Required. The property to chat about.
+    /// Format: properties/{property}
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// Required. The user's query.
+    #[prost(string, tag = "2")]
+    pub user_query: ::prost::alloc::string::String,
+    /// Optional. Provide this session ID to continue an existing conversation
+    /// and maintain context. If this field is empty or unset, a new chat
+    /// session is created. Invalid session IDs will result in an error.
+    #[prost(string, optional, tag = "3")]
+    pub session_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. If true, the response will include the current state of this
+    /// Analytics Property's quota. Quota is returned in
+    /// [PropertyChatQuota](#PropertyChatQuota).
+    #[prost(bool, tag = "4")]
+    pub return_property_quota: bool,
+}
+/// Response message for the Chat method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChatResponse {
+    /// The unique identifier for this chat session. Provide this ID in subsequent
+    /// requests to maintain conversational context.
+    #[prost(string, tag = "1")]
+    pub session_id: ::prost::alloc::string::String,
+    /// The response blocks that make up the chat response. This can include text,
+    /// tables, and lists.
+    #[prost(message, repeated, tag = "2")]
+    pub blocks: ::prost::alloc::vec::Vec<ResponseBlock>,
+    /// This Analytics Property's quota state including this request.
+    #[prost(message, optional, tag = "3")]
+    pub property_quota: ::core::option::Option<PropertyChatQuota>,
+}
 /// The request to generate a report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunReportRequest {
@@ -4219,6 +4458,43 @@ pub mod alpha_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "ListReportTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Provides a chat interface for interacting with Google Analytics data
+        /// through the API.
+        ///
+        /// This product uses AI and may display inaccurate info. Your chat activity
+        /// may be used to improve the product and your use is subject to Google's
+        /// [Terms](https://policies.google.com/terms),
+        /// [AI Use
+        /// Policy](https://policies.google.com/terms/generative-ai/use-policy), and
+        /// [Privacy Policy](https://policies.google.com/privacy).
+        /// [Learn more about Chat AI
+        /// Privacy](https://support.google.com/helpguide/answer/14185196).
+        pub async fn chat(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ChatRequest>,
+        ) -> std::result::Result<tonic::Response<super::ChatResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/Chat",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "Chat",
                     ),
                 );
             self.inner.unary(req, path, codec).await

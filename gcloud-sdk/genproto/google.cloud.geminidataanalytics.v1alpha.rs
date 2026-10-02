@@ -10,14 +10,12 @@ pub struct AgentContextReference {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Credentials {
     /// The kind of credentials.
-    /// }
     #[prost(oneof = "credentials::Kind", tags = "1")]
     pub kind: ::core::option::Option<credentials::Kind>,
 }
 /// Nested message and enum types in `Credentials`.
 pub mod credentials {
     /// The kind of credentials.
-    /// }
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Kind {
         /// OAuth credentials.
@@ -68,7 +66,10 @@ pub mod o_auth_credentials {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasourceReferences {
     /// The datasources to use.
-    #[prost(oneof = "datasource_references::References", tags = "1, 2, 3, 8, 9, 10")]
+    #[prost(
+        oneof = "datasource_references::References",
+        tags = "1, 2, 3, 8, 9, 10, 11, 13"
+    )]
     pub references: ::core::option::Option<datasource_references::References>,
 }
 /// Nested message and enum types in `DatasourceReferences`.
@@ -97,16 +98,34 @@ pub mod datasource_references {
         /// method.
         #[prost(message, tag = "10")]
         CloudSqlReference(super::CloudSqlReference),
+        /// Reference to a Bigtable instance.
+        #[prost(message, tag = "11")]
+        BigtableReference(super::BigtableReference),
+        /// Reference to a Firestore database.
+        #[prost(message, tag = "13")]
+        FirestoreReference(super::FirestoreReference),
     }
 }
 /// Message representing references to BigQuery tables and property graphs.
-/// At least one of `table_references` or `property_graph_references` must be
-/// populated.
+/// At least one of `table_references`, `property_graph_references`, or
+/// `search_scope` must be populated.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryTableReferences {
     /// Optional. References to BigQuery tables.
     #[prost(message, repeated, tag = "1")]
     pub table_references: ::prost::alloc::vec::Vec<BigQueryTableReference>,
+    /// Optional. References to BigQuery graphs.
+    ///
+    /// Note: "property graph" is the former name for BigQuery Graph. The field and
+    /// message names retain the original term for backward compatibility; both
+    /// refer to the same resource.
+    #[prost(message, repeated, tag = "2")]
+    pub property_graph_references: ::prost::alloc::vec::Vec<
+        BigQueryPropertyGraphReference,
+    >,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "4")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -127,7 +146,7 @@ pub struct BigQueryTableReference {
 /// Message representing references to Looker Studio datasources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StudioDatasourceReferences {
-    /// The references to the studio datasources.
+    /// Optional. The references to the studio datasources.
     #[prost(message, repeated, tag = "2")]
     pub studio_references: ::prost::alloc::vec::Vec<StudioDatasourceReference>,
 }
@@ -140,7 +159,7 @@ pub struct StudioDatasourceReference {
 }
 /// Message representing reference to an AlloyDB database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlloyDbReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -150,8 +169,45 @@ pub struct AlloyDbReference {
     #[prost(message, optional, tag = "3")]
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
+/// Message representing a table including its schema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseTableReference {
+    /// Required. The name of the table as defined in the database.
+    ///
+    /// Note: The precise rules for table naming, including valid characters,
+    /// length limits, and case sensitivity, are determined by the specific
+    /// database system.
+    ///
+    /// Requirements:
+    ///
+    /// * Exact Match: The provided name must be identical to the name stored
+    ///   in the database.
+    /// * Case Sensitivity: Respect the case sensitivity rules of the specific
+    ///   database system and how the table was created. For example, "Orders"
+    ///   and "orders" may be distinct table names.
+    /// * Special Characters/Keywords: If the table name includes spaces, special
+    ///   characters, or is a database reserved keyword, provide the literal name
+    ///   as it is stored. Do not add any database-specific identifier quoting
+    ///   characters (e.g., ", \`, \[\]).
+    ///
+    /// Examples:
+    ///
+    /// * Simple name: "orders", "UserActivity"
+    /// * Case sensitive: "MyTable"
+    /// * Name with spaces: "Order Details"
+    /// * Name with other special characters: "user/data", "order-items"
+    /// * Name that is a keyword: "Group", "Order"
+    ///
+    /// Permissions: The caller's credentials must have the necessary database
+    /// permissions to access the table's schema and data.
+    #[prost(string, tag = "1")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Optional. The schema of the table.
+    #[prost(message, optional, tag = "2")]
+    pub schema: ::core::option::Option<Schema>,
+}
 /// Message representing a reference to a single AlloyDB database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlloyDbDatabaseReference {
     /// Required. The project the instance belongs to.
     #[prost(string, tag = "1")]
@@ -171,10 +227,73 @@ pub struct AlloyDbDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "6")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "7")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+}
+/// Message representing reference to a Bigtable instance and agent context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigtableReference {
+    /// Required. Singular proto that supports specifying which database and tables
+    /// to include.
+    #[prost(message, optional, tag = "1")]
+    pub database_reference: ::core::option::Option<BigtableDatabaseReference>,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "2")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
+}
+/// Message representing reference to Bigtable database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigtableDatabaseReference {
+    /// Required. The project the instance belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The instance id.
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Optional. The table ids. Denotes all tables if unset.
+    #[prost(string, repeated, tag = "3")]
+    pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "4")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+}
+/// Message representing reference to a Firestore database and agent context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FirestoreReference {
+    /// Required. Singular proto that supports specifying which database and tables
+    /// to include.
+    #[prost(message, optional, tag = "1")]
+    pub database_reference: ::core::option::Option<FirestoreDatabaseReference>,
+    /// Optional. Parameters for retrieving data from Agent Context.
+    #[prost(message, optional, tag = "2")]
+    pub agent_context_reference: ::core::option::Option<AgentContextReference>,
+}
+/// Message representing a reference to a single Firestore database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FirestoreDatabaseReference {
+    /// Required. Project the firestore database belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The database id.
+    #[prost(string, tag = "2")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Optional. The collection ids. Denotes all collections if unset.
+    #[prost(string, repeated, tag = "3")]
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to collections within the database. Each reference
+    /// specifies a collection and can optionally include the collection's schema
+    /// to provide context for the query.
+    #[prost(message, repeated, tag = "4")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
 }
 /// Message representing reference to a Spanner database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -185,7 +304,7 @@ pub struct SpannerReference {
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single Spanner database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerDatabaseReference {
     /// Required. The engine of the Spanner instance.
     #[prost(enumeration = "spanner_database_reference::Engine", tag = "6")]
@@ -193,9 +312,6 @@ pub struct SpannerDatabaseReference {
     /// Required. The project the instance belongs to.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
-    /// Required. The region of the instance.
-    #[prost(string, tag = "2")]
-    pub region: ::prost::alloc::string::String,
     /// Required. The instance id.
     #[prost(string, tag = "3")]
     pub instance_id: ::prost::alloc::string::String,
@@ -205,6 +321,22 @@ pub struct SpannerDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "5")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "7")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
+    /// Optional. Priority for the queries to Spanner. Should be a value supported
+    /// by Cloud Spanner e.g.: LOW, MEDIUM, HIGH. Unsupported values will be
+    /// ignored. See
+    /// <https://docs.cloud.google.com/spanner/docs/reference/rest/v1/RequestOptions#Priority>
+    /// for complete list.
+    #[prost(string, tag = "8")]
+    pub priority: ::prost::alloc::string::String,
+    /// Tag to be attached to all queries to Spanner. Allows to identify and
+    /// monitor queries sent to Spanner by the GDA service.
+    #[prost(string, tag = "9")]
+    pub request_tag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SpannerDatabaseReference`.
 pub mod spanner_database_reference {
@@ -254,7 +386,7 @@ pub mod spanner_database_reference {
 }
 /// Message representing reference to a CloudSQL database and agent context.
 /// Only supported for the `QueryData` method.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlReference {
     /// Required. Singular proto that supports specifying which database and tables
     /// to include.
@@ -265,7 +397,7 @@ pub struct CloudSqlReference {
     pub agent_context_reference: ::core::option::Option<AgentContextReference>,
 }
 /// Message representing a reference to a single CloudSQL database.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlDatabaseReference {
     /// Required. The engine of the Cloud SQL instance.
     #[prost(enumeration = "cloud_sql_database_reference::Engine", tag = "1")]
@@ -285,6 +417,11 @@ pub struct CloudSqlDatabaseReference {
     /// Optional. The table ids. Denotes all tables if unset.
     #[prost(string, repeated, tag = "7")]
     pub table_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. References to tables within the database. Each reference
+    /// specifies a table and can optionally include the table's schema to provide
+    /// context for the query.
+    #[prost(message, repeated, tag = "8")]
+    pub database_table_references: ::prost::alloc::vec::Vec<DatabaseTableReference>,
 }
 /// Nested message and enum types in `CloudSqlDatabaseReference`.
 pub mod cloud_sql_database_reference {
@@ -338,12 +475,14 @@ pub struct LookerExploreReferences {
     /// Required. References to Looker explores.
     #[prost(message, repeated, tag = "1")]
     pub explore_references: ::prost::alloc::vec::Vec<LookerExploreReference>,
-    /// Optional. The credentials to use when calling the Looker API.
+    /// Optional. Deprecated: Use credentials in ChatRequest.
+    /// The credentials to use when calling the Looker API.
     ///
     /// Currently supports both OAuth token and API key-based credentials, as
     /// described in
     /// [Authentication with an
     /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub credentials: ::core::option::Option<Credentials>,
 }
@@ -382,6 +521,19 @@ pub mod looker_explore_reference {
         PrivateLookerInstanceInfo(super::PrivateLookerInstanceInfo),
     }
 }
+/// Message representing a reference to a single BigQuery property graph.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryPropertyGraphReference {
+    /// Required. The project that the property graph belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The dataset that the property graph belongs to.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. The property graph id.
+    #[prost(string, tag = "3")]
+    pub property_graph_id: ::prost::alloc::string::String,
+}
 /// Message representing a private Looker instance info required if the Looker
 /// instance is behind a private network.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -408,7 +560,7 @@ pub struct Datasource {
     #[prost(message, optional, tag = "10")]
     pub struct_schema: ::core::option::Option<::prost_types::Struct>,
     /// The reference to the datasource.
-    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14")]
+    #[prost(oneof = "datasource::Reference", tags = "1, 2, 4, 12, 13, 14, 15, 16, 17")]
     pub reference: ::core::option::Option<datasource::Reference>,
 }
 /// Nested message and enum types in `Datasource`.
@@ -434,6 +586,15 @@ pub mod datasource {
         /// A reference to a CloudSQL database.
         #[prost(message, tag = "14")]
         CloudSqlReference(super::CloudSqlReference),
+        /// A reference to a Bigtable instance.
+        #[prost(message, tag = "15")]
+        BigtableReference(super::BigtableReference),
+        /// A reference to a BigQuery property graph.
+        #[prost(message, tag = "16")]
+        BigqueryPropertyGraphReference(super::BigQueryPropertyGraphReference),
+        /// A reference to a Firestore database.
+        #[prost(message, tag = "17")]
+        FirestoreReference(super::FirestoreReference),
     }
 }
 /// The schema of a Datasource or QueryResult instance.
@@ -499,8 +660,6 @@ pub struct Field {
     #[prost(message, repeated, tag = "9")]
     pub subfields: ::prost::alloc::vec::Vec<Field>,
     /// Optional. Field category, not required, currently only useful for Looker.
-    /// We are using a string to avoid depending on an external package and keep
-    /// this package self-contained.
     #[prost(string, tag = "10")]
     pub category: ::prost::alloc::string::String,
     /// Optional. Looker only. Value format of the field.
@@ -566,6 +725,9 @@ pub struct Context {
     /// Why: Business jargon (e.g., YTD revenue is calculated as…, Retirement Age
     /// is 65 in the USA, etc) and system instructions (e.g., answer like a Pirate)
     /// can help the model understand the business context around a user question.
+    ///
+    /// Must be at most 250,000 bytes (approx. 250,000 characters for English
+    /// text).
     #[prost(string, tag = "1")]
     pub system_instruction: ::prost::alloc::string::String,
     /// Required. Data sources that are available for answering the question.
@@ -576,21 +738,26 @@ pub struct Context {
     pub options: ::core::option::Option<ConversationOptions>,
     /// Optional. A list of example queries, providing examples of relevant and
     /// commonly used SQL queries and their corresponding natural language queries
-    /// optionally present. Currently only used for BigQuery data sources.
+    /// optionally present. Currently only used for BigQuery data sources and
+    /// databases (alloydb, cloudsql, spanner) data sources.
     #[prost(message, repeated, tag = "5")]
     pub example_queries: ::prost::alloc::vec::Vec<ExampleQuery>,
     /// Optional. A list of golden queries, providing examples of relevant and
     /// commonly used Looker queries and their corresponding natural language
-    /// queries optionally present.
+    /// queries optionally present. Only supported for Looker data sources.
     #[prost(message, repeated, tag = "11")]
     pub looker_golden_queries: ::prost::alloc::vec::Vec<LookerGoldenQuery>,
     /// Optional. Term definitions (currently, only user authored)
+    /// Not supported for databases (alloydb, cloudsql, spanner) data sources.
     #[prost(message, repeated, tag = "8")]
     pub glossary_terms: ::prost::alloc::vec::Vec<GlossaryTerm>,
     /// Optional. Relationships between table schema, including referencing and
     /// referenced columns.
     #[prost(message, repeated, tag = "9")]
     pub schema_relationships: ::prost::alloc::vec::Vec<context::SchemaRelationship>,
+    /// Optional. A collection of user functions to be included in context.
+    #[prost(message, optional, tag = "10")]
+    pub user_functions: ::core::option::Option<UserFunctions>,
 }
 /// Nested message and enum types in `Context`.
 pub mod context {
@@ -611,10 +778,15 @@ pub mod context {
         /// index in the `left_schema_paths` list.
         #[prost(message, optional, tag = "2")]
         pub right_schema_paths: ::core::option::Option<schema_relationship::SchemaPaths>,
-        /// Sources which generated the schema relation edge.
-        #[prost(enumeration = "schema_relationship::Source", repeated, tag = "3")]
+        /// Optional. Sources which generated the schema relation edge.
+        #[prost(
+            enumeration = "schema_relationship::Source",
+            repeated,
+            packed = "false",
+            tag = "3"
+        )]
         pub sources: ::prost::alloc::vec::Vec<i32>,
-        /// A confidence score for the suggested relationship.
+        /// Optional. A confidence score for the suggested relationship.
         /// Manually added edges have the highest confidence score.
         #[prost(float, tag = "4")]
         pub confidence_score: f32,
@@ -682,15 +854,54 @@ pub mod context {
         }
     }
 }
+/// A collection of user functions to be included in context.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserFunctions {
+    /// A list of BigQuery routines to include in the context.
+    #[prost(message, repeated, tag = "1")]
+    pub bq_routines: ::prost::alloc::vec::Vec<BigQueryRoutine>,
+}
+/// A reference to a BigQuery routine.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryRoutine {
+    /// The reference to the BigQuery routine.
+    #[prost(message, optional, tag = "1")]
+    pub routine_reference: ::core::option::Option<BigQueryRoutineReference>,
+    /// User override or addition to description, to tell the agent when to use the
+    /// UDF.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+}
+/// A reference to a BigQuery routine.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BigQueryRoutineReference {
+    /// The project ID of the routine.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The dataset ID of the routine.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// The routine ID of the routine.
+    #[prost(string, tag = "3")]
+    pub routine_id: ::prost::alloc::string::String,
+}
 /// Example of relevant and commonly used SQL query and its corresponding natural
 /// language queries optionally present. Currently only used for BigQuery data
 /// sources.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExampleQuery {
     /// Optional. A natural language question that a user might ask.
     /// For example: "How many orders were placed last month?"
+    ///
+    /// Must be at most 2,000 bytes (approx. 2,000 characters).
     #[prost(string, tag = "1")]
     pub natural_language_question: ::prost::alloc::string::String,
+    /// Optional. The list of query parameters.
+    /// Example: The parameterized SQL query
+    /// "SELECT * FROM my_table WHERE id = @id" can be matched with any value of
+    /// id.
+    #[prost(message, repeated, tag = "3")]
+    pub parameters: ::prost::alloc::vec::Vec<QueryParameter>,
     /// The SQL or Looker query that should be generated to answer the natural
     /// language query.
     #[prost(oneof = "example_query::Query", tags = "101")]
@@ -705,9 +916,54 @@ pub mod example_query {
         /// Optional. The SQL query that should be generated to answer the natural
         /// language question. For example: "SELECT COUNT(\*) FROM orders WHERE
         /// order_date BETWEEN '2024-01-01' AND '2024-01-31'"
+        ///
+        /// Must be at most 50,000 bytes (approx. 50,000 characters).
         #[prost(string, tag = "101")]
         SqlQuery(::prost::alloc::string::String),
     }
+}
+/// A query parameter message represents a parameter that can be used to
+/// parameterize a SQL query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryParameter {
+    /// Required. The name of the parameter reference in the SQL query.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The description of the parameter that can be used by LLM to
+    /// extract the parameter value from the user question.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The data type of the parameter, e.g. "STRING", "INT64", "DATE",
+    /// etc. For valid values, see the [BigQuery
+    /// documentation](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>).
+    /// This will be used to populate
+    /// google.cloud.bigquery.v2.QueryParameterType.type.
+    #[prost(string, tag = "3")]
+    pub data_type: ::prost::alloc::string::String,
+}
+/// A matched query message represents the agent having matched one of the
+/// example queries supplied in context as being applicable to the current
+/// question. It will also contain additional info during the matching process.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MatchedQuery {
+    /// The query that was matched based on an example query.
+    #[prost(message, optional, tag = "1")]
+    pub example_query: ::core::option::Option<ExampleQuery>,
+    /// The extracted values for the query parameters.
+    #[prost(message, repeated, tag = "2")]
+    pub query_parameter_values: ::prost::alloc::vec::Vec<QueryParameterValues>,
+}
+/// A query parameter values message represents the values for the query
+/// parameters that were extracted from the user question by LLM, based on the
+/// example query.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryParameterValues {
+    /// Required. The name of the parameter.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The value of the parameter.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
 }
 /// A golden query for Looker, including natural language questions and a
 /// corresponding Looker Query. Analogous to ExampleQuery.
@@ -715,6 +971,8 @@ pub mod example_query {
 pub struct LookerGoldenQuery {
     /// Optional. Natural language questions that a user might ask.
     /// For example: "How many orders were placed last month?"
+    ///
+    /// Must be at most 2,000 bytes per question (approx. 2,000 characters).
     #[prost(string, repeated, tag = "4")]
     pub natural_language_questions: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -722,6 +980,69 @@ pub struct LookerGoldenQuery {
     /// Optional. The Looker Query corresponding to the natural language questions.
     #[prost(message, optional, tag = "5")]
     pub looker_query: ::core::option::Option<LookerQuery>,
+}
+/// A dynamic field in Looker (Custom Dimension, Custom Measure, or Table
+/// Calculation).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DynamicField {
+    /// Optional. The type of dynamic field: dimension, measure, table_calculation.
+    /// Looker can use the category type to specify the name of the dynamic field.
+    /// However, Looker Conversational Analytics keeps the category separate from
+    /// the name of the dynamic field. For more details, see
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#dynamic_fields.>
+    #[prost(string, optional, tag = "1")]
+    pub category: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The name of the dynamic field in LookML.
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The label defines the display name of the dynamic field.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. For custom measures, this identifies the measure the field is
+    /// based on.
+    #[prost(string, optional, tag = "4")]
+    pub based_on: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. For custom measures, this identifies the type of aggregation
+    /// (e.g. sum).
+    #[prost(string, optional, tag = "5")]
+    pub r#type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Description of the dynamic field.
+    #[prost(string, optional, tag = "6")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Looker expression to create a table calculation.
+    #[prost(string, optional, tag = "7")]
+    pub expression: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Looker expression to filter a base measure.
+    #[prost(string, optional, tag = "8")]
+    pub filter_expression: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Value format for the dynamic field.
+    #[prost(string, optional, tag = "9")]
+    pub value_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Value format name for the dynamic field if using a default named
+    /// format.
+    #[prost(string, optional, tag = "10")]
+    pub value_format_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Calculation type for table calculations. Refer to
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#calculation_type>
+    /// for all possible values depending on the `category` of dynamic field.
+    #[prost(string, optional, tag = "11")]
+    pub calculation_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Arguments for custom groups, custom bins, or shortcut
+    /// calculations. For more details, refer to
+    /// <https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#args_for_custom_groups>
+    #[prost(string, repeated, tag = "12")]
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Identifies whether the dynamic field returns a dimension or
+    /// measure.
+    #[prost(string, optional, tag = "13")]
+    pub kind_hint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Identifies the data type the dynamic field's expression should
+    /// produce.
+    #[prost(string, optional, tag = "14")]
+    pub type_hint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Whether the dynamic field is disabled.
+    #[prost(bool, optional, tag = "15")]
+    pub is_disabled: ::core::option::Option<bool>,
 }
 /// Looker Query Object
 /// [Looker API
@@ -746,6 +1067,19 @@ pub struct LookerQuery {
     /// Optional. Limit in the query.
     #[prost(string, optional, tag = "6")]
     pub limit: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The dynamic fields used in the query.
+    #[prost(message, repeated, tag = "9")]
+    pub dynamic_fields: ::prost::alloc::vec::Vec<DynamicField>,
+    /// Optional. The primary identifier for the query resource in Looker, used for
+    /// API operations. Maps to `id` (or `slug`) in the Looker API `Query`
+    /// resource.
+    #[prost(string, optional, tag = "10")]
+    pub query_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The short alphanumeric identifier for the query, used for share
+    /// links and Explore URLs (e.g., in the `qid` parameter). Maps to `client_id`
+    /// in the Looker API `Query` resource.
+    #[prost(string, optional, tag = "11")]
+    pub client_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `LookerQuery`.
 pub mod looker_query {
@@ -755,9 +1089,11 @@ pub mod looker_query {
         /// Required. The field to filter on.
         #[prost(string, tag = "1")]
         pub field: ::prost::alloc::string::String,
-        /// Required. The value for the field to filter on.
-        #[prost(string, tag = "2")]
-        pub value: ::prost::alloc::string::String,
+        /// Optional. The value for the field to filter on.
+        /// Optional so we can preserve the default value as an empty
+        /// string, important to get a valid and working Looker Explore url.
+        #[prost(string, optional, tag = "2")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
     }
 }
 /// Definition of a term within a specific domain.
@@ -765,11 +1101,15 @@ pub mod looker_query {
 pub struct GlossaryTerm {
     /// Required. User friendly display name of the glossary term being defined.
     /// For example: "CTR", "conversion rate", "pending"
+    ///
+    /// Must be at most 256 bytes.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
     /// Required. The description or meaning of the term.
     /// For example: "Click-through rate", "The percentage of users who complete a
     /// desired action", "An order that is waiting to be processed."
+    ///
+    /// Must be at most 5,000 bytes (approx. 5,000 characters).
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Optional. A list of general purpose labels associated to this term.
@@ -789,6 +1129,53 @@ pub struct ConversationOptions {
     /// Optional. Options for datasources.
     #[prost(message, optional, tag = "3")]
     pub datasource: ::core::option::Option<DatasourceOptions>,
+    /// Optional. The model to use for the agent loop.
+    #[prost(enumeration = "conversation_options::Model", optional, tag = "6")]
+    pub model: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ConversationOptions`.
+pub mod conversation_options {
+    /// Allowed models for the agent/conversation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Model {
+        /// No model specified. The model may be set on the chat request, or the
+        /// default model will be used.
+        Unspecified = 0,
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
+        LatestGaModel = 1,
+    }
+    impl Model {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_UNSPECIFIED",
+                Self::LatestGaModel => "LATEST_GA_MODEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LATEST_GA_MODEL" => Some(Self::LatestGaModel),
+                _ => None,
+            }
+        }
+    }
 }
 /// Options for datasources configurations.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -855,6 +1242,86 @@ pub mod analysis_options {
         pub enabled: bool,
     }
 }
+/// Source attributions for content.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Citation {
+    /// Output only. List of the sources being cited.
+    #[prost(message, repeated, tag = "1")]
+    pub sources: ::prost::alloc::vec::Vec<CitationSource>,
+    /// Output only. List of the anchors of the citations.
+    #[prost(message, repeated, tag = "2")]
+    pub anchors: ::prost::alloc::vec::Vec<CitationAnchor>,
+}
+/// The source of the citation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CitationSource {
+    /// Output only. Unique identifier of the source. This ID is service-generated
+    /// and is unique within the scope of a single `Citation` message.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. The title of the source.
+    #[prost(string, tag = "2")]
+    pub title: ::prost::alloc::string::String,
+    /// The source of the citation, which can be one of the supported types.
+    #[prost(oneof = "citation_source::SourceType", tags = "3, 4, 5")]
+    pub source_type: ::core::option::Option<citation_source::SourceType>,
+}
+/// Nested message and enum types in `CitationSource`.
+pub mod citation_source {
+    /// The source of the citation, which can be one of the supported types.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceType {
+        /// Output only. The uri used as the source, such as a web grounding URL.
+        #[prost(string, tag = "3")]
+        Uri(::prost::alloc::string::String),
+        /// Output only. The example query used as the source.
+        #[prost(message, tag = "4")]
+        ExampleQuery(super::ExampleQuery),
+        /// Output only. The glossary term used as the source.
+        #[prost(message, tag = "5")]
+        GlossaryTerm(super::GlossaryTerm),
+    }
+}
+/// The anchor of the citation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CitationAnchor {
+    /// The anchor of the citation, which can be one of the supported types.
+    #[prost(oneof = "citation_anchor::AnchorType", tags = "1")]
+    pub anchor_type: ::core::option::Option<citation_anchor::AnchorType>,
+}
+/// Nested message and enum types in `CitationAnchor`.
+pub mod citation_anchor {
+    /// Citation anchor within a TextMessage.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TextMessageCitationAnchor {
+        /// Output only. The 0-based index of the part within the TextMessage.parts
+        /// field.
+        #[prost(int32, tag = "1")]
+        pub part_index: i32,
+        /// Output only. The offset, measured in UTF-8 bytes, within the part string
+        /// where the citation begins (inclusive). Example: For the text "Hello,
+        /// world" where "world" is cited, the start offset bytes (inclusive) is 7
+        /// and the end offset bytes (exclusive) is 12.
+        #[prost(int32, tag = "2")]
+        pub start_offset_bytes: i32,
+        /// Output only. The offset, measured in UTF-8 bytes, within the part string
+        /// where the citation ends (exclusive). Example: For the text "Hello, world"
+        /// where "world" is cited, the start offset bytes (inclusive) is 7 and the
+        /// end offset bytes (exclusive) is 12.
+        #[prost(int32, tag = "3")]
+        pub end_offset_bytes: i32,
+        /// Output only. The ids of the sources that are cited.
+        #[prost(string, repeated, tag = "4")]
+        pub source_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// The anchor of the citation, which can be one of the supported types.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AnchorType {
+        /// Output only. Only set if the citation is for a TextMessage.
+        #[prost(message, tag = "1")]
+        TextMessageAnchor(TextMessageCitationAnchor),
+    }
+}
 /// Message for a conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Conversation {
@@ -892,6 +1359,17 @@ pub struct Conversation {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The display name for the conversation (max 63 chars).
+    #[prost(string, tag = "6")]
+    pub title: ::prost::alloc::string::String,
+    /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
+    /// Conversation resources. Encryption will happen at Titan layer, we will pass
+    /// the KMS key to Titan.
+    ///
+    /// Format:
+    /// projects/{project_id}/locations/{location}/keyRings/{key_ring_name}/cryptoKeys/{key_name}.
+    #[prost(string, optional, tag = "10")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Request for creating a conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -916,6 +1394,28 @@ pub struct CreateConversationRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request for updating a conversation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversationRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub conversation: ::core::option::Option<Conversation>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// Conversation resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields with non-default values
+    /// present in the request will be overwritten. If a wildcard mask is provided,
+    /// all fields will be overwritten.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Request for getting a conversation based on parent and conversation id.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConversationRequest {
@@ -933,8 +1433,9 @@ pub struct ListConversationsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
-    /// requested. The max page size is 100. All larger page sizes will be coerced
-    /// to 100. If unspecified, server will pick 50 as an approperiate default.
+    /// requested. The max page size is `100`. All larger page sizes will be
+    /// coerced to `100`. If unspecified, server will pick `50` as an appropriate
+    /// default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
@@ -966,6 +1467,946 @@ pub struct DeleteConversationRequest {
     /// `projects/{project}/locations/{location}/conversations/{conversation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Configuration of a send message request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SendMessageConfiguration {
+    /// Optional. The output modes that the agent is expected to respond with.
+    #[prost(string, repeated, tag = "1")]
+    pub accepted_output_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A configuration of a webhook that can be used to receive updates.
+    #[prost(message, optional, tag = "2")]
+    pub push_notification: ::core::option::Option<PushNotificationConfig>,
+    /// Optional. The maximum number of messages to include in the history. If 0,
+    /// the history will be unlimited.
+    #[prost(int32, tag = "3")]
+    pub history_length: i32,
+    /// Optional. If true, the message will be blocking until the task is
+    /// completed. If false, the task will be returned immediately.
+    #[prost(bool, tag = "4")]
+    pub blocking: bool,
+}
+/// A2ATask is the core unit of action for A2A. It has a current status
+/// and when results are created for the task they are stored in the
+/// artifact. If there are multiple turns for a task, these are stored in
+/// history.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct A2aTask {
+    /// Optional. Unique identifier (e.g. UUID) for the task, generated by the
+    /// server for a new task.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Optional. Unique identifier (e.g. UUID) for the contextual collection of
+    /// interactions (tasks and messages). Created by the A2A server.
+    #[prost(string, tag = "2")]
+    pub context_id: ::prost::alloc::string::String,
+    /// Optional. The current status of a Task, including state and a message.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::core::option::Option<TaskStatus>,
+    /// Optional. A set of output artifacts for a Task.
+    #[prost(message, repeated, tag = "4")]
+    pub artifacts: ::prost::alloc::vec::Vec<A2aArtifact>,
+    /// Optional. The history of interactions from a task.
+    #[prost(message, repeated, tag = "5")]
+    pub history: ::prost::alloc::vec::Vec<A2aMessage>,
+    /// Optional. A key/value object to store custom metadata about a task.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+}
+/// A container for the status of a task.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskStatus {
+    /// Output only. The current state of this task.
+    #[prost(enumeration = "TaskState", tag = "1")]
+    pub state: i32,
+    /// Optional. A message associated with the status.
+    #[prost(message, optional, tag = "2")]
+    pub update: ::core::option::Option<A2aMessage>,
+    /// Output only. Timestamp when the status was recorded.
+    #[prost(message, optional, tag = "3")]
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Part represents a container for a section of communication content.
+/// Parts can be purely textual, some sort of file (image, video, etc) or
+/// a structured data blob (i.e. JSON).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Part {
+    /// Optional. Metadata associated with the part.
+    #[prost(message, optional, tag = "4")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// The content payload of the part.
+    #[prost(oneof = "part::Part", tags = "1, 2, 3")]
+    pub part: ::core::option::Option<part::Part>,
+}
+/// Nested message and enum types in `Part`.
+pub mod part {
+    /// The content payload of the part.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Part {
+        /// Plain text content.
+        #[prost(string, tag = "1")]
+        Text(::prost::alloc::string::String),
+        /// File content payload.
+        #[prost(message, tag = "2")]
+        File(super::FilePart),
+        /// Structured data content payload.
+        #[prost(message, tag = "3")]
+        Data(super::DataPart),
+    }
+}
+/// FilePart represents the different ways files can be provided.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FilePart {
+    /// Optional. The MIME type of the file.
+    #[prost(string, tag = "3")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Optional. The name of the file.
+    #[prost(string, tag = "4")]
+    pub name: ::prost::alloc::string::String,
+    /// The file representation payload.
+    #[prost(oneof = "file_part::File", tags = "1, 2")]
+    pub file: ::core::option::Option<file_part::File>,
+}
+/// Nested message and enum types in `FilePart`.
+pub mod file_part {
+    /// The file representation payload.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum File {
+        /// The URI pointing to the file.
+        #[prost(string, tag = "1")]
+        FileWithUri(::prost::alloc::string::String),
+        /// The raw bytes of the file.
+        #[prost(bytes, tag = "2")]
+        FileWithBytes(::prost::alloc::vec::Vec<u8>),
+    }
+}
+/// DataPart represents a structured blob. This is most commonly a JSON payload.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataPart {
+    /// Optional. The structured data payload.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::core::option::Option<::prost_types::Struct>,
+}
+/// A2AMessage is one unit of communication between client and server.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct A2aMessage {
+    /// Optional. The unique identifier (e.g. UUID) of the message.
+    #[prost(string, tag = "1")]
+    pub message_id: ::prost::alloc::string::String,
+    /// Optional. The context id of the message.
+    #[prost(string, tag = "2")]
+    pub context_id: ::prost::alloc::string::String,
+    /// Optional. The task id of the message.
+    #[prost(string, tag = "3")]
+    pub task_id: ::prost::alloc::string::String,
+    /// Optional. A role for the message.
+    #[prost(enumeration = "Role", tag = "4")]
+    pub role: i32,
+    /// Optional. Content is the container of the message content.
+    #[prost(message, repeated, tag = "5")]
+    pub content: ::prost::alloc::vec::Vec<Part>,
+    /// Optional. Any optional metadata to provide along with the message.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The URIs of extensions that are present or contributed to this
+    /// Message.
+    #[prost(string, repeated, tag = "7")]
+    pub extensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A2AArtifact is the container for task completed results.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct A2aArtifact {
+    /// Optional. Unique identifier (e.g. UUID) for the artifact.
+    #[prost(string, tag = "1")]
+    pub artifact_id: ::prost::alloc::string::String,
+    /// Optional. A human readable name for the artifact.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A human readable description of the artifact, optional.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The content of the artifact.
+    #[prost(message, repeated, tag = "5")]
+    pub parts: ::prost::alloc::vec::Vec<Part>,
+    /// Optional. Optional metadata included with the artifact.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. The URIs of extensions that are present or contributed to this
+    /// Artifact.
+    #[prost(string, repeated, tag = "7")]
+    pub extensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// TaskStatusUpdateEvent is a delta event on a task indicating that a task
+/// has changed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskStatusUpdateEvent {
+    /// Optional. The id of the task that is changed.
+    #[prost(string, tag = "1")]
+    pub task_id: ::prost::alloc::string::String,
+    /// Optional. The id of the context that the task belongs to.
+    #[prost(string, tag = "2")]
+    pub context_id: ::prost::alloc::string::String,
+    /// Optional. The new status of the task.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::core::option::Option<TaskStatus>,
+    /// Optional. Whether this is the last status update expected for this task.
+    #[prost(bool, tag = "4")]
+    pub r#final: bool,
+    /// Optional. Optional metadata to associate with the task update.
+    #[prost(message, optional, tag = "5")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+}
+/// TaskArtifactUpdateEvent represents a task delta where an artifact has
+/// been generated.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskArtifactUpdateEvent {
+    /// Optional. The id of the task for this artifact.
+    #[prost(string, tag = "1")]
+    pub task_id: ::prost::alloc::string::String,
+    /// Optional. The id of the context that this task belongs to.
+    #[prost(string, tag = "2")]
+    pub context_id: ::prost::alloc::string::String,
+    /// Optional. The artifact itself.
+    #[prost(message, optional, tag = "3")]
+    pub artifact: ::core::option::Option<A2aArtifact>,
+    /// Optional. Whether this should be appended to a prior one produced.
+    #[prost(bool, tag = "4")]
+    pub append: bool,
+    /// Optional. Whether this represents the last part of an artifact.
+    #[prost(bool, tag = "5")]
+    pub last_chunk: bool,
+    /// Optional. Optional metadata associated with the artifact update.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+}
+/// Configuration for setting up push notifications for task updates.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PushNotificationConfig {
+    /// Optional. A unique identifier (e.g. UUID) for this push notification.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Optional. Url to send the notification to.
+    #[prost(string, tag = "2")]
+    pub url: ::prost::alloc::string::String,
+    /// Optional. Token unique for this task/session.
+    #[prost(string, tag = "3")]
+    pub token: ::prost::alloc::string::String,
+    /// Optional. Information about the authentication to send with the
+    /// notification.
+    #[prost(message, optional, tag = "4")]
+    pub authentication: ::core::option::Option<AuthenticationInfo>,
+}
+/// Defines authentication details, used for push notifications.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AuthenticationInfo {
+    /// Optional. Supported authentication schemes - e.g. Basic, Bearer, etc.
+    #[prost(string, repeated, tag = "1")]
+    pub schemes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Optional credentials.
+    #[prost(string, tag = "2")]
+    pub credentials: ::prost::alloc::string::String,
+}
+/// Defines additional transport information for the agent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentInterface {
+    /// Optional. The url this interface is found at.
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// Optional. The transport supported at this url.
+    #[prost(string, tag = "2")]
+    pub transport: ::prost::alloc::string::String,
+    /// Optional. Tenant to be set in the request when calling the agent.
+    #[prost(string, tag = "3")]
+    pub tenant: ::prost::alloc::string::String,
+}
+/// AgentCard conveys key information about an agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentCard {
+    /// Optional. The version of the A2A protocol this agent supports.
+    #[prost(string, tag = "16")]
+    pub protocol_version: ::prost::alloc::string::String,
+    /// Optional. A human readable name for the agent.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A description of the agent's domain of action/solution space.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. A URL to the address the agent is hosted at.
+    #[prost(string, tag = "3")]
+    pub url: ::prost::alloc::string::String,
+    /// Optional. The transport of the preferred endpoint. If empty, defaults to
+    /// JSONRPC.
+    #[prost(string, tag = "14")]
+    pub preferred_transport: ::prost::alloc::string::String,
+    /// Optional. Announcement of additional supported transports.
+    #[prost(message, repeated, tag = "15")]
+    pub additional_interfaces: ::prost::alloc::vec::Vec<AgentInterface>,
+    /// Optional. The service provider of the agent.
+    #[prost(message, optional, tag = "4")]
+    pub provider: ::core::option::Option<AgentProvider>,
+    /// Optional. The version of the agent.
+    #[prost(string, tag = "5")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional. A url to provide additional documentation about the agent.
+    #[prost(string, tag = "6")]
+    pub documentation_url: ::prost::alloc::string::String,
+    /// Optional. A2A Capability set supported by the agent.
+    #[prost(message, optional, tag = "7")]
+    pub capabilities: ::core::option::Option<AgentCapabilities>,
+    /// The security scheme details used for authenticating with this agent.
+    #[prost(map = "string, message", tag = "8")]
+    pub security_schemes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        SecurityScheme,
+    >,
+    /// Security requirements for contacting the agent.
+    #[prost(message, repeated, tag = "9")]
+    pub security: ::prost::alloc::vec::Vec<Security>,
+    /// Optional. The set of interaction modes that the agent supports across all
+    /// skills.
+    #[prost(string, repeated, tag = "10")]
+    pub default_input_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The mime types supported as outputs from this agent.
+    #[prost(string, repeated, tag = "11")]
+    pub default_output_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Skills represent a unit of ability an agent can perform.
+    #[prost(message, repeated, tag = "12")]
+    pub skills: ::prost::alloc::vec::Vec<AgentSkill>,
+    /// Optional. Whether the agent supports providing an extended agent card when
+    /// the user is authenticated.
+    #[prost(bool, tag = "13")]
+    pub supports_authenticated_extended_card: bool,
+    /// Optional. JSON Web Signatures computed for this AgentCard.
+    #[prost(message, repeated, tag = "17")]
+    pub signatures: ::prost::alloc::vec::Vec<AgentCardSignature>,
+    /// Optional. An optional URL to an icon for the agent.
+    #[prost(string, tag = "18")]
+    pub icon_url: ::prost::alloc::string::String,
+}
+/// Represents information about the service provider of an agent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AgentProvider {
+    /// Optional. The provider's reference url.
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// Optional. The provider's organization name.
+    #[prost(string, tag = "2")]
+    pub organization: ::prost::alloc::string::String,
+}
+/// Defines the A2A feature set supported by the agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentCapabilities {
+    /// Optional. If the agent will support streaming responses.
+    #[prost(bool, tag = "1")]
+    pub streaming: bool,
+    /// Optional. If the agent can send push notifications to the client's webhook.
+    #[prost(bool, tag = "2")]
+    pub push_notifications: bool,
+    /// Optional. Extensions supported by this agent.
+    #[prost(message, repeated, tag = "3")]
+    pub extensions: ::prost::alloc::vec::Vec<AgentExtension>,
+}
+/// A declaration of an extension supported by an Agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentExtension {
+    /// Optional. The URI of the extension.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Optional. A description of how this agent uses this extension.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Whether the client must follow specific requirements of the
+    /// extension.
+    #[prost(bool, tag = "3")]
+    pub required: bool,
+    /// Optional. Optional configuration for the extension.
+    #[prost(message, optional, tag = "4")]
+    pub params: ::core::option::Option<::prost_types::Struct>,
+}
+/// AgentSkill represents a unit of action/solution that the agent can perform.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentSkill {
+    /// Optional. Unique identifier of the skill within this agent.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Optional. A human readable name for the skill.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A human readable description of the skill details and behaviors.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. A set of tags for the skill to enhance
+    /// categorization/utilization.
+    #[prost(string, repeated, tag = "4")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A set of example queries that this skill is designed to address.
+    #[prost(string, repeated, tag = "5")]
+    pub examples: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Possible input modalities supported.
+    #[prost(string, repeated, tag = "6")]
+    pub input_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Possible output modalities produced.
+    #[prost(string, repeated, tag = "7")]
+    pub output_modes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Security schemes necessary for the agent to leverage this skill.
+    #[prost(message, repeated, tag = "8")]
+    pub security: ::prost::alloc::vec::Vec<Security>,
+}
+/// AgentCardSignature represents a JWS signature of an AgentCard.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgentCardSignature {
+    /// Required. The protected JWS header for the signature. Base64url-encoded.
+    #[prost(string, tag = "1")]
+    pub protected: ::prost::alloc::string::String,
+    /// Required. The computed signature, base64url-encoded.
+    #[prost(string, tag = "2")]
+    pub signature: ::prost::alloc::string::String,
+    /// Optional. The unprotected JWS header values.
+    #[prost(message, optional, tag = "3")]
+    pub header: ::core::option::Option<::prost_types::Struct>,
+}
+/// StringList is a wrapper for a repeated list of strings.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StringList {
+    /// The list of strings.
+    #[prost(string, repeated, tag = "1")]
+    pub list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Security requirements for contacting the agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Security {
+    /// Map of scheme names to lists of scopes or configurations.
+    #[prost(map = "string, message", tag = "1")]
+    pub schemes: ::std::collections::HashMap<::prost::alloc::string::String, StringList>,
+}
+/// SecurityScheme defines a security scheme for contacting the agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityScheme {
+    /// The security scheme definition.
+    #[prost(oneof = "security_scheme::Scheme", tags = "1, 2, 3, 4, 5")]
+    pub scheme: ::core::option::Option<security_scheme::Scheme>,
+}
+/// Nested message and enum types in `SecurityScheme`.
+pub mod security_scheme {
+    /// The security scheme definition.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Scheme {
+        /// API key security scheme.
+        #[prost(message, tag = "1")]
+        ApiKeySecurityScheme(super::ApiKeySecurityScheme),
+        /// HTTP authentication security scheme.
+        #[prost(message, tag = "2")]
+        HttpAuthSecurityScheme(super::HttpAuthSecurityScheme),
+        /// OAuth2 security scheme.
+        #[prost(message, tag = "3")]
+        Oauth2SecurityScheme(super::OAuth2SecurityScheme),
+        /// OpenID Connect security scheme.
+        #[prost(message, tag = "4")]
+        OpenIdConnectSecurityScheme(super::OpenIdConnectSecurityScheme),
+        /// Mutual TLS security scheme.
+        #[prost(message, tag = "5")]
+        MtlsSecurityScheme(super::MutualTlsSecurityScheme),
+    }
+}
+/// APIKeySecurityScheme defines an API key security scheme.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ApiKeySecurityScheme {
+    /// Optional. Description of this security scheme.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Location of the API key, valid values are "query", "header", or
+    /// "cookie".
+    #[prost(string, tag = "2")]
+    pub location: ::prost::alloc::string::String,
+    /// Optional. Name of the header, query or cookie parameter to be used.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+}
+/// HTTPAuthSecurityScheme defines an HTTP authentication security scheme.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpAuthSecurityScheme {
+    /// Optional. Description of this security scheme.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The name of the HTTP Authentication scheme to be used in the
+    /// Authorization header.
+    #[prost(string, tag = "2")]
+    pub scheme: ::prost::alloc::string::String,
+    /// Optional. A hint to the client to identify how the bearer token is
+    /// formatted.
+    #[prost(string, tag = "3")]
+    pub bearer_format: ::prost::alloc::string::String,
+}
+/// OAuth2SecurityScheme defines an OAuth2 security scheme.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OAuth2SecurityScheme {
+    /// Optional. Description of this security scheme.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. An object containing configuration information for the flow types
+    /// supported.
+    #[prost(message, optional, tag = "2")]
+    pub flows: ::core::option::Option<OAuthFlows>,
+    /// Optional. URL to the oauth2 authorization server metadata.
+    #[prost(string, tag = "3")]
+    pub oauth2_metadata_url: ::prost::alloc::string::String,
+}
+/// OpenIdConnectSecurityScheme defines an OpenID Connect security scheme.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OpenIdConnectSecurityScheme {
+    /// Optional. Description of this security scheme.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Well-known URL to discover the OpenID Connect provider metadata.
+    #[prost(string, tag = "2")]
+    pub open_id_connect_url: ::prost::alloc::string::String,
+}
+/// MutualTlsSecurityScheme defines a Mutual TLS security scheme.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MutualTlsSecurityScheme {
+    /// Optional. Description of this security scheme.
+    #[prost(string, tag = "1")]
+    pub description: ::prost::alloc::string::String,
+}
+/// OAuthFlows contains configuration information for supported OAuth flows.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OAuthFlows {
+    /// The supported OAuth flow configuration.
+    #[prost(oneof = "o_auth_flows::Flow", tags = "1, 2, 3, 4")]
+    pub flow: ::core::option::Option<o_auth_flows::Flow>,
+}
+/// Nested message and enum types in `OAuthFlows`.
+pub mod o_auth_flows {
+    /// The supported OAuth flow configuration.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Flow {
+        /// Authorization code flow.
+        #[prost(message, tag = "1")]
+        AuthorizationCode(super::AuthorizationCodeOAuthFlow),
+        /// Client credentials flow.
+        #[prost(message, tag = "2")]
+        ClientCredentials(super::ClientCredentialsOAuthFlow),
+        /// Implicit flow.
+        #[prost(message, tag = "3")]
+        Implicit(super::ImplicitOAuthFlow),
+        /// Resource owner password credentials flow.
+        #[prost(message, tag = "4")]
+        Password(super::PasswordOAuthFlow),
+    }
+}
+/// AuthorizationCodeOAuthFlow defines an authorization code OAuth flow.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthorizationCodeOAuthFlow {
+    /// Optional. The authorization URL to be used for this flow.
+    #[prost(string, tag = "1")]
+    pub authorization_url: ::prost::alloc::string::String,
+    /// Optional. The token URL to be used for this flow.
+    #[prost(string, tag = "2")]
+    pub token_url: ::prost::alloc::string::String,
+    /// Optional. The URL to be used for obtaining refresh tokens.
+    #[prost(string, tag = "3")]
+    pub refresh_url: ::prost::alloc::string::String,
+    /// The available scopes for the OAuth2 security scheme.
+    #[prost(map = "string, string", tag = "4")]
+    pub scopes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// ClientCredentialsOAuthFlow defines a client credentials OAuth flow.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClientCredentialsOAuthFlow {
+    /// Optional. The token URL to be used for this flow.
+    #[prost(string, tag = "1")]
+    pub token_url: ::prost::alloc::string::String,
+    /// Optional. The URL to be used for obtaining refresh tokens.
+    #[prost(string, tag = "2")]
+    pub refresh_url: ::prost::alloc::string::String,
+    /// The available scopes for the OAuth2 security scheme.
+    #[prost(map = "string, string", tag = "3")]
+    pub scopes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// ImplicitOAuthFlow defines an implicit OAuth flow.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImplicitOAuthFlow {
+    /// Optional. The authorization URL to be used for this flow.
+    #[prost(string, tag = "1")]
+    pub authorization_url: ::prost::alloc::string::String,
+    /// Optional. The URL to be used for obtaining refresh tokens.
+    #[prost(string, tag = "2")]
+    pub refresh_url: ::prost::alloc::string::String,
+    /// The available scopes for the OAuth2 security scheme.
+    #[prost(map = "string, string", tag = "3")]
+    pub scopes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// PasswordOAuthFlow defines a password OAuth flow.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PasswordOAuthFlow {
+    /// Optional. The token URL to be used for this flow.
+    #[prost(string, tag = "1")]
+    pub token_url: ::prost::alloc::string::String,
+    /// Optional. The URL to be used for obtaining refresh tokens.
+    #[prost(string, tag = "2")]
+    pub refresh_url: ::prost::alloc::string::String,
+    /// The available scopes for the OAuth2 security scheme.
+    #[prost(map = "string, string", tag = "3")]
+    pub scopes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Request message for SendMessage and SendStreamingMessage.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SendMessageRequest {
+    /// Required. The message to send to the agent.
+    #[prost(message, optional, tag = "1")]
+    pub message: ::core::option::Option<A2aMessage>,
+    /// Optional. Configuration for the send request.
+    #[prost(message, optional, tag = "2")]
+    pub configuration: ::core::option::Option<SendMessageConfiguration>,
+    /// Optional. Optional metadata for the request.
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Optional tenant, provided as a path parameter.
+    #[prost(string, tag = "4")]
+    pub tenant: ::prost::alloc::string::String,
+}
+/// Request message for GetAgentCard.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAgentCardRequest {
+    /// Optional. Optional tenant, provided as a path parameter.
+    #[prost(string, tag = "1")]
+    pub tenant: ::prost::alloc::string::String,
+}
+/// Response message for SendMessage.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SendMessageResponse {
+    /// The response payload.
+    #[prost(oneof = "send_message_response::Payload", tags = "1, 2")]
+    pub payload: ::core::option::Option<send_message_response::Payload>,
+}
+/// Nested message and enum types in `SendMessageResponse`.
+pub mod send_message_response {
+    /// The response payload.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        /// Completed task.
+        #[prost(message, tag = "1")]
+        Task(super::A2aTask),
+        /// Single message response.
+        #[prost(message, tag = "2")]
+        Msg(super::A2aMessage),
+    }
+}
+/// The stream response for a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamResponse {
+    /// The stream response payload.
+    #[prost(oneof = "stream_response::Payload", tags = "1, 2, 3, 4")]
+    pub payload: ::core::option::Option<stream_response::Payload>,
+}
+/// Nested message and enum types in `StreamResponse`.
+pub mod stream_response {
+    /// The stream response payload.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        /// Completed task event.
+        #[prost(message, tag = "1")]
+        Task(super::A2aTask),
+        /// Message event.
+        #[prost(message, tag = "2")]
+        Msg(super::A2aMessage),
+        /// Task status update event.
+        #[prost(message, tag = "3")]
+        StatusUpdate(super::TaskStatusUpdateEvent),
+        /// Task artifact update event.
+        #[prost(message, tag = "4")]
+        ArtifactUpdate(super::TaskArtifactUpdateEvent),
+    }
+}
+/// The set of states a Task can be in.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TaskState {
+    /// Default unspecified task state.
+    Unspecified = 0,
+    /// Represents the status that acknowledges a task is created.
+    Submitted = 1,
+    /// Represents the status that a task is currently in progress.
+    Working = 2,
+    /// Represents the status that a task is completed. This is a terminal state.
+    Completed = 3,
+    /// Represents the status that a task has failed. This is a terminal state.
+    Failed = 4,
+    /// Represents the status that a task was cancelled before it finished.
+    /// This is a terminal state.
+    Cancelled = 5,
+    /// Represents the status that the task requires information to complete.
+    /// This is an interrupted state.
+    InputRequired = 6,
+    /// Represents the status that a task has been rejected by the agent.
+    /// This is a terminal state.
+    Rejected = 7,
+    /// Represents the state that some authentication is needed from the upstream
+    /// client.
+    AuthRequired = 8,
+}
+impl TaskState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "TASK_STATE_UNSPECIFIED",
+            Self::Submitted => "TASK_STATE_SUBMITTED",
+            Self::Working => "TASK_STATE_WORKING",
+            Self::Completed => "TASK_STATE_COMPLETED",
+            Self::Failed => "TASK_STATE_FAILED",
+            Self::Cancelled => "TASK_STATE_CANCELLED",
+            Self::InputRequired => "TASK_STATE_INPUT_REQUIRED",
+            Self::Rejected => "TASK_STATE_REJECTED",
+            Self::AuthRequired => "TASK_STATE_AUTH_REQUIRED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TASK_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TASK_STATE_SUBMITTED" => Some(Self::Submitted),
+            "TASK_STATE_WORKING" => Some(Self::Working),
+            "TASK_STATE_COMPLETED" => Some(Self::Completed),
+            "TASK_STATE_FAILED" => Some(Self::Failed),
+            "TASK_STATE_CANCELLED" => Some(Self::Cancelled),
+            "TASK_STATE_INPUT_REQUIRED" => Some(Self::InputRequired),
+            "TASK_STATE_REJECTED" => Some(Self::Rejected),
+            "TASK_STATE_AUTH_REQUIRED" => Some(Self::AuthRequired),
+            _ => None,
+        }
+    }
+}
+/// Role indicates the sender of a message.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Role {
+    /// Default unspecified role.
+    Unspecified = 0,
+    /// USER role refers to communication from the client to the server.
+    User = 1,
+    /// AGENT role refers to communication from the server to the client.
+    Agent = 2,
+}
+impl Role {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ROLE_UNSPECIFIED",
+            Self::User => "ROLE_USER",
+            Self::Agent => "ROLE_AGENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ROLE_USER" => Some(Self::User),
+            "ROLE_AGENT" => Some(Self::Agent),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod data_a2a_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// DataA2AService defines the Agent-to-Agent (A2A) protocol service for Gemini
+    /// Data Analytics.
+    #[derive(Debug, Clone)]
+    pub struct DataA2aServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataA2aServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataA2aServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataA2aServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            DataA2aServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Send a message to the agent. This is a blocking call that will return the
+        /// task once it is completed.
+        pub async fn send_message(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SendMessageRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SendMessageResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataA2AService/SendMessage",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataA2AService",
+                        "SendMessage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// SendStreamingMessage is a streaming call that will return a stream of
+        /// task update events until the Task is in an interrupted or terminal state.
+        pub async fn send_streaming_message(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SendMessageRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataA2AService/SendStreamingMessage",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataA2AService",
+                        "SendStreamingMessage",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// GetAgentCard returns the agent card for the agent.
+        pub async fn get_agent_card(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAgentCardRequest>,
+        ) -> std::result::Result<tonic::Response<super::AgentCard>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataA2AService/GetAgentCard",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataA2AService",
+                        "GetAgentCard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
 }
 /// Message describing a DataAnalyticsAgent object.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1037,6 +2478,63 @@ pub struct DataAgent {
     /// on input.
     #[prost(message, optional, tag = "13")]
     pub purge_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
+    /// DataAgent resources. Cloud KMS CryptoKeys must reside in the same location
+    /// as the DataAgent. The expected format is
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, optional, tag = "14")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Controls whether BigQuery Agent Analytics trace logging is
+    /// enabled for the agent.
+    ///
+    /// BigQuery Agent Analytics is in Preview and is delivered to enrolled
+    /// projects only. In a project that is not enrolled this field is accepted
+    /// and stored, but no trace rows are written and no error is returned.
+    ///
+    /// Trace logging is additionally suppressed for the entire turn, without
+    /// error, when any table in the agent's datasource carries row-level
+    /// security, column-level security or policy tags. It is also suppressed
+    /// when that determination cannot be made, for example when the caller
+    /// lacks permission to list a table's row access policies.
+    ///
+    /// Trace rows are written only when this is `true` and
+    /// `bigquery_agent_analytics_table` is set. On a BigQuery agent, enabling
+    /// this without a table has no effect: no table is created for the agent
+    /// and no rows are written. On an agent whose datasource is not BigQuery,
+    /// `CreateDataAgent` rejects either field with `INVALID_ARGUMENT`.
+    ///
+    /// This setting is independent of the project-level BigQuery Agent Analytics
+    /// setting configured through `SetAgentOpsObservability`. An agent does not
+    /// inherit that setting.
+    #[prost(bool, optional, tag = "18")]
+    pub bigquery_agent_analytics_enabled: ::core::option::Option<bool>,
+    /// Optional. The BigQuery table that BigQuery Agent Analytics trace rows are
+    /// written to. Has no effect unless `bigquery_agent_analytics_enabled` is
+    /// `true`. The Preview enrollment described on that field applies here too.
+    ///
+    /// The trace table is validated when it is set on `CreateDataAgent`, or when
+    /// it is included in the `update_mask` of an `UpdateDataAgent` call. The
+    /// following are rejected with `INVALID_ARGUMENT`:
+    ///
+    /// * The table must belong to the same project as the agent.
+    /// * The agent's datasource must be BigQuery. BigQuery Agent Analytics is not
+    ///   supported for Looker, Looker Studio or AlloyDB agents.
+    ///
+    /// These are validated against the agent as sent in the request. An agent
+    /// that carries no datasource is not validated, and an agent switched to a
+    /// non-BigQuery datasource is not re-validated; in the latter case no trace
+    /// rows are written.
+    ///
+    /// The destination dataset must already exist and must grant write access to
+    /// the project's Gemini Data Analytics service agent, whose address is
+    /// `service-PROJECT_NUMBER@gcp-sa-geminidataanalytics.iam.gserviceaccount.com`
+    /// (that grant is not performed on your behalf). Without it the agent answers
+    /// normally and no trace rows are written.
+    ///
+    /// Changing the table on an existing agent affects subsequent turns only. Rows
+    /// already written to the previous table are left in place.
+    #[prost(message, optional, tag = "19")]
+    pub bigquery_agent_analytics_table: ::core::option::Option<BigQueryTableReference>,
     /// The type of the agent. Can be one of the following:
     ///
     /// * Data analytics agent.
@@ -1086,6 +2584,12 @@ pub struct ListDataAgentsRequest {
     /// Defaults to false.
     #[prost(bool, tag = "6")]
     pub show_deleted: bool,
+    /// Optional. Filter for the creator of the agent.
+    #[prost(
+        enumeration = "list_accessible_data_agents_request::CreatorFilter",
+        tag = "8"
+    )]
+    pub creator_filter: i32,
 }
 /// Message for response to listing DataAgents.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1317,6 +2821,92 @@ pub struct OperationMetadata {
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// Request for SetAgentOpsObservability.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityRequest {
+    /// Required. Parent value for SetAgentOpsObservabilityRequest.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Whether to enable or disable AgentOps observability.
+    /// When update_mask is provided, this field is ignored unless specified in the
+    /// mask.
+    #[prost(bool, tag = "2")]
+    pub telemetry_enabled: bool,
+    /// Required. The data source type for which to set observability settings.
+    /// Examples: "bigquery", "looker"
+    #[prost(string, tag = "3")]
+    pub data_source_type: ::prost::alloc::string::String,
+    /// Optional. Whether BigQuery Agent Analytics is enabled.
+    /// Note: An explicit `update_mask` containing "bqaa_enabled" is required to
+    /// modify this field. If `update_mask` is omitted, this field is ignored and
+    /// an existing enabled setting cannot be disabled.
+    ///
+    /// This is a project-level setting and does not by itself enable trace
+    /// logging for any individual agent. Per-agent trace logging is controlled
+    /// by `DataAgent.bigquery_agent_analytics_enabled` together with
+    /// `DataAgent.bigquery_agent_analytics_table`; an agent does not inherit
+    /// this setting.
+    #[prost(bool, tag = "4")]
+    pub bqaa_enabled: bool,
+    /// Optional. Field mask is used to specify the fields to be overwritten by the
+    /// update. The fields specified in the update_mask are relative to the
+    /// resource. A field will be overwritten if it is in the mask.
+    ///
+    /// If the user does not provide a mask, only `telemetry_enabled` will be
+    /// updated (for backward compatibility with legacy callers). Note that
+    /// disabling BigQuery Agent Analytics (`bqaa_enabled = false`) requires
+    /// providing an explicit `update_mask` containing "bqaa_enabled".
+    ///
+    /// Per AIP-161:
+    ///
+    /// * The special wildcard value '\*' is supported to update all fields.
+    /// * Field paths should use snake_case, though camelCase equivalents
+    ///   (`telemetryEnabled`, `bqaaEnabled`) are accepted for REST/JSON
+    ///   transcoding compatibility.
+    #[prost(message, optional, tag = "5")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Response for SetAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityResponse {}
+/// Metadata for SetAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SetAgentOpsObservabilityMetadata {}
+/// Request for RetrieveAgentOpsObservability.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetrieveAgentOpsObservabilityRequest {
+    /// Required. Parent value for RetrieveAgentOpsObservabilityRequest.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The data source type for which to retrieve observability
+    /// settings. Examples: "bigquery", "looker"
+    #[prost(string, tag = "2")]
+    pub data_source_type: ::prost::alloc::string::String,
+}
+/// Response for RetrieveAgentOpsObservability.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct RetrieveAgentOpsObservabilityResponse {
+    /// Output only. Whether AgentOps observability telemetry is enabled.
+    #[prost(bool, tag = "1")]
+    pub telemetry_enabled: bool,
+    /// Output only. Whether BigQuery API is enabled.
+    #[prost(bool, tag = "3")]
+    pub bigquery_enabled: bool,
+    /// Output only. Whether Cloud Trace API is enabled.
+    #[prost(bool, tag = "4")]
+    pub cloud_trace_enabled: bool,
+    /// Output only. Whether Cloud Monitoring API is enabled.
+    #[prost(bool, tag = "5")]
+    pub cloud_monitoring_enabled: bool,
+    /// Output only. Whether Cloud Logging API is enabled.
+    #[prost(bool, tag = "6")]
+    pub cloud_logging_enabled: bool,
+    /// Output only. Whether BigQuery Agent Analytics is enabled.
+    #[prost(bool, tag = "7")]
+    pub bqaa_enabled: bool,
 }
 /// Generated client implementations.
 pub mod data_agent_service_client {
@@ -1733,7 +3323,79 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Enables/Disables required GCP services and configures AgentOps
+        /// observability settings calling the Admin Settings executable node to
+        /// update the AgentOps Observability feature.
+        pub async fn set_agent_ops_observability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetAgentOpsObservabilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/SetAgentOpsObservability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "SetAgentOpsObservability",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets AgentOps observability settings and status of required services.
+        pub async fn retrieve_agent_ops_observability(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveAgentOpsObservabilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RetrieveAgentOpsObservabilityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/RetrieveAgentOpsObservability",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "RetrieveAgentOpsObservability",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
+}
+/// Overall token usage tracking for the response.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TokenUsage {
+    /// The total number of input tokens used in this request.
+    #[prost(int32, tag = "1")]
+    pub input_token_count: i32,
+    /// The total number of output tokens used in this request.
+    #[prost(int32, tag = "2")]
+    pub output_token_count: i32,
 }
 /// Request to query data from a natural language query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1773,6 +3435,10 @@ pub struct GenerationOptions {
     /// clarifying_question if the input query is ambiguous.
     #[prost(bool, tag = "4")]
     pub generate_disambiguation_question: bool,
+    /// Optional. If true (default to false), returns internal debugging
+    /// information.
+    #[prost(bool, tag = "5")]
+    pub generate_debug_info: bool,
 }
 /// References to data sources and context to use for the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1792,13 +3458,23 @@ pub struct QueryDataContext {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterizedSecureViewParameters {
     /// Optional. Named parameters for Parameterized Secure Views (PSV).
-    /// The map keys are parameter names (e.g., `"user_id"`), and values are the
-    /// corresponding parameter values (e.g., `"123"`).
-    #[prost(map = "string, string", tag = "1")]
-    pub parameters: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "1")]
+    pub parameters: ::prost::alloc::vec::Vec<
+        parameterized_secure_view_parameters::Parameter,
     >,
+}
+/// Nested message and enum types in `ParameterizedSecureViewParameters`.
+pub mod parameterized_secure_view_parameters {
+    /// Represents a single parameter for Parameterized Secure Views.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Parameter {
+        /// Required. The parameter key (e.g., `"user_id"`).
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Required. The parameter value (e.g., `"123"`).
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+    }
 }
 /// Response containing the generated query and related information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1830,6 +3506,17 @@ pub struct QueryDataResponse {
     pub disambiguation_question: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Detailed step-by-step pipeline execution information.
+    /// Populated only if generation_options.generate_debug_info was true.
+    /// Provided for debugging and transparency purposes only.
+    /// The structure and content of this object is not guaranteed and may
+    /// change at any time without notice. Do not write production code or
+    /// business logic depending on the fields in this object.
+    #[prost(message, optional, tag = "9")]
+    pub pipeline_debug_info: ::core::option::Option<::prost_types::Struct>,
+    /// Overall token usage for the request.
+    #[prost(message, optional, tag = "10")]
+    pub token_usage: ::core::option::Option<TokenUsage>,
 }
 /// The result of a query execution. The design is generic for all dialects.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1842,6 +3529,9 @@ pub struct ExecutedQueryResult {
     pub rows: ::prost::alloc::vec::Vec<executed_query_result::Row>,
     /// The total number of rows in the full result set, if known.
     /// This may be an estimate or an exact count.
+    /// Note: if an internal limit (such as LIMIT 1000) was applied during query
+    /// execution to guard against excessive data transfer, this count reflects the
+    /// truncated result size rather than the unrestricted table result size.
     #[prost(int64, tag = "3")]
     pub total_row_count: i64,
     /// Set to true if the returned rows in `query_result` are a subset of the
@@ -1894,8 +3584,9 @@ pub struct ListMessagesRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
-    /// requested. The max page size is 100. All larger page sizes will be coerced
-    /// to 100. If unspecified, server will pick 50 as an approperiate default.
+    /// requested. The max page size is `100`. All larger page sizes will be
+    /// coerced to `100`. If unspecified, server will pick `50` as an appropriate
+    /// default.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
@@ -1934,7 +3625,8 @@ pub struct StorageMessage {
 /// Request for Chat.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChatRequest {
-    /// Optional. The Google Cloud project to be used for quota and billing.
+    /// Optional. Deprecated: Use `parent` field instead.
+    /// The Google Cloud project to be used for quota and billing.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
@@ -1945,10 +3637,24 @@ pub struct ChatRequest {
     /// Required. Content of current conversation.
     #[prost(message, repeated, tag = "2")]
     pub messages: ::prost::alloc::vec::Vec<Message>,
+    /// Optional. The credentials to use when calling the data source(s) specified
+    /// in the context.
+    ///
+    /// This field can be used to provide credentials for various data sources.
+    /// For example, when connecting to Looker, it currently supports both OAuth
+    /// token and API key-based credentials, as described in
+    /// [Authentication with an
+    /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[prost(message, optional, tag = "7")]
+    pub credentials: ::core::option::Option<Credentials>,
     /// Optional. The thinking mode to use for the agent loop.
     /// Defaults to THINKING_MODE_UNSPECIFIED if not specified.
     #[prost(enumeration = "chat_request::ThinkingMode", tag = "9")]
     pub thinking_mode: i32,
+    /// Optional. The model to use for the agent loop when processing the request.
+    /// This setting only has an effect when context.options.model is not set.
+    #[prost(enumeration = "chat_request::Model", tag = "11")]
+    pub model: i32,
     /// Context Provider for the chat request.
     /// It can either be -
     /// inline_context, which is a context provided inline in the request.
@@ -1957,6 +3663,10 @@ pub struct ChatRequest {
     /// and context using conversation_id and agent_id.
     #[prost(oneof = "chat_request::ContextProvider", tags = "101, 103, 104, 105")]
     pub context_provider: ::core::option::Option<chat_request::ContextProvider>,
+    /// Optional settings to customize request behavior, specific to the target
+    /// datasource.
+    #[prost(oneof = "chat_request::DatasourceSettings", tags = "13")]
+    pub datasource_settings: ::core::option::Option<chat_request::DatasourceSettings>,
 }
 /// Nested message and enum types in `ChatRequest`.
 pub mod chat_request {
@@ -1974,7 +3684,8 @@ pub mod chat_request {
     )]
     #[repr(i32)]
     pub enum ThinkingMode {
-        /// Unspecified thinking mode, agent will use THINKING mode by default.
+        /// Unspecified thinking mode, agent will use THINKING mode by default except
+        /// for BigQuery user defaulting to FAST mode by default.
         Unspecified = 0,
         /// Fast mode, answers quickly.
         Fast = 1,
@@ -1999,6 +3710,46 @@ pub mod chat_request {
                 "THINKING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "FAST" => Some(Self::Fast),
                 "THINKING" => Some(Self::Thinking),
+                _ => None,
+            }
+        }
+    }
+    /// Model selection for the agent for BigQuery users.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Model {
+        /// No model specified. Either preview or non preview model can be used.
+        Unspecified = 0,
+        /// Use the most up-to-date non-preview model. This may constrain certain
+        /// request level settings.
+        LatestGaModel = 1,
+    }
+    impl Model {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_UNSPECIFIED",
+                Self::LatestGaModel => "LATEST_GA_MODEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LATEST_GA_MODEL" => Some(Self::LatestGaModel),
                 _ => None,
             }
         }
@@ -2031,6 +3782,14 @@ pub mod chat_request {
         #[prost(message, tag = "105")]
         ClientManagedResourceContext(super::ClientManagedResourceContext),
     }
+    /// Optional settings to customize request behavior, specific to the target
+    /// datasource.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum DatasourceSettings {
+        /// Optional. Looker specific settings.
+        #[prost(message, tag = "13")]
+        LookerSettings(super::LookerSettings),
+    }
 }
 /// Context for the chat request using a data agent.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2038,12 +3797,14 @@ pub struct DataAgentContext {
     /// Required. The name of the data agent resource.
     #[prost(string, tag = "1")]
     pub data_agent: ::prost::alloc::string::String,
-    /// Optional. The credentials to use when calling the Looker data source.
+    /// Optional. Deprecated: Use credentials in ChatRequest.
+    /// The credentials to use when calling the Looker data source.
     ///
     /// Currently supports both OAuth token and API key-based credentials, as
     /// described in
     /// [Authentication with an
     /// SDK](<https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>).
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub credentials: ::core::option::Option<Credentials>,
     /// Optional. Version of context to be used by DCS (e.g. STAGING, PUBLISHED)
@@ -2157,6 +3918,18 @@ pub mod message {
         SystemMessage(super::SystemMessage),
     }
 }
+/// Message to hold Looker specific custom settings.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LookerSettings {
+    /// Optional. Whether to operate in Looker's Development Mode.
+    /// If true, the API session will be switched to the "dev" workspace,
+    /// allowing interaction with LookML changes in the user's development branch.
+    /// If false or unset, the session remains in the default state (Production
+    /// Mode).
+    /// See <https://cloud.google.com/looker/docs/dev-mode-prod-mode.>
+    #[prost(bool, tag = "1")]
+    pub enable_dev_mode: bool,
+}
 /// A message from the user that is interacting with the system.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserMessage {
@@ -2175,7 +3948,7 @@ pub mod user_message {
     }
 }
 /// A message from the system in response to the user. This message can also be a
-/// message from the user as historical context for multiturn conversations with
+/// message from the user as historical context for multi-turn conversations with
 /// the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemMessage {
@@ -2184,6 +3957,9 @@ pub struct SystemMessage {
     /// the UI.
     #[prost(int32, optional, tag = "12")]
     pub group_id: ::core::option::Option<i32>,
+    /// Output only. Citation information for the system message.
+    #[prost(message, optional, tag = "15")]
+    pub citation: ::core::option::Option<Citation>,
     /// The kind of content in the system message.
     #[prost(oneof = "system_message::Kind", tags = "1, 2, 3, 4, 5, 6, 13, 14")]
     pub kind: ::core::option::Option<system_message::Kind>,
@@ -2214,7 +3990,9 @@ pub mod system_message {
         /// Optional. A message containing example queries.
         #[prost(message, tag = "13")]
         ExampleQueries(super::ExampleQueries),
-        /// Optional. A message containing clarification questions.
+        /// Optional. Deprecated: Use TextMessage with TextType.FINAL_RESPONSE
+        /// instead. A message containing clarification questions.
+        #[deprecated]
         #[prost(message, tag = "14")]
         Clarification(super::ClarificationMessage),
     }
@@ -2261,6 +4039,9 @@ pub mod text_message {
         /// (`FINAL_RESPONSE`). These messages provide insight into the agent's
         /// actions.
         Progress = 3,
+        /// The text is a list of follow-up questions suggested.
+        /// Each item in parts is a follow-up question.
+        FollowupQuestions = 4,
     }
     impl TextType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2273,6 +4054,7 @@ pub mod text_message {
                 Self::FinalResponse => "FINAL_RESPONSE",
                 Self::Thought => "THOUGHT",
                 Self::Progress => "PROGRESS",
+                Self::FollowupQuestions => "FOLLOWUP_QUESTIONS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2282,6 +4064,7 @@ pub mod text_message {
                 "FINAL_RESPONSE" => Some(Self::FinalResponse),
                 "THOUGHT" => Some(Self::Thought),
                 "PROGRESS" => Some(Self::Progress),
+                "FOLLOWUP_QUESTIONS" => Some(Self::FollowupQuestions),
                 _ => None,
             }
         }
@@ -2328,7 +4111,7 @@ pub struct SchemaResult {
 pub struct DataMessage {
     /// Whether this message contains the query, the result, or generated SQL for
     /// the data retrieval.
-    #[prost(oneof = "data_message::Kind", tags = "1, 2, 3, 4, 5")]
+    #[prost(oneof = "data_message::Kind", tags = "1, 2, 3, 4, 5, 6")]
     pub kind: ::core::option::Option<data_message::Kind>,
 }
 /// Nested message and enum types in `DataMessage`.
@@ -2346,14 +4129,17 @@ pub mod data_message {
         /// Retrieved data.
         #[prost(message, tag = "3")]
         Result(super::DataResult),
-        /// Looker Query generated by the system to retrieve data.
         /// Deprecated: generated looker query is now under DataQuery.looker.
+        /// Looker Query generated by the system to retrieve data.
         #[deprecated]
         #[prost(message, tag = "4")]
         GeneratedLookerQuery(super::LookerQuery),
         /// A BigQuery job executed by the system to retrieve data.
         #[prost(message, tag = "5")]
         BigQueryJob(super::BigQueryJob),
+        /// A pre-existing query that was matched to retrieve data.
+        #[prost(message, tag = "6")]
+        MatchedQuery(super::MatchedQuery),
     }
 }
 /// A query for retrieving data.
@@ -2590,20 +4376,29 @@ pub struct ErrorMessage {
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
 }
+/// Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead.
 /// Represents a single question to the user to help clarify their query.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClarificationQuestion {
-    /// Required. The natural language question to ask the user.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// The natural language question to ask the user.
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub question: ::prost::alloc::string::String,
-    /// Required. The selection mode for this question.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// The selection mode for this question.
+    #[deprecated]
     #[prost(enumeration = "clarification_question::SelectionMode", tag = "2")]
     pub selection_mode: i32,
-    /// Required. A list of distinct options for the user to choose from.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// A list of distinct options for the user to choose from.
     /// The number of options is limited to a maximum of 5.
+    #[deprecated]
     #[prost(string, repeated, tag = "3")]
     pub options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The type of clarification question.
+    /// Optional. Deprecated: The parent message is deprecated.
+    /// The type of clarification question.
+    #[deprecated]
     #[prost(
         enumeration = "clarification_question::ClarificationQuestionType",
         tag = "4"
@@ -2612,6 +4407,7 @@ pub struct ClarificationQuestion {
 }
 /// Nested message and enum types in `ClarificationQuestion`.
 pub mod clarification_question {
+    /// Deprecated: The parent message is deprecated.
     /// The selection mode for the clarification question.
     #[derive(
         Clone,
@@ -2626,11 +4422,17 @@ pub mod clarification_question {
     )]
     #[repr(i32)]
     pub enum SelectionMode {
+        /// Deprecated: The parent message is deprecated.
         /// Unspecified selection mode.
+        #[deprecated]
         Unspecified = 0,
+        /// Deprecated: The parent message is deprecated.
         /// The user can select only one option.
+        #[deprecated]
         SingleSelect = 1,
+        /// Deprecated: The parent message is deprecated.
         /// The user can select multiple options.
+        #[deprecated]
         MultiSelect = 2,
     }
     impl SelectionMode {
@@ -2640,21 +4442,27 @@ pub mod clarification_question {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "SELECTION_MODE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::SingleSelect => "SINGLE_SELECT",
+                #[allow(deprecated)]
                 Self::MultiSelect => "MULTI_SELECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "SELECTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                "SINGLE_SELECT" => Some(Self::SingleSelect),
-                "MULTI_SELECT" => Some(Self::MultiSelect),
+                "SELECTION_MODE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "SINGLE_SELECT" => Some(#[allow(deprecated)] Self::SingleSelect),
+                "MULTI_SELECT" => Some(#[allow(deprecated)] Self::MultiSelect),
                 _ => None,
             }
         }
     }
+    /// Deprecated: The parent message is deprecated.
     /// The type of clarification question.
     /// This enum may be extended with new values in the future.
     #[derive(
@@ -2670,13 +4478,19 @@ pub mod clarification_question {
     )]
     #[repr(i32)]
     pub enum ClarificationQuestionType {
+        /// Deprecated: The parent message is deprecated.
         /// Unspecified clarification question type.
+        #[deprecated]
         Unspecified = 0,
+        /// Deprecated: The parent message is deprecated.
         /// The clarification question is for filter values.
+        #[deprecated]
         FilterValues = 1,
+        /// Deprecated: The parent message is deprecated.
         /// The clarification question is for data fields. This is a generic term
         /// encompassing SQL columns, Looker fields (dimensions/measures), or
         /// nested data structure properties.
+        #[deprecated]
         Fields = 2,
     }
     impl ClarificationQuestionType {
@@ -2686,27 +4500,35 @@ pub mod clarification_question {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
+                #[allow(deprecated)]
                 Self::Unspecified => "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED",
+                #[allow(deprecated)]
                 Self::FilterValues => "FILTER_VALUES",
+                #[allow(deprecated)]
                 Self::Fields => "FIELDS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "FILTER_VALUES" => Some(Self::FilterValues),
-                "FIELDS" => Some(Self::Fields),
+                "CLARIFICATION_QUESTION_TYPE_UNSPECIFIED" => {
+                    Some(#[allow(deprecated)] Self::Unspecified)
+                }
+                "FILTER_VALUES" => Some(#[allow(deprecated)] Self::FilterValues),
+                "FIELDS" => Some(#[allow(deprecated)] Self::Fields),
                 _ => None,
             }
         }
     }
 }
+/// Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead.
 /// A message of questions to help clarify the user's query. This is returned
 /// when the system cannot confidently answer the user's question.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClarificationMessage {
-    /// Required. A batch of clarification questions to ask the user.
+    /// Required. Deprecated: The parent message is deprecated.
+    /// A batch of clarification questions to ask the user.
+    #[deprecated]
     #[prost(message, repeated, tag = "1")]
     pub questions: ::prost::alloc::vec::Vec<ClarificationQuestion>,
 }
@@ -2825,7 +4647,7 @@ pub mod data_chat_service_client {
             self
         }
         /// Answers a data question by generating a stream of
-        /// \[Message\]\[google.cloud.geminidataanalytics.v1alpha.Message\] objects.
+        /// \[Message\]\[google.cloud.geminidataanalytics.v1.Message\] objects.
         pub async fn chat(
             &mut self,
             request: impl tonic::IntoRequest<super::ChatRequest>,
@@ -2906,6 +4728,33 @@ pub mod data_chat_service_client {
                     GrpcMethod::new(
                         "google.cloud.geminidataanalytics.v1alpha.DataChatService",
                         "DeleteConversation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a conversation.
+        pub async fn update_conversation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversationRequest>,
+        ) -> std::result::Result<tonic::Response<super::Conversation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataChatService/UpdateConversation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataChatService",
+                        "UpdateConversation",
                     ),
                 );
             self.inner.unary(req, path, codec).await

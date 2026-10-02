@@ -147,11 +147,12 @@ pub struct UploadAttachmentResponse {
     #[prost(message, optional, tag = "1")]
     pub attachment_data_ref: ::core::option::Option<AttachmentDataRef>,
 }
-/// A user in Google Chat.
-/// When returned as an output from a request, if your Chat app [authenticates as
-/// a
+/// If your Chat app [authenticates as a
 /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
-/// the output for a `User` resource only populates the user's `name` and `type`.
+/// the output for a `User` resource (such as in the Messages and Memberships
+/// APIs) only populates the `name` and `type` fields for both internal and
+/// external users, unless they are members of the space or have prior affinity
+/// with the calling user.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct User {
     /// Resource name for a Google Chat \[user\]\[google.chat.v1.User\].
@@ -179,8 +180,38 @@ pub struct User {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The user's display name.
+    ///
+    /// Populated for both app authentication and user authentication.
+    /// This field is always populated for requests made with [app
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
+    /// When calling the Messages and Memberships APIs with [user
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
+    /// this field is populated for both internal and external users for the
+    /// `sender` of a message, users within `annotations` (such as user
+    /// mentions), and within `Membership` resources, provided the user is a
+    /// member of the space or has prior affinity with the calling user.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
+    /// Output only. The user's avatar image URL.
+    ///
+    /// When calling the Messages and Memberships APIs with [user
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
+    /// this field is populated for both internal and external users for the
+    /// `sender` of a message, users within `annotations` (such as user
+    /// mentions), and within `Membership` resources, provided the user is a
+    /// member of the space or has prior affinity with the calling user.
+    #[prost(string, tag = "3")]
+    pub avatar_url: ::prost::alloc::string::String,
+    /// Output only. The user's email address.
+    ///
+    /// When calling the Messages and Memberships APIs with [user
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
+    /// this field is populated for both internal and external users for the
+    /// `sender` of a message, users within `annotations` (such as user
+    /// mentions), and within `Membership` resources, provided the user is a
+    /// member of the space or has prior affinity with the calling user.
+    #[prost(string, tag = "4")]
+    pub email: ::prost::alloc::string::String,
     /// Unique identifier of the user's Google Workspace domain.
     #[prost(string, tag = "6")]
     pub domain_id: ::prost::alloc::string::String,
@@ -188,7 +219,8 @@ pub struct User {
     #[prost(enumeration = "user::Type", tag = "5")]
     pub r#type: i32,
     /// Output only. When `true`, the user is deleted or their profile is not
-    /// visible.
+    /// visible, such as when a user is mentioned in a space without being a member
+    /// and without prior affinity with the calling user.
     #[prost(bool, tag = "7")]
     pub is_anonymous: bool,
 }
@@ -514,10 +546,10 @@ pub struct DeleteCustomEmojiRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Output only. Annotations can be associated with the plain-text body of the
-/// message or with chips that link to Google Workspace resources like Google
-/// Docs or Sheets with `start_index` and `length` of 0. To add basic formatting
-/// to a text message, see [Format text
+/// Annotations can be associated with the plain-text body of the message or
+/// with chips that link to Google Workspace resources like Google Docs or Sheets
+/// with `start_index` and `length` of 0. To add basic formatting to a text
+/// message, see [Format text
 /// messages](<https://developers.google.com/workspace/chat/format-messages>).
 ///
 /// Example plain-text message body:
@@ -990,6 +1022,70 @@ impl AnnotationType {
             "RICH_LINK" => Some(Self::RichLink),
             "CUSTOM_EMOJI" => Some(Self::CustomEmoji),
             _ => None,
+        }
+    }
+}
+/// Metadata about a [Chat app
+/// command](<https://developers.google.com/workspace/chat/commands>).
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AppCommandMetadata {
+    /// The ID for the command specified in the Chat API configuration.
+    #[prost(int32, tag = "1")]
+    pub app_command_id: i32,
+    /// The type of Chat app command.
+    #[prost(enumeration = "app_command_metadata::AppCommandType", tag = "2")]
+    pub app_command_type: i32,
+}
+/// Nested message and enum types in `AppCommandMetadata`.
+pub mod app_command_metadata {
+    /// The type of Chat app command. For details, see [Types of Chat
+    /// app commands](<https://developers.google.com/workspace/chat/commands#types>).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AppCommandType {
+        /// Default value. Unspecified.
+        Unspecified = 0,
+        /// A slash command. The user sends the command in a Chat message.
+        SlashCommand = 1,
+        /// A quick command. The user selects the command from the Chat menu
+        /// in the message reply area.
+        QuickCommand = 3,
+        /// A message action. The user selects the command from the message context
+        /// menu in Chat.
+        MessageAction = 4,
+    }
+    impl AppCommandType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "APP_COMMAND_TYPE_UNSPECIFIED",
+                Self::SlashCommand => "SLASH_COMMAND",
+                Self::QuickCommand => "QUICK_COMMAND",
+                Self::MessageAction => "MESSAGE_ACTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "APP_COMMAND_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SLASH_COMMAND" => Some(Self::SlashCommand),
+                "QUICK_COMMAND" => Some(Self::QuickCommand),
+                "MESSAGE_ACTION" => Some(Self::MessageAction),
+                _ => None,
+            }
         }
     }
 }
@@ -1525,9 +1621,11 @@ pub mod membership {
         /// Optional. The Google Chat user or app the membership corresponds to.
         /// If your Chat app [authenticates as a
         /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
-        /// the output populates the
+        /// the output only populates the
         /// [user](<https://developers.google.com/workspace/chat/api/reference/rest/v1/User>)
-        /// `name` and `type`.
+        /// `name` and `type` fields for both internal and external users, unless
+        /// they are members of the space or have a prior affinity, like a direct
+        /// message (DM) conversation, with the calling user.
         #[prost(message, tag = "3")]
         Member(super::User),
         /// Optional. The Google Group the membership corresponds to.
@@ -2750,6 +2848,19 @@ pub mod space {
         /// Optional. Access permission setting for joining the space.
         #[prost(message, optional, tag = "2")]
         pub join_space_setting: ::core::option::Option<AccessPermissionSetting>,
+        /// Optional. Access permission setting for viewing space membership.
+        /// Must be specified together with
+        /// `PermissionSettings.view_space_membership` in the update mask and request
+        /// body when updating who can view space membership. When granting view
+        /// access to a target audience, you must also grant
+        /// `PermissionSettings.view_space_membership` to all members in the same
+        /// request. To remove an existing target audience (for example, to restrict
+        /// view access to space managers or assistant managers only), specify an
+        /// empty `AccessPermissionSetting` (with no `principals`).
+        #[prost(message, optional, tag = "3")]
+        pub view_space_membership_setting: ::core::option::Option<
+            AccessPermissionSetting,
+        >,
     }
     /// An access permission setting.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2807,6 +2918,19 @@ pub mod space {
         /// Optional. Setting for replying to messages in a space.
         #[prost(message, optional, tag = "8")]
         pub reply_messages: ::core::option::Option<PermissionSetting>,
+        /// Optional. Setting for viewing space membership.
+        /// Must be specified together with
+        /// `AccessPermissionSettings.view_space_membership_setting` in the update
+        /// mask and request body when updating who can view space membership.
+        /// When restricting view access to specific roles (for example, space
+        /// managers or assistant managers only), specify the desired role
+        /// permissions here and provide an empty
+        /// `AccessPermissionSettings.view_space_membership_setting` in the same
+        /// request. If a target audience is configured in
+        /// `AccessPermissionSettings.view_space_membership_setting`, this setting
+        /// must be granted to all members.
+        #[prost(message, optional, tag = "9")]
+        pub view_space_membership: ::core::option::Option<PermissionSetting>,
     }
     /// Represents a space permission setting.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3079,12 +3203,24 @@ pub struct CreateSpaceRequest {
     /// field will be ignored.
     #[prost(message, optional, tag = "1")]
     pub space: ::core::option::Option<Space>,
-    /// Optional. A unique identifier for this request.
-    /// A random UUID is recommended.
-    /// Specifying an existing request ID returns the space created with that ID
-    /// instead of creating a new space.
-    /// Specifying an existing request ID from the same Chat app with a different
-    /// authenticated user returns an error.
+    /// Optional. A unique ID for this request. A random UUID is recommended.
+    /// Specifying a request ID makes the request idempotent, which ensures that
+    /// multiple identical requests with the same request ID result in only a
+    /// single space being created. Subsequent requests with the same request ID
+    /// return the existing space and do not update the space, even if the
+    /// requested details differ from the current state.
+    ///
+    /// To use this field effectively:
+    ///
+    /// * Ensure that subsequent requests are identical and use the same
+    ///   authentication credentials as the original request.
+    /// * If a space was already created with the provided request ID, the request
+    ///   returns that space. Note that the returned space might not be fully
+    ///   populated; the API echoes the space in your request with the
+    ///   system-assigned resource name populated. To retrieve the latest metadata
+    ///   for the space, call `GetSpace`.
+    /// * Reusing an existing request ID with a different authenticated user
+    ///   results in an error.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -3316,6 +3452,7 @@ pub struct UpdateSpaceRequest {
     ///
     /// * `access_settings.access_permission_settings.discoverSpaceSetting`
     /// * `access_settings.access_permission_settings.joinSpaceSetting`
+    /// * `access_settings.access_permission_settings.viewSpaceMembershipSetting`
     ///
     /// `permission_settings`: Supports changing the
     /// [permission settings](<https://support.google.com/chat/answer/13340792>)
@@ -3332,6 +3469,7 @@ pub struct UpdateSpaceRequest {
     /// * `permission_settings.manageApps`
     /// * `permission_settings.manageWebhooks`
     /// * `permission_settings.replyMessages`
+    /// * `permission_settings.viewSpaceMembership`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. When `true`, the method runs using the user's Google Workspace
@@ -3369,8 +3507,9 @@ pub struct SearchSpacesRequest {
     ///
     /// If unspecified, at most 100 spaces are returned.
     ///
-    /// The maximum value is 1000. If you use a value more than 1000, it's
-    /// automatically changed to 1000.
+    /// The maximum value is 1000 when `useAdminAccess` is set to `true`.
+    /// Otherwise, the maximum value is 100. If you use a value more than the
+    /// maximum value, it's automatically changed to the maximum value.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token, received from the previous search spaces call. Provide this
@@ -3472,6 +3611,11 @@ pub struct SearchSpacesRequest {
     /// (external_user_allowed = "true" AND display_name:"Hello" AND space_type =
     /// "SPACE")
     /// ```
+    ///
+    /// The maximum query length is 1,000 characters.
+    ///
+    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
+    /// error.
     #[prost(string, tag = "4")]
     pub query: ::prost::alloc::string::String,
     /// Optional. How the list of spaces is ordered.
@@ -3523,10 +3667,14 @@ pub struct SearchSpacesResponse {
     pub spaces: ::prost::alloc::vec::Vec<Space>,
     /// A token that can be used to retrieve the next page. If this field is empty,
     /// there are no subsequent pages.
+    ///
+    /// Only populated when `useAdminAccess` is set to `true`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of spaces that match the query, across all pages. If the
     /// result is over 10,000 spaces, this value is an estimate.
+    ///
+    /// Only populated when `useAdminAccess` is set to `true`.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
     /// Output only. The list of search results that matched the query.
@@ -3800,9 +3948,11 @@ pub struct Message {
     /// Output only. The user who created the message.
     /// If your Chat app [authenticates as a
     /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
-    /// the output populates the
+    /// the output only populates the
     /// [user](<https://developers.google.com/workspace/chat/api/reference/rest/v1/User>)
-    /// `name` and `type`.
+    /// `name` and `type` fields for both internal and external users, unless they
+    /// are members of the space or have a prior affinity, like a direct message
+    /// (DM) conversation, with the calling user.
     #[prost(message, optional, tag = "2")]
     pub sender: ::core::option::Option<User>,
     /// Optional. Immutable. For spaces created in Chat, the time at which the
@@ -4395,9 +4545,24 @@ pub struct CreateMessageRequest {
     #[deprecated]
     #[prost(string, tag = "6")]
     pub thread_key: ::prost::alloc::string::String,
-    /// Optional. A unique request ID for this message. Specifying an existing
-    /// request ID returns the message created with that ID instead of creating a
-    /// new message.
+    /// Optional. A unique ID for this request. A random UUID is recommended.
+    /// Specifying a request ID makes the request idempotent, which ensures that
+    /// multiple identical requests with the same request ID result in only a
+    /// single message being created. Subsequent requests with the same request
+    /// ID return the existing message and do not update the message, even if the
+    /// requested details differ from the current state.
+    ///
+    /// To use this field effectively:
+    ///
+    /// * Ensure that subsequent requests are identical and use the same
+    ///   authentication credentials as the original request.
+    /// * If a message was already created with the provided request ID, the
+    ///   request returns that message. Note that the returned message might not be
+    ///   fully populated; the API echoes the message in your request with the
+    ///   system-assigned resource names populated. To retrieve the latest metadata
+    ///   for the message, call `GetMessage`.
+    /// * Reusing an existing request ID with a different authenticated user
+    ///   results in an error.
     #[prost(string, tag = "7")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. Specifies whether a message starts a thread or replies to one.
@@ -4760,6 +4925,10 @@ pub struct SearchMessagesRequest {
     ///   the top five space matches. For example, `space.display_name:Project`
     ///   searches for messages in the top five spaces that contain the word
     ///   "Project" in their display names.
+    /// * `space.space_type`: The type of the space. Only supports `=`. For
+    ///   example, `space.space_type="DIRECT_MESSAGE"` returns only messages from
+    ///   direct messages. The possible values are `DIRECT_MESSAGE`, `GROUP_CHAT`,
+    ///   and `SPACE`.
     /// * `attachment`: Supports the operator `:*` (has any) to check for the
     ///   presence of attachments. If `attachment:*` is specified, only messages
     ///   that have at least one attachment are returned.
@@ -4779,8 +4948,8 @@ pub struct SearchMessagesRequest {
     /// * `is_unread()`: Filters out messages that have been read by the calling
     ///   user.
     ///
-    /// Using the `space.display_name` filter requires that the calling credentials
-    /// include one of the following [authorization
+    /// Using the `space.display_name` or the `space.space_type` filters requires
+    /// that the calling credentials include one of the following [authorization
     /// scopes](<https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>):
     ///
     /// * `<https://www.googleapis.com/auth/chat.spaces.readonly`>
@@ -4814,6 +4983,8 @@ pub struct SearchMessagesRequest {
     ///   `space.display_name:Project OR space.display_name:Tasks` returns messages
     ///   that are in spaces with display names containing either `Project` or
     ///   `Tasks` or both.
+    /// * `space.space_type` supports only the `OR` operator, for example:
+    ///   `space.space_type = "DIRECT_MESSAGE" OR space.space_type = "GROUP_CHAT"`.
     /// * `annotations.user_mentions.user.name` supports the operators `AND` and
     ///   `OR`, but not a mix of both. For example:
     ///   `annotations.user_mentions.user.name:"users/1234567890" AND annotations.user_mentions.user.name:"users/0987654321"` returns only
@@ -4984,6 +5155,76 @@ pub struct SearchMessageResult {
     /// * `<https://www.googleapis.com/auth/chat.users.spacesettings`>
     #[prost(enumeration = "space_notification_setting::MuteSetting", tag = "4")]
     pub space_mute_setting: i32,
+}
+/// A pin on a Chat message. For more information see [Pin a
+/// message](<https://support.google.com/chat?p=chat-board-hc>).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MessagePin {
+    /// Identifier. The resource name of the message pin.
+    /// Format: `spaces/{space}/messagePins/{message_pin}`
+    /// The resource ID component matches the resource ID component of the
+    /// message. For example, a message with `spaces/AAA/messages/bbb.ccc`
+    /// corresponds to the message pin with the resource name
+    /// `spaces/AAA/messagePins/bbb.ccc`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. The resource name of the message that is pinned.
+    /// Format: `spaces/{space}/messages/{message}`
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Request message for listing message pins.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMessagePinsRequest {
+    /// Required. The parent space which owns the collection of pinned items
+    /// Format: `spaces/{space}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of message pins returned. The service might
+    /// return fewer messages than this value. The maximum value is 100. If you use
+    /// a value more than 100, it's automatically changed to 100. If unspecified,
+    /// at most 100 message pins will be returned. Negative values return an
+    /// `INVALID_ARGUMENT` error.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous list message pins call.
+    /// Provide this parameter to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided should match the call that
+    /// provided the page token. Passing different values to the other parameters
+    /// might lead to unexpected results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing message pins.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMessagePinsResponse {
+    /// The pinned messages from the specified space.
+    #[prost(message, repeated, tag = "1")]
+    pub message_pins: ::prost::alloc::vec::Vec<MessagePin>,
+    /// You can send a token as `pageToken` to retrieve the next page of
+    /// results. If empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for creating a message pin.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateMessagePinRequest {
+    /// Required. The parent space in which to create the message pin.
+    /// Format: spaces/{space}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The MessagePin to create.
+    #[prost(message, optional, tag = "2")]
+    pub message_pin: ::core::option::Option<MessagePin>,
+}
+/// Request message for deleting a message pin.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteMessagePinRequest {
+    /// Required. The resource name of the message pin to remove.
+    /// Format: spaces/{space}/messagePins/{message_pin}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents a [section](<https://support.google.com/chat/answer/16059854>) in
 /// Google Chat. Sections help users organize their spaces. There are two types
@@ -5879,12 +6120,24 @@ pub struct SetUpSpaceRequest {
     /// of creating a new space.
     #[prost(message, optional, tag = "1")]
     pub space: ::core::option::Option<Space>,
-    /// Optional. A unique identifier for this request.
-    /// A random UUID is recommended.
-    /// Specifying an existing request ID returns the space created with that ID
-    /// instead of creating a new space.
-    /// Specifying an existing request ID from the same Chat app with a different
-    /// authenticated user returns an error.
+    /// Optional. A unique ID for this request. A random UUID is recommended.
+    /// Specifying a request ID makes the request idempotent, which ensures that
+    /// multiple identical requests with the same request ID result in only a
+    /// single space being created. Subsequent requests with the same request ID
+    /// return the existing space and do not update the space, even if the
+    /// requested details differ from the current state.
+    ///
+    /// To use this field effectively:
+    ///
+    /// * Ensure that subsequent requests are identical and use the same
+    ///   authentication credentials as the original request.
+    /// * If a space was already created with the provided request ID, the request
+    ///   returns that space. Note that the returned space might not be fully
+    ///   populated; the API echoes the space in your request with the
+    ///   system-assigned resource name populated. To retrieve the latest metadata
+    ///   for the space, call `GetSpace`.
+    /// * Reusing an existing request ID with a different authenticated user
+    ///   results in an error.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. The Google Chat users or groups to invite to join the space. Omit
@@ -7349,6 +7602,109 @@ pub mod chat_service_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "DeleteReaction"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists message pins in a space. Users can pin important messages in spaces
+        /// for easy access. For more information, see [Pin or unpin a conversation in
+        /// Google Chat](https://support.google.com/chat/answer/15622437).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.spaces.pins.readonly`
+        /// * `https://www.googleapis.com/auth/chat.spaces.pins`
+        /// * `https://www.googleapis.com/auth/chat.spaces.readonly`
+        /// * `https://www.googleapis.com/auth/chat.spaces`
+        pub async fn list_message_pins(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMessagePinsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMessagePinsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/ListMessagePins",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "ListMessagePins"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a message pin.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.spaces.pins`
+        /// * `https://www.googleapis.com/auth/chat.spaces`
+        pub async fn create_message_pin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateMessagePinRequest>,
+        ) -> std::result::Result<tonic::Response<super::MessagePin>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/CreateMessagePin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "CreateMessagePin"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a message pin.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        /// * `https://www.googleapis.com/auth/chat.spaces.pins`
+        /// * `https://www.googleapis.com/auth/chat.spaces`
+        pub async fn delete_message_pin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteMessagePinRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/DeleteMessagePin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "DeleteMessagePin"),
+                );
             self.inner.unary(req, path, codec).await
         }
         /// Creates a custom emoji.

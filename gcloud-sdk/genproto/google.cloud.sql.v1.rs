@@ -4228,6 +4228,9 @@ pub struct SqlInstancesAddServerCaRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance add server certificate request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4238,6 +4241,9 @@ pub struct SqlInstancesAddServerCertificateRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance add Entra ID certificate request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4248,6 +4254,9 @@ pub struct SqlInstancesAddEntraIdCertificateRequest {
     /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance clone request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4261,6 +4270,9 @@ pub struct SqlInstancesCloneRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesCloneRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance delete request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4277,6 +4289,9 @@ pub struct SqlInstancesDeleteRequest {
     /// Optional. The description of the final backup.
     #[prost(string, tag = "5")]
     pub final_backup_description: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "11")]
+    pub location: ::prost::alloc::string::String,
     #[prost(oneof = "sql_instances_delete_request::Expiration", tags = "4, 6")]
     pub expiration: ::core::option::Option<sql_instances_delete_request::Expiration>,
 }
@@ -4304,6 +4319,9 @@ pub struct SqlInstancesDemoteMasterRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesDemoteMasterRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance demote request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4317,6 +4335,9 @@ pub struct SqlInstancesDemoteRequest {
     /// Required. The request body.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesDemoteRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance export request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4329,6 +4350,9 @@ pub struct SqlInstancesExportRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesExportRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "5")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance failover request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4341,6 +4365,9 @@ pub struct SqlInstancesFailoverRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesFailoverRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance get request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4351,6 +4378,9 @@ pub struct SqlInstancesGetRequest {
     /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance import request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4363,6 +4393,9 @@ pub struct SqlInstancesImportRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesImportRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance insert request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4373,6 +4406,9 @@ pub struct SqlInstancesInsertRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<DatabaseInstance>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance list request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4401,6 +4437,9 @@ pub struct SqlInstancesListRequest {
     /// Project ID of the project for which to list Cloud SQL instances.
     #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "5")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance list server CAs request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4411,6 +4450,9 @@ pub struct SqlInstancesListServerCasRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance list server certificates request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4421,6 +4463,9 @@ pub struct SqlInstancesListServerCertificatesRequest {
     /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance list Entra ID certificates request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4431,6 +4476,9 @@ pub struct SqlInstancesListEntraIdCertificatesRequest {
     /// Required. Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance patch request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4451,6 +4499,9 @@ pub struct SqlInstancesPatchRequest {
     pub reconcile_psc_networking_force: ::core::option::Option<bool>,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<DatabaseInstance>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "6")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance promote replica request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4469,6 +4520,9 @@ pub struct SqlInstancesPromoteReplicaRequest {
     /// instance becomes an independent Cloud SQL primary instance.
     #[prost(bool, tag = "3")]
     pub failover: bool,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance switchover request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4484,6 +4538,9 @@ pub struct SqlInstancesSwitchoverRequest {
     /// minutes and can be modified to a maximum value of 24 hours.
     #[prost(message, optional, tag = "3")]
     pub db_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance reset SSL config request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4500,6 +4557,9 @@ pub struct SqlInstancesResetSslConfigRequest {
         tag = "3"
     )]
     pub mode: i32,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SqlInstancesResetSslConfigRequest`.
 pub mod sql_instances_reset_ssl_config_request {
@@ -4558,6 +4618,9 @@ pub struct SqlInstancesRestartRequest {
     /// Project ID of the project that contains the instance to be restarted.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance restore backup request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4570,6 +4633,9 @@ pub struct SqlInstancesRestoreBackupRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesRestoreBackupRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance rotate server CA request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4582,6 +4648,9 @@ pub struct SqlInstancesRotateServerCaRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesRotateServerCaRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance rotate server certificate request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4595,6 +4664,9 @@ pub struct SqlInstancesRotateServerCertificateRequest {
     /// Optional. Rotate server certificate request body.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesRotateServerCertificateRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance rotate server certificate request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4608,6 +4680,9 @@ pub struct SqlInstancesRotateEntraIdCertificateRequest {
     /// Optional. Rotate Entra ID certificate request body.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesRotateEntraIdCertificateRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance start replica request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4618,6 +4693,9 @@ pub struct SqlInstancesStartReplicaRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance stop replica request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4628,6 +4706,9 @@ pub struct SqlInstancesStopReplicaRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance truncate log request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4640,6 +4721,9 @@ pub struct SqlInstancesTruncateLogRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesTruncateLogRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance perform disk shrink request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4653,6 +4737,9 @@ pub struct SqlInstancesPerformDiskShrinkRequest {
     /// Perform disk shrink context.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<PerformDiskShrinkContext>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance update request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4665,6 +4752,9 @@ pub struct SqlInstancesUpdateRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<DatabaseInstance>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance reschedule maintenance request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4677,6 +4767,9 @@ pub struct SqlInstancesRescheduleMaintenanceRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<SqlInstancesRescheduleMaintenanceRequestBody>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance reencrypt request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4690,6 +4783,9 @@ pub struct SqlInstancesReencryptRequest {
     /// Reencrypt body that users request
     #[prost(message, optional, tag = "3")]
     pub body: ::core::option::Option<InstancesReencryptRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database Instance reencrypt request.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4770,6 +4866,9 @@ pub struct SqlInstancesGetDiskShrinkConfigRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance verify external sync settings request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4808,6 +4907,9 @@ pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// this field is empty, then migrate all objects.
     #[prost(message, repeated, tag = "9")]
     pub selected_objects: ::prost::alloc::vec::Vec<ExternalSyncSelectedObject>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "10")]
+    pub location: ::prost::alloc::string::String,
     #[prost(
         oneof = "sql_instances_verify_external_sync_settings_request::SyncConfig",
         tags = "6"
@@ -4949,6 +5051,9 @@ pub struct SqlInstancesStartExternalSyncRequest {
     /// databases proposed, an error will be returned.
     #[prost(bool, tag = "9")]
     pub replica_overwrite_enabled: bool,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "10")]
+    pub location: ::prost::alloc::string::String,
     #[prost(oneof = "sql_instances_start_external_sync_request::SyncConfig", tags = "6")]
     pub sync_config: ::core::option::Option<
         sql_instances_start_external_sync_request::SyncConfig,
@@ -4972,6 +5077,9 @@ pub struct SqlInstancesResetReplicaSizeRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance create ephemeral certificate request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4984,6 +5092,9 @@ pub struct SqlInstancesCreateEphemeralCertRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<SslCertsCreateEphemeralRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database instance clone request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5192,6 +5303,9 @@ pub struct SqlInstancesPreCheckMajorVersionUpgradeRequest {
     /// upgrade operation.
     #[prost(message, optional, tag = "3")]
     pub body: ::core::option::Option<InstancesPreCheckMajorVersionUpgradeRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance verify external sync settings response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5232,6 +5346,9 @@ pub struct SqlInstancesGetLatestRecoveryTimeRequest {
     /// deleted. If this instance is deleted, then you must set the timestamp.
     #[prost(message, optional, tag = "3")]
     pub source_instance_deletion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "5")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Instance get latest recovery time response.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5619,6 +5736,14 @@ pub struct DatabaseInstance {
     /// false, instance metadata is not sent to the Database Center.
     #[prost(message, optional, tag = "72")]
     pub database_center_integration_enabled: ::core::option::Option<bool>,
+    /// Optional. State of the Database Center integration for this instance.
+    /// When unspecified, Database Center integration is enabled by default.
+    #[prost(
+        enumeration = "database_instance::DatabaseCenterIntegration",
+        optional,
+        tag = "76"
+    )]
+    pub database_center_integration: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
@@ -5871,6 +5996,50 @@ pub mod database_instance {
                 "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
                 "NEW_NETWORK_ARCHITECTURE" => Some(Self::NewNetworkArchitecture),
                 "OLD_NETWORK_ARCHITECTURE" => Some(Self::OldNetworkArchitecture),
+                _ => None,
+            }
+        }
+    }
+    /// State of the integration with Database Center.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseCenterIntegration {
+        /// Default value. The integration state is unspecified. When unspecified,
+        /// Database Center integration is enabled by default.
+        Unspecified = 0,
+        /// Database Center integration is enabled.
+        Enabled = 1,
+        /// Database Center integration is disabled.
+        Disabled = 2,
+    }
+    impl DatabaseCenterIntegration {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATABASE_CENTER_INTEGRATION_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_CENTER_INTEGRATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
                 _ => None,
             }
         }
@@ -6641,6 +6810,9 @@ pub struct SqlInstancesExecuteSqlRequest {
     /// The request body.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<ExecuteSqlPayload>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// The request payload used to execute SQL statements.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6853,6 +7025,9 @@ pub struct SqlInstancesAcquireSsrsLeaseRequest {
     /// Required. The request body.
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesAcquireSsrsLeaseRequest>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Response for the acquire SSRS lease request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -6873,6 +7048,9 @@ pub struct SqlInstancesReleaseSsrsLeaseRequest {
     /// Required. The project ID that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Response for the release SSRS lease request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9317,6 +9495,9 @@ pub struct SqlDatabasesDeleteRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "3")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database get request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9330,6 +9511,9 @@ pub struct SqlDatabasesGetRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "3")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database insert request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9342,6 +9526,9 @@ pub struct SqlDatabasesInsertRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<Database>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database list request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9352,6 +9539,9 @@ pub struct SqlDatabasesListRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database update request.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -9367,6 +9557,9 @@ pub struct SqlDatabasesUpdateRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<Database>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Database list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11078,6 +11271,9 @@ pub struct SqlUsersDeleteRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "5")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Request message for Users Get RPC
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -11094,6 +11290,9 @@ pub struct SqlUsersGetRequest {
     /// Host of a user of the instance.
     #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "5")]
+    pub location: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlUsersInsertRequest {
@@ -11105,6 +11304,9 @@ pub struct SqlUsersInsertRequest {
     pub project: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlUsersListRequest {
@@ -11114,6 +11316,9 @@ pub struct SqlUsersListRequest {
     /// Project ID of the project that contains the instance.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "3")]
+    pub location: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlUsersUpdateRequest {
@@ -11150,6 +11355,9 @@ pub struct SqlUsersUpdateRequest {
     pub revoke_existing_server_roles: ::core::option::Option<bool>,
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
+    /// Optional. Region of the Cloud SQL instance.
+    #[prost(string, tag = "9")]
+    pub location: ::prost::alloc::string::String,
 }
 /// User level password validation policy.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]

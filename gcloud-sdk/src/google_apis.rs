@@ -198,6 +198,7 @@ pub mod google {
                 feature = "google-cloud-automl-v1",
                 feature = "google-cloud-automl-v1beta1",
                 feature = "google-cloud-backupdr-v1",
+                feature = "google-cloud-backupdr-v1beta",
                 feature = "google-cloud-baremetalsolution-v2",
                 feature = "google-cloud-batch-v1",
                 feature = "google-cloud-batch-v1alpha",
@@ -456,7 +457,6 @@ pub mod google {
                 feature = "google-cloud-telcoautomation-v1alpha1",
                 feature = "google-cloud-texttospeech-v1",
                 feature = "google-cloud-texttospeech-v1beta1",
-                feature = "google-cloud-timeseriesinsights-v1",
                 feature = "google-cloud-tpu-v1",
                 feature = "google-cloud-tpu-v2",
                 feature = "google-cloud-tpu-v2alpha1",
@@ -508,6 +508,7 @@ pub mod google {
                 feature = "google-developers-knowledge-v1",
                 feature = "google-developers-knowledge-v1alpha",
                 feature = "google-devicesandservices-health-v4",
+                feature = "google-devicesandservices-health-v4beta",
                 feature = "google-devtools-artifactregistry-v1",
                 feature = "google-devtools-artifactregistry-v1beta2",
                 feature = "google-devtools-build-v1",
@@ -1190,6 +1191,10 @@ pub mod google {
             pub mod v1 {
                 #[cfg(any(feature = "google-cloud-backupdr-v1"))]
                 include_proto!("google.cloud.backupdr.v1");
+            }
+            pub mod v1beta {
+                #[cfg(any(feature = "google-cloud-backupdr-v1beta"))]
+                include_proto!("google.cloud.backupdr.v1beta");
             }
         }
         pub mod baremetalsolution {
@@ -2784,12 +2789,6 @@ pub mod google {
                 include_proto!("google.cloud.texttospeech.v1beta1");
             }
         }
-        pub mod timeseriesinsights {
-            pub mod v1 {
-                #[cfg(any(feature = "google-cloud-timeseriesinsights-v1"))]
-                include_proto!("google.cloud.timeseriesinsights.v1");
-            }
-        }
         pub mod tpu {
             pub mod v1 {
                 #[cfg(any(feature = "google-cloud-tpu-v1"))]
@@ -3089,6 +3088,10 @@ pub mod google {
             pub mod v4 {
                 #[cfg(any(feature = "google-devicesandservices-health-v4"))]
                 include_proto!("google.devicesandservices.health.v4");
+            }
+            pub mod v4beta {
+                #[cfg(any(feature = "google-devicesandservices-health-v4beta"))]
+                include_proto!("google.devicesandservices.health.v4beta");
             }
         }
     }
@@ -3480,6 +3483,7 @@ pub mod google {
                 feature = "google-cloud-automl-v1",
                 feature = "google-cloud-automl-v1beta1",
                 feature = "google-cloud-backupdr-v1",
+                feature = "google-cloud-backupdr-v1beta",
                 feature = "google-cloud-baremetalsolution-v2",
                 feature = "google-cloud-batch-v1",
                 feature = "google-cloud-batch-v1alpha",
@@ -3621,6 +3625,7 @@ pub mod google {
                 feature = "google-cloud-storageinsights-v1",
                 feature = "google-cloud-talent-v4",
                 feature = "google-cloud-talent-v4beta1",
+                feature = "google-cloud-tasks-v2",
                 feature = "google-cloud-tasks-v2beta3",
                 feature = "google-cloud-telcoautomation-v1",
                 feature = "google-cloud-telcoautomation-v1alpha1",
@@ -3660,6 +3665,7 @@ pub mod google {
                 feature = "google-datastore-admin-v1",
                 feature = "google-datastore-admin-v1beta1",
                 feature = "google-devicesandservices-health-v4",
+                feature = "google-devicesandservices-health-v4beta",
                 feature = "google-devtools-artifactregistry-v1",
                 feature = "google-devtools-artifactregistry-v1beta2",
                 feature = "google-devtools-cloudbuild-v1",
@@ -3919,6 +3925,7 @@ pub mod google {
                 feature = "google-cloud-asset-v1p7beta1",
                 feature = "google-cloud-audit",
                 feature = "google-cloud-backupdr-v1",
+                feature = "google-cloud-backupdr-v1beta",
                 feature = "google-cloud-batch-v1alpha",
                 feature = "google-cloud-bigquery-analyticshub-v1",
                 feature = "google-cloud-bigquery-connection-v1",
@@ -3974,6 +3981,7 @@ pub mod google {
                 feature = "google-cloud-iap-v1",
                 feature = "google-cloud-iap-v1beta1",
                 feature = "google-cloud-iot-v1",
+                feature = "google-cloud-lustre-v1",
                 feature = "google-cloud-memcache-v1",
                 feature = "google-cloud-memcache-v1beta2",
                 feature = "google-cloud-memorystore-v1",
@@ -4045,6 +4053,7 @@ pub mod google {
                 feature = "google-datastore-v1",
                 feature = "google-datastore-v1beta3",
                 feature = "google-devicesandservices-health-v4",
+                feature = "google-devicesandservices-health-v4beta",
                 feature = "google-devtools-artifactregistry-v1",
                 feature = "google-devtools-artifactregistry-v1beta2",
                 feature = "google-devtools-containeranalysis-v1",
@@ -4154,6 +4163,7 @@ pub mod google {
                 feature = "google-cloud-automl-v1",
                 feature = "google-cloud-automl-v1beta1",
                 feature = "google-cloud-backupdr-v1",
+                feature = "google-cloud-backupdr-v1beta",
                 feature = "google-cloud-baremetalsolution-v2",
                 feature = "google-cloud-batch-v1",
                 feature = "google-cloud-batch-v1alpha",
@@ -4336,7 +4346,6 @@ pub mod google {
                 feature = "google-cloud-telcoautomation-v1alpha1",
                 feature = "google-cloud-texttospeech-v1",
                 feature = "google-cloud-texttospeech-v1beta1",
-                feature = "google-cloud-timeseriesinsights-v1",
                 feature = "google-cloud-tpu-v1",
                 feature = "google-cloud-tpu-v2",
                 feature = "google-cloud-tpu-v2alpha1",
@@ -4377,6 +4386,7 @@ pub mod google {
                 feature = "google-datastore-admin-v1",
                 feature = "google-datastore-admin-v1beta1",
                 feature = "google-devicesandservices-health-v4",
+                feature = "google-devicesandservices-health-v4beta",
                 feature = "google-devtools-artifactregistry-logging-v1",
                 feature = "google-devtools-artifactregistry-v1",
                 feature = "google-devtools-artifactregistry-v1beta2",
