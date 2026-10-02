@@ -23,6 +23,21 @@ pub struct EnrollResourceRequest {
     pub destinations: ::prost::alloc::vec::Vec<
         enroll_resource_request::EligibleDestination,
     >,
+    /// Optional. If `true`, only validates the request and does not enroll the
+    /// resource. This executes standard request validation (such as schema, IAM,
+    /// and destination checks) and skips the apply phase.
+    ///
+    /// Use this field for the following purposes:
+    ///
+    /// * **Infrastructure as Code (IaC)**: Allow tools like Terraform to run
+    ///   dry-run mutations (e.g., `terraform plan`) without creating real
+    ///   resources or incurring costs.
+    /// * **User Interface Validation**: Enable real-time form and permission
+    ///   validation in custom UIs before submitting requests.
+    /// * **CI/CD & Automation**: Test your scripts, permissions, and parameters
+    ///   safely without consuming resource quotas.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
 }
 /// Nested message and enum types in `EnrollResourceRequest`.
 pub mod enroll_resource_request {
@@ -78,6 +93,22 @@ pub struct GenerateAuditScopeReportRequest {
     /// generated against. For example, `NIST_800_53`.
     #[prost(string, tag = "5")]
     pub compliance_framework: ::prost::alloc::string::String,
+    /// Optional. If `true`, only validates the request and does not generate the
+    /// audit scope report. This executes standard request validation (such as
+    /// schema, framework existence, scope, and IAM checks) and skips the apply
+    /// phase.
+    ///
+    /// Use this field for the following purposes:
+    ///
+    /// * **Infrastructure as Code (IaC)**: Allow tools like Terraform to run
+    ///   dry-run mutations (e.g., `terraform plan`) without creating real
+    ///   resources or incurring costs.
+    /// * **User Interface Validation**: Enable real-time form and permission
+    ///   validation in custom UIs before submitting requests.
+    /// * **CI/CD & Automation**: Test your scripts, permissions, and parameters
+    ///   safely without consuming resource quotas.
+    #[prost(bool, tag = "6")]
+    pub validate_only: bool,
 }
 /// Nested message and enum types in `GenerateAuditScopeReportRequest`.
 pub mod generate_audit_scope_report_request {
@@ -854,6 +885,293 @@ pub struct ControlDetails {
     #[prost(message, optional, tag = "3")]
     pub control_report_summary: ::core::option::Option<ReportSummary>,
 }
+/// Request message for
+/// \[CreateAuditSchedule\]\[google.cloud.auditmanager.v1.AuditManager.CreateAuditSchedule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateAuditScheduleRequest {
+    /// Required. Project or folder that this audit schedule is for, in one of the
+    /// following formats:
+    ///
+    /// * `projects/{project}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Audit schedule to create.
+    #[prost(message, optional, tag = "2")]
+    pub audit_schedule: ::core::option::Option<AuditSchedule>,
+    /// Required. ID to use for the audit schedule, which becomes the final
+    /// component of the audit schedule's resource name.
+    #[prost(string, tag = "3")]
+    pub audit_schedule_id: ::prost::alloc::string::String,
+    /// Optional. If `true`, only validates the request and does not create the
+    /// audit schedule. This executes standard request validation (such as schema,
+    /// framework existence, scope, and IAM checks) and skips the apply phase.
+    ///
+    /// Use this field for the following purposes:
+    ///
+    /// * **Infrastructure as Code (IaC)**: Allow tools like Terraform to run
+    ///   dry-run mutations (e.g., `terraform plan`) without creating real
+    ///   resources or incurring costs.
+    /// * **User Interface Validation**: Enable real-time form and permission
+    ///   validation in custom UIs before submitting requests.
+    /// * **CI/CD & Automation**: Test your scripts, permissions, and parameters
+    ///   safely without consuming resource quotas.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Request message for
+/// \[UpdateAuditSchedule\]\[google.cloud.auditmanager.v1.AuditManager.UpdateAuditSchedule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateAuditScheduleRequest {
+    /// Required. Audit schedule to update.
+    #[prost(message, optional, tag = "1")]
+    pub audit_schedule: ::core::option::Option<AuditSchedule>,
+    /// Optional. List of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If `true`, only validates the request and does not update the
+    /// audit schedule. This executes standard request validation (such as
+    /// schema, framework existence, scope, and IAM checks) and skips the apply
+    /// phase.
+    ///
+    /// Use this field for the following purposes:
+    ///
+    /// * **Infrastructure as Code (IaC)**: Allow tools like Terraform to run
+    ///   dry-run mutations (e.g., `terraform plan`) without creating real
+    ///   resources or incurring costs.
+    /// * **User Interface Validation**: Enable real-time form and permission
+    ///   validation in custom UIs before submitting requests.
+    /// * **CI/CD & Automation**: Test your scripts, permissions, and parameters
+    ///   safely without consuming resource quotas.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Request message for
+/// \[GetAuditSchedule\]\[google.cloud.auditmanager.v1.AuditManager.GetAuditSchedule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAuditScheduleRequest {
+    /// Required. Name of the audit schedule to retrieve, in one of the following
+    /// formats:
+    ///
+    /// * `projects/{project}/locations/{location}/auditSchedules/{audit_schedule}`
+    /// * `folders/{folder}/locations/{location}/auditSchedules/{audit_schedule}`
+    /// * `organizations/{organization}/locations/{location}/auditSchedules/{audit_schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ListAuditSchedules\]\[google.cloud.auditmanager.v1.AuditManager.ListAuditSchedules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListAuditSchedulesRequest {
+    /// Required. Parent for the audit schedule, in one of the following formats:
+    ///
+    /// * `projects/{project}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `organizations/{organization}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of items to return in a single page. The service
+    /// might return fewer items than this value. If unspecified, the service picks
+    /// an appropriate default. The maximum value is 100; values above 100 are
+    /// reduced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous call, to retrieve the next
+    /// page of results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[ListAuditSchedules\]\[google.cloud.auditmanager.v1.AuditManager.ListAuditSchedules\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuditSchedulesResponse {
+    /// List of audit schedules.
+    #[prost(message, repeated, tag = "1")]
+    pub audit_schedules: ::prost::alloc::vec::Vec<AuditSchedule>,
+    /// A token that you can send as the `page_token` in a subsequent request to
+    /// retrieve the next page of results. If this field is empty, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that can't be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// An audit schedule, in one of the following formats:
+///
+/// * `projects/{project}/locations/{location}/auditSchedules/{audit_schedule}`
+/// * `folders/{folder}/locations/{location}/auditSchedules/{audit_schedule}`
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AuditSchedule {
+    /// Identifier. Unique identifier for the audit schedule.
+    /// Format:
+    /// projects/{project}/locations/{location}/auditSchedules/{audit_schedule}
+    /// folders/{folder}/locations/{location}/auditSchedules/{audit_schedule}
+    /// organizations/{organization}/locations/{location}/auditSchedules/{audit_schedule}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Display name for the audit schedule.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Cloud Storage bucket where Audit Manager can upload the audit
+    /// report and evidence. The format is `gs://{bucket_name}`.
+    #[prost(string, tag = "3")]
+    pub gcs_uri: ::prost::alloc::string::String,
+    /// Required. Framework (set of controls) that the audit scope report is
+    /// generated against. For example, `NIST_800_53`.
+    #[prost(string, tag = "4")]
+    pub compliance_framework: ::prost::alloc::string::String,
+    /// Required. Format for the audit report.
+    #[prost(enumeration = "audit_schedule::AuditReportFormat", tag = "5")]
+    pub report_format: i32,
+    /// Required. Configuration that defines when and how often audit runs are
+    /// automatically triggered for this schedule.
+    #[prost(message, optional, tag = "6")]
+    pub schedule_config: ::core::option::Option<ScheduleConfig>,
+    /// Optional. State of the audit schedule. While most states are managed by the
+    /// system, you can use
+    /// \[UpdateAuditSchedule\]\[google.cloud.auditmanager.v1.AuditManager.UpdateAuditSchedule\]
+    /// to start, pause, or delete the schedule.
+    #[prost(enumeration = "ScheduleState", tag = "7")]
+    pub state: i32,
+    /// Output only. Timestamp when the schedule was created.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the schedule was last updated.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Calculated timestamp for the next scheduled run.
+    #[prost(message, optional, tag = "10")]
+    pub next_run_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the audit run was last triggered.
+    #[prost(message, optional, tag = "11")]
+    pub last_trigger_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Describes the error if the schedule is in an error state.
+    #[prost(string, tag = "13")]
+    pub error_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AuditSchedule`.
+pub mod audit_schedule {
+    /// Format for the audit report.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AuditReportFormat {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Open Document Format (ODF).
+        Odf = 1,
+    }
+    impl AuditReportFormat {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUDIT_REPORT_FORMAT_UNSPECIFIED",
+                Self::Odf => "AUDIT_REPORT_FORMAT_ODF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUDIT_REPORT_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIT_REPORT_FORMAT_ODF" => Some(Self::Odf),
+                _ => None,
+            }
+        }
+    }
+}
+/// Timing and frequency parameters for recurring audit runs.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ScheduleConfig {
+    /// Required. Date and time when the first audit run is triggered.
+    /// Subsequent runs are based on this time and the chosen frequency.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Date that the schedule stops.
+    /// If not specified, the schedule runs indefinitely.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Frequency of audit runs.
+    #[prost(enumeration = "schedule_config::Frequency", tag = "3")]
+    pub frequency: i32,
+    /// Optional. Time zone for the audit schedule in IANA format (for example,
+    /// `America/New_York`). The time zone is used to interpret the `start_time`
+    /// and the `end_time`, and to calculate subsequent run dates.
+    /// If not specified, the time zone default is UTC.
+    #[prost(string, tag = "4")]
+    pub time_zone: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ScheduleConfig`.
+pub mod schedule_config {
+    /// Frequency of audit runs.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Frequency {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The audit runs every day.
+        Daily = 1,
+        /// The audit runs weekly on the same day of the week as `start_time`.
+        Weekly = 2,
+        /// The audit runs monthly on the same day of the month as `start_time`.
+        Monthly = 3,
+        /// The audit runs quarterly (every 3 months) on the same
+        /// day of the month as `start_time`.
+        Quarterly = 4,
+        /// The audit runs annually on the same month and day as `start_time`.
+        Annually = 5,
+    }
+    impl Frequency {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FREQUENCY_UNSPECIFIED",
+                Self::Daily => "DAILY",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
+                Self::Quarterly => "QUARTERLY",
+                Self::Annually => "ANNUALLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FREQUENCY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                "QUARTERLY" => Some(Self::Quarterly),
+                "ANNUALLY" => Some(Self::Annually),
+                _ => None,
+            }
+        }
+    }
+}
 /// Different execution states of the Audit Manager service.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -969,6 +1287,56 @@ impl ComplianceState {
         }
     }
 }
+/// State of an audit schedule.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ScheduleState {
+    /// Default value. This value is unused.
+    Unspecified = 0,
+    /// Schedule is active and will trigger runs.
+    Active = 1,
+    /// Schedule is paused and will not trigger runs.
+    Paused = 2,
+    /// Schedule end time has passed.
+    Completed = 3,
+    /// Schedule setup failed during creation or update.
+    FailedSetup = 4,
+    /// Schedule is in an error state due to persistent failure to trigger an
+    /// audit. Manual intervention is required.
+    Error = 5,
+    /// Schedule has been marked for deletion by the user.
+    Deleted = 6,
+}
+impl ScheduleState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SCHEDULE_STATE_UNSPECIFIED",
+            Self::Active => "SCHEDULE_STATE_ACTIVE",
+            Self::Paused => "SCHEDULE_STATE_PAUSED",
+            Self::Completed => "SCHEDULE_STATE_COMPLETED",
+            Self::FailedSetup => "SCHEDULE_STATE_FAILED_SETUP",
+            Self::Error => "SCHEDULE_STATE_ERROR",
+            Self::Deleted => "SCHEDULE_STATE_DELETED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCHEDULE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SCHEDULE_STATE_ACTIVE" => Some(Self::Active),
+            "SCHEDULE_STATE_PAUSED" => Some(Self::Paused),
+            "SCHEDULE_STATE_COMPLETED" => Some(Self::Completed),
+            "SCHEDULE_STATE_FAILED_SETUP" => Some(Self::FailedSetup),
+            "SCHEDULE_STATE_ERROR" => Some(Self::Error),
+            "SCHEDULE_STATE_DELETED" => Some(Self::Deleted),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod audit_manager_client {
     #![allow(
@@ -1060,6 +1428,117 @@ pub mod audit_manager_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
+        }
+        /// Creates a new audit schedule in a given project and location.
+        pub async fn create_audit_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAuditScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuditSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.auditmanager.v1.AuditManager/CreateAuditSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.auditmanager.v1.AuditManager",
+                        "CreateAuditSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an existing audit schedule.
+        pub async fn update_audit_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAuditScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuditSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.auditmanager.v1.AuditManager/UpdateAuditSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.auditmanager.v1.AuditManager",
+                        "UpdateAuditSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single audit schedule.
+        pub async fn get_audit_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAuditScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuditSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.auditmanager.v1.AuditManager/GetAuditSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.auditmanager.v1.AuditManager",
+                        "GetAuditSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists audit schedules in a given project and location.
+        pub async fn list_audit_schedules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAuditSchedulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAuditSchedulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.auditmanager.v1.AuditManager/ListAuditSchedules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.auditmanager.v1.AuditManager",
+                        "ListAuditSchedules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds your project, folder, or organization to Audit
         /// Manager. This method creates the Audit Manager service agent in your

@@ -965,67 +965,67 @@ pub struct TextSentimentEvaluationMetrics {
 ///
 /// **Input field definitions:**
 ///
-/// `ML_USE`
 ///
+/// `ML_USE`
 /// : ("TRAIN" | "VALIDATE" | "TEST" | "UNASSIGNED")
 ///   Describes how the given example (file) should be used for model
 ///   training. "UNASSIGNED" can be used when user has no preference.
-/// `GCS_FILE_PATH`
 ///
+/// `GCS_FILE_PATH`
 /// : The path to a file on Google Cloud Storage. For example,
 ///   "gs://folder/image1.png".
-/// `LABEL`
 ///
+/// `LABEL`
 /// : A display name of an object on an image, video etc., e.g. "dog".
 ///   Must be up to 32 characters long and can consist only of ASCII
 ///   Latin letters A-Z and a-z, underscores(\_), and ASCII digits 0-9.
 ///   For each label an AnnotationSpec is created which display_name
 ///   becomes the label; AnnotationSpecs are given back in predictions.
-/// `INSTANCE_ID`
 ///
+/// `INSTANCE_ID`
 /// : A positive integer that identifies a specific instance of a
 ///   labeled entity on an example. Used e.g. to track two cars on
 ///   a video while being able to tell apart which one is which.
-/// `BOUNDING_BOX`
 ///
+/// `BOUNDING_BOX`
 /// : (`VERTEX,VERTEX,VERTEX,VERTEX` | `VERTEX,,,VERTEX,,`)
 ///   A rectangle parallel to the frame of the example (image,
 ///   video). If 4 vertices are given they are connected by edges
 ///   in the order provided, if 2 are given they are recognized
 ///   as diagonally opposite vertices of the rectangle.
-/// `VERTEX`
 ///
+/// `VERTEX`
 /// : (`COORDINATE,COORDINATE`)
 ///   First coordinate is horizontal (x), the second is vertical (y).
-/// `COORDINATE`
 ///
+/// `COORDINATE`
 /// : A float in 0 to 1 range, relative to total length of
 ///   image or video in given dimension. For fractions the
 ///   leading non-decimal 0 can be omitted (i.e. 0.3 = .3).
 ///   Point 0,0 is in top left.
-/// `TIME_SEGMENT_START`
 ///
+/// `TIME_SEGMENT_START`
 /// : (`TIME_OFFSET`)
 ///   Expresses a beginning, inclusive, of a time segment
 ///   within an example that has a time dimension
 ///   (e.g. video).
-/// `TIME_SEGMENT_END`
 ///
+/// `TIME_SEGMENT_END`
 /// : (`TIME_OFFSET`)
 ///   Expresses an end, exclusive, of a time segment within
 ///   n example that has a time dimension (e.g. video).
-/// `TIME_OFFSET`
 ///
+/// `TIME_OFFSET`
 /// : A number of seconds as measured from the start of an
 ///   example (e.g. video). Fractions are allowed, up to a
 ///   microsecond precision. "inf" is allowed, and it means the end
 ///   of the example.
-/// `TEXT_SNIPPET`
 ///
+/// `TEXT_SNIPPET`
 /// : The content of a text snippet, UTF-8 encoded, enclosed within
 ///   double quotes ("").
-/// `DOCUMENT`
 ///
+/// `DOCUMENT`
 /// : A field that provides the textual content with document and the layout
 ///   information.
 ///
@@ -1045,8 +1045,8 @@ pub struct InputConfig {
     ///
     /// #### AutoML Tables
     ///
-    /// `schema_inference_version`
     ///
+    /// `schema_inference_version`
     /// : (integer) This value must be supplied.
     ///   The version of the
     ///   algorithm to use for the initial inference of the
@@ -1343,23 +1343,23 @@ pub mod input_config {
 ///
 /// **Input field definitions:**
 ///
-/// `GCS_FILE_PATH`
 ///
+/// `GCS_FILE_PATH`
 /// : The path to a file on Google Cloud Storage. For example,
 ///   "gs://folder/video.avi".
-/// `TIME_SEGMENT_START`
 ///
+/// `TIME_SEGMENT_START`
 /// : (`TIME_OFFSET`)
 ///   Expresses a beginning, inclusive, of a time segment
 ///   within an example that has a time dimension
 ///   (e.g. video).
-/// `TIME_SEGMENT_END`
 ///
+/// `TIME_SEGMENT_END`
 /// : (`TIME_OFFSET`)
 ///   Expresses an end, exclusive, of a time segment within
 ///   n example that has a time dimension (e.g. video).
-/// `TIME_OFFSET`
 ///
+/// `TIME_OFFSET`
 /// : A number of seconds as measured from the start of an
 ///   example (e.g. video). Fractions are allowed, up to a
 ///   microsecond precision. "inf" is allowed, and it means the end
@@ -2860,8 +2860,8 @@ pub struct PredictRequest {
     ///
     /// AutoML Vision Classification
     ///
-    /// `score_threshold`
     ///
+    /// `score_threshold`
     /// : (float) A value from 0.0 to 1.0. When the model
     ///   makes predictions for an image, it will only produce results that have
     ///   at least this confidence score. The default is 0.5.
@@ -2869,13 +2869,13 @@ pub struct PredictRequest {
     ///
     /// AutoML Vision Object Detection
     ///
-    /// `score_threshold`
     ///
+    /// `score_threshold`
     /// : (float) When Model detects objects on the image,
     ///   it will only produce bounding boxes which have at least this
     ///   confidence score. Value in 0 to 1 range, default is 0.5.
-    /// `max_bounding_box_count`
     ///
+    /// `max_bounding_box_count`
     /// : (int64) The maximum number of bounding
     ///   boxes returned. The default is 100. The
     ///   number of returned bounding boxes might be limited by the server.
@@ -2883,8 +2883,8 @@ pub struct PredictRequest {
     ///
     /// AutoML Tables
     ///
-    /// `feature_importance`
     ///
+    /// `feature_importance`
     /// : (boolean) Whether
     ///   \[feature_importance\]\[google.cloud.automl.v1.TablesModelColumnInfo.feature_importance\]
     ///   is populated in the returned list of
@@ -2918,15 +2918,15 @@ pub struct PredictResponse {
     ///
     /// AutoML Vision Object Detection
     ///
-    /// `max_bounding_box_count`
     ///
+    /// `max_bounding_box_count`
     /// : (int64) The maximum number of bounding boxes to return per image.
     ///
     ///
     /// AutoML Natural Language Sentiment Analysis
     ///
-    /// `sentiment_score`
     ///
+    /// `sentiment_score`
     /// : (float, deprecated) A value between -1 and 1,
     ///   -1 maps to least positive sentiment, while 1 maps to the most positive
     ///   one and the higher the score, the more positive the sentiment in the
@@ -2959,8 +2959,8 @@ pub struct BatchPredictRequest {
     ///
     /// AutoML Natural Language Classification
     ///
-    /// `score_threshold`
     ///
+    /// `score_threshold`
     /// : (float) A value from 0.0 to 1.0. When the model
     ///   makes predictions for a text snippet, it will only produce results
     ///   that have at least this confidence score. The default is 0.5.
@@ -2968,8 +2968,8 @@ pub struct BatchPredictRequest {
     ///
     /// AutoML Vision Classification
     ///
-    /// `score_threshold`
     ///
+    /// `score_threshold`
     /// : (float) A value from 0.0 to 1.0. When the model
     ///   makes predictions for an image, it will only produce results that
     ///   have at least this confidence score. The default is 0.5.
@@ -2977,11 +2977,13 @@ pub struct BatchPredictRequest {
     ///
     /// AutoML Vision Object Detection
     ///
+    ///
     /// `score_threshold`
     ///
     /// : (float) When Model detects objects on the image,
     ///   it will only produce bounding boxes which have at least this
     ///   confidence score. Value in 0 to 1 range, default is 0.5.
+    ///
     ///
     ///
     /// `max_bounding_box_count`
@@ -2992,11 +2994,13 @@ pub struct BatchPredictRequest {
     ///   AutoML Video Intelligence Classification
     ///
     ///
+    ///
     /// `score_threshold`
     ///
     /// : (float) A value from 0.0 to 1.0. When the model
     ///   makes predictions for a video, it will only produce results that
     ///   have at least this confidence score. The default is 0.5.
+    ///
     ///
     ///
     /// `segment_classification`
@@ -3006,6 +3010,7 @@ pub struct BatchPredictRequest {
     ///   labels and their confidence scores for the entire segment of the
     ///   video that user specified in the request configuration.
     ///   The default is true.
+    ///
     ///
     ///
     /// `shot_classification`
@@ -3023,6 +3028,7 @@ pub struct BatchPredictRequest {
     ///   provided to describe that quality.
     ///
     ///
+    ///
     /// `1s_interval_classification`
     ///
     /// : (boolean) Set to true to request
@@ -3038,18 +3044,18 @@ pub struct BatchPredictRequest {
     ///
     /// AutoML Video Intelligence Object Tracking
     ///
-    /// `score_threshold`
     ///
+    /// `score_threshold`
     /// : (float) When Model detects objects on video frames,
     ///   it will only produce bounding boxes which have at least this
     ///   confidence score. Value in 0 to 1 range, default is 0.5.
-    /// `max_bounding_box_count`
     ///
+    /// `max_bounding_box_count`
     /// : (int64) The maximum number of bounding
     ///   boxes returned per image. The default is 100, the
     ///   number of bounding boxes returned might be limited by the server.
-    /// `min_bounding_box_size`
     ///
+    /// `min_bounding_box_size`
     /// : (float) Only bounding boxes with shortest edge
     ///   at least that long as a relative value of video frame size are
     ///   returned. Value in 0 to 1 range. Default is 0.
@@ -3068,15 +3074,15 @@ pub struct BatchPredictResult {
     ///
     /// AutoML Vision Object Detection
     ///
-    /// `max_bounding_box_count`
     ///
+    /// `max_bounding_box_count`
     /// : (int64) The maximum number of bounding boxes returned per image.
     ///
     ///
     /// AutoML Video Intelligence Object Tracking
     ///
-    /// `max_bounding_box_count`
     ///
+    /// `max_bounding_box_count`
     /// : (int64) The maximum number of bounding boxes returned per frame.
     #[prost(map = "string, string", tag = "1")]
     pub metadata: ::std::collections::HashMap<

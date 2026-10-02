@@ -55,6 +55,12 @@ pub struct Instance {
     pub workforce_identity_federation_config: ::core::option::Option<
         instance::WorkforceIdentityFederationConfig,
     >,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzi: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -525,6 +531,9 @@ pub mod hook {
         /// Pull request events are triggered when a pull request is opened, closed,
         /// reopened, or edited.
         PullRequest = 2,
+        /// Triggers when a general comment is added, edited, or deleted on a pull
+        /// request.
+        PullRequestComment = 3,
     }
     impl HookEventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -536,6 +545,7 @@ pub mod hook {
                 Self::Unspecified => "UNSPECIFIED",
                 Self::Push => "PUSH",
                 Self::PullRequest => "PULL_REQUEST",
+                Self::PullRequestComment => "PULL_REQUEST_COMMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -544,6 +554,7 @@ pub mod hook {
                 "UNSPECIFIED" => Some(Self::Unspecified),
                 "PUSH" => Some(Self::Push),
                 "PULL_REQUEST" => Some(Self::PullRequest),
+                "PULL_REQUEST_COMMENT" => Some(Self::PullRequestComment),
                 _ => None,
             }
         }
@@ -1028,6 +1039,66 @@ pub mod pull_request_comment {
         /// Optional. The comment on a code line.
         #[prost(message, tag = "6")]
         Code(Code),
+    }
+}
+/// Ref represents a git reference within a repository.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Ref {
+    /// Identifier. Name of the git reference (e.g., 'refs/heads/foo' or
+    /// 'refs/tags/v1.0').
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The target of the reference, which is a commit SHA.
+    #[prost(string, tag = "2")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. The type of the reference.
+    #[prost(enumeration = "r#ref::RefType", tag = "3")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `Ref`.
+pub mod r#ref {
+    /// The derived type of the reference (e.g., branch or tag) from the name.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RefType {
+        /// Unspecified ref type.
+        Unspecified = 0,
+        /// Represents a branch.
+        Branch = 1,
+        /// Represents a tag.
+        Tag = 2,
+    }
+    impl RefType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "REF_TYPE_UNSPECIFIED",
+                Self::Branch => "REF_TYPE_BRANCH",
+                Self::Tag => "REF_TYPE_TAG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REF_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REF_TYPE_BRANCH" => Some(Self::Branch),
+                "REF_TYPE_TAG" => Some(Self::Tag),
+                _ => None,
+            }
+        }
     }
 }
 /// ListInstancesRequest is the request to list instances.
@@ -1728,6 +1799,36 @@ pub struct FetchBlobResponse {
     /// The content of the blob, encoded as base64.
     #[prost(string, tag = "2")]
     pub content: ::prost::alloc::string::String,
+}
+/// Request message for fetching git references from a repository.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FetchRefsRequest {
+    /// Required. The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`.
+    /// Specifies the repository to fetch the references from.
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// Optional. The type of reference to fetch (eg. branch, tag). By default, all
+    /// references are returned.
+    #[prost(enumeration = "r#ref::RefType", tag = "2")]
+    pub r#type: i32,
+    /// Optional. Requested page size. If unspecified, a default size of 30 will be
+    /// used. The maximum value is 100; values above 100 will be coerced to 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message containing a list of git references.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchRefsResponse {
+    /// The list of git references.
+    #[prost(message, repeated, tag = "1")]
+    pub refs: ::prost::alloc::vec::Vec<Ref>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to list pull request comments.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2990,6 +3091,36 @@ pub mod secure_source_manager_client {
                     GrpcMethod::new(
                         "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "FetchBlob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches git references from a repository.
+        pub async fn fetch_refs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchRefsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchRefsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/FetchRefs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "FetchRefs",
                     ),
                 );
             self.inner.unary(req, path, codec).await

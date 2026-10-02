@@ -14,7 +14,7 @@ pub struct CivilDateTime {
     pub time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
 }
 /// Counterpart of \[google.type.Interval\]\[google.type.Interval\], but using
-/// \[CivilDateTime\]\[google.devicesandservices.health.v4.CivilDateTime\].
+/// \[CivilDateTime\]\[google.devicesandservices.health.v4beta.CivilDateTime\].
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CivilTimeInterval {
     /// Required. The inclusive start of the range.
@@ -415,6 +415,335 @@ pub struct BodyFatRollupValue {
     /// Average body fat percentage.
     #[prost(double, optional, tag = "1")]
     pub body_fat_percentage_avg: ::core::option::Option<f64>,
+}
+/// //////////////////////////////////////////////////////////////////////////
+/// SkinTemperature
+/// //////////////////////////////////////////////////////////////////////////
+/// Skin temperature measurement.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SkinTemperature {
+    /// Required. The time at which skin temperature was measured.
+    #[prost(message, optional, tag = "1")]
+    pub sample_time: ::core::option::Option<ObservationSampleTime>,
+    /// Required. The skin temperature in Celsius.
+    /// Must be in the range `\[0, 100\]`.
+    #[prost(double, optional, tag = "2")]
+    pub temperature_celsius: ::core::option::Option<f64>,
+    /// Required. The baseline skin temperature in Celsius.
+    /// Must be in the range `\[0, 100\]`.
+    #[prost(double, optional, tag = "3")]
+    pub baseline_temperature_celsius: ::core::option::Option<f64>,
+    /// Optional. Metadata for the skin temperature measurement.
+    #[prost(message, optional, tag = "4")]
+    pub metadata: ::core::option::Option<skin_temperature::SkinTemperatureMetadata>,
+}
+/// Nested message and enum types in `SkinTemperature`.
+pub mod skin_temperature {
+    /// Metadata for the skin temperature measurement.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SkinTemperatureMetadata {
+        /// Optional. The location of the skin temperature measurement.
+        #[prost(enumeration = "MeasurementLocation", tag = "1")]
+        pub measurement_location: i32,
+        /// Optional. The motion state of the skin temperature measurement.
+        #[prost(enumeration = "MeasurementState", tag = "2")]
+        pub measurement_state: i32,
+    }
+    /// The location of the skin temperature measurement.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MeasurementLocation {
+        /// Measurement location is unspecified.
+        Unspecified = 0,
+        /// Other measurement location.
+        Other = 1,
+        /// Finger measurement location.
+        Finger = 2,
+        /// Toe measurement location.
+        Toe = 3,
+        /// Wrist measurement location.
+        Wrist = 4,
+    }
+    impl MeasurementLocation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEASUREMENT_LOCATION_UNSPECIFIED",
+                Self::Other => "OTHER",
+                Self::Finger => "FINGER",
+                Self::Toe => "TOE",
+                Self::Wrist => "WRIST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEASUREMENT_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "OTHER" => Some(Self::Other),
+                "FINGER" => Some(Self::Finger),
+                "TOE" => Some(Self::Toe),
+                "WRIST" => Some(Self::Wrist),
+                _ => None,
+            }
+        }
+    }
+    /// The motion state when the skin temperature was measured.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MeasurementState {
+        /// Measurement state is unspecified.
+        Unspecified = 0,
+        /// Other measurement state.
+        Other = 1,
+        /// Measurement state at rest.
+        AtRest = 2,
+        /// Measurement state during sleep.
+        Sleep = 3,
+    }
+    impl MeasurementState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEASUREMENT_STATE_UNSPECIFIED",
+                Self::Other => "MEASUREMENT_STATE_OTHER",
+                Self::AtRest => "MEASUREMENT_STATE_AT_REST",
+                Self::Sleep => "MEASUREMENT_STATE_SLEEP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEASUREMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEASUREMENT_STATE_OTHER" => Some(Self::Other),
+                "MEASUREMENT_STATE_AT_REST" => Some(Self::AtRest),
+                "MEASUREMENT_STATE_SLEEP" => Some(Self::Sleep),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents the result of the rollup of the skin temperature data type.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SkinTemperatureRollupValue {
+    /// Average skin temperature in Celsius.
+    #[prost(double, optional, tag = "1")]
+    pub temperature_celsius_avg: ::core::option::Option<f64>,
+    /// Maximum skin temperature in Celsius.
+    #[prost(double, optional, tag = "2")]
+    pub temperature_celsius_max: ::core::option::Option<f64>,
+    /// Minimum skin temperature in Celsius.
+    #[prost(double, optional, tag = "3")]
+    pub temperature_celsius_min: ::core::option::Option<f64>,
+}
+/// Skin temperature sensor data containing multi-sensor readings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkinTemperatureSensors {
+    /// Required. The observation sample time.
+    #[prost(message, optional, tag = "1")]
+    pub sample_time: ::core::option::Option<ObservationSampleTime>,
+    /// Required. Repeated sensor data readings for this sample.
+    #[prost(message, repeated, tag = "2")]
+    pub sensor_data: ::prost::alloc::vec::Vec<skin_temperature_sensors::SensorData>,
+}
+/// Nested message and enum types in `SkinTemperatureSensors`.
+pub mod skin_temperature_sensors {
+    /// Metadata for the sensor measurement.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct SensorMetadata {
+        /// Optional. The location of the sensor measurement.
+        #[prost(enumeration = "MeasurementLocation", tag = "1")]
+        pub measurement_location: i32,
+        /// Optional. The motion state of the sensor measurement.
+        #[prost(enumeration = "sensor_metadata::MeasurementState", tag = "2")]
+        pub measurement_state: i32,
+        /// Optional. The type of the sensor.
+        #[prost(enumeration = "sensor_metadata::SensorType", tag = "3")]
+        pub sensor_type: i32,
+    }
+    /// Nested message and enum types in `SensorMetadata`.
+    pub mod sensor_metadata {
+        /// The motion state when the sensor temperature was measured.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MeasurementState {
+            /// Measurement state is unspecified.
+            Unspecified = 0,
+            /// Other measurement state.
+            Other = 1,
+            /// Measurement state at rest.
+            AtRest = 2,
+            /// Measurement state during sleep.
+            Sleep = 3,
+        }
+        impl MeasurementState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "MEASUREMENT_STATE_UNSPECIFIED",
+                    Self::Other => "OTHER",
+                    Self::AtRest => "AT_REST",
+                    Self::Sleep => "SLEEP",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MEASUREMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "OTHER" => Some(Self::Other),
+                    "AT_REST" => Some(Self::AtRest),
+                    "SLEEP" => Some(Self::Sleep),
+                    _ => None,
+                }
+            }
+        }
+        /// The type of sensor.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SensorType {
+            /// Sensor type is unspecified.
+            Unspecified = 0,
+            /// Skin temperature sensor (bottom contact sensor).
+            SkinTemperatureSensor = 1,
+            /// Internal device temperature sensor (top/ambient sensor).
+            InternalDeviceTemperatureSensor = 2,
+        }
+        impl SensorType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SENSOR_TYPE_UNSPECIFIED",
+                    Self::SkinTemperatureSensor => "SKIN_TEMPERATURE_SENSOR",
+                    Self::InternalDeviceTemperatureSensor => {
+                        "INTERNAL_DEVICE_TEMPERATURE_SENSOR"
+                    }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SENSOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SKIN_TEMPERATURE_SENSOR" => Some(Self::SkinTemperatureSensor),
+                    "INTERNAL_DEVICE_TEMPERATURE_SENSOR" => {
+                        Some(Self::InternalDeviceTemperatureSensor)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Individual sensor reading and metadata.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SensorData {
+        /// Required. The temperature reading in Celsius.
+        #[prost(double, optional, tag = "1")]
+        pub temperature_celsius: ::core::option::Option<f64>,
+        /// Optional. Metadata for the sensor reading.
+        #[prost(message, optional, tag = "2")]
+        pub metadata: ::core::option::Option<SensorMetadata>,
+    }
+    /// The location where the temperature was measured.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MeasurementLocation {
+        /// Measurement location is unspecified.
+        Unspecified = 0,
+        /// Other measurement location.
+        Other = 1,
+        /// Finger measurement location.
+        Finger = 2,
+        /// Toe measurement location.
+        Toe = 3,
+        /// Wrist measurement location.
+        Wrist = 4,
+    }
+    impl MeasurementLocation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEASUREMENT_LOCATION_UNSPECIFIED",
+                Self::Other => "OTHER",
+                Self::Finger => "FINGER",
+                Self::Toe => "TOE",
+                Self::Wrist => "WRIST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEASUREMENT_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "OTHER" => Some(Self::Other),
+                "FINGER" => Some(Self::Finger),
+                "TOE" => Some(Self::Toe),
+                "WRIST" => Some(Self::Wrist),
+                _ => None,
+            }
+        }
+    }
 }
 /// Core body temperature measurement, distinct from peripheral body temperature,
 /// reflects the temperature of the body's internal organs.
@@ -2588,7 +2917,7 @@ pub struct Food {
     pub description: ::prost::alloc::string::String,
     /// Optional. The language code where the food is available in format xx-XX.
     /// Supported values are defined in
-    /// \[Settings.food_language_code\]\[google.devicesandservices.health.v4.Settings.food_language_code\].
+    /// \[Settings.food_language_code\]\[google.devicesandservices.health.v4beta.Settings.food_language_code\].
     #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
     /// Optional. The meal type associated with this food.
@@ -5199,11 +5528,11 @@ pub struct DataPoint {
     /// `users/abcd1234/dataTypes/sleep/dataPoints/a1b2c3d4-e5f6-7890-1234-567890abcdef`
     ///
     /// The `{user}` ID is a system-generated identifier, as described in
-    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4.Identity.health_user_id\].
+    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4beta.Identity.health_user_id\].
     ///
     /// The `{data_type}` ID corresponds to the kebab-case version of the field
     /// names in the \[DataPoint
-    /// data\]\[google.devicesandservices.health.v4.DataPoint\] union
+    /// data\]\[google.devicesandservices.health.v4beta.DataPoint\] union
     /// field, e.g. `heart-rate` for the `heart_rate` field.
     ///
     /// The `{data_point}` ID can be client-provided or system-generated.
@@ -5224,7 +5553,7 @@ pub struct DataPoint {
     /// actually worn.
     #[prost(
         oneof = "data_point::Data",
-        tags = "4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 45, 46, 49, 50, 52, 53"
+        tags = "4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 45, 46, 49, 50, 52, 53, 54, 60"
     )]
     pub data: ::core::option::Option<data_point::Data>,
 }
@@ -5397,6 +5726,14 @@ pub mod data_point {
         /// Optional. Data for points in the `moods` sample data type collection.
         #[prost(message, tag = "53")]
         Moods(super::Moods),
+        /// Optional. Data for points in the `skin-temperature` sample data type
+        /// collection.
+        #[prost(message, tag = "54")]
+        SkinTemperature(super::SkinTemperature),
+        /// Optional. Data for points in the `skin-temperature-sensors` sample data
+        /// type collection.
+        #[prost(message, tag = "60")]
+        SkinTemperatureSensors(super::SkinTemperatureSensors),
     }
 }
 /// A reconciled computed or recorded metric.
@@ -5412,11 +5749,11 @@ pub struct ReconciledDataPoint {
     /// `users/abcd1234/dataTypes/sleep/dataPoints/a1b2c3d4-e5f6-7890-1234-567890abcdef`
     ///
     /// The `{user}` ID is a system-generated identifier, as described in
-    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4.Identity.health_user_id\].
+    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4beta.Identity.health_user_id\].
     ///
     /// The `{data_type}` ID corresponds to the kebab-case version of the field
     /// names in the \[DataPoint
-    /// data\]\[google.devicesandservices.health.v4.DataPoint\] union
+    /// data\]\[google.devicesandservices.health.v4beta.DataPoint\] union
     /// field, e.g. `heart-rate` for the `heart_rate` field.
     ///
     /// The `{data_point}` ID can be client-provided or system-generated.
@@ -5434,7 +5771,7 @@ pub struct ReconciledDataPoint {
     /// when they were not actually worn.
     #[prost(
         oneof = "reconciled_data_point::Data",
-        tags = "4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 32, 33, 35, 36, 37, 38, 39, 40, 41, 42, 44, 46"
+        tags = "4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 32, 33, 35, 36, 37, 38, 39, 40, 41, 42, 44, 46, 54, 30"
     )]
     pub data: ::core::option::Option<reconciled_data_point::Data>,
 }
@@ -5565,6 +5902,13 @@ pub mod reconciled_data_point {
         /// Data for points in the `blood-glucose` sample data type collection.
         #[prost(message, tag = "46")]
         BloodGlucose(super::BloodGlucose),
+        /// Data for points in the `skin-temperature` sample data type collection.
+        #[prost(message, tag = "54")]
+        SkinTemperature(super::SkinTemperature),
+        /// Data for points in the `skin-temperature-sensors` sample data type
+        /// collection.
+        #[prost(message, tag = "30")]
+        SkinTemperatureSensors(super::SkinTemperatureSensors),
     }
 }
 /// Value of a rollup for a single physical time interval (aggregation window) of
@@ -5598,7 +5942,7 @@ pub struct RollupDataPoint {
     /// resources themselves.
     #[prost(
         oneof = "rollup_data_point::Value",
-        tags = "5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26"
+        tags = "5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27"
     )]
     pub value: ::core::option::Option<rollup_data_point::Value>,
 }
@@ -5726,6 +6070,10 @@ pub mod rollup_data_point {
         /// `blood-glucose` data type.
         #[prost(message, tag = "26")]
         BloodGlucose(super::BloodGlucoseRollupValue),
+        /// Returned by default when rolling up data points from the
+        /// `skin-temperature` data type.
+        #[prost(message, tag = "27")]
+        SkinTemperature(super::SkinTemperatureRollupValue),
     }
 }
 /// Value of a daily rollup for a single civil time interval (aggregation window)
@@ -5759,7 +6107,7 @@ pub struct DailyRollupDataPoint {
     /// resources themselves.
     #[prost(
         oneof = "daily_rollup_data_point::Value",
-        tags = "5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28"
+        tags = "5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29"
     )]
     pub value: ::core::option::Option<daily_rollup_data_point::Value>,
 }
@@ -5901,6 +6249,10 @@ pub mod daily_rollup_data_point {
         /// `blood-glucose` data type.
         #[prost(message, tag = "28")]
         BloodGlucose(super::BloodGlucoseRollupValue),
+        /// Returned by default when rolling up data points from the
+        /// `skin-temperature` data type.
+        #[prost(message, tag = "29")]
+        SkinTemperature(super::SkinTemperatureRollupValue),
     }
 }
 /// Request for getting a single data point
@@ -5911,7 +6263,7 @@ pub struct GetDataPointRequest {
     /// Format: `users/{user}/dataTypes/{data_type}/dataPoints/{data_point}`
     ///
     /// See
-    /// \[DataPoint.name\]\[google.devicesandservices.health.v4.DataPoint.name\]
+    /// \[DataPoint.name\]\[google.devicesandservices.health.v4beta.DataPoint.name\]
     /// for examples and possible values.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -5927,7 +6279,7 @@ pub struct ListDataPointsRequest {
     /// * `users/me/dataTypes/weight`
     ///
     /// For a list of the supported data types see the \[DataPoint
-    /// data\]\[google.devicesandservices.health.v4.DataPoint\] union
+    /// data\]\[google.devicesandservices.health.v4beta.DataPoint\] union
     /// field.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -6036,6 +6388,45 @@ pub struct ListDataPointsRequest {
     /// descending order.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The data source family name to filter by.
+    ///
+    /// If empty, data points from all available data sources will be returned.
+    ///
+    /// Format: `users/me/dataSourceFamilies/{data_source_family}`
+    ///
+    /// The supported values are:
+    ///
+    /// * `users/me/dataSourceFamilies/all-sources` - Default value. Includes data
+    ///   from all available data sources.
+    /// * `users/me/dataSourceFamilies/google-wearables` - Includes data from
+    ///   Google and Fitbit tracker devices (such as Fitbit trackers and Pixel
+    ///   Watch). Excludes manually logged data.
+    /// * `users/me/dataSourceFamilies/google-sources` - Includes first-party
+    ///   Google data, such as data from tracker devices, manually logged data, and
+    ///   Health Connect.
+    /// * `users/me/dataSourceFamilies/self-sources` - Includes only the data the
+    ///   calling client wrote through this API, that is, data points whose data
+    ///   source was registered through this API with the same OAuth client ID as
+    ///   the caller.
+    ///
+    /// Callers that were only granted write scopes for the requested data types
+    /// may only read the data they wrote themselves: their requests are
+    /// implicitly restricted to `self-sources`, and requesting any other data
+    /// source family fails with `PERMISSION_DENIED`.
+    ///
+    /// If no data point matches the requested data source family, the response is
+    /// an empty list rather than an error.
+    ///
+    /// Filtering by data source family is not supported for the `sleep`, `food`
+    /// and `food-measurement-unit` data types, because the underlying listing
+    /// implementation cannot restrict results by data source. Such requests fail
+    /// with `INVALID_ARGUMENT` when the data source family is set explicitly, and
+    /// with `PERMISSION_DENIED` when the restriction is only implied by the
+    /// caller's scopes. For `sleep`, use
+    /// \[ReconcileDataPoints\]\[google.devicesandservices.health.v4beta.DataPointsService.ReconcileDataPoints\]
+    /// instead.
+    #[prost(string, tag = "5")]
+    pub data_source_family: ::prost::alloc::string::String,
 }
 /// Response containing raw data points matching the query
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6086,7 +6477,7 @@ pub struct BatchDeleteDataPointsRequest {
     ///
     /// For a list of the supported data types see the
     /// \[DataPoint
-    /// data\]\[google.devicesandservices.health.v4.DataPoint\] union
+    /// data\]\[google.devicesandservices.health.v4beta.DataPoint\] union
     /// field.
     ///
     /// Deleting data points across multiple data type collections is supported
@@ -6132,7 +6523,7 @@ pub struct ReconcileDataPointsRequest {
     ///
     /// For a list of the supported data types see the
     /// \[DataPoint
-    /// data\]\[google.devicesandservices.health.v4.DataPoint\] union
+    /// data\]\[google.devicesandservices.health.v4beta.DataPoint\] union
     /// field.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -6151,7 +6542,7 @@ pub struct ReconcileDataPointsRequest {
     ///
     /// A time range, either physical or civil, can be specified.
     /// See the
-    /// \[ListDataPointsRequest.filter\]\[google.devicesandservices.health.v4.ListDataPointsRequest.filter\]
+    /// \[ListDataPointsRequest.filter\]\[google.devicesandservices.health.v4beta.ListDataPointsRequest.filter\]
     /// for the supported fields and syntax.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -6205,7 +6596,7 @@ pub struct RollUpDataPointsRequest {
     /// * `users/me/dataTypes/distance`
     ///
     /// For a list of the supported data types see the \[RollupDataPoint
-    /// value\]\[google.devicesandservices.health.v4.RollupDataPoint\]
+    /// value\]\[google.devicesandservices.health.v4beta.RollupDataPoint\]
     /// union field.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -6287,7 +6678,7 @@ pub struct DailyRollUpDataPointsRequest {
     /// * `users/me/dataTypes/distance`
     ///
     /// For a list of the supported data types see the \[DailyRollupDataPoint
-    /// value\]\[google.devicesandservices.health.v4.DailyRollupDataPoint\]
+    /// value\]\[google.devicesandservices.health.v4beta.DailyRollupDataPoint\]
     /// union field.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -6366,7 +6757,7 @@ pub struct DataType {
     /// Format: `users/{user}/dataTypes/{data_type}`
     ///
     /// See
-    /// \[DataPoint.name\]\[google.devicesandservices.health.v4.DataPoint.name\]
+    /// \[DataPoint.name\]\[google.devicesandservices.health.v4beta.DataPoint.name\]
     /// for examples and possible values.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -6509,13 +6900,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/GetDataPoint",
+                "/google.devicesandservices.health.v4beta.DataPointsService/GetDataPoint",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "GetDataPoint",
                     ),
                 );
@@ -6539,13 +6930,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/ListDataPoints",
+                "/google.devicesandservices.health.v4beta.DataPointsService/ListDataPoints",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "ListDataPoints",
                     ),
                 );
@@ -6569,13 +6960,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/CreateDataPoint",
+                "/google.devicesandservices.health.v4beta.DataPointsService/CreateDataPoint",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "CreateDataPoint",
                     ),
                 );
@@ -6600,13 +6991,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/UpdateDataPoint",
+                "/google.devicesandservices.health.v4beta.DataPointsService/UpdateDataPoint",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "UpdateDataPoint",
                     ),
                 );
@@ -6630,13 +7021,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/BatchDeleteDataPoints",
+                "/google.devicesandservices.health.v4beta.DataPointsService/BatchDeleteDataPoints",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "BatchDeleteDataPoints",
                     ),
                 );
@@ -6660,13 +7051,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/ReconcileDataPoints",
+                "/google.devicesandservices.health.v4beta.DataPointsService/ReconcileDataPoints",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "ReconcileDataPoints",
                     ),
                 );
@@ -6690,13 +7081,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/RollUpDataPoints",
+                "/google.devicesandservices.health.v4beta.DataPointsService/RollUpDataPoints",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "RollUpDataPoints",
                     ),
                 );
@@ -6720,13 +7111,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/DailyRollUpDataPoints",
+                "/google.devicesandservices.health.v4beta.DataPointsService/DailyRollUpDataPoints",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "DailyRollUpDataPoints",
                     ),
                 );
@@ -6766,13 +7157,13 @@ pub mod data_points_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataPointsService/ExportExerciseTcx",
+                "/google.devicesandservices.health.v4beta.DataPointsService/ExportExerciseTcx",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataPointsService",
+                        "google.devicesandservices.health.v4beta.DataPointsService",
                         "ExportExerciseTcx",
                     ),
                 );
@@ -7372,13 +7763,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/CreateSubscriber",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/CreateSubscriber",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "CreateSubscriber",
                     ),
                 );
@@ -7402,13 +7793,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/ListSubscribers",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/ListSubscribers",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "ListSubscribers",
                     ),
                 );
@@ -7449,13 +7840,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/UpdateSubscriber",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/UpdateSubscriber",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "UpdateSubscriber",
                     ),
                 );
@@ -7480,13 +7871,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/DeleteSubscriber",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/DeleteSubscriber",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "DeleteSubscriber",
                     ),
                 );
@@ -7509,13 +7900,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/CreateSubscription",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/CreateSubscription",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "CreateSubscription",
                     ),
                 );
@@ -7540,13 +7931,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/ListSubscriptions",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/ListSubscriptions",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "ListSubscriptions",
                     ),
                 );
@@ -7567,13 +7958,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/UpdateSubscription",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/UpdateSubscription",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "UpdateSubscription",
                     ),
                 );
@@ -7595,13 +7986,13 @@ pub mod data_subscription_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.DataSubscriptionService/DeleteSubscription",
+                "/google.devicesandservices.health.v4beta.DataSubscriptionService/DeleteSubscription",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.DataSubscriptionService",
+                        "google.devicesandservices.health.v4beta.DataSubscriptionService",
                         "DeleteSubscription",
                     ),
                 );
@@ -7618,7 +8009,7 @@ pub struct User {
     /// Identifier. The resource name of the user.
     ///
     /// The `{user}` ID is a system-generated identifier, as described in
-    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4.Identity.health_user_id\].
+    /// \[Identity.health_user_id\]\[google.devicesandservices.health.v4beta.Identity.health_user_id\].
     ///
     /// Format: `users/{user}`
     #[prost(string, tag = "1")]
@@ -8590,13 +8981,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/GetProfile",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/GetProfile",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "GetProfile",
                     ),
                 );
@@ -8617,13 +9008,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/UpdateProfile",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/UpdateProfile",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "UpdateProfile",
                     ),
                 );
@@ -8644,13 +9035,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/GetSettings",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/GetSettings",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "GetSettings",
                     ),
                 );
@@ -8671,13 +9062,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/UpdateSettings",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/UpdateSettings",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "UpdateSettings",
                     ),
                 );
@@ -8701,13 +9092,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/GetIdentity",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/GetIdentity",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "GetIdentity",
                     ),
                 );
@@ -8728,13 +9119,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/GetIrnProfile",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/GetIrnProfile",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "GetIrnProfile",
                     ),
                 );
@@ -8755,13 +9146,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/GetPairedDevice",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/GetPairedDevice",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "GetPairedDevice",
                     ),
                 );
@@ -8785,13 +9176,13 @@ pub mod health_profile_service_client {
                 })?;
             let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devicesandservices.health.v4.HealthProfileService/ListPairedDevices",
+                "/google.devicesandservices.health.v4beta.HealthProfileService/ListPairedDevices",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
-                        "google.devicesandservices.health.v4.HealthProfileService",
+                        "google.devicesandservices.health.v4beta.HealthProfileService",
                         "ListPairedDevices",
                     ),
                 );

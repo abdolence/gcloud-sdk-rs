@@ -108,12 +108,18 @@ pub struct VertexEmbeddingConfig {
     /// for the list of supported models.
     #[prost(string, tag = "1")]
     pub model_id: ::prost::alloc::string::String,
-    /// Required. Required: Text template for the input to the model. The template
-    /// must contain one or more references to fields in the DataObject, e.g.:
-    /// "Movie Title: {title} ---- Movie Plot: {plot}".
+    /// Optional. Text template for the input to the model. The template must
+    /// contain one or more references to fields in the DataObject, e.g.: "Movie
+    /// Title: {title} ---- Movie Plot: {plot}".
+    ///
+    /// Required when using the text-only path.
     #[prost(string, tag = "2")]
     pub text_template: ::prost::alloc::string::String,
-    /// Required. Required: Task type for the embeddings.
+    /// Optional. Optional: Task type for the embeddings. Required for text-only
+    /// embedding models, see
+    /// <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>
+    /// Not needed for multi modal embedding models, see
+    /// <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>
     #[prost(enumeration = "EmbeddingTaskType", tag = "3")]
     pub task_type: i32,
 }
@@ -188,7 +194,7 @@ pub struct OutputFields {
     pub metadata_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a hint to the search index engine.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchHint {
     /// The type of index to use.
     #[prost(oneof = "search_hint::IndexType", tags = "3, 4")]
@@ -197,7 +203,7 @@ pub struct SearchHint {
 /// Nested message and enum types in `SearchHint`.
 pub mod search_hint {
     /// Message to specify the index to use for the search.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexHint {
         /// Required. The resource name of the index to use for the search.
         /// The index must be in the same project, location, and collection.
@@ -205,13 +211,35 @@ pub mod search_hint {
         /// `projects/{project}/locations/{location}/collections/{collection}/indexes/{index}`
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
+        /// The parameters for the index.
+        #[prost(oneof = "index_hint::Params", tags = "2")]
+        pub params: ::core::option::Option<index_hint::Params>,
+    }
+    /// Nested message and enum types in `IndexHint`.
+    pub mod index_hint {
+        /// Parameters for dense ScaNN.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct DenseScannParams {
+            /// Optional. The target recall for the search. Must be a double in the
+            /// range \[0, 1\]. While the search aims to achieve this level of recall, it
+            /// is not guaranteed.
+            #[prost(double, optional, tag = "3")]
+            pub target_recall: ::core::option::Option<f64>,
+        }
+        /// The parameters for the index.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Params {
+            /// Optional. Dense ScaNN parameters.
+            #[prost(message, tag = "2")]
+            DenseScannParams(DenseScannParams),
+        }
     }
     /// KnnHint will be used if search should be explicitly done on system's
     /// default K-Nearest Neighbor (KNN) index engine.
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct KnnHint {}
     /// The type of index to use.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum IndexType {
         /// Optional. If set, the search will use the system's default
         /// K-Nearest Neighbor (KNN) index engine.
@@ -290,14 +318,20 @@ pub mod vector_search {
 /// Defines a semantic search operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SemanticSearch {
-    /// Required. The query text, which is used to generate an embedding according
+    /// Optional. The query text, which is used to generate an embedding according
     /// to the embedding model specified in the collection config.
+    ///
+    /// Required when using the text search mode.
     #[prost(string, tag = "1")]
     pub search_text: ::prost::alloc::string::String,
     /// Required. The vector field to search.
     #[prost(string, tag = "2")]
     pub search_field: ::prost::alloc::string::String,
-    /// Required. The task type of the query embedding.
+    /// Optional. The task type of the query embedding. Must be specified for
+    /// text-only embedding models, see
+    /// <<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>>
+    /// Not needed for multi modal embedding models, see
+    /// <<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>>
     #[prost(enumeration = "EmbeddingTaskType", tag = "5")]
     pub task_type: i32,
     /// Optional. The fields to return in the search results.
@@ -535,13 +569,13 @@ pub struct ReciprocalRankFusion {
     pub weights: ::prost::alloc::vec::Vec<f64>,
 }
 /// Defines a ranker using the Vertex AI ranking service.
-/// See <https://cloud.google.com/generative-ai-app-builder/docs/ranking> for
+/// See <<https://cloud.google.com/generative-ai-app-builder/docs/ranking>> for
 /// details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VertexRanker {
     /// Required. The model used for ranking documents. The list of available
     /// models is described in
-    /// <https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models.>
+    /// <<https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models>.>
     /// Currently, only `semantic-ranker-fast@latest` is supported.
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,

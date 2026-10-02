@@ -37,6 +37,131 @@ pub struct AnalyticsAccountLink {
     #[prost(enumeration = "LinkVerificationState", tag = "4")]
     pub link_verification_state: i32,
 }
+/// A resource message representing a user group in a GMP organization.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserGroup {
+    /// Identifier. Resource name of this UserGroup.
+    ///
+    /// Format: organizations/{org_id}/userGroups/{user_group_id}
+    /// Example: "organizations/123abc/userGroups/456def"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The human-readable name for the user group.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The description of the user group.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
+/// A resource message representing a member of a user group.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserGroupMember {
+    /// Identifier. The resource name of this UserGroupMember.
+    ///
+    /// Format:
+    /// organizations/{org_id}/userGroups/{user_group_id}/members/{member_id}
+    /// Example:
+    /// "organizations/123abc/userGroups/456def/members/789ghi"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The role of the member in the user group.
+    #[prost(enumeration = "user_group_member::MembershipRole", tag = "4")]
+    pub membership_role: i32,
+    /// The member of the user group.
+    #[prost(oneof = "user_group_member::Member", tags = "2, 3")]
+    pub member: ::core::option::Option<user_group_member::Member>,
+}
+/// Nested message and enum types in `UserGroupMember`.
+pub mod user_group_member {
+    /// The role of the member in the user group.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MembershipRole {
+        /// Unspecified membership role.
+        Unspecified = 0,
+        /// Owner role that can add and remove group members.
+        Owner = 1,
+        /// Member role that receives all permissions assigned to the group.
+        Member = 2,
+    }
+    impl MembershipRole {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEMBERSHIP_ROLE_UNSPECIFIED",
+                Self::Owner => "MEMBERSHIP_ROLE_OWNER",
+                Self::Member => "MEMBERSHIP_ROLE_MEMBER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEMBERSHIP_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEMBERSHIP_ROLE_OWNER" => Some(Self::Owner),
+                "MEMBERSHIP_ROLE_MEMBER" => Some(Self::Member),
+                _ => None,
+            }
+        }
+    }
+    /// The member of the user group.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Member {
+        /// Email address of the user member.
+        #[prost(string, tag = "2")]
+        UserEmail(::prost::alloc::string::String),
+        /// User group resource name of the group member.
+        #[prost(string, tag = "3")]
+        UserGroup(::prost::alloc::string::String),
+    }
+}
+/// A resource message representing a binding to a set of roles.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AdminAccessBinding {
+    /// Identifier. The resource name of this AdminAccessBinding.
+    ///
+    /// Format:
+    /// organizations/{org_id}/adminAccessBindings/{admin_access_binding_id}
+    /// Example: "organizations/123abc/adminAccessBindings/456def"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A list of roles granted to the parent organization.
+    ///
+    /// USER_ADMIN_ROLE and BILLING_ADMIN_ROLE will be automatically added if
+    /// ORG_ADMIN_ROLE is assigned.
+    ///
+    /// No roles will be assigned if no roles are specified.
+    #[prost(enumeration = "OrganizationRole", repeated, packed = "false", tag = "4")]
+    pub organization_roles: ::prost::alloc::vec::Vec<i32>,
+    /// The entity to which the roles are granted.
+    #[prost(oneof = "admin_access_binding::AccessTarget", tags = "2, 3")]
+    pub access_target: ::core::option::Option<admin_access_binding::AccessTarget>,
+}
+/// Nested message and enum types in `AdminAccessBinding`.
+pub mod admin_access_binding {
+    /// The entity to which the roles are granted.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum AccessTarget {
+        /// Email address of the user.
+        #[prost(string, tag = "2")]
+        UserEmail(::prost::alloc::string::String),
+        /// Resource name of the user group.
+        #[prost(string, tag = "3")]
+        UserGroup(::prost::alloc::string::String),
+    }
+}
 /// The verification state of the link between a product account and a GMP
 /// organization.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -138,6 +263,45 @@ impl AnalyticsPropertyType {
             "ANALYTICS_PROPERTY_TYPE_ORDINARY" => Some(Self::Ordinary),
             "ANALYTICS_PROPERTY_TYPE_SUBPROPERTY" => Some(Self::Subproperty),
             "ANALYTICS_PROPERTY_TYPE_ROLLUP" => Some(Self::Rollup),
+            _ => None,
+        }
+    }
+}
+/// Roles that can be assigned to a user or user group in a GMP organization.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum OrganizationRole {
+    /// Unknown or unspecified organization role.
+    Unspecified = 0,
+    /// Organization admin role that grants all administrative privileges.
+    OrgAdminRole = 1,
+    /// User admin role that grants access to the Users section to perform various
+    /// user management functions.
+    UserAdminRole = 2,
+    /// Billing admin role that grants access to the Billing section to perform
+    /// various billing-related functions.
+    BillingAdminRole = 3,
+}
+impl OrganizationRole {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ORGANIZATION_ROLE_UNSPECIFIED",
+            Self::OrgAdminRole => "ORG_ADMIN_ROLE",
+            Self::UserAdminRole => "USER_ADMIN_ROLE",
+            Self::BillingAdminRole => "BILLING_ADMIN_ROLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ORGANIZATION_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ORG_ADMIN_ROLE" => Some(Self::OrgAdminRole),
+            "USER_ADMIN_ROLE" => Some(Self::UserAdminRole),
+            "BILLING_ADMIN_ROLE" => Some(Self::BillingAdminRole),
             _ => None,
         }
     }
@@ -372,6 +536,223 @@ pub mod report_property_usage_response {
         pub total: ::core::option::Option<super::super::super::super::r#type::Money>,
     }
 }
+/// Request message for GetUserGroup RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetUserGroupRequest {
+    /// Required. The name of the UserGroup to retrieve.
+    /// Format: organizations/{org_id}/userGroups/{user_group_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListUserGroups RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListUserGroupsRequest {
+    /// Required. The parent org where this UserGroup will be listed.
+    /// Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of user groups to return in one call. The
+    /// service may return fewer than this value.
+    ///
+    /// If unspecified, at most 50 user groups will be returned. The maximum value
+    /// is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListUserGroups call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListUserGroups` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListUserGroups RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserGroupsResponse {
+    /// User groups in the organization.
+    #[prost(message, repeated, tag = "1")]
+    pub user_groups: ::prost::alloc::vec::Vec<UserGroup>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateUserGroup RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateUserGroupRequest {
+    /// Required. The parent resource where this UserGroup will be created.
+    /// Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user group to create.
+    #[prost(message, optional, tag = "2")]
+    pub user_group: ::core::option::Option<UserGroup>,
+}
+/// Request message for UpdateUserGroup RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateUserGroupRequest {
+    /// Required. The user group to update.
+    #[prost(message, optional, tag = "1")]
+    pub user_group: ::core::option::Option<UserGroup>,
+    /// Required. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "\*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteUserGroup RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteUserGroupRequest {
+    /// Required. The name of the user group to delete.
+    /// Format: organizations/{org_id}/userGroups/{user_group_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetUserGroupMember RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetUserGroupMemberRequest {
+    /// Required. The name of the user group member to retrieve.
+    /// Format:
+    /// organizations/{org_id}/userGroups/{user_group_id}/members/{member_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListUserGroupMembers RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListUserGroupMembersRequest {
+    /// Required. The parent user group where this UserGroupMember will be listed.
+    /// Format: organizations/{org_id}/userGroups/{user_group_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of user group members to return in one call.
+    /// The service may return fewer than this value.
+    ///
+    /// If unspecified, at most 50 user group members will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListUserGroupMembers call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListUserGroupMembers` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListUserGroupMembers RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserGroupMembersResponse {
+    /// User group members in the user group.
+    #[prost(message, repeated, tag = "1")]
+    pub user_group_members: ::prost::alloc::vec::Vec<UserGroupMember>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateUserGroupMember RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateUserGroupMemberRequest {
+    /// Required. The parent resource where this UserGroupMember will be created.
+    /// Format: organizations/{org_id}/userGroups/{user_group_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user group member to create.
+    #[prost(message, optional, tag = "2")]
+    pub user_group_member: ::core::option::Option<UserGroupMember>,
+}
+/// Request message for UpdateUserGroupMember RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateUserGroupMemberRequest {
+    /// Required. The user group member to update.
+    #[prost(message, optional, tag = "1")]
+    pub user_group_member: ::core::option::Option<UserGroupMember>,
+    /// Required. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "\*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteUserGroupMember RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteUserGroupMemberRequest {
+    /// Required. The name of the user group member to delete.
+    /// Format:
+    /// organizations/{org_id}/userGroups/{user_group_id}/members/{member_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for GetAdminAccessBinding RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAdminAccessBindingRequest {
+    /// Required. The name of the AdminAccessBinding to retrieve.
+    /// Format:
+    /// organizations/{org_id}/adminAccessBindings/{admin_access_binding_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListAdminAccessBindings RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListAdminAccessBindingsRequest {
+    /// Required. The parent organization, which owns this collection of Admin
+    /// Access Bindings. Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of Admin Access Bindings to return in one
+    /// call. The service may return fewer than this value.
+    ///
+    /// If unspecified, at most 50 Admin Access Bindings will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous ListAdminAccessBindings
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListAdminAccessBindings` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListAdminAccessBindings RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdminAccessBindingsResponse {
+    /// Admin Access Bindings in the organization.
+    #[prost(message, repeated, tag = "1")]
+    pub admin_access_bindings: ::prost::alloc::vec::Vec<AdminAccessBinding>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateAdminAccessBinding RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CreateAdminAccessBindingRequest {
+    /// Required. The parent organization, which owns this Admin Access Binding.
+    /// Format: organizations/{org_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Admin Access Binding to create.
+    ///
+    /// Only 'user_email' input is allowed.
+    #[prost(message, optional, tag = "2")]
+    pub admin_access_binding: ::core::option::Option<AdminAccessBinding>,
+}
+/// Request message for UpdateAdminAccessBinding RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateAdminAccessBindingRequest {
+    /// Required. The AdminAccessBinding to update.
+    #[prost(message, optional, tag = "1")]
+    pub admin_access_binding: ::core::option::Option<AdminAccessBinding>,
+    /// Required. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "\*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Generated client implementations.
 pub mod marketingplatform_admin_service_client {
     #![allow(
@@ -466,7 +847,7 @@ pub mod marketingplatform_admin_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lookup for a single organization.
+        /// Looks up a single organization.
         pub async fn get_organization(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOrganizationRequest>,
@@ -685,7 +1066,7 @@ pub mod marketingplatform_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get the usage and billing data for properties within the organization for
+        /// Gets the usage and billing data for properties within the organization for
         /// the specified month.
         ///
         /// Per direct client org, user needs to be OrgAdmin/BillingAdmin on the
@@ -720,6 +1101,411 @@ pub mod marketingplatform_admin_service_client {
                     GrpcMethod::new(
                         "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
                         "ReportPropertyUsage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up a single user group.
+        pub async fn get_user_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserGroupRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/GetUserGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "GetUserGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of user groups in the specified GMP organization.
+        pub async fn list_user_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListUserGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListUserGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListUserGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "ListUserGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a user group in the specified GMP organization.
+        pub async fn create_user_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateUserGroupRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateUserGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "CreateUserGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a user group in the specified GMP organization.
+        pub async fn update_user_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateUserGroupRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/UpdateUserGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "UpdateUserGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a user group in the specified GMP organization.
+        pub async fn delete_user_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteUserGroupRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/DeleteUserGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "DeleteUserGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up a single user group member.
+        pub async fn get_user_group_member(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserGroupMemberRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UserGroupMember>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/GetUserGroupMember",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "GetUserGroupMember",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of members in the specified user group.
+        pub async fn list_user_group_members(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListUserGroupMembersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListUserGroupMembersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListUserGroupMembers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "ListUserGroupMembers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds a member to the specified GMP user group.
+        pub async fn create_user_group_member(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateUserGroupMemberRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UserGroupMember>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateUserGroupMember",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "CreateUserGroupMember",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a member in the specified GMP user group.
+        pub async fn update_user_group_member(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateUserGroupMemberRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UserGroupMember>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/UpdateUserGroupMember",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "UpdateUserGroupMember",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a member in the specified GMP user group.
+        pub async fn delete_user_group_member(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteUserGroupMemberRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/DeleteUserGroupMember",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "DeleteUserGroupMember",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up a single admin access binding.
+        pub async fn get_admin_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdminAccessBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdminAccessBinding>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/GetAdminAccessBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "GetAdminAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of admin access bindings in the specified GMP organization.
+        pub async fn list_admin_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAdminAccessBindingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdminAccessBindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListAdminAccessBindings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "ListAdminAccessBindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an admin access binding in the specified GMP organization.
+        pub async fn create_admin_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAdminAccessBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdminAccessBinding>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateAdminAccessBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "CreateAdminAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an admin access binding in the specified GMP organization.
+        pub async fn update_admin_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAdminAccessBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdminAccessBinding>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/UpdateAdminAccessBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "UpdateAdminAccessBinding",
                     ),
                 );
             self.inner.unary(req, path, codec).await

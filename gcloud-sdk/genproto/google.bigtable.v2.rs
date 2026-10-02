@@ -1766,13 +1766,70 @@ pub mod load_balancing_options {
         Random(Random),
     }
 }
-/// Configuration for the Session API. Internal usage only.
+/// Configuration for how a given slice of traffic is diverted to sessions.
+/// Internal usage only.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct SessionClientConfiguration {
-    /// What share of requests should operate on a session, \[0, 1\]. The rest
-    /// should operate on the old-style API.
+pub struct SessionScopeDiversionConfiguration {
+    /// What share of in-scope requests should operate on a session, \[0, 1\].
+    /// The remaining requests within this scope should operate on the classic API.
     #[prost(float, tag = "1")]
     pub session_load: f32,
+}
+/// Configuration for how to divert load to sessions. Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionDiversionConfiguration {
+    #[prost(oneof = "session_diversion_configuration::DiversionStrategy", tags = "1, 2")]
+    pub diversion_strategy: ::core::option::Option<
+        session_diversion_configuration::DiversionStrategy,
+    >,
+}
+/// Nested message and enum types in `SessionDiversionConfiguration`.
+pub mod session_diversion_configuration {
+    /// Configuration for how to balance sessions per method. Internal usage only.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerScopeDiversion {
+        /// Keys: Attributes of the request scope that can impact the diversion.
+        /// Valid format is:
+        /// "method:<service>.<method>" - All requests with this scope will have
+        /// the specified diversion config applied.
+        #[prost(map = "string, message", tag = "1")]
+        pub scope_diversions: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            super::SessionScopeDiversionConfiguration,
+        >,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DiversionStrategy {
+        /// If provided, all scopes should use this diversion config.
+        #[prost(message, tag = "1")]
+        GlobalDiversion(super::SessionScopeDiversionConfiguration),
+        /// Diversion happens per-scope.
+        #[prost(message, tag = "2")]
+        PerScopeDiversion(PerScopeDiversion),
+    }
+}
+/// Configuration for the Session API. Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionClientConfiguration {
+    /// Deprecated: Prefer session_diversion_configuration. If both are provided,
+    /// the client should apply this session_load to Bigtable.ReadRow &
+    /// Bigtable.MutateRow, then process the session_diversion_configuration,
+    /// overwriting any behavior established by this value.
+    ///
+    /// What share of the following methods should operate on a session, \[0, 1\]:
+    ///
+    /// * Bigtable.ReadRow
+    /// * Bigtable.MutateRow
+    ///
+    /// The rest should operate on the classic API, e.g. have session_load = 0.
+    #[deprecated]
+    #[prost(float, tag = "1")]
+    pub session_load: f32,
+    /// How load should be divered to sessions.
+    #[prost(message, optional, tag = "5")]
+    pub session_diversion_configuration: ::core::option::Option<
+        SessionDiversionConfiguration,
+    >,
     #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub load_balancing_options: ::core::option::Option<LoadBalancingOptions>,
@@ -1880,6 +1937,12 @@ pub mod session_client_configuration {
         pub new_session_creation_penalty: ::core::option::Option<
             ::prost_types::Duration,
         >,
+        /// How many concurrent session closures are allowed. The client will hold
+        /// onto a count against this budget whenever it is closing a session, and
+        /// release that count once the session is successfully established or failed
+        /// to establish.
+        #[prost(int32, tag = "7")]
+        pub soft_session_close_budget: i32,
         /// A threshold for cancelling all pending vRPCs based on how many
         /// consecutive session establishment errors have been observed. The client
         /// will eagerly cancel queued vRPCs after this threshold is met to avoid
@@ -1888,7 +1951,9 @@ pub mod session_client_configuration {
         #[prost(int32, tag = "8")]
         pub consecutive_session_failure_threshold: i32,
         /// How to balance vRPC load over connections to AFEs.
-        /// Set only if session_load > 0.
+        ///
+        /// Set only if session_load or session_diversion_configuration indicates
+        /// that there will be some session traffic.
         #[prost(message, optional, tag = "9")]
         pub load_balancing_options: ::core::option::Option<super::LoadBalancingOptions>,
     }
@@ -1956,7 +2021,7 @@ pub mod telemetry_configuration {
     }
 }
 /// Configuration for the Session API. Internal usage only.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientConfiguration {
     /// The configuration for Bigtable Sessions.
     #[prost(message, optional, tag = "2")]
@@ -2013,7 +2078,7 @@ pub mod client_configuration {
 /// Internal usage only.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionRequest {
-    #[prost(oneof = "session_request::Payload", tags = "1, 2, 3")]
+    #[prost(oneof = "session_request::Payload", tags = "1, 2, 3, 4, 5")]
     pub payload: ::core::option::Option<session_request::Payload>,
 }
 /// Nested message and enum types in `SessionRequest`.
@@ -2026,6 +2091,10 @@ pub mod session_request {
         CloseSession(super::CloseSessionRequest),
         #[prost(message, tag = "3")]
         VirtualRpc(super::VirtualRpcRequest),
+        #[prost(message, tag = "4")]
+        ContinueVirtualRpc(super::ContinueVirtualRpcRequest),
+        #[prost(message, tag = "5")]
+        CancelVirtualRpc(super::CancelVirtualRpcRequest),
     }
 }
 /// Internal usage only.
@@ -2386,7 +2455,22 @@ pub mod virtual_rpc_request {
         /// Note, this may not be needed for V1, TBD.
         #[prost(string, tag = "3")]
         pub traceparent: ::prost::alloc::string::String,
+        /// How long to delay the operation for on the server-side, for testing.
+        #[prost(message, optional, tag = "4")]
+        pub delay: ::core::option::Option<::prost_types::Duration>,
     }
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ContinueVirtualRpcRequest {
+    #[prost(int64, tag = "1")]
+    pub rpc_id: i64,
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelVirtualRpcRequest {
+    #[prost(int64, tag = "1")]
+    pub rpc_id: i64,
 }
 /// Information on which Cluster served a vRPC, e.g. for Client-Side metrics.
 /// Internal usage only.
@@ -2417,6 +2501,9 @@ pub struct VirtualRpcResponse {
     /// Could be TableResponse (or in post-V1, SqlResponse)
     #[prost(bytes = "vec", tag = "3")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
+    /// If there are more responses for this rpc_id coming.
+    #[prost(bool, tag = "5")]
+    pub has_more: bool,
 }
 /// Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2436,7 +2523,7 @@ pub struct ErrorResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableRequest {
     /// Note in V1 we target only pure point operations.
-    #[prost(oneof = "table_request::Payload", tags = "1, 2")]
+    #[prost(oneof = "table_request::Payload", tags = "1, 2, 3, 4, 5, 6")]
     pub payload: ::core::option::Option<table_request::Payload>,
 }
 /// Nested message and enum types in `TableRequest`.
@@ -2448,12 +2535,20 @@ pub mod table_request {
         ReadRow(super::SessionReadRowRequest),
         #[prost(message, tag = "2")]
         MutateRow(super::SessionMutateRowRequest),
+        #[prost(message, tag = "3")]
+        ReadRows(super::SessionReadRowsRequest),
+        #[prost(message, tag = "4")]
+        CheckAndMutateRow(super::SessionCheckAndMutateRowRequest),
+        #[prost(message, tag = "5")]
+        ReadModifyWriteRow(super::SessionReadModifyWriteRowRequest),
+        #[prost(message, tag = "6")]
+        MutateRows(super::SessionMutateRowsRequest),
     }
 }
 /// Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableResponse {
-    #[prost(oneof = "table_response::Payload", tags = "1, 2")]
+    #[prost(oneof = "table_response::Payload", tags = "1, 2, 3, 4, 5, 6")]
     pub payload: ::core::option::Option<table_response::Payload>,
 }
 /// Nested message and enum types in `TableResponse`.
@@ -2464,13 +2559,21 @@ pub mod table_response {
         ReadRow(super::SessionReadRowResponse),
         #[prost(message, tag = "2")]
         MutateRow(super::SessionMutateRowResponse),
+        #[prost(message, tag = "3")]
+        ReadRows(super::SessionReadRowsResponse),
+        #[prost(message, tag = "4")]
+        CheckAndMutateRow(super::SessionCheckAndMutateRowResponse),
+        #[prost(message, tag = "5")]
+        ReadModifyWriteRow(super::SessionReadModifyWriteRowResponse),
+        #[prost(message, tag = "6")]
+        MutateRows(super::SessionMutateRowsResponse),
     }
 }
 /// A request wrapper for operations on an authorized view. Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedViewRequest {
     /// Note in V1 we target only pure point operations.
-    #[prost(oneof = "authorized_view_request::Payload", tags = "1, 2")]
+    #[prost(oneof = "authorized_view_request::Payload", tags = "1, 2, 3, 4, 5, 6")]
     pub payload: ::core::option::Option<authorized_view_request::Payload>,
 }
 /// Nested message and enum types in `AuthorizedViewRequest`.
@@ -2482,13 +2585,21 @@ pub mod authorized_view_request {
         ReadRow(super::SessionReadRowRequest),
         #[prost(message, tag = "2")]
         MutateRow(super::SessionMutateRowRequest),
+        #[prost(message, tag = "3")]
+        ReadRows(super::SessionReadRowsRequest),
+        #[prost(message, tag = "4")]
+        CheckAndMutateRow(super::SessionCheckAndMutateRowRequest),
+        #[prost(message, tag = "5")]
+        ReadModifyWriteRow(super::SessionReadModifyWriteRowRequest),
+        #[prost(message, tag = "6")]
+        MutateRows(super::SessionMutateRowsRequest),
     }
 }
 /// A response wrapper for operations on an authorized view. Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedViewResponse {
     /// Note in V1 we target only pure point operations.
-    #[prost(oneof = "authorized_view_response::Payload", tags = "1, 2")]
+    #[prost(oneof = "authorized_view_response::Payload", tags = "1, 2, 3, 4, 5, 6")]
     pub payload: ::core::option::Option<authorized_view_response::Payload>,
 }
 /// Nested message and enum types in `AuthorizedViewResponse`.
@@ -2500,13 +2611,21 @@ pub mod authorized_view_response {
         ReadRow(super::SessionReadRowResponse),
         #[prost(message, tag = "2")]
         MutateRow(super::SessionMutateRowResponse),
+        #[prost(message, tag = "3")]
+        ReadRows(super::SessionReadRowsResponse),
+        #[prost(message, tag = "4")]
+        CheckAndMutateRow(super::SessionCheckAndMutateRowResponse),
+        #[prost(message, tag = "5")]
+        ReadModifyWriteRow(super::SessionReadModifyWriteRowResponse),
+        #[prost(message, tag = "6")]
+        MutateRows(super::SessionMutateRowsResponse),
     }
 }
 /// A request wrapper for operations on a materialized view. Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializedViewRequest {
     /// Note in V1 we target only pure point operations.
-    #[prost(oneof = "materialized_view_request::Payload", tags = "1")]
+    #[prost(oneof = "materialized_view_request::Payload", tags = "1, 2")]
     pub payload: ::core::option::Option<materialized_view_request::Payload>,
 }
 /// Nested message and enum types in `MaterializedViewRequest`.
@@ -2516,6 +2635,8 @@ pub mod materialized_view_request {
     pub enum Payload {
         #[prost(message, tag = "1")]
         ReadRow(super::SessionReadRowRequest),
+        #[prost(message, tag = "2")]
+        ReadRows(super::SessionReadRowsRequest),
     }
 }
 /// A response wrapper for operations on a materialized view. Internal usage
@@ -2523,7 +2644,7 @@ pub mod materialized_view_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializedViewResponse {
     /// Note in V1 we target only pure point operations.
-    #[prost(oneof = "materialized_view_response::Payload", tags = "1")]
+    #[prost(oneof = "materialized_view_response::Payload", tags = "1, 2")]
     pub payload: ::core::option::Option<materialized_view_response::Payload>,
 }
 /// Nested message and enum types in `MaterializedViewResponse`.
@@ -2533,6 +2654,8 @@ pub mod materialized_view_response {
     pub enum Payload {
         #[prost(message, tag = "1")]
         ReadRow(super::SessionReadRowResponse),
+        #[prost(message, tag = "2")]
+        ReadRows(super::SessionReadRowsResponse),
     }
 }
 /// Internal usage only.
@@ -2553,6 +2676,26 @@ pub struct SessionReadRowResponse {
 }
 /// Internal usage only.
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadRowsRequest {
+    #[prost(message, optional, tag = "1")]
+    pub rows: ::core::option::Option<RowSet>,
+    #[prost(message, optional, tag = "2")]
+    pub filter: ::core::option::Option<RowFilter>,
+    #[prost(int64, tag = "3")]
+    pub rows_limit: i64,
+    #[prost(bool, tag = "4")]
+    pub reversed: bool,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadRowsResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub row: ::prost::alloc::vec::Vec<Row>,
+    #[prost(message, optional, tag = "2")]
+    pub stats: ::core::option::Option<RequestStats>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionMutateRowRequest {
     #[prost(bytes = "vec", tag = "1")]
     pub key: ::prost::alloc::vec::Vec<u8>,
@@ -2562,6 +2705,97 @@ pub struct SessionMutateRowRequest {
 /// Internal usage only.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionMutateRowResponse {}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionCheckAndMutateRowRequest {
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, optional, tag = "2")]
+    pub predicate_filter: ::core::option::Option<RowFilter>,
+    #[prost(message, repeated, tag = "3")]
+    pub true_mutations: ::prost::alloc::vec::Vec<Mutation>,
+    #[prost(message, repeated, tag = "4")]
+    pub false_mutations: ::prost::alloc::vec::Vec<Mutation>,
+}
+/// Internal usage only.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SessionCheckAndMutateRowResponse {
+    #[prost(bool, tag = "1")]
+    pub predicate_matched: bool,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadModifyWriteRowRequest {
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, repeated, tag = "2")]
+    pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionReadModifyWriteRowResponse {
+    #[prost(message, optional, tag = "1")]
+    pub row: ::core::option::Option<Row>,
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionMutateRowsRequest {
+    /// The row keys and corresponding mutations to be applied in bulk.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<session_mutate_rows_request::Entry>,
+}
+/// Nested message and enum types in `SessionMutateRowsRequest`.
+pub mod session_mutate_rows_request {
+    /// A mutation for a given row.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entry {
+        /// The key of the row to which the `mutations` should be applied.
+        #[prost(bytes = "vec", tag = "1")]
+        pub key: ::prost::alloc::vec::Vec<u8>,
+        /// Changes to be atomically applied to the specified row.
+        #[prost(message, repeated, tag = "2")]
+        pub mutations: ::prost::alloc::vec::Vec<super::Mutation>,
+        /// The idempotency of the mutation.
+        #[prost(message, optional, tag = "3")]
+        pub idempotency: ::core::option::Option<super::Idempotency>,
+    }
+}
+/// Internal usage only.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionMutateRowsResponse {
+    /// One or more results for Entries from the batch request.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<session_mutate_rows_response::Entry>,
+    /// Information about how the client should adjust its rate of requests.
+    #[prost(message, optional, tag = "2")]
+    pub rate_limit_info: ::core::option::Option<
+        session_mutate_rows_response::RateLimitInfo,
+    >,
+}
+/// Nested message and enum types in `SessionMutateRowsResponse`.
+pub mod session_mutate_rows_response {
+    /// The result of applying a passed mutation in the original request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entry {
+        /// The index into the original request's `entries` list of the Entry
+        /// for which a result is being reported.
+        #[prost(int64, tag = "1")]
+        pub index: i64,
+        /// The result of the request Entry identified by `index`.
+        #[prost(message, optional, tag = "2")]
+        pub status: ::core::option::Option<super::super::super::rpc::Status>,
+    }
+    /// Rate limiting information for batched mutations.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct RateLimitInfo {
+        /// Time that must pass before the client should adjust its rate again.
+        #[prost(message, optional, tag = "1")]
+        pub period: ::core::option::Option<::prost_types::Duration>,
+        /// Multiplier that the client should apply to its current request rate.
+        #[prost(double, tag = "2")]
+        pub factor: f64,
+    }
+}
 /// Internal usage only.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionParametersResponse {
@@ -2573,6 +2807,11 @@ pub struct SessionParametersResponse {
     /// See also Heartbeats.
     #[prost(message, optional, tag = "1")]
     pub keep_alive: ::core::option::Option<::prost_types::Duration>,
+    /// Client will pull this many bytes at most to make messages for steamed
+    /// responses. If the last byte is mid-message, it will continue until a full
+    /// message comes.
+    #[prost(int32, tag = "2")]
+    pub softmax_streaming_prefetch_buffer_bytes: i32,
 }
 /// Internal usage only.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4236,7 +4475,7 @@ pub mod peer_info {
         /// The transport type is unknown.
         Unknown = 0,
         /// The client connected to this peer via an external network
-        /// (e.g. outside Google Coud).
+        /// (e.g. outside Google Cloud).
         External = 1,
         /// The client connected to this peer via CloudPath.
         CloudPath = 2,

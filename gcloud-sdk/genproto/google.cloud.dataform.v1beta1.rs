@@ -80,6 +80,9 @@ pub struct Repository {
     /// format of this field is a JSON string.
     #[prost(string, optional, tag = "15")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Includes configuration options for end user authentication.
+    #[prost(message, optional, tag = "28")]
+    pub end_user_auth_config: ::core::option::Option<repository::EndUserAuthConfig>,
 }
 /// Nested message and enum types in `Repository`.
 pub mod repository {
@@ -205,6 +208,24 @@ pub mod repository {
         #[prost(string, tag = "3")]
         pub table_prefix: ::prost::alloc::string::String,
     }
+    /// Includes configuration options for repository end user authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EndUserAuthConfig {
+        /// Optional. OAuth configuration for repository end user authentication.
+        #[prost(message, optional, tag = "1")]
+        pub oauth_config: ::core::option::Option<super::OAuthConfig>,
+    }
+}
+/// OAuth configuration for end user authentication.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OAuthConfig {
+    /// Optional. Additional OAuth scopes to use for BigQuery executions.
+    /// Scopes always in use:
+    /// `<https://www.googleapis.com/auth/bigquery`>
+    #[prost(string, repeated, tag = "1")]
+    pub additional_oauth_scopes: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Metadata used to identify if a resource is user scoped.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -2536,6 +2557,12 @@ pub struct InvocationConfig {
     /// Optional. The service account to run workflow invocations under.
     #[prost(string, tag = "6")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. Configuration for end user authentication.
+    /// Note that this should not be set when `service_account` is used.
+    #[prost(message, optional, tag = "7")]
+    pub end_user_auth_config: ::core::option::Option<
+        invocation_config::EndUserAuthenticationConfig,
+    >,
     /// Optional. Specifies the priority for query execution in BigQuery.
     /// More information can be found at
     /// <https://cloud.google.com/bigquery/docs/running-queries#queries.>
@@ -2544,6 +2571,16 @@ pub struct InvocationConfig {
 }
 /// Nested message and enum types in `InvocationConfig`.
 pub mod invocation_config {
+    /// Includes configuration options for end user authentication.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct EndUserAuthenticationConfig {
+        /// Output only. Email address of the user to run workflow invocations under.
+        #[prost(string, tag = "2")]
+        pub user_email: ::prost::alloc::string::String,
+        /// Optional. OAuth configuration for end user authentication.
+        #[prost(message, optional, tag = "4")]
+        pub oauth_config: ::core::option::Option<super::OAuthConfig>,
+    }
     /// Types of priority for query execution in BigQuery.
     #[derive(
         Clone,

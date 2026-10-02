@@ -1953,6 +1953,7 @@ pub mod tools_client {
         }
     }
 }
+/// Deprecated: Use `CesToolSpec` instead.
 /// Spec of CES app that the generator can choose from.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CesAppSpec {
@@ -2110,6 +2111,9 @@ pub mod tool_call_result {
         /// Optional. The error message of the function.
         #[prost(string, tag = "1")]
         pub message: ::prost::alloc::string::String,
+        /// Optional. Specifies whether the tool call is retryable.
+        #[prost(bool, tag = "2")]
+        pub retryable: bool,
     }
     /// Specifies the source of this tool call.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -2573,7 +2577,9 @@ pub struct Generator {
     /// Optional. List of CES tool specs that the generator can choose from.
     #[prost(message, repeated, tag = "28")]
     pub ces_tool_specs: ::prost::alloc::vec::Vec<CesToolSpec>,
-    /// Optional. List of CES app specs that the generator can choose from.
+    /// Optional. Deprecated: Use `ces_tool_specs` instead.
+    /// List of CES app specs that the generator can choose from.
+    #[deprecated]
     #[prost(message, repeated, tag = "29")]
     pub ces_app_specs: ::prost::alloc::vec::Vec<CesAppSpec>,
     /// Required. Input context of the generator.
@@ -3339,6 +3345,17 @@ pub struct InputAudioConfig {
     /// migration](<https://cloud.google.com/dialogflow/es/docs/speech-model-migration>).
     #[prost(bool, tag = "26")]
     pub opt_out_conformer_model_migration: bool,
+    /// Optional. Configuration for using Gemini ASR models served via Vertex AI.
+    /// This field is only used when `use_gemini_asr` is true.
+    #[prost(message, optional, tag = "30")]
+    pub gemini_asr_config: ::core::option::Option<
+        speech_to_text_config::GeminiAsrConfig,
+    >,
+    /// Optional. If true, Gemini ASR will be used for transcription instead of
+    /// Cloud Speech-to-Text. If false, Cloud Speech-to-Text will be used.
+    /// If unset, this setting is inherited from the ConversationProfile.
+    #[prost(bool, optional, tag = "31")]
+    pub use_gemini_asr: ::core::option::Option<bool>,
 }
 /// Description of which voice to use for speech synthesis.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3558,6 +3575,134 @@ pub struct SpeechToTextConfig {
     /// seconds of timeout value.
     #[prost(bool, tag = "11")]
     pub use_timeout_based_endpointing: bool,
+    /// Optional. Configuration for using Gemini ASR models served via Vertex AI,
+    /// overriding the default Gemini ASR model or providing additional advanced
+    /// parameters. This field is only used when `use_gemini_asr` is true.
+    #[prost(message, optional, tag = "15")]
+    pub gemini_asr_config: ::core::option::Option<
+        speech_to_text_config::GeminiAsrConfig,
+    >,
+    /// Optional. If true, Gemini ASR will be used for transcription instead of
+    /// Cloud Speech-to-Text.
+    #[prost(bool, tag = "16")]
+    pub use_gemini_asr: bool,
+}
+/// Nested message and enum types in `SpeechToTextConfig`.
+pub mod speech_to_text_config {
+    /// Configuration for using Gemini ASR models served via Vertex AI. This
+    /// message is used to override the default Gemini ASR model or provide
+    /// additional advanced parameters.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct GeminiAsrConfig {
+        /// Optional. The Gemini ASR model ID used for transcription.
+        /// This value overrides the default model ID configured on the server.
+        /// Example: "gemini-3-flash-lite-asr-preview"
+        #[prost(string, tag = "1")]
+        pub model_id: ::prost::alloc::string::String,
+        /// Optional. The required duration of detected silence (or non-speech)
+        /// before end-of-speech is committed.
+        #[prost(int32, tag = "2")]
+        pub silence_duration_ms: i32,
+        /// Optional. The required duration of detected speech before start-of-speech
+        /// is committed.
+        #[prost(int32, tag = "3")]
+        pub prefix_padding_ms: i32,
+        /// Optional. Start of speech sensitivity.
+        #[prost(enumeration = "gemini_asr_config::StartSensitivity", tag = "4")]
+        pub start_of_speech_sensitivity: i32,
+        /// Optional. End of speech sensitivity.
+        #[prost(enumeration = "gemini_asr_config::EndSensitivity", tag = "5")]
+        pub end_of_speech_sensitivity: i32,
+    }
+    /// Nested message and enum types in `GeminiAsrConfig`.
+    pub mod gemini_asr_config {
+        /// Start of speech sensitivity.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum StartSensitivity {
+            /// The default is START_SENSITIVITY_LOW.
+            Unspecified = 0,
+            /// Automatic detection will detect the start of speech more often.
+            High = 1,
+            /// Automatic detection will detect the start of speech less often.
+            Low = 2,
+        }
+        impl StartSensitivity {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "START_SENSITIVITY_UNSPECIFIED",
+                    Self::High => "START_SENSITIVITY_HIGH",
+                    Self::Low => "START_SENSITIVITY_LOW",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "START_SENSITIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "START_SENSITIVITY_HIGH" => Some(Self::High),
+                    "START_SENSITIVITY_LOW" => Some(Self::Low),
+                    _ => None,
+                }
+            }
+        }
+        /// End of speech sensitivity.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EndSensitivity {
+            /// The default is END_SENSITIVITY_LOW.
+            Unspecified = 0,
+            /// Automatic detection ends speech more often.
+            High = 1,
+            /// Automatic detection ends speech less often.
+            Low = 2,
+        }
+        impl EndSensitivity {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "END_SENSITIVITY_UNSPECIFIED",
+                    Self::High => "END_SENSITIVITY_HIGH",
+                    Self::Low => "END_SENSITIVITY_LOW",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "END_SENSITIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "END_SENSITIVITY_HIGH" => Some(Self::High),
+                    "END_SENSITIVITY_LOW" => Some(Self::Low),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// [DTMF](<https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>)
 /// digit in Telephony Gateway.
@@ -3887,6 +4032,655 @@ impl OutputAudioEncoding {
             _ => None,
         }
     }
+}
+/// Request of CreateCompanionAgent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCompanionAgentRequest {
+    /// Required. Resource identifier of the project creating the companion agent.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The companion agent to create.
+    #[prost(message, optional, tag = "2")]
+    pub companion_agent: ::core::option::Option<CompanionAgent>,
+    /// Optional. The resource ID of the companion agent to create. If not
+    /// provided, the server will auto-generate a resource ID.
+    #[prost(string, tag = "3")]
+    pub companion_agent_id: ::prost::alloc::string::String,
+}
+/// Request message for GetCompanionAgent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetCompanionAgentRequest {
+    /// Required. The unique resource identifier of the CompanionAgent to get all
+    /// information for. Format:
+    /// `projects/{project}/locations/{location}/companionAgents/{companion_agent}`.
+    /// Contains the information about the {project}, {location}, and
+    /// {companion_agent}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListCompanionAgents.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListCompanionAgentsRequest {
+    /// Required. The parent resource name to list the companion agents for.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of companion agents to return in a single page.
+    /// By default 100 and at most 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token, received from a previous call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListCompanionAgents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCompanionAgentsResponse {
+    /// The list of companion agents.
+    #[prost(message, repeated, tag = "1")]
+    pub companion_agents: ::prost::alloc::vec::Vec<CompanionAgent>,
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateCompanionAgent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCompanionAgentRequest {
+    /// Required. The Companion Agent to update.
+    #[prost(message, optional, tag = "1")]
+    pub companion_agent: ::core::option::Option<CompanionAgent>,
+    /// Optional. Update mask for Companion Agent.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteCompanionAgent.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DeleteCompanionAgentRequest {
+    /// Required. The unique resource identifier of the CompanionAgent to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/companionAgents/{companion_agent}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Guidance instruction for the companion agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GuidanceInstruction {
+    /// Optional. Display name for the instruction. This name should be unique
+    /// within the companion agent.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The detailed description of this instruction.
+    #[prost(string, tag = "2")]
+    pub display_details: ::prost::alloc::string::String,
+    /// Optional. The condition of the instruction. For example, "the customer
+    /// wants to cancel an order".  If the users want the instruction to be
+    /// triggered unconditionally, the condition can be empty.
+    #[prost(string, tag = "3")]
+    pub condition: ::prost::alloc::string::String,
+    /// Optional. The action items that can be processed.
+    #[prost(message, repeated, tag = "4")]
+    pub actions: ::prost::alloc::vec::Vec<guidance_instruction::Action>,
+    /// Optional. Event that triggers the guidance instruction.
+    /// If UNSPECIFIED, the instruction triggering will be the same as the skill's
+    /// skill_triggering_event.
+    #[prost(enumeration = "companion_agent::TriggerEvent", tag = "6")]
+    pub trigger_event: i32,
+    /// Optional. Whether to disable suggested reply generation for this
+    /// instruction. When set to `true`, guidance generated from this instruction
+    /// will not include a suggested reply. Default is `false` (suggested reply
+    /// enabled).
+    #[prost(bool, tag = "7")]
+    pub disable_suggested_reply: bool,
+}
+/// Nested message and enum types in `GuidanceInstruction`.
+pub mod guidance_instruction {
+    /// Actions to take, including agent action and system action (automation).
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Action {
+        /// Required. Description of action item. It can be a agent action (e.g.
+        /// "Send a message to the customer", "greet the customer") or system action
+        /// (e.g. "Update the ticket", "Create a task", "cancel the order").
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+    }
+}
+/// Companion agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CompanionAgent {
+    /// Identifier. The unique identifier of the companion agent.
+    /// Format:
+    /// `projects/{project}/locations/{location}/companionAgents/{companion_agent}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Creation time of this companion agent.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of this companion agent.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. List of CES toolset specs that the companion agent can choose
+    /// from.
+    #[prost(message, repeated, tag = "4")]
+    pub toolset_tools: ::prost::alloc::vec::Vec<ToolsetTool>,
+    /// Optional. List of CES tool specs that the companion agent can choose from.
+    #[prost(message, repeated, tag = "5")]
+    pub ces_tool_specs: ::prost::alloc::vec::Vec<CesToolSpec>,
+    /// Optional. Display name for the companion agent.
+    /// Character limit is 63.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Description for the companion agent.
+    #[prost(string, tag = "9")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. List of skill configs for the companion agent.
+    /// Allows at most one instance of each
+    /// \[SkillConfig\]\[google.cloud.dialogflow.v2.CompanionAgent.SkillConfig\] type.
+    #[prost(message, repeated, tag = "7")]
+    pub skill_configs: ::prost::alloc::vec::Vec<companion_agent::SkillConfig>,
+}
+/// Nested message and enum types in `CompanionAgent`.
+pub mod companion_agent {
+    /// Skill configuration for the companion agent.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SkillConfig {
+        /// Optional. The event that should trigger the skill.
+        #[prost(enumeration = "skill_config::SkillTriggerEvent", tag = "1")]
+        pub skill_triggering_event: i32,
+        /// Each SkillConfig will be one of the following specific skill configs.
+        #[prost(oneof = "skill_config::Config", tags = "2, 3")]
+        pub config: ::core::option::Option<skill_config::Config>,
+    }
+    /// Nested message and enum types in `SkillConfig`.
+    pub mod skill_config {
+        /// The event that should trigger the skill.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SkillTriggerEvent {
+            /// Default value for SkillTriggerEvent.
+            Unspecified = 0,
+            /// Triggers when each chat message or voice utterance ends.
+            EndOfUtterance = 1,
+            /// Triggers after each customer message.
+            CustomerMessage = 2,
+            /// Triggers after each agent message.
+            AgentMessage = 3,
+        }
+        impl SkillTriggerEvent {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SKILL_TRIGGER_EVENT_UNSPECIFIED",
+                    Self::EndOfUtterance => "END_OF_UTTERANCE",
+                    Self::CustomerMessage => "CUSTOMER_MESSAGE",
+                    Self::AgentMessage => "AGENT_MESSAGE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SKILL_TRIGGER_EVENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+                    "CUSTOMER_MESSAGE" => Some(Self::CustomerMessage),
+                    "AGENT_MESSAGE" => Some(Self::AgentMessage),
+                    _ => None,
+                }
+            }
+        }
+        /// Each SkillConfig will be one of the following specific skill configs.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Config {
+            /// Optional. Guidance skill configuration.
+            #[prost(message, tag = "2")]
+            GuidanceSkillConfig(super::GuidanceSkillConfig),
+            /// Optional. Translation skill configuration.
+            #[prost(message, tag = "3")]
+            TranslationSkillConfig(super::TranslationSkillConfig),
+        }
+    }
+    /// Guidance skill configuration.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GuidanceSkillConfig {
+        /// Optional. Customized instructions for guidance.
+        #[prost(message, repeated, tag = "2")]
+        pub guidance_instructions: ::prost::alloc::vec::Vec<super::GuidanceInstruction>,
+        /// Optional. This is specific additional guidance that can configured by the
+        /// user.
+        #[prost(string, tag = "3")]
+        pub overarching_guidance: ::prost::alloc::string::String,
+        /// Optional. Knowledge source configuration for guidance.
+        #[prost(message, optional, tag = "5")]
+        pub knowledge_source: ::core::option::Option<KnowledgeSource>,
+    }
+    /// Knowledge source configuration for knowledge retrieval.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct KnowledgeSource {}
+    /// Translation skill configuration for the companion agent.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TranslationSkillConfig {
+        /// Optional. Target language code for the agent, in IETF BCP-47 format
+        /// (e.g., "en-US").
+        #[prost(string, tag = "1")]
+        pub agent_language_code: ::prost::alloc::string::String,
+        /// Optional. Target language code for the customer, in IETF BCP-47 format
+        /// (e.g., "es").
+        #[prost(string, tag = "2")]
+        pub customer_language_code: ::prost::alloc::string::String,
+    }
+    /// Event that triggers companion agent skills and guidance instructions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TriggerEvent {
+        /// Default value for TriggerEvent.
+        /// For skill_triggering_event, UNSPECIFIED defaults to CUSTOMER_MESSAGE.
+        /// For instruction trigger_event, UNSPECIFIED defaults to the skill's
+        /// skill_triggering_event.
+        Unspecified = 0,
+        /// Triggers when each chat message or voice utterance ends.
+        EndOfUtterance = 1,
+        /// Triggers after each customer message.
+        CustomerMessage = 2,
+        /// Triggers after each agent message.
+        AgentMessage = 3,
+    }
+    impl TriggerEvent {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TRIGGER_EVENT_UNSPECIFIED",
+                Self::EndOfUtterance => "END_OF_UTTERANCE",
+                Self::CustomerMessage => "CUSTOMER_MESSAGE",
+                Self::AgentMessage => "AGENT_MESSAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRIGGER_EVENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+                "CUSTOMER_MESSAGE" => Some(Self::CustomerMessage),
+                "AGENT_MESSAGE" => Some(Self::AgentMessage),
+                _ => None,
+            }
+        }
+    }
+}
+/// Generated client implementations.
+pub mod companion_agents_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing companion agents.
+    #[derive(Debug, Clone)]
+    pub struct CompanionAgentsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CompanionAgentsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CompanionAgentsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CompanionAgentsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            CompanionAgentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a companion agent.
+        pub async fn create_companion_agent(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCompanionAgentRequest>,
+        ) -> std::result::Result<tonic::Response<super::CompanionAgent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.CompanionAgents/CreateCompanionAgent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.CompanionAgents",
+                        "CreateCompanionAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a companion agent.
+        pub async fn get_companion_agent(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCompanionAgentRequest>,
+        ) -> std::result::Result<tonic::Response<super::CompanionAgent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.CompanionAgents/GetCompanionAgent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.CompanionAgents",
+                        "GetCompanionAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a companion agent.
+        pub async fn update_companion_agent(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCompanionAgentRequest>,
+        ) -> std::result::Result<tonic::Response<super::CompanionAgent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.CompanionAgents/UpdateCompanionAgent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.CompanionAgents",
+                        "UpdateCompanionAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a companion agent.
+        pub async fn delete_companion_agent(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCompanionAgentRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.CompanionAgents/DeleteCompanionAgent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.CompanionAgents",
+                        "DeleteCompanionAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists companion agents.
+        pub async fn list_companion_agents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCompanionAgentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCompanionAgentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.CompanionAgents/ListCompanionAgents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.CompanionAgents",
+                        "ListCompanionAgents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Grounding metadata contains sources, citations, and search entry points used
+/// to ground a generated answer or suggestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingMetadata {
+    /// Optional. The web search queries that were used to generate the content.
+    #[prost(string, repeated, tag = "1")]
+    pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A web search entry point that can be used to display search
+    /// results.
+    #[prost(message, optional, tag = "2")]
+    pub search_entry_point: ::core::option::Option<SearchEntryPoint>,
+    /// Optional. A list of supporting references retrieved from the grounding
+    /// source.
+    #[prost(message, repeated, tag = "3")]
+    pub grounding_chunks: ::prost::alloc::vec::Vec<GroundingChunk>,
+    /// Optional. A list of grounding supports that connect the generated
+    /// content to the grounding chunks.
+    #[prost(message, repeated, tag = "4")]
+    pub grounding_supports: ::prost::alloc::vec::Vec<GroundingSupport>,
+}
+/// A web search entry point that can be used to display search
+/// results.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SearchEntryPoint {
+    /// Optional. An HTML snippet that can be embedded in a web page or an
+    /// application's webview. This snippet displays a search result, including the
+    /// title, URL, and a brief description of the search result.
+    #[prost(string, tag = "1")]
+    pub rendered_content: ::prost::alloc::string::String,
+}
+/// A piece of evidence that supports a claim made by the model.
+///
+/// This is used to show a citation for a claim made by the model.
+/// It contains a reference to the source of the information.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GroundingChunk {
+    /// The source of the grounding chunk. Currently we only support web search.
+    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1, 2")]
+    pub chunk_type: ::core::option::Option<grounding_chunk::ChunkType>,
+}
+/// Nested message and enum types in `GroundingChunk`.
+pub mod grounding_chunk {
+    /// A `Web` chunk is a piece of evidence that comes from a web page. It
+    /// contains the URI of the web page, the title of the page, and the domain of
+    /// the page. This is used to provide the user with a link to the source of
+    /// the information.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Web {
+        /// Output only. The URI of the web page that contains the evidence.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Output only. The title of the web page that contains the evidence.
+        #[prost(string, tag = "2")]
+        pub title: ::prost::alloc::string::String,
+        /// Output only. The domain of the web page that contains the evidence. This
+        /// can be used to filter out low-quality sources.
+        #[prost(string, tag = "3")]
+        pub domain: ::prost::alloc::string::String,
+    }
+    /// Context retrieved from a data source to ground the model's response. This
+    /// is used when a retrieval tool fetches information from a user-provided
+    /// corpus or a public dataset.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct RetrievedContext {
+        /// Output only. The URI of the retrieved data source.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Output only. The title of the retrieved data source.
+        #[prost(string, tag = "2")]
+        pub title: ::prost::alloc::string::String,
+        /// Output only. The content of the retrieved data source.
+        #[prost(string, tag = "3")]
+        pub text: ::prost::alloc::string::String,
+    }
+    /// The source of the grounding chunk. Currently we only support web search.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum ChunkType {
+        /// Optional. A grounding chunk from a web page, typically from web
+        /// search. See the `Web` message for details.
+        #[prost(message, tag = "1")]
+        Web(Web),
+        /// Optional. A grounding chunk from a data source retrieved by a
+        /// data store tool.
+        #[prost(message, tag = "2")]
+        RetrievedContext(RetrievedContext),
+    }
+}
+/// A segment of the content.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Segment {
+    /// Output only. The start index of the segment, measured in bytes. This marks
+    /// the beginning of the segment and is inclusive, meaning the byte at this
+    /// index is the first byte of the segment.
+    #[prost(int32, tag = "1")]
+    pub start_index: i32,
+    /// Output only. The end index of the segment, measured in bytes. This marks
+    /// the end of the segment and is exclusive, meaning the segment includes
+    /// content up to, but not including, the byte at this index.
+    #[prost(int32, tag = "2")]
+    pub end_index: i32,
+    /// Output only. The text of the segment.
+    #[prost(string, tag = "3")]
+    pub text: ::prost::alloc::string::String,
+}
+/// A collection of supporting references for a segment or part of the
+/// model's response.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GroundingSupport {
+    /// Optional. Segment of the content this support belongs to.
+    #[prost(message, optional, tag = "1")]
+    pub segment: ::core::option::Option<Segment>,
+    /// Optional. A list of indices into `grounding_chunks` field specifying the
+    /// citations associated with the claim. For instance \[1, 3\] means that
+    /// grounding_chunks\[1\] and grounding_chunks\[3\] are the retrieved contents
+    /// attributed to the claim.
+    #[prost(int32, repeated, packed = "false", tag = "2")]
+    pub grounding_chunk_indices: ::prost::alloc::vec::Vec<i32>,
 }
 /// Dialogflow contexts are similar to natural language context. If a person says
 /// to you "they are orange", you need context in order to understand what "they"
@@ -7855,8 +8649,9 @@ pub mod streaming_recognition_result {
 /// Represents the natural language text to be processed.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextInput {
-    /// Required. The UTF-8 encoded natural language text to be processed.
+    /// Optional. The UTF-8 encoded natural language text to be processed.
     /// Text length must not exceed 256 characters for virtual agent interactions.
+    /// Only one of `text` and `companion_query` should be set - not both.
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
     /// Required. The language of this conversational query. See [Language
@@ -8341,7 +9136,8 @@ pub struct Message {
     /// Format: `projects/<Project ID>/locations/<Location  ID>/conversations/<Conversation ID>/messages/<Message ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The message content.
+    /// Optional. The message content.
+    /// Only one of `content` and `companion_query` should be set - not both.
     #[prost(string, tag = "2")]
     pub content: ::prost::alloc::string::String,
     /// Optional. The message language.
@@ -8660,7 +9456,7 @@ pub struct StreamingAnalyzeContentRequest {
     #[prost(oneof = "streaming_analyze_content_request::Config", tags = "2, 3")]
     pub config: ::core::option::Option<streaming_analyze_content_request::Config>,
     /// The input.
-    #[prost(oneof = "streaming_analyze_content_request::Input", tags = "5, 6, 9")]
+    #[prost(oneof = "streaming_analyze_content_request::Input", tags = "5, 6, 9, 27")]
     pub input: ::core::option::Option<streaming_analyze_content_request::Input>,
 }
 /// Nested message and enum types in `StreamingAnalyzeContentRequest`.
@@ -8676,7 +9472,7 @@ pub mod streaming_analyze_content_request {
         TextConfig(super::InputTextConfig),
     }
     /// The input.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Input {
         /// The input audio content to be recognized. Must be sent if `audio_config`
         /// is set in the first message. The complete audio over all streaming
@@ -8695,6 +9491,9 @@ pub mod streaming_analyze_content_request {
         /// is not accepted.
         #[prost(message, tag = "9")]
         InputDtmf(super::TelephonyDtmfEvents),
+        /// Optional. Input for confirming, revising, or canceling a suggestion.
+        #[prost(message, tag = "27")]
+        SuggestionInput(super::SuggestionInput),
     }
 }
 /// The top-level message returned from the `StreamingAnalyzeContent` method.
@@ -8902,6 +9701,106 @@ pub mod generate_suggestions_response {
         #[prost(string, tag = "3")]
         pub answer_record: ::prost::alloc::string::String,
     }
+}
+/// Structured wrapper that pairs tool execution details with strongly-typed
+/// citations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallSuggestion {
+    /// Optional. Tool execution request/response details.
+    #[prost(message, optional, tag = "1")]
+    pub tool_call_info: ::core::option::Option<generator_suggestion::ToolCallInfo>,
+    /// Optional. The conversational text update generated by the agent
+    /// accompanying this tool call (e.g. "The status of your order 12345 is
+    /// currently being retrieved..."). This is a status update emitted alongside
+    /// in-flight tool execution and is not accumulated into the final response.
+    #[prost(string, tag = "2")]
+    pub text_update: ::prost::alloc::string::String,
+}
+/// Represents events containing tool call execution progress.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallEvents {
+    /// Optional. Tool call suggestions associated with these events.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_call_suggestions: ::prost::alloc::vec::Vec<ToolCallSuggestion>,
+}
+/// Represents a companion suggestion answer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CompanionSuggestion {
+    /// List of guidances generated by the Companion Agent.
+    #[prost(message, repeated, tag = "1")]
+    pub guidances: ::prost::alloc::vec::Vec<companion_suggestion::Guidance>,
+}
+/// Nested message and enum types in `CompanionSuggestion`.
+pub mod companion_suggestion {
+    /// Represents guidance for companion suggestion.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Guidance {
+        /// Suggested reply for the agent to respond to the customer.
+        #[prost(string, tag = "1")]
+        pub suggested_reply: ::prost::alloc::string::String,
+        /// Suggested action to human agent. For example, "Ask the customer for
+        /// their shipping address" or "Create a new case for the customer".
+        #[prost(string, tag = "2")]
+        pub suggested_action: ::prost::alloc::string::String,
+        /// Guidance instruction source.
+        #[prost(message, optional, tag = "3")]
+        pub instruction_source: ::core::option::Option<super::GuidanceInstruction>,
+        /// Knowledge sources.
+        #[prost(message, repeated, tag = "4")]
+        pub knowledge_sources: ::prost::alloc::vec::Vec<guidance::KnowledgeSource>,
+        /// Optional. A brief explanation of why the action is suggested.
+        #[prost(string, tag = "12")]
+        pub explanation: ::prost::alloc::string::String,
+        /// Optional. Grounding metadata for the generated guidance.
+        #[prost(message, optional, tag = "6")]
+        pub grounding_metadata: ::core::option::Option<super::GroundingMetadata>,
+        /// Optional. Rich structured tool calls and their associated citations
+        /// delivered directly as suggestions.
+        #[prost(message, repeated, tag = "7")]
+        pub tool_calls: ::prost::alloc::vec::Vec<super::ToolCallSuggestion>,
+        /// Optional. The AnswerRecords of the tool calls that triggered this
+        /// guidance.
+        /// Format: `projects/<Project ID>/locations/<Location  ID>/answerRecords/<Answer Record ID>`.
+        #[prost(string, repeated, tag = "11")]
+        pub triggering_tool_call_answer_records: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Nested message and enum types in `Guidance`.
+    pub mod guidance {
+        /// Represents a knowledge source for the guidance.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct KnowledgeSource {
+            /// URL of the knowledge article.
+            #[prost(string, tag = "1")]
+            pub knowledge_article_url: ::prost::alloc::string::String,
+            /// Knowledge article title.
+            #[prost(string, tag = "2")]
+            pub knowledge_article_title: ::prost::alloc::string::String,
+            /// Knowledge snippet.
+            #[prost(string, tag = "3")]
+            pub knowledge_snippet: ::prost::alloc::string::String,
+        }
+    }
+}
+/// Represents the response message for GenerateCompanionSuggestions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateCompanionSuggestionsResponse {
+    /// Contains the core suggestion generated by the Companion Agent.
+    #[prost(message, optional, tag = "1")]
+    pub companion_suggestion: ::core::option::Option<CompanionSuggestion>,
+    /// Answer record that uniquely identifies the suggestion.
+    /// Format: `projects/<Project ID>/locations/<Location  ID>/answerRecords/<Answer Record ID>`.
+    #[prost(string, tag = "2")]
+    pub answer_record: ::prost::alloc::string::String,
+    /// The name of the latest conversation message used to compile suggestion for.
+    /// Format: `projects/<Project ID>/locations/<Location  ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "3")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Output only. The 1-based sequential index of the suggestion generated in
+    /// this session.
+    #[prost(int32, tag = "4")]
+    pub suggestion_index: i32,
 }
 /// The request message for
 /// \[Participants.SuggestSmartReplies\]\[google.cloud.dialogflow.v2.Participants.SuggestSmartReplies\].
@@ -9186,7 +10085,10 @@ pub mod dialogflow_assist_answer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestionResult {
     /// Different type of suggestion response.
-    #[prost(oneof = "suggestion_result::SuggestionResponse", tags = "1, 2, 8, 3, 4, 9")]
+    #[prost(
+        oneof = "suggestion_result::SuggestionResponse",
+        tags = "1, 2, 8, 3, 4, 9, 10"
+    )]
     pub suggestion_response: ::core::option::Option<
         suggestion_result::SuggestionResponse,
     >,
@@ -9215,6 +10117,11 @@ pub mod suggestion_result {
         /// messages.
         #[prost(message, tag = "9")]
         GenerateSuggestionsResponse(super::GenerateSuggestionsResponse),
+        /// Suggestions generated by companion agent.
+        #[prost(message, tag = "10")]
+        GenerateCompanionSuggestionsResponse(
+            super::GenerateCompanionSuggestionsResponse,
+        ),
     }
 }
 /// Defines the language used in the input text.
@@ -9578,7 +10485,7 @@ pub struct KnowledgeAssistDebugInfo {
     /// The latency of the service.
     #[prost(message, optional, tag = "6")]
     pub service_latency: ::core::option::Option<ServiceLatency>,
-    /// Token usage metadata for query generation.
+    /// Debug information and model metadata for query generation.
     #[prost(message, optional, tag = "7")]
     pub query_generation_debug_info: ::core::option::Option<
         knowledge_assist_debug_info::QueryGenerationDebugInfo,
@@ -9651,8 +10558,8 @@ pub mod knowledge_assist_debug_info {
         #[prost(int32, tag = "18")]
         pub appended_search_context_count: i32,
     }
-    /// Token usage metadata for query generation.
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    /// Debug information and model metadata for query generation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryGenerationDebugInfo {
         /// The total number of tokens in the prompt.
         #[prost(int32, tag = "1")]
@@ -9663,6 +10570,20 @@ pub mod knowledge_assist_debug_info {
         /// The total number of tokens for the entire request.
         #[prost(int32, tag = "3")]
         pub total_token_count: i32,
+        /// The thinking level configured for the Gemini model.
+        #[prost(string, tag = "4")]
+        pub thinking_level: ::prost::alloc::string::String,
+        /// The thinking budget (in number of tokens) configured for the Gemini
+        /// model.
+        #[prost(int32, tag = "5")]
+        pub thinking_budget_tokens: i32,
+        /// The similarity score of the suggested query to the last suggested query.
+        #[prost(float, tag = "6")]
+        pub similarity_to_last_query: f32,
+        /// The similarity threshold used to filter out queries similar to the last
+        /// suggestion.
+        #[prost(float, tag = "7")]
+        pub similarity_to_last_query_threshold: f32,
     }
     /// Reason for query generation failure.
     #[derive(
@@ -9963,6 +10884,310 @@ pub mod knowledge_assist_answer {
             #[prost(message, tag = "8")]
             EventSource(EventSource),
         }
+    }
+}
+/// The request message for
+/// \[Participants.StreamingReactiveCompanionSuggestions\]\[google.cloud.dialogflow.v2.Participants.StreamingReactiveCompanionSuggestions\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingReactiveCompanionSuggestionsRequest {
+    /// Required. The human-agent participant name.
+    /// Format: `projects/<Project ID>/locations/<Location  ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
+    #[prost(string, tag = "1")]
+    pub participant: ::prost::alloc::string::String,
+    /// Required. The direct query input sent to the companion bot.
+    #[prost(
+        oneof = "streaming_reactive_companion_suggestions_request::Input",
+        tags = "2, 3, 5"
+    )]
+    pub input: ::core::option::Option<
+        streaming_reactive_companion_suggestions_request::Input,
+    >,
+}
+/// Nested message and enum types in `StreamingReactiveCompanionSuggestionsRequest`.
+pub mod streaming_reactive_companion_suggestions_request {
+    /// Required. The direct query input sent to the companion bot.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Input {
+        /// The natural language text to be processed.
+        #[prost(string, tag = "2")]
+        TextInput(::prost::alloc::string::String),
+        /// Signals to cancel the current ongoing reactive query processing.
+        #[prost(message, tag = "3")]
+        CancelReactiveQuery(super::CancelQuery),
+        /// An input representing the selection of a suggestion.
+        #[prost(message, tag = "5")]
+        SuggestionInput(super::SuggestionInput),
+    }
+}
+/// Message to signal cancellation of the current query turn.
+/// Cancels the currently active interactive query, not any query running in
+/// the background.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CancelQuery {}
+/// The response message for
+/// \[Participants.StreamingReactiveCompanionSuggestions\]\[google.cloud.dialogflow.v2.Participants.StreamingReactiveCompanionSuggestions\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingReactiveCompanionSuggestionsResponse {
+    /// Output only. Indicates whether the client/UI can accept a new query for
+    /// reactive chat. When `is_final` is `true`, the reactive chat interface is
+    /// unblocked and ready to receive new human agent queries. For synchronous
+    /// turns, this is set to `true` on the final response chunk. For asynchronous
+    /// tool calls running in the background, this is set to `true` on the
+    /// intermediate trigger chunk to unblock the UI while the background tool
+    /// execution is in progress.
+    #[prost(bool, tag = "4")]
+    pub is_final: bool,
+    /// Output only. Only set when `is_final` is `true` and conversational turn
+    /// processing completes. The final answer record representing the completed
+    /// suggestion. Only present in the last chunk of the completed response.
+    #[prost(string, tag = "5")]
+    pub answer_record: ::prost::alloc::string::String,
+    /// Required. The unique message identifier corresponding to the
+    /// human agent query that generated this response chunk.
+    #[prost(string, tag = "8")]
+    pub text_message_id: ::prost::alloc::string::String,
+    /// The timestamp when the response chunk was sent by the service.
+    #[prost(message, optional, tag = "9")]
+    pub send_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Response for the current reactive query.
+    #[prost(
+        oneof = "streaming_reactive_companion_suggestions_response::Response",
+        tags = "1, 3, 6, 7"
+    )]
+    pub response: ::core::option::Option<
+        streaming_reactive_companion_suggestions_response::Response,
+    >,
+}
+/// Nested message and enum types in `StreamingReactiveCompanionSuggestionsResponse`.
+pub mod streaming_reactive_companion_suggestions_response {
+    /// The complete response generated by the reactive mode capturing the entire
+    /// accumulated streaming response, grounding metadata, and tool calls.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReactiveModeResponse {
+        /// Optional. The full reactive suggestion generated by the Companion Agent.
+        /// After the last streaming chunk is sent, this is the final response
+        /// concatenating all the streaming response chunks together to represent the
+        /// full reactive suggestion.
+        #[prost(string, tag = "1")]
+        pub response: ::prost::alloc::string::String,
+        /// Optional. Grounding metadata for the generated response.
+        #[prost(message, optional, tag = "2")]
+        pub grounding_metadata: ::core::option::Option<super::GroundingMetadata>,
+        /// Optional. Captures all the rich structured tool calls and their
+        /// associated citations used by the reactive agent to generate the reactive
+        /// suggestion.
+        #[prost(message, repeated, tag = "3")]
+        pub tool_calls: ::prost::alloc::vec::Vec<super::ToolCallSuggestion>,
+    }
+    /// Response for the current reactive query.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Response {
+        /// Streamed response text chunks.
+        #[prost(string, tag = "1")]
+        ResponseChunk(::prost::alloc::string::String),
+        /// Status of the response for the current query. If set and non-ok,
+        /// indicates an error occurred during processing of the current query, or
+        /// confirms that a requested cancellation has successfully completed (status
+        /// code CANCELLED).
+        #[prost(message, tag = "3")]
+        Status(super::super::super::super::rpc::Status),
+        /// Output only. The final response from the reactive mode capturing the
+        /// entire accumulated streaming response, grounding metadata, and tool
+        /// calls. Only set when `is_final` is `true` and conversational processing
+        /// for the query turn completes.
+        #[prost(message, tag = "6")]
+        ReactiveModeFinalResponse(ReactiveModeResponse),
+        /// Output only. Captures intermediate tool call events that occur during the
+        /// execution of the reactive query turn. Note that conversational messages
+        /// within tool calls are displayed within the tool cards and hence are not
+        /// accumulated within the `reactive_mode_final_response.response` string.
+        #[prost(message, tag = "7")]
+        IntermediateToolCallEvents(super::ToolCallEvents),
+    }
+}
+/// The request message for
+/// \[Participants.BidiStreamingAnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.BidiStreamingAnalyzeContent\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiStreamingAnalyzeContentRequest {
+    /// Required. Possible request types for BidiStreamingAnalyzeContent.
+    #[prost(oneof = "bidi_streaming_analyze_content_request::Request", tags = "1, 2")]
+    pub request: ::core::option::Option<bidi_streaming_analyze_content_request::Request>,
+}
+/// Nested message and enum types in `BidiStreamingAnalyzeContentRequest`.
+pub mod bidi_streaming_analyze_content_request {
+    /// The config of the session.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Config {
+        /// Required. The name of the participant to fetch response for.
+        /// Format: `projects/<Project ID>/locations/<Location  ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
+        #[prost(string, tag = "1")]
+        pub participant: ::prost::alloc::string::String,
+        /// Optional. Parameters to be passed to the virtual agent at the beginning.
+        #[prost(message, optional, tag = "3")]
+        pub initial_virtual_agent_parameters: ::core::option::Option<
+            ::prost_types::Struct,
+        >,
+        /// Optional. Initial parameters for the virtual-agent.
+        #[prost(message, optional, tag = "4")]
+        pub initial_virtual_agent_query_params: ::core::option::Option<
+            super::QueryParameters,
+        >,
+        /// The config of the session.
+        #[prost(oneof = "config::Config", tags = "2")]
+        pub config: ::core::option::Option<config::Config>,
+    }
+    /// Nested message and enum types in `Config`.
+    pub mod config {
+        /// The config about how to process the audio for a voice-based session.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct VoiceSessionConfig {
+            /// Required. The encoding of input audio.
+            #[prost(enumeration = "super::super::AudioEncoding", tag = "1")]
+            pub input_audio_encoding: i32,
+            /// Required. The sample rate of input audio.
+            #[prost(int32, tag = "2")]
+            pub input_audio_sample_rate_hertz: i32,
+            /// Required. The encoding of output audio.
+            #[prost(enumeration = "super::super::OutputAudioEncoding", tag = "3")]
+            pub output_audio_encoding: i32,
+            /// Required. The sample rate of output audio.
+            #[prost(int32, tag = "4")]
+            pub output_audio_sample_rate_hertz: i32,
+            /// Optional. Whether to enable CX proactive processing.
+            #[prost(bool, tag = "5")]
+            pub enable_cx_proactive_processing: bool,
+            /// Optional. If true, Dialogflow will stream the audio bytes from Cloud
+            /// TTS for speech synthesis using the StreamingSynthesize api.
+            #[prost(bool, tag = "23")]
+            pub enable_streaming_synthesize: bool,
+            /// Optional. Configuration for using Gemini ASR models served via Vertex
+            /// AI.
+            /// This field is only used when `use_gemini_asr` is true.
+            #[prost(message, optional, tag = "24")]
+            pub gemini_asr_config: ::core::option::Option<
+                super::super::speech_to_text_config::GeminiAsrConfig,
+            >,
+            /// Optional. If true, Gemini ASR will be used for transcription instead of
+            /// Cloud Speech-to-Text. If false, Cloud Speech-to-Text will be used.
+            /// If unset, this setting is inherited from the ConversationProfile.
+            #[prost(bool, optional, tag = "25")]
+            pub use_gemini_asr: ::core::option::Option<bool>,
+        }
+        /// The config of the session.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum Config {
+            /// Configure a voice-based session.
+            #[prost(message, tag = "2")]
+            VoiceSessionConfig(VoiceSessionConfig),
+        }
+    }
+    /// Input that forms data for a single turn.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TurnInput {
+        /// Optional. Parameters to be passed to the virtual agent.
+        #[prost(message, optional, tag = "4")]
+        pub virtual_agent_parameters: ::core::option::Option<::prost_types::Struct>,
+        /// Content that indicates the end of the turn.
+        #[prost(oneof = "turn_input::MainContent", tags = "1, 2, 3, 6")]
+        pub main_content: ::core::option::Option<turn_input::MainContent>,
+    }
+    /// Nested message and enum types in `TurnInput`.
+    pub mod turn_input {
+        /// Content that indicates the end of the turn.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum MainContent {
+            /// The UTF-8 encoded natural language text to be processed.
+            #[prost(string, tag = "1")]
+            Text(::prost::alloc::string::String),
+            /// The intent to be triggered on V3 agent.
+            /// Format: `projects/<Project ID>/locations/<Location ID>/locations/  <Location ID>/agents/<Agent ID>/intents/<Intent ID>`. This can only be
+            /// used to trigger the Welcome intent id if the modality is text.
+            #[prost(string, tag = "2")]
+            Intent(::prost::alloc::string::String),
+            /// The input event name.
+            /// This can only be sent once and would cancel the ongoing speech
+            /// recognition if any. To trigger the Welcome intent use the
+            /// event "WELCOME"
+            #[prost(string, tag = "3")]
+            Event(::prost::alloc::string::String),
+            /// Optional. Input for confirming, revising, or canceling a suggestion.
+            #[prost(message, tag = "6")]
+            SuggestionInput(super::super::SuggestionInput),
+        }
+    }
+    /// Input for the conversation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Input {
+        #[prost(oneof = "input::Input", tags = "1, 2, 3")]
+        pub input: ::core::option::Option<input::Input>,
+    }
+    /// Nested message and enum types in `Input`.
+    pub mod input {
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Input {
+            /// The content of audio stream to be recognized.
+            #[prost(bytes, tag = "1")]
+            Audio(::prost::alloc::vec::Vec<u8>),
+            /// The DTMF digits used to invoke intent and fill in parameter value.
+            ///
+            /// This input is ignored if the previous response indicated that DTMF
+            /// input is not accepted.
+            #[prost(message, tag = "2")]
+            Dtmf(super::super::TelephonyDtmfEvents),
+            /// Turn input.
+            #[prost(message, tag = "3")]
+            Turn(super::TurnInput),
+        }
+    }
+    /// Required. Possible request types for BidiStreamingAnalyzeContent.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Request {
+        /// The config message for this conversation.
+        #[prost(message, tag = "1")]
+        Config(Config),
+        /// Text, audio or other multi-modality inputs.
+        /// This is the second and following messages sent by the client.
+        #[prost(message, tag = "2")]
+        Input(Input),
+    }
+}
+/// The response message for
+/// \[Participants.BidiStreamingAnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.BidiStreamingAnalyzeContent\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiStreamingAnalyzeContentResponse {
+    /// The output response.
+    #[prost(
+        oneof = "bidi_streaming_analyze_content_response::Response",
+        tags = "1, 2, 3, 4"
+    )]
+    pub response: ::core::option::Option<
+        bidi_streaming_analyze_content_response::Response,
+    >,
+}
+/// Nested message and enum types in `BidiStreamingAnalyzeContentResponse`.
+pub mod bidi_streaming_analyze_content_response {
+    /// Indicate the user barge-in has been detected.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BargeInSignal {}
+    /// Indicate that the turn is complete.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct TurnComplete {}
+    /// The output response.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Response {
+        /// The result of speech recognition.
+        #[prost(message, tag = "1")]
+        RecognitionResult(super::StreamingRecognitionResult),
+        /// Indicate the user barge-in has been detected, and client should stop
+        /// playing back the audio.
+        #[prost(message, tag = "2")]
+        BargeInSignal(BargeInSignal),
+        /// The agent response from analyze content.
+        #[prost(message, tag = "3")]
+        AnalyzeContentResponse(super::AnalyzeContentResponse),
+        /// Indicate that the turn is complete.
+        #[prost(message, tag = "4")]
+        TurnComplete(TurnComplete),
     }
 }
 /// Response reason from datastore which indicates data serving status or
@@ -10313,6 +11538,77 @@ pub mod participants_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.v2.Participants",
                         "StreamingAnalyzeContent",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Bidirectional endless streaming version of
+        /// \[StreamingAnalyzeContent\]\[google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent\].
+        pub async fn bidi_streaming_analyze_content(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::BidiStreamingAnalyzeContentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::BidiStreamingAnalyzeContentResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Participants/BidiStreamingAnalyzeContent",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Participants",
+                        "BidiStreamingAnalyzeContent",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// External streaming API for direct human-agent-to-bot chats.
+        pub async fn streaming_reactive_companion_suggestions(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingReactiveCompanionSuggestionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<
+                    super::StreamingReactiveCompanionSuggestionsResponse,
+                >,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Participants/StreamingReactiveCompanionSuggestions",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Participants",
+                        "StreamingReactiveCompanionSuggestions",
                     ),
                 );
             self.inner.streaming(req, path, codec).await
@@ -10695,6 +11991,11 @@ pub struct AgentAssistantFeedback {
     pub knowledge_assist_feedback: ::core::option::Option<
         agent_assistant_feedback::KnowledgeAssistFeedback,
     >,
+    /// Optional. Feedback for companion agent.
+    #[prost(message, optional, tag = "8")]
+    pub companion_feedback: ::core::option::Option<
+        agent_assistant_feedback::CompanionFeedback,
+    >,
 }
 /// Nested message and enum types in `AgentAssistantFeedback`.
 pub mod agent_assistant_feedback {
@@ -10751,6 +12052,9 @@ pub mod agent_assistant_feedback {
         #[prost(string, repeated, tag = "2")]
         pub clicked_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    /// Feedback for companion agent.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct CompanionFeedback {}
     /// Relevance of an answer.
     #[derive(
         Clone,
@@ -10885,7 +12189,7 @@ pub mod agent_assistant_feedback {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentAssistantRecord {
     /// Output only. The agent assist answer.
-    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6, 7, 8")]
+    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6, 7, 8, 9, 10")]
     pub answer: ::core::option::Option<agent_assistant_record::Answer>,
 }
 /// Nested message and enum types in `AgentAssistantRecord`.
@@ -10905,6 +12209,14 @@ pub mod agent_assistant_record {
         /// Output only. The generator suggestion.
         #[prost(message, tag = "8")]
         GeneratorSuggestion(super::GeneratorSuggestion),
+        /// Output only. The companion suggestion.
+        #[prost(message, tag = "9")]
+        CompanionSuggestion(super::CompanionSuggestion),
+        /// Output only. The reactive companion suggestion.
+        #[prost(message, tag = "10")]
+        ReactiveCompanionSuggestion(
+            super::streaming_reactive_companion_suggestions_response::ReactiveModeResponse,
+        ),
     }
 }
 /// Generated client implementations.
@@ -11404,9 +12716,21 @@ pub mod human_agent_assistant_config {
         /// features)
         #[prost(bool, tag = "8")]
         pub use_unredacted_conversation_data: bool,
-        /// Optional. If true, enable asynchronous execution of tools.
+        /// Optional. Deprecated: This field is not consulted for tool execution.
+        /// Configure asynchronous execution per tool using
+        /// \[CesToolSpec.async_execution\]\[google.cloud.dialogflow.v2.CesToolSpec.async_execution\]
+        /// or
+        /// \[ToolsetTool.async_execution\]\[google.cloud.dialogflow.v2.ToolsetTool.async_execution\]
+        /// instead.
+        #[deprecated]
         #[prost(bool, tag = "9")]
         pub enable_async_tool_call: bool,
+        /// Optional. The resource name of the companion agent to link.
+        /// This is only supported for `human_agent_suggestion_config`.
+        /// Format:
+        /// `projects/{project}/locations/{location}/companionAgents/{companion_agent}`
+        #[prost(string, tag = "11")]
+        pub companion_agent: ::prost::alloc::string::String,
     }
     /// Config for suggestion query.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12517,8 +13841,7 @@ pub mod conversation {
             /// relevant context reference.
             #[prost(message, optional, tag = "3")]
             pub ingestion_time: ::core::option::Option<::prost_types::Timestamp>,
-            /// If the context content was generated from a tool call, specify the
-            /// answer record associated with the tool call.
+            /// Optional. The answer record of the tool execution result.
             /// Format: `projects/<Project ID>/locations/<Location  ID>/answerRecords/<Answer Record ID>`.
             #[prost(string, tag = "4")]
             pub answer_record: ::prost::alloc::string::String,

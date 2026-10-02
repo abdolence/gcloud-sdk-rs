@@ -116,8 +116,8 @@ pub struct ApiConfig {
     /// Optional. Display name.
     #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
-    /// Immutable. The Google Cloud IAM Service Account that Gateways serving this config
-    /// should use to authenticate to other services. This may either be the
+    /// Immutable. The Google Cloud IAM Service Account that Gateways serving this
+    /// config should use to authenticate to other services. This may either be the
     /// Service Account's email
     /// (`{ACCOUNT_ID}@{PROJECT}.iam.gserviceaccount.com`) or its full resource
     /// name (`projects/{PROJECT}/accounts/{UNIQUE_ID}`). This is most often used
@@ -136,12 +136,12 @@ pub struct ApiConfig {
     /// managed_service_configs must not be included.
     #[prost(message, repeated, tag = "9")]
     pub openapi_documents: ::prost::alloc::vec::Vec<api_config::OpenApiDocument>,
-    /// Optional. gRPC service definition files. If specified, openapi_documents must
-    /// not be included.
+    /// Optional. gRPC service definition files. If specified, openapi_documents
+    /// must not be included.
     #[prost(message, repeated, tag = "10")]
     pub grpc_services: ::prost::alloc::vec::Vec<api_config::GrpcServiceDefinition>,
-    /// Optional. Service Configuration files. At least one must be included when using gRPC
-    /// service definitions. See
+    /// Optional. Service Configuration files. At least one must be included when
+    /// using gRPC service definitions. See
     /// <https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview>
     /// for the expected file contents.
     ///
@@ -188,8 +188,8 @@ pub mod api_config {
         /// $ protoc --include_imports --include_source_info test.proto -o out.pb
         #[prost(message, optional, tag = "1")]
         pub file_descriptor_set: ::core::option::Option<File>,
-        /// Optional. Uncompiled proto files associated with the descriptor set, used for
-        /// display purposes (server-side compilation is not supported). These
+        /// Optional. Uncompiled proto files associated with the descriptor set, used
+        /// for display purposes (server-side compilation is not supported). These
         /// should match the inputs to 'protoc' command used to generate
         /// file_descriptor_set.
         #[prost(message, repeated, tag = "2")]
@@ -289,10 +289,22 @@ pub struct Gateway {
     /// Output only. The current state of the Gateway.
     #[prost(enumeration = "gateway::State", tag = "7")]
     pub state: i32,
-    /// Output only. The default API Gateway host name of the form
-    /// `{gateway_id}-{hash}.{region_code}.gateway.dev`.
+    /// Output only. The default hostname that serves traffic for this Gateway.
     #[prost(string, tag = "9")]
     pub default_hostname: ::prost::alloc::string::String,
+    /// Optional. Immutable. Requests streaming for a new gateway. An attempt to
+    /// change it on update is rejected. If unset, the service selects the mode.
+    /// This field records only what was requested and is never modified by the
+    /// service; read `effective_streaming_mode` for the mode the gateway is served
+    /// with.
+    #[prost(enumeration = "gateway::StreamingMode", tag = "11")]
+    pub streaming_mode: i32,
+    /// Output only. The streaming mode this gateway is actually served with, which
+    /// the service resolves at creation from `streaming_mode`, the referenced API
+    /// Config, and the platform default at the time. Read this rather than
+    /// `streaming_mode` to determine whether a gateway supports streaming.
+    #[prost(enumeration = "gateway::EffectiveStreamingMode", tag = "12")]
+    pub effective_streaming_mode: i32,
 }
 /// Nested message and enum types in `Gateway`.
 pub mod gateway {
@@ -351,6 +363,109 @@ pub mod gateway {
             }
         }
     }
+    /// Streaming mode for a Gateway.
+    /// This enum is frozen. No values are expected to be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StreamingMode {
+        /// Lets the service select the streaming mode.
+        Unspecified = 0,
+        /// Enables streaming. The gateway supports Server-Sent Events (SSE), HTTP/2
+        /// streaming, HTTP chunked transfer, WebSockets, and gRPC bidirectional
+        /// streaming.
+        ///
+        /// The API config's backend `deadline` field governs how long a request
+        /// (unary or streaming) may run.
+        ///
+        /// Enabling streaming on a gateway does not change how the `deadline` field
+        /// behaves on an SSE or chunked-transfer path. The deadline remains a
+        /// wall-clock bound on the complete response, so a stream is cut once the
+        /// deadline elapses regardless of how much data it is sending. The default
+        /// is 15 seconds and the maximum is 3,600 seconds.
+        ///
+        /// On gRPC streaming and WebSockets, `deadline` bounds the gap between
+        /// messages instead: default 300 seconds; set `deadline` to change it, up
+        /// to 3,600 seconds. On WebSockets, a `deadline` of less than 300 seconds
+        /// is ignored and a 300-second minimum applies. The maximum total request
+        /// duration is always 3,600 seconds, not configurable.
+        Enabled = 1,
+    }
+    impl StreamingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STREAMING_MODE_UNSPECIFIED",
+                Self::Enabled => "STREAMING_MODE_ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STREAMING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STREAMING_MODE_ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
+    }
+    /// The streaming mode a Gateway is served with.
+    /// This enum is frozen. No values are expected to be added in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EffectiveStreamingMode {
+        /// Indicates that the service has not resolved a mode. Every gateway
+        /// returned by `GetGateway` and `ListGateways` carries a resolved mode, so
+        /// this value should not be returned under normal circumstances.
+        Unspecified = 0,
+        /// Indicates that the gateway does not support streaming.
+        Disabled = 1,
+        /// Indicates that the gateway supports streaming.
+        Enabled = 2,
+    }
+    impl EffectiveStreamingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EFFECTIVE_STREAMING_MODE_UNSPECIFIED",
+                Self::Disabled => "EFFECTIVE_STREAMING_MODE_DISABLED",
+                Self::Enabled => "EFFECTIVE_STREAMING_MODE_ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECTIVE_STREAMING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFFECTIVE_STREAMING_MODE_DISABLED" => Some(Self::Disabled),
+                "EFFECTIVE_STREAMING_MODE_ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request message for ApiGatewayService.ListGateways
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -400,8 +515,8 @@ pub struct CreateGatewayRequest {
     /// `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Identifier to assign to the Gateway. Must be unique within scope of
-    /// the parent resource.
+    /// Required. Identifier to assign to the Gateway. Must be unique within scope
+    /// of the parent resource.
     #[prost(string, tag = "2")]
     pub gateway_id: ::prost::alloc::string::String,
     /// Required. Gateway resource.
@@ -605,8 +720,8 @@ pub struct CreateApiConfigRequest {
     /// `projects/*/locations/global/apis/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Identifier to assign to the API Config. Must be unique within scope of
-    /// the parent resource.
+    /// Required. Identifier to assign to the API Config. Must be unique within
+    /// scope of the parent resource.
     #[prost(string, tag = "2")]
     pub api_config_id: ::prost::alloc::string::String,
     /// Required. API resource.
@@ -655,14 +770,17 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
+    /// have
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
-    /// Output only. Diagnostics generated during processing of configuration source files.
+    /// Output only. Diagnostics generated during processing of configuration
+    /// source files.
     #[prost(message, repeated, tag = "8")]
     pub diagnostics: ::prost::alloc::vec::Vec<operation_metadata::Diagnostic>,
 }

@@ -476,6 +476,97 @@ pub mod cluster {
         ClusterConfig(ClusterConfig),
     }
 }
+/// The memory layer of a cluster. A memory layer serves reads from
+/// memory without hitting the backing persistent data store.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MemoryLayer {
+    /// Identifier. Name of the memory layer. This is always:
+    /// "projects/{project}/instances/{instance}/clusters/{cluster}/memoryLayer".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The configuration of this memory layer. Set an empty `memory_config` to
+    /// enable the memory layer. Unset this to disable the memory layer.
+    #[prost(message, optional, tag = "2")]
+    pub memory_config: ::core::option::Option<memory_layer::MemoryConfig>,
+    /// Optional. The etag for this memory layer.
+    /// This may be sent on update requests to ensure that the client has an
+    /// up-to-date value before proceeding. The server returns an ABORTED error on
+    /// a mismatched etag.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. The current state of the memory layer.
+    #[prost(enumeration = "memory_layer::State", tag = "4")]
+    pub state: i32,
+}
+/// Nested message and enum types in `MemoryLayer`.
+pub mod memory_layer {
+    /// Configuration of a memory layer.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MemoryConfig {
+        /// Output only. Reporting the current size of the memory layer in GiB.
+        #[prost(int32, tag = "2")]
+        pub storage_size_gib: i32,
+    }
+    /// Possible states of a memory layer.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state of the memory layer could not be determined.
+        NotKnown = 0,
+        /// The memory layer has been successfully enabled and is ready to serve
+        /// requests.
+        Ready = 1,
+        /// The memory layer is currently being enabled, and may be disabled
+        /// if the enablement process encounters an error. A cluster may not be able
+        /// to serve requests from the memory layer while being enabled.
+        Enabling = 2,
+        /// The memory layer is currently being resized, and may revert to its
+        /// previous storage size if the process encounters an error. The memory
+        /// layer is still capable of serving requests while being resized, but may
+        /// exhibit performance as if its number of allocated nodes is between the
+        /// starting and requested states.
+        Resizing = 3,
+        /// The memory layer is disabled. The default state for a cluster without a
+        /// memory layer.
+        Disabled = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::NotKnown => "STATE_NOT_KNOWN",
+                Self::Ready => "READY",
+                Self::Enabling => "ENABLING",
+                Self::Resizing => "RESIZING",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_NOT_KNOWN" => Some(Self::NotKnown),
+                "READY" => Some(Self::Ready),
+                "ENABLING" => Some(Self::Enabling),
+                "RESIZING" => Some(Self::Resizing),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+}
 /// A configuration object describing how Cloud Bigtable should treat traffic
 /// from a particular end user application.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -579,6 +670,20 @@ pub mod app_profile {
         /// The priority of requests sent using this app profile.
         #[prost(enumeration = "Priority", tag = "1")]
         pub priority: i32,
+        /// Optional. The memory config to use for requests sent using this app
+        /// profile.
+        #[prost(message, optional, tag = "2")]
+        pub memory_config: ::core::option::Option<standard_isolation::MemoryConfig>,
+    }
+    /// Nested message and enum types in `StandardIsolation`.
+    pub mod standard_isolation {
+        /// If set, eligible single-row requests (currently limited to ReadRows)
+        /// using this app profile will be routed to the memory layer. All eligible
+        /// writes populate the memory layer. MemoryConfig can only be set if the
+        /// AppProfile uses single cluster routing and the configured cluster has a
+        /// memory layer enabled.
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct MemoryConfig {}
     }
     /// Data Boost is a serverless compute capability that lets you run
     /// high-throughput read jobs and queries on your Bigtable data, without
@@ -1095,6 +1200,82 @@ pub struct PartialUpdateClusterRequest {
     /// Required. The subset of Cluster fields which should be replaced.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for BigtableInstanceAdmin.UpdateMemoryLayer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateMemoryLayerRequest {
+    /// Required. The memory layer to update.
+    ///
+    /// The memory layer's `name` format is as follows:
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}/memoryLayer`.
+    #[prost(message, optional, tag = "1")]
+    pub memory_layer: ::core::option::Option<MemoryLayer>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The metadata for the Operation returned by UpdateMemoryLayer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateMemoryLayerMetadata {
+    /// The request that prompted the initiation of this UpdateMemoryLayer
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<UpdateMemoryLayerRequest>,
+    /// The time at which the original request was received.
+    #[prost(message, optional, tag = "2")]
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the operation failed or was completed successfully.
+    #[prost(message, optional, tag = "3")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for BigtableInstanceAdmin.ListMemoryLayers.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ListMemoryLayersRequest {
+    /// Required. The unique name of the cluster for which a list of memory layers
+    /// is requested. Values are of the form
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
+    /// Use `{cluster} = '-'` to list MemoryLayers for all Clusters in an instance,
+    /// e.g., `projects/myproject/instances/myinstance/clusters/-`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of memory layers to return. The service may
+    /// return fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListMemoryLayers` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListMemoryLayers`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for BigtableInstanceAdmin.ListMemoryLayers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMemoryLayersResponse {
+    /// The list of requested memory layers.
+    #[prost(message, repeated, tag = "1")]
+    pub memory_layers: ::prost::alloc::vec::Vec<MemoryLayer>,
+    /// Locations from which MemoryLayer information could not be retrieved,
+    /// due to an outage or some other transient condition.
+    /// MemoryLayers from these locations may be missing from `memory_layers`,
+    /// or may only have partial information returned.
+    /// Values are of the form `projects/<project>/locations/<zone_id>`
+    #[prost(string, repeated, tag = "2")]
+    pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.GetMemoryLayer.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetMemoryLayerRequest {
+    /// Required. The unique name of the requested cluster's memory layer. Values
+    /// are of the form
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}/memoryLayer`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.CreateAppProfile.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1934,6 +2115,96 @@ pub mod bigtable_instance_admin_client {
                     GrpcMethod::new(
                         "google.bigtable.admin.v2.BigtableInstanceAdmin",
                         "DeleteCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the memory layer of a cluster.
+        ///
+        /// To enable the memory layer, set the memory_config.
+        /// To disable the memory layer, unset the memory_config.
+        pub async fn update_memory_layer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateMemoryLayerRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "UpdateMemoryLayer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists information about memory layers.
+        pub async fn list_memory_layers(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMemoryLayersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMemoryLayersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/ListMemoryLayers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "ListMemoryLayers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about the memory layer of a cluster.
+        pub async fn get_memory_layer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMemoryLayerRequest>,
+        ) -> std::result::Result<tonic::Response<super::MemoryLayer>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "GetMemoryLayer",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3092,6 +3363,14 @@ pub struct Table {
     /// Note one can still delete the data stored in the table through Data APIs.
     #[prost(bool, tag = "9")]
     pub deletion_protection: bool,
+    /// Output only. The effective automated backup policy applied to the table.
+    /// This represents the policy actually in effect, which may be a
+    /// system-default policy if the user has not explicitly configured one.
+    /// Views: `SCHEMA_VIEW`, `FULL`.
+    #[prost(message, optional, tag = "19")]
+    pub effective_automated_backup_policy: ::core::option::Option<
+        table::AutomatedBackupPolicy,
+    >,
     /// Rules to specify what data is stored in each storage tier.
     /// Different tiers store data differently, providing different trade-offs
     /// between cost and performance. Different parts of a table can be stored
@@ -3264,6 +3543,20 @@ pub mod table {
         /// This field can only set for tables in Enterprise Plus instances.
         #[prost(string, repeated, tag = "3")]
         pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The amount of time that the automated backups remain hot.
+        /// If specified, the backups created by this policy are `HOT` backups.
+        /// If not specified, the backups are `STANDARD` backups.
+        ///
+        /// The value must be at least 24 hours and at most 10 days, and can't
+        /// exceed the policy's `retention_period`.
+        ///
+        /// Only SSD instances support `HOT` automated backups.
+        #[prost(message, optional, tag = "4")]
+        pub keep_hot_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. If `true`, automated backups are explicitly disabled on this
+        /// table. This allows users to opt out of default enablement.
+        #[prost(bool, tag = "5")]
+        pub disabled: bool,
     }
     /// Possible timestamp granularities to use when keeping multiple versions
     /// of data in a table.

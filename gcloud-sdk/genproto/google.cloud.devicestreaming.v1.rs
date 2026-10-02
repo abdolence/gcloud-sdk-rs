@@ -301,9 +301,12 @@ pub struct DeviceSession {
     /// Output only. The timestamp that the session first became ACTIVE.
     #[prost(message, optional, tag = "9")]
     pub active_start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. The requested device
+    /// Required. The requested device.
     #[prost(message, optional, tag = "15")]
     pub android_device: ::core::option::Option<AndroidDevice>,
+    /// Optional. Information about the client which invoked the device session.
+    #[prost(message, optional, tag = "21")]
+    pub client_info: ::core::option::Option<ClientInfo>,
     /// The amount of time that a device will be initially allocated for.
     #[prost(oneof = "device_session::Expiration", tags = "13, 5")]
     pub expiration: ::core::option::Option<device_session::Expiration>,
@@ -411,6 +414,16 @@ pub mod device_session {
         #[prost(message, tag = "5")]
         ExpireTime(::prost_types::Timestamp),
     }
+}
+/// Information about the client which invoked the device session.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ClientInfo {
+    /// Required. Client name, such as gcloud. The maximum length is 64 characters.
+    #[prost(string, tag = "1")]
+    pub client: ::prost::alloc::string::String,
+    /// Optional. Client version. The maximum length is 64 characters.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
 }
 /// A single Android device.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

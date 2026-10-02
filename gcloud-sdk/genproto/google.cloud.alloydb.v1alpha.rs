@@ -2517,6 +2517,8 @@ pub enum DatabaseVersion {
     Postgres17 = 5,
     /// The database version is Postgres 18.
     Postgres18 = 6,
+    /// The database version is Postgres 19.
+    Postgres19 = 7,
 }
 impl DatabaseVersion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2533,6 +2535,7 @@ impl DatabaseVersion {
             Self::Postgres16 => "POSTGRES_16",
             Self::Postgres17 => "POSTGRES_17",
             Self::Postgres18 => "POSTGRES_18",
+            Self::Postgres19 => "POSTGRES_19",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2545,6 +2548,7 @@ impl DatabaseVersion {
             "POSTGRES_16" => Some(Self::Postgres16),
             "POSTGRES_17" => Some(Self::Postgres17),
             "POSTGRES_18" => Some(Self::Postgres18),
+            "POSTGRES_19" => Some(Self::Postgres19),
             _ => None,
         }
     }

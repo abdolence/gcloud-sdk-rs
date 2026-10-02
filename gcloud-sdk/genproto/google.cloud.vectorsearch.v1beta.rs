@@ -112,12 +112,18 @@ pub struct VertexEmbeddingConfig {
     /// for the list of supported models.
     #[prost(string, tag = "1")]
     pub model_id: ::prost::alloc::string::String,
-    /// Required. Required: Text template for the input to the model. The template
-    /// must contain one or more references to fields in the DataObject, e.g.:
-    /// "Movie Title: {title} ---- Movie Plot: {plot}".
+    /// Optional. Text template for the input to the model. The template must
+    /// contain one or more references to fields in the DataObject, e.g.: "Movie
+    /// Title: {title} ---- Movie Plot: {plot}".
+    ///
+    /// Required when using the text-only path.
     #[prost(string, tag = "2")]
     pub text_template: ::prost::alloc::string::String,
-    /// Required. Required: Task type for the embeddings.
+    /// Optional. Optional: Task type for the embeddings. Required for text-only
+    /// embedding models, see
+    /// <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>
+    /// Not needed for multi modal embedding models, see
+    /// <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>
     #[prost(enumeration = "EmbeddingTaskType", tag = "3")]
     pub task_type: i32,
 }
@@ -192,7 +198,7 @@ pub struct OutputFields {
     pub metadata_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a hint to the search index engine.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchHint {
     /// The type of index to use.
     #[prost(oneof = "search_hint::IndexType", tags = "1, 2, 3, 4")]
@@ -201,7 +207,7 @@ pub struct SearchHint {
 /// Nested message and enum types in `SearchHint`.
 pub mod search_hint {
     /// Message to specify the index to use for the search.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexHint {
         /// Required. The resource name of the index to use for the search.
         /// The index must be in the same project, location, and collection.
@@ -216,19 +222,27 @@ pub mod search_hint {
     /// Nested message and enum types in `IndexHint`.
     pub mod index_hint {
         /// Parameters for dense ScaNN.
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DenseScannParams {
             /// Optional. Dense ANN param overrides to control recall and latency.
             /// The percentage of leaves to search, in the range \[0, 100\].
+            /// Not supported for `STORAGE_OPTIMIZED` indexes.
+            /// Cannot be set together with `target_recall`.
             #[prost(int32, tag = "1")]
             pub search_leaves_pct: i32,
             /// Optional. The number of initial candidates. Must be a positive integer
-            /// (> 0).
+            /// (> 0). Not supported for `STORAGE_OPTIMIZED` indexes. Cannot be set
+            /// together with `target_recall`.
             #[prost(int32, tag = "2")]
             pub initial_candidate_count: i32,
+            /// Optional. The target recall for the search. Must be a double in the
+            /// range \[0, 1\]. While the search aims to achieve this level of recall, it
+            /// is not guaranteed.
+            #[prost(double, optional, tag = "3")]
+            pub target_recall: ::core::option::Option<f64>,
         }
         /// The parameters for the index.
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Params {
             /// Optional. Dense ScaNN parameters.
             #[prost(message, tag = "2")]
@@ -240,7 +254,7 @@ pub mod search_hint {
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct KnnHint {}
     /// The type of index to use.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum IndexType {
         /// Optional. Deprecated: Use `index_hint` instead.
         /// Specifies that the search should use a particular index.
@@ -330,14 +344,20 @@ pub mod vector_search {
 /// Defines a semantic search operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SemanticSearch {
-    /// Required. The query text, which is used to generate an embedding according
+    /// Optional. The query text, which is used to generate an embedding according
     /// to the embedding model specified in the collection config.
+    ///
+    /// Required when using the text search mode.
     #[prost(string, tag = "1")]
     pub search_text: ::prost::alloc::string::String,
     /// Required. The vector field to search.
     #[prost(string, tag = "2")]
     pub search_field: ::prost::alloc::string::String,
-    /// Required. The task type of the query embedding.
+    /// Optional. The task type of the query embedding. Must be specified for
+    /// text-only embedding models, see
+    /// <<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>>
+    /// Not needed for multi modal embedding models, see
+    /// <<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>>
     #[prost(enumeration = "EmbeddingTaskType", tag = "5")]
     pub task_type: i32,
     /// Optional. The fields to return in the search results.
@@ -376,6 +396,234 @@ pub struct TextSearch {
     /// represented as a `google.protobuf.Struct`.
     #[prost(message, optional, tag = "5")]
     pub filter: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Structured query definition. When set, `search_text` and
+    /// `data_field_names` must be left empty; otherwise the request will be
+    /// rejected with an `INVALID_ARGUMENT` error. Conversely, when
+    /// `structured_query` is unset, both `search_text` and `data_field_names`
+    /// are required.
+    #[prost(message, optional, tag = "6")]
+    pub structured_query: ::core::option::Option<StructuredQuery>,
+}
+/// A structured query for text search. Allows expressing field-targeted text
+/// queries combined via boolean operators, with optional per-node boosting.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StructuredQuery {
+    /// Optional. Optional multiplier applied to this query node's contribution to
+    /// the final relevance score. Must be non-negative; if unset or 0, defaults
+    /// to 1.0. Values greater than 1.0 increase its influence on ranking, values
+    /// between 0.0 and 1.0 decrease it.
+    #[prost(float, tag = "4")]
+    pub boost: f32,
+    /// The type of query to execute.
+    #[prost(oneof = "structured_query::QueryType", tags = "1, 2, 3")]
+    pub query_type: ::core::option::Option<structured_query::QueryType>,
+}
+/// Nested message and enum types in `StructuredQuery`.
+pub mod structured_query {
+    /// The type of query to execute.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum QueryType {
+        /// Optional. A leaf-level text query.
+        #[prost(message, tag = "1")]
+        Text(super::TextQuery),
+        /// Optional. A query that applies a unary operator to a sub-query.
+        #[prost(message, tag = "2")]
+        Unary(::prost::alloc::boxed::Box<super::UnaryQuery>),
+        /// Optional. A query that combines multiple sub-queries with a boolean
+        /// operator.
+        #[prost(message, tag = "3")]
+        Combine(super::CombinedQuery),
+    }
+}
+/// A leaf-level text query targeting one or more data fields. When multiple
+/// fields are specified, this is equivalent to combining per-field matches with
+/// an OR operator (i.e. the query matches if the text is found in any of the
+/// listed fields).
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TextQuery {
+    /// Required. The text to search for.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// Required. The data fields to search against.
+    #[prost(string, repeated, tag = "2")]
+    pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The matching strategy to apply for this query. If unset, defaults
+    /// to `STANDARD`.
+    #[prost(enumeration = "text_query::MatchType", tag = "3")]
+    pub match_type: i32,
+    /// Optional. The query enhancement settings to apply for this query.
+    #[prost(message, optional, tag = "4")]
+    pub query_enhancement: ::core::option::Option<QueryEnhancement>,
+}
+/// Nested message and enum types in `TextQuery`.
+pub mod text_query {
+    /// The matching strategy to apply when comparing `text` against the content
+    /// of `fields`.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MatchType {
+        /// Defaults to `STANDARD`.
+        Unspecified = 0,
+        /// Treats `text` as individual search terms combined with an implicit
+        /// AND: every term must appear in the field, in any order and any
+        /// position. Case-insensitive.
+        Text = 1,
+        /// Matches only when the entire field value is exactly equal to `text`.
+        Exact = 2,
+    }
+    impl MatchType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                Self::Text => "TEXT",
+                Self::Exact => "EXACT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TEXT" => Some(Self::Text),
+                "EXACT" => Some(Self::Exact),
+                _ => None,
+            }
+        }
+    }
+}
+/// Query enhancement settings. When enabled, expands the search terms with
+/// stemming, synonyms, and spelling corrections, and removes stop words.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QueryEnhancement {
+    /// Optional. Whether query enhancement is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Optional. The IETF BCP 47 language tag, such as "en-US", for query
+    /// enhancement. If unset, the language is detected automatically. See
+    /// <<https://en.wikipedia.org/wiki/IETF_language_tag>.>
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// A query that applies a unary operator to a sub-query.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnaryQuery {
+    /// Required. The unary operator to apply.
+    #[prost(enumeration = "unary_query::Operator", tag = "1")]
+    pub op: i32,
+    /// Required. The sub-query the operator is applied to.
+    #[prost(message, optional, boxed, tag = "2")]
+    pub sub_query: ::core::option::Option<::prost::alloc::boxed::Box<StructuredQuery>>,
+}
+/// Nested message and enum types in `UnaryQuery`.
+pub mod unary_query {
+    /// Unary operators applicable to a sub-query.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operator {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Negates the sub-query.
+        Not = 1,
+    }
+    impl Operator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                Self::Not => "NOT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT" => Some(Self::Not),
+                _ => None,
+            }
+        }
+    }
+}
+/// A query that combines multiple sub-queries with a boolean operator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CombinedQuery {
+    /// Required. The boolean operator used to combine the sub-queries.
+    #[prost(enumeration = "combined_query::Operator", tag = "1")]
+    pub op: i32,
+    /// Required. The sub-queries to be combined.
+    #[prost(message, repeated, tag = "2")]
+    pub sub_queries: ::prost::alloc::vec::Vec<StructuredQuery>,
+}
+/// Nested message and enum types in `CombinedQuery`.
+pub mod combined_query {
+    /// Boolean operators used to combine sub-queries.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operator {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// All sub-queries must match.
+        And = 1,
+        /// At least one sub-query must match.
+        Or = 2,
+    }
+    impl Operator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                Self::And => "AND",
+                Self::Or => "OR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "AND" => Some(Self::And),
+                "OR" => Some(Self::Or),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request for performing a single search.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -427,6 +675,83 @@ pub struct SearchResult {
     /// BatchSearchDataObjects.
     #[prost(double, optional, tag = "2")]
     pub distance: ::core::option::Option<f64>,
+    /// Output only. Quality signals for this result. Only populated when
+    /// \[BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled\]\[google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled\]
+    /// is `true`.
+    #[prost(message, optional, tag = "3")]
+    pub search_result_metadata: ::core::option::Option<
+        search_result::SearchResultMetadata,
+    >,
+}
+/// Nested message and enum types in `SearchResult`.
+pub mod search_result {
+    /// Quality signals describing how this result was retrieved, combined and
+    /// re-ranked. Only populated when
+    /// \[BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled\]\[google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.BatchSearchMetadataOptions.search_signals_enabled\]
+    /// is `true`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchResultMetadata {
+        /// Output only. The per-search distances for this data object, one entry per
+        /// batch search that returned it.
+        #[prost(message, repeated, tag = "1")]
+        pub search_distances: ::prost::alloc::vec::Vec<
+            search_result_metadata::SearchDistance,
+        >,
+        /// Output only. The RRF combination signals for this data object. Only set
+        /// when the request combines results using RRF.
+        #[prost(message, optional, tag = "2")]
+        pub rrf_ranker_result: ::core::option::Option<
+            search_result_metadata::RrfRankerResult,
+        >,
+        /// Output only. The Vertex re-ranking signals for this data object. Only set
+        /// when the request re-ranks results using the Vertex ranker.
+        #[prost(message, optional, tag = "3")]
+        pub vertex_ranker_result: ::core::option::Option<
+            search_result_metadata::VertexRankerResult,
+        >,
+    }
+    /// Nested message and enum types in `SearchResultMetadata`.
+    pub mod search_result_metadata {
+        /// The rank and distance of this data object within a single search of the
+        /// batch.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct SearchDistance {
+            /// Output only. The index of the search in the
+            /// \[BatchSearchDataObjectsRequest.searches\]\[google.cloud.vectorsearch.v1beta.BatchSearchDataObjectsRequest.searches\]
+            /// this distance corresponds to.
+            #[prost(int32, tag = "1")]
+            pub search_index: i32,
+            /// Output only. The order of this data object in the search's result list,
+            /// starting at 1 for the top (best-ranked) result.
+            #[prost(int32, tag = "2")]
+            pub rank: i32,
+            /// Output only. The similarity distance of this data object for the
+            /// search.
+            #[prost(double, tag = "3")]
+            pub distance: f64,
+        }
+        /// The rank and score assigned by the Reciprocal Rank Fusion ranker when
+        /// combining the results of the batch searches.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct RrfRankerResult {
+            /// Output only. The rank of this data object after RRF combination.
+            #[prost(int32, tag = "1")]
+            pub rank: i32,
+            /// Output only. The score of this data object after RRF combination.
+            #[prost(double, tag = "2")]
+            pub score: f64,
+        }
+        /// The rank and score assigned by the Vertex re-ranker.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct VertexRankerResult {
+            /// Output only. The rank of this data object after Vertex re-ranking.
+            #[prost(int32, tag = "1")]
+            pub rank: i32,
+            /// Output only. The score of this data object after Vertex re-ranking.
+            #[prost(double, tag = "2")]
+            pub score: f64,
+        }
+    }
 }
 /// Metadata about the search execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -556,6 +881,12 @@ pub struct BatchSearchDataObjectsRequest {
     pub combine: ::core::option::Option<
         batch_search_data_objects_request::CombineResultsOptions,
     >,
+    /// Optional. Options controlling which metadata is included in the search
+    /// results.
+    #[prost(message, optional, tag = "4")]
+    pub metadata_options: ::core::option::Option<
+        batch_search_data_objects_request::BatchSearchMetadataOptions,
+    >,
 }
 /// Nested message and enum types in `BatchSearchDataObjectsRequest`.
 pub mod batch_search_data_objects_request {
@@ -572,6 +903,14 @@ pub mod batch_search_data_objects_request {
         /// will be used.
         #[prost(int32, tag = "3")]
         pub top_k: i32,
+    }
+    /// Options controlling which metadata is included in the search results.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct BatchSearchMetadataOptions {
+        /// Optional. If `true`, per-result quality signals are returned in
+        /// \[SearchResult.search_result_metadata\]\[google.cloud.vectorsearch.v1beta.SearchResult.search_result_metadata\].
+        #[prost(bool, tag = "1")]
+        pub search_signals_enabled: bool,
     }
 }
 /// Defines a ranker to combine results from multiple searches.
@@ -611,13 +950,13 @@ pub struct ReciprocalRankFusion {
     pub weights: ::prost::alloc::vec::Vec<f64>,
 }
 /// Defines a ranker using the Vertex AI ranking service.
-/// See <https://cloud.google.com/generative-ai-app-builder/docs/ranking> for
+/// See <<https://cloud.google.com/generative-ai-app-builder/docs/ranking>> for
 /// details.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VertexRanker {
     /// Required. The model used for ranking documents. The list of available
     /// models is described in
-    /// <https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models.>
+    /// <<https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models>.>
     /// Currently, only `semantic-ranker-fast@latest` is supported.
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,
