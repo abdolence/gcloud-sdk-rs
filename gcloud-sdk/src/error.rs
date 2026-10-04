@@ -28,6 +28,9 @@ pub enum ErrorKind {
     TokenData,
     GrpcStatus(tonic::transport::Error),
     UrlError(hyper::http::uri::InvalidUri),
+    /// An API URL that parses but cannot be connected to: no scheme, a scheme
+    /// other than `http` or `https`, or no host.
+    InvalidApiUrl(String),
     ExternalCredsSourceError(String),
     /// A header value built from user input (user agent, headers, the token itself)
     /// failed HTTP header validation (e.g. contained a control character).
@@ -117,6 +120,7 @@ impl fmt::Display for Error {
             GrpcStatus(ref e) => write!(f, "Tonic/gRPC error: {}", e),
             TonicMetadata(ref e) => write!(f, "Tonic metadata error: {}", e),
             UrlError(ref e) => write!(f, "Url error: {}", e),
+            InvalidApiUrl(ref e) => write!(f, "Invalid API URL: {}", e),
             ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
             HeaderValue(ref e) => write!(f, "invalid header value: {}", e),
         }
