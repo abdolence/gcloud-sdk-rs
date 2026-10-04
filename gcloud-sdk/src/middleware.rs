@@ -103,6 +103,30 @@ impl<T> GoogleAuthMiddlewareService<T> {
     pub fn set_additional_headers(&mut self, additional_headers: HeaderMap) {
         Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
+
+    /// Wraps `inner` in a middleware service that shares this one's token generator, so
+    /// both fetch and refresh one token, and carries the same headers except
+    /// `google-cloud-resource-prefix`, which is set to `cloud_resource_prefix` or left
+    /// out when it is `None`.
+    pub(crate) fn with_inner<U>(
+        &self,
+        inner: U,
+        cloud_resource_prefix: Option<String>,
+    ) -> crate::error::Result<GoogleAuthMiddlewareService<U>> {
+        let mut headers = HeaderMap::clone(&self.headers);
+        headers.remove(GOOGLE_CLOUD_RESOURCE_PREFIX);
+        if let Some(prefix) = cloud_resource_prefix {
+            headers.insert(
+                GOOGLE_CLOUD_RESOURCE_PREFIX,
+                HeaderValue::from_str(&prefix)?,
+            );
+        }
+        Ok(GoogleAuthMiddlewareService {
+            inner,
+            token_generator: Arc::clone(&self.token_generator),
+            headers: Arc::new(headers),
+        })
+    }
 }
 
 impl<T, RequestBody> Service<hyper::Request<RequestBody>> for GoogleAuthMiddlewareService<T>
@@ -245,6 +269,22 @@ mod tests {
             Ok(Token {
                 token_type: "Bearer".to_string(),
                 token: SecretValue::from("dummy-token"),
+                expiry: Timestamp::now() + SignedDuration::from_hours(1),
+            })
+        }
+    }
+
+    struct CountingSource {
+        calls: Arc<std::sync::atomic::AtomicUsize>,
+    }
+
+    #[async_trait]
+    impl Source for CountingSource {
+        async fn token(&self) -> crate::error::Result<Token> {
+            self.calls.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            Ok(Token {
+                token_type: "Bearer".to_string(),
+                token: SecretValue::from("counted-token"),
                 expiry: Timestamp::now() + SignedDuration::from_hours(1),
             })
         }
@@ -519,5 +559,84 @@ mod tests {
             .map(|v| v.to_str().unwrap())
             .collect();
         assert_eq!(values, vec!["first", "second"]);
+    }
+
+    #[tokio::test]
+    async fn with_inner_shares_the_token_and_replaces_the_resource_prefix() {
+        let calls = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+        let token_generator = GoogleAuthTokenGenerator::new(
+            TokenSourceType::ExternalSource(Box::new(CountingSource {
+                calls: calls.clone(),
+            })),
+            vec![],
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(2);
+        let mut extra = hyper::HeaderMap::new();
+        extra.insert("x-test-header", "test-value".parse().unwrap());
+        let mut layer =
+            GoogleAuthMiddlewareLayer::new(token_generator, Some("projects/first".to_string()))
+                .unwrap()
+                .amend_user_agent("extra-ua".to_string())
+                .unwrap();
+        layer.set_additional_headers(extra);
+        let mut first = layer.layer(DummyService {
+            tx: Arc::new(tx.clone()),
+        });
+
+        let (other_tx, mut other_rx) = tokio::sync::mpsc::channel(2);
+        let other = DummyService {
+            tx: Arc::new(other_tx),
+        };
+        let mut with_prefix = first
+            .with_inner(other.clone(), Some("projects/second".to_string()))
+            .unwrap();
+        let mut without_prefix = first.with_inner(other, None).unwrap();
+
+        for service in [&mut first, &mut with_prefix, &mut without_prefix] {
+            let req = Request::builder()
+                .uri("http://example.com")
+                .body("".to_string())
+                .unwrap();
+            tower::Service::call(service, req).await.unwrap();
+        }
+
+        let first_req = rx.recv().await.unwrap();
+        let with_prefix_req = other_rx.recv().await.unwrap();
+        let without_prefix_req = other_rx.recv().await.unwrap();
+
+        let expected_ua = format!("gcloud-sdk-rs/{} extra-ua", env!("CARGO_PKG_VERSION"));
+        for req in [&first_req, &with_prefix_req, &without_prefix_req] {
+            assert_eq!(
+                req.headers().get(hyper::header::USER_AGENT).unwrap(),
+                expected_ua.as_str()
+            );
+            assert_eq!(req.headers().get("x-test-header").unwrap(), "test-value");
+            assert_eq!(
+                req.headers().get("authorization").unwrap(),
+                "Bearer counted-token"
+            );
+        }
+        assert_eq!(
+            first_req
+                .headers()
+                .get(GOOGLE_CLOUD_RESOURCE_PREFIX)
+                .unwrap(),
+            "projects/first"
+        );
+        assert_eq!(
+            with_prefix_req
+                .headers()
+                .get(GOOGLE_CLOUD_RESOURCE_PREFIX)
+                .unwrap(),
+            "projects/second"
+        );
+        assert!(without_prefix_req
+            .headers()
+            .get(GOOGLE_CLOUD_RESOURCE_PREFIX)
+            .is_none());
+        assert_eq!(calls.load(std::sync::atomic::Ordering::SeqCst), 1);
     }
 }
