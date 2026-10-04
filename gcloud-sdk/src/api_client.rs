@@ -106,6 +106,32 @@ where
         f(self.service.clone())
     }
 
+    /// Builds a client of an API served from another endpoint that reuses this client's
+    /// authentication: one token generator, so the token is fetched and refreshed once for
+    /// both clients (BigQuery and Cloud Storage, for example).
+    ///
+    /// Unlike [`get_with`](Self::get_with), which shares the channel and so reaches only
+    /// the same host, this opens a new channel to `google_api_url`. The user agent,
+    /// `x-goog-api-client` and additional headers are carried over;
+    /// `google-cloud-resource-prefix` is not, since another API usually needs another
+    /// prefix or none, and is set from `cloud_resource_prefix` instead.
+    pub async fn connect_with_endpoint<C2, S: AsRef<str>>(
+        &self,
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C2,
+        google_api_url: S,
+        cloud_resource_prefix: Option<String>,
+    ) -> crate::error::Result<GoogleApi<C2>>
+    where
+        C2: Clone + Send,
+    {
+        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
+        Ok(GoogleApiClient {
+            builder: GoogleApiClientBuilderFunction { f: builder_fn },
+            service: self.service.with_inner(channel, cloud_resource_prefix)?,
+            _ph: PhantomData,
+        })
+    }
+
     pub fn amend_user_agent(mut self, user_agent: String) -> crate::error::Result<Self> {
         self.service.append_user_agent(user_agent)?;
         Ok(self)
@@ -454,6 +480,59 @@ mod tests {
         // A client built with `get_with` reuses the same `Arc<GoogleAuthTokenGenerator>`
         // as one built with `get`, so its token cache is shared: the source is asked for
         // a token once, not once per client.
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
+
+    // A gRPC endpoint that accepts connections and never answers, counting the
+    // connections it received: the channel's eager connect succeeds against it, and a
+    // request sent to it reaches the middleware's token fetch before it stalls.
+    async fn silent_endpoint() -> (String, Arc<AtomicUsize>) {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", listener.local_addr().unwrap());
+        let connections = Arc::new(AtomicUsize::new(0));
+        let counter = connections.clone();
+        tokio::spawn(async move {
+            let mut held = Vec::new();
+            while let Ok((socket, _)) = listener.accept().await {
+                counter.fetch_add(1, Ordering::SeqCst);
+                held.push(socket);
+            }
+        });
+        (url, connections)
+    }
+
+    async fn send_stalled(mut service: GoogleAuthMiddlewareService<Channel>) {
+        let _ = tokio::time::timeout(Duration::from_millis(200), probe(&mut service)).await;
+    }
+
+    #[tokio::test]
+    async fn connect_with_endpoint_shares_auth_with_a_client_on_another_host() {
+        let calls = Arc::new(AtomicUsize::new(0));
+        let (first_url, first_connections) = silent_endpoint().await;
+        let (second_url, second_connections) = silent_endpoint().await;
+
+        let first: GoogleApi<GoogleAuthMiddlewareService<Channel>> =
+            GoogleApi::from_function_with_token_source(
+                |svc| svc,
+                first_url,
+                None,
+                vec![],
+                TokenSourceType::ExternalSource(Box::new(CountingSource {
+                    calls: calls.clone(),
+                })),
+            )
+            .await
+            .unwrap();
+        let second = first
+            .connect_with_endpoint(|svc| svc, second_url, None)
+            .await
+            .unwrap();
+
+        send_stalled(first.get()).await;
+        send_stalled(second.get()).await;
+
+        assert_eq!(first_connections.load(Ordering::SeqCst), 1);
+        assert_eq!(second_connections.load(Ordering::SeqCst), 1);
         assert_eq!(calls.load(Ordering::SeqCst), 1);
     }
 }
