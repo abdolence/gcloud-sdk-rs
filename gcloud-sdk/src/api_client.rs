@@ -371,9 +371,7 @@ impl GoogleEnvironment {
             .http2_keep_alive_interval(Duration::from_secs(60))
             .keep_alive_while_idle(true);
 
-        let config = if !&api_url_string.contains("http://") {
-            let domain_name = api_url_string.replace("https://", "");
-
+        let config = if let Some(domain_name) = tls_server_name(&api_url_string)? {
             let tls_config = Self::init_tls_config(domain_name);
             base_config.tls_config(tls_config)?
         } else {
@@ -407,12 +405,89 @@ impl GoogleEnvironment {
     }
 }
 
+/// The TLS server name to verify for a gRPC API URL.
+///
+/// Returns the URL's host, without port or path, for an `https` URL, and `None`
+/// for a plain `http` URL, which connects without TLS. Any other scheme, a URL
+/// without a scheme or host, or an unparseable URL is an error.
+fn tls_server_name(api_url: &str) -> Result<Option<String>, crate::error::Error> {
+    let uri: hyper::http::Uri = api_url.parse()?;
+    let invalid = |reason: &str| {
+        crate::error::Error::from(crate::error::ErrorKind::InvalidApiUrl(format!(
+            "{reason}: {api_url}"
+        )))
+    };
+    match uri.scheme_str() {
+        Some("https") => {
+            let host = uri
+                .host()
+                .filter(|host| !host.is_empty())
+                .ok_or_else(|| invalid("missing host"))?;
+            let host = host
+                .strip_prefix('[')
+                .and_then(|h| h.strip_suffix(']'))
+                .unwrap_or(host);
+            Ok(Some(host.to_string()))
+        }
+        Some("http") => Ok(None),
+        Some(_) => Err(invalid("unsupported scheme")),
+        None => Err(invalid("missing scheme")),
+    }
+}
+
 pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
     Lazy::new(|| vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn tls_server_name_is_the_host_of_a_plain_https_url() {
+        assert_eq!(
+            tls_server_name("https://bigquery.googleapis.com").unwrap(),
+            Some("bigquery.googleapis.com".to_string())
+        );
+    }
+
+    #[test]
+    fn tls_server_name_ignores_a_trailing_slash() {
+        assert_eq!(
+            tls_server_name("https://bigquery.googleapis.com/").unwrap(),
+            Some("bigquery.googleapis.com".to_string())
+        );
+    }
+
+    #[test]
+    fn tls_server_name_ignores_the_path() {
+        assert_eq!(
+            tls_server_name("https://bigquery.googleapis.com/bigquery/v2").unwrap(),
+            Some("bigquery.googleapis.com".to_string())
+        );
+    }
+
+    #[test]
+    fn tls_server_name_ignores_an_explicit_port() {
+        assert_eq!(
+            tls_server_name("https://bigquery.googleapis.com:443").unwrap(),
+            Some("bigquery.googleapis.com".to_string())
+        );
+    }
+
+    #[test]
+    fn plain_http_url_uses_no_tls() {
+        assert_eq!(tls_server_name("http://localhost:8080").unwrap(), None);
+        assert_eq!(tls_server_name("http://localhost:8080/").unwrap(), None);
+    }
+
+    #[test]
+    fn url_without_scheme_or_host_is_an_error() {
+        assert!(tls_server_name("bigquery.googleapis.com").is_err());
+        assert!(tls_server_name("/bigquery/v2").is_err());
+        assert!(tls_server_name("https://").is_err());
+        assert!(tls_server_name("not a url").is_err());
+        assert!(tls_server_name("").is_err());
+    }
     use crate::token_source::{Source, Token, TokenSourceType};
     use secret_vault_value::SecretValue;
     use std::sync::atomic::{AtomicUsize, Ordering};
