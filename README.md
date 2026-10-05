@@ -128,6 +128,7 @@ You can find an example how to handle it [here](https://github.com/abdolence/kms
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
 * [firestore](https://github.com/abdolence/firestore-rs) - to work with Firestore;
+* [bigquery](https://github.com/abdolence/bigquery-rs) - to work with BigQuery;
 * [secret-vault](https://github.com/abdolence/secret-vault-rs) - to read secrets from Google Secret Manager;
 * [kms-aead](https://github.com/abdolence/kms-aead-rs) - envelope encryption using Google KMS and Ring AEAD.
 * [opentelemetry-gcloud-trace](https://github.com/abdolence/opentelemetry-gcloud-trace-rs) - Google Cloud Trace support for OpenTelemetry project.
