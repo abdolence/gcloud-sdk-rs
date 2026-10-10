@@ -261,7 +261,7 @@ Service account keys sign JWTs with `jsonwebtoken`, which needs a crypto provide
 - `jwt-aws-lc-rs`: default feature, uses aws-lc-rs, which is built from C sources and needs a C compiler;
 - `jwt-rust-crypto`: uses the pure Rust crates of RustCrypto.
 
-With `default-features = false` enable one of them, otherwise service account keys fail with `ErrorKind::JwtCryptoProviderMissing`.
+With `default-features = false` enable one of them, otherwise service account keys and `IdTokenVerifier::new` fail with `ErrorKind::JwtCryptoProviderMissing`.
 With both enabled, aws-lc-rs is used.
 The library installs the provider as the process default of `jsonwebtoken`, unless your application installed one before.
 

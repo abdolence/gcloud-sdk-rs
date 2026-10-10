@@ -2,8 +2,7 @@
 //! service-to-service call.
 //!
 //! Signatures are checked with the crypto provider of the `jwt-aws-lc-rs` or
-//! `jwt-rust-crypto` feature. Without either, every token is refused with
-//! [`IdTokenVerifyError::KeysUnavailable`] carrying
+//! `jwt-rust-crypto` feature. Without either, creating an [`IdTokenVerifier`] fails with
 //! [`ErrorKind::JwtCryptoProviderMissing`].
 
 use std::collections::HashMap;
@@ -119,8 +118,8 @@ pub enum IdTokenVerifyError {
     /// The token is not a valid Google ID token for the audience; the caller is not
     /// authenticated.
     InvalidToken(InvalidIdToken),
-    /// The signing keys could not be fetched, or no crypto provider is enabled to use
-    /// them, so the token could not be checked; it may be valid. A failed fetch is
+    /// The signing keys could not be fetched, so the token could not be checked; it may
+    /// be valid. A failed fetch is
     /// reported to every verification for a short interval before the next fetch, hence
     /// the shared error.
     KeysUnavailable(Arc<crate::error::Error>),
@@ -281,47 +280,47 @@ pub struct IdTokenVerifier {
 
 impl IdTokenVerifier {
     /// A verifier that fetches Google's signing keys from
-    /// <https://www.googleapis.com/oauth2/v3/certs>.
+    /// <https://www.googleapis.com/oauth2/v3/certs>. Fails with
+    /// [`ErrorKind::JwtCryptoProviderMissing`] without a `jwt-*` feature.
     pub fn new(audience: IdTokenAudience) -> crate::error::Result<Self> {
         let client = reqwest::Client::builder()
             .user_agent(crate::GCLOUD_SDK_USER_AGENT)
             .timeout(KEYS_FETCH_TIMEOUT)
             .build()?;
-        Ok(Self::with_keys_source(
+        Self::with_keys_source(
             audience,
             GoogleKeys {
                 client,
                 url: GOOGLE_KEYS_URL.to_string(),
             },
-        ))
+        )
     }
 
     /// A verifier that gets its signing keys from `keys_source`, such as a fixed local
-    /// key in tests. The other checks are the same as [`new`](Self::new)'s.
+    /// key in tests. The other checks and the errors are the same as [`new`](Self::new)'s.
     pub fn with_keys_source(
         audience: IdTokenAudience,
         keys_source: impl IdTokenKeysSource + 'static,
-    ) -> Self {
+    ) -> crate::error::Result<Self> {
+        crate::jwt_crypto::ensure_provider()?;
         let mut validation = Validation::new(Algorithm::RS256);
         validation.set_audience(&[audience.as_str()]);
         validation.set_issuer(&GOOGLE_ISSUERS);
         validation.set_required_spec_claims(&["exp", "iss", "aud", "sub"]);
         validation.leeway = LEEWAY.as_secs().unsigned_abs();
         validation.validate_nbf = true;
-        Self {
+        Ok(Self {
             validation,
             keys_source: Box::new(keys_source),
             cache: RwLock::new(KeyCache::default()),
             fetching: Mutex::new(()),
             refetch_interval: REFETCH_INTERVAL,
-        }
+        })
     }
 
     /// Verifies `token`, the bearer token of an `authorization` header, and returns its
     /// claims.
     pub async fn verify(&self, token: &str) -> Result<VerifiedIdToken, IdTokenVerifyError> {
-        crate::jwt_crypto::ensure_provider()
-            .map_err(|error| IdTokenVerifyError::KeysUnavailable(Arc::new(error)))?;
         let header = jsonwebtoken::decode_header(token).map_err(InvalidIdToken::Malformed)?;
         if header.alg != Algorithm::RS256 {
             return Err(InvalidIdToken::Malformed(
@@ -534,7 +533,7 @@ mod tests {
     ) -> (IdTokenVerifier, Arc<AtomicUsize>) {
         let (source, fetches) = ScriptedKeys::new(results);
         (
-            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source),
+            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source).unwrap(),
             fetches,
         )
     }
@@ -748,7 +747,7 @@ mod tests {
         ]);
         source.fetch_duration = Duration::from_millis(300);
         let mut verifier =
-            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source);
+            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source).unwrap();
         verifier.refetch_interval = Duration::from_millis(100);
         let verifier = Arc::new(verifier);
         verifier
@@ -856,34 +855,12 @@ mod tests {
 mod missing_provider_tests {
     use super::*;
 
-    struct NoKeys;
+    #[test]
+    fn verifier_without_a_crypto_provider_is_refused() {
+        let err = IdTokenVerifier::new(IdTokenAudience::new("https://orders-abc123-ew.a.run.app"))
+            .err()
+            .unwrap();
 
-    #[async_trait]
-    impl IdTokenKeysSource for NoKeys {
-        async fn fetch_keys(&self) -> crate::error::Result<IdTokenKeys> {
-            Ok(IdTokenKeys::new(
-                JwkSet { keys: vec![] },
-                Duration::from_secs(3600),
-            ))
-        }
-    }
-
-    #[tokio::test]
-    async fn verifying_without_a_crypto_provider_makes_keys_unavailable() {
-        let verifier = IdTokenVerifier::with_keys_source(
-            IdTokenAudience::new("https://orders-abc123-ew.a.run.app"),
-            NoKeys,
-        );
-
-        let err = verifier
-            .verify("header.claims.signature")
-            .await
-            .unwrap_err();
-
-        assert!(matches!(
-            err,
-            IdTokenVerifyError::KeysUnavailable(ref error)
-                if matches!(error.kind(), ErrorKind::JwtCryptoProviderMissing)
-        ));
+        assert!(matches!(err.kind(), ErrorKind::JwtCryptoProviderMissing));
     }
 }
