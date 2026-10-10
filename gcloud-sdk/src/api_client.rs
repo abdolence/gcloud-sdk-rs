@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use google_cloud_auth::credentials::{Builder as CredentialsBuilder, Credentials};
+use google_cloud_auth::credentials::Credentials;
 use once_cell::sync::Lazy;
 use tonic::transport::Channel;
 use tower::ServiceBuilder;
@@ -11,7 +11,7 @@ use tracing::*;
 use crate::adc::AdcFile;
 use crate::metadata::MetadataServer;
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
-use crate::GoogleAuthTokenGenerator;
+use crate::GoogleAuthHeaders;
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
@@ -66,7 +66,7 @@ where
         );
 
         let mut middleware = GoogleAuthMiddlewareLayer::new(
-            GoogleAuthTokenGenerator::from(credentials),
+            GoogleAuthHeaders::from(credentials),
             cloud_resource_prefix,
         )?;
         middleware.set_additional_headers(additional_headers);
@@ -80,15 +80,15 @@ where
         middleware: GoogleAuthMiddlewareLayer,
     ) -> crate::error::Result<Self> {
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
+        Ok(Self::on_channel(builder, channel, middleware))
+    }
 
-        let service: GoogleAuthMiddlewareService<Channel> =
-            ServiceBuilder::new().layer(middleware).service(channel);
-
-        Ok(Self {
+    fn on_channel(builder: B, channel: Channel, middleware: GoogleAuthMiddlewareLayer) -> Self {
+        Self {
             builder,
-            service,
+            service: ServiceBuilder::new().layer(middleware).service(channel),
             _ph: PhantomData,
-        })
+        }
     }
 
     pub fn get(&self) -> C {
@@ -96,14 +96,14 @@ where
     }
 
     /// Builds a client of another API on this client's authenticated channel: same
-    /// connection, token source and headers, for an API served from the same endpoint
+    /// connection, authentication and headers, for an API served from the same endpoint
     /// (Firestore's admin and long-running operations services, for example).
     pub fn get_with<C2>(&self, f: impl FnOnce(GoogleAuthMiddlewareService<Channel>) -> C2) -> C2 {
         f(self.service.clone())
     }
 
     /// Builds a client of an API served from another endpoint that reuses this client's
-    /// authentication: one token generator, so the token is fetched and refreshed once for
+    /// authentication: one [`GoogleAuthHeaders`], so the token is fetched and refreshed once for
     /// both clients (BigQuery and Cloud Storage, for example).
     ///
     /// Unlike [`get_with`](Self::get_with), which shares the channel and so reaches only
@@ -197,6 +197,11 @@ where
 
     /// A client that authenticates with the Application Default Credentials, for
     /// `token_scopes`.
+    ///
+    /// Fails with [`ErrorKind::CryptoProviderMissing`](crate::error::ErrorKind::CryptoProviderMissing)
+    /// for a service account key, used directly or as the source of an impersonation,
+    /// when the `auth-default-crypto` feature is off and no rustls crypto provider is
+    /// installed.
     pub async fn from_function_with_scopes<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
@@ -220,17 +225,19 @@ where
         token_scopes: Vec<String>,
         headers: hyper::HeaderMap,
     ) -> crate::error::Result<Self> {
-        let credentials = CredentialsBuilder::default()
-            .with_scopes(token_scopes)
-            .build()?;
-        Self::from_function_with_credentials_and_headers(
-            builder_fn,
-            google_api_url,
+        // The channel comes first: with a single rustls provider compiled in, its TLS
+        // setup installs that provider, which the credentials may need to sign with.
+        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
+        let mut middleware = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::access_tokens_from_adc(token_scopes)?,
             cloud_resource_prefix_meta,
-            credentials,
-            headers,
-        )
-        .await
+        )?;
+        middleware.set_additional_headers(headers);
+        Ok(Self::on_channel(
+            GoogleApiClientBuilderFunction { f: builder_fn },
+            channel,
+            middleware,
+        ))
     }
 
     /// A client that authenticates with `credentials`, built with
@@ -238,6 +245,10 @@ where
     /// workload identity federation, or a
     /// [`CredentialsProvider`](google_cloud_auth::credentials::CredentialsProvider) of
     /// your own.
+    ///
+    /// `credentials` built from a service account key need a rustls crypto provider when
+    /// the `auth-default-crypto` feature is off. They are opaque here, so this
+    /// constructor cannot check for one.
     pub async fn from_function_with_credentials<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
@@ -291,33 +302,42 @@ pub type GoogleApi<C> = GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>;
 pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
-    /// The Google Cloud project of this environment: the `GCP_PROJECT`, `PROJECT_ID` or
-    /// `GCP_PROJECT_ID` environment variable, else the project the Application Default
-    /// Credentials file names, else the project of the metadata server.
+    /// The Google Cloud project of this environment: the first of the `GCP_PROJECT`,
+    /// `PROJECT_ID`, `GCP_PROJECT_ID` and `GOOGLE_CLOUD_PROJECT` environment variables
+    /// that is set, else the project the Application Default Credentials file names, else
+    /// the project of the metadata server.
     pub async fn detect_google_project_id() -> Option<String> {
-        if let Some(project_id) = ["GCP_PROJECT", "PROJECT_ID", "GCP_PROJECT_ID"]
-            .into_iter()
-            .find_map(|name| std::env::var(name).ok())
-        {
+        Self::detect_project_id_in(
+            |name| std::env::var(name).ok(),
+            AdcFile::load(),
+            MetadataServer::from_env(),
+        )
+        .await
+    }
+
+    async fn detect_project_id_in(
+        env: impl Fn(&str) -> Option<String>,
+        adc: Option<AdcFile>,
+        metadata: MetadataServer,
+    ) -> Option<String> {
+        if let Some(project_id) = PROJECT_ID_ENV_VARS.into_iter().find_map(env) {
             debug!("Detected GCP Project ID using environment variables");
             return Some(project_id);
         }
-        if let Some(project_id) =
-            AdcFile::load().and_then(|adc| adc.project_id().map(ToString::to_string))
-        {
+        if let Some(project_id) = adc.and_then(|adc| adc.project_id().map(ToString::to_string)) {
             debug!("Detected GCP Project ID in the Application Default Credentials file");
             return Some(project_id);
         }
-        match MetadataServer::from_env().project_id().await {
-            Ok(project_id) => {
-                debug!("Detected GCP Project ID using the metadata server");
-                Some(project_id)
-            }
-            Err(error) => {
-                debug!(%error, "No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
-                None
-            }
+        let project_id = metadata.project_id().await;
+        if project_id.is_some() {
+            debug!("Detected GCP Project ID using the metadata server");
+        } else {
+            debug!(
+                env = ?PROJECT_ID_ENV_VARS,
+                "No GCP Project ID detected in this environment; set one of the environment variables"
+            );
         }
+        project_id
     }
 
     pub async fn init_google_services_channel<S: AsRef<str>>(
@@ -395,13 +415,22 @@ fn tls_server_name(api_url: &str) -> Result<Option<String>, crate::error::Error>
     }
 }
 
+/// The environment variables that name the project, in the order they are read.
+const PROJECT_ID_ENV_VARS: [&str; 4] = [
+    "GCP_PROJECT",
+    "PROJECT_ID",
+    "GCP_PROJECT_ID",
+    "GOOGLE_CLOUD_PROJECT",
+];
+
 pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
     Lazy::new(|| vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::StubCredentials;
+    use crate::test_support::{StubCredentials, StubResponse, StubServer};
+    use serde_json::json;
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::Arc;
 
@@ -467,7 +496,7 @@ mod tests {
     async fn get_with_shares_the_authenticated_channel() {
         let credentials = StubCredentials::bearer("counted-token");
         let middleware = GoogleAuthMiddlewareLayer::new(
-            GoogleAuthTokenGenerator::from(Credentials::from(credentials.clone())),
+            GoogleAuthHeaders::from(Credentials::from(credentials.clone())),
             None,
         )
         .unwrap();
@@ -490,7 +519,7 @@ mod tests {
         probe(&mut from_get).await;
         probe(&mut from_get_with).await;
 
-        // A client built with `get_with` reuses the same `Arc<GoogleAuthTokenGenerator>`
+        // A client built with `get_with` reuses the same `Arc<GoogleAuthHeaders>`
         // as one built with `get`, so its header cache is shared: the headers are served
         // in full once, not once per client.
         assert_eq!(credentials.served(), 1);
@@ -544,5 +573,81 @@ mod tests {
         assert_eq!(first_connections.load(Ordering::SeqCst), 1);
         assert_eq!(second_connections.load(Ordering::SeqCst), 1);
         assert_eq!(credentials.served(), 1);
+    }
+
+    async fn detected_project_id(
+        env: &[(&str, &str)],
+        adc: Option<serde_json::Value>,
+        metadata: &StubServer,
+    ) -> Option<String> {
+        GoogleEnvironment::detect_project_id_in(
+            |name| {
+                env.iter()
+                    .find(|(set, _)| *set == name)
+                    .map(|(_, value)| value.to_string())
+            },
+            adc.map(AdcFile::from),
+            MetadataServer::at(metadata.url.clone()),
+        )
+        .await
+    }
+
+    #[tokio::test]
+    async fn project_id_sources_are_read_in_order() {
+        let metadata = StubServer::start(vec![StubResponse::text("200 OK", "metadata-project")
+            .with_header("Metadata-Flavor", "Google")])
+        .await;
+        let mut env = vec![
+            ("GCP_PROJECT", "gcp-project"),
+            ("PROJECT_ID", "project-id"),
+            ("GCP_PROJECT_ID", "gcp-project-id"),
+            ("GOOGLE_CLOUD_PROJECT", "google-cloud-project"),
+        ];
+        let mut adc = json!({
+            "type": "impersonated_service_account",
+            "project_id": "adc-project",
+            "quota_project_id": "adc-quota-project",
+            "source_credentials": {
+                "type": "service_account",
+                "project_id": "source-project",
+                "quota_project_id": "source-quota-project",
+            },
+        });
+
+        let mut detected = Vec::new();
+        while !env.is_empty() {
+            detected.push(detected_project_id(&env, Some(adc.clone()), &metadata).await);
+            env.remove(0);
+        }
+        for field in [
+            "/project_id",
+            "/quota_project_id",
+            "/source_credentials/project_id",
+        ] {
+            detected.push(detected_project_id(&env, Some(adc.clone()), &metadata).await);
+            let (parent, name) = field.rsplit_once('/').unwrap();
+            adc.pointer_mut(parent)
+                .and_then(serde_json::Value::as_object_mut)
+                .unwrap()
+                .remove(name);
+        }
+        detected.push(detected_project_id(&env, Some(adc), &metadata).await);
+        detected.push(detected_project_id(&env, None, &metadata).await);
+
+        assert_eq!(
+            detected,
+            [
+                "gcp-project",
+                "project-id",
+                "gcp-project-id",
+                "google-cloud-project",
+                "adc-project",
+                "adc-quota-project",
+                "source-project",
+                "source-quota-project",
+                "metadata-project",
+            ]
+            .map(|project| Some(project.to_string()))
+        );
     }
 }

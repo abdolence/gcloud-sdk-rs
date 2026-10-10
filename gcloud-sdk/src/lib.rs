@@ -31,6 +31,22 @@
 //!
 
 #![allow(unexpected_cfgs)]
+
+// jsonwebtoken panics on its first verification without a crypto provider, and a
+// provider that some other dependency happens to enable is not one to rely on.
+#[cfg(all(
+    feature = "id-token-verify",
+    not(any(
+        feature = "jwt-aws-lc-rs",
+        feature = "jwt-rust-crypto",
+        feature = "jwt-custom-provider"
+    ))
+))]
+compile_error!(
+    "the `id-token-verify` feature needs a jsonwebtoken crypto provider: enable `jwt-aws-lc-rs` \
+     or `jwt-rust-crypto`, or `jwt-custom-provider` when the application installs its own"
+);
+
 mod apis;
 pub use apis::*;
 
@@ -39,7 +55,7 @@ mod axum_layer;
 #[cfg(feature = "axum")]
 pub use axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
 mod adc;
-mod auth_token_generator;
+mod auth_headers;
 pub mod error;
 mod id_token;
 #[cfg(feature = "id-token-verify")]
@@ -47,7 +63,7 @@ pub mod id_token_verify;
 #[cfg(feature = "id-token-verify")]
 mod jwt_crypto;
 mod metadata;
-pub use auth_token_generator::GoogleAuthTokenGenerator;
+pub use auth_headers::GoogleAuthHeaders;
 pub use id_token::{IdTokenAudience, ServiceAccountEmail};
 pub use middleware::GoogleAuthMiddlewareLayer;
 
@@ -71,7 +87,7 @@ pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_P
 // Re-exports
 /// The crate that mints every token, at the version this crate is built against: build
 /// [`Credentials`](google_cloud_auth::credentials::Credentials) with it for
-/// [`GoogleApi::from_function_with_credentials`] and [`GoogleAuthTokenGenerator`].
+/// [`GoogleApi::from_function_with_credentials`] and [`GoogleAuthHeaders`].
 pub use google_cloud_auth;
 pub use hyper::HeaderMap;
 pub use prost;

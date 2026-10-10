@@ -2,7 +2,8 @@ use std::sync::{Arc, Mutex, PoisonError, RwLock};
 
 use google_cloud_auth::credentials::idtoken::{self, IDTokenCredentials};
 use google_cloud_auth::credentials::{
-    external_account, CacheableResource, Credentials, CredentialsProvider, EntityTag,
+    external_account, Builder as CredentialsBuilder, CacheableResource, Credentials,
+    CredentialsProvider, EntityTag,
 };
 use google_cloud_auth::errors::CredentialsError;
 use hyper::header::{Entry, HeaderMap, HeaderValue, AUTHORIZATION};
@@ -18,14 +19,15 @@ use crate::{IdTokenAudience, ServiceAccountEmail, GCP_DEFAULT_SCOPES};
 /// and whatever else the credentials add, such as `x-goog-user-project` for a quota
 /// project.
 ///
-/// The credentials mint, cache and refresh the tokens. The generator keeps the headers of
-/// the current token, with `authorization` marked sensitive so that it stays out of logs,
-/// and takes new ones only when the credentials report a new token.
+/// The credentials mint, cache and refresh the tokens. A `GoogleAuthHeaders` keeps the
+/// headers of the current token, with `authorization` marked sensitive so that it stays
+/// out of logs, and takes new ones only when the credentials report a new token.
 ///
-/// [`id_token`](Self::id_token) and [`id_token_impersonating`](Self::id_token_impersonating)
-/// build credentials, which spawns their refresh task on the current Tokio runtime.
+/// [`id_token_from_adc`](Self::id_token_from_adc) and
+/// [`id_token_impersonating`](Self::id_token_impersonating) build credentials, which
+/// spawns their refresh task on the current Tokio runtime.
 #[derive(Debug)]
-pub struct GoogleAuthTokenGenerator {
+pub struct GoogleAuthHeaders {
     credentials: Credentials,
     /// Replaced whole under the lock, so a poisoned lock still holds consistent headers.
     cached: RwLock<Option<CachedHeaders>>,
@@ -37,7 +39,7 @@ struct CachedHeaders {
     headers: Arc<HeaderMap>,
 }
 
-impl GoogleAuthTokenGenerator {
+impl GoogleAuthHeaders {
     /// ID tokens for `audience`, minted with the identity of the Application Default
     /// Credentials:
     /// - a service account key file, as that service account;
@@ -50,32 +52,47 @@ impl GoogleAuthTokenGenerator {
     ///   `generateIdToken` the way it calls `generateAccessToken` for access tokens.
     ///
     /// Fails with [`ErrorKind::IdTokenNeedsImpersonation`] for credentials that hold no
-    /// service account: `authorized_user` credentials, and workload identity federation
-    /// without impersonation. Use [`id_token_impersonating`](Self::id_token_impersonating)
-    /// for those.
-    pub async fn id_token(audience: &IdTokenAudience) -> crate::error::Result<Self> {
-        Self::id_token_from_adc(AdcFile::load(), audience)
+    /// service account: `authorized_user` and `external_account_authorized_user`
+    /// credentials, workload identity federation without impersonation, and
+    /// `gdch_service_account` credentials. Use
+    /// [`id_token_impersonating`](Self::id_token_impersonating) for the first three.
+    ///
+    /// Fails with [`ErrorKind::CryptoProviderMissing`] for a service account key, used
+    /// directly or as the source of an impersonation, when the `auth-default-crypto`
+    /// feature is off and no rustls crypto provider is installed.
+    pub async fn id_token_from_adc(audience: &IdTokenAudience) -> crate::error::Result<Self> {
+        Self::id_token_from_adc_file(AdcFile::load(), audience)
     }
 
-    fn id_token_from_adc(
+    fn id_token_from_adc_file(
         adc: Option<AdcFile>,
         audience: &IdTokenAudience,
     ) -> crate::error::Result<Self> {
-        let credentials = match adc.as_ref().map(AdcFile::kind) {
-            Some(AdcKind::AuthorizedUser) => {
-                return Err(ErrorKind::IdTokenNeedsImpersonation(
-                    IdTokenUnsupportedCredentials::AuthorizedUser,
-                )
-                .into())
+        let unsupported = match adc.as_ref().map(AdcFile::kind) {
+            Some(AdcKind::AuthorizedUser) => IdTokenUnsupportedCredentials::AuthorizedUser,
+            Some(AdcKind::ExternalAccountAuthorizedUser) => {
+                IdTokenUnsupportedCredentials::ExternalAccountAuthorizedUser
             }
+            Some(AdcKind::GdchServiceAccount) => IdTokenUnsupportedCredentials::GdchServiceAccount,
             Some(AdcKind::ExternalAccount(config)) => {
-                federated_id_token_credentials(config, audience)?
+                let federation = ImpersonatedFederation::try_from(config)?;
+                let source = external_account::Builder::new(federation.source)
+                    .with_scopes(GCP_DEFAULT_SCOPES.iter())
+                    .build()?;
+                return Self::impersonated(audience, &federation.service_account, source);
             }
-            Some(AdcKind::Other) | None => idtoken::Builder::new(audience.as_str())
-                .with_include_email()
-                .build()?,
+            Some(AdcKind::Other) | None => {
+                if let Some(adc) = &adc {
+                    adc.ensure_signing_provider()?;
+                }
+                return Ok(Self::from(
+                    idtoken::Builder::new(audience.as_str())
+                        .with_include_email()
+                        .build()?,
+                ));
+            }
         };
-        Ok(Self::from(credentials))
+        Err(ErrorKind::IdTokenNeedsImpersonation(unsupported).into())
     }
 
     /// ID tokens for `audience`, minted with the identity of `service_account` through the
@@ -83,7 +100,19 @@ impl GoogleAuthTokenGenerator {
     /// `source_credentials`. Their principal needs the `iam.serviceAccounts.getOpenIdToken`
     /// permission on `service_account`, which the Service Account OpenID Connect Identity
     /// Token Creator role grants.
+    ///
+    /// `source_credentials` built from a service account key sign with it, and need a
+    /// rustls crypto provider when the `auth-default-crypto` feature is off. They are
+    /// opaque here, so this constructor cannot check for one.
     pub async fn id_token_impersonating(
+        audience: &IdTokenAudience,
+        service_account: &ServiceAccountEmail,
+        source_credentials: Credentials,
+    ) -> crate::error::Result<Self> {
+        Self::impersonated(audience, service_account, source_credentials)
+    }
+
+    fn impersonated(
         audience: &IdTokenAudience,
         service_account: &ServiceAccountEmail,
         source_credentials: Credentials,
@@ -95,6 +124,15 @@ impl GoogleAuthTokenGenerator {
         )
         .with_include_email()
         .build()?;
+        Ok(Self::from(credentials))
+    }
+
+    /// Access tokens for `scopes`, minted with the Application Default Credentials.
+    pub(crate) fn access_tokens_from_adc(scopes: Vec<String>) -> crate::error::Result<Self> {
+        if let Some(adc) = AdcFile::load() {
+            adc.ensure_signing_provider()?;
+        }
+        let credentials = CredentialsBuilder::default().with_scopes(scopes).build()?;
         Ok(Self::from(credentials))
     }
 
@@ -141,7 +179,7 @@ impl GoogleAuthTokenGenerator {
 }
 
 /// Access tokens, or whatever headers `credentials` serve.
-impl From<Credentials> for GoogleAuthTokenGenerator {
+impl From<Credentials> for GoogleAuthHeaders {
     fn from(credentials: Credentials) -> Self {
         Self {
             credentials,
@@ -153,49 +191,52 @@ impl From<Credentials> for GoogleAuthTokenGenerator {
 /// ID tokens from any google-cloud-auth ID token credentials, such as
 /// `idtoken::service_account::Builder` builds from a key that is not the Application
 /// Default Credentials.
-impl From<IDTokenCredentials> for GoogleAuthTokenGenerator {
+impl From<IDTokenCredentials> for GoogleAuthHeaders {
     fn from(credentials: IDTokenCredentials) -> Self {
         Self::from(Credentials::from(IdTokenHeaders::from(credentials)))
     }
 }
 
-/// ID tokens for the service account a workload identity federation `config` impersonates.
+/// A workload identity federation configuration that impersonates a service account,
+/// split into that account and the federation without the impersonation.
 ///
-/// The ID tokens are minted with the federated token itself, the source of the
+/// ID tokens are minted with the federated token itself as the source of the
 /// impersonation: an ID token minted with the impersonated account's own access token
 /// would need that account to hold `getOpenIdToken` on itself.
-fn federated_id_token_credentials(
-    config: &Value,
-    audience: &IdTokenAudience,
-) -> crate::error::Result<IDTokenCredentials> {
-    let Some(impersonation_url) = config
-        .get("service_account_impersonation_url")
-        .and_then(Value::as_str)
-    else {
-        return Err(ErrorKind::IdTokenNeedsImpersonation(
-            IdTokenUnsupportedCredentials::ExternalAccount,
-        )
-        .into());
-    };
-    let service_account = ServiceAccountEmail::from_impersonation_url(impersonation_url)?;
-    let mut federation = config.clone();
-    if let Some(fields) = federation.as_object_mut() {
-        fields.remove("service_account_impersonation_url");
+#[derive(Debug)]
+struct ImpersonatedFederation {
+    service_account: ServiceAccountEmail,
+    /// The configuration without its `service_account_impersonation_url`.
+    source: Value,
+}
+
+impl TryFrom<&Value> for ImpersonatedFederation {
+    type Error = crate::error::Error;
+
+    fn try_from(config: &Value) -> crate::error::Result<Self> {
+        let Some(impersonation_url) = config
+            .get("service_account_impersonation_url")
+            .and_then(Value::as_str)
+        else {
+            return Err(ErrorKind::IdTokenNeedsImpersonation(
+                IdTokenUnsupportedCredentials::ExternalAccount,
+            )
+            .into());
+        };
+        let service_account = ServiceAccountEmail::from_impersonation_url(impersonation_url)?;
+        let mut source = config.clone();
+        if let Some(fields) = source.as_object_mut() {
+            fields.remove("service_account_impersonation_url");
+        }
+        Ok(Self {
+            service_account,
+            source,
+        })
     }
-    let federated = external_account::Builder::new(federation)
-        .with_scopes(GCP_DEFAULT_SCOPES.iter())
-        .build()?;
-    Ok(idtoken::impersonated::Builder::from_source_credentials(
-        audience.as_str(),
-        service_account.to_string(),
-        federated,
-    )
-    .with_include_email()
-    .build()?)
 }
 
 /// Serves the ID tokens of `IDTokenCredentials` as an `authorization` header, under an
-/// entity tag that changes only when the token does, so that a [`GoogleAuthTokenGenerator`]
+/// entity tag that changes only when the token does, so that a [`GoogleAuthHeaders`]
 /// caches them like access token headers.
 #[derive(Debug)]
 struct IdTokenHeaders {
@@ -305,11 +346,11 @@ mod tests {
 
     #[tokio::test]
     async fn id_token_is_served_as_a_sensitive_bearer_header() {
-        let generator = GoogleAuthTokenGenerator::from(IDTokenCredentials::from(
-            ScriptedIdToken::new("minted-id-token"),
-        ));
+        let auth_headers = GoogleAuthHeaders::from(IDTokenCredentials::from(ScriptedIdToken::new(
+            "minted-id-token",
+        )));
 
-        let headers = generator.headers().await.unwrap();
+        let headers = auth_headers.headers().await.unwrap();
 
         assert_eq!(headers[AUTHORIZATION], "Bearer minted-id-token");
         assert!(headers[AUTHORIZATION].is_sensitive());
@@ -358,7 +399,7 @@ mod tests {
     }
 
     fn id_token_error(adc: serde_json::Value) -> ErrorKind {
-        GoogleAuthTokenGenerator::id_token_from_adc(
+        GoogleAuthHeaders::id_token_from_adc_file(
             Some(AdcFile::from(adc)),
             &IdTokenAudience::new(AUDIENCE),
         )
@@ -390,16 +431,94 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn external_account_credentials_with_impersonation_mint_id_tokens() {
+    async fn external_account_authorized_user_credentials_need_impersonation() {
+        let workforce_user = json!({
+            "type": "external_account_authorized_user",
+            "audience": "//iam.googleapis.com/locations/global/workforcePools/staff/providers/okta",
+            "refresh_token": "refresh-token",
+            "token_url": "https://sts.googleapis.com/v1/oauthtoken",
+        });
+
+        assert!(matches!(
+            id_token_error(workforce_user),
+            ErrorKind::IdTokenNeedsImpersonation(
+                IdTokenUnsupportedCredentials::ExternalAccountAuthorizedUser
+            )
+        ));
+    }
+
+    #[tokio::test]
+    async fn gdch_service_account_credentials_cannot_mint_id_tokens() {
+        let gdch = json!({
+            "type": "gdch_service_account",
+            "project": "orders",
+            "name": "invoker",
+            "token_uri": "https://service-identity.gdch.example/authenticate",
+        });
+
+        assert!(matches!(
+            id_token_error(gdch),
+            ErrorKind::IdTokenNeedsImpersonation(IdTokenUnsupportedCredentials::GdchServiceAccount)
+        ));
+    }
+
+    fn impersonating_federation_config() -> serde_json::Value {
         let mut config = federation_config();
         config["service_account_impersonation_url"] = json!(format!(
             "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{INVOKER}:generateAccessToken"
         ));
+        config
+    }
 
-        GoogleAuthTokenGenerator::id_token_from_adc(
-            Some(AdcFile::from(config)),
+    #[test]
+    fn impersonated_federation_mints_with_the_federated_token_as_source() {
+        let federation =
+            ImpersonatedFederation::try_from(&impersonating_federation_config()).unwrap();
+
+        assert_eq!(
+            federation.service_account,
+            ServiceAccountEmail::new(INVOKER)
+        );
+        assert_eq!(federation.source, federation_config());
+    }
+
+    #[tokio::test]
+    async fn external_account_credentials_with_impersonation_build_id_token_credentials() {
+        GoogleAuthHeaders::id_token_from_adc_file(
+            Some(AdcFile::from(impersonating_federation_config())),
             &IdTokenAudience::new(AUDIENCE),
         )
         .unwrap();
+    }
+
+    /// Installs the rustls provider the README tells applications to install when the
+    /// `auth-default-crypto` feature is off.
+    fn install_crypto_provider() {
+        #[cfg(not(feature = "auth-default-crypto"))]
+        let _ = rustls::crypto::ring::default_provider().install_default();
+    }
+
+    #[tokio::test]
+    async fn service_account_key_signs_a_sensitive_bearer_header() {
+        install_crypto_provider();
+        let key = json!({
+            "type": "service_account",
+            "project_id": "orders",
+            "private_key_id": "orders-key",
+            "private_key": crate::test_support::TEST_RSA_PRIVATE_KEY,
+            "client_email": INVOKER,
+        });
+        let credentials = google_cloud_auth::credentials::service_account::Builder::new(key)
+            .build()
+            .unwrap();
+
+        let headers = GoogleAuthHeaders::from(credentials)
+            .headers()
+            .await
+            .unwrap();
+
+        let authorization = &headers[AUTHORIZATION];
+        assert!(authorization.as_bytes().starts_with(b"Bearer ey"));
+        assert!(authorization.is_sensitive());
     }
 }

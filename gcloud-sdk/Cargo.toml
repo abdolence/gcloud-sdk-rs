@@ -22,8 +22,12 @@ tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
 # google-cloud-auth's default rustls crypto provider and ID token backend (aws-lc-rs).
 # Without it, the application installs a rustls `CryptoProvider` before building credentials.
 auth-default-crypto = ["google-cloud-auth/default-rustls-provider", "google-cloud-auth/default-idtoken-backend"]
+# The crypto provider `id-token-verify` checks signatures with. It needs one of these three.
 jwt-aws-lc-rs = ["jsonwebtoken?/aws_lc_rs"]
 jwt-rust-crypto = ["jsonwebtoken?/rust_crypto"]
+# The application installs its own `jsonwebtoken` crypto provider, with
+# `CryptoProvider::install_default`, before it verifies an ID token.
+jwt-custom-provider = []
 id-token-verify = ["dep:jsonwebtoken"]
 axum = ["dep:axum-core", "id-token-verify"]
 
@@ -309,6 +313,7 @@ serde_json = { version = "1" }
 jiff = { version = "0.2.35", features = ["std", "serde"], default-features = false }
 jsonwebtoken = { version = "11.1", optional = true }
 google-cloud-auth = { version = "1.17", default-features = false, features = ["idtoken"] }
+rustls = { version = "0.23.38", default-features = false, features = ["std"] }
 hyper = { version ="1", features = ["client", "http2"] }
 async-trait = "0.1"
 tokio = { version =  "1", default-features = false }
@@ -323,6 +328,7 @@ axum-core = { version = "0.5", optional = true }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "io-util"] }
+rustls = { version = "0.23.38", default-features = false, features = ["std", "ring"] }
 
 [package.metadata.release]
 tag-prefix=""

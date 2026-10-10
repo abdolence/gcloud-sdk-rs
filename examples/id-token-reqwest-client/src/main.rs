@@ -12,7 +12,7 @@
 
 use gcloud_sdk::google_cloud_auth::credentials::Builder as CredentialsBuilder;
 use gcloud_sdk::{
-    GoogleAuthReqwestMiddleware, GoogleAuthTokenGenerator, IdTokenAudience, ServiceAccountEmail,
+    GoogleAuthHeaders, GoogleAuthReqwestMiddleware, IdTokenAudience, ServiceAccountEmail,
 };
 
 #[tokio::main]
@@ -20,20 +20,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let service_url = std::env::var("SERVICE_URL")?;
     let audience = IdTokenAudience::new(service_url.clone());
 
-    let generator = match std::env::var("IMPERSONATE_SERVICE_ACCOUNT") {
+    let auth_headers = match std::env::var("IMPERSONATE_SERVICE_ACCOUNT") {
         Ok(service_account) => {
-            GoogleAuthTokenGenerator::id_token_impersonating(
+            GoogleAuthHeaders::id_token_impersonating(
                 &audience,
                 &ServiceAccountEmail::new(service_account),
                 CredentialsBuilder::default().build()?,
             )
             .await?
         }
-        Err(_) => GoogleAuthTokenGenerator::id_token(&audience).await?,
+        Err(_) => GoogleAuthHeaders::id_token_from_adc(&audience).await?,
     };
 
     let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
-        .with(GoogleAuthReqwestMiddleware::new(generator))
+        .with(GoogleAuthReqwestMiddleware::new(auth_headers))
         .build();
 
     let response = client.get(&service_url).send().await?;

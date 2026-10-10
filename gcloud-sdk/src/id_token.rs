@@ -52,3 +52,31 @@ impl fmt::Display for ServiceAccountEmail {
         f.write_str(&self.0)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn impersonation_url_names_the_service_account_before_the_method() {
+        let url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/invoker@orders.iam.gserviceaccount.com:generateAccessToken";
+
+        assert_eq!(
+            ServiceAccountEmail::from_impersonation_url(url).unwrap(),
+            ServiceAccountEmail::new("invoker@orders.iam.gserviceaccount.com")
+        );
+    }
+
+    #[test]
+    fn impersonation_url_without_a_service_account_is_invalid() {
+        let url =
+            "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/:generateAccessToken";
+
+        assert!(matches!(
+            ServiceAccountEmail::from_impersonation_url(url)
+                .unwrap_err()
+                .into_kind(),
+            ErrorKind::InvalidImpersonationUrl(_)
+        ));
+    }
+}

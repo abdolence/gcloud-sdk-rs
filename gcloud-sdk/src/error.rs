@@ -15,8 +15,6 @@ pub enum ErrorKind {
     /// reached. [`CredentialsError::is_transient`](google_cloud_auth::errors::CredentialsError::is_transient)
     /// says whether a retry may succeed.
     Credentials(google_cloud_auth::errors::CredentialsError),
-    /// GCE metadata service error.
-    Metadata(String),
     TonicMetadata(tonic::metadata::errors::InvalidMetadataValue),
     GrpcStatus(tonic::transport::Error),
     UrlError(hyper::http::uri::InvalidUri),
@@ -28,11 +26,19 @@ pub enum ErrorKind {
     HeaderValue(hyper::header::InvalidHeaderValue),
     /// The Application Default Credentials hold no service account to mint an ID token
     /// as. An ID token needs a service account to impersonate, given to
-    /// [`GoogleAuthTokenGenerator::id_token_impersonating`](crate::GoogleAuthTokenGenerator::id_token_impersonating).
+    /// [`GoogleAuthHeaders::id_token_impersonating`](crate::GoogleAuthHeaders::id_token_impersonating).
     IdTokenNeedsImpersonation(IdTokenUnsupportedCredentials),
     /// A `service_account_impersonation_url` in a credentials file that names no
     /// service account.
     InvalidImpersonationUrl(String),
+    /// The Application Default Credentials sign with a private key of their own, such as
+    /// a service account key file, and no rustls
+    /// [`CryptoProvider`](rustls::crypto::CryptoProvider) is installed to sign with.
+    ///
+    /// Only reported when the `auth-default-crypto` feature is off. Install a provider
+    /// with `CryptoProvider::install_default` before building a client, or enable that
+    /// feature.
+    CryptoProviderMissing,
 }
 
 /// Credentials that cannot mint an ID token without impersonating a service account
@@ -45,6 +51,12 @@ pub enum IdTokenUnsupportedCredentials {
     AuthorizedUser,
     /// `external_account` credentials without a `service_account_impersonation_url`.
     ExternalAccount,
+    /// `external_account_authorized_user` credentials, such as
+    /// `gcloud auth application-default login` writes for a workforce identity
+    /// federation user.
+    ExternalAccountAuthorizedUser,
+    /// `gdch_service_account` credentials of Google Distributed Cloud Hosted.
+    GdchServiceAccount,
 }
 
 impl fmt::Display for IdTokenUnsupportedCredentials {
@@ -55,6 +67,10 @@ impl fmt::Display for IdTokenUnsupportedCredentials {
                 f,
                 "external_account credentials without service_account_impersonation_url"
             ),
+            Self::ExternalAccountAuthorizedUser => {
+                write!(f, "external_account_authorized_user credentials")
+            }
+            Self::GdchServiceAccount => write!(f, "gdch_service_account credentials"),
         }
     }
 }
@@ -83,7 +99,6 @@ impl fmt::Display for Error {
             HttpStatus(ref s) => write!(f, "http status error: {}", s),
             CredentialsBuild(ref e) => write!(f, "credentials build error: {}", e),
             Credentials(ref e) => write!(f, "credentials error: {}", e),
-            Metadata(ref e) => write!(f, "gce metadata service error: {}", e),
             GrpcStatus(ref e) => write!(f, "Tonic/gRPC error: {}", e),
             TonicMetadata(ref e) => write!(f, "Tonic metadata error: {}", e),
             UrlError(ref e) => write!(f, "Url error: {}", e),
@@ -98,6 +113,11 @@ impl fmt::Display for Error {
                 f,
                 "service_account_impersonation_url names no service account: {}",
                 url
+            ),
+            CryptoProviderMissing => write!(
+                f,
+                "the credentials sign with a private key and no rustls CryptoProvider is installed; \
+                 install one with CryptoProvider::install_default or enable the auth-default-crypto feature"
             ),
         }
     }

@@ -103,7 +103,6 @@ fn bearer_headers(token: &str) -> HeaderMap {
 }
 
 /// A 2048-bit RSA key generated for these tests; it signs nothing outside them.
-#[cfg(feature = "id-token-verify")]
 pub(crate) const TEST_RSA_PRIVATE_KEY: &str = r"-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDfuSBdVqRqLKTk
 uFNL6aieALaeza3kcVXFzIMZw+SIXWMW372Hes+ettM5501atS2ND8FXSmP3NR9/
@@ -187,7 +186,6 @@ impl StubResponse {
         }
     }
 
-    #[cfg(feature = "id-token-verify")]
     pub(crate) fn with_header(mut self, name: &'static str, value: impl Into<String>) -> Self {
         self.headers.push((name, value.into()));
         self

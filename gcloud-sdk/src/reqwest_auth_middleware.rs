@@ -4,20 +4,20 @@ use async_trait::async_trait;
 use reqwest_middleware::{Middleware, Next};
 
 use crate::middleware::replace_headers;
-use crate::GoogleAuthTokenGenerator;
+use crate::GoogleAuthHeaders;
 
 /// A `reqwest-middleware` middleware that sets the authentication headers of a
-/// [`GoogleAuthTokenGenerator`] on every request: `authorization` with an access token or
+/// [`GoogleAuthHeaders`] on every request: `authorization` with an access token or
 /// an ID token, and any other header the credentials add, such as `x-goog-user-project`.
 #[derive(Clone)]
 pub struct GoogleAuthReqwestMiddleware {
-    token_generator: Arc<GoogleAuthTokenGenerator>,
+    auth_headers: Arc<GoogleAuthHeaders>,
 }
 
 impl GoogleAuthReqwestMiddleware {
-    pub fn new(token_generator: impl Into<Arc<GoogleAuthTokenGenerator>>) -> Self {
+    pub fn new(auth_headers: impl Into<Arc<GoogleAuthHeaders>>) -> Self {
         Self {
-            token_generator: token_generator.into(),
+            auth_headers: auth_headers.into(),
         }
     }
 }
@@ -31,7 +31,7 @@ impl Middleware for GoogleAuthReqwestMiddleware {
         next: Next<'_>,
     ) -> reqwest_middleware::Result<reqwest::Response> {
         let auth_headers = self
-            .token_generator
+            .auth_headers
             .headers()
             .await
             .map_err(reqwest_middleware::Error::middleware)?;
@@ -81,12 +81,11 @@ mod tests {
             "x-goog-user-project",
             HeaderValue::from_static("billing-project"),
         );
-        let generator = GoogleAuthTokenGenerator::from(Credentials::from(StubCredentials::new(
-            credentials_headers,
-        )));
+        let auth_headers =
+            GoogleAuthHeaders::from(Credentials::from(StubCredentials::new(credentials_headers)));
         let capture = CaptureHeaders::default();
         let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
-            .with(GoogleAuthReqwestMiddleware::new(generator))
+            .with(GoogleAuthReqwestMiddleware::new(auth_headers))
             .with(capture.clone())
             .build();
 

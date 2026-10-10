@@ -35,7 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let audience = IdTokenAudience::new(audience);
     let service_account = std::env::var("ID_TOKEN_SERVICE_ACCOUNT").ok();
 
-    let generator = match GoogleAuthTokenGenerator::id_token(&audience).await {
+    let auth_headers = match GoogleAuthHeaders::id_token_from_adc(&audience).await {
         Err(err) if matches!(err.kind(), ErrorKind::IdTokenNeedsImpersonation(_)) => {
             let Some(service_account) = &service_account else {
                 return Err(err.into());
@@ -43,7 +43,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!(
                 "Default credentials hold no service account, impersonating {service_account}"
             );
-            GoogleAuthTokenGenerator::id_token_impersonating(
+            GoogleAuthHeaders::id_token_impersonating(
                 &audience,
                 &ServiceAccountEmail::new(service_account.clone()),
                 CredentialsBuilder::default().build()?,
@@ -52,12 +52,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         other => other?,
     };
-    let headers = generator.headers().await?;
+    let headers = auth_headers.headers().await?;
     let id_token = headers
         .get("authorization")
         .and_then(|authorization| authorization.to_str().ok())
         .and_then(|authorization| authorization.strip_prefix("Bearer "))
-        .ok_or("the generator served no bearer token")?;
+        .ok_or("the credentials served no bearer token")?;
 
     let verified = IdTokenVerifier::new(audience)?.verify(id_token).await?;
     let email = verified
