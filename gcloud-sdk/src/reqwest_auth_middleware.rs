@@ -3,12 +3,12 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use reqwest_middleware::{Middleware, Next};
 
+use crate::middleware::replace_headers;
 use crate::GoogleAuthTokenGenerator;
 
-/// A `reqwest-middleware` middleware that sets the `authorization` header of every
-/// request to the current token of a [`GoogleAuthTokenGenerator`]: an ID token for a
-/// generator over an [`IdTokenSource`](crate::IdTokenSource), or an access token for one
-/// over Google credentials.
+/// A `reqwest-middleware` middleware that sets the authentication headers of a
+/// [`GoogleAuthTokenGenerator`] on every request: `authorization` with an access token or
+/// an ID token, and any other header the credentials add, such as `x-goog-user-project`.
 #[derive(Clone)]
 pub struct GoogleAuthReqwestMiddleware {
     token_generator: Arc<GoogleAuthTokenGenerator>,
@@ -30,13 +30,12 @@ impl Middleware for GoogleAuthReqwestMiddleware {
         extensions: &mut hyper::http::Extensions,
         next: Next<'_>,
     ) -> reqwest_middleware::Result<reqwest::Response> {
-        let authorization = self
+        let auth_headers = self
             .token_generator
-            .authorization_header()
+            .headers()
             .await
             .map_err(reqwest_middleware::Error::middleware)?;
-        req.headers_mut()
-            .insert(reqwest::header::AUTHORIZATION, authorization);
+        replace_headers(req.headers_mut(), &auth_headers);
         next.run(req, extensions).await
     }
 }
@@ -44,43 +43,59 @@ impl Middleware for GoogleAuthReqwestMiddleware {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::{StubResponse, StubServer};
-    use crate::token_source::{Source, Token};
-    use jiff::{SignedDuration, Timestamp};
-    use secret_vault_value::SecretValue;
+    use crate::test_support::StubCredentials;
+    use google_cloud_auth::credentials::Credentials;
+    use reqwest::header::{HeaderMap, HeaderValue};
+    use std::sync::Mutex;
 
-    struct FixedToken;
+    /// Ends the chain with an empty `200 OK` instead of sending the request, keeping the
+    /// headers it received.
+    #[derive(Clone, Default)]
+    struct CaptureHeaders {
+        received: Arc<Mutex<Vec<HeaderMap>>>,
+    }
 
     #[async_trait]
-    impl Source for FixedToken {
-        async fn token(&self) -> crate::error::Result<Token> {
-            Ok(Token::new(
-                "Bearer".to_string(),
-                SecretValue::from("minted-id-token"),
-                Timestamp::now() + SignedDuration::from_hours(1),
-            ))
+    impl Middleware for CaptureHeaders {
+        async fn handle(
+            &self,
+            req: reqwest::Request,
+            _extensions: &mut hyper::http::Extensions,
+            _next: Next<'_>,
+        ) -> reqwest_middleware::Result<reqwest::Response> {
+            self.received.lock().unwrap().push(req.headers().clone());
+            Ok(reqwest::Response::from(hyper::Response::new(
+                Vec::<u8>::new(),
+            )))
         }
     }
 
     #[tokio::test]
-    async fn requests_carry_the_generator_token() {
-        let service = StubServer::start(vec![StubResponse::json("200 OK", "{}")]).await;
+    async fn every_credentials_header_is_forwarded_and_authorization_is_sensitive() {
+        let mut credentials_headers = HeaderMap::new();
+        credentials_headers.insert(
+            reqwest::header::AUTHORIZATION,
+            HeaderValue::from_static("Bearer billed-token"),
+        );
+        credentials_headers.insert(
+            "x-goog-user-project",
+            HeaderValue::from_static("billing-project"),
+        );
+        let generator = GoogleAuthTokenGenerator::from(Credentials::from(StubCredentials::new(
+            credentials_headers,
+        )));
+        let capture = CaptureHeaders::default();
         let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
-            .with(GoogleAuthReqwestMiddleware::new(
-                GoogleAuthTokenGenerator::from_source(Box::new(FixedToken) as crate::BoxSource),
-            ))
+            .with(GoogleAuthReqwestMiddleware::new(generator))
+            .with(capture.clone())
             .build();
 
-        let response = client
-            .get(format!("{}/orders", service.url))
-            .send()
-            .await
-            .unwrap();
+        client.get("http://orders.invalid/").send().await.unwrap();
 
-        assert_eq!(response.status(), reqwest::StatusCode::OK);
-        assert_eq!(
-            service.received()[0].header("authorization"),
-            Some("Bearer minted-id-token")
-        );
+        let received = capture.received.lock().unwrap();
+        let authorization = &received[0][reqwest::header::AUTHORIZATION];
+        assert_eq!(authorization, "Bearer billed-token");
+        assert!(authorization.is_sensitive());
+        assert_eq!(received[0]["x-goog-user-project"], "billing-project");
     }
 }

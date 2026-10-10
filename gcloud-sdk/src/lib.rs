@@ -38,16 +38,18 @@ pub use apis::*;
 mod axum_layer;
 #[cfg(feature = "axum")]
 pub use axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
+mod adc;
+mod auth_token_generator;
 pub mod error;
+mod id_token;
 #[cfg(feature = "id-token-verify")]
 pub mod id_token_verify;
+#[cfg(feature = "id-token-verify")]
 mod jwt_crypto;
-mod token_source;
+mod metadata;
+pub use auth_token_generator::GoogleAuthTokenGenerator;
+pub use id_token::{IdTokenAudience, ServiceAccountEmail};
 pub use middleware::GoogleAuthMiddlewareLayer;
-pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
-pub use token_source::id_token::{IdTokenAudience, IdTokenSource, ServiceAccountEmail};
-pub use token_source::metadata::Metadata as GceMetadataClient;
-pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, TokenSourceType};
 
 mod api_client;
 pub use api_client::*;
@@ -67,6 +69,10 @@ pub mod proto_ext;
 pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 
 // Re-exports
+/// The crate that mints every token, at the version this crate is built against: build
+/// [`Credentials`](google_cloud_auth::credentials::Credentials) with it for
+/// [`GoogleApi::from_function_with_credentials`] and [`GoogleAuthTokenGenerator`].
+pub use google_cloud_auth;
 pub use hyper::HeaderMap;
 pub use prost;
 pub use prost_types;
