@@ -14,8 +14,7 @@ struct CachedToken {
 
 impl CachedToken {
     fn from_token(token: Token) -> crate::error::Result<Self> {
-        let mut authorization = HeaderValue::from_str(&token.header_value())?;
-        authorization.set_sensitive(true);
+        let authorization = token.authorization()?;
         Ok(Self {
             token,
             authorization,
@@ -34,11 +33,17 @@ impl GoogleAuthTokenGenerator {
         token_scopes: Vec<String>,
     ) -> crate::error::Result<GoogleAuthTokenGenerator> {
         let token_source: BoxSource = create_source(token_source_type, token_scopes).await?;
+        Ok(Self::from_source(token_source))
+    }
 
-        Ok(GoogleAuthTokenGenerator {
-            token_source,
+    /// A generator that caches the tokens of `token_source` and asks it for a new one
+    /// shortly before the cached one expires. Pass an
+    /// [`IdTokenSource`](crate::IdTokenSource) to serve ID tokens.
+    pub fn from_source(token_source: impl Into<BoxSource>) -> GoogleAuthTokenGenerator {
+        GoogleAuthTokenGenerator {
+            token_source: token_source.into(),
             cached_token: RwLock::new(None),
-        })
+        }
     }
 
     pub async fn clear_cache(&self) {

@@ -50,10 +50,18 @@
 mod apis;
 pub use apis::*;
 
+#[cfg(feature = "axum")]
+mod axum_layer;
+#[cfg(feature = "axum")]
+pub use axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
 pub mod error;
+#[cfg(feature = "id-token-verify")]
+pub mod id_token_verify;
+mod jwt_crypto;
 mod token_source;
 pub use middleware::GoogleAuthMiddlewareLayer;
 pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
+pub use token_source::id_token::{IdTokenAudience, IdTokenSource, ServiceAccountEmail};
 pub use token_source::metadata::Metadata as GceMetadataClient;
 pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, TokenSourceType};
 
@@ -61,6 +69,14 @@ mod api_client;
 pub use api_client::*;
 
 mod middleware;
+
+#[cfg(feature = "reqwest-middleware")]
+mod reqwest_auth_middleware;
+#[cfg(feature = "reqwest-middleware")]
+pub use reqwest_auth_middleware::GoogleAuthReqwestMiddleware;
+
+#[cfg(test)]
+mod test_support;
 
 pub mod proto_ext;
 

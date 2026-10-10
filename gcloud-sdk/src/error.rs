@@ -35,6 +35,41 @@ pub enum ErrorKind {
     /// A header value built from user input (user agent, headers, the token itself)
     /// failed HTTP header validation (e.g. contained a control character).
     HeaderValue(hyper::header::InvalidHeaderValue),
+    /// The credentials hold no service account to mint an ID token as. An ID token
+    /// needs a service account to impersonate, given to
+    /// [`IdTokenSource::impersonating`](crate::IdTokenSource::impersonating).
+    IdTokenNeedsImpersonation(IdTokenUnsupportedCredentials),
+    /// A `service_account_impersonation_url` in a credentials file that names no
+    /// service account.
+    InvalidImpersonationUrl(String),
+}
+
+/// Credentials that cannot mint an ID token without impersonating a service account
+/// (see [`ErrorKind::IdTokenNeedsImpersonation`]).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IdTokenUnsupportedCredentials {
+    /// `authorized_user` credentials, such as those `gcloud auth application-default login`
+    /// writes.
+    AuthorizedUser,
+    /// `external_account` credentials without a `service_account_impersonation_url`.
+    ExternalAccount,
+    /// An access token source given as
+    /// [`TokenSourceType::ExternalSource`](crate::TokenSourceType::ExternalSource).
+    ExternalSource,
+}
+
+impl fmt::Display for IdTokenUnsupportedCredentials {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::AuthorizedUser => write!(f, "authorized_user credentials"),
+            Self::ExternalAccount => write!(
+                f,
+                "external_account credentials without service_account_impersonation_url"
+            ),
+            Self::ExternalSource => write!(f, "an external token source"),
+        }
+    }
 }
 
 /// Details of an authentication failure (see [`ErrorKind::Auth`]).
@@ -123,6 +158,16 @@ impl fmt::Display for Error {
             InvalidApiUrl(ref e) => write!(f, "Invalid API URL: {}", e),
             ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
             HeaderValue(ref e) => write!(f, "invalid header value: {}", e),
+            IdTokenNeedsImpersonation(ref credentials) => write!(
+                f,
+                "{} cannot mint an ID token; give a service account to impersonate",
+                credentials
+            ),
+            InvalidImpersonationUrl(ref url) => write!(
+                f,
+                "service_account_impersonation_url names no service account: {}",
+                url
+            ),
         }
     }
 }

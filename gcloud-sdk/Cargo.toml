@@ -16,10 +16,14 @@ exclude = ["*.sh"]
 doctest = false
 
 [features]
-default = ["tls-roots"]
+default = ["tls-roots", "jwt-aws-lc-rs"]
 tls-roots = ["reqwest/native-tls", "tonic/tls-native-roots"]
 tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
+jwt-aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
+jwt-rust-crypto = ["jsonwebtoken/rust_crypto"]
 rest = ["serde_with"]
+id-token-verify = []
+axum = ["dep:axum-core", "id-token-verify"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
 # Google API features
@@ -414,6 +418,8 @@ aws-config = { version = "1.1", features = ["behavior-version-latest"], optional
 aws-sigv4 = { version = "1.2" , optional = true }
 aws-credential-types = { version = "1.2.1", optional = true }
 percent-encoding = { version = "2.3", optional = true }
+reqwest-middleware = { version = "0.5", optional = true, default-features = false }
+axum-core = { version = "0.5", optional = true }
 
 
 [dev-dependencies]
@@ -424,4 +430,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots"]
+features = ["rest", "tls-roots", "id-token-verify", "axum", "reqwest-middleware"]

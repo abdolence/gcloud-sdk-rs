@@ -45,6 +45,14 @@ impl GoogleRestApi {
         Ok(request.header(reqwest::header::AUTHORIZATION, authorization))
     }
 
+    /// A [`GoogleAuthReqwestMiddleware`](crate::GoogleAuthReqwestMiddleware) over this
+    /// client's token generator, so requests sent through a `reqwest-middleware` client
+    /// reuse the tokens this client has already minted.
+    #[cfg(feature = "reqwest-middleware")]
+    pub fn middleware(&self) -> crate::GoogleAuthReqwestMiddleware {
+        crate::GoogleAuthReqwestMiddleware::new(self.token_generator.clone())
+    }
+
     pub async fn get<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
         self.with_google_token(self.client.request(Method::GET, url))
             .await
@@ -89,4 +97,75 @@ where
         .unwrap();
 
     url.as_str().parse().unwrap()
+}
+
+#[cfg(all(test, feature = "reqwest-middleware"))]
+mod tests {
+    use super::*;
+    use crate::test_support::{StubResponse, StubServer};
+    use crate::token_source::{Source, Token};
+    use jiff::{SignedDuration, Timestamp};
+    use secret_vault_value::SecretValue;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    struct CountingSource {
+        mints: Arc<AtomicUsize>,
+    }
+
+    #[async_trait]
+    impl Source for CountingSource {
+        async fn token(&self) -> crate::error::Result<Token> {
+            self.mints.fetch_add(1, Ordering::SeqCst);
+            Ok(Token::new(
+                "Bearer".to_string(),
+                SecretValue::from("shared-token"),
+                Timestamp::now() + SignedDuration::from_hours(1),
+            ))
+        }
+    }
+
+    #[tokio::test]
+    async fn middleware_shares_the_token_cache() {
+        let mints = Arc::new(AtomicUsize::new(0));
+        let api = GoogleRestApi {
+            client: reqwest::Client::new(),
+            token_generator: Arc::new(GoogleAuthTokenGenerator::from_source(Box::new(
+                CountingSource {
+                    mints: mints.clone(),
+                },
+            )
+                as crate::BoxSource)),
+        };
+        let service = StubServer::start(vec![
+            StubResponse::json("200 OK", "{}"),
+            StubResponse::json("200 OK", "{}"),
+        ])
+        .await;
+        let middleware_client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
+            .with(api.middleware())
+            .build();
+
+        api.get(format!("{}/rest", service.url))
+            .await
+            .unwrap()
+            .send()
+            .await
+            .unwrap();
+        middleware_client
+            .get(format!("{}/middleware", service.url))
+            .send()
+            .await
+            .unwrap();
+
+        let received = service.received();
+        assert_eq!(
+            received[0].header("authorization"),
+            Some("Bearer shared-token")
+        );
+        assert_eq!(
+            received[1].header("authorization"),
+            Some("Bearer shared-token")
+        );
+        assert_eq!(mints.load(Ordering::SeqCst), 1);
+    }
 }

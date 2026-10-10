@@ -1,0 +1,10 @@
+[package]
+name = "id-token-axum-server-example"
+version = "0.1.0"
+authors = ["me@abdolence.dev"]
+edition = "2021"
+
+[dependencies]
+gcloud-sdk = { path = "./../../gcloud-sdk", features = ["id-token-verify", "axum"] }
+tokio = { version = "1.20", features = ["full"] }
+axum = "0.8"

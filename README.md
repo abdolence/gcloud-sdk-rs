@@ -12,6 +12,7 @@ This is NOT OFFICIAL Google Cloud SDK (there is early versions with limited func
 
 # Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
+It also handles [Google authentication](#google-authentication) for these clients and [service-to-service authentication](#service-to-service-authentication) with Google ID tokens between your own services.
 
 ## How API/models are generated:
 - gRPC APIs: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
@@ -124,6 +125,194 @@ So to work for local development you need to use `gcloud auth application-defaul
 Some of the APIs (notable KMS, Artifact Registry and others) require additionally specify headers such as `x-goog-request-params`.
 You can find an example how to handle it [here](https://github.com/abdolence/kms-aead-rs/blob/b8bb496800625a660be0c9896366d7407b8aa714/src/providers/gcp_kms_encryption.rs#L114)
 
+## Service-to-service authentication
+The library supports Google-signed ID tokens on both sides of a call between services:
+- minting them to call Cloud Run, Cloud Run functions and services behind Identity-Aware Proxy (IAP);
+- attaching them to gRPC and HTTP requests;
+- verifying them in the service that receives the call (`id-token-verify` feature);
+- protecting an axum service (`axum` feature) and calling it with reqwest (`reqwest-middleware` feature).
+
+Full examples: [axum service](examples/id-token-axum-server), [reqwest client](examples/id-token-reqwest-client).
+[examples/id-token](examples/id-token) mints and verifies a token with the core API only,
+and is the end-to-end check of the keyless CI workflow.
+
+### Calling a Cloud Run or IAP service
+`IdTokenSource` mints ID tokens for one audience:
+- the URL of a Cloud Run service, or a custom audience configured for it;
+- the OAuth client ID of a resource behind IAP.
+
+Google ID tokens are valid for one hour. `GoogleAuthTokenGenerator::from_source` caches the token
+and refreshes it before `exp`, the same way as access tokens.
+
+gRPC (for example a tonic service on Cloud Run), with the default features:
+
+```rust
+use gcloud_sdk::{
+    GoogleApi, GoogleAuthMiddleware, GoogleAuthMiddlewareLayer, GoogleAuthTokenGenerator,
+    IdTokenAudience, IdTokenSource, TokenSourceType,
+};
+
+let audience = IdTokenAudience::new("https://orders-abc123-ew.a.run.app");
+let id_tokens = GoogleAuthTokenGenerator::from_source(
+    IdTokenSource::new(audience, TokenSourceType::Default).await?,
+);
+
+let orders_client: GoogleApi<OrdersClient<GoogleAuthMiddleware>> =
+    GoogleApi::from_function_with_middleware(
+        OrdersClient::new,
+        "https://orders-abc123-ew.a.run.app",
+        GoogleAuthMiddlewareLayer::new(id_tokens, None)?,
+    )
+    .await?;
+```
+
+HTTP with `reqwest-middleware` feature:
+
+```toml
+gcloud-sdk = { version = "0.32", features = ["reqwest-middleware"] }
+reqwest = "0.13"
+reqwest-middleware = "0.5"
+```
+
+```rust
+use gcloud_sdk::GoogleAuthReqwestMiddleware;
+
+let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
+    .with(GoogleAuthReqwestMiddleware::new(id_tokens))
+    .build();
+
+let response = client
+    .get("https://orders-abc123-ew.a.run.app/orders")
+    .send()
+    .await?;
+```
+
+Full example available [here](examples/id-token-reqwest-client).
+
+With the `rest` feature as well, `GoogleRestApi::middleware()` gives the middleware for hand-written
+`reqwest-middleware` calls on the same token cache as the `GoogleRestApi` client.
+
+Without the `reqwest-middleware` feature, `id_tokens.authorization_header().await?` gives the `authorization` header value
+for any HTTP client.
+
+### Which credentials work
+`IdTokenSource::new` takes the identity of the credentials it finds:
+- service account key file: signs a JWT with the key and exchanges it for an ID token;
+- metadata server (Cloud Run, GKE, Compute Engine, etc.): the service account attached to the workload;
+- `gcloud auth application-default login --impersonate-service-account=...` and workload identity
+  federation with service account impersonation: the impersonated service account.
+
+User credentials from `gcloud auth application-default login` and workload identity federation without
+service account impersonation cannot mint an ID token for an audience,
+so `IdTokenSource::new` returns `ErrorKind::IdTokenNeedsImpersonation` for them.
+Use `IdTokenSource::impersonating` with any credentials to mint ID tokens of a service account through
+IAM Credentials API:
+
+```rust
+use gcloud_sdk::{IdTokenAudience, IdTokenSource, ServiceAccountEmail, TokenSourceType};
+
+let source = IdTokenSource::impersonating(
+    IdTokenAudience::new("https://orders-abc123-ew.a.run.app"),
+    ServiceAccountEmail::new("invoker@my-project.iam.gserviceaccount.com"),
+    TokenSourceType::Default,
+)
+.await?;
+```
+
+The caller needs `roles/iam.serviceAccountOpenIdTokenCreator` on that service account.
+This is also the way for local development, using your own `gcloud auth application-default login` credentials.
+
+### Receiving and verifying tokens
+`IdTokenVerifier` from `id-token-verify` feature checks:
+- RS256 signature with Google keys from `https://www.googleapis.com/oauth2/v3/certs`;
+- `iss` is Google, and `aud` is the audience of your service;
+- `exp`, `nbf` and `iat`, with 30 seconds of leeway.
+
+The keys are cached for the `max-age` of the response. A token signed with an unknown key ID refetches them,
+at most once every 30 seconds. When a fetch fails, the cached keys stay in use until their `max-age` passes.
+
+```toml
+gcloud-sdk = { version = "0.32", features = ["id-token-verify"] }
+```
+
+```rust
+use gcloud_sdk::id_token_verify::{IdTokenVerifier, IdTokenVerifyError};
+use gcloud_sdk::IdTokenAudience;
+
+let verifier = IdTokenVerifier::new(IdTokenAudience::new("https://orders-abc123-ew.a.run.app"))?;
+
+match verifier.verify(bearer_token).await {
+    Ok(verified) => {
+        // Your own allowlist of callers
+        let caller = verified.verified_email();
+    }
+    // Answer 401
+    Err(IdTokenVerifyError::InvalidToken(reason)) => {}
+    // Answer 503: the token may be valid, but Google keys are not available
+    Err(IdTokenVerifyError::KeysUnavailable(error)) => {}
+}
+```
+
+`IdTokenVerifier::with_keys_source` takes the keys from your own `IdTokenKeysSource` instead,
+for example a locally generated RSA key in tests.
+
+The verifier checks signatures with the [JWT crypto provider](#jwt-crypto-provider) of the library features.
+
+### Protecting an axum service
+`VerifyIdTokenLayer` from `axum` feature verifies the bearer token of every request:
+- 401 for a missing or invalid token;
+- 403 when the token is valid, but your `authorize` check refuses the caller;
+- 503 when Google keys are not available.
+
+Handlers receive the verified claims as `VerifiedIdToken`:
+
+```toml
+gcloud-sdk = { version = "0.32", features = ["id-token-verify", "axum"] }
+axum = "0.8"
+```
+
+```rust
+use std::sync::Arc;
+
+use axum::routing::get;
+use axum::Router;
+use gcloud_sdk::id_token_verify::{
+    IdTokenVerifier, PrincipalEmail, VerifiedIdToken, VerifyIdTokenLayer,
+};
+use gcloud_sdk::IdTokenAudience;
+
+let verifier = Arc::new(IdTokenVerifier::new(IdTokenAudience::new(
+    "https://orders-abc123-ew.a.run.app",
+))?);
+let billing = PrincipalEmail::new("billing@my-project.iam.gserviceaccount.com");
+
+let app = Router::new()
+    .route("/orders", get(list_orders))
+    .layer(
+        VerifyIdTokenLayer::new(verifier)
+            .authorize(move |token| token.verified_email() == Some(&billing)),
+    );
+
+async fn list_orders(caller: VerifiedIdToken) -> String {
+    format!("Orders for {:?}", caller.verified_email())
+}
+```
+
+The layer is a tower layer, so it works the same way for tonic servers.
+
+Full example available [here](examples/id-token-axum-server).
+
+### JWT crypto provider
+Service account keys and `IdTokenVerifier` sign and verify JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
+- `jwt-aws-lc-rs`: default feature, uses aws-lc-rs, which is built from C sources and needs a C compiler;
+- `jwt-rust-crypto`: the pure Rust alternative, uses the crates of RustCrypto.
+
+With `default-features = false` enable one of them, or install a `jsonwebtoken` crypto provider in your application yourself.
+With both enabled, aws-lc-rs is used.
+The library installs the provider of the enabled feature as the process default of `jsonwebtoken`, unless your application installed one before.
+
+`tls-webpki-roots` already builds aws-lc-rs for rustls, so `jwt-aws-lc-rs` adds nothing new with it.
+`jwt-rust-crypto` avoids the C build only together with `tls-roots`.
 
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
@@ -149,3 +338,4 @@ The library was started as a fork of [mechiru/googapis](https://github.com/mechi
 - Improved observability with tracing and measuring execution time of endpoints.
 - Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime.
 - Security-related protocol extensions for Google Secret Manager and KMS.
+- Service-to-service authentication with Google ID tokens: minting and verifying them, a reqwest middleware and an axum layer.

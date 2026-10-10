@@ -11,6 +11,8 @@ members = [
     "examples/text-to-speech-client",
     "examples/kms-client",
     "examples/id-token",
+    "examples/id-token-axum-server",
+    "examples/id-token-reqwest-client",
     "examples/iam-client",
     "examples/artifact-registry-client",
     "examples/servicecontrol-client",
