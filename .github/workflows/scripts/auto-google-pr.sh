@@ -2,7 +2,7 @@
 
 #git submodule foreach git pull origin master
 git submodule update --init --recursive --recommend-shallow --depth 1 --remote --merge
-cargo protosgen
+cargo protosgen || exit 1
 git add -A -- gcloud-sdk/genproto gcloud-sdk/src/google_apis.rs gcloud-protos-generator/proto/googleapis
 
 git update-index --refresh

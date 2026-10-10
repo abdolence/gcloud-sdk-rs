@@ -4,6 +4,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+pub mod prerelease;
+
 #[derive(Clone, Hash, PartialEq, Eq)]
 pub struct Package {
     raw: String,
@@ -62,7 +64,7 @@ impl Package {
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct Proto {
     pub path: PathBuf,
-    package: Package,
+    pub package: Package,
     imports: Vec<Proto>,
 }
 

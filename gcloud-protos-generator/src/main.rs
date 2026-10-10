@@ -1,5 +1,5 @@
-use crate::gen::Proto;
-use std::{fs, path::PathBuf};
+use crate::gen::{prerelease::SupersededPrereleases, Proto};
+use std::{fs, path::PathBuf, process};
 
 mod gen;
 
@@ -8,6 +8,14 @@ fn main() {
     let proto_includes = PathBuf::from("gcloud-protos-generator/protobuf");
     let all_protos = gen::find_proto(proto_root.clone());
     let protos = filter_unwanted_protos(all_protos);
+    let superseded = protos
+        .iter()
+        .map(|proto| &proto.package)
+        .collect::<SupersededPrereleases>();
+    let protos = superseded.remove_from(protos).unwrap_or_else(|refused| {
+        eprintln!("{refused}");
+        process::exit(1)
+    });
 
     let out_dir = PathBuf::from("gcloud-sdk/genproto");
     let _ = fs::remove_dir_all(out_dir.as_path());
@@ -56,15 +64,11 @@ fn filter_unwanted_protos(protos: Vec<Proto>) -> Vec<Proto> {
         .filter(|proto| {
             let path = proto.path.to_str().unwrap();
             !path.contains("google/ads/")
-                && !path.contains("google/cloud/compute/v1beta/")
                 && !path.contains("google/cloud/gkehub/")
                 && !path.contains("google/cloud/retail/")
                 && !path.contains("google/cloud/oracledatabase/")
                 && !path.contains("google/cloud/discoveryengine/")
                 && !path.contains("google/shopping")
-                && !path.contains("google/cloud/dialogflow/v2beta")
-                && !path.contains("google/cloud/dialogflow/v3beta1")
-                && !path.contains("google/cloud/dialogflow/cx/v3beta1")
                 && !path.contains("preview/google/")
         })
         .collect()
