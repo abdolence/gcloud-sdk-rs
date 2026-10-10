@@ -355,7 +355,7 @@ mod jwt {
         claims: &impl serde::Serialize,
     ) -> crate::error::Result<reqwest::Response> {
         let header = header("JWT", &sa.private_key_id);
-        crate::jwt_crypto::ensure_provider()?;
+        crate::jwt_crypto::ensure_provider();
         let key = EncodingKey::from_rsa_pem(sa.private_key.as_sensitive_bytes())?;
         let assertion = &encode(&header, claims, &key)?;
 
@@ -567,17 +567,6 @@ mod tests {
         );
     }
 
-    fn test_service_account(token_uri: String) -> ServiceAccount {
-        ServiceAccount {
-            client_email: "caller@my-project.iam.gserviceaccount.com".to_string(),
-            private_key_id: "test-key-id".to_string(),
-            private_key: crate::test_support::TEST_RSA_PRIVATE_KEY.into(),
-            token_uri,
-            scopes: crate::GCP_DEFAULT_SCOPES.clone(),
-            quota_project_id: None,
-        }
-    }
-
     #[cfg(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto"))]
     #[tokio::test]
     async fn service_account_key_signs_its_assertion() {
@@ -587,27 +576,18 @@ mod tests {
         )])
         .await
         .url;
+        let service_account = ServiceAccount {
+            client_email: "caller@my-project.iam.gserviceaccount.com".to_string(),
+            private_key_id: "test-key-id".to_string(),
+            private_key: crate::test_support::TEST_RSA_PRIVATE_KEY.into(),
+            token_uri: format!("{url}/token"),
+            scopes: crate::GCP_DEFAULT_SCOPES.clone(),
+            quota_project_id: None,
+        };
 
-        let token = jwt::token(&test_service_account(format!("{url}/token")))
-            .await
-            .unwrap();
+        let token = jwt::token(&service_account).await.unwrap();
 
         assert_eq!(token.token.as_sensitive_str(), "service-account-token");
-    }
-
-    #[cfg(not(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto")))]
-    #[tokio::test]
-    async fn service_account_key_without_a_crypto_provider_is_an_error() {
-        let err = jwt::token(&test_service_account(
-            "http://127.0.0.1:1/token".to_string(),
-        ))
-        .await
-        .unwrap_err();
-
-        assert!(matches!(
-            err.kind(),
-            crate::error::ErrorKind::JwtCryptoProviderMissing
-        ));
     }
 
     #[tokio::test]

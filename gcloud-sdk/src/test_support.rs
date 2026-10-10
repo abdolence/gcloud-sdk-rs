@@ -1,6 +1,6 @@
 //! Fixtures shared by the tests: an RSA key and a local HTTP stub server.
 
-// Without a JWT crypto provider only the missing-provider errors are tested, and most
+// Without a JWT crypto provider the tests that sign or verify are not built, and most
 // fixtures go unused.
 #![cfg_attr(
     not(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto")),
@@ -48,7 +48,7 @@ pub(crate) fn signed_jwt(kid: &str, claims: &serde_json::Value) -> String {
         kid: Some(kid.to_string()),
         ..Header::new(Algorithm::RS256)
     };
-    crate::jwt_crypto::ensure_provider().unwrap();
+    crate::jwt_crypto::ensure_provider();
     let key = EncodingKey::from_rsa_pem(TEST_RSA_PRIVATE_KEY.as_bytes()).unwrap();
     encode(&header, claims, &key).unwrap()
 }
@@ -57,7 +57,7 @@ pub(crate) fn signed_jwt(kid: &str, claims: &serde_json::Value) -> String {
 /// `key_ids`.
 #[cfg(feature = "id-token-verify")]
 pub(crate) fn test_jwk_set(key_ids: &[&str]) -> jsonwebtoken::jwk::JwkSet {
-    crate::jwt_crypto::ensure_provider().unwrap();
+    crate::jwt_crypto::ensure_provider();
     let encoding_key = EncodingKey::from_rsa_pem(TEST_RSA_PRIVATE_KEY.as_bytes()).unwrap();
     let keys = key_ids
         .iter()

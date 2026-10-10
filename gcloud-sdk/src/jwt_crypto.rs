@@ -3,25 +3,15 @@
 
 /// Makes the provider of the enabled `jwt-*` feature the process default of
 /// `jsonwebtoken`, unless the application installed one already; with both features,
-/// aws-lc-rs. Call it before every `jsonwebtoken` signature or verification: without
-/// either feature it fails with [`ErrorKind::JwtCryptoProviderMissing`], where
-/// `jsonwebtoken` would panic.
+/// aws-lc-rs. Call it before every `jsonwebtoken` signature or verification.
 ///
-/// [`ErrorKind::JwtCryptoProviderMissing`]: crate::error::ErrorKind::JwtCryptoProviderMissing
-pub(crate) fn ensure_provider() -> crate::error::Result<()> {
+/// Without either feature it does nothing, so the provider the application installed,
+/// through its own `jsonwebtoken` features or `install_default`, is the one used.
+pub(crate) fn ensure_provider() {
+    // An `Err` from `install_default` means a provider is installed already, the
+    // application's or ours.
     #[cfg(feature = "jwt-aws-lc-rs")]
-    let provider = Some(&jsonwebtoken::crypto::aws_lc::DEFAULT_PROVIDER);
+    let _ = jsonwebtoken::crypto::aws_lc::DEFAULT_PROVIDER.install_default();
     #[cfg(all(feature = "jwt-rust-crypto", not(feature = "jwt-aws-lc-rs")))]
-    let provider = Some(&jsonwebtoken::crypto::rust_crypto::DEFAULT_PROVIDER);
-    #[cfg(not(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto")))]
-    let provider: Option<&'static jsonwebtoken::crypto::CryptoProvider> = None;
-
-    match provider {
-        Some(provider) => {
-            // An `Err` means a provider is installed already, the application's or ours.
-            let _ = provider.install_default();
-            Ok(())
-        }
-        None => Err(crate::error::ErrorKind::JwtCryptoProviderMissing.into()),
-    }
+    let _ = jsonwebtoken::crypto::rust_crypto::DEFAULT_PROVIDER.install_default();
 }

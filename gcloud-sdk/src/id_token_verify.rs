@@ -2,8 +2,8 @@
 //! service-to-service call.
 //!
 //! Signatures are checked with the crypto provider of the `jwt-aws-lc-rs` or
-//! `jwt-rust-crypto` feature. Without either, creating an [`IdTokenVerifier`] fails with
-//! [`ErrorKind::JwtCryptoProviderMissing`].
+//! `jwt-rust-crypto` feature. Without either, the application installs a `jsonwebtoken`
+//! crypto provider itself.
 
 use std::collections::HashMap;
 use std::fmt;
@@ -291,43 +291,43 @@ pub struct IdTokenVerifier {
 
 impl IdTokenVerifier {
     /// A verifier that fetches Google's signing keys from
-    /// <https://www.googleapis.com/oauth2/v3/certs>. Fails with
-    /// [`ErrorKind::JwtCryptoProviderMissing`] without a `jwt-*` feature.
+    /// <https://www.googleapis.com/oauth2/v3/certs>. Fails only when the HTTP client
+    /// cannot be built.
     pub fn new(audience: IdTokenAudience) -> crate::error::Result<Self> {
         let client = reqwest::Client::builder()
             .user_agent(crate::GCLOUD_SDK_USER_AGENT)
             .timeout(KEYS_FETCH_TIMEOUT)
             .https_only(true)
             .build()?;
-        Self::with_keys_source(
+        Ok(Self::with_keys_source(
             audience,
             GoogleKeys {
                 client,
                 url: GOOGLE_KEYS_URL.to_string(),
             },
-        )
+        ))
     }
 
     /// A verifier that gets its signing keys from `keys_source`, such as a fixed local
-    /// key in tests. The other checks and the errors are the same as [`new`](Self::new)'s.
+    /// key in tests. The other checks are the same as [`new`](Self::new)'s.
     pub fn with_keys_source(
         audience: IdTokenAudience,
         keys_source: impl IdTokenKeysSource + 'static,
-    ) -> crate::error::Result<Self> {
-        crate::jwt_crypto::ensure_provider()?;
+    ) -> Self {
+        crate::jwt_crypto::ensure_provider();
         let mut validation = Validation::new(Algorithm::RS256);
         validation.set_audience(&[audience.as_str()]);
         validation.set_issuer(&GOOGLE_ISSUERS);
         validation.set_required_spec_claims(&["exp", "iss", "aud", "sub"]);
         validation.leeway = LEEWAY.as_secs().unsigned_abs();
         validation.validate_nbf = true;
-        Ok(Self {
+        Self {
             validation,
             keys_source: Box::new(keys_source),
             cache: RwLock::new(KeyCache::default()),
             fetching: Mutex::new(()),
             refetch_interval: REFETCH_INTERVAL,
-        })
+        }
     }
 
     /// Verifies `token`, the bearer token of an `authorization` header, and returns its
@@ -545,7 +545,7 @@ mod tests {
     ) -> (IdTokenVerifier, Arc<AtomicUsize>) {
         let (source, fetches) = ScriptedKeys::new(results);
         (
-            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source).unwrap(),
+            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source),
             fetches,
         )
     }
@@ -759,7 +759,7 @@ mod tests {
         ]);
         source.fetch_duration = Duration::from_millis(300);
         let mut verifier =
-            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source).unwrap();
+            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source);
         verifier.refetch_interval = Duration::from_millis(100);
         let verifier = Arc::new(verifier);
         verifier
@@ -859,19 +859,5 @@ mod tests {
             keys_endpoint.received()[0].request_line,
             "GET /oauth2/v3/certs HTTP/1.1"
         );
-    }
-}
-
-#[cfg(all(test, not(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto"))))]
-mod missing_provider_tests {
-    use super::*;
-
-    #[test]
-    fn verifier_without_a_crypto_provider_is_refused() {
-        let err = IdTokenVerifier::new(IdTokenAudience::new("https://orders-abc123-ew.a.run.app"))
-            .err()
-            .unwrap();
-
-        assert!(matches!(err.kind(), ErrorKind::JwtCryptoProviderMissing));
     }
 }

@@ -35,9 +35,6 @@ pub enum ErrorKind {
     /// A header value built from user input (user agent, headers, the token itself)
     /// failed HTTP header validation (e.g. contained a control character).
     HeaderValue(hyper::header::InvalidHeaderValue),
-    /// Neither the `jwt-aws-lc-rs` nor the `jwt-rust-crypto` feature is enabled, so
-    /// JWTs cannot be signed or verified.
-    JwtCryptoProviderMissing,
     /// The credentials hold no service account to mint an ID token as. An ID token
     /// needs a service account to impersonate, given to
     /// [`IdTokenSource::impersonating`](crate::IdTokenSource::impersonating).
@@ -161,10 +158,6 @@ impl fmt::Display for Error {
             InvalidApiUrl(ref e) => write!(f, "Invalid API URL: {}", e),
             ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
             HeaderValue(ref e) => write!(f, "invalid header value: {}", e),
-            JwtCryptoProviderMissing => write!(
-                f,
-                "no JWT crypto provider: enable the gcloud-sdk feature jwt-aws-lc-rs or jwt-rust-crypto"
-            ),
             IdTokenNeedsImpersonation(ref credentials) => write!(
                 f,
                 "{} cannot mint an ID token; give a service account to impersonate",

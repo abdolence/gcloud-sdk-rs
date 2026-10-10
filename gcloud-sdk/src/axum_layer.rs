@@ -235,7 +235,10 @@ mod tests {
     }
 
     fn verifier(keys: TestKeys) -> Arc<IdTokenVerifier> {
-        Arc::new(IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), keys).unwrap())
+        Arc::new(IdTokenVerifier::with_keys_source(
+            IdTokenAudience::new(AUDIENCE),
+            keys,
+        ))
     }
 
     fn token_for(audience: &str) -> String {

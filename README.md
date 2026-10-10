@@ -257,13 +257,13 @@ The layer is a tower layer, so it works the same way for tonic servers.
 Full example available [here](examples/id-token).
 
 ### JWT crypto provider
-Service account keys sign JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
+Service account keys and `IdTokenVerifier` sign and verify JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
 - `jwt-aws-lc-rs`: default feature, uses aws-lc-rs, which is built from C sources and needs a C compiler;
-- `jwt-rust-crypto`: uses the pure Rust crates of RustCrypto.
+- `jwt-rust-crypto`: the pure Rust alternative, uses the crates of RustCrypto.
 
-With `default-features = false` enable one of them, otherwise service account keys and `IdTokenVerifier::new` fail with `ErrorKind::JwtCryptoProviderMissing`.
+With `default-features = false` enable one of them, or install a `jsonwebtoken` crypto provider in your application yourself.
 With both enabled, aws-lc-rs is used.
-The library installs the provider as the process default of `jsonwebtoken`, unless your application installed one before.
+The library installs the provider of the enabled feature as the process default of `jsonwebtoken`, unless your application installed one before.
 
 `tls-webpki-roots` already builds aws-lc-rs for rustls, so `jwt-aws-lc-rs` adds nothing new with it.
 `jwt-rust-crypto` avoids the C build only together with `tls-roots`.
