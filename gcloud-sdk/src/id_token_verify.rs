@@ -350,9 +350,11 @@ impl IdTokenVerifier {
         if let Some(found) = self.cache.read().await.lookup(&kid, self.refetch_interval) {
             return found;
         }
-        self.cache.write().await.last_fetch = Some(Instant::now());
         let fetched = self.keys_source.fetch_keys().await;
         let mut cache = self.cache.write().await;
+        // Set only once the fetch is over: verifications arriving during it must wait on
+        // `fetching` for its keys, not be refused as inside the refetch interval.
+        cache.last_fetch = Some(Instant::now());
         match fetched {
             Ok(keys) => {
                 cache.store(keys);
@@ -403,7 +405,7 @@ struct KeyCache {
     keys: HashMap<String, Arc<DecodingKey>>,
     /// When the keys stop being fresh; `None` until a fetch succeeds.
     fresh_until: Option<Instant>,
-    /// When the last fetch started, whether it succeeded or not.
+    /// When the last fetch finished, whether it succeeded or not.
     last_fetch: Option<Instant>,
     /// The error of the last fetch, when it failed.
     last_failure: Option<Arc<crate::error::Error>>,
@@ -488,6 +490,7 @@ mod tests {
     struct ScriptedKeys {
         results: std::sync::Mutex<VecDeque<crate::error::Result<IdTokenKeys>>>,
         fetches: Arc<AtomicUsize>,
+        fetch_duration: Duration,
     }
 
     impl ScriptedKeys {
@@ -496,6 +499,7 @@ mod tests {
             let source = Self {
                 results: std::sync::Mutex::new(results.into()),
                 fetches: Arc::clone(&fetches),
+                fetch_duration: Duration::ZERO,
             };
             (source, fetches)
         }
@@ -505,6 +509,7 @@ mod tests {
     impl IdTokenKeysSource for ScriptedKeys {
         async fn fetch_keys(&self) -> crate::error::Result<IdTokenKeys> {
             self.fetches.fetch_add(1, Ordering::SeqCst);
+            tokio::time::sleep(self.fetch_duration).await;
             self.results
                 .lock()
                 .unwrap()
@@ -649,6 +654,35 @@ mod tests {
             IdTokenVerifyError::InvalidToken(InvalidIdToken::UnknownKey(Some(ref kid))) if kid == ROTATED_KEY
         ));
         assert_eq!(fetches.load(Ordering::SeqCst), 1);
+    }
+
+    #[tokio::test]
+    async fn verification_during_a_refetch_waits_for_its_keys() {
+        let (mut source, fetches) = ScriptedKeys::new(vec![
+            keys(&[CURRENT_KEY]),
+            keys(&[CURRENT_KEY, ROTATED_KEY]),
+        ]);
+        source.fetch_duration = Duration::from_millis(300);
+        let mut verifier =
+            IdTokenVerifier::with_keys_source(IdTokenAudience::new(AUDIENCE), source);
+        verifier.refetch_interval = Duration::from_millis(100);
+        let verifier = Arc::new(verifier);
+        verifier
+            .verify(&signed_jwt(CURRENT_KEY, &claims()))
+            .await
+            .unwrap();
+        tokio::time::sleep(Duration::from_millis(150)).await;
+
+        let refetching = tokio::spawn({
+            let verifier = Arc::clone(&verifier);
+            async move { verifier.verify(&signed_jwt(ROTATED_KEY, &claims())).await }
+        });
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        let waiting = verifier.verify(&signed_jwt(ROTATED_KEY, &claims())).await;
+
+        assert!(refetching.await.unwrap().is_ok());
+        assert!(waiting.is_ok(), "{waiting:?}");
+        assert_eq!(fetches.load(Ordering::SeqCst), 2);
     }
 
     #[tokio::test]
