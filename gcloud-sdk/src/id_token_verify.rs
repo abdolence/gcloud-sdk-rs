@@ -616,6 +616,90 @@ mod tests {
         ));
     }
 
+    fn assert_invalid_algorithm(err: IdTokenVerifyError) {
+        assert!(matches!(
+            err,
+            IdTokenVerifyError::InvalidToken(InvalidIdToken::Malformed(ref error))
+                if matches!(error.kind(), jsonwebtoken::errors::ErrorKind::InvalidAlgorithm)
+        ));
+    }
+
+    #[tokio::test]
+    async fn token_signed_with_the_public_key_as_hmac_secret_is_invalid() {
+        let (verifier, _) = verifier(vec![keys(&[CURRENT_KEY])]);
+        let public_key = serde_json::to_vec(&test_jwk_set(&[CURRENT_KEY]).keys[0]).unwrap();
+        let header = jsonwebtoken::Header {
+            kid: Some(CURRENT_KEY.to_string()),
+            ..jsonwebtoken::Header::new(Algorithm::HS256)
+        };
+        let token = jsonwebtoken::encode(
+            &header,
+            &claims(),
+            &jsonwebtoken::EncodingKey::from_secret(&public_key),
+        )
+        .unwrap();
+
+        assert_invalid_algorithm(verifier.verify(&token).await.unwrap_err());
+    }
+
+    #[tokio::test]
+    async fn token_signed_with_another_rsa_algorithm_is_invalid() {
+        let (verifier, _) = verifier(vec![keys(&[CURRENT_KEY])]);
+        let header = jsonwebtoken::Header {
+            kid: Some(CURRENT_KEY.to_string()),
+            ..jsonwebtoken::Header::new(Algorithm::RS512)
+        };
+        let key = jsonwebtoken::EncodingKey::from_rsa_pem(
+            crate::test_support::TEST_RSA_PRIVATE_KEY.as_bytes(),
+        )
+        .unwrap();
+        let token = jsonwebtoken::encode(&header, &claims(), &key).unwrap();
+
+        assert_invalid_algorithm(verifier.verify(&token).await.unwrap_err());
+    }
+
+    #[tokio::test]
+    async fn token_without_a_key_id_is_invalid() {
+        let (verifier, fetches) = verifier(vec![keys(&[CURRENT_KEY])]);
+        let key = jsonwebtoken::EncodingKey::from_rsa_pem(
+            crate::test_support::TEST_RSA_PRIVATE_KEY.as_bytes(),
+        )
+        .unwrap();
+        let token = jsonwebtoken::encode(
+            &jsonwebtoken::Header::new(Algorithm::RS256),
+            &claims(),
+            &key,
+        )
+        .unwrap();
+
+        let err = verifier.verify(&token).await.unwrap_err();
+
+        assert!(matches!(
+            err,
+            IdTokenVerifyError::InvalidToken(InvalidIdToken::UnknownKey(None))
+        ));
+        assert_eq!(fetches.load(Ordering::SeqCst), 0);
+    }
+
+    #[tokio::test]
+    async fn token_issued_in_the_future_is_not_yet_valid() {
+        let (verifier, _) = verifier(vec![keys(&[CURRENT_KEY])]);
+        let mut issued_later = claims();
+        issued_later["iat"] = (Timestamp::now() + SignedDuration::from_mins(5))
+            .as_second()
+            .into();
+
+        let err = verifier
+            .verify(&signed_jwt(CURRENT_KEY, &issued_later))
+            .await
+            .unwrap_err();
+
+        assert!(matches!(
+            err,
+            IdTokenVerifyError::InvalidToken(InvalidIdToken::NotYetValid)
+        ));
+    }
+
     #[tokio::test]
     async fn unknown_key_refetches_the_keys() {
         let (mut verifier, fetches) = verifier(vec![
