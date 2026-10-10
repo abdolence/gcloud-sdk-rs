@@ -40,11 +40,14 @@ The official SDK still leaves gaps, and closes them slowly. As of October 2026:
   gcloud-sdk generates a tonic client for every API in googleapis, so any method of any API is available as soon as it appears in the protos.
 - **Data-plane APIs.** Bigtable, Firestore (including `Listen`) and Datastore are not published as official crates, Spanner is pre-1.0,
   and BigQuery Storage Read sits behind an unstable cfg.
-- **Streaming.** Bidirectional and server streaming calls work as tonic streams, for example Firestore `Listen`, Pub/Sub `StreamingPull`
-  and BigQuery Storage Write.
+- **Streaming.** Bidirectional and server streaming calls work as tonic streams, including the ones the official SDK does not provide:
+  Firestore `Listen`, Bigtable `ReadRows`, Speech v1 `StreamingRecognize`, and any streaming method of an API that has no official crate,
+  or no gRPC transport in its official crate.
 - **Your own tower stack.** The clients are plain tonic clients over a tower service, so you can add your own layers, timeouts and channels.
 - **native-tls.** The official SDK supports rustls only and declined native-tls in [googleapis/google-cloud-rust#4316](https://github.com/googleapis/google-cloud-rust/issues/4316).
   With `tls-roots`, gcloud-sdk uses native-tls for the gRPC channels and for the token requests of `google-cloud-auth`.
+  Be aware that if another dependency enables the `http3` feature of reqwest, the default reqwest backend is rustls again,
+  and the token requests use it.
 
 ### Opinionated integrations
 gcloud-sdk makes choices the official SDK leaves to you:
@@ -73,17 +76,20 @@ so one `Credentials` serves the official clients and the gcloud-sdk clients.
 | `TokenSourceType::MetadataServer` | `credentials::mds::Builder::default()` |
 | `GceMetadataClient` | none |
 | `Token`, `Token::generate_for_scopes` | `credentials::Builder::default().build_access_token_credentials()?.access_token()` |
-| `GoogleAuthTokenGenerator::new(..)`, `GoogleAuthTokenGenerator::from_source(..)` | `GoogleAuthTokenGenerator::from(..)` with `Credentials` or `IDTokenCredentials` |
+| `GoogleAuthTokenGenerator` | `GoogleAuthHeaders` |
+| `GoogleAuthTokenGenerator::new(..)` for the ADC | `GoogleAuthHeaders::from_adc()`, `GoogleAuthHeaders::from_adc_with_scopes(..)` |
+| `GoogleAuthTokenGenerator::new(..)`, `GoogleAuthTokenGenerator::from_source(..)` for other credentials | `GoogleAuthHeaders::from(..)` with `Credentials` or `IDTokenCredentials` |
 | `authorization_header()`, `create_token()` | `headers()`: every authentication header, `authorization` included |
 | `clear_cache()` | none, `google-cloud-auth` refreshes the tokens |
-| `IdTokenSource::new(audience, TokenSourceType::Default)` | `GoogleAuthTokenGenerator::id_token(&audience)` |
-| `IdTokenSource::impersonating(audience, service_account, TokenSourceType::Default)` | `GoogleAuthTokenGenerator::id_token_impersonating(&audience, &service_account, credentials::Builder::default().build()?)` |
-| `IdTokenSource::new(audience, Json / File / MetadataServer)` | `GoogleAuthTokenGenerator::from(idtoken::{service_account, mds}::Builder::new(..).build()?)` |
+| `IdTokenSource::new(audience, TokenSourceType::Default)` | `GoogleAuthHeaders::id_token_from_adc(&audience)` |
+| `IdTokenSource::impersonating(audience, service_account, TokenSourceType::Default)` | `GoogleAuthHeaders::id_token_impersonating(&audience, &service_account, credentials::Builder::default().build()?)` |
+| `IdTokenSource::new(audience, Json / File / MetadataServer)` | `GoogleAuthHeaders::from(idtoken::{service_account, mds}::Builder::new(..).build()?)` |
 | `from_function_with_token_source`, `from_function_with_token_source_and_headers` | `from_function_with_credentials`, `from_function_with_credentials_and_headers` |
 | `with_token_source`, `with_token_source_and_headers` | `with_credentials`, `with_credentials_and_headers` |
 | `with_token_source_and_middleware` | `with_middleware` |
 | `GoogleEnvironment::find_default_creds` | none |
 | `ErrorKind::Auth(AuthErrorDetails)` | `ErrorKind::Credentials(CredentialsError)`, and `ErrorKind::CredentialsBuild` when credentials cannot be built |
+| `ErrorKind::Metadata` | none, it came from `GceMetadataClient` |
 | `rest` feature, `GoogleRestApi`, `google_rest_apis` | removed, see [REST APIs moved to the official SDK](#rest-apis-moved-to-the-official-sdk) |
 
 The `credentials` and `idtoken` paths above are modules of `gcloud_sdk::google_cloud_auth::credentials`.
@@ -97,16 +103,25 @@ The `credentials` and `idtoken` paths above are modules of `gcloud_sdk::google_c
   and text-to-speech (`google-cloud-texttospeech-v1beta1`) betas are kept.
 
 New features:
-- `auth-default-crypto` (default): the aws-lc-rs rustls provider and ID token backend of `google-cloud-auth`.
+- `auth-default-crypto` (default): the aws-lc-rs rustls provider and ID token backend of `google-cloud-auth`;
+- `jwt-custom-provider`: for applications that install their own `jsonwebtoken` crypto provider, see [JWT crypto provider](#jwt-crypto-provider).
+
+`id-token-verify` now needs one of `jwt-aws-lc-rs`, `jwt-rust-crypto` or `jwt-custom-provider`, otherwise the build fails.
 
 ### Behaviour changes
 - The middleware sends every header the credentials produce, not only `authorization`, so the quota project reaches the server as `x-goog-user-project`.
 - Tokens are refreshed before they expire, and failed token requests are retried.
 - Service account keys sign a JWT that is used as the access token directly, without the exchange at `token_uri`.
-- The project ID lookup on the metadata server uses `GCE_METADATA_HOST`, else `metadata.google.internal`, the same host `google-cloud-auth` uses.
-  It no longer probes `169.254.169.254`.
-- Workload identity federation without service account impersonation fails `GoogleAuthTokenGenerator::id_token` with
+- `GoogleEnvironment::detect_google_project_id` takes the first project ID it finds:
+  1. the `GCP_PROJECT`, `PROJECT_ID`, `GCP_PROJECT_ID` and `GOOGLE_CLOUD_PROJECT` environment variables;
+  2. the `project_id` of the ADC file, then its `quota_project_id`;
+  3. the `project_id` of the source credentials in the ADC file, then their `quota_project_id`;
+  4. the metadata server at `GCE_METADATA_HOST`, else `metadata.google.internal`, the same host `google-cloud-auth` uses.
+     Only an answer with `Metadata-Flavor: Google` counts, and `169.254.169.254` is no longer probed.
+- Workload identity federation without service account impersonation fails `GoogleAuthHeaders::id_token_from_adc` with
   `ErrorKind::IdTokenNeedsImpersonation`, the same way as user credentials. With impersonation it mints as the impersonated service account.
+- With `default-features = false` and no rustls `CryptoProvider` installed, the ADC constructors return `ErrorKind::CryptoProviderMissing`
+  instead of a panic when the ADC is a service account key, see [crypto providers](#crypto-providers).
 
 ### Known limits
 - **MSRV is 1.91**, the MSRV of `google-cloud-auth`.
@@ -118,7 +133,12 @@ New features:
 
 ## REST APIs moved to the official SDK
 0.33 removes the REST clients generated from OpenAPI specs. Each one has an official crate, except FCM and Identity Toolkit v3.
-Each official crate was checked with a read-only call against a live project, authenticated through `google-cloud-auth` 1.17.0.
+Each official crate was called against a live project, authenticated through `google-cloud-auth` 1.17.0:
+- `storage_v1`, `cloudresourcemanager_v3`, `bigquery_v2`, `compute_v1`, `dns_v1` and `sqladmin_v1`: a read-only call returned data;
+- `lustre_v1`: the API is disabled on the test project, and the call returned `SERVICE_DISABLED`;
+- `servicecontrol_v1` and `servicecontrol_v2`: a `check` on a non-existent service returned `PERMISSION_DENIED`.
+
+For the last three, the calls show only that the request reached Google with valid authentication.
 
 | Removed module | Official crate |
 |---|---|
@@ -148,7 +168,7 @@ The library features:
 - `tls-roots`: default, native-tls with the system roots;
 - `tls-webpki-roots`: rustls with the webpki roots;
 - `auth-default-crypto`: default, the aws-lc-rs crypto of `google-cloud-auth`;
-- `jwt-aws-lc-rs` (default) and `jwt-rust-crypto`: the crypto of the ID token verifier, see [JWT crypto provider](#jwt-crypto-provider);
+- `jwt-aws-lc-rs` (default), `jwt-rust-crypto` and `jwt-custom-provider`: the crypto of the ID token verifier, see [JWT crypto provider](#jwt-crypto-provider);
 - `id-token-verify`, `axum`, `reqwest-middleware`: [service-to-service authentication](#service-to-service-authentication).
 
 ### Example for gRPC
@@ -208,6 +228,15 @@ rustls::crypto::ring::default_provider()
     .install_default()
     .expect("Failed to install rustls crypto provider");
 ```
+
+Without a provider, the constructors that use the ADC return `ErrorKind::CryptoProviderMissing` when the ADC signs locally,
+with a service account key used directly or as the source of an impersonation:
+`from_function`, `from_function_with_scopes` and the other `from_function*` without credentials,
+`GoogleAuthHeaders::from_adc`, `GoogleAuthHeaders::from_adc_with_scopes` and `GoogleAuthHeaders::id_token_from_adc`.
+
+Credentials you build yourself are not checked: the ones passed to `from_function_with_credentials*`, `with_credentials*`,
+`GoogleAuthHeaders::from(..)`, and the source credentials of `GoogleAuthHeaders::id_token_impersonating`.
+Install the provider before building them, otherwise their refresh task panics.
 
 The same call fixes this error, which appears when more than one rustls provider is compiled into your application:
 
@@ -295,7 +324,7 @@ Full examples: [axum service](examples/id-token-axum-server), [reqwest client](e
 and is the end-to-end check of the keyless CI workflow.
 
 ### Calling a Cloud Run or IAP service
-`GoogleAuthTokenGenerator::id_token` mints ID tokens for one audience:
+`GoogleAuthHeaders::id_token_from_adc` mints ID tokens for one audience:
 - the URL of a Cloud Run service, or a custom audience configured for it;
 - the OAuth client ID of a resource behind IAP.
 
@@ -305,12 +334,12 @@ gRPC (for example a tonic service on Cloud Run), with the default features:
 
 ```rust
 use gcloud_sdk::{
-    GoogleApi, GoogleAuthMiddleware, GoogleAuthMiddlewareLayer, GoogleAuthTokenGenerator,
+    GoogleApi, GoogleAuthHeaders, GoogleAuthMiddleware, GoogleAuthMiddlewareLayer,
     IdTokenAudience,
 };
 
 let audience = IdTokenAudience::new("https://orders-abc123-ew.a.run.app");
-let id_tokens = GoogleAuthTokenGenerator::id_token(&audience).await?;
+let id_tokens = GoogleAuthHeaders::id_token_from_adc(&audience).await?;
 
 let orders_client: GoogleApi<OrdersClient<GoogleAuthMiddleware>> =
     GoogleApi::from_function_with_middleware(
@@ -344,26 +373,34 @@ let response = client
 
 Full example available [here](examples/id-token-reqwest-client).
 
+The middleware constructors take `GoogleAuthHeaders` or `Arc<GoogleAuthHeaders>`.
+For access tokens of the ADC instead of ID tokens, for example to call Google APIs over HTTP,
+use `GoogleAuthHeaders::from_adc()` or `GoogleAuthHeaders::from_adc_with_scopes(..)`.
+
 Without the `reqwest-middleware` feature, `id_tokens.headers().await?` gives the headers, `authorization` among them, for any HTTP client.
 
 ### Which credentials work
-`GoogleAuthTokenGenerator::id_token` mints with the identity of the ADC:
+`GoogleAuthHeaders::id_token_from_adc` mints with the identity of the ADC:
 - service account key file: as that service account;
 - metadata server (Cloud Run, GKE, Compute Engine, etc.): as the service account attached to the workload;
 - `gcloud auth application-default login --impersonate-service-account=...` and workload identity
   federation with service account impersonation: as the impersonated service account.
 
-User credentials from `gcloud auth application-default login` and workload identity federation without
-service account impersonation cannot mint an ID token for an audience,
-so `id_token` returns `ErrorKind::IdTokenNeedsImpersonation` for them.
-Use `GoogleAuthTokenGenerator::id_token_impersonating` with any credentials to mint ID tokens of a service account through
+These credentials hold no service account and cannot mint an ID token for an audience,
+so `id_token_from_adc` returns `ErrorKind::IdTokenNeedsImpersonation` for them:
+- user credentials from `gcloud auth application-default login` (`AuthorizedUser`);
+- workforce identity federation users (`ExternalAccountAuthorizedUser`);
+- workload identity federation without service account impersonation (`ExternalAccount`);
+- Google Distributed Cloud Hosted service accounts (`GdchServiceAccount`).
+
+Use `GoogleAuthHeaders::id_token_impersonating` with any credentials but the last to mint ID tokens of a service account through
 IAM Credentials API:
 
 ```rust
 use gcloud_sdk::google_cloud_auth::credentials::Builder as CredentialsBuilder;
-use gcloud_sdk::{GoogleAuthTokenGenerator, IdTokenAudience, ServiceAccountEmail};
+use gcloud_sdk::{GoogleAuthHeaders, IdTokenAudience, ServiceAccountEmail};
 
-let id_tokens = GoogleAuthTokenGenerator::id_token_impersonating(
+let id_tokens = GoogleAuthHeaders::id_token_impersonating(
     &IdTokenAudience::new("https://orders-abc123-ew.a.run.app"),
     &ServiceAccountEmail::new("invoker@my-project.iam.gserviceaccount.com"),
     CredentialsBuilder::default().build()?,
@@ -375,7 +412,7 @@ The caller needs `roles/iam.serviceAccountOpenIdTokenCreator` on that service ac
 This is also the way for local development, using your own `gcloud auth application-default login` credentials.
 
 For a key file or a metadata server that is not the ADC, build the ID token credentials with `google_cloud_auth::credentials::idtoken`
-and pass them to `GoogleAuthTokenGenerator::from(..)`.
+and pass them to `GoogleAuthHeaders::from(..)`.
 
 ### Receiving and verifying tokens
 `IdTokenVerifier` from `id-token-verify` feature checks:
@@ -389,6 +426,9 @@ at most once every 30 seconds. When a fetch fails, the cached keys stay in use u
 ```toml
 gcloud-sdk = { version = "0.33", features = ["id-token-verify"] }
 ```
+
+The verifier fetches the keys over HTTPS, so it needs `tls-roots` or `tls-webpki-roots`, or a TLS feature of reqwest in your application.
+Without one, every key fetch fails at runtime with `KeysUnavailable`.
 
 ```rust
 use gcloud_sdk::id_token_verify::{IdTokenVerifier, IdTokenVerifyError};
@@ -460,9 +500,10 @@ Full example available [here](examples/id-token-axum-server).
 ### JWT crypto provider
 `IdTokenVerifier` verifies JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
 - `jwt-aws-lc-rs`: default feature, uses aws-lc-rs, which is built from C sources and needs a C compiler;
-- `jwt-rust-crypto`: the pure Rust alternative, uses the crates of RustCrypto.
+- `jwt-rust-crypto`: the pure Rust alternative, uses the crates of RustCrypto;
+- `jwt-custom-provider`: your application installs its own `jsonwebtoken` provider with `CryptoProvider::install_default` before it verifies a token.
 
-With `default-features = false` enable one of them, or install a `jsonwebtoken` crypto provider in your application yourself.
+With `default-features = false` and `id-token-verify`, enable one of them, otherwise the build fails.
 With both enabled, aws-lc-rs is used.
 The library installs the provider of the enabled feature as the process default of `jsonwebtoken`, unless your application installed one before.
 
