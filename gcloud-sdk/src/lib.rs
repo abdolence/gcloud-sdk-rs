@@ -51,6 +51,7 @@ mod apis;
 pub use apis::*;
 
 pub mod error;
+mod jwt_crypto;
 mod token_source;
 pub use middleware::GoogleAuthMiddlewareLayer;
 pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
@@ -61,6 +62,9 @@ mod api_client;
 pub use api_client::*;
 
 mod middleware;
+
+#[cfg(test)]
+mod test_support;
 
 pub mod proto_ext;
 

@@ -125,6 +125,18 @@ Some of the APIs (notable KMS, Artifact Registry and others) require additionall
 You can find an example how to handle it [here](https://github.com/abdolence/kms-aead-rs/blob/b8bb496800625a660be0c9896366d7407b8aa714/src/providers/gcp_kms_encryption.rs#L114)
 
 
+### JWT crypto provider
+Service account keys sign JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
+- `jwt-aws-lc-rs`: default feature, uses aws-lc-rs, which is built from C sources and needs a C compiler;
+- `jwt-rust-crypto`: uses the pure Rust crates of RustCrypto.
+
+With `default-features = false` enable one of them, otherwise service account keys fail with `ErrorKind::JwtCryptoProviderMissing`.
+With both enabled, aws-lc-rs is used.
+The library installs the provider as the process default of `jsonwebtoken`, unless your application installed one before.
+
+`tls-webpki-roots` already builds aws-lc-rs for rustls, so `jwt-aws-lc-rs` adds nothing new with it.
+`jwt-rust-crypto` avoids the C build only together with `tls-roots`.
+
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
 * [firestore](https://github.com/abdolence/firestore-rs) - to work with Firestore;

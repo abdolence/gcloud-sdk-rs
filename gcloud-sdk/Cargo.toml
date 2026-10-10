@@ -16,9 +16,11 @@ exclude = ["*.sh"]
 doctest = false
 
 [features]
-default = ["tls-roots"]
+default = ["tls-roots", "jwt-aws-lc-rs"]
 tls-roots = ["reqwest/native-tls", "tonic/tls-native-roots"]
 tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
+jwt-aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
+jwt-rust-crypto = ["jsonwebtoken/rust_crypto"]
 rest = ["serde_with"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
