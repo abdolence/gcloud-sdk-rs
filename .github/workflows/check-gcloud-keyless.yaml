@@ -27,3 +27,9 @@ jobs:
       - name: Run test example
         run: |
           cargo run --package simple-api-client-example --bin simple-api-client-example
+      - name: Run ID token check
+        env:
+          ID_TOKEN_SERVICE_ACCOUNT: 'lb-github-service-account@${{ env.GCP_PROJECT }}.iam.gserviceaccount.com'
+          ID_TOKEN_AUDIENCE: 'https://gcloud-sdk-it.invalid'
+        run: |
+          cargo run --package id-token-example --bin id-token-example
