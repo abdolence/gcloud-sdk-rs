@@ -50,6 +50,10 @@
 mod apis;
 pub use apis::*;
 
+#[cfg(feature = "axum")]
+mod axum_layer;
+#[cfg(feature = "axum")]
+pub use axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
 pub mod error;
 #[cfg(feature = "id-token-verify")]
 pub mod id_token_verify;

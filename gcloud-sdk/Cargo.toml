@@ -23,6 +23,7 @@ jwt-aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
 jwt-rust-crypto = ["jsonwebtoken/rust_crypto"]
 rest = ["serde_with"]
 id-token-verify = []
+axum = ["dep:axum-core", "id-token-verify"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
 # Google API features
@@ -418,6 +419,7 @@ aws-sigv4 = { version = "1.2" , optional = true }
 aws-credential-types = { version = "1.2.1", optional = true }
 percent-encoding = { version = "2.3", optional = true }
 reqwest-middleware = { version = "0.5", optional = true, default-features = false }
+axum-core = { version = "0.5", optional = true }
 
 
 [dev-dependencies]
