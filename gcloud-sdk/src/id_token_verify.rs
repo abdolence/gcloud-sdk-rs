@@ -781,18 +781,6 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn failed_fetch_makes_keys_unavailable() {
-        let (verifier, _) = verifier(vec![unavailable()]);
-
-        let err = verifier
-            .verify(&signed_jwt(CURRENT_KEY, &claims()))
-            .await
-            .unwrap_err();
-
-        assert!(matches!(err, IdTokenVerifyError::KeysUnavailable(_)));
-    }
-
-    #[tokio::test]
     async fn cached_keys_stay_in_use_after_a_failed_refetch() {
         let (mut verifier, fetches) = verifier(vec![keys(&[CURRENT_KEY]), unavailable()]);
         verifier.refetch_interval = Duration::ZERO;

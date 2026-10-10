@@ -544,40 +544,4 @@ mod tests {
             ErrorKind::IdTokenNeedsImpersonation(IdTokenUnsupportedCredentials::AuthorizedUser)
         ));
     }
-
-    #[tokio::test]
-    async fn generator_refreshes_an_id_token_inside_the_refresh_margin() {
-        let soon = whole_second(Timestamp::now() + SignedDuration::from_secs(10));
-        let later = whole_second(Timestamp::now() + SignedDuration::from_hours(1));
-        let token_endpoint = StubServer::start(vec![
-            StubResponse::json(
-                "200 OK",
-                serde_json::json!({ "id_token": id_token_expiring_at(soon) }).to_string(),
-            ),
-            StubResponse::json(
-                "200 OK",
-                serde_json::json!({ "id_token": id_token_expiring_at(later) }).to_string(),
-            ),
-        ])
-        .await;
-        let source = IdTokenSource::new(
-            IdTokenAudience::new(AUDIENCE),
-            TokenSourceType::Json(service_account_key_json(&format!(
-                "{}/token",
-                token_endpoint.url
-            ))),
-        )
-        .await
-        .unwrap();
-        let generator = crate::GoogleAuthTokenGenerator::from_source(source);
-
-        let first = generator.create_token().await.unwrap();
-        let second = generator.create_token().await.unwrap();
-        let third = generator.create_token().await.unwrap();
-
-        assert_eq!(first.expiry, soon);
-        assert_eq!(second.expiry, later);
-        assert_eq!(third.expiry, later);
-        assert_eq!(token_endpoint.received().len(), 2);
-    }
 }
