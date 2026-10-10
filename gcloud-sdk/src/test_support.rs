@@ -1,4 +1,5 @@
-//! Fixtures shared by the tests: an RSA key and a local HTTP stub server.
+//! Fixtures shared by the tests: scripted credentials, an RSA key and a local HTTP stub
+//! server.
 
 // Without a JWT crypto provider the tests that sign or verify are not built, and most
 // fixtures go unused.
@@ -7,10 +8,99 @@
     allow(dead_code)
 )]
 
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 
+use google_cloud_auth::credentials::{CacheableResource, CredentialsProvider, EntityTag};
+use google_cloud_auth::errors::CredentialsError;
+use hyper::header::{HeaderMap, HeaderValue};
+use hyper::http::Extensions;
+#[cfg(feature = "id-token-verify")]
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+/// Credentials that serve scripted headers the way google-cloud-auth's do: under an entity
+/// tag that changes when the headers do, answering `NotModified` to a caller that holds
+/// the current tag. Clones share their script and counters.
+#[derive(Debug, Clone)]
+pub(crate) struct StubCredentials {
+    current: Arc<Mutex<TaggedHeaders>>,
+    served: Arc<AtomicUsize>,
+    not_modified: Arc<AtomicUsize>,
+}
+
+#[derive(Debug, Clone)]
+struct TaggedHeaders {
+    entity_tag: EntityTag,
+    headers: HeaderMap,
+}
+
+impl StubCredentials {
+    pub(crate) fn new(headers: HeaderMap) -> Self {
+        Self {
+            current: Arc::new(Mutex::new(TaggedHeaders {
+                entity_tag: EntityTag::new(),
+                headers,
+            })),
+            served: Arc::new(AtomicUsize::new(0)),
+            not_modified: Arc::new(AtomicUsize::new(0)),
+        }
+    }
+
+    /// Credentials that serve `authorization: Bearer {token}`, not marked sensitive.
+    pub(crate) fn bearer(token: &str) -> Self {
+        Self::new(bearer_headers(token))
+    }
+
+    /// Serves `authorization: Bearer {token}` from now on, under a new entity tag.
+    pub(crate) fn rotate_bearer(&self, token: &str) {
+        *self.current.lock().unwrap() = TaggedHeaders {
+            entity_tag: EntityTag::new(),
+            headers: bearer_headers(token),
+        };
+    }
+
+    /// How many times the headers were served in full.
+    pub(crate) fn served(&self) -> usize {
+        self.served.load(Ordering::SeqCst)
+    }
+
+    /// How many times a caller holding the current tag was answered `NotModified`.
+    pub(crate) fn not_modified(&self) -> usize {
+        self.not_modified.load(Ordering::SeqCst)
+    }
+}
+
+impl CredentialsProvider for StubCredentials {
+    async fn headers(
+        &self,
+        extensions: Extensions,
+    ) -> Result<CacheableResource<HeaderMap>, CredentialsError> {
+        let current = self.current.lock().unwrap().clone();
+        if extensions.get::<EntityTag>() == Some(&current.entity_tag) {
+            self.not_modified.fetch_add(1, Ordering::SeqCst);
+            return Ok(CacheableResource::NotModified);
+        }
+        self.served.fetch_add(1, Ordering::SeqCst);
+        Ok(CacheableResource::New {
+            entity_tag: current.entity_tag,
+            data: current.headers,
+        })
+    }
+
+    async fn universe_domain(&self) -> Option<String> {
+        None
+    }
+}
+
+fn bearer_headers(token: &str) -> HeaderMap {
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        hyper::header::AUTHORIZATION,
+        HeaderValue::from_str(&format!("Bearer {token}")).unwrap(),
+    );
+    headers
+}
 
 /// A 2048-bit RSA key generated for these tests; it signs nothing outside them.
 pub(crate) const TEST_RSA_PRIVATE_KEY: &str = r"-----BEGIN PRIVATE KEY-----
@@ -43,6 +133,7 @@ VPNvPfZ32mJr45YUokuFcGU=
 -----END PRIVATE KEY-----";
 
 /// A JWT signed with [`TEST_RSA_PRIVATE_KEY`] under key ID `kid`.
+#[cfg(feature = "id-token-verify")]
 pub(crate) fn signed_jwt(kid: &str, claims: &serde_json::Value) -> String {
     let header = Header {
         kid: Some(kid.to_string()),
@@ -87,7 +178,14 @@ impl StubResponse {
         }
     }
 
-    #[cfg(feature = "id-token-verify")]
+    pub(crate) fn text(status_line: &'static str, body: impl Into<String>) -> Self {
+        Self {
+            status_line,
+            headers: vec![("content-type", "application/text".to_string())],
+            body: body.into(),
+        }
+    }
+
     pub(crate) fn with_header(mut self, name: &'static str, value: impl Into<String>) -> Self {
         self.headers.push((name, value.into()));
         self
@@ -100,7 +198,6 @@ pub(crate) struct ReceivedRequest {
     /// The request line, such as `POST /token HTTP/1.1`.
     pub(crate) request_line: String,
     pub(crate) headers: Vec<(String, String)>,
-    pub(crate) body: String,
 }
 
 impl ReceivedRequest {
@@ -176,15 +273,14 @@ async fn read_request(socket: &mut tokio::net::TcpStream) -> ReceivedRequest {
         .find(|(name, _)| name.eq_ignore_ascii_case("content-length"))
         .map(|(_, value)| value.parse().unwrap())
         .unwrap_or(0);
+    // The body is read so that the client sees its request through before the response.
     while buf.len() < head_end + content_length {
         let read = socket.read(&mut chunk).await.unwrap();
         assert!(read > 0, "connection closed before the request body ended");
         buf.extend_from_slice(&chunk[..read]);
     }
-    let body = String::from_utf8(buf[head_end..head_end + content_length].to_vec()).unwrap();
     ReceivedRequest {
         request_line,
         headers,
-        body,
     }
 }

@@ -10,9 +10,9 @@
 //! themselves: set `IMPERSONATE_SERVICE_ACCOUNT` to a service account on which they have
 //! `roles/iam.serviceAccountOpenIdTokenCreator`.
 
+use gcloud_sdk::google_cloud_auth::credentials::Builder as CredentialsBuilder;
 use gcloud_sdk::{
-    GoogleAuthReqwestMiddleware, GoogleAuthTokenGenerator, IdTokenAudience, IdTokenSource,
-    ServiceAccountEmail, TokenSourceType,
+    GoogleAuthHeaders, GoogleAuthReqwestMiddleware, IdTokenAudience, ServiceAccountEmail,
 };
 
 #[tokio::main]
@@ -20,22 +20,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let service_url = std::env::var("SERVICE_URL")?;
     let audience = IdTokenAudience::new(service_url.clone());
 
-    let source = match std::env::var("IMPERSONATE_SERVICE_ACCOUNT") {
+    let auth_headers = match std::env::var("IMPERSONATE_SERVICE_ACCOUNT") {
         Ok(service_account) => {
-            IdTokenSource::impersonating(
-                audience,
-                ServiceAccountEmail::new(service_account),
-                TokenSourceType::Default,
+            GoogleAuthHeaders::id_token_impersonating(
+                &audience,
+                &ServiceAccountEmail::new(service_account),
+                CredentialsBuilder::default().build()?,
             )
             .await?
         }
-        Err(_) => IdTokenSource::new(audience, TokenSourceType::Default).await?,
+        Err(_) => GoogleAuthHeaders::id_token_from_adc(&audience).await?,
     };
 
     let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
-        .with(GoogleAuthReqwestMiddleware::new(
-            GoogleAuthTokenGenerator::from_source(source),
-        ))
+        .with(GoogleAuthReqwestMiddleware::new(auth_headers))
         .build();
 
     let response = client.get(&service_url).send().await?;

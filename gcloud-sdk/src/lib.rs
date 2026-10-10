@@ -1,10 +1,8 @@
 //! # Google Cloud SDK for Rust
 //!
-//! Library provides all available APIs generated based:
-//! - on proto interfaces for gRPC;
-//! - OpenAPI spec for REST APIs not available as gRPC;
+//! Library provides all available Google gRPC APIs generated from their proto interfaces.
 //!
-//! The library also provides and easy-to-use client API for both gRPC and REST,
+//! The library also provides an easy-to-use client API for gRPC
 //! that supports Google Authentication natively.
 //!
 //! ## gRPC example
@@ -28,25 +26,27 @@
 //!         .await?;
 //!
 //! ```
-//! ## REST example
-//! ```ignore
-//!
-//! let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
-//!
-//! let response = gcloud_sdk::google_rest_apis::storage::buckets_api::storage_buckets_list(
-//!     &google_rest_client.create_google_storage_config().await?,
-//!     gcloud_sdk::google_rest_apis::storage::buckets_api::StoragePeriodBucketsPeriodListParams {
-//!         project: google_project_id,
-//!         ..Default::default()
-//!     }
-//! ).await?;
-//!
-//! ```
 //!
 //! Complete examples available on [github](https://github.com/abdolence/gcloud-sdk-rs/tree/master/src/examples).
 //!
 
 #![allow(unexpected_cfgs)]
+
+// jsonwebtoken panics on its first verification without a crypto provider, and a
+// provider that some other dependency happens to enable is not one to rely on.
+#[cfg(all(
+    feature = "id-token-verify",
+    not(any(
+        feature = "jwt-aws-lc-rs",
+        feature = "jwt-rust-crypto",
+        feature = "jwt-custom-provider"
+    ))
+))]
+compile_error!(
+    "the `id-token-verify` feature needs a jsonwebtoken crypto provider: enable `jwt-aws-lc-rs` \
+     or `jwt-rust-crypto`, or `jwt-custom-provider` when the application installs its own"
+);
+
 mod apis;
 pub use apis::*;
 
@@ -54,16 +54,18 @@ pub use apis::*;
 mod axum_layer;
 #[cfg(feature = "axum")]
 pub use axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
+mod adc;
+mod auth_headers;
 pub mod error;
+mod id_token;
 #[cfg(feature = "id-token-verify")]
 pub mod id_token_verify;
+#[cfg(feature = "id-token-verify")]
 mod jwt_crypto;
-mod token_source;
+mod metadata;
+pub use auth_headers::GoogleAuthHeaders;
+pub use id_token::{IdTokenAudience, ServiceAccountEmail};
 pub use middleware::GoogleAuthMiddlewareLayer;
-pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
-pub use token_source::id_token::{IdTokenAudience, IdTokenSource, ServiceAccountEmail};
-pub use token_source::metadata::Metadata as GceMetadataClient;
-pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, TokenSourceType};
 
 mod api_client;
 pub use api_client::*;
@@ -80,15 +82,13 @@ mod test_support;
 
 pub mod proto_ext;
 
-#[cfg(feature = "rest")]
-mod rest_apis;
-
-#[cfg(feature = "rest")]
-pub use rest_apis::*;
-
 pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 
 // Re-exports
+/// The crate that mints every token, at the version this crate is built against: build
+/// [`Credentials`](google_cloud_auth::credentials::Credentials) with it for
+/// [`GoogleApi::from_function_with_credentials`] and [`GoogleAuthHeaders`].
+pub use google_cloud_auth;
 pub use hyper::HeaderMap;
 pub use prost;
 pub use prost_types;

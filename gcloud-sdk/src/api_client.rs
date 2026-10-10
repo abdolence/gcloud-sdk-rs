@@ -1,16 +1,17 @@
 use std::marker::PhantomData;
 use std::time::Duration;
 
-use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
 use async_trait::async_trait;
+use google_cloud_auth::credentials::Credentials;
 use once_cell::sync::Lazy;
 use tonic::transport::Channel;
 use tower::ServiceBuilder;
 use tracing::*;
 
+use crate::adc::AdcFile;
+use crate::metadata::MetadataServer;
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
-use crate::token_source::credentials::CredentialsInfo;
-use crate::token_source::*;
+use crate::GoogleAuthHeaders;
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
@@ -36,63 +37,58 @@ where
     B: GoogleApiClientBuilder<C>,
     C: Clone + Send,
 {
-    pub async fn with_token_source<S: AsRef<str>>(
+    pub async fn with_credentials<S: AsRef<str>>(
         builder: B,
         google_api_url: S,
         cloud_resource_prefix: Option<String>,
-        token_source_type: TokenSourceType,
-        token_scopes: Vec<String>,
+        credentials: Credentials,
     ) -> crate::error::Result<Self> {
-        Self::with_token_source_and_headers(
+        Self::with_credentials_and_headers(
             builder,
             google_api_url,
             cloud_resource_prefix,
-            token_source_type,
-            token_scopes,
+            credentials,
             hyper::HeaderMap::new(),
         )
         .await
     }
 
-    pub async fn with_token_source_and_headers<S: AsRef<str>>(
+    pub async fn with_credentials_and_headers<S: AsRef<str>>(
         builder: B,
         google_api_url: S,
         cloud_resource_prefix: Option<String>,
-        token_source_type: TokenSourceType,
-        token_scopes: Vec<String>,
+        credentials: Credentials,
         additional_headers: hyper::HeaderMap,
     ) -> crate::error::Result<Self> {
         debug!(
-            "Creating a new Google API client for {}. Scopes: {:?}",
-            google_api_url.as_ref(),
-            token_scopes
+            "Creating a new Google API client for {}",
+            google_api_url.as_ref()
         );
 
-        let token_generator =
-            GoogleAuthTokenGenerator::new(token_source_type, token_scopes).await?;
-
-        let mut middleware =
-            GoogleAuthMiddlewareLayer::new(token_generator, cloud_resource_prefix)?;
+        let mut middleware = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from(credentials),
+            cloud_resource_prefix,
+        )?;
         middleware.set_additional_headers(additional_headers);
 
-        Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
+        Self::with_middleware(builder, google_api_url, middleware).await
     }
 
-    pub async fn with_token_source_and_middleware<S: AsRef<str>>(
+    pub async fn with_middleware<S: AsRef<str>>(
         builder: B,
         google_api_url: S,
         middleware: GoogleAuthMiddlewareLayer,
     ) -> crate::error::Result<Self> {
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
+        Ok(Self::on_channel(builder, channel, middleware))
+    }
 
-        let service: GoogleAuthMiddlewareService<Channel> =
-            ServiceBuilder::new().layer(middleware).service(channel);
-
-        Ok(Self {
+    fn on_channel(builder: B, channel: Channel, middleware: GoogleAuthMiddlewareLayer) -> Self {
+        Self {
             builder,
-            service,
+            service: ServiceBuilder::new().layer(middleware).service(channel),
             _ph: PhantomData,
-        })
+        }
     }
 
     pub fn get(&self) -> C {
@@ -100,14 +96,14 @@ where
     }
 
     /// Builds a client of another API on this client's authenticated channel: same
-    /// connection, token source and headers, for an API served from the same endpoint
+    /// connection, authentication and headers, for an API served from the same endpoint
     /// (Firestore's admin and long-running operations services, for example).
     pub fn get_with<C2>(&self, f: impl FnOnce(GoogleAuthMiddlewareService<Channel>) -> C2) -> C2 {
         f(self.service.clone())
     }
 
     /// Builds a client of an API served from another endpoint that reuses this client's
-    /// authentication: one token generator, so the token is fetched and refreshed once for
+    /// authentication: one [`GoogleAuthHeaders`], so the token is fetched and refreshed once for
     /// both clients (BigQuery and Cloud Storage, for example).
     ///
     /// Unlike [`get_with`](Self::get_with), which shares the channel and so reaches only
@@ -167,6 +163,8 @@ impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
 where
     C: Clone + Send,
 {
+    /// A client that authenticates with the Application Default Credentials, for the
+    /// `cloud-platform` scope.
     pub async fn from_function<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
@@ -197,18 +195,25 @@ where
         .await
     }
 
+    /// A client that authenticates with the Application Default Credentials, for
+    /// `token_scopes`.
+    ///
+    /// Fails with [`ErrorKind::CryptoProviderMissing`](crate::error::ErrorKind::CryptoProviderMissing)
+    /// for a service account key, used directly or as the source of an impersonation,
+    /// when the `auth-default-crypto` feature is off and no rustls crypto provider is
+    /// installed.
     pub async fn from_function_with_scopes<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
         cloud_resource_prefix_meta: Option<String>,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
-        Self::from_function_with_token_source(
+        Self::from_function_with_scopes_and_headers(
             builder_fn,
             google_api_url,
             cloud_resource_prefix_meta,
             token_scopes,
-            TokenSourceType::Default,
+            hyper::HeaderMap::new(),
         )
         .await
     }
@@ -220,54 +225,58 @@ where
         token_scopes: Vec<String>,
         headers: hyper::HeaderMap,
     ) -> crate::error::Result<Self> {
-        Self::from_function_with_token_source_and_headers(
+        // The channel comes first: with a single rustls provider compiled in, its TLS
+        // setup installs that provider, which the credentials may need to sign with.
+        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
+        let mut middleware = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from_adc_with_scopes(token_scopes).await?,
+            cloud_resource_prefix_meta,
+        )?;
+        middleware.set_additional_headers(headers);
+        Ok(Self::on_channel(
+            GoogleApiClientBuilderFunction { f: builder_fn },
+            channel,
+            middleware,
+        ))
+    }
+
+    /// A client that authenticates with `credentials`, built with
+    /// [`google_cloud_auth`](crate::google_cloud_auth): a service account key, impersonation,
+    /// workload identity federation, or a
+    /// [`CredentialsProvider`](google_cloud_auth::credentials::CredentialsProvider) of
+    /// your own.
+    ///
+    /// `credentials` built from a service account key need a rustls crypto provider when
+    /// the `auth-default-crypto` feature is off. They are opaque here, so this
+    /// constructor cannot check for one.
+    pub async fn from_function_with_credentials<S: AsRef<str>>(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: S,
+        cloud_resource_prefix_meta: Option<String>,
+        credentials: Credentials,
+    ) -> crate::error::Result<Self> {
+        Self::from_function_with_credentials_and_headers(
             builder_fn,
             google_api_url,
             cloud_resource_prefix_meta,
-            token_scopes,
-            TokenSourceType::Default,
-            headers,
+            credentials,
+            hyper::HeaderMap::new(),
         )
         .await
     }
 
-    pub async fn from_function_with_token_source<S: AsRef<str>>(
+    pub async fn from_function_with_credentials_and_headers<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
         google_api_url: S,
         cloud_resource_prefix_meta: Option<String>,
-        token_scopes: Vec<String>,
-        token_source_type: TokenSourceType,
-    ) -> crate::error::Result<Self> {
-        let builder: GoogleApiClientBuilderFunction<C> =
-            GoogleApiClientBuilderFunction { f: builder_fn };
-
-        Self::with_token_source(
-            builder,
-            google_api_url,
-            cloud_resource_prefix_meta,
-            token_source_type,
-            token_scopes,
-        )
-        .await
-    }
-
-    pub async fn from_function_with_token_source_and_headers<S: AsRef<str>>(
-        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
-        google_api_url: S,
-        cloud_resource_prefix_meta: Option<String>,
-        token_scopes: Vec<String>,
-        token_source_type: TokenSourceType,
+        credentials: Credentials,
         headers: hyper::HeaderMap,
     ) -> crate::error::Result<Self> {
-        let builder: GoogleApiClientBuilderFunction<C> =
-            GoogleApiClientBuilderFunction { f: builder_fn };
-
-        Self::with_token_source_and_headers(
-            builder,
+        Self::with_credentials_and_headers(
+            GoogleApiClientBuilderFunction { f: builder_fn },
             google_api_url,
             cloud_resource_prefix_meta,
-            token_source_type,
-            token_scopes,
+            credentials,
             headers,
         )
         .await
@@ -278,10 +287,12 @@ where
         google_api_url: S,
         middleware: GoogleAuthMiddlewareLayer,
     ) -> crate::error::Result<Self> {
-        let builder: GoogleApiClientBuilderFunction<C> =
-            GoogleApiClientBuilderFunction { f: builder_fn };
-
-        Self::with_token_source_and_middleware(builder, google_api_url, middleware).await
+        Self::with_middleware(
+            GoogleApiClientBuilderFunction { f: builder_fn },
+            google_api_url,
+            middleware,
+        )
+        .await
     }
 }
 
@@ -291,73 +302,42 @@ pub type GoogleApi<C> = GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>;
 pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
+    /// The Google Cloud project of this environment: the first of the `GCP_PROJECT`,
+    /// `PROJECT_ID`, `GCP_PROJECT_ID` and `GOOGLE_CLOUD_PROJECT` environment variables
+    /// that is set, else the project the Application Default Credentials file names, else
+    /// the project of the metadata server.
     pub async fn detect_google_project_id() -> Option<String> {
-        let for_env = std::env::var("GCP_PROJECT")
-            .ok()
-            .or_else(|| std::env::var("PROJECT_ID").ok())
-            .or_else(|| std::env::var("GCP_PROJECT_ID").ok());
-        if for_env.is_some() {
-            debug!("Detected GCP Project ID using environment variables");
-            for_env
-        } else {
-            let local_creds = match crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES) {
-                Ok(Some(creds)) => Some(creds),
-                Ok(None) | Err(_) => crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES)
-                    .ok()
-                    .flatten(),
-            };
-
-            let local_quota_project_id =
-                local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
-
-            if local_quota_project_id.is_some() {
-                debug!("Detected default project id from local defined in quota_project_id for the service account file.");
-                local_quota_project_id
-            } else {
-                let mut metadata_server =
-                    crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
-                if metadata_server.init().await {
-                    let metadata_result = metadata_server.detect_google_project_id().await;
-                    if metadata_result.is_some() {
-                        debug!("Detected GCP Project ID using GKE metadata server");
-                        metadata_result
-                    } else {
-                        debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
-                        metadata_result
-                    }
-                } else {
-                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
-                    None
-                }
-            }
-        }
+        Self::detect_project_id_in(
+            |name| std::env::var(name).ok(),
+            AdcFile::load(),
+            MetadataServer::from_env(),
+        )
+        .await
     }
 
-    pub async fn find_default_creds(
-        token_scopes: &[String],
-    ) -> crate::error::Result<Option<CredentialsInfo>> {
-        debug!("Finding default credentials for scopes: {:?}", token_scopes);
-
-        if let Some(src) = from_env_var(token_scopes)? {
-            debug!("Creating credentials based on environment variable: GOOGLE_APPLICATION_CREDENTIALS");
-            return Ok(src.to_credentials_info());
+    async fn detect_project_id_in(
+        env: impl Fn(&str) -> Option<String>,
+        adc: Option<AdcFile>,
+        metadata: MetadataServer,
+    ) -> Option<String> {
+        if let Some(project_id) = PROJECT_ID_ENV_VARS.into_iter().find_map(env) {
+            debug!("Detected GCP Project ID using environment variables");
+            return Some(project_id);
         }
-        if let Some(src) = from_well_known_file(token_scopes)? {
-            debug!("Creating credentials based on standard config files such as application_default_credentials.json");
-            return Ok(src.to_credentials_info());
+        if let Some(project_id) = adc.and_then(|adc| adc.project_id().map(ToString::to_string)) {
+            debug!("Detected GCP Project ID in the Application Default Credentials file");
+            return Some(project_id);
         }
-        let mut metadata_server = crate::token_source::metadata::Metadata::new(token_scopes);
-        if metadata_server.init().await {
-            let metadata_result_email = metadata_server.email().await;
-            if let Some(email) = metadata_result_email {
-                debug!("Detected SA email using GKE metadata server");
-                return Ok(Some(CredentialsInfo {
-                    client_email: email,
-                    project_id: metadata_server.detect_google_project_id().await,
-                }));
-            }
+        let project_id = metadata.project_id().await;
+        if project_id.is_some() {
+            debug!("Detected GCP Project ID using the metadata server");
+        } else {
+            debug!(
+                env = ?PROJECT_ID_ENV_VARS,
+                "No GCP Project ID detected in this environment; set one of the environment variables"
+            );
         }
-        Ok(None)
+        project_id
     }
 
     pub async fn init_google_services_channel<S: AsRef<str>>(
@@ -435,12 +415,24 @@ fn tls_server_name(api_url: &str) -> Result<Option<String>, crate::error::Error>
     }
 }
 
+/// The environment variables that name the project, in the order they are read.
+const PROJECT_ID_ENV_VARS: [&str; 4] = [
+    "GCP_PROJECT",
+    "PROJECT_ID",
+    "GCP_PROJECT_ID",
+    "GOOGLE_CLOUD_PROJECT",
+];
+
 pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
     Lazy::new(|| vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::test_support::{StubCredentials, StubResponse, StubServer};
+    use serde_json::json;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
 
     #[test]
     fn tls_server_name_is_the_host_of_a_plain_https_url() {
@@ -488,27 +480,6 @@ mod tests {
         assert!(tls_server_name("not a url").is_err());
         assert!(tls_server_name("").is_err());
     }
-    use crate::token_source::{Source, Token, TokenSourceType};
-    use secret_vault_value::SecretValue;
-    use std::sync::atomic::{AtomicUsize, Ordering};
-    use std::sync::Arc;
-
-    struct CountingSource {
-        calls: Arc<AtomicUsize>,
-    }
-
-    #[async_trait]
-    impl Source for CountingSource {
-        async fn token(&self) -> crate::error::Result<Token> {
-            self.calls.fetch_add(1, Ordering::SeqCst);
-            Ok(Token {
-                token_type: "Bearer".to_string(),
-                token: SecretValue::from("counted-token"),
-                expiry: jiff::Timestamp::now() + jiff::SignedDuration::from_hours(1),
-            })
-        }
-    }
-
     // Neither address is dialed: the middleware fetches the token before handing the
     // request to the channel, and a closed loopback port fails the connection quickly
     // without ever reaching the network.
@@ -523,16 +494,12 @@ mod tests {
 
     #[tokio::test]
     async fn get_with_shares_the_authenticated_channel() {
-        let calls = Arc::new(AtomicUsize::new(0));
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(CountingSource {
-                calls: calls.clone(),
-            })),
-            vec![],
+        let credentials = StubCredentials::bearer("counted-token");
+        let middleware = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from(Credentials::from(credentials.clone())),
+            None,
         )
-        .await
         .unwrap();
-        let middleware = GoogleAuthMiddlewareLayer::new(token_generator, None).unwrap();
         let channel = Channel::from_static("http://127.0.0.1:1").connect_lazy();
         let service: GoogleAuthMiddlewareService<Channel> =
             ServiceBuilder::new().layer(middleware).service(channel);
@@ -552,10 +519,10 @@ mod tests {
         probe(&mut from_get).await;
         probe(&mut from_get_with).await;
 
-        // A client built with `get_with` reuses the same `Arc<GoogleAuthTokenGenerator>`
-        // as one built with `get`, so its token cache is shared: the source is asked for
-        // a token once, not once per client.
-        assert_eq!(calls.load(Ordering::SeqCst), 1);
+        // A client built with `get_with` reuses the same `Arc<GoogleAuthHeaders>`
+        // as one built with `get`, so its header cache is shared: the headers are served
+        // in full once, not once per client.
+        assert_eq!(credentials.served(), 1);
     }
 
     // A gRPC endpoint that accepts connections and never answers, counting the
@@ -582,19 +549,16 @@ mod tests {
 
     #[tokio::test]
     async fn connect_with_endpoint_shares_auth_with_a_client_on_another_host() {
-        let calls = Arc::new(AtomicUsize::new(0));
+        let credentials = StubCredentials::bearer("counted-token");
         let (first_url, first_connections) = silent_endpoint().await;
         let (second_url, second_connections) = silent_endpoint().await;
 
         let first: GoogleApi<GoogleAuthMiddlewareService<Channel>> =
-            GoogleApi::from_function_with_token_source(
+            GoogleApi::from_function_with_credentials(
                 |svc| svc,
                 first_url,
                 None,
-                vec![],
-                TokenSourceType::ExternalSource(Box::new(CountingSource {
-                    calls: calls.clone(),
-                })),
+                Credentials::from(credentials.clone()),
             )
             .await
             .unwrap();
@@ -608,6 +572,82 @@ mod tests {
 
         assert_eq!(first_connections.load(Ordering::SeqCst), 1);
         assert_eq!(second_connections.load(Ordering::SeqCst), 1);
-        assert_eq!(calls.load(Ordering::SeqCst), 1);
+        assert_eq!(credentials.served(), 1);
+    }
+
+    async fn detected_project_id(
+        env: &[(&str, &str)],
+        adc: Option<serde_json::Value>,
+        metadata: &StubServer,
+    ) -> Option<String> {
+        GoogleEnvironment::detect_project_id_in(
+            |name| {
+                env.iter()
+                    .find(|(set, _)| *set == name)
+                    .map(|(_, value)| value.to_string())
+            },
+            adc.map(AdcFile::from),
+            MetadataServer::at(metadata.url.clone()),
+        )
+        .await
+    }
+
+    #[tokio::test]
+    async fn project_id_sources_are_read_in_order() {
+        let metadata = StubServer::start(vec![StubResponse::text("200 OK", "metadata-project")
+            .with_header("Metadata-Flavor", "Google")])
+        .await;
+        let mut env = vec![
+            ("GCP_PROJECT", "gcp-project"),
+            ("PROJECT_ID", "project-id"),
+            ("GCP_PROJECT_ID", "gcp-project-id"),
+            ("GOOGLE_CLOUD_PROJECT", "google-cloud-project"),
+        ];
+        let mut adc = json!({
+            "type": "impersonated_service_account",
+            "project_id": "adc-project",
+            "quota_project_id": "adc-quota-project",
+            "source_credentials": {
+                "type": "service_account",
+                "project_id": "source-project",
+                "quota_project_id": "source-quota-project",
+            },
+        });
+
+        let mut detected = Vec::new();
+        while !env.is_empty() {
+            detected.push(detected_project_id(&env, Some(adc.clone()), &metadata).await);
+            env.remove(0);
+        }
+        for field in [
+            "/project_id",
+            "/quota_project_id",
+            "/source_credentials/project_id",
+        ] {
+            detected.push(detected_project_id(&env, Some(adc.clone()), &metadata).await);
+            let (parent, name) = field.rsplit_once('/').unwrap();
+            adc.pointer_mut(parent)
+                .and_then(serde_json::Value::as_object_mut)
+                .unwrap()
+                .remove(name);
+        }
+        detected.push(detected_project_id(&env, Some(adc), &metadata).await);
+        detected.push(detected_project_id(&env, None, &metadata).await);
+
+        assert_eq!(
+            detected,
+            [
+                "gcp-project",
+                "project-id",
+                "gcp-project-id",
+                "google-cloud-project",
+                "adc-project",
+                "adc-quota-project",
+                "source-project",
+                "source-quota-project",
+                "metadata-project",
+            ]
+            .map(|project| Some(project.to_string()))
+        );
     }
 }

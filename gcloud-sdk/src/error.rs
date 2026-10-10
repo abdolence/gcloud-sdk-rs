@@ -6,42 +6,39 @@ use std::{convert::From, fmt};
 pub enum ErrorKind {
     /// Errors that can possibly occur while accessing an HTTP server.
     Http(reqwest::Error),
-    /// Http status code that is not 2xx when getting token.
+    /// An HTTP status other than 2xx.
     HttpStatus(reqwest::StatusCode),
-    /// Authentication failed while obtaining or refreshing a token.
-    /// Distinguishes auth failures from errors of the API call itself.
-    Auth(AuthErrorDetails),
-    /// GCE metadata service error.
-    Metadata(String),
+    /// Credentials could not be built: no Application Default Credentials were found, or a
+    /// credentials file is malformed or of a type the token cannot be minted from.
+    CredentialsBuild(google_cloud_auth::build_errors::Error),
+    /// Credentials failed to produce a token: a token endpoint refused them or could not be
+    /// reached. [`CredentialsError::is_transient`](google_cloud_auth::errors::CredentialsError::is_transient)
+    /// says whether a retry may succeed.
+    Credentials(google_cloud_auth::errors::CredentialsError),
     TonicMetadata(tonic::metadata::errors::InvalidMetadataValue),
-    /// JWT encode/decode error.
-    Jwt(jsonwebtoken::errors::Error),
-    /// Token source error.
-    TokenSource,
-    /// An error parsing credentials file.
-    CredentialsJson(serde_json::Error),
-    /// An error reading credentials file.
-    CredentialsFile(std::io::Error),
-    /// An error from json serialization and deserialization.
-    TokenJson(serde_json::Error),
-    /// Invalid token error.
-    TokenData,
     GrpcStatus(tonic::transport::Error),
     UrlError(hyper::http::uri::InvalidUri),
     /// An API URL that parses but cannot be connected to: no scheme, a scheme
     /// other than `http` or `https`, or no host.
     InvalidApiUrl(String),
-    ExternalCredsSourceError(String),
     /// A header value built from user input (user agent, headers, the token itself)
     /// failed HTTP header validation (e.g. contained a control character).
     HeaderValue(hyper::header::InvalidHeaderValue),
-    /// The credentials hold no service account to mint an ID token as. An ID token
-    /// needs a service account to impersonate, given to
-    /// [`IdTokenSource::impersonating`](crate::IdTokenSource::impersonating).
+    /// The Application Default Credentials hold no service account to mint an ID token
+    /// as. An ID token needs a service account to impersonate, given to
+    /// [`GoogleAuthHeaders::id_token_impersonating`](crate::GoogleAuthHeaders::id_token_impersonating).
     IdTokenNeedsImpersonation(IdTokenUnsupportedCredentials),
     /// A `service_account_impersonation_url` in a credentials file that names no
     /// service account.
     InvalidImpersonationUrl(String),
+    /// The Application Default Credentials sign with a private key of their own, such as
+    /// a service account key file, and no rustls
+    /// [`CryptoProvider`](rustls::crypto::CryptoProvider) is installed to sign with.
+    ///
+    /// Only reported when the `auth-default-crypto` feature is off. Install a provider
+    /// with `CryptoProvider::install_default` before building a client, or enable that
+    /// feature.
+    CryptoProviderMissing,
 }
 
 /// Credentials that cannot mint an ID token without impersonating a service account
@@ -54,9 +51,12 @@ pub enum IdTokenUnsupportedCredentials {
     AuthorizedUser,
     /// `external_account` credentials without a `service_account_impersonation_url`.
     ExternalAccount,
-    /// An access token source given as
-    /// [`TokenSourceType::ExternalSource`](crate::TokenSourceType::ExternalSource).
-    ExternalSource,
+    /// `external_account_authorized_user` credentials, such as
+    /// `gcloud auth application-default login` writes for a workforce identity
+    /// federation user.
+    ExternalAccountAuthorizedUser,
+    /// `gdch_service_account` credentials of Google Distributed Cloud Hosted.
+    GdchServiceAccount,
 }
 
 impl fmt::Display for IdTokenUnsupportedCredentials {
@@ -67,58 +67,11 @@ impl fmt::Display for IdTokenUnsupportedCredentials {
                 f,
                 "external_account credentials without service_account_impersonation_url"
             ),
-            Self::ExternalSource => write!(f, "an external token source"),
-        }
-    }
-}
-
-/// Details of an authentication failure (see [`ErrorKind::Auth`]).
-#[derive(Debug)]
-pub struct AuthErrorDetails {
-    /// HTTP status returned by the authentication endpoint, if any.
-    pub status: Option<reqwest::StatusCode>,
-    /// OAuth error code from the response body (e.g. `invalid_grant`), if present.
-    pub oauth_error: Option<String>,
-    /// Human readable details: the OAuth `error_description` or the raw response body.
-    pub details: Option<String>,
-}
-
-impl AuthErrorDetails {
-    /// A remediation hint for well-known OAuth error codes, if one is available.
-    pub fn hint(&self) -> Option<&'static str> {
-        match self.oauth_error.as_deref() {
-            Some("invalid_grant") => Some(
-                "the credentials are likely expired or revoked; re-authenticate (e.g. `gcloud auth application-default login`) or provide a new service account key",
-            ),
-            _ => None,
-        }
-    }
-}
-
-impl fmt::Display for AuthErrorDetails {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut separate = false;
-        if let Some(ref status) = self.status {
-            write!(f, "HTTP {}", status)?;
-            separate = true;
-        }
-        if let Some(ref e) = self.oauth_error {
-            if separate {
-                write!(f, ", ")?;
+            Self::ExternalAccountAuthorizedUser => {
+                write!(f, "external_account_authorized_user credentials")
             }
-            write!(f, "oauth error: {}", e)?;
-            separate = true;
+            Self::GdchServiceAccount => write!(f, "gdch_service_account credentials"),
         }
-        if let Some(ref d) = self.details {
-            if separate {
-                write!(f, " ")?;
-            }
-            write!(f, "({})", d)?;
-        }
-        if let Some(hint) = self.hint() {
-            write!(f, ". Hint: {}", hint)?;
-        }
-        Ok(())
     }
 }
 
@@ -144,19 +97,12 @@ impl fmt::Display for Error {
         match *self.0 {
             Http(ref e) => write!(f, "http error: {}", e),
             HttpStatus(ref s) => write!(f, "http status error: {}", s),
-            Auth(ref details) => write!(f, "authentication error: {}", details),
-            Metadata(ref e) => write!(f, "gce metadata service error: {}", e),
-            Jwt(ref e) => write!(f, "jwt error: {}", e),
-            TokenSource => write!(f, "token source error: not found token source"),
-            CredentialsJson(ref e) => write!(f, "credentials json error: {}", e),
-            CredentialsFile(ref e) => write!(f, "credentials file error: {}", e),
-            TokenJson(ref e) => write!(f, "token json error: {}", e),
-            TokenData => write!(f, "token data error: invalid token response data"),
+            CredentialsBuild(ref e) => write!(f, "credentials build error: {}", e),
+            Credentials(ref e) => write!(f, "credentials error: {}", e),
             GrpcStatus(ref e) => write!(f, "Tonic/gRPC error: {}", e),
             TonicMetadata(ref e) => write!(f, "Tonic metadata error: {}", e),
             UrlError(ref e) => write!(f, "Url error: {}", e),
             InvalidApiUrl(ref e) => write!(f, "Invalid API URL: {}", e),
-            ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
             HeaderValue(ref e) => write!(f, "invalid header value: {}", e),
             IdTokenNeedsImpersonation(ref credentials) => write!(
                 f,
@@ -167,6 +113,11 @@ impl fmt::Display for Error {
                 f,
                 "service_account_impersonation_url names no service account: {}",
                 url
+            ),
+            CryptoProviderMissing => write!(
+                f,
+                "the credentials sign with a private key and no rustls CryptoProvider is installed; \
+                 install one with CryptoProvider::install_default or enable the auth-default-crypto feature"
             ),
         }
     }
@@ -180,9 +131,15 @@ impl From<reqwest::Error> for Error {
     }
 }
 
-impl From<jsonwebtoken::errors::Error> for Error {
-    fn from(e: jsonwebtoken::errors::Error) -> Self {
-        ErrorKind::Jwt(e).into()
+impl From<google_cloud_auth::build_errors::Error> for Error {
+    fn from(e: google_cloud_auth::build_errors::Error) -> Self {
+        ErrorKind::CredentialsBuild(e).into()
+    }
+}
+
+impl From<google_cloud_auth::errors::CredentialsError> for Error {
+    fn from(e: google_cloud_auth::errors::CredentialsError) -> Self {
+        ErrorKind::Credentials(e).into()
     }
 }
 

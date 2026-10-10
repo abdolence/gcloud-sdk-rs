@@ -1,7 +1,6 @@
 /target
 Cargo.lock
 .idea/**
-gcloud-protos-generator/openapi/generator/*.jar
 tmp/
 
 

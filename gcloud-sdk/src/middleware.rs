@@ -1,4 +1,4 @@
-use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
+use crate::GoogleAuthHeaders;
 use futures::{Future, TryFutureExt};
 use hyper::header::{HeaderMap, HeaderName, HeaderValue, USER_AGENT};
 use jiff::Timestamp;
@@ -43,10 +43,27 @@ fn append_header_value(
     Ok(HeaderValue::from_str(&combined)?)
 }
 
+/// Sets every header of `source` on `target`, replacing all the values `target` holds
+/// under each of its names.
+///
+/// `iter()` yields one pair per value, so the names are cleared first and the pairs then
+/// appended: `insert`ing them one by one would keep only the last value of a repeated
+/// name.
+pub(crate) fn replace_headers(target: &mut HeaderMap, source: &HeaderMap) {
+    for name in source.keys() {
+        target.remove(name);
+    }
+    target.extend(
+        source
+            .iter()
+            .map(|(name, value)| (name.clone(), value.clone())),
+    );
+}
+
 #[derive(Clone)]
 pub struct GoogleAuthMiddlewareService<T> {
     inner: T,
-    token_generator: Arc<GoogleAuthTokenGenerator>,
+    auth_headers: Arc<GoogleAuthHeaders>,
     /// Every header added to each request except `authorization`, already validated.
     headers: Arc<HeaderMap>,
 }
@@ -54,12 +71,12 @@ pub struct GoogleAuthMiddlewareService<T> {
 impl<T> GoogleAuthMiddlewareService<T> {
     pub fn new(
         service: T,
-        token_generator: Arc<GoogleAuthTokenGenerator>,
+        auth_headers: impl Into<Arc<GoogleAuthHeaders>>,
         cloud_resource_prefix: Option<String>,
     ) -> crate::error::Result<GoogleAuthMiddlewareService<T>> {
         Ok(GoogleAuthMiddlewareService {
             inner: service,
-            token_generator,
+            auth_headers: auth_headers.into(),
             headers: Arc::new(default_headers(cloud_resource_prefix)?),
         })
     }
@@ -104,7 +121,7 @@ impl<T> GoogleAuthMiddlewareService<T> {
         Arc::make_mut(&mut self.headers).extend(additional_headers);
     }
 
-    /// Wraps `inner` in a middleware service that shares this one's token generator, so
+    /// Wraps `inner` in a middleware service that shares this one's [`GoogleAuthHeaders`](crate::GoogleAuthHeaders), so
     /// both fetch and refresh one token, and carries the same headers except
     /// `google-cloud-resource-prefix`, which is set to `cloud_resource_prefix` or left
     /// out when it is `None`.
@@ -123,7 +140,7 @@ impl<T> GoogleAuthMiddlewareService<T> {
         }
         Ok(GoogleAuthMiddlewareService {
             inner,
-            token_generator: Arc::clone(&self.token_generator),
+            auth_headers: Arc::clone(&self.auth_headers),
             headers: Arc::new(headers),
         })
     }
@@ -147,7 +164,7 @@ where
     }
 
     fn call(&mut self, mut req: hyper::Request<RequestBody>) -> Self::Future {
-        let generator = Arc::clone(&self.token_generator);
+        let auth_headers = Arc::clone(&self.auth_headers);
         let headers = Arc::clone(&self.headers);
 
         // tower's documented idiom for a `Clone` inner service: the instance we already
@@ -157,23 +174,12 @@ where
 
         Box::pin(async move {
             let begin_time = Timestamp::now();
-            let authorization = generator.authorization_header().await.map_err(Box::new)?;
+            let request_auth_headers = auth_headers.headers().await.map_err(Box::new)?;
             let token_generated_time = Timestamp::now();
 
             let req_headers = req.headers_mut();
-            req_headers.insert(hyper::header::AUTHORIZATION, authorization);
-            // Each name in `headers` fully replaces whatever the request already carries
-            // under it (multi-valued or not); `iter()` yields one pair per value, so the
-            // names are cleared first and then appended rather than repeatedly `insert`ed,
-            // which would silently drop every value but the last for a repeated name.
-            for name in headers.keys() {
-                req_headers.remove(name);
-            }
-            req_headers.extend(
-                headers
-                    .iter()
-                    .map(|(name, value)| (name.clone(), value.clone())),
-            );
+            replace_headers(req_headers, &request_auth_headers);
+            replace_headers(req_headers, &headers);
 
             let req_uri = req.uri().clone();
             inner
@@ -204,17 +210,17 @@ where
 }
 
 pub struct GoogleAuthMiddlewareLayer {
-    token_generator: Arc<GoogleAuthTokenGenerator>,
+    auth_headers: Arc<GoogleAuthHeaders>,
     headers: Arc<HeaderMap>,
 }
 
 impl GoogleAuthMiddlewareLayer {
     pub fn new(
-        token_generator: GoogleAuthTokenGenerator,
+        auth_headers: impl Into<Arc<GoogleAuthHeaders>>,
         cloud_resource_prefix: Option<String>,
     ) -> crate::error::Result<Self> {
         Ok(GoogleAuthMiddlewareLayer {
-            token_generator: Arc::new(token_generator),
+            auth_headers: auth_headers.into(),
             headers: Arc::new(default_headers(cloud_resource_prefix)?),
         })
     }
@@ -245,7 +251,7 @@ impl<S> Layer<S> for GoogleAuthMiddlewareLayer {
     fn layer(&self, service: S) -> GoogleAuthMiddlewareService<S> {
         GoogleAuthMiddlewareService {
             inner: service,
-            token_generator: Arc::clone(&self.token_generator),
+            auth_headers: Arc::clone(&self.auth_headers),
             headers: Arc::clone(&self.headers),
         }
     }
@@ -254,41 +260,10 @@ impl<S> Layer<S> for GoogleAuthMiddlewareLayer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::token_source::{Source, Token, TokenSourceType};
-    use async_trait::async_trait;
+    use crate::test_support::StubCredentials;
+    use google_cloud_auth::credentials::Credentials;
     use hyper::{Request, Response};
-    use jiff::{SignedDuration, Timestamp};
-    use secret_vault_value::SecretValue;
     use std::convert::Infallible;
-
-    struct DummySource;
-
-    #[async_trait]
-    impl Source for DummySource {
-        async fn token(&self) -> crate::error::Result<Token> {
-            Ok(Token {
-                token_type: "Bearer".to_string(),
-                token: SecretValue::from("dummy-token"),
-                expiry: Timestamp::now() + SignedDuration::from_hours(1),
-            })
-        }
-    }
-
-    struct CountingSource {
-        calls: Arc<std::sync::atomic::AtomicUsize>,
-    }
-
-    #[async_trait]
-    impl Source for CountingSource {
-        async fn token(&self) -> crate::error::Result<Token> {
-            self.calls.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
-            Ok(Token {
-                token_type: "Bearer".to_string(),
-                token: SecretValue::from("counted-token"),
-                expiry: Timestamp::now() + SignedDuration::from_hours(1),
-            })
-        }
-    }
 
     #[derive(Clone)]
     struct DummyService {
@@ -316,27 +291,27 @@ mod tests {
         }
     }
 
-    #[tokio::test]
-    async fn test_headers_presence() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
-
-        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
-        let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
-                .unwrap();
-
-        let req = Request::builder()
+    fn request() -> Request<String> {
+        Request::builder()
             .uri("http://example.com")
             .body("".to_string())
-            .unwrap();
+            .unwrap()
+    }
 
-        tower::Service::call(&mut service, req).await.unwrap();
+    #[tokio::test]
+    async fn test_headers_presence() {
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let dummy_service = DummyService { tx: Arc::new(tx) };
+        let mut service = GoogleAuthMiddlewareService::new(
+            dummy_service,
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                StubCredentials::bearer("dummy-token"),
+            ))),
+            None,
+        )
+        .unwrap();
+
+        tower::Service::call(&mut service, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
         let expected_default = format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION"));
@@ -358,62 +333,98 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn authorization_header_is_marked_sensitive() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
+    async fn every_credentials_header_is_forwarded() {
+        let mut credentials_headers = HeaderMap::new();
+        credentials_headers.insert(
+            hyper::header::AUTHORIZATION,
+            HeaderValue::from_static("Bearer billed-token"),
+        );
+        credentials_headers.insert(
+            "x-goog-user-project",
+            HeaderValue::from_static("billing-project"),
+        );
+        let credentials = StubCredentials::new(credentials_headers);
 
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
-        let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
-                .unwrap();
+        let mut service = GoogleAuthMiddlewareService::new(
+            DummyService { tx: Arc::new(tx) },
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                credentials.clone(),
+            ))),
+            None,
+        )
+        .unwrap();
 
-        let req = Request::builder()
-            .uri("http://example.com")
-            .body("".to_string())
-            .unwrap();
-
-        tower::Service::call(&mut service, req).await.unwrap();
+        tower::Service::call(&mut service, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
-        assert!(captured_req
-            .headers()
-            .get("authorization")
-            .unwrap()
-            .is_sensitive());
+        let authorization = captured_req.headers().get("authorization").unwrap();
+        assert_eq!(authorization, "Bearer billed-token");
+        assert!(authorization.is_sensitive());
+        assert_eq!(
+            captured_req.headers().get("x-goog-user-project"),
+            Some(&HeaderValue::from_static("billing-project"))
+        );
+    }
+
+    #[tokio::test]
+    async fn headers_are_refreshed_when_the_entity_tag_changes() {
+        let credentials = StubCredentials::bearer("first-token");
+        let (tx, mut rx) = tokio::sync::mpsc::channel(3);
+        let mut service = GoogleAuthMiddlewareService::new(
+            DummyService { tx: Arc::new(tx) },
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                credentials.clone(),
+            ))),
+            None,
+        )
+        .unwrap();
+
+        tower::Service::call(&mut service, request()).await.unwrap();
+        tower::Service::call(&mut service, request()).await.unwrap();
+        credentials.rotate_bearer("second-token");
+        tower::Service::call(&mut service, request()).await.unwrap();
+
+        let authorizations: Vec<String> = [
+            rx.recv().await.unwrap(),
+            rx.recv().await.unwrap(),
+            rx.recv().await.unwrap(),
+        ]
+        .iter()
+        .map(|req| req.headers()["authorization"].to_str().unwrap().to_string())
+        .collect();
+        assert_eq!(
+            authorizations,
+            [
+                "Bearer first-token",
+                "Bearer first-token",
+                "Bearer second-token"
+            ]
+        );
+        // The second request presented the first headers' tag and was served the cached
+        // headers.
+        assert_eq!(credentials.not_modified(), 1);
+        assert_eq!(credentials.served(), 2);
     }
 
     #[tokio::test]
     async fn test_headers_amend() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
-
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
 
-        let layer = GoogleAuthMiddlewareLayer::new(token_generator, None)
-            .unwrap()
-            .amend_user_agent("extra-ua".to_string())
-            .unwrap()
-            .amend_x_goog_api_client("extra-client".to_string())
-            .unwrap();
+        let layer = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from(Credentials::from(StubCredentials::bearer("dummy-token"))),
+            None,
+        )
+        .unwrap()
+        .amend_user_agent("extra-ua".to_string())
+        .unwrap()
+        .amend_x_goog_api_client("extra-client".to_string())
+        .unwrap();
 
         let mut service = layer.layer(dummy_service);
 
-        let req = Request::builder()
-            .uri("http://example.com")
-            .body("".to_string())
-            .unwrap();
-
-        tower::Service::call(&mut service, req).await.unwrap();
+        tower::Service::call(&mut service, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
         let expected_ua = format!("gcloud-sdk-rs/{} extra-ua", env!("CARGO_PKG_VERSION"));
@@ -434,16 +445,12 @@ mod tests {
 
     #[tokio::test]
     async fn invalid_user_agent_is_rejected_at_setter() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
+        let layer_result = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from(Credentials::from(StubCredentials::bearer("dummy-token"))),
+            None,
         )
-        .await
-        .unwrap();
-
-        let layer_result = GoogleAuthMiddlewareLayer::new(token_generator, None)
-            .unwrap()
-            .amend_user_agent("bad\nvalue".to_string());
+        .unwrap()
+        .amend_user_agent("bad\nvalue".to_string());
 
         match layer_result {
             Err(e) => assert!(matches!(
@@ -456,30 +463,23 @@ mod tests {
 
     #[tokio::test]
     async fn amended_clone_does_not_change_sibling() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
-
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
-        let base_service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
-                .unwrap();
+        let base_service = GoogleAuthMiddlewareService::new(
+            dummy_service,
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                StubCredentials::bearer("dummy-token"),
+            ))),
+            None,
+        )
+        .unwrap();
 
         let mut amended = base_service.clone();
         amended.append_user_agent("extra".to_string()).unwrap();
 
         let mut sibling = base_service.clone();
 
-        let req = Request::builder()
-            .uri("http://example.com")
-            .body("".to_string())
-            .unwrap();
-
-        tower::Service::call(&mut sibling, req).await.unwrap();
+        tower::Service::call(&mut sibling, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
         let expected_default = format!("gcloud-sdk-rs/{}", env!("CARGO_PKG_VERSION"));
@@ -494,28 +494,21 @@ mod tests {
 
     #[tokio::test]
     async fn test_additional_headers() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
-
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
-                .unwrap();
+        let mut service = GoogleAuthMiddlewareService::new(
+            dummy_service,
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                StubCredentials::bearer("dummy-token"),
+            ))),
+            None,
+        )
+        .unwrap();
         let mut test_headers = hyper::HeaderMap::new();
         test_headers.insert("x-test-header", "test-value".parse().unwrap());
         service.set_additional_headers(test_headers);
 
-        let req = Request::builder()
-            .uri("http://example.com")
-            .body("".to_string())
-            .unwrap();
-
-        tower::Service::call(&mut service, req).await.unwrap();
+        tower::Service::call(&mut service, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
         assert_eq!(
@@ -526,30 +519,23 @@ mod tests {
 
     #[tokio::test]
     async fn additional_headers_keep_every_value_of_a_repeated_name() {
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(DummySource)),
-            vec![],
-        )
-        .await
-        .unwrap();
-
         let (tx, mut rx) = tokio::sync::mpsc::channel(1);
         let dummy_service = DummyService { tx: Arc::new(tx) };
-        let mut service =
-            GoogleAuthMiddlewareService::new(dummy_service, Arc::new(token_generator), None)
-                .unwrap();
+        let mut service = GoogleAuthMiddlewareService::new(
+            dummy_service,
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                StubCredentials::bearer("dummy-token"),
+            ))),
+            None,
+        )
+        .unwrap();
 
         let mut test_headers = hyper::HeaderMap::new();
         test_headers.append("x-multi", "first".parse().unwrap());
         test_headers.append("x-multi", "second".parse().unwrap());
         service.set_additional_headers(test_headers);
 
-        let req = Request::builder()
-            .uri("http://example.com")
-            .body("".to_string())
-            .unwrap();
-
-        tower::Service::call(&mut service, req).await.unwrap();
+        tower::Service::call(&mut service, request()).await.unwrap();
 
         let captured_req = rx.recv().await.unwrap();
         let values: Vec<&str> = captured_req
@@ -563,24 +549,18 @@ mod tests {
 
     #[tokio::test]
     async fn with_inner_shares_the_token_and_replaces_the_resource_prefix() {
-        let calls = Arc::new(std::sync::atomic::AtomicUsize::new(0));
-        let token_generator = GoogleAuthTokenGenerator::new(
-            TokenSourceType::ExternalSource(Box::new(CountingSource {
-                calls: calls.clone(),
-            })),
-            vec![],
-        )
-        .await
-        .unwrap();
+        let credentials = StubCredentials::bearer("counted-token");
 
         let (tx, mut rx) = tokio::sync::mpsc::channel(2);
         let mut extra = hyper::HeaderMap::new();
         extra.insert("x-test-header", "test-value".parse().unwrap());
-        let mut layer =
-            GoogleAuthMiddlewareLayer::new(token_generator, Some("projects/first".to_string()))
-                .unwrap()
-                .amend_user_agent("extra-ua".to_string())
-                .unwrap();
+        let mut layer = GoogleAuthMiddlewareLayer::new(
+            GoogleAuthHeaders::from(Credentials::from(credentials.clone())),
+            Some("projects/first".to_string()),
+        )
+        .unwrap()
+        .amend_user_agent("extra-ua".to_string())
+        .unwrap();
         layer.set_additional_headers(extra);
         let mut first = layer.layer(DummyService {
             tx: Arc::new(tx.clone()),
@@ -596,11 +576,7 @@ mod tests {
         let mut without_prefix = first.with_inner(other, None).unwrap();
 
         for service in [&mut first, &mut with_prefix, &mut without_prefix] {
-            let req = Request::builder()
-                .uri("http://example.com")
-                .body("".to_string())
-                .unwrap();
-            tower::Service::call(service, req).await.unwrap();
+            tower::Service::call(service, request()).await.unwrap();
         }
 
         let first_req = rx.recv().await.unwrap();
@@ -637,6 +613,8 @@ mod tests {
             .headers()
             .get(GOOGLE_CLOUD_RESOURCE_PREFIX)
             .is_none());
-        assert_eq!(calls.load(std::sync::atomic::Ordering::SeqCst), 1);
+        // One `GoogleAuthHeaders` behind all three services: the headers were derived once and
+        // then served from its cache.
+        assert_eq!(credentials.served(), 1);
     }
 }

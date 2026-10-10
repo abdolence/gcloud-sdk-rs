@@ -11,4 +11,11 @@ jobs:
           profile: minimal
           toolchain: stable
           components: rustfmt, clippy
-      - run: cargo fmt -- --check && cargo test -p protosgen && cargo test -p gcloud-sdk --features rest,id-token-verify,axum,reqwest-middleware && cargo test -p gcloud-sdk --no-default-features --features tls-webpki-roots,id-token-verify && cargo test -p gcloud-sdk --no-default-features --features tls-roots,jwt-rust-crypto,id-token-verify,axum,reqwest-middleware #&& cargo clippy -- -Dwarnings && cargo test --all-features
+      - run: cargo fmt -- --check
+      - run: cargo test -p protosgen
+      - run: cargo clippy -p gcloud-sdk --all-targets --features id-token-verify,axum,reqwest-middleware -- -Dwarnings
+      - run: cargo test -p gcloud-sdk --features id-token-verify,axum,reqwest-middleware
+      # These rows build google-cloud-auth without a rustls crypto provider of its own.
+      - run: cargo test -p gcloud-sdk --no-default-features --features tls-webpki-roots,jwt-aws-lc-rs,id-token-verify
+      - run: cargo test -p gcloud-sdk --no-default-features --features tls-roots,jwt-rust-crypto,id-token-verify,axum,reqwest-middleware
+      - run: cargo check -p gcloud-sdk --no-default-features --features tls-webpki-roots,jwt-custom-provider,id-token-verify

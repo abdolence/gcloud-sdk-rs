@@ -5,7 +5,6 @@ members = [
     "gcloud-protos-generator",
     "examples/firestore-client",
     "examples/secrets-manager-client",
-    "examples/gcs-rest-client",
     "examples/simple-api-client",
     "examples/bigquery-storage-write-client",
     "examples/text-to-speech-client",
@@ -15,7 +14,5 @@ members = [
     "examples/id-token-reqwest-client",
     "examples/iam-client",
     "examples/artifact-registry-client",
-    "examples/servicecontrol-client",
-    "examples/cloudresourcemanager-client",
     "examples/bigquery-storage-read-client",
 ]
