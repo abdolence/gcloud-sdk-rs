@@ -131,6 +131,10 @@ The library supports Google-signed ID tokens on both sides of a call between ser
 - verifying them in the service that receives the call (`id-token-verify` feature);
 - protecting an axum service (`axum` feature) and calling it with reqwest (`reqwest-middleware` feature).
 
+Full examples: [axum service](examples/id-token-axum-server), [reqwest client](examples/id-token-reqwest-client).
+[examples/id-token](examples/id-token) mints and verifies a token with the core API only,
+and is the end-to-end check of the keyless CI workflow.
+
 ### Calling a Cloud Run or IAP service
 `IdTokenSource` mints ID tokens for one audience:
 - the URL of a Cloud Run service, or a custom audience configured for it;
@@ -139,9 +143,14 @@ The library supports Google-signed ID tokens on both sides of a call between ser
 Google ID tokens are valid for one hour. `GoogleAuthTokenGenerator::from_source` caches the token
 and refreshes it before `exp`, the same way as access tokens.
 
-gRPC (for example a tonic service on Cloud Run):
+gRPC (for example a tonic service on Cloud Run), with the default features:
 
 ```rust
+use gcloud_sdk::{
+    GoogleApi, GoogleAuthMiddleware, GoogleAuthMiddlewareLayer, GoogleAuthTokenGenerator,
+    IdTokenAudience, IdTokenSource, TokenSourceType,
+};
+
 let audience = IdTokenAudience::new("https://orders-abc123-ew.a.run.app");
 let id_tokens = GoogleAuthTokenGenerator::from_source(
     IdTokenSource::new(audience, TokenSourceType::Default).await?,
@@ -158,7 +167,15 @@ let orders_client: GoogleApi<OrdersClient<GoogleAuthMiddleware>> =
 
 HTTP with `reqwest-middleware` feature:
 
+```toml
+gcloud-sdk = { version = "0.32", features = ["reqwest-middleware"] }
+reqwest = "0.13"
+reqwest-middleware = "0.5"
+```
+
 ```rust
+use gcloud_sdk::GoogleAuthReqwestMiddleware;
+
 let client = reqwest_middleware::ClientBuilder::new(reqwest::Client::new())
     .with(GoogleAuthReqwestMiddleware::new(id_tokens))
     .build();
@@ -169,10 +186,12 @@ let response = client
     .await?;
 ```
 
+Full example available [here](examples/id-token-reqwest-client).
+
 With the `rest` feature as well, `GoogleRestApi::middleware()` gives the middleware for hand-written
 `reqwest-middleware` calls on the same token cache as the `GoogleRestApi` client.
 
-Without the feature, `id_tokens.authorization_header().await?` gives the `authorization` header value
+Without the `reqwest-middleware` feature, `id_tokens.authorization_header().await?` gives the `authorization` header value
 for any HTTP client.
 
 ### Which credentials work
@@ -189,6 +208,8 @@ Use `IdTokenSource::impersonating` with any credentials to mint ID tokens of a s
 IAM Credentials API:
 
 ```rust
+use gcloud_sdk::{IdTokenAudience, IdTokenSource, ServiceAccountEmail, TokenSourceType};
+
 let source = IdTokenSource::impersonating(
     IdTokenAudience::new("https://orders-abc123-ew.a.run.app"),
     ServiceAccountEmail::new("invoker@my-project.iam.gserviceaccount.com"),
@@ -209,7 +230,14 @@ This is also the way for local development, using your own `gcloud auth applicat
 The keys are cached for the `max-age` of the response. A token signed with an unknown key ID refetches them,
 at most once every 30 seconds. When a fetch fails, the cached keys stay in use until their `max-age` passes.
 
+```toml
+gcloud-sdk = { version = "0.32", features = ["id-token-verify"] }
+```
+
 ```rust
+use gcloud_sdk::id_token_verify::{IdTokenVerifier, IdTokenVerifyError};
+use gcloud_sdk::IdTokenAudience;
+
 let verifier = IdTokenVerifier::new(IdTokenAudience::new("https://orders-abc123-ew.a.run.app"))?;
 
 match verifier.verify(bearer_token).await {
@@ -237,7 +265,21 @@ The verifier checks signatures with the [JWT crypto provider](#jwt-crypto-provid
 
 Handlers receive the verified claims as `VerifiedIdToken`:
 
+```toml
+gcloud-sdk = { version = "0.32", features = ["id-token-verify", "axum"] }
+axum = "0.8"
+```
+
 ```rust
+use std::sync::Arc;
+
+use axum::routing::get;
+use axum::Router;
+use gcloud_sdk::id_token_verify::{
+    IdTokenVerifier, PrincipalEmail, VerifiedIdToken, VerifyIdTokenLayer,
+};
+use gcloud_sdk::IdTokenAudience;
+
 let verifier = Arc::new(IdTokenVerifier::new(IdTokenAudience::new(
     "https://orders-abc123-ew.a.run.app",
 ))?);
@@ -257,7 +299,7 @@ async fn list_orders(caller: VerifiedIdToken) -> String {
 
 The layer is a tower layer, so it works the same way for tonic servers.
 
-Full example available [here](examples/id-token).
+Full example available [here](examples/id-token-axum-server).
 
 ### JWT crypto provider
 Service account keys and `IdTokenVerifier` sign and verify JWTs with `jsonwebtoken`, which needs a crypto provider. The library has a feature for each:
