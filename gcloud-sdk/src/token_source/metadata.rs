@@ -64,19 +64,7 @@ impl Metadata {
     }
 
     pub async fn id_token(&self, audience: &str) -> crate::error::Result<SecretValue> {
-        let url = PathAndQuery::from_str(
-            format!(
-                "/computeMetadata/v1/instance/service-accounts/{}/identity?audience={}",
-                self.account, audience
-            )
-            .as_str(),
-        )?;
-        trace!(
-            "Receiving a new ID token from Metadata Server using '{}'",
-            url
-        );
-        let resp = self.client.get(url).await?;
-        Ok(SecretValue::from(resp))
+        self.identity(&format!("audience={audience}")).await
     }
 
     /// An ID token for `audience` that carries the service account's `email`, which
@@ -89,6 +77,10 @@ impl Metadata {
             .append_pair("audience", audience.as_str())
             .append_pair("format", "full")
             .finish();
+        self.identity(&query).await
+    }
+
+    async fn identity(&self, query: &str) -> crate::error::Result<SecretValue> {
         let url = PathAndQuery::from_str(&format!(
             "/computeMetadata/v1/instance/service-accounts/{}/identity?{}",
             self.account, query

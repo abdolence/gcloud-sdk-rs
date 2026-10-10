@@ -65,6 +65,7 @@ impl fmt::Display for ServiceAccountEmail {
 /// [`GoogleAuthTokenGenerator`](crate::GoogleAuthTokenGenerator) with
 /// [`from_source`](crate::GoogleAuthTokenGenerator::from_source) to cache it until shortly
 /// before its `exp`. The token is a [`SecretValue`] and is never logged.
+#[derive(Debug)]
 pub struct IdTokenSource {
     audience: IdTokenAudience,
     flow: IdTokenFlow,
@@ -136,15 +137,6 @@ impl IdTokenSource {
         ));
         debug!(%audience, ?flow, "Created an ID token source");
         Ok(Self { audience, flow })
-    }
-}
-
-impl fmt::Debug for IdTokenSource {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("IdTokenSource")
-            .field("audience", &self.audience)
-            .field("flow", &self.flow)
-            .finish()
     }
 }
 

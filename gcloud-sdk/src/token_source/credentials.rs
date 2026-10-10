@@ -523,27 +523,7 @@ mod external_account {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    // Spawns a local one-shot HTTP server that answers any request with the
-    // given status line and JSON body, and returns its base URL.
-    async fn one_shot_http_server(status_line: &'static str, body: &'static str) -> String {
-        use tokio::io::{AsyncReadExt, AsyncWriteExt};
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
-        tokio::spawn(async move {
-            let (mut socket, _) = listener.accept().await.unwrap();
-            let mut buf = [0u8; 8192];
-            let _ = socket.read(&mut buf).await;
-            let resp = format!(
-                "HTTP/1.1 {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
-                status_line,
-                body.len(),
-                body
-            );
-            socket.write_all(resp.as_bytes()).await.unwrap();
-        });
-        format!("http://{}", addr)
-    }
+    use crate::test_support::{StubResponse, StubServer};
 
     fn test_user() -> User {
         User {
@@ -556,11 +536,12 @@ mod tests {
 
     #[tokio::test]
     async fn test_user_token_refresh_invalid_grant() {
-        let url = one_shot_http_server(
+        let url = StubServer::start(vec![StubResponse::json(
             "400 Bad Request",
             r#"{"error":"invalid_grant","error_description":"Token has been expired or revoked."}"#,
-        )
-        .await;
+        )])
+        .await
+        .url;
 
         let err = oauth2::fetch_token(&url, &test_user()).await.unwrap_err();
 
@@ -600,11 +581,12 @@ mod tests {
     #[cfg(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto"))]
     #[tokio::test]
     async fn service_account_key_signs_its_assertion() {
-        let url = one_shot_http_server(
+        let url = StubServer::start(vec![StubResponse::json(
             "200 OK",
             r#"{"access_token":"service-account-token","token_type":"Bearer","expires_in":3600}"#,
-        )
-        .await;
+        )])
+        .await
+        .url;
 
         let token = jwt::token(&test_service_account(format!("{url}/token")))
             .await
@@ -630,7 +612,12 @@ mod tests {
 
     #[tokio::test]
     async fn test_user_token_refresh_non_json_body() {
-        let url = one_shot_http_server("503 Service Unavailable", "upstream unavailable").await;
+        let url = StubServer::start(vec![StubResponse::json(
+            "503 Service Unavailable",
+            "upstream unavailable",
+        )])
+        .await
+        .url;
 
         let err = oauth2::fetch_token(&url, &test_user()).await.unwrap_err();
 
