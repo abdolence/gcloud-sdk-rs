@@ -12,6 +12,7 @@ This is NOT OFFICIAL Google Cloud SDK (there is early versions with limited func
 
 # Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
+It also handles [Google authentication](#google-authentication) for these clients and [service-to-service authentication](#service-to-service-authentication) with Google ID tokens between your own services.
 
 ## How API/models are generated:
 - gRPC APIs: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
