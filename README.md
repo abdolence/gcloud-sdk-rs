@@ -11,12 +11,7 @@ Async Google Cloud Platform (GCP) gRPC/REST APIs client implementation based on 
 This is NOT OFFICIAL Google Cloud SDK (there is early versions with limited functionality of the official Google Cloud SDK now [here](https://github.com/googleapis/google-cloud-rust)).
 
 # Overview
-This library contains all the code generated from the Google API for gRPC and REST APIs, but now includes much more:
-- [Google authentication](#google-authentication) for the generated clients: application default credentials, service account keys, the metadata server and [workload identity federation](#workload-identity-federation), including AWS (`external-account-aws` feature);
-- a Tonic auth middleware, with one channel or one token source shared across clients of the same or another endpoint (`get_with`, `connect_with_endpoint`);
-- a [REST API client](#example-for-rest-api) with Google authentication (`GoogleRestApi`);
-- [service-to-service authentication](#service-to-service-authentication) with Google ID tokens: minting them, attaching them to gRPC and reqwest requests, verifying them and [protecting an axum service](#protecting-an-axum-service);
-- [high-level APIs](#high-level-apis) for Firestore, BigQuery, Secret Manager, etc. in separate crates.
+This library contains all the code generated from the Google API for gRPC and REST APIs.
 
 ## How API/models are generated:
 - gRPC APIs: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
@@ -342,3 +337,4 @@ The library was started as a fork of [mechiru/googapis](https://github.com/mechi
 - Improved observability with tracing and measuring execution time of endpoints.
 - Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime.
 - Security-related protocol extensions for Google Secret Manager and KMS.
+- Service-to-service authentication with Google ID tokens: minting and verifying them, a reqwest middleware and an axum layer.
