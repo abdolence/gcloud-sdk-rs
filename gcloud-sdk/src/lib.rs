@@ -66,6 +66,11 @@ pub use api_client::*;
 
 mod middleware;
 
+#[cfg(feature = "reqwest-middleware")]
+mod reqwest_auth_middleware;
+#[cfg(feature = "reqwest-middleware")]
+pub use reqwest_auth_middleware::GoogleAuthReqwestMiddleware;
+
 #[cfg(test)]
 mod test_support;
 
