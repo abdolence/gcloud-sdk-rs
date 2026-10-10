@@ -67,6 +67,10 @@ pub mod google {
                 #[cfg(any(feature = "google-ai-generativelanguage-v1"))]
                 include_proto!("google.ai.generativelanguage.v1");
             }
+            pub mod v1beta {
+                #[cfg(any(feature = "google-ai-generativelanguage-v1beta"))]
+                include_proto!("google.ai.generativelanguage.v1beta");
+            }
         }
     }
     pub mod analytics {
@@ -103,6 +107,7 @@ pub mod google {
                 feature = "google-actions-sdk-v2-interactionmodel-prompt",
                 feature = "google-actions-sdk-v2-interactionmodel-type",
                 feature = "google-ai-generativelanguage-v1",
+                feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-analytics-admin-v1alpha",
                 feature = "google-analytics-admin-v1beta",
                 feature = "google-analytics-data-v1alpha",
@@ -336,6 +341,7 @@ pub mod google {
                 feature = "google-cloud-tasks-v2",
                 feature = "google-cloud-telcoautomation-v1",
                 feature = "google-cloud-texttospeech-v1",
+                feature = "google-cloud-texttospeech-v1beta1",
                 feature = "google-cloud-tpu-v1",
                 feature = "google-cloud-tpu-v2",
                 feature = "google-cloud-translation-v3",
@@ -2201,6 +2207,10 @@ pub mod google {
                 #[cfg(any(feature = "google-cloud-texttospeech-v1"))]
                 include_proto!("google.cloud.texttospeech.v1");
             }
+            pub mod v1beta1 {
+                #[cfg(any(feature = "google-cloud-texttospeech-v1beta1"))]
+                include_proto!("google.cloud.texttospeech.v1beta1");
+            }
         }
         pub mod tpu {
             pub mod v1 {
@@ -2703,6 +2713,7 @@ pub mod google {
     pub mod longrunning {
         #[cfg(
             any(
+                feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-analytics-data-v1alpha",
                 feature = "google-analytics-data-v1beta",
                 feature = "google-api-apikeys-v2",
@@ -2828,6 +2839,7 @@ pub mod google {
                 feature = "google-cloud-tasks-v2",
                 feature = "google-cloud-telcoautomation-v1",
                 feature = "google-cloud-texttospeech-v1",
+                feature = "google-cloud-texttospeech-v1beta1",
                 feature = "google-cloud-tpu-v1",
                 feature = "google-cloud-tpu-v2",
                 feature = "google-cloud-translation-v3",
@@ -3061,6 +3073,7 @@ pub mod google {
             any(
                 feature = "google-actions-sdk-v2",
                 feature = "google-actions-type",
+                feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-analytics-admin-v1alpha",
                 feature = "google-apps-card-v1",
                 feature = "google-apps-drive-labels-v2",
@@ -3210,6 +3223,7 @@ pub mod google {
         #[cfg(
             any(
                 feature = "google-actions-sdk-v2",
+                feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-analytics-data-v1alpha",
                 feature = "google-analytics-data-v1beta",
                 feature = "google-api-apikeys-v2",
@@ -3379,6 +3393,7 @@ pub mod google {
                 feature = "google-cloud-tasks-v2",
                 feature = "google-cloud-telcoautomation-v1",
                 feature = "google-cloud-texttospeech-v1",
+                feature = "google-cloud-texttospeech-v1beta1",
                 feature = "google-cloud-tpu-v1",
                 feature = "google-cloud-tpu-v2",
                 feature = "google-cloud-translation-v3",

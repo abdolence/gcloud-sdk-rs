@@ -175,6 +175,7 @@ features=(
   google-cloud-talent-v4
   google-cloud-tasks-v2
   google-cloud-texttospeech-v1
+  google-cloud-texttospeech-v1beta1
   google-cloud-tpu-v1
   google-cloud-translation-v3
   google-cloud-video-livestream-v1
