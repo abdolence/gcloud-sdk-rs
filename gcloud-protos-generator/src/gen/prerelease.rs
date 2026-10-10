@@ -8,7 +8,11 @@ use std::{collections::HashSet, fmt};
 /// Pre-release API versions generated even though a GA version of the same
 /// API exists. An entry keeps every package under that version, sub-packages
 /// such as `google.cloud.aiplatform.v1beta1.schema.predict.instance` included.
-const KEPT_PRERELEASE_VERSIONS: &[&str] = &["google.cloud.aiplatform.v1beta1"];
+const KEPT_PRERELEASE_VERSIONS: &[&str] = &[
+    "google.ai.generativelanguage.v1beta",
+    "google.cloud.aiplatform.v1beta1",
+    "google.cloud.texttospeech.v1beta1",
+];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Stage {
@@ -233,6 +237,28 @@ mod tests {
         assert!(
             !superseded.contains(&"google.cloud.aiplatform.v1beta1.schema.predict.instance".into())
         );
+    }
+
+    #[test]
+    fn kept_gemini_beta_is_not_superseded() {
+        let superseded = superseded_among(&[
+            "google.ai.generativelanguage.v1",
+            "google.ai.generativelanguage.v1alpha",
+            "google.ai.generativelanguage.v1beta",
+        ]);
+        assert!(!superseded.contains(&"google.ai.generativelanguage.v1beta".into()));
+        assert!(!superseded.contains(&"google.ai.generativelanguage.v1".into()));
+        assert!(superseded.contains(&"google.ai.generativelanguage.v1alpha".into()));
+    }
+
+    #[test]
+    fn kept_text_to_speech_beta_is_not_superseded() {
+        let superseded = superseded_among(&[
+            "google.cloud.texttospeech.v1",
+            "google.cloud.texttospeech.v1beta1",
+        ]);
+        assert!(!superseded.contains(&"google.cloud.texttospeech.v1beta1".into()));
+        assert!(!superseded.contains(&"google.cloud.texttospeech.v1".into()));
     }
 
     #[test]
