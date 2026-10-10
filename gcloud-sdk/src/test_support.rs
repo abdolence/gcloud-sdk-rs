@@ -53,6 +53,24 @@ pub(crate) fn signed_jwt(kid: &str, claims: &serde_json::Value) -> String {
     encode(&header, claims, &key).unwrap()
 }
 
+/// A JWK set that publishes the public half of [`TEST_RSA_PRIVATE_KEY`] under each of
+/// `key_ids`.
+#[cfg(feature = "id-token-verify")]
+pub(crate) fn test_jwk_set(key_ids: &[&str]) -> jsonwebtoken::jwk::JwkSet {
+    crate::jwt_crypto::ensure_provider().unwrap();
+    let encoding_key = EncodingKey::from_rsa_pem(TEST_RSA_PRIVATE_KEY.as_bytes()).unwrap();
+    let keys = key_ids
+        .iter()
+        .map(|kid| {
+            let mut jwk =
+                jsonwebtoken::jwk::Jwk::from_encoding_key(&encoding_key, Algorithm::RS256).unwrap();
+            jwk.common.key_id = Some(kid.to_string());
+            jwk
+        })
+        .collect();
+    jsonwebtoken::jwk::JwkSet { keys }
+}
+
 /// One response of a [`StubServer`].
 pub(crate) struct StubResponse {
     status_line: &'static str,
@@ -67,6 +85,12 @@ impl StubResponse {
             headers: vec![("content-type", "application/json".to_string())],
             body: body.into(),
         }
+    }
+
+    #[cfg(feature = "id-token-verify")]
+    pub(crate) fn with_header(mut self, name: &'static str, value: impl Into<String>) -> Self {
+        self.headers.push((name, value.into()));
+        self
     }
 }
 

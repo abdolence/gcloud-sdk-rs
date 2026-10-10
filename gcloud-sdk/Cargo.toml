@@ -22,6 +22,7 @@ tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
 jwt-aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
 jwt-rust-crypto = ["jsonwebtoken/rust_crypto"]
 rest = ["serde_with"]
+id-token-verify = []
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
 # Google API features
@@ -426,4 +427,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots"]
+features = ["rest", "tls-roots", "id-token-verify"]

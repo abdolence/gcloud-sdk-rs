@@ -51,6 +51,8 @@ mod apis;
 pub use apis::*;
 
 pub mod error;
+#[cfg(feature = "id-token-verify")]
+pub mod id_token_verify;
 mod jwt_crypto;
 mod token_source;
 pub use middleware::GoogleAuthMiddlewareLayer;
