@@ -1,7 +1,7 @@
 [package]
 name = "gcloud-sdk"
 version = "0.33.0"
-authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
+authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Async Google gRPC APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest."
