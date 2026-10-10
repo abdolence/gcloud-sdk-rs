@@ -169,6 +169,9 @@ let response = client
     .await?;
 ```
 
+With the `rest` feature as well, `GoogleRestApi::middleware()` gives the middleware for hand-written
+`reqwest-middleware` calls on the same token cache as the `GoogleRestApi` client.
+
 Without the feature, `id_tokens.authorization_header().await?` gives the `authorization` header value
 for any HTTP client.
 
