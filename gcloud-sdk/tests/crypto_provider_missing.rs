@@ -36,12 +36,17 @@ async fn service_account_key_without_a_crypto_provider_is_a_typed_error() {
 
     let id_tokens =
         GoogleAuthHeaders::id_token_from_adc(&IdTokenAudience::new("https://orders.example")).await;
+    let access_tokens = GoogleAuthHeaders::from_adc().await;
     let client: gcloud_sdk::error::Result<GoogleApi<GoogleAuthMiddleware>> =
         GoogleApi::from_function(|service| service, api_url, None).await;
 
     std::fs::remove_file(key_file).unwrap();
     assert!(matches!(
         id_tokens.unwrap_err().kind(),
+        ErrorKind::CryptoProviderMissing
+    ));
+    assert!(matches!(
+        access_tokens.unwrap_err().kind(),
         ErrorKind::CryptoProviderMissing
     ));
     assert!(matches!(

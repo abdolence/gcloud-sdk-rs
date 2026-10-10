@@ -229,7 +229,7 @@ where
         // setup installs that provider, which the credentials may need to sign with.
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
         let mut middleware = GoogleAuthMiddlewareLayer::new(
-            GoogleAuthHeaders::access_tokens_from_adc(token_scopes)?,
+            GoogleAuthHeaders::from_adc_with_scopes(token_scopes).await?,
             cloud_resource_prefix_meta,
         )?;
         middleware.set_additional_headers(headers);

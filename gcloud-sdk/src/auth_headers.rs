@@ -23,6 +23,7 @@ use crate::{IdTokenAudience, ServiceAccountEmail, GCP_DEFAULT_SCOPES};
 /// headers of the current token, with `authorization` marked sensitive so that it stays
 /// out of logs, and takes new ones only when the credentials report a new token.
 ///
+/// [`from_adc`](Self::from_adc), [`from_adc_with_scopes`](Self::from_adc_with_scopes),
 /// [`id_token_from_adc`](Self::id_token_from_adc) and
 /// [`id_token_impersonating`](Self::id_token_impersonating) build credentials, which
 /// spawns their refresh task on the current Tokio runtime.
@@ -127,8 +128,21 @@ impl GoogleAuthHeaders {
         Ok(Self::from(credentials))
     }
 
+    /// Access tokens for the `cloud-platform` scope, minted with the Application Default
+    /// Credentials: [`from_adc_with_scopes`](Self::from_adc_with_scopes) with
+    /// [`GCP_DEFAULT_SCOPES`].
+    pub async fn from_adc() -> crate::error::Result<Self> {
+        Self::from_adc_with_scopes(GCP_DEFAULT_SCOPES.clone()).await
+    }
+
     /// Access tokens for `scopes`, minted with the Application Default Credentials.
-    pub(crate) fn access_tokens_from_adc(scopes: Vec<String>) -> crate::error::Result<Self> {
+    ///
+    /// Fails with [`ErrorKind::CryptoProviderMissing`] for a service account key, used
+    /// directly or as the source of an impersonation, when the `auth-default-crypto`
+    /// feature is off and no rustls crypto provider is installed. Credentials built with
+    /// google-cloud-auth's `Builder` and converted with `GoogleAuthHeaders::from` are not
+    /// checked, and a missing provider panics in their refresh task instead.
+    pub async fn from_adc_with_scopes(scopes: Vec<String>) -> crate::error::Result<Self> {
         if let Some(adc) = AdcFile::load() {
             adc.ensure_signing_provider()?;
         }
@@ -179,6 +193,11 @@ impl GoogleAuthHeaders {
 }
 
 /// Access tokens, or whatever headers `credentials` serve.
+///
+/// `credentials` built from a service account key need a rustls crypto provider when
+/// the `auth-default-crypto` feature is off. They are opaque here, so this conversion
+/// cannot check for one; [`GoogleAuthHeaders::from_adc_with_scopes`] checks for
+/// Application Default Credentials.
 impl From<Credentials> for GoogleAuthHeaders {
     fn from(credentials: Credentials) -> Self {
         Self {
@@ -191,6 +210,11 @@ impl From<Credentials> for GoogleAuthHeaders {
 /// ID tokens from any google-cloud-auth ID token credentials, such as
 /// `idtoken::service_account::Builder` builds from a key that is not the Application
 /// Default Credentials.
+///
+/// ID token credentials built from a service account key need a rustls crypto provider
+/// when the `auth-default-crypto` feature is off. They are opaque here, so this
+/// conversion cannot check for one; [`GoogleAuthHeaders::id_token_from_adc`] checks for
+/// Application Default Credentials.
 impl From<IDTokenCredentials> for GoogleAuthHeaders {
     fn from(credentials: IDTokenCredentials) -> Self {
         Self::from(Credentials::from(IdTokenHeaders::from(credentials)))
@@ -498,27 +522,51 @@ mod tests {
         let _ = rustls::crypto::ring::default_provider().install_default();
     }
 
-    #[tokio::test]
-    async fn service_account_key_signs_a_sensitive_bearer_header() {
-        install_crypto_provider();
-        let key = json!({
+    fn service_account_key() -> serde_json::Value {
+        json!({
             "type": "service_account",
             "project_id": "orders",
             "private_key_id": "orders-key",
             "private_key": crate::test_support::TEST_RSA_PRIVATE_KEY,
             "client_email": INVOKER,
-        });
-        let credentials = google_cloud_auth::credentials::service_account::Builder::new(key)
-            .build()
-            .unwrap();
+        })
+    }
 
-        let headers = GoogleAuthHeaders::from(credentials)
-            .headers()
-            .await
-            .unwrap();
+    async fn assert_signed_sensitive_bearer(auth_headers: GoogleAuthHeaders) {
+        let headers = auth_headers.headers().await.unwrap();
 
         let authorization = &headers[AUTHORIZATION];
         assert!(authorization.as_bytes().starts_with(b"Bearer ey"));
         assert!(authorization.is_sensitive());
+    }
+
+    #[tokio::test]
+    async fn service_account_key_signs_a_sensitive_bearer_header() {
+        install_crypto_provider();
+        let credentials =
+            google_cloud_auth::credentials::service_account::Builder::new(service_account_key())
+                .build()
+                .unwrap();
+
+        assert_signed_sensitive_bearer(GoogleAuthHeaders::from(credentials)).await;
+    }
+
+    /// The only test in this binary that sets `GOOGLE_APPLICATION_CREDENTIALS`; the others
+    /// pass their Application Default Credentials explicitly.
+    #[tokio::test]
+    async fn service_account_key_as_adc_signs_a_sensitive_bearer_header() {
+        install_crypto_provider();
+        let key_file = std::env::temp_dir().join(format!(
+            "gcloud-sdk-adc-access-tokens-{}.json",
+            std::process::id()
+        ));
+        std::fs::write(&key_file, service_account_key().to_string()).unwrap();
+        std::env::set_var("GOOGLE_APPLICATION_CREDENTIALS", &key_file);
+
+        let auth_headers = GoogleAuthHeaders::from_adc().await;
+
+        std::env::remove_var("GOOGLE_APPLICATION_CREDENTIALS");
+        std::fs::remove_file(key_file).unwrap();
+        assert_signed_sensitive_bearer(auth_headers.unwrap()).await;
     }
 }
