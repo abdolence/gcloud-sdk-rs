@@ -12,13 +12,19 @@ use std::time::{Duration, Instant};
 
 use async_trait::async_trait;
 use jiff::{SignedDuration, Timestamp};
-use jsonwebtoken::jwk::JwkSet;
 use jsonwebtoken::{Algorithm, DecodingKey, Validation};
 use tokio::sync::{Mutex, RwLock};
 use tracing::*;
 
 use crate::error::ErrorKind;
 use crate::IdTokenAudience;
+
+#[cfg(feature = "axum")]
+pub use crate::axum_layer::{VerifyIdToken, VerifyIdTokenLayer};
+/// The `jsonwebtoken` crate of [`JwkSet`] and of [`InvalidIdToken::Malformed`]'s error, so
+/// that an [`IdTokenKeysSource`] needs no `jsonwebtoken` dependency of its own.
+pub use jsonwebtoken;
+pub use jsonwebtoken::jwk::JwkSet;
 
 /// Google's ID token signing keys, the `jwks_uri` of
 /// <https://accounts.google.com/.well-known/openid-configuration>.
