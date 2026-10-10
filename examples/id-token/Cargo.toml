@@ -5,11 +5,7 @@ authors = ["me@abdolence.dev"]
 edition = "2021"
 
 [dependencies]
-gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["tls-webpki-roots", "jwt-aws-lc-rs", "id-token-verify", "axum", "reqwest-middleware"] }
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["tls-webpki-roots", "jwt-aws-lc-rs", "id-token-verify"] }
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }
-rustls = "0.23.31"
-axum = "0.8"
-reqwest = { version = "0.13", default-features = false }
-reqwest-middleware = "0.5"
