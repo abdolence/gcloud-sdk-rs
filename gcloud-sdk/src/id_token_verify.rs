@@ -256,7 +256,12 @@ fn cache_max_age(headers: &reqwest::header::HeaderMap) -> Option<Duration> {
     let cache_control = headers.get(reqwest::header::CACHE_CONTROL)?.to_str().ok()?;
     cache_control
         .split(',')
-        .find_map(|directive| directive.trim().strip_prefix("max-age="))
+        .find_map(|directive| {
+            let (name, seconds) = directive.split_once('=')?;
+            name.trim()
+                .eq_ignore_ascii_case("max-age")
+                .then_some(seconds)
+        })
         .and_then(|seconds| seconds.trim().parse().ok())
         .map(Duration::from_secs)
 }
@@ -286,6 +291,7 @@ impl IdTokenVerifier {
         let client = reqwest::Client::builder()
             .user_agent(crate::GCLOUD_SDK_USER_AGENT)
             .timeout(KEYS_FETCH_TIMEOUT)
+            .https_only(true)
             .build()?;
         Self::with_keys_source(
             audience,
@@ -822,6 +828,17 @@ mod tests {
             .unwrap();
 
         assert_eq!(fetches.load(Ordering::SeqCst), 2);
+    }
+
+    #[test]
+    fn cache_max_age_directive_is_case_insensitive() {
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert(
+            reqwest::header::CACHE_CONTROL,
+            "public, MAX-AGE=600".parse().unwrap(),
+        );
+
+        assert_eq!(cache_max_age(&headers), Some(Duration::from_secs(600)));
     }
 
     #[tokio::test]
