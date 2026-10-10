@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex, PoisonError, RwLock};
 
 use google_cloud_auth::credentials::idtoken::{self, IDTokenCredentials};
+use google_cloud_auth::credentials::service_account::{self, AccessSpecifier};
 use google_cloud_auth::credentials::{
     external_account, Builder as CredentialsBuilder, CacheableResource, Credentials,
     CredentialsProvider, EntityTag,
@@ -10,7 +11,7 @@ use hyper::header::{Entry, HeaderMap, HeaderValue, AUTHORIZATION};
 use hyper::http::Extensions;
 use serde_json::Value;
 
-use crate::adc::{AdcFile, AdcKind};
+use crate::adc::{ensure_crypto_provider, AdcFile, AdcKind};
 use crate::error::{ErrorKind, IdTokenUnsupportedCredentials};
 use crate::{IdTokenAudience, ServiceAccountEmail, GCP_DEFAULT_SCOPES};
 
@@ -24,9 +25,12 @@ use crate::{IdTokenAudience, ServiceAccountEmail, GCP_DEFAULT_SCOPES};
 /// out of logs, and takes new ones only when the credentials report a new token.
 ///
 /// [`from_adc`](Self::from_adc), [`from_adc_with_scopes`](Self::from_adc_with_scopes),
+/// [`from_service_account_key`](Self::from_service_account_key),
 /// [`id_token_from_adc`](Self::id_token_from_adc) and
 /// [`id_token_impersonating`](Self::id_token_impersonating) build credentials, which
-/// spawns their refresh task on the current Tokio runtime.
+/// spawns their refresh task on the current Tokio runtime. All but the last check for the
+/// rustls crypto provider a service account key signs with, and fail with
+/// [`ErrorKind::CryptoProviderMissing`] instead of panicking in that task.
 #[derive(Debug)]
 pub struct GoogleAuthHeaders {
     credentials: Credentials,
@@ -150,6 +154,24 @@ impl GoogleAuthHeaders {
         Ok(Self::from(credentials))
     }
 
+    /// Access tokens for `scopes`, minted with the service account key `key`, the JSON of
+    /// a key file as the IAM console or `gcloud iam service-accounts keys create` writes it.
+    ///
+    /// Fails with [`ErrorKind::CryptoProviderMissing`] when the `auth-default-crypto`
+    /// feature is off and no rustls crypto provider is installed, and with
+    /// [`ErrorKind::CredentialsBuild`] when `key` lacks the fields of a service account key.
+    /// The private key itself is parsed on the first token request.
+    pub async fn from_service_account_key(
+        key: Value,
+        scopes: Vec<String>,
+    ) -> crate::error::Result<Self> {
+        ensure_crypto_provider()?;
+        let credentials = service_account::Builder::new(key)
+            .with_access_specifier(AccessSpecifier::from_scopes(scopes))
+            .build()?;
+        Ok(Self::from(credentials))
+    }
+
     /// The headers to set on a request, replacing any it carries under the same names.
     pub async fn headers(&self) -> crate::error::Result<Arc<HeaderMap>> {
         let cached = self
@@ -197,7 +219,8 @@ impl GoogleAuthHeaders {
 /// `credentials` built from a service account key need a rustls crypto provider when
 /// the `auth-default-crypto` feature is off. They are opaque here, so this conversion
 /// cannot check for one; [`GoogleAuthHeaders::from_adc_with_scopes`] checks for
-/// Application Default Credentials.
+/// Application Default Credentials and [`GoogleAuthHeaders::from_service_account_key`] for
+/// a key.
 impl From<Credentials> for GoogleAuthHeaders {
     fn from(credentials: Credentials) -> Self {
         Self {
@@ -549,6 +572,19 @@ mod tests {
                 .unwrap();
 
         assert_signed_sensitive_bearer(GoogleAuthHeaders::from(credentials)).await;
+    }
+
+    #[tokio::test]
+    async fn service_account_key_constructor_signs_a_sensitive_bearer_header() {
+        install_crypto_provider();
+
+        let auth_headers = GoogleAuthHeaders::from_service_account_key(
+            service_account_key(),
+            GCP_DEFAULT_SCOPES.clone(),
+        )
+        .await;
+
+        assert_signed_sensitive_bearer(auth_headers.unwrap()).await;
     }
 
     /// The only test in this binary that sets `GOOGLE_APPLICATION_CREDENTIALS`; the others

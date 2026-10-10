@@ -87,13 +87,10 @@ impl AdcFile {
     /// refresh task it spawns at build, and panics there, and in every later token
     /// request, when no provider is installed.
     pub(crate) fn ensure_signing_provider(&self) -> crate::error::Result<()> {
-        if cfg!(feature = "auth-default-crypto")
-            || !self.signs_locally()
-            || rustls::crypto::CryptoProvider::get_default().is_some()
-        {
-            Ok(())
+        if self.signs_locally() {
+            ensure_crypto_provider()
         } else {
-            Err(ErrorKind::CryptoProviderMissing.into())
+            Ok(())
         }
     }
 
@@ -110,6 +107,23 @@ impl AdcFile {
     /// credentials.
     pub(crate) fn project_id(&self) -> Option<&str> {
         project_of(&self.0).or_else(|| project_of(self.0.get("source_credentials")?))
+    }
+}
+
+/// Fails with [`ErrorKind::CryptoProviderMissing`] when google-cloud-auth has no rustls
+/// crypto provider to sign with a private key: the `auth-default-crypto` feature is off
+/// and the application installed none.
+///
+/// Only an installed provider counts. rustls would install the single provider its crate
+/// features select on its first `ClientConfig::builder()`, but that lookup is private to
+/// rustls, and the builder panics when the features select none or two.
+pub(crate) fn ensure_crypto_provider() -> crate::error::Result<()> {
+    if cfg!(feature = "auth-default-crypto")
+        || rustls::crypto::CryptoProvider::get_default().is_some()
+    {
+        Ok(())
+    } else {
+        Err(ErrorKind::CryptoProviderMissing.into())
     }
 }
 

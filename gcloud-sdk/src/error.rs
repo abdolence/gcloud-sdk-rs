@@ -31,8 +31,10 @@ pub enum ErrorKind {
     /// A `service_account_impersonation_url` in a credentials file that names no
     /// service account.
     InvalidImpersonationUrl(String),
-    /// The Application Default Credentials sign with a private key of their own, such as
-    /// a service account key file, and no rustls
+    /// The credentials sign with a private key of their own, such as a service account key
+    /// file as the Application Default Credentials or the key given to
+    /// [`GoogleAuthHeaders::from_service_account_key`](crate::GoogleAuthHeaders::from_service_account_key),
+    /// and no rustls
     /// [`CryptoProvider`](rustls::crypto::CryptoProvider) is installed to sign with.
     ///
     /// Only reported when the `auth-default-crypto` feature is off. Install a provider
