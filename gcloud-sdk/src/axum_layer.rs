@@ -137,7 +137,7 @@ where
                     req.extensions_mut().insert(verified);
                     inner.call(req).await
                 }
-                Err(refusal) => Ok(refusal.into_response()),
+                Err(refusal) => Ok(refusal.into()),
             }
         })
     }
@@ -151,16 +151,16 @@ enum Refusal {
     Forbidden,
 }
 
-impl Refusal {
-    fn into_response<B: Default>(self) -> Response<B> {
-        let (status, challenge) = match self {
-            Self::MissingToken => (StatusCode::UNAUTHORIZED, Some("Bearer")),
-            Self::InvalidToken => (
+impl<B: Default> From<Refusal> for Response<B> {
+    fn from(refusal: Refusal) -> Self {
+        let (status, challenge) = match refusal {
+            Refusal::MissingToken => (StatusCode::UNAUTHORIZED, Some("Bearer")),
+            Refusal::InvalidToken => (
                 StatusCode::UNAUTHORIZED,
                 Some(r#"Bearer error="invalid_token""#),
             ),
-            Self::KeysUnavailable => (StatusCode::SERVICE_UNAVAILABLE, None),
-            Self::Forbidden => (StatusCode::FORBIDDEN, None),
+            Refusal::KeysUnavailable => (StatusCode::SERVICE_UNAVAILABLE, None),
+            Refusal::Forbidden => (StatusCode::FORBIDDEN, None),
         };
         let mut response = Response::new(B::default());
         *response.status_mut() = status;
