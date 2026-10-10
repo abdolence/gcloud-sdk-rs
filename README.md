@@ -11,7 +11,12 @@ Async Google Cloud Platform (GCP) gRPC/REST APIs client implementation based on 
 This is NOT OFFICIAL Google Cloud SDK (there is early versions with limited functionality of the official Google Cloud SDK now [here](https://github.com/googleapis/google-cloud-rust)).
 
 # Overview
-This library contains all the code generated from the Google API for gRPC and REST APIs.
+This library contains all the code generated from the Google API for gRPC and REST APIs, but now includes much more:
+- [Google authentication](#google-authentication) for the generated clients: application default credentials, service account keys, the metadata server and [workload identity federation](#workload-identity-federation), including AWS (`external-account-aws` feature);
+- a Tonic auth middleware, with one channel or one token source shared across clients of the same or another endpoint (`get_with`, `connect_with_endpoint`);
+- a [REST API client](#example-for-rest-api) with Google authentication (`GoogleRestApi`);
+- [service-to-service authentication](#service-to-service-authentication) with Google ID tokens: minting them, attaching them to gRPC and reqwest requests, verifying them and [protecting an axum service](#protecting-an-axum-service);
+- [high-level APIs](#high-level-apis) for Firestore, BigQuery, Secret Manager, etc. in separate crates.
 
 ## How API/models are generated:
 - gRPC APIs: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
