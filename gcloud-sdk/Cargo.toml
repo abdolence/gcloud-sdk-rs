@@ -430,4 +430,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots", "id-token-verify"]
+features = ["rest", "tls-roots", "id-token-verify", "axum", "reqwest-middleware"]
