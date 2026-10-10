@@ -146,6 +146,14 @@ with a service account key used directly or as the source of an impersonation:
 `from_function`, `from_function_with_scopes` and the other `from_function*` without credentials,
 `GoogleAuthHeaders::from_adc`, `GoogleAuthHeaders::from_adc_with_scopes` and `GoogleAuthHeaders::id_token_from_adc`.
 
+For a service account key that is not the ADC, `GoogleAuthHeaders::from_service_account_key` runs the same check
+and returns the same error:
+
+```rust
+let key: serde_json::Value = serde_json::from_str(&std::fs::read_to_string("key.json")?)?;
+let auth_headers = GoogleAuthHeaders::from_service_account_key(key, GCP_DEFAULT_SCOPES.clone()).await?;
+```
+
 Credentials you build yourself are not checked: the ones passed to `from_function_with_credentials*`, `with_credentials*`,
 `GoogleAuthHeaders::from(..)`, and the source credentials of `GoogleAuthHeaders::id_token_impersonating`.
 Install the provider before building them, otherwise their refresh task panics.

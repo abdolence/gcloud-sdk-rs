@@ -7,21 +7,25 @@
 use gcloud_sdk::error::ErrorKind;
 use gcloud_sdk::{GoogleApi, GoogleAuthHeaders, GoogleAuthMiddleware, IdTokenAudience};
 
-/// A service account key file, as the Application Default Credentials. The check fails
-/// before the key is parsed, so the key itself does not need to be valid.
-fn key_file_as_adc() -> std::path::PathBuf {
-    let path = std::env::temp_dir().join(format!(
-        "gcloud-sdk-crypto-provider-missing-{}.json",
-        std::process::id()
-    ));
-    let key = serde_json::json!({
+/// A service account key. The check fails before the key is parsed, so the key itself
+/// does not need to be valid.
+fn service_account_key() -> serde_json::Value {
+    serde_json::json!({
         "type": "service_account",
         "project_id": "orders",
         "private_key_id": "orders-key",
         "private_key": "-----BEGIN PRIVATE KEY-----\nunused\n-----END PRIVATE KEY-----\n",
         "client_email": "invoker@orders.iam.gserviceaccount.com",
-    });
-    std::fs::write(&path, key.to_string()).unwrap();
+    })
+}
+
+/// A service account key file, as the Application Default Credentials.
+fn key_file_as_adc() -> std::path::PathBuf {
+    let path = std::env::temp_dir().join(format!(
+        "gcloud-sdk-crypto-provider-missing-{}.json",
+        std::process::id()
+    ));
+    std::fs::write(&path, service_account_key().to_string()).unwrap();
     std::env::set_var("GOOGLE_APPLICATION_CREDENTIALS", &path);
     path
 }
@@ -39,6 +43,11 @@ async fn service_account_key_without_a_crypto_provider_is_a_typed_error() {
     let access_tokens = GoogleAuthHeaders::from_adc().await;
     let client: gcloud_sdk::error::Result<GoogleApi<GoogleAuthMiddleware>> =
         GoogleApi::from_function(|service| service, api_url, None).await;
+    let key = GoogleAuthHeaders::from_service_account_key(
+        service_account_key(),
+        gcloud_sdk::GCP_DEFAULT_SCOPES.clone(),
+    )
+    .await;
 
     std::fs::remove_file(key_file).unwrap();
     assert!(matches!(
@@ -51,6 +60,10 @@ async fn service_account_key_without_a_crypto_provider_is_a_typed_error() {
     ));
     assert!(matches!(
         client.err().unwrap().kind(),
+        ErrorKind::CryptoProviderMissing
+    ));
+    assert!(matches!(
+        key.err().unwrap().kind(),
         ErrorKind::CryptoProviderMissing
     ));
 }
