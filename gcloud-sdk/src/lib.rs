@@ -55,6 +55,7 @@ mod jwt_crypto;
 mod token_source;
 pub use middleware::GoogleAuthMiddlewareLayer;
 pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
+pub use token_source::id_token::{IdTokenAudience, IdTokenSource, ServiceAccountEmail};
 pub use token_source::metadata::Metadata as GceMetadataClient;
 pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, TokenSourceType};
 

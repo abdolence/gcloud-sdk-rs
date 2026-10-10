@@ -79,6 +79,27 @@ impl Metadata {
         Ok(SecretValue::from(resp))
     }
 
+    /// An ID token for `audience` that carries the service account's `email`, which
+    /// the metadata server includes only in the `full` format.
+    pub(crate) async fn id_token_with_email(
+        &self,
+        audience: &crate::IdTokenAudience,
+    ) -> crate::error::Result<SecretValue> {
+        let query = Serializer::new(String::new())
+            .append_pair("audience", audience.as_str())
+            .append_pair("format", "full")
+            .finish();
+        let url = PathAndQuery::from_str(&format!(
+            "/computeMetadata/v1/instance/service-accounts/{}/identity?{}",
+            self.account, query
+        ))?;
+        trace!(
+            "Receiving a new ID token from Metadata Server using '{}'",
+            url
+        );
+        Ok(SecretValue::from(self.client.get(url).await?))
+    }
+
     pub async fn email(&self) -> Option<String> {
         match PathAndQuery::from_str(
             format!(

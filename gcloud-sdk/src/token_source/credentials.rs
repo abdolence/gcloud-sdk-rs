@@ -134,6 +134,17 @@ impl Source for Credentials {
     }
 }
 
+impl ServiceAccount {
+    /// An ID token for `audience`, from a self-signed assertion exchanged at the key's
+    /// token endpoint.
+    pub(crate) async fn id_token(
+        &self,
+        audience: &crate::IdTokenAudience,
+    ) -> crate::error::Result<SecretValue> {
+        jwt::id_token(self, audience).await
+    }
+}
+
 impl From<Credentials> for BoxSource {
     fn from(v: Credentials) -> Self {
         Box::new(v)
@@ -192,7 +203,7 @@ pub fn from_file(path: impl AsRef<Path>, scopes: &[String]) -> crate::error::Res
 }
 
 #[inline]
-fn httpc_post(url: &str) -> reqwest::RequestBuilder {
+pub(super) fn httpc_post(url: &str) -> reqwest::RequestBuilder {
     reqwest::Client::new()
         .post(url)
         .header(reqwest::header::USER_AGENT, crate::GCLOUD_SDK_USER_AGENT)
@@ -207,7 +218,7 @@ struct OAuthErrorResponse {
 
 const OAUTH_ERROR_BODY_MAX_LEN: usize = 512;
 
-async fn auth_error_from_response(resp: reqwest::Response) -> crate::error::Error {
+pub(super) async fn auth_error_from_response(resp: reqwest::Response) -> crate::error::Error {
     let status = resp.status();
     let body = resp.text().await.unwrap_or_default();
     let (oauth_error, details) = match serde_json::from_str::<OAuthErrorResponse>(&body) {
@@ -247,6 +258,7 @@ struct IamCredentialsTokenResponse {
 
 mod jwt {
     use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
+    use secret_vault_value::SecretValue;
 
     use std::{convert::TryFrom, time::SystemTime};
 
@@ -254,11 +266,23 @@ mod jwt {
         credentials::{httpc_post, ServiceAccount},
         Token, TokenResponse,
     };
+    use crate::IdTokenAudience;
 
     #[derive(Debug, serde::Serialize)]
     struct Claims<'a> {
         iss: &'a str,
         scope: &'a str,
+        aud: &'a str,
+        iat: u64,
+        exp: u64,
+    }
+
+    /// Claims of the assertion exchanged for an ID token: `target_audience` takes the
+    /// place of `scope`.
+    #[derive(Debug, serde::Serialize)]
+    struct IdTokenClaims<'a> {
+        iss: &'a str,
+        target_audience: &'a str,
         aud: &'a str,
         iat: u64,
         exp: u64,
@@ -286,6 +310,11 @@ mod jwt {
         assertion: &'a str,
     }
 
+    #[derive(Debug, serde::Deserialize)]
+    struct IdTokenResponse {
+        id_token: SecretValue,
+    }
+
     const DEFAULT_EXPIRE: u64 = 60 * 60;
 
     pub async fn token(sa: &ServiceAccount) -> crate::error::Result<Token> {
@@ -297,10 +326,38 @@ mod jwt {
             iat,
             exp: iat + DEFAULT_EXPIRE,
         };
+        let resp = exchange(sa, &claims).await?;
+        let resp = resp.json::<TokenResponse>().await?;
+        Token::try_from(resp)
+    }
+
+    // https://cloud.google.com/iap/docs/authentication-howto#obtaining_an_oidc_token_from_a_local_service_account_key_file
+    pub async fn id_token(
+        sa: &ServiceAccount,
+        audience: &IdTokenAudience,
+    ) -> crate::error::Result<SecretValue> {
+        let iat = issued_at();
+        let claims = IdTokenClaims {
+            iss: &sa.client_email,
+            target_audience: audience.as_str(),
+            aud: &sa.token_uri,
+            iat,
+            exp: iat + DEFAULT_EXPIRE,
+        };
+        let resp = exchange(sa, &claims).await?;
+        Ok(resp.json::<IdTokenResponse>().await?.id_token)
+    }
+
+    /// Signs `claims` with the service account key and exchanges the assertion at the
+    /// key's token endpoint, returning the successful response.
+    async fn exchange(
+        sa: &ServiceAccount,
+        claims: &impl serde::Serialize,
+    ) -> crate::error::Result<reqwest::Response> {
         let header = header("JWT", &sa.private_key_id);
         crate::jwt_crypto::ensure_provider()?;
         let key = EncodingKey::from_rsa_pem(sa.private_key.as_sensitive_bytes())?;
-        let assertion = &encode(&header, &claims, &key)?;
+        let assertion = &encode(&header, claims, &key)?;
 
         let req = httpc_post(&sa.token_uri).form(&Payload {
             grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
@@ -308,8 +365,7 @@ mod jwt {
         });
         let resp = req.send().await?;
         if resp.status().is_success() {
-            let resp = resp.json::<TokenResponse>().await?;
-            Token::try_from(resp)
+            Ok(resp)
         } else {
             Err(super::auth_error_from_response(resp).await)
         }

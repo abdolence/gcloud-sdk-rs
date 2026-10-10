@@ -1,4 +1,16 @@
-//! Fixtures shared by the tests.
+//! Fixtures shared by the tests: an RSA key and a local HTTP stub server.
+
+// Without a JWT crypto provider only the missing-provider errors are tested, and most
+// fixtures go unused.
+#![cfg_attr(
+    not(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto")),
+    allow(dead_code)
+)]
+
+use std::sync::{Arc, Mutex};
+
+use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 /// A 2048-bit RSA key generated for these tests; it signs nothing outside them.
 pub(crate) const TEST_RSA_PRIVATE_KEY: &str = r"-----BEGIN PRIVATE KEY-----
@@ -29,3 +41,126 @@ xcOguBDd9RXvGAI0v2ZdC1CF/MLsHRT8+COxaVb60NRRiyVTbyQ2BDfR5B6Tb8L1
 qv0DqY+7mrGKzFdVr3Uf2lJJYFipabaL1GrD5FkZYPW21eNfBj2QRorgLf70n7L+
 VPNvPfZ32mJr45YUokuFcGU=
 -----END PRIVATE KEY-----";
+
+/// A JWT signed with [`TEST_RSA_PRIVATE_KEY`] under key ID `kid`.
+pub(crate) fn signed_jwt(kid: &str, claims: &serde_json::Value) -> String {
+    let header = Header {
+        kid: Some(kid.to_string()),
+        ..Header::new(Algorithm::RS256)
+    };
+    crate::jwt_crypto::ensure_provider().unwrap();
+    let key = EncodingKey::from_rsa_pem(TEST_RSA_PRIVATE_KEY.as_bytes()).unwrap();
+    encode(&header, claims, &key).unwrap()
+}
+
+/// One response of a [`StubServer`].
+pub(crate) struct StubResponse {
+    status_line: &'static str,
+    headers: Vec<(&'static str, String)>,
+    body: String,
+}
+
+impl StubResponse {
+    pub(crate) fn json(status_line: &'static str, body: impl Into<String>) -> Self {
+        Self {
+            status_line,
+            headers: vec![("content-type", "application/json".to_string())],
+            body: body.into(),
+        }
+    }
+}
+
+/// A request a [`StubServer`] received.
+#[derive(Debug, Clone)]
+pub(crate) struct ReceivedRequest {
+    /// The request line, such as `POST /token HTTP/1.1`.
+    pub(crate) request_line: String,
+    pub(crate) headers: Vec<(String, String)>,
+    pub(crate) body: String,
+}
+
+impl ReceivedRequest {
+    pub(crate) fn header(&self, name: &str) -> Option<&str> {
+        self.headers
+            .iter()
+            .find(|(header, _)| header.eq_ignore_ascii_case(name))
+            .map(|(_, value)| value.as_str())
+    }
+}
+
+/// A local HTTP/1.1 server that answers one request per connection with the given
+/// responses in order, records every request, and stops accepting after the last one.
+pub(crate) struct StubServer {
+    pub(crate) url: String,
+    received: Arc<Mutex<Vec<ReceivedRequest>>>,
+}
+
+impl StubServer {
+    pub(crate) async fn start(responses: Vec<StubResponse>) -> Self {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", listener.local_addr().unwrap());
+        let received = Arc::new(Mutex::new(Vec::new()));
+        let recorder = Arc::clone(&received);
+        tokio::spawn(async move {
+            for response in responses {
+                let (mut socket, _) = listener.accept().await.unwrap();
+                let request = read_request(&mut socket).await;
+                recorder.lock().unwrap().push(request);
+                let mut head = format!(
+                    "HTTP/1.1 {}\r\ncontent-length: {}\r\nconnection: close\r\n",
+                    response.status_line,
+                    response.body.len()
+                );
+                for (name, value) in &response.headers {
+                    head.push_str(&format!("{name}: {value}\r\n"));
+                }
+                head.push_str("\r\n");
+                socket.write_all(head.as_bytes()).await.unwrap();
+                socket.write_all(response.body.as_bytes()).await.unwrap();
+            }
+        });
+        Self { url, received }
+    }
+
+    pub(crate) fn received(&self) -> Vec<ReceivedRequest> {
+        self.received.lock().unwrap().clone()
+    }
+}
+
+async fn read_request(socket: &mut tokio::net::TcpStream) -> ReceivedRequest {
+    let mut buf = Vec::new();
+    let mut chunk = [0u8; 4096];
+    let head_end = loop {
+        let read = socket.read(&mut chunk).await.unwrap();
+        assert!(read > 0, "connection closed before the request head ended");
+        buf.extend_from_slice(&chunk[..read]);
+        if let Some(pos) = buf.windows(4).position(|window| window == b"\r\n\r\n") {
+            break pos + 4;
+        }
+    };
+    let head = String::from_utf8(buf[..head_end].to_vec()).unwrap();
+    let mut lines = head.split("\r\n").filter(|line| !line.is_empty());
+    let request_line = lines.next().unwrap().to_string();
+    let headers: Vec<(String, String)> = lines
+        .map(|line| {
+            let (name, value) = line.split_once(':').unwrap();
+            (name.trim().to_string(), value.trim().to_string())
+        })
+        .collect();
+    let content_length: usize = headers
+        .iter()
+        .find(|(name, _)| name.eq_ignore_ascii_case("content-length"))
+        .map(|(_, value)| value.parse().unwrap())
+        .unwrap_or(0);
+    while buf.len() < head_end + content_length {
+        let read = socket.read(&mut chunk).await.unwrap();
+        assert!(read > 0, "connection closed before the request body ended");
+        buf.extend_from_slice(&chunk[..read]);
+    }
+    let body = String::from_utf8(buf[head_end..head_end + content_length].to_vec()).unwrap();
+    ReceivedRequest {
+        request_line,
+        headers,
+        body,
+    }
+}

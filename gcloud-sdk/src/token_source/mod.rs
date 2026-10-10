@@ -9,6 +9,7 @@ use secret_vault_value::SecretValue;
 
 pub mod auth_token_generator;
 pub mod credentials;
+pub mod id_token;
 pub mod metadata;
 
 pub use credentials::{from_env_var, from_well_known_file};
@@ -58,19 +59,40 @@ pub async fn create_source(
 // - A JSON file in a location known to the gcloud command-line tool.
 // - On Google Compute Engine, it fetches credentials from the metadata server.
 pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSource> {
+    Ok(find_default_credentials(token_scopes).await?.into())
+}
+
+/// The credentials [`find_default`] settles on, before they are boxed into a token source.
+enum DefaultCredentials {
+    File(credentials::Credentials),
+    MetadataServer(metadata::Metadata),
+}
+
+impl From<DefaultCredentials> for BoxSource {
+    fn from(v: DefaultCredentials) -> Self {
+        match v {
+            DefaultCredentials::File(credentials) => credentials.into(),
+            DefaultCredentials::MetadataServer(metadata) => metadata.into(),
+        }
+    }
+}
+
+async fn find_default_credentials(
+    token_scopes: &[String],
+) -> crate::error::Result<DefaultCredentials> {
     debug!("Finding default token for scopes: {:?}", token_scopes);
 
     if let Some(src) = from_env_var(token_scopes)? {
         debug!("Creating token based on environment variable: GOOGLE_APPLICATION_CREDENTIALS");
-        return Ok(src.into());
+        return Ok(DefaultCredentials::File(src));
     }
     if let Some(src) = from_well_known_file(token_scopes)? {
         debug!("Creating token based on standard config files such as application_default_credentials.json");
-        return Ok(src.into());
+        return Ok(DefaultCredentials::File(src));
     }
     if let Some(src) = from_metadata(token_scopes, "default".to_string()).await? {
         debug!("Creating token based on metadata server");
-        return Ok(src.into());
+        return Ok(DefaultCredentials::MetadataServer(src));
     }
     warn!("None of the possible sources detected for Google OAuth token");
     Err(crate::error::ErrorKind::TokenSource.into())
@@ -93,6 +115,14 @@ impl Token {
     }
     pub fn header_value(&self) -> String {
         format!("{} {}", self.token_type, self.token.as_sensitive_str())
+    }
+
+    /// The `authorization` header value for this token, marked sensitive so that it is
+    /// left out of logs.
+    pub(crate) fn authorization(&self) -> crate::error::Result<hyper::header::HeaderValue> {
+        let mut authorization = hyper::header::HeaderValue::from_str(&self.header_value())?;
+        authorization.set_sensitive(true);
+        Ok(authorization)
     }
 
     pub async fn generate_for_scopes(

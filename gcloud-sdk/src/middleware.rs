@@ -561,6 +561,57 @@ mod tests {
         assert_eq!(values, vec!["first", "second"]);
     }
 
+    #[cfg(any(feature = "jwt-aws-lc-rs", feature = "jwt-rust-crypto"))]
+    #[tokio::test]
+    async fn id_token_layer_attaches_the_minted_id_token() {
+        use crate::test_support::{signed_jwt, StubResponse, StubServer, TEST_RSA_PRIVATE_KEY};
+        use crate::{IdTokenAudience, IdTokenSource};
+
+        let id_token = signed_jwt(
+            "google-key",
+            &serde_json::json!({
+                "aud": "https://orders-abc123-ew.a.run.app",
+                "exp": (Timestamp::now() + SignedDuration::from_hours(1)).as_second(),
+            }),
+        );
+        let token_endpoint = StubServer::start(vec![StubResponse::json(
+            "200 OK",
+            serde_json::json!({ "id_token": id_token }).to_string(),
+        )])
+        .await;
+        let key = serde_json::json!({
+            "type": "service_account",
+            "client_email": "caller@my-project.iam.gserviceaccount.com",
+            "private_key_id": "test-key-id",
+            "private_key": TEST_RSA_PRIVATE_KEY,
+            "token_uri": format!("{}/token", token_endpoint.url),
+        });
+        let source = IdTokenSource::new(
+            IdTokenAudience::new("https://orders-abc123-ew.a.run.app"),
+            TokenSourceType::Json(key.to_string()),
+        )
+        .await
+        .unwrap();
+
+        let (tx, mut rx) = tokio::sync::mpsc::channel(1);
+        let layer =
+            GoogleAuthMiddlewareLayer::new(GoogleAuthTokenGenerator::from_source(source), None)
+                .unwrap();
+        let mut service = layer.layer(DummyService { tx: Arc::new(tx) });
+
+        let req = Request::builder()
+            .uri("https://orders-abc123-ew.a.run.app/orders.v1.Orders/List")
+            .body("".to_string())
+            .unwrap();
+        tower::Service::call(&mut service, req).await.unwrap();
+
+        let captured_req = rx.recv().await.unwrap();
+        assert_eq!(
+            captured_req.headers().get("authorization").unwrap(),
+            format!("Bearer {id_token}").as_str()
+        );
+    }
+
     #[tokio::test]
     async fn with_inner_shares_the_token_and_replaces_the_resource_prefix() {
         let calls = Arc::new(std::sync::atomic::AtomicUsize::new(0));
