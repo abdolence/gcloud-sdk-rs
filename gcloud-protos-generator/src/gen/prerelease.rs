@@ -164,7 +164,10 @@ impl fmt::Display for SupersededImports {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
+    use std::{
+        fs,
+        path::{Path, PathBuf},
+    };
 
     fn superseded_among(names: &[&str]) -> SupersededPrereleases {
         let packages = names
@@ -294,6 +297,60 @@ mod tests {
                 importer: "google.cloud.fleet.v1".into(),
                 imported: "google.container.v1beta1".into(),
             }]
+        );
+    }
+
+    /// Feature names in the `[features]` table of a Cargo manifest.
+    fn manifest_features(manifest: &str) -> Vec<&str> {
+        manifest
+            .lines()
+            .skip_while(|line| line.trim() != "[features]")
+            .skip(1)
+            .take_while(|line| !line.trim_start().starts_with('['))
+            .filter(|line| !line.trim_start().starts_with('#'))
+            .filter_map(|line| line.split_once('='))
+            .map(|(name, _)| name.trim())
+            .collect()
+    }
+
+    /// The published SDK holds no superseded package, neither as a generated
+    /// module nor as a feature: the generator never writes one, and nothing
+    /// may add one back by hand.
+    #[test]
+    fn sdk_holds_no_superseded_prerelease() {
+        let sdk = Path::new(env!("CARGO_MANIFEST_DIR")).join("../gcloud-sdk");
+
+        let generated = fs::read_dir(sdk.join("genproto"))
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .filter(|path| path.extension().is_some_and(|extension| extension == "rs"))
+            .map(|path| {
+                let module = path.file_stem().unwrap().to_str().unwrap();
+                Package::from_escaped_vec(module.split('.').map(str::to_owned).collect())
+            })
+            .collect::<Vec<_>>();
+        assert!(!generated.is_empty(), "no generated modules under {sdk:?}");
+        let superseded = generated.iter().collect::<SupersededPrereleases>();
+
+        let manifest = fs::read_to_string(sdk.join("Cargo.toml")).unwrap();
+        // A feature is named after its package with dots replaced by dashes,
+        // and package segments never contain a dash.
+        let featured = manifest_features(&manifest)
+            .into_iter()
+            .map(|feature| Package::from(feature.replace('-', ".").as_str()))
+            .collect::<Vec<_>>();
+
+        let mut offending = generated
+            .iter()
+            .chain(&featured)
+            .filter(|package| superseded.contains(package))
+            .map(|package| package.raw.clone())
+            .collect::<Vec<_>>();
+        offending.sort();
+        offending.dedup();
+        assert!(
+            offending.is_empty(),
+            "superseded pre-release packages in gcloud-sdk/genproto or the [features] table: {offending:#?}"
         );
     }
 }
