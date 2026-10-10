@@ -1,10 +1,8 @@
 //! # Google Cloud SDK for Rust
 //!
-//! Library provides all available APIs generated based:
-//! - on proto interfaces for gRPC;
-//! - OpenAPI spec for REST APIs not available as gRPC;
+//! Library provides all available Google gRPC APIs generated from their proto interfaces.
 //!
-//! The library also provides and easy-to-use client API for both gRPC and REST,
+//! The library also provides an easy-to-use client API for gRPC
 //! that supports Google Authentication natively.
 //!
 //! ## gRPC example
@@ -26,20 +24,6 @@
 //!             ..Default::default()
 //!         }))
 //!         .await?;
-//!
-//! ```
-//! ## REST example
-//! ```ignore
-//!
-//! let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
-//!
-//! let response = gcloud_sdk::google_rest_apis::storage::buckets_api::storage_buckets_list(
-//!     &google_rest_client.create_google_storage_config().await?,
-//!     gcloud_sdk::google_rest_apis::storage::buckets_api::StoragePeriodBucketsPeriodListParams {
-//!         project: google_project_id,
-//!         ..Default::default()
-//!     }
-//! ).await?;
 //!
 //! ```
 //!
@@ -79,12 +63,6 @@ pub use reqwest_auth_middleware::GoogleAuthReqwestMiddleware;
 mod test_support;
 
 pub mod proto_ext;
-
-#[cfg(feature = "rest")]
-mod rest_apis;
-
-#[cfg(feature = "rest")]
-pub use rest_apis::*;
 
 pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 

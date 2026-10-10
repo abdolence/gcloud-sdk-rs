@@ -11,4 +11,4 @@ jobs:
           profile: minimal
           toolchain: stable
           components: rustfmt, clippy
-      - run: cargo fmt -- --check && cargo test -p protosgen && cargo test -p gcloud-sdk --features rest,id-token-verify,axum,reqwest-middleware && cargo test -p gcloud-sdk --no-default-features --features tls-webpki-roots,id-token-verify && cargo test -p gcloud-sdk --no-default-features --features tls-roots,jwt-rust-crypto,id-token-verify,axum,reqwest-middleware #&& cargo clippy -- -Dwarnings && cargo test --all-features
+      - run: cargo fmt -- --check && cargo test -p protosgen && cargo test -p gcloud-sdk --features id-token-verify,axum,reqwest-middleware && cargo test -p gcloud-sdk --no-default-features --features tls-webpki-roots,id-token-verify && cargo test -p gcloud-sdk --no-default-features --features tls-roots,jwt-rust-crypto,id-token-verify,axum,reqwest-middleware #&& cargo clippy -- -Dwarnings && cargo test --all-features

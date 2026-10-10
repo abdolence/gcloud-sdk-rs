@@ -4,7 +4,7 @@ version = "0.32.5"
 authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "Async Google gRPC/REST APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest."
+description = "Async Google gRPC APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest."
 repository = "https://github.com/abdolence/gcloud-sdk-rs"
 documentation = "https://docs.rs/gcloud-sdk"
 categories = ["api-bindings"]
@@ -21,7 +21,6 @@ tls-roots = ["reqwest/native-tls", "tonic/tls-native-roots"]
 tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls"]
 jwt-aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
 jwt-rust-crypto = ["jsonwebtoken/rust_crypto"]
-rest = ["serde_with"]
 id-token-verify = []
 axum = ["dep:axum-core", "id-token-verify"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
@@ -294,18 +293,6 @@ grafeas-v1 = []
 maps-fleetengine-delivery-v1 = []
 maps-fleetengine-v1 = []
 
-# REST features
-google-rest-bigquery-v2 = ["rest"]
-google-rest-cloudresourcemanager-v3 = ["rest"]
-google-rest-compute-v1 = ["rest"]
-google-rest-dns-v1 = ["rest"]
-google-rest-identitytoolkit-v3 = ["rest"]
-google-rest-lustre-v1 = ["rest"]
-google-rest-servicecontrol-v1 = ["rest"]
-google-rest-servicecontrol-v2 = ["rest"]
-google-rest-sqladmin-v1 = ["rest"]
-google-rest-storage-v1 = ["rest"]
-google-rest-fcm-v1 = ["rest"]
 
 [dependencies]
 tonic = { version = "0.14.0" }
@@ -326,9 +313,8 @@ tokio = { version =  "1", default-features = false }
 tracing = "0.1"
 secret-vault-value = { version="1.0", features=["serde"] }
 once_cell = "1.19"
-reqwest = { version = "0.13", features = ["multipart", "json", "gzip", "stream", "http2", "form", "query"], default-features = false  }
+reqwest = { version = "0.13", features = ["json", "gzip", "http2", "form"], default-features = false  }
 bytes = { version = "1"}
-serde_with = { version = "3", optional = true, features = ["base64"] }
 aws-config = { version = "1.1", features = ["behavior-version-latest"], optional = true }
 aws-sigv4 = { version = "1.2" , optional = true }
 aws-credential-types = { version = "1.2.1", optional = true }
@@ -345,4 +331,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots", "id-token-verify", "axum", "reqwest-middleware"]
+features = ["tls-roots", "id-token-verify", "axum", "reqwest-middleware"]
