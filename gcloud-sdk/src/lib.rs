@@ -72,6 +72,9 @@ pub use api_client::*;
 
 mod middleware;
 
+mod request_timeouts;
+pub use request_timeouts::{RequestTimeoutElapsed, RequestTimeouts};
+
 #[cfg(feature = "reqwest-middleware")]
 mod reqwest_auth_middleware;
 #[cfg(feature = "reqwest-middleware")]

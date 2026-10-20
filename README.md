@@ -122,6 +122,32 @@ let response = firestore_client
 
 Full example available [here](examples/firestore-client). More examples are located [here](examples).
 
+### Request timeouts
+By default a call waits for as long as its connection lives. The channel's HTTP/2 keep-alive notices a server that stopped answering
+after up to two minutes: a ping every 60 s, and 60 s for its answer.
+
+`RequestTimeouts` sets client-side limits for a call, both off by default:
+- `total`: the whole call, authentication included. It is sent to the server as `grpc-timeout`, and suits unary calls;
+- `idle`: the wait for the response to start and for each next part of the response, counted only while you are waiting for one. It suits server streams.
+
+```rust
+use std::time::Duration;
+
+// Every call of the client
+let firestore_client = firestore_client
+    .with_request_timeouts(RequestTimeouts::new().with_total(Duration::from_secs(30)));
+
+// One call: replaces both limits of the client, and RequestTimeouts::new() switches them off
+let mut request = tonic::Request::new(run_query_request);
+request
+    .extensions_mut()
+    .insert(RequestTimeouts::new().with_idle(Duration::from_secs(30)));
+```
+
+A call that runs out of a limit fails with `Code::DeadlineExceeded`, and the source of its status is a `RequestTimeoutElapsed`.
+
+Be aware not to set `idle` on a bidirectional stream such as Firestore's `Listen`: it stays quiet until there is something to send.
+
 ### Crypto providers
 `google-cloud-auth` signs service account JWTs with a rustls `CryptoProvider`.
 With the default features it uses aws-lc-rs.

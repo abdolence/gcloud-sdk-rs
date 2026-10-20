@@ -1,4 +1,4 @@
-use crate::GoogleAuthHeaders;
+use crate::{GoogleAuthHeaders, RequestTimeouts};
 use futures::{Future, TryFutureExt};
 use hyper::header::{HeaderMap, HeaderName, HeaderValue, USER_AGENT};
 use jiff::Timestamp;
@@ -66,6 +66,8 @@ pub struct GoogleAuthMiddlewareService<T> {
     auth_headers: Arc<GoogleAuthHeaders>,
     /// Every header added to each request except `authorization`, already validated.
     headers: Arc<HeaderMap>,
+    /// The limits of a call whose request carries no [`RequestTimeouts`] of its own.
+    request_timeouts: RequestTimeouts,
 }
 
 impl<T> GoogleAuthMiddlewareService<T> {
@@ -78,7 +80,12 @@ impl<T> GoogleAuthMiddlewareService<T> {
             inner: service,
             auth_headers: auth_headers.into(),
             headers: Arc::new(default_headers(cloud_resource_prefix)?),
+            request_timeouts: RequestTimeouts::new(),
         })
+    }
+
+    pub(crate) fn set_request_timeouts(&mut self, request_timeouts: RequestTimeouts) {
+        self.request_timeouts = request_timeouts;
     }
 
     pub fn set_user_agent(&mut self, user_agent: String) -> crate::error::Result<()> {
@@ -142,6 +149,7 @@ impl<T> GoogleAuthMiddlewareService<T> {
             inner,
             auth_headers: Arc::clone(&self.auth_headers),
             headers: Arc::new(headers),
+            request_timeouts: self.request_timeouts,
         })
     }
 }
@@ -166,13 +174,20 @@ where
     fn call(&mut self, mut req: hyper::Request<RequestBody>) -> Self::Future {
         let auth_headers = Arc::clone(&self.auth_headers);
         let headers = Arc::clone(&self.headers);
+        let clock = req
+            .extensions()
+            .get::<RequestTimeouts>()
+            .copied()
+            .unwrap_or(self.request_timeouts)
+            .start();
 
         // tower's documented idiom for a `Clone` inner service: the instance we already
         // polled ready goes into the future, and the service keeps a fresh clone.
         let clone = self.inner.clone();
         let mut inner = std::mem::replace(&mut self.inner, clone);
 
-        Box::pin(async move {
+        let limited = clock.map(|clock| (clock, req.uri().clone()));
+        let send = async move {
             let begin_time = Timestamp::now();
             let request_auth_headers = auth_headers.headers().await.map_err(Box::new)?;
             let token_generated_time = Timestamp::now();
@@ -180,6 +195,9 @@ where
             let req_headers = req.headers_mut();
             replace_headers(req_headers, &request_auth_headers);
             replace_headers(req_headers, &headers);
+            if let Some(clock) = clock {
+                clock.insert_grpc_timeout(req_headers)?;
+            }
 
             let req_uri = req.uri().clone();
             inner
@@ -205,7 +223,11 @@ where
                     );
                     e.into()
                 })
-        })
+        };
+        match limited {
+            Some((clock, uri)) => Box::pin(clock.limit(uri, send)),
+            None => Box::pin(send),
+        }
     }
 }
 
@@ -253,6 +275,7 @@ impl<S> Layer<S> for GoogleAuthMiddlewareLayer {
             inner: service,
             auth_headers: Arc::clone(&self.auth_headers),
             headers: Arc::clone(&self.headers),
+            request_timeouts: RequestTimeouts::new(),
         }
     }
 }
@@ -264,6 +287,7 @@ mod tests {
     use google_cloud_auth::credentials::Credentials;
     use hyper::{Request, Response};
     use std::convert::Infallible;
+    use std::time::Duration;
 
     #[derive(Clone)]
     struct DummyService {
@@ -616,5 +640,57 @@ mod tests {
         // One `GoogleAuthHeaders` behind all three services: the headers were derived once and
         // then served from its cache.
         assert_eq!(credentials.served(), 1);
+    }
+
+    /// Only a total limit reaches the server, as the time left of it, and a `grpc-timeout`
+    /// the caller set stays as it was.
+    #[tokio::test(start_paused = true)]
+    async fn grpc_timeout_carries_the_total_limit_only() {
+        let (tx, mut rx) = tokio::sync::mpsc::channel(4);
+        let mut service = GoogleAuthMiddlewareService::new(
+            DummyService { tx: Arc::new(tx) },
+            Arc::new(GoogleAuthHeaders::from(Credentials::from(
+                StubCredentials::bearer("dummy-token"),
+            ))),
+            None,
+        )
+        .unwrap();
+        let total = RequestTimeouts::new().with_total(Duration::from_secs(5));
+        let mut idle_only = request();
+        idle_only
+            .extensions_mut()
+            .insert(RequestTimeouts::new().with_idle(Duration::from_secs(5)));
+        let mut total_only = request();
+        total_only.extensions_mut().insert(total);
+        let mut caller_timeout = request();
+        caller_timeout.extensions_mut().insert(total);
+        caller_timeout
+            .headers_mut()
+            .insert("grpc-timeout", HeaderValue::from_static("1S"));
+
+        for req in [request(), idle_only, total_only, caller_timeout] {
+            tower::Service::call(&mut service, req).await.unwrap();
+        }
+
+        let mut sent = Vec::new();
+        for _ in 0..4 {
+            sent.push(
+                rx.recv()
+                    .await
+                    .unwrap()
+                    .headers()
+                    .get("grpc-timeout")
+                    .cloned(),
+            );
+        }
+        assert_eq!(
+            sent,
+            [
+                None,
+                None,
+                Some(HeaderValue::from_static("5000000u")),
+                Some(HeaderValue::from_static("1S")),
+            ]
+        );
     }
 }

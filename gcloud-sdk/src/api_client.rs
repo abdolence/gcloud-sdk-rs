@@ -11,7 +11,7 @@ use tracing::*;
 use crate::adc::AdcFile;
 use crate::metadata::MetadataServer;
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
-use crate::GoogleAuthHeaders;
+use crate::{GoogleAuthHeaders, RequestTimeouts};
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
@@ -139,6 +139,15 @@ where
     ) -> crate::error::Result<Self> {
         self.service.append_x_goog_api_client(x_goog_api_client)?;
         Ok(self)
+    }
+
+    /// Applies `request_timeouts` to every call of this client, and of the clients made from
+    /// it with [`get_with`](Self::get_with) and
+    /// [`connect_with_endpoint`](Self::connect_with_endpoint), unless the call carries
+    /// [`RequestTimeouts`] of its own.
+    pub fn with_request_timeouts(mut self, request_timeouts: RequestTimeouts) -> Self {
+        self.service.set_request_timeouts(request_timeouts);
+        self
     }
 }
 
@@ -429,10 +438,9 @@ pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::{StubCredentials, StubResponse, StubServer};
+    use crate::test_support::{silent_endpoint, StubCredentials, StubResponse, StubServer};
     use serde_json::json;
-    use std::sync::atomic::{AtomicUsize, Ordering};
-    use std::sync::Arc;
+    use std::sync::atomic::Ordering;
 
     #[test]
     fn tls_server_name_is_the_host_of_a_plain_https_url() {
@@ -523,24 +531,6 @@ mod tests {
         // as one built with `get`, so its header cache is shared: the headers are served
         // in full once, not once per client.
         assert_eq!(credentials.served(), 1);
-    }
-
-    // A gRPC endpoint that accepts connections and never answers, counting the
-    // connections it received: the channel's eager connect succeeds against it, and a
-    // request sent to it reaches the middleware's token fetch before it stalls.
-    async fn silent_endpoint() -> (String, Arc<AtomicUsize>) {
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let url = format!("http://{}", listener.local_addr().unwrap());
-        let connections = Arc::new(AtomicUsize::new(0));
-        let counter = connections.clone();
-        tokio::spawn(async move {
-            let mut held = Vec::new();
-            while let Ok((socket, _)) = listener.accept().await {
-                counter.fetch_add(1, Ordering::SeqCst);
-                held.push(socket);
-            }
-        });
-        (url, connections)
     }
 
     async fn send_stalled(mut service: GoogleAuthMiddlewareService<Channel>) {
