@@ -1,5 +1,5 @@
-//! Fixtures shared by the tests: scripted credentials, an RSA key and a local HTTP stub
-//! server.
+//! Fixtures shared by the tests: scripted credentials, an RSA key, a local HTTP stub
+//! server and local gRPC endpoints.
 
 // Without a JWT crypto provider the tests that sign or verify are not built, and most
 // fixtures go unused.
@@ -8,16 +8,26 @@
     allow(dead_code)
 )]
 
+use std::convert::Infallible;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
+use std::task::{Context, Poll};
+use std::time::Duration;
 
+use futures::future::BoxFuture;
+use futures::StreamExt;
 use google_cloud_auth::credentials::{CacheableResource, CredentialsProvider, EntityTag};
 use google_cloud_auth::errors::CredentialsError;
 use hyper::header::{HeaderMap, HeaderValue};
-use hyper::http::Extensions;
+use hyper::http::{Extensions, Uri};
+use hyper_util::rt::TokioIo;
 #[cfg(feature = "id-token-verify")]
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tonic::server::NamedService;
+use tonic::transport::{Channel, Endpoint};
+use tonic::Status;
+use tonic_prost::ProstCodec;
 
 /// Credentials that serve scripted headers the way google-cloud-auth's do: under an entity
 /// tag that changes when the headers do, answering `NotModified` to a caller that holds
@@ -282,5 +292,84 @@ async fn read_request(socket: &mut tokio::net::TcpStream) -> ReceivedRequest {
     ReceivedRequest {
         request_line,
         headers,
+    }
+}
+
+/// A gRPC endpoint that accepts connections and never answers, counting the connections it
+/// received: a channel's eager connect succeeds against it, and a request sent to it reaches
+/// the middleware's token fetch before it stalls.
+pub(crate) async fn silent_endpoint() -> (String, Arc<AtomicUsize>) {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}", listener.local_addr().unwrap());
+    let connections = Arc::new(AtomicUsize::new(0));
+    let counter = connections.clone();
+    tokio::spawn(async move {
+        let mut held = Vec::new();
+        while let Ok((socket, _)) = listener.accept().await {
+            counter.fetch_add(1, Ordering::SeqCst);
+            held.push(socket);
+        }
+    });
+    (url, connections)
+}
+
+/// A channel to an in-process tonic server that answers every call with a stream of empty
+/// messages, one after each of `gaps`, and then keeps the stream open without sending
+/// another.
+///
+/// The two talk through an in-memory pipe rather than a socket: with the clock paused, a
+/// runtime with nothing to run polls sockets without waiting and then advances the clock to
+/// the next timer, so a message sent on a socket can arrive after a timer that is due later.
+pub(crate) async fn stalling_stream_channel(gaps: Vec<Duration>) -> Channel {
+    let (connections, mut accepted) = tokio::sync::mpsc::unbounded_channel();
+    tokio::spawn(
+        tonic::transport::Server::builder()
+            .add_service(StallingStream { gaps })
+            .serve_with_incoming(futures::stream::poll_fn(move |cx| accepted.poll_recv(cx))),
+    );
+    Endpoint::from_static("http://stalling-stream.test")
+        .connect_with_connector(tower::service_fn(move |_: Uri| {
+            let (client, server) = tokio::io::duplex(64 * 1024);
+            connections.send(Ok::<_, std::io::Error>(server)).unwrap();
+            std::future::ready(Ok::<_, std::io::Error>(TokioIo::new(client)))
+        }))
+        .await
+        .unwrap()
+}
+
+#[derive(Clone)]
+struct StallingStream {
+    gaps: Vec<Duration>,
+}
+
+impl NamedService for StallingStream {
+    const NAME: &'static str = "test.StallingStream";
+}
+
+impl tower::Service<hyper::Request<tonic::body::Body>> for StallingStream {
+    type Response = hyper::Response<tonic::body::Body>;
+    type Error = Infallible;
+    type Future = BoxFuture<'static, Result<Self::Response, Infallible>>;
+
+    fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Infallible>> {
+        Poll::Ready(Ok(()))
+    }
+
+    fn call(&mut self, request: hyper::Request<tonic::body::Body>) -> Self::Future {
+        let gaps = self.gaps.clone();
+        let messages = tower::service_fn(move |_: tonic::Request<()>| {
+            let stream = futures::stream::iter(gaps.clone())
+                .then(|gap| async move {
+                    tokio::time::sleep(gap).await;
+                    Ok::<(), Status>(())
+                })
+                .chain(futures::stream::pending());
+            std::future::ready(Ok::<_, Status>(tonic::Response::new(stream)))
+        });
+        Box::pin(async move {
+            Ok(tonic::server::Grpc::new(ProstCodec::<(), ()>::default())
+                .server_streaming(messages, request)
+                .await)
+        })
     }
 }
