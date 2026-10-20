@@ -186,7 +186,10 @@ where
         let clone = self.inner.clone();
         let mut inner = std::mem::replace(&mut self.inner, clone);
 
+        let req_uri = req.uri().clone();
+        let send_uri = req_uri.clone();
         let send = async move {
+            let req_uri = send_uri;
             let begin_time = Timestamp::now();
             let request_auth_headers = auth_headers.headers().await.map_err(Box::new)?;
             let token_generated_time = Timestamp::now();
@@ -198,7 +201,6 @@ where
                 clock.insert_grpc_timeout(req_headers)?;
             }
 
-            let req_uri = req.uri().clone();
             inner
                 .call(req)
                 .map_ok(|x| {
@@ -224,7 +226,7 @@ where
                 })
         };
         match clock {
-            Some(clock) => Box::pin(clock.limit(send)),
+            Some(clock) => Box::pin(clock.limit(req_uri, send)),
             None => Box::pin(send),
         }
     }

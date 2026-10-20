@@ -9,14 +9,26 @@ use std::time::Duration;
 use bytes::Bytes;
 use futures::future::{select, Either};
 use hyper::body::{Body, Frame, SizeHint};
-use hyper::header::{HeaderMap, HeaderName};
+use hyper::header::{HeaderMap, HeaderName, HeaderValue};
+use hyper::Uri;
 use tokio::time::{sleep, sleep_until, Instant, Sleep};
 use tonic::Status;
+use tracing::error;
 
 const GRPC_TIMEOUT: HeaderName = HeaderName::from_static("grpc-timeout");
 
-/// The longest timeout `grpc-timeout` can carry: eight digits of hours.
-const MAX_GRPC_TIMEOUT: Duration = Duration::from_secs(99_999_999 * 60 * 60);
+/// The largest `grpc-timeout` value: the gRPC spec allows at most eight digits.
+const MAX_GRPC_TIMEOUT_VALUE: u128 = 99_999_999;
+
+/// The `grpc-timeout` units from the finest, each with its length in nanoseconds.
+const GRPC_TIMEOUT_UNITS: [(char, u128); 6] = [
+    ('n', 1),
+    ('u', 1_000),
+    ('m', 1_000_000),
+    ('S', 1_000_000_000),
+    ('M', 60 * 1_000_000_000),
+    ('H', 60 * 60 * 1_000_000_000),
+];
 
 /// Client-side time limits for a gRPC call. Both are off by default.
 ///
@@ -151,22 +163,17 @@ impl CallClock {
         if remaining.is_zero() {
             return Err(RequestTimeoutElapsed::Total(limit).into());
         }
-        // tonic's encoder panics past the eight digits, and it is reachable only through
-        // `tonic::Request::set_timeout`.
-        if remaining <= MAX_GRPC_TIMEOUT {
-            let mut encoder = tonic::Request::new(());
-            encoder.set_timeout(remaining);
-            if let Some(value) = encoder.into_parts().0.into_headers().remove(GRPC_TIMEOUT) {
-                headers.entry(GRPC_TIMEOUT).or_insert(value);
-            }
+        if let Some(value) = grpc_timeout_value(remaining) {
+            headers.entry(GRPC_TIMEOUT).or_insert(value);
         }
         Ok(())
     }
 
-    /// Runs `send`, the call up to its response headers, within the earlier of the two
-    /// limits, and then bounds the response body by both.
+    /// Runs `send`, the call to `uri` up to its response headers, within the earlier of the
+    /// two limits, and then bounds the response body by both.
     pub(crate) async fn limit<B: 'static, E: From<Status>>(
         self,
+        uri: Uri,
         send: impl Future<Output = Result<hyper::Response<B>, E>>,
     ) -> Result<hyper::Response<B>, E> {
         let total = self
@@ -179,11 +186,19 @@ impl CallClock {
             ))
         });
         let response = match total.into_iter().chain(idle).min_by_key(|(at, _)| *at) {
-            // The limit is polled first: with `total` set, tonic's channel races about the
-            // same deadline, read from `grpc-timeout`, and fails the call `Cancelled`.
+            // The limit is polled first: with `total` set, tonic's channel races a deadline
+            // read from `grpc-timeout`, no earlier than this one, and fails the call
+            // `Cancelled`.
             Some((deadline, elapsed)) => {
                 match select(pin!(sleep_until(deadline)), pin!(send)).await {
-                    Either::Left(_) => return Err(Status::from(elapsed).into()),
+                    Either::Left(_) => {
+                        error!(
+                            req_uri = %uri,
+                            "Err: took {}ms ({elapsed})",
+                            self.started.elapsed().as_millis()
+                        );
+                        return Err(Status::from(elapsed).into());
+                    }
                     Either::Right((response, _)) => response?,
                 }
             }
@@ -210,6 +225,18 @@ impl CallClock {
         }
         body
     }
+}
+
+/// `timeout` as a `grpc-timeout` value in the finest unit that fits, rounded up, so that a
+/// deadline read from the header never comes before the one it was written from. `None`
+/// past eight digits of hours.
+fn grpc_timeout_value(timeout: Duration) -> Option<HeaderValue> {
+    let nanos = timeout.as_nanos();
+    let (value, unit) = GRPC_TIMEOUT_UNITS
+        .iter()
+        .map(|&(unit, unit_nanos)| (nanos.div_ceil(unit_nanos), unit))
+        .find(|&(value, _)| value <= MAX_GRPC_TIMEOUT_VALUE)?;
+    HeaderValue::try_from(format!("{value}{unit}")).ok()
 }
 
 struct TimeoutBody {
@@ -243,11 +270,21 @@ impl Body for TimeoutBody {
         }
         if let Some(idle) = &mut this.idle {
             if !idle.waiting {
-                idle.sleep.set(sleep(idle.limit));
+                // A limit too large to add to the clock leaves the sleep at tokio's far
+                // future, where `sleep(limit)` put it.
+                if let Some(deadline) = Instant::now().checked_add(idle.limit) {
+                    idle.sleep.as_mut().reset(deadline);
+                }
                 idle.waiting = true;
             }
         }
         match Pin::new(&mut this.inner).poll_frame(cx) {
+            Poll::Ready(None) => {
+                // A body polled again after its end must not fail on a limit.
+                this.total = None;
+                this.idle = None;
+                Poll::Ready(None)
+            }
             Poll::Ready(frame) => {
                 if let Some(idle) = &mut this.idle {
                     idle.waiting = false;
@@ -285,6 +322,7 @@ mod tests {
     use google_cloud_auth::credentials::Credentials;
     use hyper::http::uri::PathAndQuery;
     use std::error::Error as _;
+    use std::future::poll_fn;
     use tokio::time::Instant;
     use tonic::client::Grpc;
     use tonic::codec::Streaming;
@@ -347,6 +385,89 @@ mod tests {
             status.source().and_then(|source| source.downcast_ref()),
             Some(&RequestTimeoutElapsed::Total(LIMIT))
         );
+    }
+
+    /// Past 100 s tonic's own encoder drops the microseconds of `grpc-timeout`, and the
+    /// channel would end the call on that shorter deadline, `Cancelled`.
+    #[tokio::test(start_paused = true)]
+    async fn total_limit_past_milliseconds_fails_with_deadline_exceeded() {
+        let limit = Duration::from_micros(110_000_500);
+        let (url, _) = silent_endpoint().await;
+        let client: GoogleApi<GoogleAuthMiddleware> = GoogleApi::from_function_with_credentials(
+            |service| service,
+            url,
+            None,
+            Credentials::from(StubCredentials::bearer("token")),
+        )
+        .await
+        .unwrap()
+        .with_request_timeouts(RequestTimeouts::new().with_total(limit));
+
+        let started = Instant::now();
+        let status = unary(client.get(), tonic::Request::new(()))
+            .await
+            .unwrap_err();
+
+        // tokio's timers fire on whole milliseconds.
+        assert!((limit..limit + Duration::from_millis(1)).contains(&started.elapsed()));
+        assert_eq!(status.code(), Code::DeadlineExceeded);
+        assert_eq!(
+            status.source().and_then(|source| source.downcast_ref()),
+            Some(&RequestTimeoutElapsed::Total(limit))
+        );
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn total_limit_ends_a_stream_that_keeps_delivering() {
+        let service = GoogleAuthMiddlewareService::new(
+            stalling_stream_channel(vec![Duration::from_secs(2); 10]).await,
+            GoogleAuthHeaders::from(Credentials::from(StubCredentials::bearer("token"))),
+            None,
+        )
+        .unwrap();
+        let mut request = tonic::Request::new(());
+        request
+            .extensions_mut()
+            .insert(RequestTimeouts::new().with_total(LIMIT));
+
+        let started = Instant::now();
+        let mut messages = open_stream(service, request).await;
+        let status = tokio::time::timeout(LIMIT * 2, async {
+            while messages.message().await?.is_some() {}
+            Ok::<_, Status>(())
+        })
+        .await
+        .expect("the total limit ends the stream")
+        .unwrap_err();
+
+        assert_eq!(started.elapsed(), LIMIT);
+        assert_eq!(status.code(), Code::DeadlineExceeded);
+        assert_eq!(
+            status.source().and_then(|source| source.downcast_ref()),
+            Some(&RequestTimeoutElapsed::Total(LIMIT))
+        );
+    }
+
+    /// A body that has ended stays ended, however long after its limits it is polled.
+    #[tokio::test(start_paused = true)]
+    async fn limits_end_with_the_response_body() {
+        let clock = RequestTimeouts::new()
+            .with_total(LIMIT)
+            .with_idle(LIMIT)
+            .start()
+            .unwrap();
+        let mut body = clock.limit_body(tonic::body::Body::new(String::from("message")));
+
+        assert!(poll_fn(|cx| Pin::new(&mut body).poll_frame(cx))
+            .await
+            .is_some_and(|frame| frame.is_ok()));
+        assert!(poll_fn(|cx| Pin::new(&mut body).poll_frame(cx))
+            .await
+            .is_none());
+        tokio::time::sleep(LIMIT * 2).await;
+        assert!(poll_fn(|cx| Pin::new(&mut body).poll_frame(cx))
+            .await
+            .is_none());
     }
 
     #[tokio::test(start_paused = true)]

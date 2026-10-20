@@ -128,7 +128,7 @@ after up to two minutes: a ping every 60 s, and 60 s for its answer.
 
 `RequestTimeouts` sets client-side limits for a call, both off by default:
 - `total`: the whole call, authentication included. It is sent to the server as `grpc-timeout`, and suits unary calls;
-- `idle`: the wait for the response to start and for each next message, counted only while you are waiting for one. It suits server streams.
+- `idle`: the wait for the response to start and for each next part of the response, counted only while you are waiting for one. It suits server streams.
 
 ```rust
 use std::time::Duration;
