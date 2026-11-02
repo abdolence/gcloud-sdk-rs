@@ -2,6 +2,7 @@
 /// A detailed representation of an Apt artifact. Information in the record
 /// is derived from the archive's control file.
 /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AptArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
@@ -26,6 +27,7 @@ pub struct AptArtifact {
 /// Nested message and enum types in `AptArtifact`.
 pub mod apt_artifact {
     /// Package type is either binary or source.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -70,6 +72,7 @@ pub mod apt_artifact {
     }
 }
 /// Google Cloud Storage location where the artifacts currently reside.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAptArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
@@ -80,6 +83,7 @@ pub struct ImportAptArtifactsGcsSource {
     pub use_wildcards: bool,
 }
 /// The request to import new apt artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAptArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
@@ -92,6 +96,7 @@ pub struct ImportAptArtifactsRequest {
 /// Nested message and enum types in `ImportAptArtifactsRequest`.
 pub mod import_apt_artifacts_request {
     /// The source location of the package binaries.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
@@ -100,6 +105,7 @@ pub mod import_apt_artifacts_request {
     }
 }
 /// Error information explaining why a package was not imported.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsErrorInfo {
     /// The detailed error status.
@@ -112,6 +118,7 @@ pub struct ImportAptArtifactsErrorInfo {
 /// Nested message and enum types in `ImportAptArtifactsErrorInfo`.
 pub mod import_apt_artifacts_error_info {
     /// The source that was not imported.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
@@ -120,6 +127,7 @@ pub mod import_apt_artifacts_error_info {
     }
 }
 /// The response message from importing APT artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsResponse {
     /// The Apt artifacts imported.
@@ -130,6 +138,7 @@ pub struct ImportAptArtifactsResponse {
     pub errors: ::prost::alloc::vec::Vec<ImportAptArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAptArtifactsMetadata {}
 /// DockerImage represents a docker artifact.
@@ -139,6 +148,7 @@ pub struct ImportAptArtifactsMetadata {}
 /// * imageSizeBytes
 /// * mediaType
 /// * buildTime
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DockerImage {
     /// Required. registry_location, project_id, repository_name and image id forms
@@ -197,6 +207,7 @@ pub struct DockerImage {
     pub image_manifests: ::prost::alloc::vec::Vec<ImageManifest>,
 }
 /// Details of a single image manifest within a multi-arch image.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageManifest {
     /// Optional. The CPU architecture of the image.
@@ -231,6 +242,7 @@ pub struct ImageManifest {
     pub variant: ::prost::alloc::string::String,
 }
 /// The request to list docker images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDockerImagesRequest {
     /// Required. The name of the parent resource whose docker images will be
@@ -248,6 +260,7 @@ pub struct ListDockerImagesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing docker images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDockerImagesResponse {
     /// The docker images returned.
@@ -259,6 +272,7 @@ pub struct ListDockerImagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get docker images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDockerImageRequest {
     /// Required. The name of the docker images.
@@ -266,6 +280,7 @@ pub struct GetDockerImageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// MavenArtifact represents a maven artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MavenArtifact {
     /// Required. registry_location, project_id, repository_name and maven_artifact
@@ -302,6 +317,7 @@ pub struct MavenArtifact {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list maven artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMavenArtifactsRequest {
     /// Required. The name of the parent resource whose maven artifacts will be
@@ -316,6 +332,7 @@ pub struct ListMavenArtifactsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing maven artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMavenArtifactsResponse {
     /// The maven artifacts returned.
@@ -327,6 +344,7 @@ pub struct ListMavenArtifactsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get maven artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMavenArtifactRequest {
     /// Required. The name of the maven artifact.
@@ -334,6 +352,7 @@ pub struct GetMavenArtifactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// NpmPackage represents an npm artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NpmPackage {
     /// Required. registry_location, project_id, repository_name and npm_package
@@ -362,6 +381,7 @@ pub struct NpmPackage {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list npm packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNpmPackagesRequest {
     /// Required. The name of the parent resource whose npm packages will be
@@ -376,6 +396,7 @@ pub struct ListNpmPackagesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing npm packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNpmPackagesResponse {
     /// The npm packages returned.
@@ -387,6 +408,7 @@ pub struct ListNpmPackagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get npm packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNpmPackageRequest {
     /// Required. The name of the npm package.
@@ -394,6 +416,7 @@ pub struct GetNpmPackageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// PythonPackage represents a python artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PythonPackage {
     /// Required. registry_location, project_id, repository_name and python_package
@@ -426,6 +449,7 @@ pub struct PythonPackage {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list python packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPythonPackagesRequest {
     /// Required. The name of the parent resource whose python packages will be
@@ -440,6 +464,7 @@ pub struct ListPythonPackagesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing python packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPythonPackagesResponse {
     /// The python packages returned.
@@ -451,6 +476,7 @@ pub struct ListPythonPackagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get python packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPythonPackageRequest {
     /// Required. The name of the python package.
@@ -459,6 +485,7 @@ pub struct GetPythonPackageRequest {
 }
 /// An Attachment refers to additional metadata that can be attached to
 /// artifacts in Artifact Registry. An attachment consists of one or more files.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attachment {
     /// The name of the attachment. E.g.
@@ -506,6 +533,7 @@ pub struct Attachment {
     pub oci_version_name: ::prost::alloc::string::String,
 }
 /// The request to list attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAttachmentsRequest {
     /// Required. The name of the parent resource whose attachments will be listed.
@@ -527,6 +555,7 @@ pub struct ListAttachmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttachmentsResponse {
     /// The attachments returned.
@@ -538,6 +567,7 @@ pub struct ListAttachmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve an attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAttachmentRequest {
     /// Required. The name of the attachment to retrieve.
@@ -545,6 +575,7 @@ pub struct GetAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAttachmentRequest {
     /// Required. The name of the parent resource where the attachment will be
@@ -559,6 +590,7 @@ pub struct CreateAttachmentRequest {
     pub attachment: ::core::option::Option<Attachment>,
 }
 /// The request to delete an attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAttachmentRequest {
     /// Required. The name of the attachment to delete.
@@ -566,6 +598,7 @@ pub struct DeleteAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A hash of file content.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hash {
     /// The algorithm used to compute the hash value.
@@ -578,6 +611,7 @@ pub struct Hash {
 /// Nested message and enum types in `Hash`.
 pub mod hash {
     /// The algorithm used to compute the hash.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -626,6 +660,7 @@ pub mod hash {
     }
 }
 /// Files store content that is potentially associated with Packages or Versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct File {
     /// The name of the file, for example:
@@ -660,6 +695,7 @@ pub struct File {
     >,
 }
 /// The request to list files.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFilesRequest {
     /// Required. The name of the repository whose files will be listed. For
@@ -729,6 +765,7 @@ pub struct ListFilesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing files.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFilesResponse {
     /// The files returned.
@@ -740,6 +777,7 @@ pub struct ListFilesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a file.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFileRequest {
     /// Required. The name of the file to retrieve.
@@ -747,6 +785,7 @@ pub struct GetFileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete a file.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFileRequest {
     /// Required. The name of the file to delete.
@@ -754,6 +793,7 @@ pub struct DeleteFileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to update a file.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFileRequest {
     /// Required. The File that replaces the resource on the server.
@@ -767,6 +807,7 @@ pub struct UpdateFileRequest {
 }
 /// Tags point to a version and represent an alternative name that can be used
 /// to access the version.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Tag {
     /// The name of the tag, for example:
@@ -784,6 +825,7 @@ pub struct Tag {
     pub version: ::prost::alloc::string::String,
 }
 /// The request to list tags.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTagsRequest {
     /// The name of the parent package whose tags will be listed.
@@ -828,6 +870,7 @@ pub struct ListTagsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing tags.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsResponse {
     /// The tags returned.
@@ -839,6 +882,7 @@ pub struct ListTagsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a tag.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTagRequest {
     /// The name of the tag to retrieve.
@@ -846,6 +890,7 @@ pub struct GetTagRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new tag.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateTagRequest {
     /// The name of the parent resource where the tag will be created.
@@ -859,6 +904,7 @@ pub struct CreateTagRequest {
     pub tag: ::core::option::Option<Tag>,
 }
 /// The request to create or update a tag.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateTagRequest {
     /// The tag that replaces the resource on the server.
@@ -871,6 +917,7 @@ pub struct UpdateTagRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a tag.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTagRequest {
     /// The name of the tag to delete.
@@ -880,6 +927,7 @@ pub struct DeleteTagRequest {
 /// The body of a version resource. A version resource represents a
 /// collection of components, such as files and other data. This may correspond
 /// to a version in many package management schemes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// The name of the version, for example:
@@ -921,6 +969,7 @@ pub struct Version {
     pub fingerprints: ::prost::alloc::vec::Vec<Hash>,
 }
 /// The request to list versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// The name of the parent resource whose versions will be listed.
@@ -987,6 +1036,7 @@ pub struct ListVersionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response from listing versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
     /// The versions returned.
@@ -998,6 +1048,7 @@ pub struct ListVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a version.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVersionRequest {
     /// The name of the version to retrieve.
@@ -1008,6 +1059,7 @@ pub struct GetVersionRequest {
     pub view: i32,
 }
 /// The request to delete a version.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVersionRequest {
     /// The name of the version to delete.
@@ -1019,6 +1071,7 @@ pub struct DeleteVersionRequest {
     pub force: bool,
 }
 /// The request to delete multiple versions across a repository.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchDeleteVersionsRequest {
     /// The name of the repository holding all requested versions.
@@ -1034,6 +1087,7 @@ pub struct BatchDeleteVersionsRequest {
     pub validate_only: bool,
 }
 /// The metadata of an LRO from deleting multiple versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchDeleteVersionsMetadata {
     /// The versions the operation failed to delete.
@@ -1041,6 +1095,7 @@ pub struct BatchDeleteVersionsMetadata {
     pub failed_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request to update a version.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVersionRequest {
     /// Required. The Version that replaces the resource on the server.
@@ -1054,6 +1109,7 @@ pub struct UpdateVersionRequest {
 }
 /// The view, which determines what version information is returned in a
 /// response.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum VersionView {
@@ -1088,6 +1144,7 @@ impl VersionView {
     }
 }
 /// The request for exporting an artifact to a destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportArtifactRequest {
     /// Required. The repository of the artifact to export.
@@ -1104,6 +1161,7 @@ pub struct ExportArtifactRequest {
 /// Nested message and enum types in `ExportArtifactRequest`.
 pub mod export_artifact_request {
     /// The artifact to be exported.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceArtifact {
         /// The artifact version to export.
@@ -1117,6 +1175,7 @@ pub mod export_artifact_request {
         SourceTag(::prost::alloc::string::String),
     }
     /// The destination to export the artifact to.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// The Cloud Storage path to export the artifact to. Should start with the
@@ -1128,6 +1187,7 @@ pub mod export_artifact_request {
     }
 }
 /// The response for exporting an artifact to a destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportArtifactResponse {
     /// The exported version. Should be the same as the request version with
@@ -1136,6 +1196,7 @@ pub struct ExportArtifactResponse {
     pub exported_version: ::core::option::Option<Version>,
 }
 /// The LRO metadata for exporting an artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportArtifactMetadata {
     /// The exported artifact files.
@@ -1145,6 +1206,7 @@ pub struct ExportArtifactMetadata {
 /// Nested message and enum types in `ExportArtifactMetadata`.
 pub mod export_artifact_metadata {
     /// The exported artifact file.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportedFile {
         /// Name of the exported artifact file.
@@ -1161,6 +1223,7 @@ pub mod export_artifact_metadata {
     /// Nested message and enum types in `ExportedFile`.
     pub mod exported_file {
         /// The destination the file was exported to.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Destination {
             /// Cloud Storage Object path of the exported file. Examples:
@@ -1171,6 +1234,7 @@ pub mod export_artifact_metadata {
     }
 }
 /// GenericArtifact represents a generic artifact
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenericArtifact {
     /// Resource name of the generic artifact.
@@ -1191,6 +1255,7 @@ pub struct GenericArtifact {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// GoModule represents a Go module.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoModule {
     /// The resource name of a Go module.
@@ -1208,6 +1273,7 @@ pub struct GoModule {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A detailed representation of a KFP artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KfpArtifact {
     /// Output only. Resource name of the KFP artifact. Since users don't directly
@@ -1222,6 +1288,7 @@ pub struct KfpArtifact {
     pub version: ::prost::alloc::string::String,
 }
 /// Packages are named collections of versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Package {
     /// The name of the package, for example:
@@ -1247,6 +1314,7 @@ pub struct Package {
     >,
 }
 /// The request to list packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPackagesRequest {
     /// Required. The name of the parent resource whose packages will be listed.
@@ -1310,6 +1378,7 @@ pub struct ListPackagesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing packages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPackagesResponse {
     /// The packages returned.
@@ -1321,6 +1390,7 @@ pub struct ListPackagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a package.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPackageRequest {
     /// Required. The name of the package to retrieve.
@@ -1328,6 +1398,7 @@ pub struct GetPackageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete a package.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePackageRequest {
     /// Required. The name of the package to delete.
@@ -1335,6 +1406,7 @@ pub struct DeletePackageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to update a package.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePackageRequest {
     /// The package that replaces the resource on the server.
@@ -1347,6 +1419,7 @@ pub struct UpdatePackageRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Artifact policy configuration for the repository contents.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpstreamPolicy {
     /// The user-provided ID of the upstream policy.
@@ -1363,6 +1436,7 @@ pub struct UpstreamPolicy {
 /// CleanupPolicyCondition is a set of conditions attached to a CleanupPolicy.
 /// If multiple entries are set, all must be satisfied for the condition to be
 /// satisfied.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CleanupPolicyCondition {
     /// Match versions by tag status.
@@ -1387,6 +1461,7 @@ pub struct CleanupPolicyCondition {
 /// Nested message and enum types in `CleanupPolicyCondition`.
 pub mod cleanup_policy_condition {
     /// Statuses applying to versions.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1436,6 +1511,7 @@ pub mod cleanup_policy_condition {
 }
 /// CleanupPolicyMostRecentVersions is an alternate condition of a CleanupPolicy
 /// for retaining a minimum number of versions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CleanupPolicyMostRecentVersions {
     /// List of package name prefixes that will apply this rule.
@@ -1446,6 +1522,7 @@ pub struct CleanupPolicyMostRecentVersions {
     pub keep_count: ::core::option::Option<i32>,
 }
 /// Artifact policy configuration for repository cleanup policies.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CleanupPolicy {
     /// The user-provided ID of the cleanup policy.
@@ -1460,6 +1537,7 @@ pub struct CleanupPolicy {
 /// Nested message and enum types in `CleanupPolicy`.
 pub mod cleanup_policy {
     /// Action type for a cleanup policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1502,6 +1580,7 @@ pub mod cleanup_policy {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ConditionType {
         /// Policy condition for matching versions.
@@ -1514,6 +1593,7 @@ pub mod cleanup_policy {
     }
 }
 /// Virtual repository configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualRepositoryConfig {
     /// Policies that configure the upstream artifacts distributed by the Virtual
@@ -1522,6 +1602,7 @@ pub struct VirtualRepositoryConfig {
     pub upstream_policies: ::prost::alloc::vec::Vec<UpstreamPolicy>,
 }
 /// Remote repository configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoteRepositoryConfig {
     /// The description of the remote source.
@@ -1546,6 +1627,7 @@ pub struct RemoteRepositoryConfig {
 /// Nested message and enum types in `RemoteRepositoryConfig`.
 pub mod remote_repository_config {
     /// The credentials to access the remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpstreamCredentials {
         #[prost(oneof = "upstream_credentials::Credentials", tags = "1")]
@@ -1554,6 +1636,7 @@ pub mod remote_repository_config {
     /// Nested message and enum types in `UpstreamCredentials`.
     pub mod upstream_credentials {
         /// Username and password credentials.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct UsernamePasswordCredentials {
             /// The username to access the remote repository.
@@ -1565,6 +1648,7 @@ pub mod remote_repository_config {
             #[prost(string, tag = "2")]
             pub password_secret_version: ::prost::alloc::string::String,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Credentials {
             /// Use username and password to access the remote repository.
@@ -1573,6 +1657,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for a Docker remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DockerRepository {
         /// Address of the remote repository.
@@ -1582,6 +1667,7 @@ pub mod remote_repository_config {
     /// Nested message and enum types in `DockerRepository`.
     pub mod docker_repository {
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the custom remote repository, for ex:
@@ -1591,6 +1677,7 @@ pub mod remote_repository_config {
         }
         /// Predefined list of publicly available Docker repositories like Docker
         /// Hub.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1630,6 +1717,7 @@ pub mod remote_repository_config {
             }
         }
         /// Address of the remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Docker repositories supported by Artifact
@@ -1642,6 +1730,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for a Maven remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MavenRepository {
         /// Address of the remote repository.
@@ -1651,6 +1740,7 @@ pub mod remote_repository_config {
     /// Nested message and enum types in `MavenRepository`.
     pub mod maven_repository {
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the upstream remote repository, for ex:
@@ -1660,6 +1750,7 @@ pub mod remote_repository_config {
         }
         /// Predefined list of publicly available Maven repositories like Maven
         /// Central.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1699,6 +1790,7 @@ pub mod remote_repository_config {
             }
         }
         /// Address of the remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Maven repositories supported by Artifact
@@ -1711,6 +1803,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for a Npm remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NpmRepository {
         /// Address of the remote repository
@@ -1720,6 +1813,7 @@ pub mod remote_repository_config {
     /// Nested message and enum types in `NpmRepository`.
     pub mod npm_repository {
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the upstream remote repository, for ex:
@@ -1728,6 +1822,7 @@ pub mod remote_repository_config {
             pub uri: ::prost::alloc::string::String,
         }
         /// Predefined list of publicly available NPM repositories like npmjs.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1767,6 +1862,7 @@ pub mod remote_repository_config {
             }
         }
         /// Address of the remote repository
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Npm repositories supported by Artifact
@@ -1779,6 +1875,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for a Python remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PythonRepository {
         /// Address of the remote repository.
@@ -1788,6 +1885,7 @@ pub mod remote_repository_config {
     /// Nested message and enum types in `PythonRepository`.
     pub mod python_repository {
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the upstream remote repository, for ex:
@@ -1796,6 +1894,7 @@ pub mod remote_repository_config {
             pub uri: ::prost::alloc::string::String,
         }
         /// Predefined list of publicly available Python repositories like PyPI.org.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1835,6 +1934,7 @@ pub mod remote_repository_config {
             }
         }
         /// Address of the remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Python repositories supported by Artifact
@@ -1847,6 +1947,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for an Apt remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AptRepository {
         /// Address of the remote repository.
@@ -1857,6 +1958,7 @@ pub mod remote_repository_config {
     pub mod apt_repository {
         /// Publicly available Apt repositories constructed from a common repository
         /// base and a custom repository path.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PublicRepository {
             /// A common public repository base for Apt.
@@ -1869,6 +1971,7 @@ pub mod remote_repository_config {
         /// Nested message and enum types in `PublicRepository`.
         pub mod public_repository {
             /// Predefined list of publicly available repository bases for Apt.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1917,6 +2020,7 @@ pub mod remote_repository_config {
             }
         }
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the upstream remote repository, for ex:
@@ -1925,6 +2029,7 @@ pub mod remote_repository_config {
             pub uri: ::prost::alloc::string::String,
         }
         /// Address of the remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Apt repositories supported by Artifact
@@ -1937,6 +2042,7 @@ pub mod remote_repository_config {
         }
     }
     /// Configuration for a Yum remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct YumRepository {
         /// Address of the remote repository.
@@ -1947,6 +2053,7 @@ pub mod remote_repository_config {
     pub mod yum_repository {
         /// Publicly available Yum repositories constructed from a common repository
         /// base and a custom repository path.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PublicRepository {
             /// A common public repository base for Yum.
@@ -1959,6 +2066,7 @@ pub mod remote_repository_config {
         /// Nested message and enum types in `PublicRepository`.
         pub mod public_repository {
             /// Predefined list of publicly available repository bases for Yum.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -2019,6 +2127,7 @@ pub mod remote_repository_config {
             }
         }
         /// Customer-specified publicly available remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomRepository {
             /// An http/https uri reference to the upstream remote repository, for ex:
@@ -2027,6 +2136,7 @@ pub mod remote_repository_config {
             pub uri: ::prost::alloc::string::String,
         }
         /// Address of the remote repository.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Yum repositories supported by Artifact
@@ -2039,6 +2149,7 @@ pub mod remote_repository_config {
         }
     }
     /// Common remote repository settings type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommonRemoteRepository {
         /// Required. A common public repository base for remote repository.
@@ -2046,6 +2157,7 @@ pub mod remote_repository_config {
         pub uri: ::prost::alloc::string::String,
     }
     /// Settings specific to the remote repository.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RemoteSource {
         /// Specific settings for a Docker remote repository.
@@ -2073,6 +2185,7 @@ pub mod remote_repository_config {
     }
 }
 /// A Repository for storing artifacts with a specific format.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repository {
     /// The name of the repository, for example:
@@ -2162,6 +2275,7 @@ pub mod repository {
     /// MavenRepositoryConfig is maven related repository details.
     /// Provides additional configuration details for repositories of the maven
     /// format type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MavenRepositoryConfig {
         /// The repository with this flag will allow publishing
@@ -2175,6 +2289,7 @@ pub mod repository {
     /// Nested message and enum types in `MavenRepositoryConfig`.
     pub mod maven_repository_config {
         /// VersionPolicy is the version policy for the repository.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2223,6 +2338,7 @@ pub mod repository {
     /// DockerRepositoryConfig is docker related repository details.
     /// Provides additional configuration details for repositories of the docker
     /// format type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DockerRepositoryConfig {
         /// The repository which enabled this flag prevents all tags from being
@@ -2233,6 +2349,7 @@ pub mod repository {
     }
     /// Config on whether to perform vulnerability scanning for resources in this
     /// repository, as well as output fields describing current state.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VulnerabilityScanningConfig {
         /// Optional. Config for whether this repository has vulnerability scanning
@@ -2259,6 +2376,7 @@ pub mod repository {
     /// Nested message and enum types in `VulnerabilityScanningConfig`.
     pub mod vulnerability_scanning_config {
         /// Config for vulnerability scanning of resources in this repository.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2305,6 +2423,7 @@ pub mod repository {
         }
         /// Describes the state of vulnerability scanning in this repository,
         /// including both repository enablement and API enablement.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2353,6 +2472,7 @@ pub mod repository {
         }
     }
     /// A package format.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2429,6 +2549,7 @@ pub mod repository {
     }
     /// The mode configures the repository to serve artifacts from different
     /// sources.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2476,6 +2597,7 @@ pub mod repository {
         }
     }
     /// Repository-specific configurations.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FormatConfig {
         /// Maven repository config contains repository level configuration
@@ -2489,6 +2611,7 @@ pub mod repository {
     }
     /// Repository configuration specific to the Mode value being selected (Remote
     /// or Virtual)
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ModeConfig {
         /// Configuration specific for a Virtual Repository.
@@ -2500,6 +2623,7 @@ pub mod repository {
     }
 }
 /// The request to list repositories.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRepositoriesRequest {
     /// Required. The name of the parent resource whose repositories will be
@@ -2538,6 +2662,7 @@ pub struct ListRepositoriesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing repositories.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
     /// The repositories returned.
@@ -2549,6 +2674,7 @@ pub struct ListRepositoriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a repository.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRepositoryRequest {
     /// Required. The name of the repository to retrieve.
@@ -2556,6 +2682,7 @@ pub struct GetRepositoryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new repository.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepositoryRequest {
     /// Required. The name of the parent resource where the repository will be
@@ -2570,6 +2697,7 @@ pub struct CreateRepositoryRequest {
     pub repository: ::core::option::Option<Repository>,
 }
 /// The request to update a repository.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRepositoryRequest {
     /// The repository that replaces the resource on the server.
@@ -2582,6 +2710,7 @@ pub struct UpdateRepositoryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a repository.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. The name of the repository to delete.
@@ -2591,6 +2720,7 @@ pub struct DeleteRepositoryRequest {
 /// A rule defines the deny or allow action of the operation it applies to and
 /// the conditions required for the rule to apply. You can set one rule for an
 /// entire repository and one rule for each package within.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Rule {
     /// The name of the rule, for example:
@@ -2614,6 +2744,7 @@ pub struct Rule {
 /// Nested message and enum types in `Rule`.
 pub mod rule {
     /// Defines the action of the rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2657,6 +2788,7 @@ pub mod rule {
         }
     }
     /// The operation the rule applies to.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2697,6 +2829,7 @@ pub mod rule {
     }
 }
 /// The request to list rules.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRulesRequest {
     /// Required. The name of the parent repository whose rules will be listed.
@@ -2712,6 +2845,7 @@ pub struct ListRulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing rules.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
     /// The rules returned.
@@ -2723,6 +2857,7 @@ pub struct ListRulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleRequest {
     /// Required. The name of the rule to retrieve.
@@ -2730,6 +2865,7 @@ pub struct GetRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRuleRequest {
     /// Required. The name of the parent resource where the rule will be created.
@@ -2743,6 +2879,7 @@ pub struct CreateRuleRequest {
     pub rule: ::core::option::Option<Rule>,
 }
 /// The request to update a rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateRuleRequest {
     /// The rule that replaces the resource on the server.
@@ -2755,6 +2892,7 @@ pub struct UpdateRuleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRuleRequest {
     /// Required. The name of the rule to delete.
@@ -2762,6 +2900,7 @@ pub struct DeleteRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The Artifact Registry settings that apply to a Project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectSettings {
     /// The name of the project's settings.
@@ -2784,6 +2923,7 @@ pub struct ProjectSettings {
 /// Nested message and enum types in `ProjectSettings`.
 pub mod project_settings {
     /// The possible redirection states for legacy repositories.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2858,6 +2998,7 @@ pub mod project_settings {
     }
 }
 /// Gets the redirection status for a project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProjectSettingsRequest {
     /// Required. The name of the projectSettings resource.
@@ -2865,6 +3006,7 @@ pub struct GetProjectSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Sets the settings of the project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateProjectSettingsRequest {
     /// The project settings.
@@ -2875,6 +3017,7 @@ pub struct UpdateProjectSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The Artifact Registry VPC SC config that apply to a Project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpcscConfig {
     /// The name of the project's VPC SC Config.
@@ -2894,6 +3037,7 @@ pub struct VpcscConfig {
 /// Nested message and enum types in `VPCSCConfig`.
 pub mod vpcsc_config {
     /// VPCSCPolicy is the VPC SC policy for project and location.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2942,6 +3086,7 @@ pub mod vpcsc_config {
     }
 }
 /// Gets the VPC SC config for a project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpcscConfigRequest {
     /// Required. The name of the VPCSCConfig resource.
@@ -2949,6 +3094,7 @@ pub struct GetVpcscConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Sets the VPCSC config of the project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateVpcscConfigRequest {
     /// The project config.
@@ -2959,6 +3105,7 @@ pub struct UpdateVpcscConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A detailed representation of a Yum artifact.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct YumArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
@@ -2977,6 +3124,7 @@ pub struct YumArtifact {
 /// Nested message and enum types in `YumArtifact`.
 pub mod yum_artifact {
     /// Package type is either binary or source.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3021,6 +3169,7 @@ pub mod yum_artifact {
     }
 }
 /// Google Cloud Storage location where the artifacts currently reside.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportYumArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
@@ -3031,6 +3180,7 @@ pub struct ImportYumArtifactsGcsSource {
     pub use_wildcards: bool,
 }
 /// The request to import new yum artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportYumArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
@@ -3043,6 +3193,7 @@ pub struct ImportYumArtifactsRequest {
 /// Nested message and enum types in `ImportYumArtifactsRequest`.
 pub mod import_yum_artifacts_request {
     /// The source location of the package binaries.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
@@ -3051,6 +3202,7 @@ pub mod import_yum_artifacts_request {
     }
 }
 /// Error information explaining why a package was not imported.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsErrorInfo {
     /// The detailed error status.
@@ -3063,6 +3215,7 @@ pub struct ImportYumArtifactsErrorInfo {
 /// Nested message and enum types in `ImportYumArtifactsErrorInfo`.
 pub mod import_yum_artifacts_error_info {
     /// The source that was not imported.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
@@ -3071,6 +3224,7 @@ pub mod import_yum_artifacts_error_info {
     }
 }
 /// The response message from importing YUM artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsResponse {
     /// The yum artifacts imported.
@@ -3081,9 +3235,11 @@ pub struct ImportYumArtifactsResponse {
     pub errors: ::prost::alloc::vec::Vec<ImportYumArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportYumArtifactsMetadata {}
 /// Metadata type for longrunning-operations, currently empty.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {}
 /// Generated client implementations.

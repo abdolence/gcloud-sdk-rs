@@ -3,6 +3,7 @@
 /// \[google.type.DateTime\]\[google.type.DateTime\], but ensures that neither the
 /// timezone nor the UTC offset can be set to avoid confusion between civil and
 /// physical time queries.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CivilDateTime {
     /// Required. Calendar date.
@@ -15,6 +16,7 @@ pub struct CivilDateTime {
 }
 /// Counterpart of \[google.type.Interval\]\[google.type.Interval\], but using
 /// \[CivilDateTime\]\[google.devicesandservices.health.v4.CivilDateTime\].
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CivilTimeInterval {
     /// Required. The inclusive start of the range.
@@ -25,6 +27,7 @@ pub struct CivilTimeInterval {
     pub end: ::core::option::Option<CivilDateTime>,
 }
 /// Represents a time interval of an observed data point.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObservationTimeInterval {
     /// Required. Observed interval start time.
@@ -52,6 +55,7 @@ pub struct ObservationTimeInterval {
 }
 /// Represents a time interval of session data point, which bundles multiple
 /// observed metrics together.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionTimeInterval {
     /// Required. The start time of the observed session.
@@ -78,6 +82,7 @@ pub struct SessionTimeInterval {
     pub civil_end_time: ::core::option::Option<CivilDateTime>,
 }
 /// Represents a sample time of an observed data point.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObservationSampleTime {
     /// Required. The time of the observation.
@@ -94,6 +99,7 @@ pub struct ObservationSampleTime {
 }
 /// Software as Medical Device (SaMD) metadata.
 /// Used to construct the Unique Device Identifier (UDI).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MedicalDeviceInfo {
     /// Output only. The algorithm version used by the feature.
@@ -115,6 +121,7 @@ pub struct MedicalDeviceInfo {
     pub device_model: ::prost::alloc::string::String,
 }
 /// Record of active zone minutes in a given time interval.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActiveZoneMinutes {
     /// Required. Observed interval.
@@ -133,6 +140,7 @@ pub struct ActiveZoneMinutes {
 /// Nested message and enum types in `ActiveZoneMinutes`.
 pub mod active_zone_minutes {
     /// Represents different heart rate zones.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -181,6 +189,7 @@ pub mod active_zone_minutes {
     }
 }
 /// Represents the result of the rollup of the active zone minutes data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActiveZoneMinutesRollupValue {
     /// Active zone minutes in `HeartRateZone.CARDIO`.
@@ -194,6 +203,7 @@ pub struct ActiveZoneMinutesRollupValue {
     pub sum_in_fat_burn_heart_zone: ::core::option::Option<i64>,
 }
 /// Record of active minutes in a given time interval.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActiveMinutes {
     /// Required. Observed interval.
@@ -209,6 +219,7 @@ pub struct ActiveMinutes {
 /// Nested message and enum types in `ActiveMinutes`.
 pub mod active_minutes {
     /// Active minutes at a given activity level.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ActiveMinutesByActivityLevel {
         /// Required. The level of activity.
@@ -219,6 +230,7 @@ pub mod active_minutes {
         pub active_minutes: ::core::option::Option<i64>,
     }
     /// Activity level.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -267,6 +279,7 @@ pub mod active_minutes {
     }
 }
 /// Represents the result of the rollup of the active minutes data type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActiveMinutesRollupValue {
     /// Active minutes by activity level. At most one record per activity level
@@ -279,6 +292,7 @@ pub struct ActiveMinutesRollupValue {
 /// Nested message and enum types in `ActiveMinutesRollupValue`.
 pub mod active_minutes_rollup_value {
     /// Active minutes by activity level.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ActiveMinutesRollupByActivityLevel {
         /// The level of activity.
@@ -290,6 +304,7 @@ pub mod active_minutes_rollup_value {
     }
 }
 /// Internal type to capture activity level during a certain time interval.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActivityLevel {
     /// Required. Observed interval.
@@ -302,6 +317,7 @@ pub struct ActivityLevel {
 /// Nested message and enum types in `ActivityLevel`.
 pub mod activity_level {
     /// Represents different activity level types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -354,6 +370,7 @@ pub mod activity_level {
     }
 }
 /// Represents the result of the rollup of the activity level data type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActivityLevelRollupValue {
     /// List of total durations in each activity level type.
@@ -365,6 +382,7 @@ pub struct ActivityLevelRollupValue {
 /// Nested message and enum types in `ActivityLevelRollupValue`.
 pub mod activity_level_rollup_value {
     /// Represents the total duration in a specific activity level type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ActivityLevelRollupByActivityLevelType {
         /// Activity level type.
@@ -377,6 +395,7 @@ pub mod activity_level_rollup_value {
 }
 /// Captures the altitude gain (i.e. deltas), and not level above sea, for a user
 /// in millimeters.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Altitude {
     /// Required. Observed interval.
@@ -389,6 +408,7 @@ pub struct Altitude {
 }
 /// Number of calories burned due to basal metabolic rate (BMR) over a period of
 /// time.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BasalEnergyBurned {
     /// Required. Observed interval.
@@ -400,6 +420,7 @@ pub struct BasalEnergyBurned {
     pub kcal: ::core::option::Option<f64>,
 }
 /// Body fat measurement.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BodyFat {
     /// Required. The time at which body fat was measured.
@@ -410,6 +431,7 @@ pub struct BodyFat {
     pub percentage: ::core::option::Option<f64>,
 }
 /// Represents the result of the rollup of the body fat data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BodyFatRollupValue {
     /// Average body fat percentage.
@@ -418,6 +440,7 @@ pub struct BodyFatRollupValue {
 }
 /// Core body temperature measurement, distinct from peripheral body temperature,
 /// reflects the temperature of the body's internal organs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CoreBodyTemperature {
     /// Required. The time at which core body temperature was measured.
@@ -437,6 +460,7 @@ pub struct CoreBodyTemperature {
 /// Nested message and enum types in `CoreBodyTemperature`.
 pub mod core_body_temperature {
     /// Measurement location for core body temperature.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -541,6 +565,7 @@ pub mod core_body_temperature {
     }
 }
 /// Represents the result of the rollup of the core body temperature data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CoreBodyTemperatureRollupValue {
     /// Average core body temperature in Celsius.
@@ -555,6 +580,7 @@ pub struct CoreBodyTemperatureRollupValue {
 }
 /// Represents the result of the rollup of the calories in heart rate zone data
 /// type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaloriesInHeartRateZoneRollupValue {
     /// List of calories burned in each heart rate zone.
@@ -566,6 +592,7 @@ pub struct CaloriesInHeartRateZoneRollupValue {
 /// Nested message and enum types in `CaloriesInHeartRateZoneRollupValue`.
 pub mod calories_in_heart_rate_zone_rollup_value {
     /// Represents the amount of kilocalories burned in a specific heart rate zone.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CaloriesInHeartRateZoneValue {
         /// The heart rate zone.
@@ -578,6 +605,7 @@ pub mod calories_in_heart_rate_zone_rollup_value {
 }
 /// User's heart rate zone thresholds based on the Karvonen algorithm for a
 /// specific day.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DailyHeartRateZones {
     /// Required. Date (in user's timezone) of the heart rate zones record.
@@ -592,6 +620,7 @@ pub struct DailyHeartRateZones {
 /// Nested message and enum types in `DailyHeartRateZones`.
 pub mod daily_heart_rate_zones {
     /// The heart rate zone.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct HeartRateZone {
         /// Required. The heart rate zone type.
@@ -613,6 +642,7 @@ pub mod daily_heart_rate_zones {
 /// * `non_rem_heart_rate_beats_per_minute`
 /// * `entropy`
 /// * `deep_sleep_root_mean_square_of_successive_differences_milliseconds`
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyHeartRateVariability {
     /// Required. Date (in the user's timezone) of heart rate variability
@@ -641,6 +671,7 @@ pub struct DailyHeartRateVariability {
 }
 /// A daily average respiratory rate (breaths per minute) for a day of the year.
 /// One data point per day calculated for the main sleep.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyRespiratoryRate {
     /// Required. The date on which the respiratory rate was measured.
@@ -653,6 +684,7 @@ pub struct DailyRespiratoryRate {
 /// A daily oxygen saturation (SpO2) record.
 /// Represents the user's daily oxygen saturation summary, typically calculated
 /// during sleep.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyOxygenSaturation {
     /// Required. Date (in user's timezone) of the daily oxygen saturation record.
@@ -679,6 +711,7 @@ pub struct DailyOxygenSaturation {
 }
 /// Measures the daily resting heart rate for a user, calculated using the all
 /// day heart rate measurements.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyRestingHeartRate {
     /// Required. Date  (in the user's timezone) of the resting heart rate
@@ -697,6 +730,7 @@ pub struct DailyRestingHeartRate {
 /// Nested message and enum types in `DailyRestingHeartRate`.
 pub mod daily_resting_heart_rate {
     /// Metadata for the daily resting heart rate.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DailyRestingHeartRateMetadata {
         /// Required. The method used to calculate the resting heart rate.
@@ -709,6 +743,7 @@ pub mod daily_resting_heart_rate {
     /// Nested message and enum types in `DailyRestingHeartRateMetadata`.
     pub mod daily_resting_heart_rate_metadata {
         /// The method used to calculate the resting heart rate.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -755,6 +790,7 @@ pub mod daily_resting_heart_rate {
 }
 /// Provides derived sleep temperature values, calculated from skin or internal
 /// device temperature readings during sleep.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailySleepTemperatureDerivations {
     /// Required. Date for which the sleep temperature derivations are calculated.
@@ -775,6 +811,7 @@ pub struct DailySleepTemperatureDerivations {
 }
 /// Contains a daily summary of the user's VO2 max (cardio fitness score),
 /// which is the maximum rate of oxygen the body can use during exercise.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyVo2Max {
     /// Required. The date for which the Daily VO2 max was measured.
@@ -799,6 +836,7 @@ pub struct DailyVo2Max {
 /// Nested message and enum types in `DailyVO2Max`.
 pub mod daily_vo2_max {
     /// The cardio fitness level categories.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -859,6 +897,7 @@ pub mod daily_vo2_max {
     }
 }
 /// Distance traveled over an interval of time.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Distance {
     /// Required. Observed interval.
@@ -870,6 +909,7 @@ pub struct Distance {
     pub millimeters: ::core::option::Option<i64>,
 }
 /// Result of the rollup of the user's distance.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DistanceRollupValue {
     /// Sum of the distance in millimeters.
@@ -879,6 +919,7 @@ pub struct DistanceRollupValue {
 /// Represents an Electrocardiogram (ECG) measurement session.
 /// This data type is based on SaMD feature and any changes to it may require
 /// additional review.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Electrocardiogram {
     /// Required. Observed interval.
@@ -926,6 +967,7 @@ pub struct Electrocardiogram {
 /// Nested message and enum types in `Electrocardiogram`.
 pub mod electrocardiogram {
     /// The classification of the ECG reading rhythm.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -996,6 +1038,7 @@ pub mod electrocardiogram {
     }
 }
 /// An exercise that stores information about a physical activity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Exercise {
     /// Required. Observed exercise interval
@@ -1055,6 +1098,7 @@ pub mod exercise {
     /// Represents splits or laps recorded within an exercise. Lap events
     /// partition a workout into segments based on criteria like distance, time, or
     /// calories.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SplitSummary {
         /// Required. Lap start time
@@ -1084,6 +1128,7 @@ pub mod exercise {
     /// Nested message and enum types in `SplitSummary`.
     pub mod split_summary {
         /// The type of the split, such as manual, duration, distance, calories.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1137,6 +1182,7 @@ pub mod exercise {
     }
     /// Represents instantaneous events that happen during an exercise,
     /// such as start, stop, pause, split.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExerciseEvent {
         /// Required. Exercise event time
@@ -1152,6 +1198,7 @@ pub mod exercise {
     /// Nested message and enum types in `ExerciseEvent`.
     pub mod exercise_event {
         /// The type of the event, such as start, stop, pause, resume.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1212,6 +1259,7 @@ pub mod exercise {
         }
     }
     /// Additional exercise metadata.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExerciseMetadata {
         /// Optional. Pool length in millimeters. Only present in the swimming
@@ -1224,6 +1272,7 @@ pub mod exercise {
     }
     /// The type of activity performed during an exercise.
     /// May receive new values in the future.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1984,6 +2033,7 @@ pub mod exercise {
     }
 }
 /// Gained elevation measured in floors over the time interval
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Floors {
     /// Required. Observed interval
@@ -1995,6 +2045,7 @@ pub struct Floors {
     pub count: ::core::option::Option<i64>,
 }
 /// Represents the result of the rollup of the user's floors.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FloorsRollupValue {
     /// Sum of the floors count.
@@ -2002,6 +2053,7 @@ pub struct FloorsRollupValue {
     pub count_sum: ::core::option::Option<i64>,
 }
 /// Represents the result of the rollup of the user's altitude.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AltitudeRollupValue {
     /// Sum of the altitude gain in millimeters.
@@ -2009,6 +2061,7 @@ pub struct AltitudeRollupValue {
     pub gain_millimeters_sum: ::core::option::Option<i64>,
 }
 /// A heart rate measurement.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HeartRate {
     /// Required. Observation time
@@ -2025,6 +2078,7 @@ pub struct HeartRate {
 /// Nested message and enum types in `HeartRate`.
 pub mod heart_rate {
     /// Heart rate metadata.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct HeartRateMetadata {
         /// Optional. Indicates the user’s level of activity when the heart rate
@@ -2039,6 +2093,7 @@ pub mod heart_rate {
     /// Nested message and enum types in `HeartRateMetadata`.
     pub mod heart_rate_metadata {
         /// The user’s level of activity when the heart rate sample was measured.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2082,6 +2137,7 @@ pub mod heart_rate {
             }
         }
         /// The location of the sensor that measured the heart rate.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2143,6 +2199,7 @@ pub mod heart_rate {
     }
 }
 /// Represents the result of the rollup of the heart rate data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HeartRateRollupValue {
     /// The average heart rate value in the interval.
@@ -2157,6 +2214,7 @@ pub struct HeartRateRollupValue {
 }
 /// Represents the result of the rollup of the user's daily heart rate
 /// variability personal range.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunVo2MaxRollupValue {
     /// Minimum value of run VO2 max in the interval..
@@ -2171,6 +2229,7 @@ pub struct RunVo2MaxRollupValue {
 }
 /// VO2 max value calculated based on the user's running activity.
 /// Value stored in ml/kg/min.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunVo2Max {
     /// Required. The time at which the metric was measured.
@@ -2183,6 +2242,7 @@ pub struct RunVo2Max {
 }
 /// Represents the result of the rollup of the user's daily heart rate
 /// variability personal range.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HeartRateVariabilityPersonalRangeRollupValue {
     /// The lower bound of the user's average heart rate variability personal
@@ -2195,6 +2255,7 @@ pub struct HeartRateVariabilityPersonalRangeRollupValue {
     pub average_heart_rate_variability_milliseconds_max: ::core::option::Option<f64>,
 }
 /// Body height measurement.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Height {
     /// Required. The time at which the height was recorded.
@@ -2208,6 +2269,7 @@ pub struct Height {
 /// Captures user's heart rate variability (HRV) as measured by the root mean
 /// square of successive differences (RMSSD) between normal heartbeats or by
 /// standard deviation of the inter-beat intervals (SDNN).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HeartRateVariability {
     /// Required. The time of the heart rate variability measurement.
@@ -2233,6 +2295,7 @@ pub struct HeartRateVariability {
 /// Nested message and enum types in `HeartRateVariability`.
 pub mod heart_rate_variability {
     /// Metadata for HeartRateVariability.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct HeartRateVariabilityMetadata {
         /// Optional. The power in interbeat interval fluctuations within the high
@@ -2246,6 +2309,7 @@ pub mod heart_rate_variability {
     }
 }
 /// Represents the volume quantity.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VolumeQuantity {
     /// Required. Value representing the volume in milliliters.
@@ -2259,6 +2323,7 @@ pub struct VolumeQuantity {
     pub user_provided_unit: i32,
 }
 /// Holds information about a user logged hydration.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HydrationLog {
     /// Required. Observed interval.
@@ -2269,6 +2334,7 @@ pub struct HydrationLog {
     pub amount_consumed: ::core::option::Option<VolumeQuantity>,
 }
 /// Represents the result of the rollup of the hydration log data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HydrationLogRollupValue {
     /// Rollup for amount consumed.
@@ -2280,6 +2346,7 @@ pub struct HydrationLogRollupValue {
 /// Nested message and enum types in `HydrationLogRollupValue`.
 pub mod hydration_log_rollup_value {
     /// Rollup for volume quantity.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VolumeQuantityRollup {
         /// Required. The sum of volume in milliliters.
@@ -2294,6 +2361,7 @@ pub mod hydration_log_rollup_value {
 /// sign of atrial fibrillation (AFib).
 /// This data type is based on SaMD feature and any changes to it may require
 /// additional review.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IrregularRhythmNotification {
     /// Required. Observed interval.
@@ -2317,6 +2385,7 @@ pub struct IrregularRhythmNotification {
 /// Nested message and enum types in `IrregularRhythmNotification`.
 pub mod irregular_rhythm_notification {
     /// A single heart beat measurement.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct HeartBeat {
         /// Required. The time of the heart beat measurement.
@@ -2343,6 +2412,7 @@ pub mod irregular_rhythm_notification {
     /// the positive bit set to true. Internally, windows can be negative, however.
     /// We never save "inconclusive" windows (they aren't produced by the
     /// algorithm).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AlertWindow {
         /// Required. Observed interval.
@@ -2381,6 +2451,7 @@ pub mod irregular_rhythm_notification {
     }
 }
 /// Summary metrics for an exercise.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MetricsSummary {
     /// Optional. Total calories burned by the user during the exercise.
@@ -2429,6 +2500,7 @@ pub struct MetricsSummary {
 /// Nested message and enum types in `MetricsSummary`.
 pub mod metrics_summary {
     /// Time spent in each heart rate zone.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimeInHeartRateZones {
         /// Optional. Time spent in light heart rate zone.
@@ -2445,6 +2517,7 @@ pub mod metrics_summary {
         pub peak_time: ::core::option::Option<::prost_types::Duration>,
     }
     /// Mobility workouts specific metrics
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MobilityMetrics {
         /// Optional. Cadence is a measure of the frequency of your foot strikes.
@@ -2471,6 +2544,7 @@ pub mod metrics_summary {
     }
 }
 /// Represents the weight quantity.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeightQuantity {
     /// Required. The weight value in grams.
@@ -2482,6 +2556,7 @@ pub struct WeightQuantity {
     pub user_provided_unit: i32,
 }
 /// Represents the energy quantity.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnergyQuantity {
     /// Required. The energy value in kilocalories.
@@ -2493,6 +2568,7 @@ pub struct EnergyQuantity {
     pub user_provided_unit: i32,
 }
 /// Represents the quantity of a nutrient.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NutrientQuantity {
     /// Required. The quantity of the nutrient, measured in grams.
@@ -2516,6 +2592,7 @@ pub struct NutrientQuantity {
 ///
 /// The identified food is preferred over the anonymous food.
 /// Nutrition logs created from anonymous food are not editable.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NutritionLog {
     /// Required. The time window when the food was logged.
@@ -2557,6 +2634,7 @@ pub struct NutritionLog {
 pub mod nutrition_log {
     /// Represents different properties and information about the serving of a
     /// specific food.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Serving {
         /// Optional. The number of servings.
@@ -2572,6 +2650,7 @@ pub mod nutrition_log {
     }
 }
 /// Represents a food item.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Food {
     /// Required. The display name of the food.
@@ -2633,6 +2712,7 @@ pub struct Food {
 pub mod food {
     /// Represents different properties and information about the serving of a
     /// specific food.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FoodServing {
         /// Optional. Amount of food consumed, fractional values are supported.
@@ -2656,6 +2736,7 @@ pub mod food {
     }
 }
 /// Represents the result of the rollup of the nutrition log data type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NutritionLogRollupValue {
     /// List of the nutrient roll-ups by the nutrient type.
@@ -2686,6 +2767,7 @@ pub struct NutritionLogRollupValue {
 /// Nested message and enum types in `NutritionLogRollupValue`.
 pub mod nutrition_log_rollup_value {
     /// Rollup for the weight.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct WeightQuantityRollup {
         /// Required. The sum of the weight in grams.
@@ -2696,6 +2778,7 @@ pub mod nutrition_log_rollup_value {
         pub user_provided_unit_last: i32,
     }
     /// Rollup for the energy quantity.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EnergyQuantityRollup {
         /// Required. The sum of the energy in kilocalories.
@@ -2706,6 +2789,7 @@ pub mod nutrition_log_rollup_value {
         pub user_provided_unit_last: i32,
     }
     /// Nutrient quantity rollup.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NutrientQuantityRollup {
         /// Required. Aggregated nutrient weight.
@@ -2717,6 +2801,7 @@ pub mod nutrition_log_rollup_value {
     }
 }
 /// Captures the user's instantaneous oxygen saturation percentage (SpO2).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OxygenSaturation {
     /// Required. The time at which oxygen saturation was measured.
@@ -2728,6 +2813,7 @@ pub struct OxygenSaturation {
     pub percentage: ::core::option::Option<f64>,
 }
 /// Represents the rollup value for the daily resting heart rate data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RestingHeartRatePersonalRangeRollupValue {
     /// The lower bound of the user's daily resting heart rate personal range.
@@ -2738,6 +2824,7 @@ pub struct RestingHeartRatePersonalRangeRollupValue {
     pub beats_per_minute_max: ::core::option::Option<f64>,
 }
 /// Represents a food measurement unit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FoodMeasurementUnit {
     /// Required. The display name of the food measurement unit (e.g., "gram",
@@ -2751,6 +2838,7 @@ pub struct FoodMeasurementUnit {
 }
 /// Records respiratory rate details during sleep.
 /// Can have multiple per day if the user sleeps multiple times.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RespiratoryRateSleepSummary {
     /// Required. The time at which respiratory rate was measured.
@@ -2780,6 +2868,7 @@ pub struct RespiratoryRateSleepSummary {
 /// Nested message and enum types in `RespiratoryRateSleepSummary`.
 pub mod respiratory_rate_sleep_summary {
     /// Respiratory rate statistics for a given sleep stage.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RespiratoryRateSleepSummaryStatistics {
         /// Required. Average breaths per minute.
@@ -2794,6 +2883,7 @@ pub mod respiratory_rate_sleep_summary {
     }
 }
 /// A sleep session possibly including stages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sleep {
     /// Required. Observed sleep interval.
@@ -2831,6 +2921,7 @@ pub struct Sleep {
 /// Nested message and enum types in `Sleep`.
 pub mod sleep {
     /// Sleep stage segment.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SleepStage {
         /// Required. Sleep stage start time.
@@ -2858,6 +2949,7 @@ pub mod sleep {
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// A time interval to represent an out-of-bed segment.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OutOfBedSegment {
         /// Required. Segment tart time.
@@ -2876,6 +2968,7 @@ pub mod sleep {
         pub end_utc_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Additional information about how the sleep was processed.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SleepMetadata {
         /// Output only. Sleep stages algorithm processing status.
@@ -2909,6 +3002,7 @@ pub mod sleep {
     /// Nested message and enum types in `SleepMetadata`.
     pub mod sleep_metadata {
         /// Sleep stages algorithm processing status.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -2987,6 +3081,7 @@ pub mod sleep {
         }
     }
     /// Sleep summary: metrics and stages summary.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SleepSummary {
         /// Output only. Delta between wake time and bedtime. It is the sum of all
@@ -3017,6 +3112,7 @@ pub mod sleep {
     /// Nested message and enum types in `SleepSummary`.
     pub mod sleep_summary {
         /// Total duration and segment count for a stage.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StageSummary {
             /// Output only. Sleep stage type: AWAKE, DEEP, REM, LIGHT etc.
@@ -3031,6 +3127,7 @@ pub mod sleep {
         }
     }
     /// Sleep type: classic or stages.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3076,6 +3173,7 @@ pub mod sleep {
         }
     }
     /// Sleep stage type: AWAKE, DEEP, REM, LIGHT etc.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3136,6 +3234,7 @@ pub mod sleep {
     }
 }
 /// Step count over the time interval.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Steps {
     /// Required. Observed interval.
@@ -3147,6 +3246,7 @@ pub struct Steps {
     pub count: ::core::option::Option<i64>,
 }
 /// Represents the result of the rollup of the steps data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StepsRollupValue {
     /// Total number of steps in the interval.
@@ -3154,6 +3254,7 @@ pub struct StepsRollupValue {
     pub count_sum: ::core::option::Option<i64>,
 }
 /// Swim lengths data over the time interval.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SwimLengthsData {
     /// Required. Observed interval.
@@ -3169,6 +3270,7 @@ pub struct SwimLengthsData {
 /// Nested message and enum types in `SwimLengthsData`.
 pub mod swim_lengths_data {
     /// Swim stroke type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3221,6 +3323,7 @@ pub mod swim_lengths_data {
     }
 }
 /// Represents the result of the rollup of the swim lengths data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SwimLengthsDataRollupValue {
     /// Total number of swim strokes in the interval.
@@ -3229,6 +3332,7 @@ pub struct SwimLengthsDataRollupValue {
 }
 /// Time in heart rate zone record. It's an interval spent in specific heart
 /// rate zone.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeInHeartRateZone {
     /// Required. Observed interval.
@@ -3240,6 +3344,7 @@ pub struct TimeInHeartRateZone {
 }
 /// Represents the result of the rollup of the time in heart rate zone data
 /// type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeInHeartRateZoneRollupValue {
     /// List of time spent in each heart rate zone.
@@ -3251,6 +3356,7 @@ pub struct TimeInHeartRateZoneRollupValue {
 /// Nested message and enum types in `TimeInHeartRateZoneRollupValue`.
 pub mod time_in_heart_rate_zone_rollup_value {
     /// Represents the total time spent in a specific heart rate zone.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimeInHeartRateZoneValue {
         /// The heart rate zone.
@@ -3272,6 +3378,7 @@ pub mod time_in_heart_rate_zone_rollup_value {
 ///
 /// Example filter query:
 /// `total_calories.interval.start_time >= "2026-04-20T00:00:00Z" AND  total_calories.interval.start_time < "2026-04-21T00:00:00Z"`
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TotalCaloriesRollupValue {
     /// Sum of the total calories in kilocalories.
@@ -3279,6 +3386,7 @@ pub struct TotalCaloriesRollupValue {
     pub kcal_sum: ::core::option::Option<f64>,
 }
 /// VO2 max measurement.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vo2Max {
     /// Required. The time at which VO2 max was measured.
@@ -3295,6 +3403,7 @@ pub struct Vo2Max {
 /// Nested message and enum types in `VO2Max`.
 pub mod vo2_max {
     /// Measurement method used to measure the VO2 max value.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3383,6 +3492,7 @@ pub mod vo2_max {
     }
 }
 /// Body weight measurement.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Weight {
     /// Required. The time at which the weight was measured
@@ -3397,6 +3507,7 @@ pub struct Weight {
     pub notes: ::prost::alloc::string::String,
 }
 /// Represents the result of the rollup of the weight data type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeightRollupValue {
     /// Average weight in grams.
@@ -3405,6 +3516,7 @@ pub struct WeightRollupValue {
 }
 /// Represents a blood glucose level measurement.
 /// LINT: LEGACY_NAMES
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BloodGlucose {
     /// Required. The time at which blood glucose was measured.
@@ -3433,6 +3545,7 @@ pub struct BloodGlucose {
 /// Nested message and enum types in `BloodGlucose`.
 pub mod blood_glucose {
     /// The clinical method or tool used to measure the blood glucose level.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3482,6 +3595,7 @@ pub mod blood_glucose {
         }
     }
     /// Meal type associated with the measurement.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3533,6 +3647,7 @@ pub mod blood_glucose {
         }
     }
     /// Timing of the measurement.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3592,6 +3707,7 @@ pub mod blood_glucose {
         }
     }
     /// Type of body fluid used to measure the blood glucose.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3653,6 +3769,7 @@ pub mod blood_glucose {
 }
 /// Represents the result of the rollup of the blood glucose data type.
 /// LINT: LEGACY_NAMES
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BloodGlucoseRollupValue {
     /// Average blood glucose level in mg/dL.
@@ -3663,6 +3780,7 @@ pub struct BloodGlucoseRollupValue {
 ///
 /// SedentaryPeriod data represents the periods of time that the user was
 /// sedentary (i.e. not moving while wearing the device).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SedentaryPeriod {
     /// Required. Observed interval.
@@ -3670,6 +3788,7 @@ pub struct SedentaryPeriod {
     pub interval: ::core::option::Option<ObservationTimeInterval>,
 }
 /// Represents the result of the rollup of the user's sedentary periods.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SedentaryPeriodRollupValue {
     /// The total time user spent sedentary during the interval.
@@ -3677,6 +3796,7 @@ pub struct SedentaryPeriodRollupValue {
     pub duration_sum: ::core::option::Option<::prost_types::Duration>,
 }
 /// Energy burned as part of an activity, excluding the basal energy burn.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ActiveEnergyBurned {
     /// Required. Observed interval
@@ -3688,6 +3808,7 @@ pub struct ActiveEnergyBurned {
     pub kcal: ::core::option::Option<f64>,
 }
 /// Represents the result of the rollup of active energy burned.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ActiveEnergyBurnedRollupValue {
     /// Output only. Sum of the active energy burned in kilocalories.
@@ -3695,6 +3816,7 @@ pub struct ActiveEnergyBurnedRollupValue {
     pub kcal_sum: ::core::option::Option<f64>,
 }
 /// Menstrual period record.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MenstrualPeriod {
     /// Required. Observed interval.
@@ -3705,6 +3827,7 @@ pub struct MenstrualPeriod {
     pub notes: ::prost::alloc::string::String,
 }
 /// Ovulation test record.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OvulationTest {
     /// Required. The time at which ovulation test was measured.
@@ -3715,6 +3838,7 @@ pub struct OvulationTest {
     pub result: i32,
 }
 /// Symptoms logged by the user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Symptoms {
     /// Required. Time when the symptoms were logged.
@@ -3732,6 +3856,7 @@ pub struct Symptoms {
 /// Nested message and enum types in `Symptoms`.
 pub mod symptoms {
     /// Enum representing possible symptom values.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4028,6 +4153,7 @@ pub mod symptoms {
     }
 }
 /// Moods record.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Moods {
     /// Required. The time at which moods were measured.
@@ -4043,6 +4169,7 @@ pub struct Moods {
 /// Nested message and enum types in `Moods`.
 pub mod moods {
     /// The mood.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4350,6 +4477,7 @@ pub mod moods {
         }
     }
     /// The valence.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4398,6 +4526,7 @@ pub mod moods {
     }
 }
 /// The heart rate zone type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum HeartRateZoneType {
@@ -4439,6 +4568,7 @@ impl HeartRateZoneType {
     }
 }
 /// Enum representing the access level of a food item.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FoodAccessLevel {
@@ -4472,6 +4602,7 @@ impl FoodAccessLevel {
     }
 }
 /// Enum representing the meal type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MealType {
@@ -4533,6 +4664,7 @@ impl MealType {
     }
 }
 /// Enum representing the unit of energy.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EnergyUnit {
@@ -4578,6 +4710,7 @@ impl EnergyUnit {
     }
 }
 /// Holds information about a user logged food.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Nutrient {
@@ -4759,6 +4892,7 @@ impl Nutrient {
     }
 }
 /// Enum representing the unit of weight.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum WeightUnit {
@@ -4816,6 +4950,7 @@ impl WeightUnit {
     }
 }
 /// Enum representing the unit of volume.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum VolumeUnit {
@@ -4873,6 +5008,7 @@ impl VolumeUnit {
     }
 }
 /// Ovulation test result.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OvulationTestResult {
@@ -4922,6 +5058,7 @@ impl OvulationTestResult {
 /// Each health data point, regardless of the complexity or data model (whether a
 /// simple step count or a detailed sleep session) must retain information about
 /// its source of origin (e.g. the device or app that collected it).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSource {
     /// Optional. Captures how the data was recorded.
@@ -4942,6 +5079,7 @@ pub struct DataSource {
 /// Nested message and enum types in `DataSource`.
 pub mod data_source {
     /// Captures metadata about the device that recorded the measurement.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Device {
         /// Optional. Captures the form factor of the device.
@@ -4957,6 +5095,7 @@ pub mod data_source {
     /// Nested message and enum types in `Device`.
     pub mod device {
         /// Form factor of the device, e.g. phone, watch, band, etc.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -5029,6 +5168,7 @@ pub mod data_source {
         }
     }
     /// Optional metadata for the application that provided this data.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Application {
         /// Output only. A unique identifier for the mobile application
@@ -5060,6 +5200,7 @@ pub mod data_source {
         pub google_web_client_id: ::prost::alloc::string::String,
     }
     /// The method by which the data was recorded.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5119,6 +5260,7 @@ pub mod data_source {
     /// The platform that uploaded the data.
     /// Additional values may be added in the future. Clients should be prepared to
     /// handle unknown values gracefully.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5187,6 +5329,7 @@ pub mod data_source {
     }
 }
 /// A computed or recorded metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataPoint {
     /// Identifier. Data point name, only supported for the subset of identifiable
@@ -5238,6 +5381,7 @@ pub mod data_point {
     /// Unless otherwise noted, data types will exclude data points that are
     /// identified as recorded by wearables in intervals when they were not
     /// actually worn.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Optional. Data for points in the `steps` interval data type collection.
@@ -5400,6 +5544,7 @@ pub mod data_point {
     }
 }
 /// A reconciled computed or recorded metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconciledDataPoint {
     /// Identifier. Data point name, only supported for the subset of identifiable
@@ -5448,6 +5593,7 @@ pub mod reconciled_data_point {
     /// Unless otherwise noted, data types reconciliation algorithm will exclude
     /// data points that are identified as recorded by wearables in intervals
     /// when they were not actually worn.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Data for points in the `steps` interval data type collection.
@@ -5571,6 +5717,7 @@ pub mod reconciled_data_point {
 /// reconciled data points from all data sources, excluding those data points
 /// that are identified as recorded by wearables in intervals when they were not
 /// actually worn.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollupDataPoint {
     /// Start time of the window this value aggregates over
@@ -5621,6 +5768,7 @@ pub mod rollup_data_point {
     /// These messages represent the aggregated data payload for each data type
     /// and are embedded within the `RollupDataPoint`. They are not standalone
     /// resources themselves.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Returned by default when rolling up data points from the `steps` data
@@ -5732,6 +5880,7 @@ pub mod rollup_data_point {
 /// of reconciled data points from all data sources, excluding those data points
 /// that are identified as recorded by wearables in intervals when they were not
 /// actually worn.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DailyRollupDataPoint {
     /// Start time of the window this value aggregates over
@@ -5782,6 +5931,7 @@ pub mod daily_rollup_data_point {
     /// These messages represent the aggregated data payload for each data type
     /// and are embedded within the `DailyRollupDataPoint`. They are not standalone
     /// resources themselves.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Returned by default when rolling up data points from the `steps` data
@@ -5904,6 +6054,7 @@ pub mod daily_rollup_data_point {
     }
 }
 /// Request for getting a single data point
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataPointRequest {
     /// Required. The name of the data point to retrieve.
@@ -5917,6 +6068,7 @@ pub struct GetDataPointRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing raw data points
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataPointsRequest {
     /// Required. Parent data type of the Data Point collection.
@@ -6038,6 +6190,7 @@ pub struct ListDataPointsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response containing raw data points matching the query
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPointsResponse {
     /// Data points matching the query
@@ -6048,6 +6201,7 @@ pub struct ListDataPointsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to create an identifiable data point.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataPointRequest {
     /// Required. The parent resource name where the data point will be created.
@@ -6059,9 +6213,11 @@ pub struct CreateDataPointRequest {
     pub data_point: ::core::option::Option<DataPoint>,
 }
 /// Metadata for a create data point operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataPointOperationMetadata {}
 /// Request to update an identifiable data point.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataPointRequest {
     /// Required. The data point to update
@@ -6073,9 +6229,11 @@ pub struct UpdateDataPointRequest {
     pub data_point: ::core::option::Option<DataPoint>,
 }
 /// Metadata for an update data point operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataPointOperationMetadata {}
 /// Request to delete a batch of identifiable data points.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchDeleteDataPointsRequest {
     /// Optional. Parent (data type) for the Data Point collection
@@ -6102,6 +6260,7 @@ pub struct BatchDeleteDataPointsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response containing the list of possibly soft-deleted DataPoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteDataPointsResponse {
     /// The list of soft-deleted DataPoints, if the data type supports only soft
@@ -6110,6 +6269,7 @@ pub struct BatchDeleteDataPointsResponse {
     pub data_points: ::prost::alloc::vec::Vec<DataPoint>,
 }
 /// Metadata for a batch delete data points operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteDataPointsOperationMetadata {
     /// The key in this map is the index of the request in the `requests` field in
@@ -6121,6 +6281,7 @@ pub struct BatchDeleteDataPointsOperationMetadata {
     >,
 }
 /// Request to reconcile data points from multiple data sources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReconcileDataPointsRequest {
     /// Required. Parent data type of the Data Point collection.
@@ -6185,6 +6346,7 @@ pub struct ReconcileDataPointsRequest {
     pub data_source_family: ::prost::alloc::string::String,
 }
 /// Response containing the list of reconciled DataPoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconcileDataPointsResponse {
     /// Data points matching the query
@@ -6195,6 +6357,7 @@ pub struct ReconcileDataPointsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to roll up data points by physical time intervals.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollUpDataPointsRequest {
     /// Required. Parent data type of the Data Point collection.
@@ -6266,6 +6429,7 @@ pub struct RollUpDataPointsRequest {
     pub data_source_family: ::prost::alloc::string::String,
 }
 /// Response containing the list of rolled up data points.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollUpDataPointsResponse {
     /// Values for each aggregation time window.
@@ -6277,6 +6441,7 @@ pub struct RollUpDataPointsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to roll up data points by civil time intervals.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyRollUpDataPointsRequest {
     /// Required. Parent data type of the Data Point collection.
@@ -6348,6 +6513,7 @@ pub struct DailyRollUpDataPointsRequest {
     pub data_source_family: ::prost::alloc::string::String,
 }
 /// Response containing the list of rolled up data points.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DailyRollUpDataPointsResponse {
     /// Values for each aggregation time window.
@@ -6359,6 +6525,7 @@ pub struct DailyRollUpDataPointsResponse {
 /// given type.
 ///
 /// Clients currently do not need to interact with this resource directly.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataType {
     /// Identifier. The resource name of the data type.
@@ -6372,6 +6539,7 @@ pub struct DataType {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents a request to export exercise data in TCX format.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportExerciseTcxRequest {
     /// Required. The resource name of the exercise data point to export.
@@ -6391,6 +6559,7 @@ pub struct ExportExerciseTcxRequest {
     pub partial_data: bool,
 }
 /// Represents a Response for exporting exercise data in TCX format.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportExerciseTcxResponse {
     /// Contains the exported TCX data.
@@ -6782,6 +6951,7 @@ pub mod data_points_service_client {
 }
 /// -- Messages --
 /// Request message for CreateSubscriber.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSubscriberRequest {
     /// Required. The parent resource where this subscriber will be created.
@@ -6801,6 +6971,7 @@ pub struct CreateSubscriberRequest {
     pub subscriber_id: ::prost::alloc::string::String,
 }
 /// Request message for ListSubscribers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscribersRequest {
     /// Required. The parent, which owns this collection of subscribers.
@@ -6821,6 +6992,7 @@ pub struct ListSubscribersRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSubscribers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscribersResponse {
     /// Subscribers from the specified project.
@@ -6835,6 +7007,7 @@ pub struct ListSubscribersResponse {
     pub total_size: i32,
 }
 /// Request message for UpdateSubscriber.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSubscriberRequest {
     /// Required. The subscriber resource to update. Its 'name' field is mapped to
@@ -6855,6 +7028,7 @@ pub struct UpdateSubscriberRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteSubscriber.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriberRequest {
     /// Required. The name of the subscriber to delete.
@@ -6872,6 +7046,7 @@ pub struct DeleteSubscriberRequest {
     pub force: bool,
 }
 /// Request message for CreateSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSubscriptionRequest {
     /// Required. The parent subscriber.
@@ -6892,6 +7067,7 @@ pub struct CreateSubscriptionRequest {
     pub subscription: ::core::option::Option<CreateSubscriptionPayload>,
 }
 /// Request message for ListSubscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
     /// Required. The parent subscriber.
@@ -6931,6 +7107,7 @@ pub struct ListSubscriptionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSubscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsResponse {
     /// The subscriptions from the specified subscriber.
@@ -6942,6 +7119,7 @@ pub struct ListSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSubscriptionRequest {
     /// Required. The subscription to update.
@@ -6955,6 +7133,7 @@ pub struct UpdateSubscriptionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
     /// Required. The resource name of the subscription to delete.
@@ -6973,6 +7152,7 @@ pub struct DeleteSubscriptionRequest {
 }
 /// -- Resource Messages --
 /// A subscriber receives notifications from Google Health API.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscriber {
     /// Identifier. The resource name of the Subscriber.
@@ -7013,6 +7193,7 @@ pub struct Subscriber {
 /// Nested message and enum types in `Subscriber`.
 pub mod subscriber {
     /// The state of the subscriber.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7064,6 +7245,7 @@ pub mod subscriber {
 }
 /// A subscription to a data collection for a specific user, to be delivered to
 /// a subscriber.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Subscription {
     /// Identifier. The resource name of the Subscription.
@@ -7099,6 +7281,7 @@ pub struct Subscription {
 /// Configuration for a subscriber.
 /// A notification is sent to a subscription ONLY if the subscriber has a config
 /// for the data type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubscriberConfig {
     /// Required. See [Google Health API data
@@ -7113,6 +7296,7 @@ pub struct SubscriberConfig {
 /// Nested message and enum types in `SubscriberConfig`.
 pub mod subscriber_config {
     /// Policy for subscription creation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7174,6 +7358,7 @@ pub mod subscriber_config {
 /// signature of the JSON payload. Clients must verify this signature using
 /// Google Health API's public key to confirm the payload was sent by the Health
 /// API.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndpointAuthorization {
     /// Required. Input only. Provides a client-provided secret that will be sent
@@ -7191,6 +7376,7 @@ pub struct EndpointAuthorization {
     pub secret_set: bool,
 }
 /// Payload for creating a subscriber.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSubscriberPayload {
     /// Required. The full HTTPS URI where update notifications will be sent.
@@ -7209,6 +7395,7 @@ pub struct CreateSubscriberPayload {
     pub endpoint_authorization: ::core::option::Option<EndpointAuthorization>,
 }
 /// Payload for creating a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSubscriptionPayload {
     /// Optional. Data types subscribed to.
@@ -7223,12 +7410,15 @@ pub struct CreateSubscriptionPayload {
     pub user: ::prost::alloc::string::String,
 }
 /// Represents metadata for creating a subscriber.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSubscriberMetadata {}
 /// Represents metadata for updating a subscriber.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSubscriberMetadata {}
 /// Represents metadata for deleting a subscriber.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriberMetadata {}
 /// Generated client implementations.
@@ -7613,6 +7803,7 @@ pub mod data_subscription_service_client {
 /// It matches the parent resource of collections owned by the user.
 ///
 /// Clients currently do not need to interact with this resource directly.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct User {
     /// Identifier. The resource name of the user.
@@ -7625,6 +7816,7 @@ pub struct User {
     pub name: ::prost::alloc::string::String,
 }
 /// Profile details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Profile {
     /// Identifier. The resource name of this Profile resource.
@@ -7693,6 +7885,7 @@ pub struct Profile {
 /// The PairedDevice details include information about the device type, battery
 /// status, battery level, last sync time, device version, mac address, and
 /// features.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PairedDevice {
     /// Identifier. The resource name of this Device resource.
@@ -7845,6 +8038,7 @@ pub struct PairedDevice {
 /// Nested message and enum types in `PairedDevice`.
 pub mod paired_device {
     /// The type of device.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7894,6 +8088,7 @@ pub mod paired_device {
 /// fibrillation (AFib). The IrnProfile details include information about the
 /// user's onboarding status, enrollment status, and the last update time of
 /// analyzable data for this feature.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IrnProfile {
     /// Identifier. The resource name of this IrnProfile resource.
@@ -7919,6 +8114,7 @@ pub struct IrnProfile {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Settings details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Settings {
     /// Identifier. The resource name of this Settings resource.
@@ -8000,6 +8196,7 @@ pub struct Settings {
 /// Nested message and enum types in `Settings`.
 pub mod settings {
     /// The measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8043,6 +8240,7 @@ pub mod settings {
         }
     }
     /// The measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8086,6 +8284,7 @@ pub mod settings {
         }
     }
     /// The measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8131,6 +8330,7 @@ pub mod settings {
     /// The stride length type defined in the user's account settings. Specifies if
     /// the user's stride length is determined automatically (default) or manually
     /// as defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8178,6 +8378,7 @@ pub mod settings {
         }
     }
     /// The swim unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8221,6 +8422,7 @@ pub mod settings {
         }
     }
     /// The measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8264,6 +8466,7 @@ pub mod settings {
         }
     }
     /// The measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8311,6 +8514,7 @@ pub mod settings {
         }
     }
     /// The water measurement unit defined in the user's account settings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8359,6 +8563,7 @@ pub mod settings {
     }
 }
 /// Represents details about the Google user's identity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Identity {
     /// Identifier. The resource name of this Identity resource.
@@ -8388,6 +8593,7 @@ pub struct Identity {
     pub health_user_id: ::prost::alloc::string::String,
 }
 /// Request message for getting Profile details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProfileRequest {
     /// Required. The name of the Profile.
@@ -8396,6 +8602,7 @@ pub struct GetProfileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting IRN Profile details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIrnProfileRequest {
     /// Required. The resource name of the IRN Profile.
@@ -8409,6 +8616,7 @@ pub struct GetIrnProfileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for updating Profile details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateProfileRequest {
     /// Required. Profile details.
@@ -8419,6 +8627,7 @@ pub struct UpdateProfileRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for getting Settings details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Required. The name of the Settings.
@@ -8427,6 +8636,7 @@ pub struct GetSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for updating Settings details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSettingsRequest {
     /// Required. Settings details
@@ -8437,6 +8647,7 @@ pub struct UpdateSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for getting Identity details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIdentityRequest {
     /// Required. The resource name of the Identity.
@@ -8445,6 +8656,7 @@ pub struct GetIdentityRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a Device.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPairedDeviceRequest {
     /// Required. The name of the device to retrieve.
@@ -8453,6 +8665,7 @@ pub struct GetPairedDeviceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing Devices.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPairedDevicesRequest {
     /// Required. The parent, which owns this collection of devices.
@@ -8473,6 +8686,7 @@ pub struct ListPairedDevicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListPairedDevices.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPairedDevicesResponse {
     /// The paired devices of the user.
@@ -8801,6 +9015,7 @@ pub mod health_profile_service_client {
 }
 /// Log message for a webhook notification sent by the Google Health API to a
 /// subscriber's endpoint. Includes the HTTP response received from the endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookNotificationCloudLog {
     /// Required. Represents the HTTP response.

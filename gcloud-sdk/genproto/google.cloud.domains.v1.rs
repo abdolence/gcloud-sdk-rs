@@ -15,6 +15,7 @@
 /// the domain for transfer and retrieve the domain's transfer authorization
 /// code. Then call `RetrieveTransferParameters` to confirm that the domain is
 /// unlocked and to get values needed to build a call to `TransferDomain`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Registration {
     /// Output only. Name of the `Registration` resource, in the format
@@ -75,6 +76,7 @@ pub struct Registration {
 /// Nested message and enum types in `Registration`.
 pub mod registration {
     /// Possible states of a `Registration`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -147,6 +149,7 @@ pub mod registration {
         }
     }
     /// Possible issues with a `Registration` that require attention.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -198,6 +201,7 @@ pub mod registration {
     }
 }
 /// Defines renewal, billing, and transfer settings for a `Registration`.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagementSettings {
     /// Output only. The renewal method for this `Registration`.
@@ -210,6 +214,7 @@ pub struct ManagementSettings {
 /// Nested message and enum types in `ManagementSettings`.
 pub mod management_settings {
     /// Defines how the `Registration` is renewed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -263,6 +268,7 @@ pub mod management_settings {
 }
 /// Defines the DNS configuration of a `Registration`, including name servers,
 /// DNSSEC, and glue records.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DnsSettings {
     /// The list of glue records for this `Registration`. Commonly empty.
@@ -275,6 +281,7 @@ pub struct DnsSettings {
 /// Nested message and enum types in `DnsSettings`.
 pub mod dns_settings {
     /// Configuration for an arbitrary DNS provider.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomDns {
         /// Required. A list of name servers that store the DNS zone for this domain. Each name
@@ -292,6 +299,7 @@ pub mod dns_settings {
     /// `Registration`'s `dns_provider`. You cannot configure the DNS zone itself
     /// using the API. To configure the DNS zone, go to
     /// [Google Domains](<https://domains.google/>).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GoogleDomainsDns {
         /// Output only. A list of name servers that store the DNS zone for this domain. Each name
@@ -313,6 +321,7 @@ pub mod dns_settings {
     /// Defines a Delegation Signer (DS) record, which is needed to enable DNSSEC
     /// for a domain. It contains a digest (hash) of a DNSKEY record that must be
     /// present in the domain's DNS zone.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DsRecord {
         /// The key tag of the record. Must be set in range 0 -- 65535.
@@ -332,6 +341,7 @@ pub mod dns_settings {
     pub mod ds_record {
         /// List of algorithms used to create a DNSKEY. Certain
         /// algorithms are not supported for particular domains.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -436,6 +446,7 @@ pub mod dns_settings {
         }
         /// List of hash functions that may have been used to generate a digest of a
         /// DNSKEY.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -493,6 +504,7 @@ pub mod dns_settings {
     /// For example, when `ns.example.com` is a name server for `example.com`, the
     /// host `ns.example.com` must have a glue record to break the circular DNS
     /// reference.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GlueRecord {
         /// Required. Domain name of the host in Punycode format.
@@ -510,6 +522,7 @@ pub mod dns_settings {
         pub ipv6_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The publication state of DS records for a `Registration`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -557,6 +570,7 @@ pub mod dns_settings {
         }
     }
     /// The DNS provider of the registration.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DnsProvider {
         /// An arbitrary DNS provider identified by its name servers.
@@ -573,6 +587,7 @@ pub mod dns_settings {
 /// [ICANN](<https://icann.org/>) requires all domain names to have associated
 /// contact information. The `registrant_contact` is considered the
 /// domain's legal owner, and often the other contacts are identical.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContactSettings {
     /// Required. Privacy setting for the contacts associated with the `Registration`.
@@ -598,6 +613,7 @@ pub struct ContactSettings {
 /// Nested message and enum types in `ContactSettings`.
 pub mod contact_settings {
     /// Details required for a contact associated with a `Registration`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Contact {
         /// Required. Postal address of the contact.
@@ -619,6 +635,7 @@ pub mod contact_settings {
     }
 }
 /// Request for the `SearchDomains` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchDomainsRequest {
     /// Required. String used to search for available domain names.
@@ -629,6 +646,7 @@ pub struct SearchDomainsRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `SearchDomains` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDomainsResponse {
     /// Results of the domain name search.
@@ -636,6 +654,7 @@ pub struct SearchDomainsResponse {
     pub register_parameters: ::prost::alloc::vec::Vec<RegisterParameters>,
 }
 /// Request for the `RetrieveRegisterParameters` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveRegisterParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
@@ -646,6 +665,7 @@ pub struct RetrieveRegisterParametersRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveRegisterParameters` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveRegisterParametersResponse {
     /// Parameters to use when calling the `RegisterDomain` method.
@@ -653,6 +673,7 @@ pub struct RetrieveRegisterParametersResponse {
     pub register_parameters: ::core::option::Option<RegisterParameters>,
 }
 /// Request for the `RegisterDomain` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterDomainRequest {
     /// Required. The parent resource of the `Registration`. Must be in the
@@ -683,6 +704,7 @@ pub struct RegisterDomainRequest {
     pub validate_only: bool,
 }
 /// Request for the `RetrieveTransferParameters` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveTransferParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
@@ -693,6 +715,7 @@ pub struct RetrieveTransferParametersRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveTransferParameters` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveTransferParametersResponse {
     /// Parameters to use when calling the `TransferDomain` method.
@@ -700,6 +723,7 @@ pub struct RetrieveTransferParametersResponse {
     pub transfer_parameters: ::core::option::Option<TransferParameters>,
 }
 /// Request for the `TransferDomain` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferDomainRequest {
     /// Required. The parent resource of the `Registration`. Must be in the
@@ -734,6 +758,7 @@ pub struct TransferDomainRequest {
     pub validate_only: bool,
 }
 /// Request for the `ListRegistrations` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegistrationsRequest {
     /// Required. The project and location from which to list `Registration`s, specified in
@@ -767,6 +792,7 @@ pub struct ListRegistrationsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `ListRegistrations` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegistrationsResponse {
     /// A list of `Registration`s.
@@ -778,6 +804,7 @@ pub struct ListRegistrationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetRegistration` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegistrationRequest {
     /// Required. The name of the `Registration` to get, in the format
@@ -786,6 +813,7 @@ pub struct GetRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateRegistration` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegistrationRequest {
     /// Fields of the `Registration` to update.
@@ -798,6 +826,7 @@ pub struct UpdateRegistrationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `ConfigureManagementSettings` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigureManagementSettingsRequest {
     /// Required. The name of the `Registration` whose management settings are being updated,
@@ -814,6 +843,7 @@ pub struct ConfigureManagementSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `ConfigureDnsSettings` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigureDnsSettingsRequest {
     /// Required. The name of the `Registration` whose DNS settings are being updated,
@@ -839,6 +869,7 @@ pub struct ConfigureDnsSettingsRequest {
     pub validate_only: bool,
 }
 /// Request for the `ConfigureContactSettings` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigureContactSettingsRequest {
     /// Required. The name of the `Registration` whose contact settings are being updated,
@@ -862,6 +893,7 @@ pub struct ConfigureContactSettingsRequest {
     pub validate_only: bool,
 }
 /// Request for the `ExportRegistration` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportRegistrationRequest {
     /// Required. The name of the `Registration` to export,
@@ -870,6 +902,7 @@ pub struct ExportRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteRegistration` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegistrationRequest {
     /// Required. The name of the `Registration` to delete,
@@ -878,6 +911,7 @@ pub struct DeleteRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `RetrieveAuthorizationCode` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being retrieved,
@@ -886,6 +920,7 @@ pub struct RetrieveAuthorizationCodeRequest {
     pub registration: ::prost::alloc::string::String,
 }
 /// Request for the `ResetAuthorizationCode` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being reset,
@@ -894,6 +929,7 @@ pub struct ResetAuthorizationCodeRequest {
     pub registration: ::prost::alloc::string::String,
 }
 /// Parameters required to register a new domain.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegisterParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
@@ -917,6 +953,7 @@ pub struct RegisterParameters {
 /// Nested message and enum types in `RegisterParameters`.
 pub mod register_parameters {
     /// Possible availability states of a domain name.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -972,6 +1009,7 @@ pub mod register_parameters {
     }
 }
 /// Parameters required to transfer a domain from another registrar.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
@@ -996,6 +1034,7 @@ pub struct TransferParameters {
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
 /// Defines an authorization code.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuthorizationCode {
     /// The Authorization Code in ASCII. It can be used to transfer the domain
@@ -1004,6 +1043,7 @@ pub struct AuthorizationCode {
     pub code: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation. Output only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -1031,6 +1071,7 @@ pub struct OperationMetadata {
 /// accessible mapping from domain name to contact information, and requires that
 /// each domain name have an entry. Choose from these options to control how much
 /// information in your `ContactSettings` is published.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ContactPrivacy {
@@ -1077,6 +1118,7 @@ impl ContactPrivacy {
     }
 }
 /// Notices about special properties of certain domains.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DomainNotice {
@@ -1110,6 +1152,7 @@ impl DomainNotice {
     }
 }
 /// Notices related to contact information.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ContactNotice {
@@ -1144,6 +1187,7 @@ impl ContactNotice {
     }
 }
 /// Possible states of a `Registration`'s transfer lock.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransferLockState {

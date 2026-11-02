@@ -13,6 +13,7 @@
 /// Constraints have a default behavior determined by the `constraint_default`
 /// field, which is the enforcement behavior that is used in the absence of a
 /// policy being defined or inherited for the resource in question.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Constraint {
     /// Immutable. The resource name of the constraint. Must be in one of
@@ -60,6 +61,7 @@ pub mod constraint {
     /// A constraint type that allows or disallows a list of string values, which
     /// are configured in the
     /// \[`PolicyRule`\]\[google.cloud.orgpolicy.v2.PolicySpec.PolicyRule\].
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListConstraint {
         /// Indicates whether values grouped into categories can be used in
@@ -75,6 +77,7 @@ pub mod constraint {
         pub supports_under: bool,
     }
     /// Custom constraint definition. Defines this as a managed constraint.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomConstraintDefinition {
         /// The resource instance type on which this policy applies. Format will be
@@ -113,6 +116,7 @@ pub mod constraint {
     /// Nested message and enum types in `CustomConstraintDefinition`.
     pub mod custom_constraint_definition {
         /// Defines a parameter structure.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Parameter {
             /// Type of the parameter.
@@ -139,6 +143,7 @@ pub mod constraint {
         /// Nested message and enum types in `Parameter`.
         pub mod parameter {
             /// Defines Metadata structure.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Metadata {
                 /// Detailed description of what this `parameter` is and use of it.
@@ -147,6 +152,7 @@ pub mod constraint {
                 pub description: ::prost::alloc::string::String,
             }
             /// All valid types of parameter.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -202,6 +208,7 @@ pub mod constraint {
         ///
         /// `UPDATE`-only custom constraints are not supported. Use `CREATE` or
         /// `CREATE, UPDATE`.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -259,6 +266,7 @@ pub mod constraint {
             }
         }
         /// Allow or deny type.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -308,6 +316,7 @@ pub mod constraint {
     ///
     /// If `customConstraintDefinition` is defined, this constraint is a managed
     /// constraint.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BooleanConstraint {
         /// Custom constraint definition. Defines this as a managed constraint.
@@ -320,6 +329,7 @@ pub mod constraint {
     /// constraint. This must not be `CONSTRAINT_DEFAULT_UNSPECIFIED`.
     ///
     /// Immutable after creation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -368,6 +378,7 @@ pub mod constraint {
     /// The type of restrictions for this `Constraint`.
     ///
     /// Immutable after creation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConstraintType {
         /// Defines this constraint as being a list constraint.
@@ -384,6 +395,7 @@ pub mod constraint {
 /// By creating a custom constraint, customers can apply policies of this
 /// custom constraint. *Creating a custom constraint itself does NOT apply any
 /// policy enforcement*.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomConstraint {
     /// Immutable. Name of the constraint. This is unique within the organization.
@@ -440,6 +452,7 @@ pub mod custom_constraint {
     ///
     /// `UPDATE` only custom constraints are not supported. Use `CREATE` or
     /// `CREATE, UPDATE`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -497,6 +510,7 @@ pub mod custom_constraint {
         }
     }
     /// Allow or deny type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -543,6 +557,7 @@ pub mod custom_constraint {
 }
 /// Defines an organization policy which is used to specify constraints
 /// for configurations of Google Cloud resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Immutable. The resource name of the policy. Must be one of the following
@@ -581,6 +596,7 @@ pub struct Policy {
 }
 /// Similar to PolicySpec but with an extra 'launch' field for launch reference.
 /// The PolicySpec here is specific for dry-run.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlternatePolicySpec {
     /// Reference to the launch that will be used while audit logging and to
@@ -594,6 +610,7 @@ pub struct AlternatePolicySpec {
 }
 /// Defines a Google Cloud policy specification which is used to specify
 /// constraints for configurations of Google Cloud resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicySpec {
     /// An opaque tag indicating the current version of the policySpec, used for
@@ -644,6 +661,7 @@ pub struct PolicySpec {
 /// Nested message and enum types in `PolicySpec`.
 pub mod policy_spec {
     /// A rule used to express this policy.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PolicyRule {
         /// A condition which determines whether this rule is used
@@ -692,6 +710,7 @@ pub mod policy_spec {
         ///
         /// The `supports_under` field of the associated `Constraint`  defines
         /// whether ancestry prefixes can be used.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StringValues {
             /// List of values allowed at this resource.
@@ -701,6 +720,7 @@ pub mod policy_spec {
             #[prost(string, repeated, tag = "2")]
             pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// List of values to be used for this policy rule. This field can be set
@@ -725,6 +745,7 @@ pub mod policy_spec {
 }
 /// The request sent to the \[ListConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConstraintsRequest {
     /// Required. The Google Cloud resource that parents the constraint. Must be in
@@ -748,6 +769,7 @@ pub struct ListConstraintsRequest {
 }
 /// The response returned from the \[ListConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsResponse {
     /// The collection of constraints that are available on the targeted resource.
@@ -759,6 +781,7 @@ pub struct ListConstraintsResponse {
 }
 /// The request sent to the \[ListPolicies\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPoliciesRequest {
     /// Required. The target Google Cloud resource that parents the set of
@@ -784,6 +807,7 @@ pub struct ListPoliciesRequest {
 /// The response returned from the \[ListPolicies\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method. It will be empty
 /// if no policies are set on the resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesResponse {
     /// All policies that exist on the resource. It will be empty if no
@@ -797,6 +821,7 @@ pub struct ListPoliciesResponse {
 }
 /// The request sent to the \[GetPolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. Resource name of the policy. See
@@ -806,6 +831,7 @@ pub struct GetPolicyRequest {
 }
 /// The request sent to the \[GetEffectivePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectivePolicyRequest {
     /// Required. The effective policy to compute. See
@@ -815,6 +841,7 @@ pub struct GetEffectivePolicyRequest {
 }
 /// The request sent to the \[CreatePolicyRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyRequest {
     /// Required. The Google Cloud resource that will parent the new policy. Must
@@ -832,6 +859,7 @@ pub struct CreatePolicyRequest {
 }
 /// The request sent to the \[UpdatePolicyRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
     /// Required. Policy to update.
@@ -845,6 +873,7 @@ pub struct UpdatePolicyRequest {
 }
 /// The request sent to the \[DeletePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePolicyRequest {
     /// Required. Name of the policy to delete.
@@ -859,6 +888,7 @@ pub struct DeletePolicyRequest {
 }
 /// The request sent to the \[CreateCustomConstraintRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.CreateCustomConstraint\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomConstraintRequest {
     /// Required. Must be in the following form:
@@ -872,6 +902,7 @@ pub struct CreateCustomConstraintRequest {
 }
 /// The request sent to the \[GetCustomConstraint\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetCustomConstraint\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomConstraintRequest {
     /// Required. Resource name of the custom or managed constraint. See the custom
@@ -881,6 +912,7 @@ pub struct GetCustomConstraintRequest {
 }
 /// The request sent to the \[ListCustomConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomConstraintsRequest {
     /// Required. The target Google Cloud resource that parents the set of custom
@@ -904,6 +936,7 @@ pub struct ListCustomConstraintsRequest {
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints\] method. It will
 /// be empty if no custom or managed constraints are set on the organization
 /// resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomConstraintsResponse {
     /// All custom and managed constraints that exist on the organization resource.
@@ -917,6 +950,7 @@ pub struct ListCustomConstraintsResponse {
 }
 /// The request sent to the \[UpdateCustomConstraintRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.UpdateCustomConstraint\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomConstraintRequest {
     /// Required. `CustomConstraint` to update.
@@ -925,6 +959,7 @@ pub struct UpdateCustomConstraintRequest {
 }
 /// The request sent to the \[DeleteCustomConstraint\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.DeleteCustomConstraint\] method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCustomConstraintRequest {
     /// Required. Name of the custom constraint to delete.

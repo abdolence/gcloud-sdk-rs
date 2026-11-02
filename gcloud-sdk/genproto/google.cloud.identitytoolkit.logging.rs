@@ -3,6 +3,7 @@
 /// google.cloud.audit.AuditLog so that consumers can easily query
 /// for requests regardless of whether those requests were logged via
 /// Cloud Audit Logging or Identitytoolkit request logging.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestLog {
     /// The name of the service method or operation.
@@ -47,6 +48,7 @@ pub struct RequestLog {
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
 /// Metadata about the request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestMetadata {
     /// The IP address of the caller.

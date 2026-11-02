@@ -2,6 +2,7 @@
 /// Backup as stored in Platform log. It's used to log the details of
 /// a createBackup/updateBackup request, so only fields that can be taken
 /// from API calls are included here.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedBackup {
     /// A set of custom labels supplied by user.
@@ -31,6 +32,7 @@ pub struct LoggedBackup {
 /// Nested message and enum types in `LoggedBackup`.
 pub mod logged_backup {
     /// State
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93,6 +95,7 @@ pub mod logged_backup {
 /// The BackupChannel should be in the same project and region
 /// as the cluster being backed up.
 /// The backup can be created only in destination_project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedBackupChannel {
     /// The project where Backups are allowed to be stored.
@@ -110,6 +113,7 @@ pub struct LoggedBackupChannel {
     pub description: ::prost::alloc::string::String,
 }
 /// Namespaces, list of namespaces
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Namespaces {
     /// namespaces
@@ -117,6 +121,7 @@ pub struct Namespaces {
     pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// NamespacedName
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NamespacedName {
     /// the namespace of the resource in Kubernetes
@@ -127,6 +132,7 @@ pub struct NamespacedName {
     pub name: ::prost::alloc::string::String,
 }
 /// NamespacedNames
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedNames {
     /// a list of namespaced names in Kubernetes
@@ -135,6 +141,7 @@ pub struct NamespacedNames {
 }
 /// Encryption key.
 /// This only contains the key metadata, and no key material.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionKey {
     /// Google KMS encryption key in the format:
@@ -145,6 +152,7 @@ pub struct EncryptionKey {
 /// BackupPlan as stored in Platform log. It's used to log the details of
 /// a createBackupPlan/updateBackupPlan request, so only fields that can be taken
 /// from user input are included here.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedBackupPlan {
     /// User specified descriptive string for this BackupPlan.
@@ -185,6 +193,7 @@ pub mod logged_backup_plan {
     /// 1. When to automatically delete Backups created under this BackupPlan
     /// 1. A plan level minimum Backup retain days which blocks deletion
     /// 1. Lock to disallow any policy updates
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Number of days during which deletion of a Backup created under this
@@ -205,6 +214,7 @@ pub mod logged_backup_plan {
         pub locked: bool,
     }
     /// Schedule, an inner message type defines a cron schedule.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Schedule {
         /// A cron style string schedule on which an operation will be executed.
@@ -216,6 +226,7 @@ pub mod logged_backup_plan {
     }
     /// BackupConfig, an inner message type defines the configuration of creating
     /// a backup from this BackupPlan
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackupConfig {
         /// A boolean flag specifies whether volume data should be backed up
@@ -233,6 +244,7 @@ pub mod logged_backup_plan {
     }
     /// Nested message and enum types in `BackupConfig`.
     pub mod backup_config {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum BackupScope {
             /// If set to true, backup whole cluster
@@ -250,6 +262,7 @@ pub mod logged_backup_plan {
 /// LoggedBackupPlanMetadata as stored in Platform log. It's used to log the
 /// details of a BackupPlan, which are not provided by users, but are filled
 /// by the service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggedBackupPlanMetadata {
     /// The name of the backup channel if any.
@@ -267,6 +280,7 @@ pub struct LoggedBackupPlanMetadata {
 /// Restore as stored in Platform log. It's used to log the update details of a
 /// updateRestore request, so only mutable and non-output_only fields are
 /// included here..
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedRestore {
     /// Full name of the Backup resource this Restore resource used to restore
@@ -292,6 +306,7 @@ pub struct LoggedRestore {
 /// Nested message and enum types in `LoggedRestore`.
 pub mod logged_restore {
     /// Possible values for state of the Restore.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -359,6 +374,7 @@ pub mod logged_restore {
 /// The RestoreChannel should be in the same project and region
 /// as the backups being created.
 /// The restore can be created only in destination_project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedRestoreChannel {
     /// The project where Restores are allowed to be stored.
@@ -378,6 +394,7 @@ pub struct LoggedRestoreChannel {
 /// RestorePlan as stored in Platform log. It's used to log the details of
 /// a createRestorePlan/updateRestorePlan request, so only fields that can be
 /// taken from user input are included here.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedRestorePlan {
     /// User specified descriptive string for this RestorePlan.
@@ -408,6 +425,7 @@ pub struct LoggedRestorePlan {
     >,
 }
 /// Configuration of a restore.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreConfig {
     /// Specifies the mechanism to be used to restore volume data.
@@ -466,6 +484,7 @@ pub mod restore_config {
     /// This is a direct map to the Kubernetes GroupKind type
     /// [GroupKind](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
     /// and is used for identifying specific "types" of resources to restore.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GroupKind {
         /// API group string of a Kubernetes resource, e.g.
@@ -499,6 +518,7 @@ pub mod restore_config {
     ///
     /// * Namespace
     /// * PersistentVolume
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
         /// A list of cluster-scoped resource group kinds to restore from the
@@ -525,6 +545,7 @@ pub mod restore_config {
     /// A transformation rule to be applied against Kubernetes resources as they
     /// are selected for restoration from a Backup. A rule contains both filtering
     /// logic (which resources are subject to substitution) and substitution logic.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubstitutionRule {
         /// (Filtering parameter) Any resource subject to substitution must be
@@ -571,6 +592,7 @@ pub mod restore_config {
     }
     /// TransformationRuleAction defines a TransformationRule action based on the
     /// JSON Patch RFC (<https://www.rfc-editor.org/rfc/rfc6902>)
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TransformationRuleAction {
         /// op specifies the operation to perform.
@@ -592,6 +614,7 @@ pub mod restore_config {
     /// Nested message and enum types in `TransformationRuleAction`.
     pub mod transformation_rule_action {
         /// Possible values for operations of a transformation rule action.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -667,6 +690,7 @@ pub mod restore_config {
     /// ResourceFilter specifies matching criteria to limit the scope of a
     /// change to a specific set of kubernetes resources that are selected for
     /// restoration from a backup.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceFilter {
         /// (Filtering parameter) Any resource subject to transformation must be
@@ -694,6 +718,7 @@ pub mod restore_config {
     /// A transformation rule to be applied against Kubernetes resources as they
     /// are selected for restoration from a Backup. A rule contains both filtering
     /// logic (which resources are subject to transform) and transformation logic.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TransformationRule {
         /// A list of transformation rule actions to take against candidate
@@ -714,6 +739,7 @@ pub mod restore_config {
         pub description: ::prost::alloc::string::String,
     }
     /// Defines how volume data should be restored
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -772,6 +798,7 @@ pub mod restore_config {
     }
     /// Defines the behavior for handling the situation where cluster-scoped
     /// resources being restored already exist in the target cluster.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -820,6 +847,7 @@ pub mod restore_config {
     }
     /// Defines the behavior for handling the situation where sets of namespaced
     /// resources being restored already exist in the target cluster.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -914,6 +942,7 @@ pub mod restore_config {
     /// Specifies the namespaced resources to restore from the Backup.
     /// Only one of the entries may be specified. If not specified, NO namespaced
     /// resources will be restored.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NamespacedResourceRestoreScope {
         /// Restore all namespaced resources in the Backup if set to "True".
@@ -942,6 +971,7 @@ pub mod restore_config {
 /// LoggedRestorePlanMetadata as stored in Platform log. It's used to log the
 /// details of a RestorePlan, which are not provided by users, but are filled
 /// by the service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggedRestorePlanMetadata {
     /// The name of the restore channel if any.
@@ -951,6 +981,7 @@ pub struct LoggedRestorePlanMetadata {
 /// use case 1
 /// A log entry when modification(creation, update, deletion) is made to a
 /// BackupPlan
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupPlanChange {
     /// The full name of the old BackupPlan resource that is being modified.
@@ -978,6 +1009,7 @@ pub struct BackupPlanChange {
 /// use case 2
 /// A log entry when modification(creation, update, deletion) is made to a
 /// Backup
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupChange {
     /// The full name of the Backup resource that is being modified.
@@ -1006,6 +1038,7 @@ pub struct BackupChange {
 /// use case 3
 /// A log entry when modification(creation, update, deletion) is made to a
 /// restorePlan.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestorePlanChange {
     /// The full name of the RestorePlan resource that is being modified.
@@ -1033,6 +1066,7 @@ pub struct RestorePlanChange {
 /// use case 4
 /// A log entry when modification(creation, update, deletion) is made to a
 /// restore.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreChange {
     /// The full name of the Restore resource that is being modified.
@@ -1057,6 +1091,7 @@ pub struct RestoreChange {
 /// use case 5
 /// A log entry when modification(creation, update, deletion) is made to a
 /// backupChannel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupChannelChange {
     /// The full name of the BackupChannel resource that is being modified.
@@ -1082,6 +1117,7 @@ pub struct BackupChannelChange {
 /// use case 6
 /// A log entry when modification(creation, update, deletion) is made to a
 /// restoreChannel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreChannelChange {
     /// The full name of the RestoreChannel resource that is being modified.
@@ -1105,6 +1141,7 @@ pub struct RestoreChannelChange {
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
 /// The type of changes this log is about.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ChangeType {

@@ -3,6 +3,7 @@
 /// A Channel is a resource on which event providers publish their events.
 /// The published events are delivered through the transport associated with the
 /// channel. Note that a channel is associated with exactly one event provider.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// Required. The resource name of the channel. Must be unique within the
@@ -57,6 +58,7 @@ pub struct Channel {
 /// Nested message and enum types in `Channel`.
 pub mod channel {
     /// State lists all the possible states of a Channel
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -116,6 +118,7 @@ pub mod channel {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Transport {
         /// Output only. The name of the Pub/Sub topic created and managed by
@@ -129,6 +132,7 @@ pub mod channel {
 /// A ChannelConnection is a resource which event providers create during the
 /// activation process to establish a connection between the provider and the
 /// subscriber channel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelConnection {
     /// Required. The name of the connection.
@@ -163,6 +167,7 @@ pub struct ChannelConnection {
     >,
 }
 /// A representation of the Provider resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Provider {
     /// Output only. In
@@ -178,6 +183,7 @@ pub struct Provider {
     pub event_types: ::prost::alloc::vec::Vec<EventType>,
 }
 /// A representation of the event type resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventType {
     /// Output only. The full name of the event type (for example,
@@ -203,6 +209,7 @@ pub struct EventType {
 }
 /// A representation of the FilteringAttribute resource.
 /// Filtering attributes are per event type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FilteringAttribute {
     /// Output only. Attribute used for filtering the event type.
@@ -223,6 +230,7 @@ pub struct FilteringAttribute {
 /// An enrollment represents a subscription for messages on a particular message
 /// bus. It defines a matching criteria for messages on the bus and the
 /// subscriber endpoint where matched messages should be delivered.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Enrollment {
     /// Identifier. Resource name of the form
@@ -277,6 +285,7 @@ pub struct Enrollment {
 }
 /// The configuration for Platform Telemetry logging for Eventarc Advanced
 /// resources.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggingConfig {
     /// Optional. The minimum severity of logs that will be sent to
@@ -291,6 +300,7 @@ pub mod logging_config {
     /// resources.
     /// This enum is an exhaustive list of log severities and is FROZEN. Do not
     /// expect new values to be added.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -367,6 +377,7 @@ pub mod logging_config {
     }
 }
 /// A GoogleApiSource represents a subscription of 1P events from a MessageBus.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleApiSource {
     /// Identifier. Resource name of the form
@@ -432,6 +443,7 @@ pub struct GoogleApiSource {
 /// Nested message and enum types in `GoogleApiSource`.
 pub mod google_api_source {
     /// Config to enable subscribing to all events from a list of projects.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProjectSubscriptions {
         /// Required. A list of projects to receive events from.
@@ -444,6 +456,7 @@ pub mod google_api_source {
         pub list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Config to enabled subscribing to events from other projects in the org.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OrganizationSubscription {
         /// Required. Enable org level subscription.
@@ -454,6 +467,7 @@ pub mod google_api_source {
     ///
     /// Users need the eventarc.googleApiSource.create permission on the entire org
     /// in order to create a resource with these settings.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum WideScopeSubscription {
         /// Optional. Config to enable subscribing to events from all projects in the
@@ -473,6 +487,7 @@ pub mod google_api_source {
 /// Once configured, first-party event data will be protected
 /// using the specified custom managed encryption key instead of Google-managed
 /// encryption keys.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleChannelConfig {
     /// Required. The resource name of the config. Must be in the format of,
@@ -502,6 +517,7 @@ pub struct GoogleChannelConfig {
 /// visibility and control over the messages being published and consumed and can
 /// restrict publishers and subscribers to only a subset of data available in the
 /// system by defining authorization policies.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageBus {
     /// Identifier. Resource name of the form
@@ -553,6 +569,7 @@ pub struct MessageBus {
     pub logging_config: ::core::option::Option<LoggingConfig>,
 }
 /// A representation of the Pipeline resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pipeline {
     /// Identifier. The resource name of the Pipeline. Must be unique within the
@@ -638,6 +655,7 @@ pub struct Pipeline {
 /// Nested message and enum types in `Pipeline`.
 pub mod pipeline {
     /// Represents the format of message data.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MessagePayloadFormat {
         /// The kind of message format.
@@ -650,9 +668,11 @@ pub mod pipeline {
     /// Nested message and enum types in `MessagePayloadFormat`.
     pub mod message_payload_format {
         /// The format of a JSON message payload.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JsonFormat {}
         /// The format of a Protobuf message payload.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ProtobufFormat {
             /// Optional. The entire schema definition is stored in this field.
@@ -660,6 +680,7 @@ pub mod pipeline {
             pub schema_definition: ::prost::alloc::string::String,
         }
         /// The format of an AVRO message payload.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AvroFormat {
             /// Optional. The entire schema definition is stored in this field.
@@ -670,6 +691,7 @@ pub mod pipeline {
         /// One of Protobuf, Avro, and JSON supported.
         /// This allows specification of what specific format
         /// messages are sent and received.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// Optional. Protobuf format.
@@ -684,6 +706,7 @@ pub mod pipeline {
         }
     }
     /// Represents a target of an invocation over HTTP.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Destination {
         /// Optional. Network config is used to configure how Pipeline resolves and
@@ -715,6 +738,7 @@ pub mod pipeline {
     pub mod destination {
         /// Represents a network config to be used for destination resolution and
         /// connectivity.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct NetworkConfig {
             /// Required. Name of the NetworkAttachment that allows access to the
@@ -724,6 +748,7 @@ pub mod pipeline {
             pub network_attachment: ::prost::alloc::string::String,
         }
         /// Represents a HTTP endpoint destination.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HttpEndpoint {
             /// Required. The URI of the HTTP endpoint.
@@ -908,6 +933,7 @@ pub mod pipeline {
             pub message_binding_template: ::prost::alloc::string::String,
         }
         /// Represents a config used to authenticate message requests.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AuthenticationConfig {
             /// The type of authentication method.
@@ -925,6 +951,7 @@ pub mod pipeline {
             /// a Google Cloud service account. Use this authentication method to
             /// invoke your Cloud Run and Cloud Functions destinations or HTTP
             /// endpoints that support Google OIDC.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OidcToken {
                 /// Required. Service account email used to generate the OIDC Token.
@@ -946,6 +973,7 @@ pub mod pipeline {
             /// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>).
             /// This type of authorization should generally only be used when calling
             /// Google APIs hosted on \*.googleapis.com.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OAuthToken {
                 /// Required. Service account email used to generate the [OAuth
@@ -965,6 +993,7 @@ pub mod pipeline {
                 pub scope: ::prost::alloc::string::String,
             }
             /// The type of authentication method.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum AuthenticationMethodDescriptor {
                 /// Optional. This authenticate method will apply Google OIDC tokens
@@ -983,6 +1012,7 @@ pub mod pipeline {
             }
         }
         /// The destination identifier to which the request should be routed to.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DestinationDescriptor {
             /// Optional. An HTTP endpoint destination described by an URI.
@@ -1012,6 +1042,7 @@ pub mod pipeline {
         }
     }
     /// Mediation defines different ways to modify the Pipeline.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Mediation {
         /// The config of mediation.
@@ -1021,6 +1052,7 @@ pub mod pipeline {
     /// Nested message and enum types in `Mediation`.
     pub mod mediation {
         /// Transformation defines the way to transform an incoming message.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Transformation {
             /// Optional. The CEL expression template to apply to transform messages.
@@ -1104,6 +1136,7 @@ pub mod pipeline {
             pub transformation_template: ::prost::alloc::string::String,
         }
         /// The config of mediation.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum MediationDescriptor {
             /// Optional. How the Pipeline is to transform messages
@@ -1119,6 +1152,7 @@ pub mod pipeline {
     /// The delay is capped at 60 seconds by default.
     /// Please note that if you set the min_retry_delay and max_retry_delay fields
     /// to the same value this will make the duration between retries constant.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetryPolicy {
         /// Optional. The maximum number of delivery attempts for any message. The
@@ -1138,6 +1172,7 @@ pub mod pipeline {
     }
 }
 /// Network Configuration that can be inherited by other protos.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkConfig {
     /// Required. Name of the NetworkAttachment that allows access to the
@@ -1147,6 +1182,7 @@ pub struct NetworkConfig {
     pub network_attachment: ::prost::alloc::string::String,
 }
 /// A representation of the trigger resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trigger {
     /// Required. The resource name of the trigger. Must be unique within the
@@ -1233,6 +1269,7 @@ pub mod trigger {
     /// The retry policy configuration for the Trigger.
     ///
     /// Can only be set with Cloud Run destinations.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetryPolicy {
         /// Optional. The maximum number of delivery attempts for any message. The
@@ -1242,6 +1279,7 @@ pub mod trigger {
     }
 }
 /// Filters events based on exact matches on the CloudEvents attributes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventFilter {
     /// Required. The name of a CloudEvents attribute. Currently, only a subset of
@@ -1264,6 +1302,7 @@ pub struct EventFilter {
     pub operator: ::prost::alloc::string::String,
 }
 /// A condition that is part of the trigger state computation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StateCondition {
     /// The canonical code of the condition.
@@ -1274,6 +1313,7 @@ pub struct StateCondition {
     pub message: ::prost::alloc::string::String,
 }
 /// Represents a target of an invocation over HTTP.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Destination {
     /// Optional. Network config is used to configure how Eventarc resolves and
@@ -1286,6 +1326,7 @@ pub struct Destination {
 }
 /// Nested message and enum types in `Destination`.
 pub mod destination {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Descriptor {
         /// Cloud Run fully-managed resource that receives the events. The resource
@@ -1318,6 +1359,7 @@ pub mod destination {
 }
 /// Represents the transport intermediaries created for the trigger to
 /// deliver events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Transport {
     #[prost(oneof = "transport::Intermediary", tags = "1")]
@@ -1325,6 +1367,7 @@ pub struct Transport {
 }
 /// Nested message and enum types in `Transport`.
 pub mod transport {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Intermediary {
         /// The Pub/Sub topic and subscription used by Eventarc as a transport
@@ -1334,6 +1377,7 @@ pub mod transport {
     }
 }
 /// Represents a Cloud Run destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRun {
     /// Required. The name of the Cloud Run service being addressed. See
@@ -1355,6 +1399,7 @@ pub struct CloudRun {
     pub region: ::prost::alloc::string::String,
 }
 /// Represents a GKE destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Gke {
     /// Required. The name of the cluster the GKE service is running in. The
@@ -1382,6 +1427,7 @@ pub struct Gke {
     pub path: ::prost::alloc::string::String,
 }
 /// Represents a Pub/Sub transport.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pubsub {
     /// Optional. The name of the Pub/Sub topic created and managed by Eventarc as
@@ -1400,6 +1446,7 @@ pub struct Pubsub {
     pub subscription: ::prost::alloc::string::String,
 }
 /// Represents a HTTP endpoint destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpEndpoint {
     /// Required. The URI of the HTTP endpoint.
@@ -1414,6 +1461,7 @@ pub struct HttpEndpoint {
     pub uri: ::prost::alloc::string::String,
 }
 /// The request message for the GetTrigger method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTriggerRequest {
     /// Required. The name of the trigger to get.
@@ -1421,6 +1469,7 @@ pub struct GetTriggerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListTriggers method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTriggersRequest {
     /// Required. The parent collection to list triggers on.
@@ -1451,6 +1500,7 @@ pub struct ListTriggersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListTriggers` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTriggersResponse {
     /// The requested triggers, up to the number specified in `page_size`.
@@ -1465,6 +1515,7 @@ pub struct ListTriggersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateTrigger method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTriggerRequest {
     /// Required. The parent collection in which to add this trigger.
@@ -1482,6 +1533,7 @@ pub struct CreateTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateTrigger method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTriggerRequest {
     /// The trigger to be updated.
@@ -1502,6 +1554,7 @@ pub struct UpdateTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteTrigger method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTriggerRequest {
     /// Required. The name of the trigger to be deleted.
@@ -1521,6 +1574,7 @@ pub struct DeleteTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetChannel method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelRequest {
     /// Required. The name of the channel to get.
@@ -1528,6 +1582,7 @@ pub struct GetChannelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannels method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. The parent collection to list channels on.
@@ -1553,6 +1608,7 @@ pub struct ListChannelsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for the `ListChannels` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsResponse {
     /// The requested channels, up to the number specified in `page_size`.
@@ -1567,6 +1623,7 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannel method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelRequest {
     /// Required. The parent collection in which to add this channel.
@@ -1584,6 +1641,7 @@ pub struct CreateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateChannel method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelRequest {
     /// The channel to be updated.
@@ -1600,6 +1658,7 @@ pub struct UpdateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteChannel method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelRequest {
     /// Required. The name of the channel to be deleted.
@@ -1611,6 +1670,7 @@ pub struct DeleteChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetProvider method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProviderRequest {
     /// Required. The name of the provider to get.
@@ -1618,6 +1678,7 @@ pub struct GetProviderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListProviders method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProvidersRequest {
     /// Required. The parent of the provider to get.
@@ -1644,6 +1705,7 @@ pub struct ListProvidersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListProviders` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProvidersResponse {
     /// The requested providers, up to the number specified in `page_size`.
@@ -1658,6 +1720,7 @@ pub struct ListProvidersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the GetChannelConnection method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelConnectionRequest {
     /// Required. The name of the channel connection to get.
@@ -1665,6 +1728,7 @@ pub struct GetChannelConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannelConnections method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelConnectionsRequest {
     /// Required. The parent collection from which to list channel connections.
@@ -1684,6 +1748,7 @@ pub struct ListChannelConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the `ListChannelConnections` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelConnectionsResponse {
     /// The requested channel connections, up to the number specified in
@@ -1700,6 +1765,7 @@ pub struct ListChannelConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannelConnection method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelConnectionRequest {
     /// Required. The parent collection in which to add this channel connection.
@@ -1713,6 +1779,7 @@ pub struct CreateChannelConnectionRequest {
     pub channel_connection_id: ::prost::alloc::string::String,
 }
 /// The request message for the DeleteChannelConnection method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelConnectionRequest {
     /// Required. The name of the channel connection to delete.
@@ -1720,6 +1787,7 @@ pub struct DeleteChannelConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the UpdateGoogleChannelConfig method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleChannelConfigRequest {
     /// Required. The config to be updated.
@@ -1732,6 +1800,7 @@ pub struct UpdateGoogleChannelConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for the GetGoogleChannelConfig method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGoogleChannelConfigRequest {
     /// Required. The name of the config to get.
@@ -1739,6 +1808,7 @@ pub struct GetGoogleChannelConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the GetMessageBus method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMessageBusRequest {
     /// Required. The name of the message bus to get.
@@ -1746,6 +1816,7 @@ pub struct GetMessageBusRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListMessageBuses method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusesRequest {
     /// Required. The parent collection to list message buses on.
@@ -1775,6 +1846,7 @@ pub struct ListMessageBusesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListMessageBuses` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMessageBusesResponse {
     /// The requested message buses, up to the number specified in `page_size`.
@@ -1789,6 +1861,7 @@ pub struct ListMessageBusesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the `ListMessageBusEnrollments` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusEnrollmentsRequest {
     /// Required. The parent message bus to list enrollments on.
@@ -1808,6 +1881,7 @@ pub struct ListMessageBusEnrollmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the `ListMessageBusEnrollments` method.\`
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusEnrollmentsResponse {
     /// The requested enrollments, up to the number specified in `page_size`.
@@ -1822,6 +1896,7 @@ pub struct ListMessageBusEnrollmentsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateMessageBus method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMessageBusRequest {
     /// Required. The parent collection in which to add this message bus.
@@ -1840,6 +1915,7 @@ pub struct CreateMessageBusRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateMessageBus method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMessageBusRequest {
     /// Required. The MessageBus to be updated.
@@ -1860,6 +1936,7 @@ pub struct UpdateMessageBusRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteMessageBus method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMessageBusRequest {
     /// Required. The name of the MessageBus to be deleted.
@@ -1879,6 +1956,7 @@ pub struct DeleteMessageBusRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetEnrollment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEnrollmentRequest {
     /// Required. The name of the Enrollment to get.
@@ -1886,6 +1964,7 @@ pub struct GetEnrollmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListEnrollments method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEnrollmentsRequest {
     /// Required. The parent collection to list triggers on.
@@ -1915,6 +1994,7 @@ pub struct ListEnrollmentsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListEnrollments` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnrollmentsResponse {
     /// The requested Enrollments, up to the number specified in `page_size`.
@@ -1929,6 +2009,7 @@ pub struct ListEnrollmentsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateEnrollment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnrollmentRequest {
     /// Required. The parent collection in which to add this enrollment.
@@ -1947,6 +2028,7 @@ pub struct CreateEnrollmentRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateEnrollment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEnrollmentRequest {
     /// Required. The Enrollment to be updated.
@@ -1967,6 +2049,7 @@ pub struct UpdateEnrollmentRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteEnrollment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEnrollmentRequest {
     /// Required. The name of the Enrollment to be deleted.
@@ -1986,6 +2069,7 @@ pub struct DeleteEnrollmentRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetPipeline method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPipelineRequest {
     /// Required. The name of the pipeline to get.
@@ -1993,6 +2077,7 @@ pub struct GetPipelineRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListPipelines method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPipelinesRequest {
     /// Required. The parent collection to list pipelines on.
@@ -2022,6 +2107,7 @@ pub struct ListPipelinesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the ListPipelines method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPipelinesResponse {
     /// The requested pipelines, up to the number specified in `page_size`.
@@ -2036,6 +2122,7 @@ pub struct ListPipelinesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreatePipeline method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePipelineRequest {
     /// Required. The parent collection in which to add this pipeline.
@@ -2054,6 +2141,7 @@ pub struct CreatePipelineRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdatePipeline method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePipelineRequest {
     /// Required. The Pipeline to be updated.
@@ -2074,6 +2162,7 @@ pub struct UpdatePipelineRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeletePipeline method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePipelineRequest {
     /// Required. The name of the Pipeline to be deleted.
@@ -2093,6 +2182,7 @@ pub struct DeletePipelineRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetGoogleApiSource method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGoogleApiSourceRequest {
     /// Required. The name of the google api source to get.
@@ -2100,6 +2190,7 @@ pub struct GetGoogleApiSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListGoogleApiSources method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGoogleApiSourcesRequest {
     /// Required. The parent collection to list GoogleApiSources on.
@@ -2129,6 +2220,7 @@ pub struct ListGoogleApiSourcesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListGoogleApiSources` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleApiSourcesResponse {
     /// The requested GoogleApiSources, up to the number specified in `page_size`.
@@ -2143,6 +2235,7 @@ pub struct ListGoogleApiSourcesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateGoogleApiSource method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGoogleApiSourceRequest {
     /// Required. The parent collection in which to add this google api source.
@@ -2161,6 +2254,7 @@ pub struct CreateGoogleApiSourceRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateGoogleApiSource method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleApiSourceRequest {
     /// Required. The GoogleApiSource to be updated.
@@ -2182,6 +2276,7 @@ pub struct UpdateGoogleApiSourceRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteGoogleApiSource method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGoogleApiSourceRequest {
     /// Required. The name of the GoogleApiSource to be deleted.
@@ -2201,6 +2296,7 @@ pub struct DeleteGoogleApiSourceRequest {
     pub validate_only: bool,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

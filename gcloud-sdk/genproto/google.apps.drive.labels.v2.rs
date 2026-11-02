@@ -17,6 +17,7 @@
 ///   cause new restrictions on existing metadata related to the label are
 ///   rejected.
 /// * Disabled—When disabled, the configured `DisabledPolicy` takes effect.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Lifecycle {
     /// Output only. The state of the object associated with this lifecycle.
@@ -35,6 +36,7 @@ pub struct Lifecycle {
 pub mod lifecycle {
     /// The policy that governs how to treat a disabled label, field, or selection
     /// choice in different contexts.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisabledPolicy {
         /// Whether to hide this disabled object in the search menu for Drive items.
@@ -54,6 +56,7 @@ pub mod lifecycle {
         pub show_in_apply: bool,
     }
     /// The state of the object associated with this lifecycle.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -111,6 +114,7 @@ pub mod lifecycle {
     }
 }
 /// Information about a user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserInfo {
     /// The identifier for this user that can be used with the People API to get
@@ -120,6 +124,7 @@ pub struct UserInfo {
     pub person: ::prost::alloc::string::String,
 }
 /// Badge status of the label.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BadgeConfig {
     /// The color of the badge. When not specified, no badge is rendered.
@@ -134,6 +139,7 @@ pub struct BadgeConfig {
 }
 /// The color derived from BadgeConfig and changed to the closest recommended
 /// supported color.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BadgeColors {
     /// Output only. Badge background that pairs with the foreground.
@@ -152,6 +158,7 @@ pub struct BadgeColors {
 }
 /// Contains information about whether a label component should be considered
 /// locked.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LockStatus {
     /// Output only. Indicates whether this label component is the (direct) target
@@ -163,6 +170,7 @@ pub struct LockStatus {
 }
 /// Describes violations in a request to create or update a Label or its
 /// Fields.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidArgument {
     /// Describes all violations in a client request.
@@ -172,6 +180,7 @@ pub struct InvalidArgument {
 /// Nested message and enum types in `InvalidArgument`.
 pub mod invalid_argument {
     /// Describes the Field in which the violation occurred.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FieldViolation {
         /// The path to the field where this violation occurred. This path is
@@ -191,6 +200,7 @@ pub mod invalid_argument {
     /// Nested message and enum types in `FieldViolation`.
     pub mod field_violation {
         /// Possible reasons a field is invalid.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -256,6 +266,7 @@ pub mod invalid_argument {
     }
 }
 /// Describes what preconditions have failed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreconditionFailure {
     /// Describes all violations in a client request.
@@ -265,6 +276,7 @@ pub struct PreconditionFailure {
 /// Nested message and enum types in `PreconditionFailure`.
 pub mod precondition_failure {
     /// Specific failure reason.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Violation {
         /// The path to the field where this violation occurred. This path is
@@ -284,6 +296,7 @@ pub mod precondition_failure {
     /// Nested message and enum types in `Violation`.
     pub mod violation {
         /// The possible reasons a the violation occurred.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -383,6 +396,7 @@ pub mod precondition_failure {
     }
 }
 /// Exception detail.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExceptionDetail {
     /// The type of exception that occurred. Required.
@@ -394,6 +408,7 @@ pub struct ExceptionDetail {
 /// error for debugging and logging purposes.
 /// Add new ExceptionTypes to EXCEPTION_TYPE_TO_ERROR_CODE_MAP in
 /// j/c/g/apps/boq/metadata/model/service/exceptions/CategoryExceptionHelper
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ExceptionType {
@@ -545,6 +560,7 @@ impl ExceptionType {
 /// Defines a field that has a display name, data type, and other
 /// configuration options. This field defines the kind of metadata that may be
 /// set on a Drive item.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
     /// Output only. The key of a field, unique within a label or library.
@@ -608,6 +624,7 @@ pub struct Field {
 /// Nested message and enum types in `Field`.
 pub mod field {
     /// The basic properties of the field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Properties {
         /// Required. The display text to show in the UI identifying this field.
@@ -622,6 +639,7 @@ pub mod field {
         pub insert_before_field: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering a field.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the field should be shown as required in the UI.
@@ -640,6 +658,7 @@ pub mod field {
         pub shown_in_apply: bool,
     }
     /// The capabilities related to this field when editing the field.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this field.
@@ -660,6 +679,7 @@ pub mod field {
         pub can_enable: bool,
     }
     /// The capabilities related to this field on applied metadata.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read related applied metadata on items.
@@ -673,6 +693,7 @@ pub mod field {
         pub can_write: bool,
     }
     /// Options for a multi-valued variant of an associated field type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListOptions {
         /// Maximum number of entries permitted.
@@ -680,6 +701,7 @@ pub mod field {
         pub max_entries: i32,
     }
     /// Options for the Text field type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TextOptions {
         /// Output only. The minimum valid length of values for the text field.
@@ -690,6 +712,7 @@ pub mod field {
         pub max_length: i32,
     }
     /// Options for the Integer field type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IntegerOptions {
         /// Output only. The minimum valid value for the integer field.
@@ -700,6 +723,7 @@ pub mod field {
         pub max_value: i64,
     }
     /// Options for the date field type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DateOptions {
         /// Localized date formatting option. Field values are rendered in
@@ -723,6 +747,7 @@ pub mod field {
     /// Nested message and enum types in `DateOptions`.
     pub mod date_options {
         /// Localized date format options.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -771,6 +796,7 @@ pub mod field {
         }
     }
     /// Options for the selection field type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectionOptions {
         /// When specified, indicates this field supports a list of values.
@@ -785,6 +811,7 @@ pub mod field {
     /// Nested message and enum types in `SelectionOptions`.
     pub mod selection_options {
         /// Selection field choice.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Choice {
             /// The unique value of the choice.
@@ -845,6 +872,7 @@ pub mod field {
         /// Nested message and enum types in `Choice`.
         pub mod choice {
             /// Basic properties of the choice.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Properties {
                 /// Required. The display text to show in the UI identifying this field.
@@ -865,6 +893,7 @@ pub mod field {
                 pub insert_before_choice: ::prost::alloc::string::String,
             }
             /// UI display hints for rendering an option.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct DisplayHints {
                 /// Whether the option should be shown in the UI as disabled.
@@ -900,6 +929,7 @@ pub mod field {
                 pub badge_priority: i64,
             }
             /// The capabilities related to this choice when editing the choice.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct SchemaCapabilities {
                 /// Whether the user can update this choice.
@@ -916,6 +946,7 @@ pub mod field {
                 pub can_enable: bool,
             }
             /// The capabilities related to this choice on applied metadata.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct AppliedCapabilities {
                 /// Whether the user can read related applied metadata on items.
@@ -931,6 +962,7 @@ pub mod field {
         }
     }
     /// Options for the user field type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UserOptions {
         /// When specified, indicates that this field supports a list of values.
@@ -940,6 +972,7 @@ pub mod field {
     }
     /// The data type and options of this field.
     /// Once published, the data type cannot be changed.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Text field options.
@@ -963,6 +996,7 @@ pub mod field {
 /// organize and search across items. Labels can be simple strings, or can
 /// contain fields that describe additional metadata that can be further used to
 /// organize and search Drive items.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Label {
     /// Output only. Resource name of the label. Will be in the form of either:
@@ -1049,6 +1083,7 @@ pub struct Label {
 /// Nested message and enum types in `Label`.
 pub mod label {
     /// Basic properties of the label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Properties {
         /// Required. Title of the label.
@@ -1059,6 +1094,7 @@ pub mod label {
         pub description: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering the label.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the label should be shown in the UI as disabled.
@@ -1077,6 +1113,7 @@ pub mod label {
         pub priority: i64,
     }
     /// The capabilities a user has on this label's applied metadata.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read applied metadata related to this label.
@@ -1090,6 +1127,7 @@ pub mod label {
         pub can_remove: bool,
     }
     /// The capabilities related to this label when editing the label.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this label.
@@ -1110,6 +1148,7 @@ pub mod label {
         pub can_enable: bool,
     }
     /// Behavior of this label when it's applied to Drive items.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedLabelPolicy {
         /// Indicates how the applied label and field values should be copied when
@@ -1121,6 +1160,7 @@ pub mod label {
     pub mod applied_label_policy {
         /// Indicates how the applied label and field values should be copied when
         /// a Drive item is copied.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1173,6 +1213,7 @@ pub mod label {
         }
     }
     /// The type of this label.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1224,6 +1265,7 @@ pub mod label {
 }
 /// Label constraints governing the structure of a Label; such as, the maximum
 /// number of Fields allowed and maximum length of the label title.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelLimits {
     /// Resource name.
@@ -1251,6 +1293,7 @@ pub struct LabelLimits {
 }
 /// Field constants governing the structure of a Field; such as, the maximum
 /// title length, minimum and maximum field values or length, etc.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FieldLimits {
     /// Max length for the id.
@@ -1283,6 +1326,7 @@ pub struct FieldLimits {
     pub selection_limits: ::core::option::Option<SelectionLimits>,
 }
 /// Limits for list-variant of a Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLimits {
     /// Maximum number of values allowed for the Field type.
@@ -1290,6 +1334,7 @@ pub struct ListLimits {
     pub max_entries: i32,
 }
 /// Limits for text Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextLimits {
     /// Minimum length allowed for a text Field type.
@@ -1300,6 +1345,7 @@ pub struct TextLimits {
     pub max_length: i32,
 }
 /// Limits for long text Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LongTextLimits {
     /// Minimum length allowed for a long text Field type.
@@ -1310,6 +1356,7 @@ pub struct LongTextLimits {
     pub max_length: i32,
 }
 /// Limits for integer Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IntegerLimits {
     /// Minimum value for an integer Field type.
@@ -1320,6 +1367,7 @@ pub struct IntegerLimits {
     pub max_value: i64,
 }
 /// Limits for date Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateLimits {
     /// Minimum value for the date Field type.
@@ -1330,6 +1378,7 @@ pub struct DateLimits {
     pub max_value: ::core::option::Option<super::super::super::super::r#type::Date>,
 }
 /// Limits for selection Field type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SelectionLimits {
     /// Limits for list-variant of a Field type.
@@ -1349,6 +1398,7 @@ pub struct SelectionLimits {
     pub max_deleted_choices: i32,
 }
 /// Limits for Field.Type.USER.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserLimits {
     /// Limits for list-variant of a Field type.
@@ -1356,6 +1406,7 @@ pub struct UserLimits {
     pub list_limits: ::core::option::Option<ListLimits>,
 }
 /// A Lock that can be applied to a Label, Field, or Choice.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelLock {
     /// Output only. Resource name of this LabelLock.
@@ -1392,6 +1443,7 @@ pub struct LabelLock {
 /// Nested message and enum types in `LabelLock`.
 pub mod label_lock {
     /// A description of a user's capabilities on a LabelLock.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Capabilities {
         /// True if the user is authorized to view the policy.
@@ -1399,6 +1451,7 @@ pub mod label_lock {
         pub can_view_policy: bool,
     }
     /// A description of a LabelLock's state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1445,6 +1498,7 @@ pub mod label_lock {
 }
 /// The permission that applies to a principal (user, group, audience) on a
 /// label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelPermission {
     /// Resource name of this permission.
@@ -1472,6 +1526,7 @@ pub struct LabelPermission {
 /// Nested message and enum types in `LabelPermission`.
 pub mod label_permission {
     /// Roles are concentric with subsequent role.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1533,6 +1588,7 @@ pub mod label_permission {
     /// * people/12345
     /// * groups/45678
     /// * audiences/default
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Principal {
         /// Person resource name.
@@ -1550,6 +1606,7 @@ pub mod label_permission {
 }
 /// Provides control over how write requests are executed. When not specified,
 /// the last write wins.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WriteControl {
     /// Determines the revision of the label to write to and how the request
@@ -1563,6 +1620,7 @@ pub mod write_control {
     /// Determines the revision of the label to write to and how the request
     /// should behave if that revision is not the current revision of the
     /// label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Control {
         /// The \[revision_id\]\[google.apps.drive.labels.v1.Label.revision_id\] of the
@@ -1574,6 +1632,7 @@ pub mod write_control {
     }
 }
 /// Request to get the capabilities for a user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserCapabilitiesRequest {
     /// Required. The resource name of the user. Only "users/me/capabilities" is
@@ -1587,6 +1646,7 @@ pub struct GetUserCapabilitiesRequest {
     pub customer: ::prost::alloc::string::String,
 }
 /// Request to create a Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLabelRequest {
     /// Required. The label to create.
@@ -1603,6 +1663,7 @@ pub struct CreateLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to get a label by resource name.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLabelRequest {
     /// Required. Label resource name.
@@ -1630,6 +1691,7 @@ pub struct GetLabelRequest {
 }
 /// The set of requests for updating aspects of a Label. If any request is not
 /// valid, no requests will be applied.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeltaUpdateLabelRequest {
     /// Required. The resource name of the Label to update.
@@ -1658,6 +1720,7 @@ pub struct DeltaUpdateLabelRequest {
 /// Nested message and enum types in `DeltaUpdateLabelRequest`.
 pub mod delta_update_label_request {
     /// A single kind of update to apply to a Label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Request {
         /// The kind of update. Exactly one Field is required.
@@ -1667,6 +1730,7 @@ pub mod delta_update_label_request {
     /// Nested message and enum types in `Request`.
     pub mod request {
         /// The kind of update. Exactly one Field is required.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// Updates the Label properties.
@@ -1710,6 +1774,7 @@ pub mod delta_update_label_request {
         }
     }
     /// Updates basic properties of a Label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateLabelPropertiesRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1722,6 +1787,7 @@ pub mod delta_update_label_request {
         pub properties: ::core::option::Option<super::label::Properties>,
     }
     /// Request to disable the Field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableFieldRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1737,6 +1803,7 @@ pub mod delta_update_label_request {
         pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
     }
     /// Request to enable the Field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableFieldRequest {
         /// Required. ID of the Field to enable.
@@ -1744,6 +1811,7 @@ pub mod delta_update_label_request {
         pub id: ::prost::alloc::string::String,
     }
     /// Request to delete the Field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFieldRequest {
         /// Required. ID of the Field to delete.
@@ -1751,6 +1819,7 @@ pub mod delta_update_label_request {
         pub id: ::prost::alloc::string::String,
     }
     /// Request to create a Field within a Label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateFieldRequest {
         /// Required. Field to create.
@@ -1758,6 +1827,7 @@ pub mod delta_update_label_request {
         pub field: ::core::option::Option<super::Field>,
     }
     /// Request to update Field properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldPropertiesRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1773,6 +1843,7 @@ pub mod delta_update_label_request {
         pub properties: ::core::option::Option<super::field::Properties>,
     }
     /// Request to change the type of a Field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UpdateFieldTypeRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1791,6 +1862,7 @@ pub mod delta_update_label_request {
     }
     /// Nested message and enum types in `UpdateFieldTypeRequest`.
     pub mod update_field_type_request {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TypeOptions {
             /// Update field to Text.
@@ -1811,6 +1883,7 @@ pub mod delta_update_label_request {
         }
     }
     /// Request to create a Selection Choice.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateSelectionChoiceRequest {
         /// Required. The Selection Field in which a Choice will be created.
@@ -1821,6 +1894,7 @@ pub mod delta_update_label_request {
         pub choice: ::core::option::Option<super::field::selection_options::Choice>,
     }
     /// Request to update a Choice properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UpdateSelectionChoicePropertiesRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1841,6 +1915,7 @@ pub mod delta_update_label_request {
         >,
     }
     /// Request to delete a Choice.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteSelectionChoiceRequest {
         /// Required. The Selection Field from which a Choice will be deleted.
@@ -1851,6 +1926,7 @@ pub mod delta_update_label_request {
         pub id: ::prost::alloc::string::String,
     }
     /// Request to disable a Choice.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableSelectionChoiceRequest {
         /// The fields that should be updated. At least one field must be specified.
@@ -1869,6 +1945,7 @@ pub mod delta_update_label_request {
         pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
     }
     /// Request to enable a Choice.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableSelectionChoiceRequest {
         /// Required. The Selection Field in which a Choice will be enabled.
@@ -1880,6 +1957,7 @@ pub mod delta_update_label_request {
     }
 }
 /// Response for Label update.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeltaUpdateLabelResponse {
     /// The reply of the updates. This maps 1:1 with the updates, although
@@ -1895,6 +1973,7 @@ pub struct DeltaUpdateLabelResponse {
 /// Nested message and enum types in `DeltaUpdateLabelResponse`.
 pub mod delta_update_label_response {
     /// A single response from an update.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Response {
         /// The response for the corresponding request.
@@ -1907,6 +1986,7 @@ pub mod delta_update_label_response {
     /// Nested message and enum types in `Response`.
     pub mod response {
         /// The response for the corresponding request.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Response {
             /// Updated basic properties of a Label.
@@ -1950,9 +2030,11 @@ pub mod delta_update_label_response {
         }
     }
     /// Response following update to Label properties.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateLabelPropertiesResponse {}
     /// Response following Field create.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CreateFieldResponse {
         /// The field of the created field. When left blank in a create request,
@@ -1965,6 +2047,7 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following update to Field properties.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldPropertiesResponse {
         /// The priority of the updated field. The priority may change from what
@@ -1973,18 +2056,23 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following update to Field type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldTypeResponse {}
     /// Response following Field enable.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableFieldResponse {}
     /// Response following Field disable.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableFieldResponse {}
     /// Response following Field delete.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFieldResponse {}
     /// Response following Selection Choice create.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CreateSelectionChoiceResponse {
         /// The server-generated id of the field.
@@ -1995,6 +2083,7 @@ pub mod delta_update_label_response {
         pub id: ::prost::alloc::string::String,
     }
     /// Response following update to Selection Choice properties.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateSelectionChoicePropertiesResponse {
         /// The priority of the updated choice. The priority may change from what
@@ -2003,18 +2092,22 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following Choice enable.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableSelectionChoiceResponse {}
     /// Response following Choice disable.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableSelectionChoiceResponse {}
     /// Response following Choice delete.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteSelectionChoiceResponse {}
 }
 /// Request to update the `CopyMode` of the given Label. Changes to this policy
 /// are not revisioned, do not require publishing, and take effect immediately.
 /// \\
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateLabelCopyModeRequest {
     /// Required. The resource name of the Label to update.
@@ -2038,6 +2131,7 @@ pub struct UpdateLabelCopyModeRequest {
     pub view: i32,
 }
 /// Request to get the limits for a Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLabelLimitsRequest {
     /// Required. Label revision resource name
@@ -2046,6 +2140,7 @@ pub struct GetLabelLimitsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list labels available to the current user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelsRequest {
     /// Whether to include only published labels in the results.
@@ -2082,6 +2177,7 @@ pub struct ListLabelsRequest {
 }
 /// Nested message and enum types in `ListLabelsRequest`.
 pub mod list_labels_request {
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Access {
         /// Set to `true` in order to use the user's admin credentials. This will
@@ -2096,6 +2192,7 @@ pub mod list_labels_request {
     }
 }
 /// Response for listing Labels.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelsResponse {
     /// Labels.
@@ -2107,6 +2204,7 @@ pub struct ListLabelsResponse {
 }
 /// Creates or updates a permission on the Label. Permissions affect the Label
 /// resource as a whole, are not revisioned, and do not require publishing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateLabelPermissionRequest {
     /// Required. The parent Label resource name on the Label Permission is
@@ -2122,6 +2220,7 @@ pub struct CreateLabelPermissionRequest {
     pub use_admin_access: bool,
 }
 /// Request to list the permissions on a Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelPermissionsRequest {
     /// Required. The parent Label resource name on which Label Permission are
@@ -2140,6 +2239,7 @@ pub struct ListLabelPermissionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing the permissions on a Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelPermissionsResponse {
     /// Label permissions.
@@ -2151,6 +2251,7 @@ pub struct ListLabelPermissionsResponse {
 }
 /// Updates a Label Permission. Permissions affect the Label resource as a whole,
 /// are not revisioned, and do not require publishing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateLabelPermissionRequest {
     /// Required. The parent Label resource name.
@@ -2166,6 +2267,7 @@ pub struct UpdateLabelPermissionRequest {
 }
 /// Deletes a Label Permission. Permissions affect the Label resource as a whole,
 /// are not revisioned, and do not require publishing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLabelPermissionRequest {
     /// Required. Label Permission resource name.
@@ -2177,6 +2279,7 @@ pub struct DeleteLabelPermissionRequest {
     pub use_admin_access: bool,
 }
 /// Updates one or more Label Permissions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateLabelPermissionsRequest {
     /// Required. The parent Label resource name shared by all permissions being
@@ -2197,6 +2300,7 @@ pub struct BatchUpdateLabelPermissionsRequest {
     pub use_admin_access: bool,
 }
 /// Response for updating one or more Label Permissions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateLabelPermissionsResponse {
     /// Required. Permissions updated.
@@ -2204,6 +2308,7 @@ pub struct BatchUpdateLabelPermissionsResponse {
     pub permissions: ::prost::alloc::vec::Vec<LabelPermission>,
 }
 /// Deletes one of more Label Permissions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteLabelPermissionsRequest {
     /// Required. The request message specifying the resources to update.
@@ -2224,6 +2329,7 @@ pub struct BatchDeleteLabelPermissionsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request to deprecate a published Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableLabelRequest {
     /// The fields that should be updated. At least one field must be specified.
@@ -2251,6 +2357,7 @@ pub struct DisableLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to publish a label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishLabelRequest {
     /// Required. Label resource name.
@@ -2270,6 +2377,7 @@ pub struct PublishLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to enable a label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableLabelRequest {
     /// Required. Label resource name.
@@ -2289,6 +2397,7 @@ pub struct EnableLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to delete a label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLabelRequest {
     /// Required. Label resource name.
@@ -2304,6 +2413,7 @@ pub struct DeleteLabelRequest {
     pub write_control: ::core::option::Option<WriteControl>,
 }
 /// A request to list the LabelLocks on a Label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelLocksRequest {
     /// Required. Label on which Locks are applied.
@@ -2318,6 +2428,7 @@ pub struct ListLabelLocksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response to a ListLabelLocksRequest.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelLocksResponse {
     /// LabelLocks.
@@ -2330,6 +2441,7 @@ pub struct ListLabelLocksResponse {
 /// Resource view that can be applied to label responses. The default value
 /// `LABEL_VIEW_BASIC` implies the field mask:
 /// `name,id,revision_id,label_type,properties.*`\\
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LabelView {
@@ -2360,6 +2472,7 @@ impl LabelView {
     }
 }
 /// The capabilities of a user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserCapabilities {
     /// Output only. Resource name for the user capabilities.

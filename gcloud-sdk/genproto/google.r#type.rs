@@ -5,6 +5,7 @@
 /// The start must be less than or equal to the end.
 /// When the start equals the end, the interval is empty (matches no time).
 /// When both start and end are unspecified, the interval matches any time.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Interval {
     /// Optional. Inclusive start of the interval.
@@ -25,6 +26,7 @@ pub struct Interval {
 /// specified otherwise, this object must conform to the
 /// <a href="<https://en.wikipedia.org/wiki/World_Geodetic_System#1984_version">>
 /// WGS84 standard</a>. Values must be within normalized ranges.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LatLng {
     /// The latitude in degrees. It must be in the range \[-90.0, +90.0\].
@@ -50,6 +52,7 @@ pub struct LatLng {
 /// * \[google.type.TimeOfDay\]\[google.type.TimeOfDay\]
 /// * \[google.type.DateTime\]\[google.type.DateTime\]
 /// * \[google.protobuf.Timestamp\]\[google.protobuf.Timestamp\]
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Date {
     /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
@@ -90,6 +93,7 @@ pub struct Date {
 ///
 /// This type is more flexible than some applications may want. Make sure to
 /// document and validate your application's limitations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateTime {
     /// Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
@@ -135,6 +139,7 @@ pub mod date_time {
     /// in the future (for example, a country modifies their DST start/end dates,
     /// and future DateTimes in the affected range had already been stored).
     /// If omitted, the DateTime is considered to be in local time.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TimeOffset {
         /// UTC offset. Must be whole seconds, between -18 hours and +18 hours.
@@ -149,6 +154,7 @@ pub mod date_time {
 }
 /// Represents a time zone from the
 /// [IANA Time Zone Database](<https://www.iana.org/time-zones>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeZone {
     /// IANA Time Zone Database time zone. For example "America/New_York".
@@ -288,6 +294,7 @@ pub struct TimeZone {
 ///
 /// // ...
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval \[0, 1\].
@@ -352,6 +359,7 @@ pub struct Color {
 /// The exact variables and functions that may be referenced within an expression
 /// are determined by the service that evaluates it. See the service
 /// documentation for additional information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Expr {
     /// Textual representation of an expression in Common Expression Language
@@ -373,6 +381,7 @@ pub struct Expr {
     pub location: ::prost::alloc::string::String,
 }
 /// Represents an amount of money with its currency type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Money {
     /// The three-letter currency code defined in ISO 4217.
@@ -392,6 +401,7 @@ pub struct Money {
     pub nanos: i32,
 }
 /// Represents a day of the week.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DayOfWeek {
@@ -448,6 +458,7 @@ impl DayOfWeek {
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
 /// types are \[google.type.Date\]\[google.type.Date\] and
 /// `google.protobuf.Timestamp`.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeOfDay {
     /// Hours of a day in 24 hour format. Must be greater than or equal to 0 and
@@ -470,6 +481,7 @@ pub struct TimeOfDay {
     pub nanos: i32,
 }
 /// Represents a month in the Gregorian calendar.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Month {
@@ -559,6 +571,7 @@ impl Month {
 ///
 /// For more guidance on how to use this schema, see:
 /// <https://support.google.com/business/answer/6397478.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostalAddress {
     /// The schema revision of the `PostalAddress`. This must be set to 0, which is
@@ -659,6 +672,7 @@ pub struct PostalAddress {
 /// [BigDecimal](<https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html>)
 /// or Python's
 /// [decimal.Decimal](<https://docs.python.org/3/library/decimal.html>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Decimal {
     /// The decimal value, as a string.
@@ -728,6 +742,7 @@ pub struct Decimal {
     pub value: ::prost::alloc::string::String,
 }
 /// Localized variant of a text in a particular language.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedText {
     /// Localized string in the language corresponding to
@@ -744,6 +759,7 @@ pub struct LocalizedText {
 /// A `CalendarPeriod` represents the abstract concept of a time period that has
 /// a canonical start. Grammatically, "the start of the current
 /// `CalendarPeriod`." All calendar times begin at midnight UTC.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CalendarPeriod {
@@ -801,6 +817,7 @@ impl CalendarPeriod {
     }
 }
 /// Represents a fraction in terms of a numerator divided by a denominator.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fraction {
     /// The numerator in the fraction, e.g. 2 in 2/3.
@@ -841,6 +858,7 @@ pub struct Fraction {
 /// Reference(s):
 ///
 /// * <https://github.com/google/libphonenumber>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PhoneNumber {
     /// The phone number's extension. The extension is not standardized in ITU
@@ -872,6 +890,7 @@ pub mod phone_number {
     /// dialable, which means the same short code can exist in different regions,
     /// with different usage and pricing, even if those regions share the same
     /// country calling code (For example: US and CA).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ShortCode {
         /// Required. The BCP-47 region code of the location where calls to this
@@ -890,6 +909,7 @@ pub mod phone_number {
     /// Required.  Either a regular number, or a short code.  New fields may be
     /// added to the oneof below in the future, so clients should ignore phone
     /// numbers for which none of the fields they coded against are set.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Kind {
         /// The phone number, represented as a leading plus sign ('+'), followed by a
@@ -984,6 +1004,7 @@ pub mod phone_number {
 /// it would produce a unique representation. It is thus recommended that `w` be
 /// kept positive, which can be achieved by changing all the signs when `w` is
 /// negative.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// The x component.

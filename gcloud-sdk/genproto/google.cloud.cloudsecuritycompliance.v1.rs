@@ -2,6 +2,7 @@
 /// A framework is a collection of cloud controls and regulatory controls
 /// that represent security best practices or industry-defined standards such as
 /// FedRAMP or NIST.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Framework {
     /// Required. Identifier. The name of the framework, in one of the following
@@ -48,6 +49,7 @@ pub struct Framework {
 /// Nested message and enum types in `Framework`.
 pub mod framework {
     /// The type of framework.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92,6 +94,7 @@ pub mod framework {
     }
 }
 /// The details of a cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlDetails {
     /// Required. The name of the cloud control, in one of the following formats:
@@ -118,6 +121,7 @@ pub struct CloudControlDetails {
 /// * `projects/{project}/locations/{location}/frameworks/{framework}`.
 ///
 /// The only supported location is `global`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameworkReference {
     /// Required. The major version of the framework. If not specified, the version
@@ -132,6 +136,7 @@ pub struct FrameworkReference {
 /// Parameters are key-value pairs that let you provide your custom location
 /// requirements, environment requirements, or other settings that are
 /// relevant to the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Parameter {
     /// Required. The name or key of the parameter.
@@ -143,6 +148,7 @@ pub struct Parameter {
 }
 /// A cloud control is a set of rules and associated metadata that you can
 /// use to define your organization's security or compliance intent.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControl {
     /// Required. Identifier. The name of the cloud control, in either of the
@@ -215,6 +221,7 @@ pub struct CloudControl {
 /// Nested message and enum types in `CloudControl`.
 pub mod cloud_control {
     /// The type of cloud control.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -259,6 +266,7 @@ pub mod cloud_control {
     }
 }
 /// The parameter specification for the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterSpec {
     /// Required. The name of the parameter.
@@ -294,6 +302,7 @@ pub struct ParameterSpec {
 /// Nested message and enum types in `ParameterSpec`.
 pub mod parameter_spec {
     /// The type of parameter value.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -350,6 +359,7 @@ pub mod parameter_spec {
     }
 }
 /// The validation of the parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Validation {
     /// Defines validators for parameter values.
@@ -359,6 +369,7 @@ pub struct Validation {
 /// Nested message and enum types in `Validation`.
 pub mod validation {
     /// Defines validators for parameter values.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Constraint {
         /// The permitted set of values for the parameter.
@@ -373,6 +384,7 @@ pub mod validation {
     }
 }
 /// The allowed set of values for the parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllowedValues {
     /// Required. The list of allowed values for the parameter.
@@ -380,6 +392,7 @@ pub struct AllowedValues {
     pub values: ::prost::alloc::vec::Vec<ParamValue>,
 }
 /// The regular expression (regex) validator for parameter values.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegexpPattern {
     /// Required. The regex pattern to match the values of the parameter with.
@@ -387,6 +400,7 @@ pub struct RegexpPattern {
     pub pattern: ::prost::alloc::string::String,
 }
 /// The number range for number parameters.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IntRange {
     /// Required. The minimum permitted value for the numeric parameter
@@ -399,6 +413,7 @@ pub struct IntRange {
     pub max: i64,
 }
 /// A list of strings for the parameter value.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StringList {
     /// Required. The strings in the list.
@@ -406,6 +421,7 @@ pub struct StringList {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The possible parameter value types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParamValue {
     /// The list of possible parameter value types.
@@ -415,6 +431,7 @@ pub struct ParamValue {
 /// Nested message and enum types in `ParamValue`.
 pub mod param_value {
     /// The list of possible parameter value types.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// Optional. A string value.
@@ -435,6 +452,7 @@ pub mod param_value {
     }
 }
 /// The parameter substitution rules.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ParameterSubstitutionRule {
     /// The type of substitution.
@@ -446,6 +464,7 @@ pub struct ParameterSubstitutionRule {
 /// Nested message and enum types in `ParameterSubstitutionRule`.
 pub mod parameter_substitution_rule {
     /// The type of substitution.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SubstitutionType {
         /// The placeholder substitution rule.
@@ -457,6 +476,7 @@ pub mod parameter_substitution_rule {
     }
 }
 /// The attribute at the given path that's substituted entirely.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AttributeSubstitutionRule {
     /// The fully qualified proto attribute path, in dot notation.
@@ -465,6 +485,7 @@ pub struct AttributeSubstitutionRule {
     pub attribute: ::prost::alloc::string::String,
 }
 /// The placeholder that's substituted in the rendered string.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlaceholderSubstitutionRule {
     /// The fully qualified proto attribute path, in dot notation.
@@ -472,6 +493,7 @@ pub struct PlaceholderSubstitutionRule {
     pub attribute: ::prost::alloc::string::String,
 }
 /// A rule in the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Rule {
     /// Optional. The rule description. The maximum length is 2000 characters.
@@ -487,6 +509,7 @@ pub struct Rule {
 /// Nested message and enum types in `Rule`.
 pub mod rule {
     /// The rule implementation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Implementation {
         /// The rule's logic expression in Common Expression Language (CEL).
@@ -495,6 +518,7 @@ pub mod rule {
     }
 }
 /// A Common Expression Language (CEL) expression that's used to create a rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CelExpression {
     /// Required. The logical expression in CEL. The maximum length of the
@@ -509,6 +533,7 @@ pub struct CelExpression {
 /// Nested message and enum types in `CELExpression`.
 pub mod cel_expression {
     /// The criteria of the CEL expression.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Criteria {
         /// The resource instance types on which this expression is defined.
@@ -519,6 +544,7 @@ pub mod cel_expression {
     }
 }
 /// The metadata for the long-running operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -548,6 +574,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// The regulatory control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Control {
     /// Output only. The name of a regulatory control, in one of the following
@@ -605,6 +632,7 @@ pub struct Control {
 /// Nested message and enum types in `Control`.
 pub mod control {
     /// The regulatory control family.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -713,6 +741,7 @@ pub mod control {
     }
 }
 /// The regulatory family of the control.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ControlFamily {
     /// The identifier for the regulatory control family.
@@ -723,6 +752,7 @@ pub struct ControlFamily {
     pub display_name: ::prost::alloc::string::String,
 }
 /// The responsibility type for the regulatory control.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RegulatoryControlResponsibilityType {
@@ -762,6 +792,7 @@ impl RegulatoryControlResponsibilityType {
     }
 }
 /// The enforcement mode for the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EnforcementMode {
@@ -799,6 +830,7 @@ impl EnforcementMode {
     }
 }
 /// The category for the framework.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FrameworkCategory {
@@ -844,6 +876,7 @@ impl FrameworkCategory {
     }
 }
 /// The category for the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CloudControlCategory {
@@ -973,6 +1006,7 @@ impl CloudControlCategory {
     }
 }
 /// The cloud provider that's associated with the cloud control.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CloudProvider {
@@ -1010,6 +1044,7 @@ impl CloudProvider {
     }
 }
 /// The severity of the finding.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Severity {
@@ -1084,6 +1119,7 @@ impl Severity {
     }
 }
 /// The action type of the rule.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RuleActionType {
@@ -1121,6 +1157,7 @@ impl RuleActionType {
     }
 }
 /// The type of resource that a control or framework can be applied to.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TargetResourceType {
@@ -1164,6 +1201,7 @@ impl TargetResourceType {
     }
 }
 /// The request message for \[GenerateFrameworkAuditScopeReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateFrameworkAuditScopeReportRequest {
     /// Required. The organization, folder or project for the audit report.
@@ -1188,6 +1226,7 @@ pub struct GenerateFrameworkAuditScopeReportRequest {
 /// Nested message and enum types in `GenerateFrameworkAuditScopeReportRequest`.
 pub mod generate_framework_audit_scope_report_request {
     /// The set of options for the audit scope report format.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1228,6 +1267,7 @@ pub mod generate_framework_audit_scope_report_request {
     }
 }
 /// The response message for \[GenerateFrameworkAuditScopeReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateFrameworkAuditScopeReportResponse {
     /// Identifier. The name of the audit report, in the format that was
@@ -1250,6 +1290,7 @@ pub struct GenerateFrameworkAuditScopeReportResponse {
 /// Nested message and enum types in `GenerateFrameworkAuditScopeReportResponse`.
 pub mod generate_framework_audit_scope_report_response {
     /// The set of options that the audit scope report is exported in.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuditReport {
         /// The audit scope report content in byte format.
@@ -1258,6 +1299,7 @@ pub mod generate_framework_audit_scope_report_response {
     }
 }
 /// Additional information for an audit operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportSummary {
     /// Output only. The total number of checks.
@@ -1277,6 +1319,7 @@ pub struct ReportSummary {
     pub error_count: i32,
 }
 /// The request message for \[CreateFrameworkAudit\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFrameworkAuditRequest {
     /// Required. The parent resource where this framework audit is created.
@@ -1300,6 +1343,7 @@ pub struct CreateFrameworkAuditRequest {
     pub framework_audit: ::core::option::Option<FrameworkAudit>,
 }
 /// A destination for the framework audit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameworkAuditDestination {
     /// The type of destination.
@@ -1311,6 +1355,7 @@ pub struct FrameworkAuditDestination {
 /// Nested message and enum types in `FrameworkAuditDestination`.
 pub mod framework_audit_destination {
     /// The type of destination.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DestinationType {
         /// The Cloud Storage bucket destination.
@@ -1319,6 +1364,7 @@ pub mod framework_audit_destination {
     }
 }
 /// A Cloud Storage bucket destination.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BucketDestination {
     /// Required. The URI of the Cloud Storage bucket.
@@ -1331,6 +1377,7 @@ pub struct BucketDestination {
 /// Nested message and enum types in `BucketDestination`.
 pub mod bucket_destination {
     /// The set of options for the framework audit format.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1371,6 +1418,7 @@ pub mod bucket_destination {
     }
 }
 /// A framework audit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrameworkAudit {
     /// Output only. Identifier. The name of the framework audit.
@@ -1418,6 +1466,7 @@ pub struct FrameworkAudit {
 /// Nested message and enum types in `FrameworkAudit`.
 pub mod framework_audit {
     /// The state of the framework audit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1474,6 +1523,7 @@ pub mod framework_audit {
     }
 }
 /// The request message for \[ListFrameworkAudits\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworkAuditsRequest {
     /// Required. The parent resource where the framework audits are listed.
@@ -1504,6 +1554,7 @@ pub struct ListFrameworkAuditsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for \[ListFrameworkAudits\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFrameworkAuditsResponse {
     /// The framework audits.
@@ -1515,6 +1566,7 @@ pub struct ListFrameworkAuditsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[GetFrameworkAudit\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFrameworkAuditRequest {
     /// Required. The name of the framework audit to retrieve.
@@ -1528,6 +1580,7 @@ pub struct GetFrameworkAuditRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The details for a cloud control group.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlGroupAuditDetails {
     /// Output only. The ID of the cloud control group.
@@ -1571,6 +1624,7 @@ pub struct CloudControlGroupAuditDetails {
     pub report_summary: ::core::option::Option<ReportSummary>,
 }
 /// The details for a finding.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindingDetails {
     /// Output only. The name of the finding.
@@ -1587,6 +1641,7 @@ pub struct FindingDetails {
     pub evidence: ::core::option::Option<EvidenceDetails>,
 }
 /// The observation details for a finding.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObservationDetails {
     /// Output only. The current value.
@@ -1600,6 +1655,7 @@ pub struct ObservationDetails {
     pub guidance: ::prost::alloc::string::String,
 }
 /// The evidence details for a finding.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EvidenceDetails {
     /// Output only. The resource identifier.
@@ -1613,6 +1669,7 @@ pub struct EvidenceDetails {
     pub evidence_path: ::prost::alloc::string::String,
 }
 /// The details for a cloud control audit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlAuditDetails {
     /// Output only. The name of the cloud control.
@@ -1635,6 +1692,7 @@ pub struct CloudControlAuditDetails {
     pub findings: ::prost::alloc::vec::Vec<FindingDetails>,
 }
 /// The state of compliance after evaluation is complete.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ComplianceState {
@@ -1893,6 +1951,7 @@ pub mod audit_client {
     }
 }
 /// The request message for \[UpdateCmEnrollment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCmEnrollmentRequest {
     /// Required. The Compliance Manager enrollment to update.
@@ -1904,6 +1963,7 @@ pub struct UpdateCmEnrollmentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for \[CalculateEffectiveCmEnrollment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CalculateEffectiveCmEnrollmentRequest {
     /// Required. The name of the Compliance Manager enrollment to calculate.
@@ -1917,6 +1977,7 @@ pub struct CalculateEffectiveCmEnrollmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The settings for Compliance Manager at a specific resource scope.=
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CmEnrollment {
     /// Identifier. The name of the Compliance Manager enrollment.
@@ -1939,6 +2000,7 @@ pub struct CmEnrollment {
     pub audit_config: ::core::option::Option<AuditConfig>,
 }
 /// The response message for \[CalculateEffectiveCmEnrollment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateEffectiveCmEnrollmentResponse {
     /// The effective Compliance Manager enrollment for the resource.
@@ -1946,6 +2008,7 @@ pub struct CalculateEffectiveCmEnrollmentResponse {
     pub cm_enrollment: ::core::option::Option<CmEnrollment>,
 }
 /// The audit configuration for Compliance Manager.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditConfig {
     /// Required. The list of destinations that can be selected for uploading audit
@@ -1957,6 +2020,7 @@ pub struct AuditConfig {
 pub mod audit_config {
     /// The destination details where audit reports are
     /// uploaded.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CmEligibleDestination {
         /// Set of options for the report destination location.
@@ -1968,6 +2032,7 @@ pub mod audit_config {
     /// Nested message and enum types in `CmEligibleDestination`.
     pub mod cm_eligible_destination {
         /// Set of options for the report destination location.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum CmEligibleDestinations {
             /// The Cloud Storage bucket where audit reports and evidences can be
@@ -2138,6 +2203,7 @@ pub mod cm_enrollment_service_client {
     }
 }
 /// Request message for \[ListFrameworks\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworksRequest {
     /// Required. The parent resource name, in one of the following formats:
@@ -2162,6 +2228,7 @@ pub struct ListFrameworksRequest {
 }
 /// The response message for \[ListFrameworks\]\[\].
 /// Returns a paginated list of Framework resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFrameworksResponse {
     /// The list of framework resources.
@@ -2173,6 +2240,7 @@ pub struct ListFrameworksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[GetFramework\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFrameworkRequest {
     /// Required. The name of the framework to retrieve, in one of the following
@@ -2190,6 +2258,7 @@ pub struct GetFrameworkRequest {
     pub major_revision_id: i64,
 }
 /// The request message for \[CreateFramework\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFrameworkRequest {
     /// Required. The parent resource name, in one of the following formats:
@@ -2209,6 +2278,7 @@ pub struct CreateFrameworkRequest {
     pub framework: ::core::option::Option<Framework>,
 }
 /// The request message for \[UpdateFramework\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFrameworkRequest {
     /// Optional. A field mask is used to specify the fields to be overwritten in
@@ -2226,6 +2296,7 @@ pub struct UpdateFrameworkRequest {
     pub major_revision_id: i64,
 }
 /// Request message for \[DeleteFramework\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFrameworkRequest {
     /// Required. The name of the resource, in one of the following formats:
@@ -2238,6 +2309,7 @@ pub struct DeleteFrameworkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[ListCloudControls\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudControlsRequest {
     /// Required. The parent resource name, in one of the following formats:
@@ -2266,6 +2338,7 @@ pub struct ListCloudControlsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for \[ListCloudControls\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloudControlsResponse {
     /// The list of CloudControl resources.
@@ -2277,6 +2350,7 @@ pub struct ListCloudControlsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[GetCloudControl\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudControlRequest {
     /// Required. The name of the cloud control to retrieve, in one of the
@@ -2294,6 +2368,7 @@ pub struct GetCloudControlRequest {
     pub major_revision_id: i64,
 }
 /// The request message for \[CreateCloudControl\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCloudControlRequest {
     /// Required. The parent resource name, in one of the following formats:
@@ -2314,6 +2389,7 @@ pub struct CreateCloudControlRequest {
     pub cloud_control: ::core::option::Option<CloudControl>,
 }
 /// The request message for \[UpdateCloudControl\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCloudControlRequest {
     /// Optional. Use a field mask to specify the fields to be overwritten in the
@@ -2337,6 +2413,7 @@ pub struct UpdateCloudControlRequest {
     pub cloud_control: ::core::option::Option<CloudControl>,
 }
 /// The request message for \[DeleteCloudControl\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCloudControlRequest {
     /// Required. The name of the cloud control to delete, in one of the following
@@ -2779,6 +2856,7 @@ pub mod config_client {
 /// Framework deployments represent the assignment of a framework to a target
 /// resource. Supported target resources are organizations, folders, and
 /// projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrameworkDeployment {
     /// Identifier. The name of the framework deployment, in the format
@@ -2857,6 +2935,7 @@ pub struct FrameworkDeployment {
 /// control on a target resource. Supported target resources are
 /// `organizations/{organizationID}`, `folders/{folderID}`, and
 /// `projects/{projectID}`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlDeployment {
     /// Identifier. The name for the cloud control deployment, in the format
@@ -2916,6 +2995,7 @@ pub struct CloudControlDeployment {
 }
 /// The name of the target resource or the configuration that's required to
 /// create a new target resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetResourceConfig {
     /// The resource configuration for the target resource.
@@ -2925,6 +3005,7 @@ pub struct TargetResourceConfig {
 /// Nested message and enum types in `TargetResourceConfig`.
 pub mod target_resource_config {
     /// The resource configuration for the target resource.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceConfig {
         /// Optional. The resource hierarchy node, in one of the following formats:
@@ -2941,6 +3022,7 @@ pub mod target_resource_config {
     }
 }
 /// The configuration that's required to create a target resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetResourceCreationConfig {
     /// The configuration that's required to create the target resource.
@@ -2955,6 +3037,7 @@ pub struct TargetResourceCreationConfig {
 /// Nested message and enum types in `TargetResourceCreationConfig`.
 pub mod target_resource_creation_config {
     /// The configuration that's required to create the target resource.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceCreationConfig {
         /// Optional. The configuration that's required to create a folder.
@@ -2967,6 +3050,7 @@ pub mod target_resource_creation_config {
 }
 /// The configuration that's required to create a folder to be used
 /// as the target resource for a deployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FolderCreationConfig {
     /// Required. The parent of the folder, in the format
@@ -2979,6 +3063,7 @@ pub struct FolderCreationConfig {
 }
 /// The configuration that's required to create a project to be used
 /// as the target resource of a deployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectCreationConfig {
     /// Required. The parent of the project, in the format
@@ -2994,6 +3079,7 @@ pub struct ProjectCreationConfig {
 }
 /// The enforcement mode and parameters of a cloud
 /// control deployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlMetadata {
     /// Required. The cloud control name and parameters.
@@ -3004,6 +3090,7 @@ pub struct CloudControlMetadata {
     pub enforcement_mode: i32,
 }
 /// The request message for \[CreateFrameworkDeployment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFrameworkDeploymentRequest {
     /// Required. The parent resource of the framework deployment in the format
@@ -3023,6 +3110,7 @@ pub struct CreateFrameworkDeploymentRequest {
     pub framework_deployment: ::core::option::Option<FrameworkDeployment>,
 }
 /// The request message for \[DeleteFrameworkDeployment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFrameworkDeploymentRequest {
     /// Required. The name of the framework deployment that you want to delete,
@@ -3045,6 +3133,7 @@ pub struct DeleteFrameworkDeploymentRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// The request message for \[GetFrameworkDeployment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFrameworkDeploymentRequest {
     /// Required. The name of the framework deployment, in the format
@@ -3056,6 +3145,7 @@ pub struct GetFrameworkDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[ListFrameworkDeployments\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworkDeploymentsRequest {
     /// Required. The parent resource of the framework deployment, in the format
@@ -3089,6 +3179,7 @@ pub struct ListFrameworkDeploymentsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for \[ListFrameworkDeployments\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFrameworkDeploymentsResponse {
     /// The list of framework deployments.
@@ -3100,6 +3191,7 @@ pub struct ListFrameworkDeploymentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[GetCloudControlDeployment\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudControlDeploymentRequest {
     /// Required. The name for the cloud control deployment, in the format
@@ -3111,6 +3203,7 @@ pub struct GetCloudControlDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[ListCloudControlDeployments\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudControlDeploymentsRequest {
     /// Required. The parent resource for the cloud control deployment, in the
@@ -3143,6 +3236,7 @@ pub struct ListCloudControlDeploymentsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for \[ListCloudControlDeployments\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloudControlDeploymentsResponse {
     /// The list of cloud control deployments.
@@ -3154,6 +3248,7 @@ pub struct ListCloudControlDeploymentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The reference to a cloud control deployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudControlDeploymentReference {
     /// Output only. The name of the CloudControlDeployment. The format is
@@ -3165,6 +3260,7 @@ pub struct CloudControlDeploymentReference {
     pub cloud_control_deployment: ::prost::alloc::string::String,
 }
 /// The reference to a framework deployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameworkDeploymentReference {
     /// Output only. The name of the framework deployment, in the format
@@ -3194,6 +3290,7 @@ pub struct FrameworkDeploymentReference {
     pub framework_display_name: ::prost::alloc::string::String,
 }
 /// The state of the deployment resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DeploymentState {
@@ -3536,6 +3633,7 @@ pub mod deployment_client {
 }
 /// The request message for
 /// \[ListFrameworkComplianceSummariesRequest\]\[google.cloud.cloudsecuritycompliance.v1.ListFrameworkComplianceSummariesRequest\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFrameworkComplianceSummariesRequest {
     /// Required. The parent scope for the framework compliance summary.
@@ -3558,6 +3656,7 @@ pub struct ListFrameworkComplianceSummariesRequest {
 }
 /// The response message for
 /// \[ListFrameworkComplianceSummariesResponse\]\[google.cloud.cloudsecuritycompliance.v1.ListFrameworkComplianceSummariesResponse\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFrameworkComplianceSummariesResponse {
     /// The list of framework compliance summaries.
@@ -3570,6 +3669,7 @@ pub struct ListFrameworkComplianceSummariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The response message for \[GetFrameworkComplianceReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrameworkComplianceReport {
     /// The name of the framework.
@@ -3610,6 +3710,7 @@ pub struct FrameworkComplianceReport {
     pub target_resource_details: ::prost::alloc::vec::Vec<TargetResourceDetails>,
 }
 /// The request message for \[FetchFrameworkComplianceReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchFrameworkComplianceReportRequest {
     /// Required. The name of the framework compliance report to retrieve.
@@ -3623,6 +3724,7 @@ pub struct FetchFrameworkComplianceReportRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The request message for \[ListFindingSummaries\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingSummariesRequest {
     /// Required. The parent scope for the framework overview page.
@@ -3645,6 +3747,7 @@ pub struct ListFindingSummariesRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The response message for \[ListFindingSummaries\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingSummariesResponse {
     /// List of finding summary by category.
@@ -3655,6 +3758,7 @@ pub struct ListFindingSummariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[ListControlComplianceSummaries\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListControlComplianceSummariesRequest {
     /// Required. The parent scope for the framework overview page.
@@ -3677,6 +3781,7 @@ pub struct ListControlComplianceSummariesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for \[ListControlComplianceSummaries\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListControlComplianceSummariesResponse {
     /// The list of control compliance details.
@@ -3687,6 +3792,7 @@ pub struct ListControlComplianceSummariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[AggregateFrameworkComplianceReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregateFrameworkComplianceReportRequest {
     /// Required. The name of the aggregated compliance report over time to
@@ -3705,6 +3811,7 @@ pub struct AggregateFrameworkComplianceReportRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for \[AggregateFrameworkComplianceReport\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregateFrameworkComplianceReportResponse {
     /// The list of aggregated compliance reports.
@@ -3714,6 +3821,7 @@ pub struct AggregateFrameworkComplianceReportResponse {
     >,
 }
 /// The details for a control assessment.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ControlAssessmentDetails {
     /// The number of controls that are passing or not assessed.
@@ -3731,6 +3839,7 @@ pub struct ControlAssessmentDetails {
     pub not_assessed_controls: i32,
 }
 /// The details for a framework compliance summary.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrameworkComplianceSummary {
     /// The name of the framework.
@@ -3771,6 +3880,7 @@ pub struct FrameworkComplianceSummary {
     pub controls_passing_trend: ::core::option::Option<Trend>,
 }
 /// The details for a finding.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindingSummary {
     /// The category of the finding.
@@ -3796,6 +3906,7 @@ pub struct FindingSummary {
     pub name: ::prost::alloc::string::String,
 }
 /// The details for control compliance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ControlComplianceSummary {
     /// The name of the control.
@@ -3834,6 +3945,7 @@ pub struct ControlComplianceSummary {
     pub name: ::prost::alloc::string::String,
 }
 /// The cloud control report.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudControlReport {
     /// The name of the cloud control.
@@ -3887,6 +3999,7 @@ pub struct CloudControlReport {
 /// Nested message and enum types in `CloudControlReport`.
 pub mod cloud_control_report {
     /// The assessment details of the cloud control.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AssessmentDetails {
         /// The details of a manual cloud control assessment.
@@ -3898,6 +4011,7 @@ pub mod cloud_control_report {
     }
 }
 /// The details for a manual cloud control assessment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManualCloudControlAssessmentDetails {
     /// The guide for assessing a cloud control manually.
@@ -3907,6 +4021,7 @@ pub struct ManualCloudControlAssessmentDetails {
     >,
 }
 /// The cloud control assessment details for non-manual cloud controls.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudControlAssessmentDetails {
     /// The number of findings for the cloud control.
@@ -3917,6 +4032,7 @@ pub struct CloudControlAssessmentDetails {
     pub evaluation_state: i32,
 }
 /// The similar controls.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SimilarControls {
     /// The name of the framework.
@@ -3927,6 +4043,7 @@ pub struct SimilarControls {
     pub control_id: ::prost::alloc::string::String,
 }
 /// The aggregated compliance report.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedComplianceReport {
     /// The control assessment details of the framework.
@@ -3937,6 +4054,7 @@ pub struct AggregatedComplianceReport {
     pub report_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The details for a target resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetResourceDetails {
     /// The framework deployment name for the target resource.
@@ -3967,6 +4085,7 @@ pub struct TargetResourceDetails {
     pub minor_revision_id: i64,
 }
 /// The trend of a compliance metric.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Trend {
     /// Output only. The duration for the trend.
@@ -3978,6 +4097,7 @@ pub struct Trend {
     pub value_percent: f64,
 }
 /// The evaluation state of the control.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EvaluationState {
@@ -4016,6 +4136,7 @@ impl EvaluationState {
 }
 /// A finding is a record of assessment data like security, risk, health, or
 /// privacy.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FindingClass {
@@ -4084,6 +4205,7 @@ impl FindingClass {
 }
 /// Specifies the view of the framework compliance summary to be returned.
 /// New values may be added in the future.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FrameworkComplianceSummaryView {

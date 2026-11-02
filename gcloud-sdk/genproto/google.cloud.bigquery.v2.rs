@@ -7,6 +7,7 @@
 /// See code samples on how this message can be deserialized.
 ///
 /// This feature is not yet available.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArrowSchema {
     /// IPC serialized Arrow schema.
@@ -16,6 +17,7 @@ pub struct ArrowSchema {
 /// Arrow RecordBatch.
 ///
 /// This feature is not yet available.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArrowRecordBatch {
     /// IPC-serialized Arrow RecordBatch.
@@ -25,6 +27,7 @@ pub struct ArrowRecordBatch {
 /// Contains options specific to Arrow Serialization.
 ///
 /// This feature is not yet available.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArrowSerializationOptions {
     /// The compression codec to use for Arrow buffers in serialized record
@@ -42,6 +45,7 @@ pub struct ArrowSerializationOptions {
 /// Nested message and enum types in `ArrowSerializationOptions`.
 pub mod arrow_serialization_options {
     /// Compression codec's supported by Arrow.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86,6 +90,7 @@ pub mod arrow_serialization_options {
     }
     /// The precision of the timestamp value in the Avro message. This precision
     /// will **only** be applied to the column(s) with the `TIMESTAMP_PICOS` type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -141,6 +146,7 @@ pub mod arrow_serialization_options {
 }
 /// Configuration for BigQuery tables for Apache Iceberg (formerly BigLake
 /// managed tables.)
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigLakeConfiguration {
     /// Optional. The connection specifying the credentials to be used to read and
@@ -164,6 +170,7 @@ pub struct BigLakeConfiguration {
 /// Nested message and enum types in `BigLakeConfiguration`.
 pub mod big_lake_configuration {
     /// Supported file formats for BigQuery tables for Apache Iceberg.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -203,6 +210,7 @@ pub mod big_lake_configuration {
         }
     }
     /// Supported table formats for BigQuery tables for Apache Iceberg.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -243,6 +251,7 @@ pub mod big_lake_configuration {
     }
 }
 /// Configures table clustering.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Clustering {
     /// One or more fields on which data should be clustered. Only top-level,
@@ -257,6 +266,7 @@ pub struct Clustering {
     pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Options for data format adjustments.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataFormatOptions {
     /// Optional. Output timestamp as usec int64. Default is false.
@@ -271,6 +281,7 @@ pub struct DataFormatOptions {
 /// Nested message and enum types in `DataFormatOptions`.
 pub mod data_format_options {
     /// The API output format for a timestamp.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -320,6 +331,7 @@ pub mod data_format_options {
     }
 }
 /// Identifier for a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatasetReference {
     /// Required. A unique ID for this dataset, without the project name. The ID
@@ -332,6 +344,7 @@ pub struct DatasetReference {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Configuration for Cloud KMS encryption settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionConfiguration {
     /// Optional. Describes the Cloud KMS encryption key that will be used to
@@ -343,6 +356,7 @@ pub struct EncryptionConfiguration {
 /// Options defining open source compatible datasets living in the BigQuery
 /// catalog. Contains metadata of open source database, schema,
 /// or namespace represented by the current dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalCatalogDatasetOptions {
     /// Optional. A map of key value pairs defining the parameters and properties
@@ -359,6 +373,7 @@ pub struct ExternalCatalogDatasetOptions {
     pub default_storage_location_uri: ::prost::alloc::string::String,
 }
 /// Configures the access a dataset defined in an external metadata storage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalDatasetReference {
     /// Required. External source that backs this dataset.
@@ -371,6 +386,7 @@ pub struct ExternalDatasetReference {
     #[prost(string, tag = "3")]
     pub connection: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestrictionConfig {
     /// Output only. Specifies the type of dataset/table restriction.
@@ -380,6 +396,7 @@ pub struct RestrictionConfig {
 /// Nested message and enum types in `RestrictionConfig`.
 pub mod restriction_config {
     /// RestrictionType specifies the type of dataset/table restriction.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -422,6 +439,7 @@ pub mod restriction_config {
     }
 }
 /// Id path of a routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RoutineReference {
     /// Required. The ID of the project containing this routine.
@@ -436,6 +454,7 @@ pub struct RoutineReference {
     #[prost(string, tag = "3")]
     pub routine_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableReference {
     /// Required. The ID of the project containing this table.
@@ -455,6 +474,7 @@ pub struct TableReference {
     pub table_id: ::prost::alloc::string::String,
 }
 /// Schema of a table
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
@@ -468,6 +488,7 @@ pub struct TableSchema {
 }
 /// Metadata about the foreign data type definition such as the system
 /// in which the type is defined.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForeignTypeInfo {
     /// Required. Specifies the system which defines the foreign data type.
@@ -478,6 +499,7 @@ pub struct ForeignTypeInfo {
 pub mod foreign_type_info {
     /// External systems, such as query engines or table formats, that have their
     /// own data types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -520,6 +542,7 @@ pub mod foreign_type_info {
 /// Data policy option. For more information, see
 /// [Mask data by applying data policies to a
 /// column](<https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataPolicyOption {
     /// Data policy resource name in the form of
@@ -530,6 +553,7 @@ pub struct DataPolicyOption {
 /// A list of data policy options. For more information, see
 /// [Mask data by applying data policies to a
 /// column](<https://docs.cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataPolicyList {
     /// Contains a list of data policy options. At most 9 data policies are
@@ -538,6 +562,7 @@ pub struct DataPolicyList {
     pub data_policies: ::prost::alloc::vec::Vec<DataPolicyOption>,
 }
 /// A field in TableSchema
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableFieldSchema {
     /// Required. The field name. The name must contain only letters (a-z, A-Z),
@@ -707,6 +732,7 @@ pub struct TableFieldSchema {
 }
 /// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PolicyTagList {
         /// A list of policy tag resource names. For example,
@@ -715,6 +741,7 @@ pub mod table_field_schema {
         #[prost(string, repeated, tag = "1")]
         pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataGovernanceTagsInfo {
         /// Optional. The data governance tags added to this field are used for
@@ -735,6 +762,7 @@ pub mod table_field_schema {
         >,
     }
     /// Represents the type of a field element.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FieldElementType {
         /// Required. The type of a field element. For more information, see
@@ -743,6 +771,7 @@ pub mod table_field_schema {
         pub r#type: ::prost::alloc::string::String,
     }
     /// Definition of the expression used to generate the field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GeneratedExpressionInfo {
         /// Optional. The generation expression (e.g. AI.EMBED(...)) used to generate
@@ -760,6 +789,7 @@ pub mod table_field_schema {
     }
     /// Optional. Definition of how values are generated for the field.
     /// Only valid for top-level schema fields (not nested fields).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GeneratedColumn {
         /// Optional. Dictates when system generated values are used to populate the
@@ -773,6 +803,7 @@ pub mod table_field_schema {
     /// Nested message and enum types in `GeneratedColumn`.
     pub mod generated_column {
         /// Dictates when system generated values are used to populate the field.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -818,6 +849,7 @@ pub mod table_field_schema {
             }
         }
         /// Captures the metadata for the generated column.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Definition {
             /// Definition of the expression used to generate the field.
@@ -827,6 +859,7 @@ pub mod table_field_schema {
     }
     /// Rounding mode options that can be used when storing NUMERIC
     /// or BIGNUMERIC values.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -889,6 +922,7 @@ pub mod table_field_schema {
 /// granted through its dataset (including creation of new resources) requires
 /// read permission to referenced resources, plus write permission to the
 /// authorizing dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatasetAccessEntry {
     /// The dataset this entry applies to
@@ -903,6 +937,7 @@ pub struct DatasetAccessEntry {
 /// Nested message and enum types in `DatasetAccessEntry`.
 pub mod dataset_access_entry {
     /// Indicates the type of resources in a dataset that the entry applies to.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -947,6 +982,7 @@ pub mod dataset_access_entry {
     }
 }
 /// An object that defines dataset access for an entity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Access {
     /// An IAM role ID that should be granted to the user, group,
@@ -1019,6 +1055,7 @@ pub struct Access {
     pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
 /// Represents a BigQuery dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Output only. The resource type.
@@ -1227,6 +1264,7 @@ pub struct Dataset {
 /// Nested message and enum types in `Dataset`.
 pub mod dataset {
     /// Indicates the billing model that will be applied to the dataset.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1272,6 +1310,7 @@ pub mod dataset {
 }
 /// A global tag managed by Resource Manager.
 /// <https://cloud.google.com/iam/docs/tags-access-control#definitions>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcpTag {
     /// Required. The namespaced friendly name of the tag key, e.g.
@@ -1283,6 +1322,7 @@ pub struct GcpTag {
     pub tag_value: ::prost::alloc::string::String,
 }
 /// A dataset source type which refers to another BigQuery dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkedDatasetSource {
     /// The source dataset reference contains project numbers and not project ids.
@@ -1290,6 +1330,7 @@ pub struct LinkedDatasetSource {
     pub source_dataset: ::core::option::Option<DatasetReference>,
 }
 /// Metadata about the Linked Dataset.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkedDatasetMetadata {
     /// Output only. Specifies whether Linked Dataset is currently in a linked
@@ -1300,6 +1341,7 @@ pub struct LinkedDatasetMetadata {
 /// Nested message and enum types in `LinkedDatasetMetadata`.
 pub mod linked_dataset_metadata {
     /// Specifies whether Linked Dataset is currently in a linked state or not.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1346,6 +1388,7 @@ pub mod linked_dataset_metadata {
     }
 }
 /// Request format for getting information about a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. Project ID of the requested dataset
@@ -1390,6 +1433,7 @@ pub struct GetDatasetRequest {
 /// Nested message and enum types in `GetDatasetRequest`.
 pub mod get_dataset_request {
     /// DatasetView specifies which dataset information is returned.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1441,6 +1485,7 @@ pub mod get_dataset_request {
     }
 }
 /// Request format for inserting a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertDatasetRequest {
     /// Required. Project ID of the new dataset
@@ -1473,6 +1518,7 @@ pub struct InsertDatasetRequest {
     pub access_policy_version: i32,
 }
 /// Message for updating or patching a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOrPatchDatasetRequest {
     /// Required. Project ID of the dataset being updated
@@ -1518,6 +1564,7 @@ pub struct UpdateOrPatchDatasetRequest {
 /// Nested message and enum types in `UpdateOrPatchDatasetRequest`.
 pub mod update_or_patch_dataset_request {
     /// UpdateMode specifies which dataset fields is updated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1569,6 +1616,7 @@ pub mod update_or_patch_dataset_request {
     }
 }
 /// Request format for deleting a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. Project ID of the dataset being deleted
@@ -1583,6 +1631,7 @@ pub struct DeleteDatasetRequest {
     #[prost(bool, tag = "3")]
     pub delete_contents: bool,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. Project ID of the datasets to be listed
@@ -1611,6 +1660,7 @@ pub struct ListDatasetsRequest {
 }
 /// A dataset resource with only a subset of fields, to be returned in a list of
 /// datasets.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFormatDataset {
     /// The resource type.
@@ -1662,6 +1712,7 @@ pub struct ListFormatDataset {
     pub external_dataset_reference: ::core::option::Option<ExternalDatasetReference>,
 }
 /// Response format for a page of results when listing datasets.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetList {
     /// Output only. The resource type.
@@ -1690,6 +1741,7 @@ pub struct DatasetList {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request format for undeleting a dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteDatasetRequest {
     /// Required. Project ID of the dataset to be undeleted
@@ -2036,6 +2088,7 @@ pub mod dataset_service_client {
 }
 /// The data types that could be used as a target type when converting decimal
 /// values.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DecimalTargetType {
@@ -2075,6 +2128,7 @@ impl DecimalTargetType {
     }
 }
 /// Error details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorProto {
     /// A short error code that summarizes the error.
@@ -2093,6 +2147,7 @@ pub struct ErrorProto {
 }
 /// Metadata about open source compatible table. The fields contained in
 /// these options correspond to Hive metastore's table-level properties.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalCatalogTableOptions {
     /// Optional. A map of the key-value pairs defining the parameters and
@@ -2118,6 +2173,7 @@ pub struct ExternalCatalogTableOptions {
 }
 /// Contains information about how a table's data is stored and accessed by open
 /// source query engines.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageDescriptor {
     /// Optional. The physical location of the table
@@ -2141,6 +2197,7 @@ pub struct StorageDescriptor {
     pub serde_info: ::core::option::Option<SerDeInfo>,
 }
 /// Serializer and deserializer information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerDeInfo {
     /// Optional. Name of the SerDe.
@@ -2164,6 +2221,7 @@ pub struct SerDeInfo {
 }
 /// This enum defines how to interpret source URIs for load jobs and external
 /// tables.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FileSetSpecType {
@@ -2199,6 +2257,7 @@ impl FileSetSpecType {
     }
 }
 /// Options for configuring hive partitioning detect.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HivePartitioningOptions {
     /// Optional. When set, what mode of hive partitioning to use when reading
@@ -2263,6 +2322,7 @@ pub struct HivePartitioningOptions {
 /// Used to indicate that a JSON variant, rather than normal JSON, is being used
 /// as the source_format. This should only be used in combination with the
 /// JSON source format.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum JsonExtension {
@@ -2293,6 +2353,7 @@ impl JsonExtension {
     }
 }
 /// Indicates the map target type. Only applies to parquet maps.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MapTargetType {
@@ -2324,6 +2385,7 @@ impl MapTargetType {
     }
 }
 /// Options for external data sources.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvroOptions {
     /// Optional. If sourceFormat is set to "AVRO", indicates whether to interpret
@@ -2333,6 +2395,7 @@ pub struct AvroOptions {
     pub use_avro_logical_types: ::core::option::Option<bool>,
 }
 /// Parquet Options for load and make external tables.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ParquetOptions {
     /// Optional. Indicates whether to infer Parquet ENUM logical type as STRING
@@ -2348,6 +2411,7 @@ pub struct ParquetOptions {
     pub map_target_type: i32,
 }
 /// Information related to a CSV data source.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CsvOptions {
     /// Optional. The separator character for fields in a CSV file. The separator
@@ -2447,6 +2511,7 @@ pub struct CsvOptions {
     pub source_column_match: ::prost::alloc::string::String,
 }
 /// Json Options for load and make external tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JsonOptions {
     /// Optional. The character encoding of the data.
@@ -2456,6 +2521,7 @@ pub struct JsonOptions {
     pub encoding: ::prost::alloc::string::String,
 }
 /// Information related to a Bigtable protobuf column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigtableProtoConfig {
     /// Optional. The ID of the Bigtable SchemaBundle resource associated with this
@@ -2472,6 +2538,7 @@ pub struct BigtableProtoConfig {
     pub proto_message_name: ::prost::alloc::string::String,
 }
 /// Information related to a Bigtable column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigtableColumn {
     /// \[Required\] Qualifier of the column.
@@ -2535,6 +2602,7 @@ pub struct BigtableColumn {
     pub proto_config: ::core::option::Option<BigtableProtoConfig>,
 }
 /// Information related to a Bigtable column family.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigtableColumnFamily {
     /// Identifier of the column family.
@@ -2590,6 +2658,7 @@ pub struct BigtableColumnFamily {
     pub proto_config: ::core::option::Option<BigtableProtoConfig>,
 }
 /// Options specific to Google Cloud Bigtable data sources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigtableOptions {
     /// Optional. List of column families to expose in the table schema along with
@@ -2623,6 +2692,7 @@ pub struct BigtableOptions {
     pub output_column_families_as_json: ::core::option::Option<bool>,
 }
 /// Options specific to Google Sheets data sources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleSheetsOptions {
     /// Optional. The number of rows at the top of a sheet that BigQuery will skip
@@ -2646,6 +2716,7 @@ pub struct GoogleSheetsOptions {
     #[prost(string, tag = "2")]
     pub range: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalDataConfiguration {
     /// \[Required\] The fully-qualified URIs that point to your data in Google
@@ -2852,6 +2923,7 @@ pub struct ExternalDataConfiguration {
 /// Nested message and enum types in `ExternalDataConfiguration`.
 pub mod external_data_configuration {
     /// Supported Object Metadata Types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2896,6 +2968,7 @@ pub mod external_data_configuration {
     }
     /// MetadataCacheMode identifies if the table should use metadata caching for
     /// files from external source (eg Google Cloud Storage).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2944,6 +3017,7 @@ pub mod external_data_configuration {
     }
 }
 /// Provides error statistics for a GenAi function call.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiFunctionErrorStats {
     /// A list of unique errors at function level (up to 5, truncated to 100
@@ -2955,6 +3029,7 @@ pub struct GenAiFunctionErrorStats {
     pub num_failed_rows: i64,
 }
 /// Provides cost optimization statistics for a GenAi function call.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiFunctionCostOptimizationStats {
     /// Number of rows inferred via cost optimized workflow.
@@ -2965,6 +3040,7 @@ pub struct GenAiFunctionCostOptimizationStats {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Provides cache statistics for a GenAi function call.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiFunctionCacheStats {
     /// Number of rows served from cache.
@@ -2972,6 +3048,7 @@ pub struct GenAiFunctionCacheStats {
     pub num_cache_hit_rows: ::core::option::Option<i64>,
 }
 /// Provides statistics for each Ai function call within a query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiFunctionStats {
     /// Name of the function.
@@ -2997,6 +3074,7 @@ pub struct GenAiFunctionStats {
     pub cache_stats: ::core::option::Option<GenAiFunctionCacheStats>,
 }
 /// Provides error statistics for the query job across all AI function calls.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenAiErrorStats {
     /// A list of unique errors at query level (up to 5, truncated to 100 chars)
@@ -3004,6 +3082,7 @@ pub struct GenAiErrorStats {
     pub errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GenAi stats for the query job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenAiStats {
     /// Job level error stats across all GenAi functions
@@ -3016,6 +3095,7 @@ pub struct GenAiStats {
     pub function_stats: ::prost::alloc::vec::Vec<GenAiFunctionStats>,
 }
 /// Id path of a model.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ModelReference {
     /// Required. The ID of the project containing this model.
@@ -3031,6 +3111,7 @@ pub struct ModelReference {
     pub model_id: ::prost::alloc::string::String,
 }
 /// The type of a struct parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryParameterStructType {
     /// Optional. The name of this field.
@@ -3044,6 +3125,7 @@ pub struct QueryParameterStructType {
     pub description: ::prost::alloc::string::String,
 }
 /// The type of a query parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryParameterType {
     /// Required. The top level type of this field.
@@ -3074,6 +3156,7 @@ pub struct QueryParameterType {
     >,
 }
 /// Represents the value of a range.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RangeValue {
     /// Optional. The start value of the range. A missing value represents an
@@ -3086,6 +3169,7 @@ pub struct RangeValue {
     pub end: ::core::option::Option<::prost::alloc::boxed::Box<QueryParameterValue>>,
 }
 /// The value of a query parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryParameterValue {
     /// Optional. The value of this value, if a simple scalar type.
@@ -3108,6 +3192,7 @@ pub struct QueryParameterValue {
     pub alt_struct_values: ::prost::alloc::vec::Vec<::prost_types::Value>,
 }
 /// A parameter given to a query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryParameter {
     /// Optional. If unset, this is a positional parameter. Otherwise, should be
@@ -3121,6 +3206,7 @@ pub struct QueryParameter {
     #[prost(message, optional, tag = "3")]
     pub parameter_value: ::core::option::Option<QueryParameterValue>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RangePartitioning {
     /// Required. The name of the column to partition the table on. It must be a
@@ -3134,6 +3220,7 @@ pub struct RangePartitioning {
 /// Nested message and enum types in `RangePartitioning`.
 pub mod range_partitioning {
     /// Defines the ranges for range partitioning.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Range {
         /// Required. The start of range partitioning, inclusive. This field is an
@@ -3192,6 +3279,7 @@ pub mod range_partitioning {
 ///   "typeKind": "RANGE",
 ///   "rangeElementType": {"typeKind": "DATE"}
 ///   }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlDataType {
     /// Required. The top level type of this field.
@@ -3205,6 +3293,7 @@ pub struct StandardSqlDataType {
 /// Nested message and enum types in `StandardSqlDataType`.
 pub mod standard_sql_data_type {
     /// The kind of the datatype.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3311,6 +3400,7 @@ pub mod standard_sql_data_type {
         }
     }
     /// For complex types, the sub type information.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubType {
         /// The type of the array's elements, if type_kind = "ARRAY".
@@ -3325,6 +3415,7 @@ pub mod standard_sql_data_type {
     }
 }
 /// A field or a column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlField {
     /// Optional. The name of this field. Can be absent for struct fields.
@@ -3337,6 +3428,7 @@ pub struct StandardSqlField {
     pub r#type: ::core::option::Option<StandardSqlDataType>,
 }
 /// The representation of a SQL STRUCT type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlStructType {
     /// Fields within the struct.
@@ -3344,6 +3436,7 @@ pub struct StandardSqlStructType {
     pub fields: ::prost::alloc::vec::Vec<StandardSqlField>,
 }
 /// A table type
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlTableType {
     /// The columns in this table type
@@ -3351,6 +3444,7 @@ pub struct StandardSqlTableType {
     pub columns: ::prost::alloc::vec::Vec<StandardSqlField>,
 }
 /// System variables given to a query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemVariables {
     /// Output only. Data type for each system variable.
@@ -3363,6 +3457,7 @@ pub struct SystemVariables {
     #[prost(message, optional, tag = "2")]
     pub values: ::core::option::Option<::prost_types::Struct>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimePartitioning {
     /// Required. The supported types are DAY, HOUR, MONTH, and YEAR, which will
@@ -3389,6 +3484,7 @@ pub struct TimePartitioning {
 ///
 /// For additional information on migrating, see:
 /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/migrating-from-legacy-sql#differences_in_user-defined_javascript_functions>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserDefinedFunctionResource {
     /// \[Pick one\] A code resource to load from a Google Cloud Storage URI
@@ -3402,6 +3498,7 @@ pub struct UserDefinedFunctionResource {
     pub inline_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Properties for the destination table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationTableProperties {
     /// Optional. Friendly name for the destination table. If the table already
@@ -3453,6 +3550,7 @@ pub struct DestinationTableProperties {
 ///
 /// Additional properties are allowed, but ignored. Specifying multiple
 /// connection properties with the same key returns an error.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectionProperty {
     /// The key of the property to set.
@@ -3463,6 +3561,7 @@ pub struct ConnectionProperty {
     pub value: ::prost::alloc::string::String,
 }
 /// JobConfigurationQuery configures a BigQuery query job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfigurationQuery {
     /// \[Required\] SQL query text to execute. The useLegacySql field can be used
@@ -3640,6 +3739,7 @@ pub struct JobConfigurationQuery {
     pub write_incremental_results: bool,
 }
 /// Options related to script execution.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScriptOptions {
     /// Timeout period for each statement in a script.
@@ -3658,6 +3758,7 @@ pub struct ScriptOptions {
 /// Nested message and enum types in `ScriptOptions`.
 pub mod script_options {
     /// KeyResultStatementKind controls how the key result is determined.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3703,6 +3804,7 @@ pub mod script_options {
 }
 /// JobConfigurationLoad contains the configuration properties for loading data
 /// into a destination table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfigurationLoad {
     /// \[Required\] The fully-qualified URIs that point to your data in Google
@@ -4078,6 +4180,7 @@ pub struct JobConfigurationLoad {
 /// Nested message and enum types in `JobConfigurationLoad`.
 pub mod job_configuration_load {
     /// Indicates the character map used for column names.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4126,6 +4229,7 @@ pub mod job_configuration_load {
         }
     }
     /// Indicates the strategy used to match loaded columns to the schema.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4177,6 +4281,7 @@ pub mod job_configuration_load {
 /// to another.
 /// For more information on copying tables, see [Copy a
 /// table](<https://cloud.google.com/bigquery/docs/managing-tables#copy-table>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfigurationTableCopy {
     /// \[Pick one\] Source table to copy.
@@ -4232,6 +4337,7 @@ pub struct JobConfigurationTableCopy {
 /// Nested message and enum types in `JobConfigurationTableCopy`.
 pub mod job_configuration_table_copy {
     /// Indicates different operation types supported in table copy job.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4288,6 +4394,7 @@ pub mod job_configuration_table_copy {
 }
 /// JobConfigurationExtract configures a job that exports data from a BigQuery
 /// table into Google Cloud Storage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobConfigurationExtract {
     /// \[Pick one\] A list of fully-qualified Google Cloud Storage URIs where the
@@ -4333,6 +4440,7 @@ pub struct JobConfigurationExtract {
 /// Nested message and enum types in `JobConfigurationExtract`.
 pub mod job_configuration_extract {
     /// Options related to model extraction.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelExtractOptions {
         /// The 1-based ID of the trial to be exported from a hyperparameter tuning
@@ -4344,6 +4452,7 @@ pub mod job_configuration_extract {
         pub trial_id: ::core::option::Option<i64>,
     }
     /// Required. Source reference for the export.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// A reference to the table being exported.
@@ -4354,6 +4463,7 @@ pub mod job_configuration_extract {
         SourceModel(super::ModelReference),
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfiguration {
     /// Output only. The type of the job. Can be QUERY, LOAD, EXTRACT, COPY or
@@ -4424,6 +4534,7 @@ pub struct JobConfiguration {
 /// For
 /// [`jobs.insert`](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert>)
 /// method calls it will always be `REQUESTED`.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobCreationReason {
     /// Output only. Specifies the high level reason why a Job was created.
@@ -4433,6 +4544,7 @@ pub struct JobCreationReason {
 /// Nested message and enum types in `JobCreationReason`.
 pub mod job_creation_reason {
     /// Indicates the high level reason why a job was created.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4489,6 +4601,7 @@ pub mod job_creation_reason {
     }
 }
 /// A job reference is a fully qualified identifier for referring to a job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobReference {
     /// Required. The ID of the project containing this job.
@@ -4507,6 +4620,7 @@ pub struct JobReference {
     pub location: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Remote Model Info
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoteModelInfo {
     /// Output only. Fully qualified name of the user-provided connection object of
@@ -4538,6 +4652,7 @@ pub struct RemoteModelInfo {
 /// Nested message and enum types in `RemoteModelInfo`.
 pub mod remote_model_info {
     /// Supported service type for remote model.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4595,6 +4710,7 @@ pub mod remote_model_info {
     /// Remote services are services outside of BigQuery used by remote models for
     /// predictions. A remote service is backed by either an arbitrary endpoint or
     /// a selected remote service type, but not both.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RemoteService {
         /// Output only. The endpoint for remote model.
@@ -4606,6 +4722,7 @@ pub mod remote_model_info {
     }
 }
 /// Information about a single transform column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformColumn {
     /// Output only. Name of the column.
@@ -4618,6 +4735,7 @@ pub struct TransformColumn {
     #[prost(string, tag = "3")]
     pub transform_sql: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// Output only. A hash of this resource.
@@ -4719,11 +4837,13 @@ pub struct Model {
 /// Nested message and enum types in `Model`.
 pub mod model {
     /// Enums for seasonal period.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SeasonalPeriod {}
     /// Nested message and enum types in `SeasonalPeriod`.
     pub mod seasonal_period {
         /// Seasonal period type.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4788,12 +4908,14 @@ pub mod model {
         }
     }
     /// Enums for kmeans model type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct KmeansEnums {}
     /// Nested message and enum types in `KmeansEnums`.
     pub mod kmeans_enums {
         /// Indicates the method used to initialize the centroids for KMeans
         /// clustering algorithm.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4843,11 +4965,13 @@ pub mod model {
         }
     }
     /// Enums for XGBoost model type.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BoostedTreeOptionEnums {}
     /// Nested message and enum types in `BoostedTreeOptionEnums`.
     pub mod boosted_tree_option_enums {
         /// Booster types supported. Refer to booster parameter in XGBoost.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4892,6 +5016,7 @@ pub mod model {
         }
         /// Type of normalization algorithm for boosted tree models using dart
         /// booster. Refer to normalize_type in XGBoost.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4936,6 +5061,7 @@ pub mod model {
         }
         /// Tree construction algorithm used in boosted tree models.
         /// Refer to tree_method in XGBoost.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4989,11 +5115,13 @@ pub mod model {
         }
     }
     /// Enums for hyperparameter tuning.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct HparamTuningEnums {}
     /// Nested message and enum types in `HparamTuningEnums`.
     pub mod hparam_tuning_enums {
         /// Available evaluation metrics used as hyperparameter tuning objectives.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -5111,6 +5239,7 @@ pub mod model {
     }
     /// Evaluation metrics for regression and explicit feedback type matrix
     /// factorization models.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RegressionMetrics {
         /// Mean absolute error.
@@ -5135,6 +5264,7 @@ pub mod model {
     /// unweighted average is taken of those values. When micro-averaged, the
     /// metric is calculated globally by counting the total number of correctly
     /// predicted rows.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AggregateClassificationMetrics {
         /// Precision is the fraction of actual positive predictions that had
@@ -5169,6 +5299,7 @@ pub mod model {
         pub roc_auc: ::core::option::Option<f64>,
     }
     /// Evaluation metrics for binary classification/classifier models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BinaryClassificationMetrics {
         /// Aggregate classification metrics.
@@ -5191,6 +5322,7 @@ pub mod model {
     /// Nested message and enum types in `BinaryClassificationMetrics`.
     pub mod binary_classification_metrics {
         /// Confusion matrix for binary classification models.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BinaryConfusionMatrix {
             /// Threshold value used when computing each of the following metric.
@@ -5225,6 +5357,7 @@ pub mod model {
         }
     }
     /// Evaluation metrics for multi-class classification/classifier models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MultiClassClassificationMetrics {
         /// Aggregate classification metrics.
@@ -5241,6 +5374,7 @@ pub mod model {
     /// Nested message and enum types in `MultiClassClassificationMetrics`.
     pub mod multi_class_classification_metrics {
         /// Confusion matrix for multi-class classification models.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ConfusionMatrix {
             /// Confidence threshold used when computing the entries of the
@@ -5254,6 +5388,7 @@ pub mod model {
         /// Nested message and enum types in `ConfusionMatrix`.
         pub mod confusion_matrix {
             /// A single entry in the confusion matrix.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Entry {
                 /// The predicted label. For confidence_threshold > 0, we will
@@ -5266,6 +5401,7 @@ pub mod model {
                 pub item_count: ::core::option::Option<i64>,
             }
             /// A single row in the confusion matrix.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Row {
                 /// The original label of this row.
@@ -5278,6 +5414,7 @@ pub mod model {
         }
     }
     /// Evaluation metrics for clustering models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusteringMetrics {
         /// Davies-Bouldin index.
@@ -5293,6 +5430,7 @@ pub mod model {
     /// Nested message and enum types in `ClusteringMetrics`.
     pub mod clustering_metrics {
         /// Message containing the information about one cluster.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Cluster {
             /// Centroid id.
@@ -5308,6 +5446,7 @@ pub mod model {
         /// Nested message and enum types in `Cluster`.
         pub mod cluster {
             /// Representative value of a single feature within the cluster.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct FeatureValue {
                 /// The feature column name.
@@ -5320,6 +5459,7 @@ pub mod model {
             /// Nested message and enum types in `FeatureValue`.
             pub mod feature_value {
                 /// Representative value of a categorical feature.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct CategoricalValue {
                     /// Counts of all categories for the categorical feature. If there are
@@ -5334,6 +5474,7 @@ pub mod model {
                 /// Nested message and enum types in `CategoricalValue`.
                 pub mod categorical_value {
                     /// Represents the count of a single category within the cluster.
+                    #[allow(clippy::all)]
                     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
                     pub struct CategoryCount {
                         /// The name of category.
@@ -5346,6 +5487,7 @@ pub mod model {
                     }
                 }
                 /// Value.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Value {
                     /// The numerical feature value. This is the centroid value for this
@@ -5361,6 +5503,7 @@ pub mod model {
     }
     /// Evaluation metrics used by weighted-ALS models specified by
     /// feedback_type=implicit.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RankingMetrics {
         /// Calculates a precision per user for all the items by ranking them and
@@ -5384,6 +5527,7 @@ pub mod model {
         pub average_rank: ::core::option::Option<f64>,
     }
     /// Model evaluation metrics for ARIMA forecasting models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArimaForecastingMetrics {
         /// Repeated as there can be many metric sets (one for each model) in
@@ -5396,6 +5540,7 @@ pub mod model {
     /// Nested message and enum types in `ArimaForecastingMetrics`.
     pub mod arima_forecasting_metrics {
         /// Model evaluation metrics for a single ARIMA forecasting model.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ArimaSingleModelForecastingMetrics {
             /// Non-seasonal order.
@@ -5446,6 +5591,7 @@ pub mod model {
         }
     }
     /// Model evaluation metrics for dimensionality reduction models.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DimensionalityReductionMetrics {
         /// Total percentage of variance explained by the selected principal
@@ -5456,6 +5602,7 @@ pub mod model {
     /// Evaluation metrics of a model. These are either computed on all training
     /// data or just the eval data based on whether eval data was used during
     /// training. These are not present for imported models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EvaluationMetrics {
         /// Metrics.
@@ -5465,6 +5612,7 @@ pub mod model {
     /// Nested message and enum types in `EvaluationMetrics`.
     pub mod evaluation_metrics {
         /// Metrics.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Metrics {
             /// Populated for regression models and explicit feedback type matrix
@@ -5494,6 +5642,7 @@ pub mod model {
     }
     /// Data split result. This contains references to the training and evaluation
     /// data tables that were used to train the model.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DataSplitResult {
         /// Table reference of the training data after split.
@@ -5507,6 +5656,7 @@ pub mod model {
         pub test_table: ::core::option::Option<super::TableReference>,
     }
     /// Arima order, can be used for both non-seasonal and seasonal parts.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ArimaOrder {
         /// Order of the autoregressive part.
@@ -5520,6 +5670,7 @@ pub mod model {
         pub q: ::core::option::Option<i64>,
     }
     /// ARIMA model fitting metrics.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ArimaFittingMetrics {
         /// Log-likelihood.
@@ -5534,6 +5685,7 @@ pub mod model {
     }
     /// Global explanations containing the top most important features
     /// after training.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GlobalExplanation {
         /// A list of the top global explanations. Sorted by absolute value of
@@ -5549,6 +5701,7 @@ pub mod model {
     /// Nested message and enum types in `GlobalExplanation`.
     pub mod global_explanation {
         /// Explanation for a single feature.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Explanation {
             /// The full feature name. For non-numerical features, will be formatted
@@ -5562,11 +5715,13 @@ pub mod model {
         }
     }
     /// Encoding methods for categorical features.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CategoryEncodingMethod {}
     /// Nested message and enum types in `CategoryEncodingMethod`.
     pub mod category_encoding_method {
         /// Supported encoding methods for categorical features.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -5615,11 +5770,13 @@ pub mod model {
         }
     }
     /// PCA solver options.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PcaSolverOptionEnums {}
     /// Nested message and enum types in `PcaSolverOptionEnums`.
     pub mod pca_solver_option_enums {
         /// Enums for supported PCA solvers.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -5668,11 +5825,13 @@ pub mod model {
         }
     }
     /// Model registry options.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelRegistryOptionEnums {}
     /// Nested message and enum types in `ModelRegistryOptionEnums`.
     pub mod model_registry_option_enums {
         /// Enums for supported model registries.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -5713,6 +5872,7 @@ pub mod model {
         }
     }
     /// Information about a single training query run for the model.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrainingRun {
         /// Output only. Options that were used for this training run, includes
@@ -5756,6 +5916,7 @@ pub mod model {
     /// Nested message and enum types in `TrainingRun`.
     pub mod training_run {
         /// Options used in model training.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TrainingOptions {
             /// The maximum number of iterations in training. Used only for iterative
@@ -6195,6 +6356,7 @@ pub mod model {
         pub mod training_options {
             /// Supported reservation affinity types to configure a Vertex AI
             /// resource.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -6244,6 +6406,7 @@ pub mod model {
                 }
             }
             /// The id that uniquely identifies an external model.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum ExternalModelId {
                 /// The id of a Hugging Face model. For example, `google/gemma-2-2b-it`.
@@ -6256,6 +6419,7 @@ pub mod model {
             }
         }
         /// Information about a single iteration of the training run.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IterationResult {
             /// Index of the iteration, 0 based.
@@ -6288,6 +6452,7 @@ pub mod model {
         /// Nested message and enum types in `IterationResult`.
         pub mod iteration_result {
             /// Information about a single cluster for clustering model.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct ClusterInfo {
                 /// Centroid id.
@@ -6303,6 +6468,7 @@ pub mod model {
             }
             /// (Auto-)arima fitting result. Wrap everything in ArimaResult for easier
             /// refactoring if we want to use model-specific iteration results.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ArimaResult {
                 /// This message is repeated because there are multiple arima models
@@ -6323,6 +6489,7 @@ pub mod model {
             /// Nested message and enum types in `ArimaResult`.
             pub mod arima_result {
                 /// Arima coefficients.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct ArimaCoefficients {
                     /// Auto-regressive coefficients, an array of double.
@@ -6336,6 +6503,7 @@ pub mod model {
                     pub intercept_coefficient: ::core::option::Option<f64>,
                 }
                 /// Arima model information.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct ArimaModelInfo {
                     /// Non-seasonal order.
@@ -6396,6 +6564,7 @@ pub mod model {
             /// Principal component infos, used only for eigen decomposition based
             /// models, e.g., PCA. Ordered by explained_variance in the descending
             /// order.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct PrincipalComponentInfo {
                 /// Id of the principal component.
@@ -6416,6 +6585,7 @@ pub mod model {
         }
     }
     /// Search space for a double hyperparameter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DoubleHparamSearchSpace {
         /// Search space.
@@ -6427,6 +6597,7 @@ pub mod model {
     /// Nested message and enum types in `DoubleHparamSearchSpace`.
     pub mod double_hparam_search_space {
         /// Range of a double hyperparameter.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DoubleRange {
             /// Min value of the double parameter.
@@ -6437,6 +6608,7 @@ pub mod model {
             pub max: ::core::option::Option<f64>,
         }
         /// Discrete candidates of a double hyperparameter.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DoubleCandidates {
             /// Candidates for the double parameter in increasing order.
@@ -6444,6 +6616,7 @@ pub mod model {
             pub candidates: ::prost::alloc::vec::Vec<f64>,
         }
         /// Search space.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum SearchSpace {
             /// Range of the double hyperparameter.
@@ -6455,6 +6628,7 @@ pub mod model {
         }
     }
     /// Search space for an int hyperparameter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IntHparamSearchSpace {
         /// Search space.
@@ -6464,6 +6638,7 @@ pub mod model {
     /// Nested message and enum types in `IntHparamSearchSpace`.
     pub mod int_hparam_search_space {
         /// Range of an int hyperparameter.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct IntRange {
             /// Min value of the int parameter.
@@ -6474,6 +6649,7 @@ pub mod model {
             pub max: ::core::option::Option<i64>,
         }
         /// Discrete candidates of an int hyperparameter.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IntCandidates {
             /// Candidates for the int parameter in increasing order.
@@ -6481,6 +6657,7 @@ pub mod model {
             pub candidates: ::prost::alloc::vec::Vec<i64>,
         }
         /// Search space.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum SearchSpace {
             /// Range of the int hyperparameter.
@@ -6492,6 +6669,7 @@ pub mod model {
         }
     }
     /// Search space for string and enum.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringHparamSearchSpace {
         /// Canididates for the string or enum parameter in lower case.
@@ -6499,6 +6677,7 @@ pub mod model {
         pub candidates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Search space for int array.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IntArrayHparamSearchSpace {
         /// Candidates for the int array parameter.
@@ -6510,6 +6689,7 @@ pub mod model {
     /// Nested message and enum types in `IntArrayHparamSearchSpace`.
     pub mod int_array_hparam_search_space {
         /// An array of int.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct IntArray {
             /// Elements in the int array.
@@ -6519,6 +6699,7 @@ pub mod model {
     }
     /// Hyperparameter search spaces.
     /// These should be a subset of training_options.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HparamSearchSpaces {
         /// Learning rate of training jobs.
@@ -6595,6 +6776,7 @@ pub mod model {
     /// Training info of a trial in [hyperparameter
     /// tuning](<https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-hp-tuning-overview>)
     /// models.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HparamTuningTrial {
         /// 1-based index of the trial.
@@ -6634,6 +6816,7 @@ pub mod model {
     /// Nested message and enum types in `HparamTuningTrial`.
     pub mod hparam_tuning_trial {
         /// Current status of the trial.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -6694,6 +6877,7 @@ pub mod model {
         }
     }
     /// Indicates the type of the Model.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6832,6 +7016,7 @@ pub mod model {
         }
     }
     /// Loss metric to evaluate model training performance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6875,6 +7060,7 @@ pub mod model {
         }
     }
     /// Distance metric used to compute the distance between two points.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6918,6 +7104,7 @@ pub mod model {
         }
     }
     /// Indicates the method to split input data into multiple tables.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6974,6 +7161,7 @@ pub mod model {
         }
     }
     /// Type of supported data frequency for time series forecasting models.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7041,6 +7229,7 @@ pub mod model {
         }
     }
     /// Type of supported holiday regions for time series forecasting models.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7351,6 +7540,7 @@ pub mod model {
     /// Enums for color space, used for processing images in Object Table.
     /// See more details at
     /// <https://www.tensorflow.org/io/tutorials/colorspace.>
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7406,6 +7596,7 @@ pub mod model {
         }
     }
     /// Indicates the learning rate optimization strategy to use.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7449,6 +7640,7 @@ pub mod model {
         }
     }
     /// Indicates the optimization strategy used for training.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7492,6 +7684,7 @@ pub mod model {
         }
     }
     /// Indicates the training algorithm to use for matrix factorization models.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7536,6 +7729,7 @@ pub mod model {
     }
 }
 /// Request format for getting information about a BigQuery ML model.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. Project ID of the requested model.
@@ -7548,6 +7742,7 @@ pub struct GetModelRequest {
     #[prost(string, tag = "3")]
     pub model_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchModelRequest {
     /// Required. Project ID of the model to patch.
@@ -7566,6 +7761,7 @@ pub struct PatchModelRequest {
     pub model: ::core::option::Option<Model>,
 }
 /// Request format for deleting BigQuery ML models.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteModelRequest {
     /// Required. Project ID of the model to delete.
@@ -7579,6 +7775,7 @@ pub struct DeleteModelRequest {
     pub model_id: ::prost::alloc::string::String,
 }
 /// Request format for listing BigQuery ML models.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. Project ID of the models to list.
@@ -7597,6 +7794,7 @@ pub struct ListModelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response format for a single page when listing BigQuery ML models.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// Models in the requested dataset. Only the following fields are populated:
@@ -7829,6 +8027,7 @@ pub mod model_service_client {
     }
 }
 /// Id path of a property graph.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropertyGraphReference {
     /// Required. The ID of the project containing this property graph.
@@ -7844,6 +8043,7 @@ pub struct PropertyGraphReference {
     pub property_graph_id: ::prost::alloc::string::String,
 }
 /// Id path of a row access policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowAccessPolicyReference {
     /// Required. The ID of the project containing this row access policy.
@@ -7862,6 +8062,7 @@ pub struct RowAccessPolicyReference {
     pub policy_id: ::prost::alloc::string::String,
 }
 /// \[Preview\] Information related to sessions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionInfo {
     /// Output only. The id of the session.
@@ -7869,6 +8070,7 @@ pub struct SessionInfo {
     pub session_id: ::prost::alloc::string::String,
 }
 /// An operation within a stage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExplainQueryStep {
     /// Machine-readable operation type.
@@ -7879,6 +8081,7 @@ pub struct ExplainQueryStep {
     pub substeps: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A single stage of query execution.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainQueryStage {
     /// Human-readable name for the stage.
@@ -7981,6 +8184,7 @@ pub struct ExplainQueryStage {
 /// Nested message and enum types in `ExplainQueryStage`.
 pub mod explain_query_stage {
     /// Indicates the type of compute mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8025,6 +8229,7 @@ pub mod explain_query_stage {
     }
 }
 /// Summary of the state of query execution at a given time.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QueryTimelineSample {
     /// Milliseconds elapsed since the start of query execution.
@@ -8065,6 +8270,7 @@ pub struct QueryTimelineSample {
 /// not directly correlate to these metrics, but these are the equivalents for
 /// billing purposes.
 /// Output only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalServiceCost {
     /// External service name.
@@ -8092,6 +8298,7 @@ pub struct ExternalServiceCost {
 }
 /// Statistics for the EXPORT DATA statement as part of Query Job. EXTRACT
 /// JOB statistics are populated in JobStatistics4.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataStatistics {
     /// Number of destination files generated in case of EXPORT DATA
@@ -8104,6 +8311,7 @@ pub struct ExportDataStatistics {
     pub row_count: ::core::option::Option<i64>,
 }
 /// Reason why BI Engine didn't accelerate the query (or sub-query).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BiEngineReason {
     /// Output only. High-level BI Engine reason for partial or disabled
@@ -8118,6 +8326,7 @@ pub struct BiEngineReason {
 /// Nested message and enum types in `BiEngineReason`.
 pub mod bi_engine_reason {
     /// Indicates the high-level reason for no/partial acceleration
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8179,6 +8388,7 @@ pub mod bi_engine_reason {
 }
 /// Statistics for a BI Engine specific query.
 /// Populated as part of JobStatistics2
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiEngineStatistics {
     /// Output only. Specifies which mode of BI Engine acceleration was performed
@@ -8198,6 +8408,7 @@ pub struct BiEngineStatistics {
 /// Nested message and enum types in `BiEngineStatistics`.
 pub mod bi_engine_statistics {
     /// Indicates the type of BI Engine acceleration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8250,6 +8461,7 @@ pub mod bi_engine_statistics {
         }
     }
     /// Indicates the type of BI Engine acceleration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8306,6 +8518,7 @@ pub mod bi_engine_statistics {
 }
 /// Reason about why no search index was used in the search query (or
 /// sub-query).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexUnusedReason {
     /// Specifies the high-level reason for the scenario when no search index was
@@ -8328,6 +8541,7 @@ pub struct IndexUnusedReason {
 pub mod index_unused_reason {
     /// Indicates the high-level reason for the scenario when no search index was
     /// used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8489,6 +8703,7 @@ pub mod index_unused_reason {
     }
 }
 /// Statistics for index pruning.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexPruningStats {
     /// The base table reference.
@@ -8505,6 +8720,7 @@ pub struct IndexPruningStats {
     pub post_index_pruning_parallel_input_count: ::core::option::Option<i64>,
 }
 /// Indicates the stored columns usage in the query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredColumnsUsage {
     /// Specifies whether the query was accelerated with stored columns.
@@ -8522,6 +8738,7 @@ pub struct StoredColumnsUsage {
 /// Nested message and enum types in `StoredColumnsUsage`.
 pub mod stored_columns_usage {
     /// If the stored column was not used, explain why.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StoredColumnsUnusedReason {
         /// Specifies the high-level reason for the unused scenario, each reason must
@@ -8541,6 +8758,7 @@ pub mod stored_columns_usage {
     pub mod stored_columns_unused_reason {
         /// Indicates the high-level reason for the scenario when stored columns
         /// cannot be used in the query.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -8608,6 +8826,7 @@ pub mod stored_columns_usage {
 }
 /// Statistics for a search query.
 /// Populated as part of JobStatistics2.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchStatistics {
     /// Specifies the index usage mode for the query.
@@ -8631,6 +8850,7 @@ pub mod search_statistics {
     /// this context, "usage" means that an index lookup is attempted to prune
     /// base table data, with effectiveness depending on the selectivity of the
     /// search term.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8685,6 +8905,7 @@ pub mod search_statistics {
 }
 /// Statistics for a vector search query.
 /// Populated as part of JobStatistics2.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VectorSearchStatistics {
     /// Specifies the index usage mode for the query.
@@ -8703,6 +8924,7 @@ pub struct VectorSearchStatistics {
 /// Nested message and enum types in `VectorSearchStatistics`.
 pub mod vector_search_statistics {
     /// Indicates the type of vector index usage in the entire vector search query.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8757,6 +8979,7 @@ pub mod vector_search_statistics {
     }
 }
 /// Query optimization information for a QUERY job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryInfo {
     /// Output only. Information about query optimizations.
@@ -8764,6 +8987,7 @@ pub struct QueryInfo {
     pub optimization_details: ::core::option::Option<::prost_types::Struct>,
 }
 /// Statistics for a LOAD query.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoadQueryStatistics {
     /// Output only. Number of source files in a LOAD query.
@@ -8791,6 +9015,7 @@ pub struct LoadQueryStatistics {
 }
 /// Statistics related to Incremental Query Results. Populated as part of
 /// JobStatistics2. This feature is not yet available.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IncrementalResultStats {
     /// Output only. Reason why incremental query results are/were not written by
@@ -8827,6 +9052,7 @@ pub struct IncrementalResultStats {
 /// Nested message and enum types in `IncrementalResultStats`.
 pub mod incremental_result_stats {
     /// Reason why incremental query results are/were not written by the query.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8872,6 +9098,7 @@ pub mod incremental_result_stats {
     }
 }
 /// Statistics for a query job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics2 {
     /// Output only. Describes execution plan for the query.
@@ -9140,6 +9367,7 @@ pub struct JobStatistics2 {
     pub object_storage_stats: ::prost::alloc::vec::Vec<ObjectStorageStats>,
 }
 /// Storage and caching statistics for object storage.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectStorageStats {
     /// The cloud provider for this block of statistics.
@@ -9156,6 +9384,7 @@ pub struct ObjectStorageStats {
 /// Nested message and enum types in `ObjectStorageStats`.
 pub mod object_storage_stats {
     /// The cloud provider hosting the object storage.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9204,6 +9433,7 @@ pub mod object_storage_stats {
     }
 }
 /// Statistics for a load job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics3 {
     /// Output only. Number of source files in a load job.
@@ -9232,6 +9462,7 @@ pub struct JobStatistics3 {
     pub timeline: ::prost::alloc::vec::Vec<QueryTimelineSample>,
 }
 /// Statistics for an extract job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics4 {
     /// Output only. Number of files per destination URI or URI pattern
@@ -9250,6 +9481,7 @@ pub struct JobStatistics4 {
     pub timeline: ::prost::alloc::vec::Vec<QueryTimelineSample>,
 }
 /// Statistics for a copy job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CopyJobStatistics {
     /// Output only. Number of rows copied to the destination table.
@@ -9264,6 +9496,7 @@ pub struct CopyJobStatistics {
     pub remote_destination_region: ::prost::alloc::string::String,
 }
 /// Job statistics specific to a BigQuery ML training job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MlStatistics {
     /// Output only. Maximum number of iterations specified as max_iterations in
@@ -9293,6 +9526,7 @@ pub struct MlStatistics {
 /// Nested message and enum types in `MlStatistics`.
 pub mod ml_statistics {
     /// Training type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9338,6 +9572,7 @@ pub mod ml_statistics {
     }
 }
 /// Job statistics specific to the child job of a script.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScriptStatistics {
     /// Whether this child job was a statement or expression.
@@ -9366,6 +9601,7 @@ pub mod script_statistics {
     ///   characters, plus 1. For example, a TAB on column 1, 2, 3, 4, 5, 6 , or 8
     ///   will advance the next character to column 9.  A TAB on column 9, 10, 11,
     ///   12, 13, 14, 15, or 16 will advance the next character to column 17.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ScriptStackFrame {
         /// Output only. One-based start line.
@@ -9389,6 +9625,7 @@ pub mod script_statistics {
         pub text: ::prost::alloc::string::String,
     }
     /// Describes how the job is evaluated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9433,6 +9670,7 @@ pub mod script_statistics {
     }
 }
 /// Statistics for row-level security.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowLevelSecurityStatistics {
     /// Whether any accessed data was protected by row access policies.
@@ -9440,6 +9678,7 @@ pub struct RowLevelSecurityStatistics {
     pub row_level_security_applied: bool,
 }
 /// Statistics for data-masking.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataMaskingStatistics {
     /// Whether any accessed data was protected by the data masking.
@@ -9447,6 +9686,7 @@ pub struct DataMaskingStatistics {
     pub data_masking_applied: bool,
 }
 /// Statistics for a single job execution.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics {
     /// Output only. Creation time of this job, in milliseconds since the epoch.
@@ -9551,6 +9791,7 @@ pub struct JobStatistics {
 /// Nested message and enum types in `JobStatistics`.
 pub mod job_statistics {
     /// \[Alpha\] Information of a multi-statement transaction.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TransactionInfo {
         /// Output only. \[Alpha\] Id of the transaction.
@@ -9559,6 +9800,7 @@ pub mod job_statistics {
     }
 }
 /// Detailed statistics for DML statements
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DmlStats {
     /// Output only. Number of inserted Rows. Populated by DML INSERT and MERGE
@@ -9583,6 +9825,7 @@ pub struct DmlStats {
 /// Nested message and enum types in `DmlStats`.
 pub mod dml_stats {
     /// Enum to specify the DML mode used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9627,6 +9870,7 @@ pub mod dml_stats {
     }
     /// Reason for disabling fine-grained DML. Additional values may be added in
     /// the future.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9680,6 +9924,7 @@ pub mod dml_stats {
     }
 }
 /// Performance insights for the job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PerformanceInsights {
     /// Output only. Average execution ms of previous runs. Indicates the job ran
@@ -9706,6 +9951,7 @@ pub struct PerformanceInsights {
 }
 /// Performance insights compared to the previous executions for a specific
 /// stage.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StagePerformanceChangeInsight {
     /// Output only. The stage id that the insight mapped to.
@@ -9716,6 +9962,7 @@ pub struct StagePerformanceChangeInsight {
     pub input_data_change: ::core::option::Option<InputDataChange>,
 }
 /// Details about the input data change insight.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InputDataChange {
     /// Output only. Records read difference percentage compared to a previous run.
@@ -9723,6 +9970,7 @@ pub struct InputDataChange {
     pub records_read_diff_percentage: f32,
 }
 /// Standalone performance insights for a specific stage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StagePerformanceStandaloneInsight {
     /// Output only. The stage id that the insight mapped to.
@@ -9746,6 +9994,7 @@ pub struct StagePerformanceStandaloneInsight {
     pub partition_skew: ::core::option::Option<PartitionSkew>,
 }
 /// High cardinality join detailed information.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HighCardinalityJoin {
     /// Output only. Count of left input rows.
@@ -9762,6 +10011,7 @@ pub struct HighCardinalityJoin {
     pub step_index: i32,
 }
 /// Partition skew detailed information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionSkew {
     /// Output only. Source stages which produce skewed data.
@@ -9771,6 +10021,7 @@ pub struct PartitionSkew {
 /// Nested message and enum types in `PartitionSkew`.
 pub mod partition_skew {
     /// Details about source stages which produce skewed data.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkewSource {
         /// Output only. Stage id of the skew source stage.
@@ -9790,6 +10041,7 @@ pub mod partition_skew {
 }
 /// Table-level performance insights compared to previous runs. These insights
 /// don't apply to specific query stages, rather they apply to the whole table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableChangeInsight {
     /// Output only. The table that was queried.
@@ -9808,6 +10060,7 @@ pub struct TableChangeInsight {
     pub metadata_cache_not_used_but_used_previously: ::core::option::Option<bool>,
 }
 /// Column Metadata Index staleness detailed infnormation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MetadataCacheStalenessInsight {
     /// Output only. Average column metadata index staleness of previous runs with
@@ -9821,6 +10074,7 @@ pub struct MetadataCacheStalenessInsight {
 }
 /// Statistics for a BigSpark query.
 /// Populated as part of JobStatistics2
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkStatistics {
     /// Output only. Spark job ID if a Spark job is created successfully.
@@ -9874,6 +10128,7 @@ pub struct SparkStatistics {
 /// Nested message and enum types in `SparkStatistics`.
 pub mod spark_statistics {
     /// Spark job logs can be filtered by these fields in Cloud Logging.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LoggingInfo {
         /// Output only. Resource type used for logging.
@@ -9885,6 +10140,7 @@ pub mod spark_statistics {
     }
 }
 /// Statistics of materialized views considered in a query job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializedViewStatistics {
     /// Materialized views considered for the query job. Only certain materialized
@@ -9896,6 +10152,7 @@ pub struct MaterializedViewStatistics {
     pub materialized_view: ::prost::alloc::vec::Vec<MaterializedView>,
 }
 /// A materialized view considered for a query job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaterializedView {
     /// The candidate materialized view.
@@ -9923,6 +10180,7 @@ pub mod materialized_view {
     /// Reason why a materialized view was not chosen for a query. For more
     /// information, see [Understand why materialized views were
     /// rejected](<https://cloud.google.com/bigquery/docs/materialized-views-use#understand-rejected>).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10027,6 +10285,7 @@ pub mod materialized_view {
     }
 }
 /// The column metadata index pruning statistics.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PruningStats {
     /// The number of partitions matched.
@@ -10041,6 +10300,7 @@ pub struct PruningStats {
 }
 /// Table level detail on the usage of metadata caching. Only set for Metadata
 /// caching eligible tables referenced in the query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableMetadataCacheUsage {
     /// Metadata caching eligible table referenced in the query.
@@ -10072,6 +10332,7 @@ pub struct TableMetadataCacheUsage {
 /// Nested message and enum types in `TableMetadataCacheUsage`.
 pub mod table_metadata_cache_usage {
     /// Reasons for not using metadata caching.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10122,6 +10383,7 @@ pub mod table_metadata_cache_usage {
     }
 }
 /// Statistics for metadata caching in queried tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataCacheStatistics {
     /// Set for the Metadata caching eligible tables referenced in the query.
@@ -10131,6 +10393,7 @@ pub struct MetadataCacheStatistics {
 /// The type of editions.
 /// Different features and behaviors are provided to different editions
 /// Capacity commitments and reservations are linked to editions.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ReservationEdition {
@@ -10167,6 +10430,7 @@ impl ReservationEdition {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatus {
     /// Output only. Final error result of the job. If present, indicates that the
@@ -10184,6 +10448,7 @@ pub struct JobStatus {
     #[prost(string, tag = "3")]
     pub state: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Output only. The type of the resource.
@@ -10225,6 +10490,7 @@ pub struct Job {
     pub job_creation_reason: ::core::option::Option<JobCreationReason>,
 }
 /// Describes format of a jobs cancellation request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelJobRequest {
     /// Required. Project ID of the job to cancel
@@ -10246,6 +10512,7 @@ pub struct CancelJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes format of a jobs cancellation response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobCancelResponse {
     /// The resource type of the response.
@@ -10256,6 +10523,7 @@ pub struct JobCancelResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Describes format of a jobs get request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. Project ID of the requested job.
@@ -10279,6 +10547,7 @@ pub struct GetJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes format of a job insertion request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertJobRequest {
     /// Project ID of project that will be billed for the job.
@@ -10289,6 +10558,7 @@ pub struct InsertJobRequest {
     pub job: ::core::option::Option<Job>,
 }
 /// Describes the format of a jobs deletion request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. Project ID of the job for which metadata is to be deleted.
@@ -10309,6 +10579,7 @@ pub struct DeleteJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes the format of the list jobs request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Project ID of the jobs to list.
@@ -10347,6 +10618,7 @@ pub struct ListJobsRequest {
 /// Nested message and enum types in `ListJobsRequest`.
 pub mod list_jobs_request {
     /// Projection is used to control what job information is returned.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10386,6 +10658,7 @@ pub mod list_jobs_request {
         }
     }
     /// StateFilter allows filtration by job execution state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10431,6 +10704,7 @@ pub mod list_jobs_request {
 }
 /// ListFormatJob is a partial projection of job information returned as part
 /// of a jobs.list response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFormatJob {
     /// Unique opaque ID of the job.
@@ -10469,6 +10743,7 @@ pub struct ListFormatJob {
     pub principal_subject: ::prost::alloc::string::String,
 }
 /// JobList is the response format for a jobs.list call.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobList {
     /// A hash of this page of results.
@@ -10490,6 +10765,7 @@ pub struct JobList {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request object of GetQueryResults.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQueryResultsRequest {
     /// Required. Project ID of the query job.
@@ -10542,6 +10818,7 @@ pub struct GetQueryResultsRequest {
     pub format_options: ::core::option::Option<DataFormatOptions>,
 }
 /// Response object of GetQueryResults.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetQueryResultsResponse {
     /// The resource type of the response.
@@ -10604,6 +10881,7 @@ pub struct GetQueryResultsResponse {
     pub num_dml_affected_rows: ::core::option::Option<i64>,
 }
 /// Request format for the query request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostQueryRequest {
     /// Required. Project ID of the query request.
@@ -10614,6 +10892,7 @@ pub struct PostQueryRequest {
     pub query_request: ::core::option::Option<QueryRequest>,
 }
 /// Describes the format of the jobs.query request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequest {
     /// The resource type of the request.
@@ -10813,6 +11092,7 @@ pub struct QueryRequest {
 /// Nested message and enum types in `QueryRequest`.
 pub mod query_request {
     /// Job Creation Mode provides different options on job creation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10862,6 +11142,7 @@ pub mod query_request {
     /// The format of the query results.
     ///
     /// This feature is not yet available.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10910,6 +11191,7 @@ pub mod query_request {
     /// `STRUCT_ENCODING`.
     ///
     /// This feature is not yet available.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResultsFormatSerializationOptions {
         /// Optional. Options specific to the Apache Arrow output format.
@@ -10917,6 +11199,7 @@ pub mod query_request {
         ArrowSerializationOptions(super::ArrowSerializationOptions),
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResponse {
     /// The resource type.
@@ -11141,6 +11424,7 @@ pub mod query_response {
     /// than default `STRUCT_ENCODING`.
     ///
     /// This feature is not yet available.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResultsSchema {
         /// Output only. Arrow schema
@@ -11151,6 +11435,7 @@ pub mod query_response {
     /// specified with value other than default `STRUCT_ENCODING`.
     ///
     /// This feature is not yet available.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Results {
         /// Output only. Serialized row data in Arrow RecordBatch format.
@@ -11512,6 +11797,7 @@ pub mod job_service_client {
 /// BigQuery-specific metadata about a location. This will be set on
 /// google.cloud.location.Location.metadata in Cloud Location API
 /// responses.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationMetadata {
     /// The legacy BigQuery location ID, e.g. “EU” for the “europe” location.
@@ -11520,6 +11806,7 @@ pub struct LocationMetadata {
     pub legacy_location_id: ::prost::alloc::string::String,
 }
 /// The classification of managed table types that can be created.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ManagedTableType {
@@ -11554,6 +11841,7 @@ impl ManagedTableType {
 }
 /// The partitioning information, which includes managed table, external table
 /// and metastore partitioned table partition information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitioningDefinition {
     /// Optional. Details about each partitioning column. This field is output only
@@ -11572,6 +11860,7 @@ pub struct PartitioningDefinition {
     pub partitioned_column: ::prost::alloc::vec::Vec<PartitionedColumn>,
 }
 /// The partitioning column information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PartitionedColumn {
     /// Required. The name of the partition column.
@@ -11579,6 +11868,7 @@ pub struct PartitionedColumn {
     pub field: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents privacy policy associated with "aggregation threshold" method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregationThresholdPolicy {
     /// Optional. The threshold for the "aggregation threshold" policy.
@@ -11595,6 +11885,7 @@ pub struct AggregationThresholdPolicy {
     pub privacy_unit_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents privacy policy associated with "differential privacy" method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DifferentialPrivacyPolicy {
     /// Optional. The maximum epsilon value that a query can consume. If the
@@ -11665,6 +11956,7 @@ pub struct DifferentialPrivacyPolicy {
 /// Represents privacy policy associated with "join restrictions". Join
 /// restriction gives data providers the ability to enforce joins on the
 /// 'join_allowed_columns' when data is queried from a privacy protected view.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JoinRestrictionPolicy {
     /// Optional. Specifies if a join is required or not on queries for the view.
@@ -11680,6 +11972,7 @@ pub struct JoinRestrictionPolicy {
 /// Nested message and enum types in `JoinRestrictionPolicy`.
 pub mod join_restriction_policy {
     /// Enum for Join Restrictions policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11734,6 +12027,7 @@ pub mod join_restriction_policy {
 }
 /// Represents privacy policy that contains the privacy requirements specified by
 /// the data owner. Currently, this is only supported on views.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivacyPolicy {
     /// Optional. Join restriction policy is outside of the one of policies, since
@@ -11751,6 +12045,7 @@ pub struct PrivacyPolicy {
 pub mod privacy_policy {
     /// Privacy policy associated with this requirement specification. Only one of
     /// the privacy methods is allowed per data source object.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PrivacyPolicy {
         /// Optional. Policy used for aggregation thresholds.
@@ -11762,6 +12057,7 @@ pub mod privacy_policy {
     }
 }
 /// Request object of GetServiceAccount
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceAccountRequest {
     /// Required. ID of the project.
@@ -11769,6 +12065,7 @@ pub struct GetServiceAccountRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Response object of GetServiceAccount
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceAccountResponse {
     /// The resource type of the response.
@@ -11907,6 +12204,7 @@ pub mod project_service_client {
     }
 }
 /// A user-defined function or a stored procedure.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Routine {
     /// Output only. A hash of this resource.
@@ -12053,6 +12351,7 @@ pub struct Routine {
 /// Nested message and enum types in `Routine`.
 pub mod routine {
     /// Input/output argument of a function or a stored procedure.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Argument {
         /// Optional. The name of this argument. Can be absent for function return
@@ -12083,6 +12382,7 @@ pub mod routine {
     /// Nested message and enum types in `Argument`.
     pub mod argument {
         /// Represents the kind of a given argument.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -12135,6 +12435,7 @@ pub mod routine {
             }
         }
         /// The input/output mode of the argument.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -12183,6 +12484,7 @@ pub mod routine {
         }
     }
     /// Options for a remote user-defined function.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RemoteFunctionOptions {
         /// Endpoint of the user-provided remote service, e.g.
@@ -12211,6 +12513,7 @@ pub mod routine {
         pub max_batching_rows: i64,
     }
     /// The fine-grained type of the routine.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12262,6 +12565,7 @@ pub mod routine {
         }
     }
     /// The language of the routine.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12329,6 +12633,7 @@ pub mod routine {
     ///
     /// SQL UDFs cannot have determinism specified. Their determinism is
     /// automatically determined.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12373,6 +12678,7 @@ pub mod routine {
         }
     }
     /// Security mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12418,6 +12724,7 @@ pub mod routine {
         }
     }
     /// Data governance type values. Only supports `DATA_MASKING`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12458,6 +12765,7 @@ pub mod routine {
     }
 }
 /// Options for a user-defined Python function.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PythonOptions {
     /// Required. The name of the function defined in Python code as the entry
@@ -12472,6 +12780,7 @@ pub struct PythonOptions {
     pub packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Options for the runtime of the external system.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalRuntimeOptions {
     /// Optional. Amount of memory provisioned for a Python UDF container instance.
@@ -12507,6 +12816,7 @@ pub struct ExternalRuntimeOptions {
     pub container_request_concurrency: i64,
 }
 /// Options for a user-defined Spark routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkOptions {
     /// Fully qualified name of the user-provided Spark connection object. Format:
@@ -12563,6 +12873,7 @@ pub struct SparkOptions {
     pub main_class: ::prost::alloc::string::String,
 }
 /// The status of a routine build.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RoutineBuildStatus {
     /// Output only. The current build state of the routine.
@@ -12587,6 +12898,7 @@ pub struct RoutineBuildStatus {
 /// Nested message and enum types in `RoutineBuildStatus`.
 pub mod routine_build_status {
     /// The build state of a routine.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12635,6 +12947,7 @@ pub mod routine_build_status {
     }
 }
 /// Describes the format for getting information about a routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRoutineRequest {
     /// Required. Project ID of the requested routine
@@ -12648,6 +12961,7 @@ pub struct GetRoutineRequest {
     pub routine_id: ::prost::alloc::string::String,
 }
 /// Describes the format for inserting a routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRoutineRequest {
     /// Required. Project ID of the new routine
@@ -12661,6 +12975,7 @@ pub struct InsertRoutineRequest {
     pub routine: ::core::option::Option<Routine>,
 }
 /// Describes the format for updating a routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRoutineRequest {
     /// Required. Project ID of the routine to update
@@ -12677,6 +12992,7 @@ pub struct UpdateRoutineRequest {
     pub routine: ::core::option::Option<Routine>,
 }
 /// Describes the format for deleting a routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRoutineRequest {
     /// Required. Project ID of the routine to delete
@@ -12690,6 +13006,7 @@ pub struct DeleteRoutineRequest {
     pub routine_id: ::prost::alloc::string::String,
 }
 /// Describes the format for listing routines.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutinesRequest {
     /// Required. Project ID of the routines to list
@@ -12713,6 +13030,7 @@ pub struct ListRoutinesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Describes the format of a single result page when listing routines.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoutinesResponse {
     /// Routines in the requested dataset. Unless read_mask is set in the request,
@@ -12980,6 +13298,7 @@ pub mod routine_service_client {
     }
 }
 /// Request message for the ListRowAccessPolicies method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRowAccessPoliciesRequest {
     /// Required. Project ID of the row access policies to list.
@@ -13001,6 +13320,7 @@ pub struct ListRowAccessPoliciesRequest {
     pub page_size: i32,
 }
 /// Response message for the ListRowAccessPolicies method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRowAccessPoliciesResponse {
     /// Row access policies on the requested table.
@@ -13011,6 +13331,7 @@ pub struct ListRowAccessPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetRowAccessPolicy method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRowAccessPolicyRequest {
     /// Required. Project ID of the table to get the row access policy.
@@ -13027,6 +13348,7 @@ pub struct GetRowAccessPolicyRequest {
     pub policy_id: ::prost::alloc::string::String,
 }
 /// Request message for the CreateRowAccessPolicy method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRowAccessPolicyRequest {
     /// Required. Project ID of the table to get the row access policy.
@@ -13043,6 +13365,7 @@ pub struct CreateRowAccessPolicyRequest {
     pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
 }
 /// Request message for the UpdateRowAccessPolicy method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateRowAccessPolicyRequest {
     /// Required. Project ID of the table to get the row access policy.
@@ -13062,6 +13385,7 @@ pub struct UpdateRowAccessPolicyRequest {
     pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
 }
 /// Request message for the DeleteRowAccessPolicy method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRowAccessPolicyRequest {
     /// Required. Project ID of the table to delete the row access policy.
@@ -13083,6 +13407,7 @@ pub struct DeleteRowAccessPolicyRequest {
     pub force: ::core::option::Option<bool>,
 }
 /// Request message for the BatchDeleteRowAccessPoliciesRequest method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchDeleteRowAccessPoliciesRequest {
     /// Required. Project ID of the table to delete the row access policies.
@@ -13106,6 +13431,7 @@ pub struct BatchDeleteRowAccessPoliciesRequest {
 /// Represents access on a subset of rows on the specified table, defined by its
 /// filter predicate. Access to the subset of rows is controlled by its IAM
 /// policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowAccessPolicy {
     /// Output only. A hash of this resource.
@@ -13470,6 +13796,7 @@ pub mod row_access_policy_service_client {
     }
 }
 /// Represents the primary key constraint on a table's columns.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrimaryKey {
     /// Required. The columns that are composed of the primary key constraint.
@@ -13477,6 +13804,7 @@ pub struct PrimaryKey {
     pub columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The pair of the foreign key column and primary key column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ColumnReference {
     /// Required. The column that composes the foreign key.
@@ -13488,6 +13816,7 @@ pub struct ColumnReference {
     pub referenced_column: ::prost::alloc::string::String,
 }
 /// Represents a foreign key constraint on a table's columns.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForeignKey {
     /// Optional. Set only if the foreign key constraint is named.
@@ -13502,6 +13831,7 @@ pub struct ForeignKey {
     pub column_references: ::prost::alloc::vec::Vec<ColumnReference>,
 }
 /// The TableConstraints defines the primary key and foreign key.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableConstraints {
     /// Optional. Represents a primary key constraint on a table's columns.
@@ -13516,6 +13846,7 @@ pub struct TableConstraints {
 }
 /// Replication info of a table created using `AS REPLICA` DDL like:
 /// `CREATE MATERIALIZED VIEW mv1 AS REPLICA OF src_mv`
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableReplicationInfo {
     /// Required. Source table reference that is replicated.
@@ -13543,6 +13874,7 @@ pub struct TableReplicationInfo {
 pub mod table_replication_info {
     /// Replication status of the table created using `AS REPLICA` like:
     /// `CREATE MATERIALIZED VIEW mv1 AS REPLICA OF src_mv`
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13595,6 +13927,7 @@ pub mod table_replication_info {
     }
 }
 /// Describes the definition of a logical view.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ViewDefinition {
     /// Required. A query that BigQuery executes when the view is referenced.
@@ -13628,6 +13961,7 @@ pub struct ViewDefinition {
 }
 /// A view can be represented in multiple ways. Each representation has its own
 /// dialect. This message stores the metadata required for these representations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForeignViewDefinition {
     /// Required. The query that defines the view.
@@ -13638,6 +13972,7 @@ pub struct ForeignViewDefinition {
     pub dialect: ::prost::alloc::string::String,
 }
 /// Definition and configuration of a materialized view.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaterializedViewDefinition {
     /// Required. A query whose results are persisted.
@@ -13666,6 +14001,7 @@ pub struct MaterializedViewDefinition {
 /// Status of a materialized view.
 /// The last refresh timestamp status is omitted here, but is present in the
 /// MaterializedViewDefinition message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaterializedViewStatus {
     /// Output only. Refresh watermark of materialized view. The base tables' data
@@ -13678,6 +14014,7 @@ pub struct MaterializedViewStatus {
     pub last_refresh_status: ::core::option::Option<ErrorProto>,
 }
 /// Information about base table and snapshot time of the snapshot.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotDefinition {
     /// Required. Reference describing the ID of the table that was snapshot.
@@ -13689,6 +14026,7 @@ pub struct SnapshotDefinition {
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about base table and clone time of a table clone.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloneDefinition {
     /// Required. Reference describing the ID of the table that was cloned.
@@ -13699,6 +14037,7 @@ pub struct CloneDefinition {
     #[prost(message, optional, tag = "2")]
     pub clone_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Streamingbuffer {
     /// Output only. A lower-bound estimate of the number of bytes currently in
@@ -13715,6 +14054,7 @@ pub struct Streamingbuffer {
     #[prost(fixed64, tag = "3")]
     pub oldest_entry_time: u64,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// The type of resource ID.
@@ -13963,6 +14303,7 @@ pub struct Table {
     >,
 }
 /// Request format for getting table metadata.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTableRequest {
     /// Required. Project ID of the requested table
@@ -13991,6 +14332,7 @@ pub struct GetTableRequest {
 /// Nested message and enum types in `GetTableRequest`.
 pub mod get_table_request {
     /// TableMetadataView specifies which table information is returned.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14046,6 +14388,7 @@ pub mod get_table_request {
     }
 }
 /// Request format for inserting table metadata.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTableRequest {
     /// Required. Project ID of the new table
@@ -14058,6 +14401,7 @@ pub struct InsertTableRequest {
     #[prost(message, optional, tag = "4")]
     pub table: ::core::option::Option<Table>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOrPatchTableRequest {
     /// Required. Project ID of the table to update
@@ -14077,6 +14421,7 @@ pub struct UpdateOrPatchTableRequest {
     pub autodetect_schema: bool,
 }
 /// Request format for deleting a table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTableRequest {
     /// Required. Project ID of the table to delete
@@ -14090,6 +14435,7 @@ pub struct DeleteTableRequest {
     pub table_id: ::prost::alloc::string::String,
 }
 /// Request format for enumerating tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTablesRequest {
     /// Required. Project ID of the tables to list
@@ -14108,6 +14454,7 @@ pub struct ListTablesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Information about a logical view.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFormatView {
     /// True if view is defined in legacy SQL dialect,
@@ -14118,6 +14465,7 @@ pub struct ListFormatView {
     #[prost(message, optional, tag = "2")]
     pub privacy_policy: ::core::option::Option<PrivacyPolicy>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFormatTable {
     /// The resource type.
@@ -14169,6 +14517,7 @@ pub struct ListFormatTable {
     pub require_partition_filter: ::core::option::Option<bool>,
 }
 /// Partial projection of the metadata for a given table in a list response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableList {
     /// The type of list.

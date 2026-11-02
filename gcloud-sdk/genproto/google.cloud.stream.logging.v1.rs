@@ -3,6 +3,7 @@
 /// stream resources. Internally, these logs represent events happening in
 /// the control plane as result of API invocations against the stream resource
 /// entities.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationEventLog {
     /// Enum for type of event being logged.
@@ -20,6 +21,7 @@ pub struct OperationEventLog {
 }
 /// OperationArtifact contains the information about the artifact created as
 /// result of the operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationArtifact {
     /// Type of the artifact.
@@ -33,6 +35,7 @@ pub struct OperationArtifact {
 /// to serve the end consumer. Internally, these logs represent events in the
 /// data plane streamer instance as a result of end consumer interacting with the
 /// stream resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionEventLog {
     /// Enum for type of event being logged.
@@ -46,6 +49,7 @@ pub struct SessionEventLog {
     pub session_id: ::prost::alloc::string::String,
 }
 /// OperationEventType is the enum value for the state of operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperationEventType {
@@ -183,6 +187,7 @@ impl OperationEventType {
     }
 }
 /// SessionEventType is the enum value for the state of session.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SessionEventType {

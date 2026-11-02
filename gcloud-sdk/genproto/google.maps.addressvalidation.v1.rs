@@ -2,6 +2,7 @@
 /// Details of the post-processed address. Post-processing includes
 /// correcting misspelled parts of the address, replacing incorrect parts, and
 /// inferring missing parts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
     /// The post-processed address, formatted as a single-line address following
@@ -67,6 +68,7 @@ pub struct Address {
     pub unresolved_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents an address component, such as a street, city, or state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddressComponent {
     /// The name for this component.
@@ -109,6 +111,7 @@ pub struct AddressComponent {
 /// Nested message and enum types in `AddressComponent`.
 pub mod address_component {
     /// The different possible values for confirmation levels.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -161,6 +164,7 @@ pub mod address_component {
     }
 }
 /// A wrapper for the name of the component.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComponentName {
     /// The name text. For example, "5th Avenue" for a street name or "1253" for a
@@ -173,6 +177,7 @@ pub struct ComponentName {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Contains information about the place the input was geocoded to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Geocode {
     /// The geocoded location of the input.
@@ -213,6 +218,7 @@ pub struct Geocode {
 /// Plus code (<http://plus.codes>) is a location reference with two formats:
 /// global code defining a 14mx14m (1/8000th of a degree) or smaller rectangle,
 /// and compound code, replacing the prefix with a reference location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlusCode {
     /// Place's global (full) code, such as "9FWM33GV+HQ", representing an
@@ -227,6 +233,7 @@ pub struct PlusCode {
 }
 /// The metadata for the post-processed address. `metadata` is not guaranteed to
 /// be fully populated for every address sent to the Address Validation API.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddressMetadata {
     /// Indicates that this is the address of a business.
@@ -243,6 +250,7 @@ pub struct AddressMetadata {
     pub residential: ::core::option::Option<bool>,
 }
 /// USPS representation of a US address.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UspsAddress {
     /// First address line.
@@ -277,6 +285,7 @@ pub struct UspsAddress {
 /// populated for every US or PR address sent to the Address Validation API. It's
 /// recommended to integrate the backup address fields in the response if you
 /// utilize uspsData as the primary part of the response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UspsData {
     /// USPS standardized address.
@@ -532,6 +541,7 @@ pub struct UspsData {
     pub cass_processed: bool,
 }
 /// The request for validating an address.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateAddressRequest {
     /// Required. The address being validated. Unformatted addresses should be
@@ -601,6 +611,7 @@ pub struct ValidateAddressRequest {
     pub session_token: ::prost::alloc::string::String,
 }
 /// The response to an address validation request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAddressResponse {
     /// The result of the address validation.
@@ -612,6 +623,7 @@ pub struct ValidateAddressResponse {
     pub response_id: ::prost::alloc::string::String,
 }
 /// The request for sending validation feedback.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvideValidationFeedbackRequest {
     /// Required. The outcome of the sequence of validation attempts.
@@ -634,6 +646,7 @@ pub struct ProvideValidationFeedbackRequest {
 pub mod provide_validation_feedback_request {
     /// The possible final outcomes of the sequence of address validation requests
     /// needed to validate an address.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -694,9 +707,11 @@ pub mod provide_validation_feedback_request {
 /// The response for validation feedback.
 ///
 /// The response is empty if the feedback is sent successfully.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvideValidationFeedbackResponse {}
 /// The result of validating an address.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidationResult {
     /// Overall verdict flags
@@ -718,6 +733,7 @@ pub struct ValidationResult {
     pub usps_data: ::core::option::Option<UspsData>,
 }
 /// High level overview of the address validation result and geocode.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Verdict {
     /// The granularity of the **input** address. This is the result of parsing the
@@ -794,6 +810,7 @@ pub mod verdict {
     /// identifies a `LOCALITY`. However, if we are unable to find a geocode for
     /// "123 Main Street" in Redwood City, the geocode returned might be of
     /// `LOCALITY` granularity even though the address is more granular.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,

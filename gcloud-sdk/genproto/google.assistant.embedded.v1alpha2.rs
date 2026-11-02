@@ -4,6 +4,7 @@
 /// contain a `config` message and must not contain `audio_in` data. All
 /// subsequent messages must contain `audio_in` data and must not contain a
 /// `config` message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistRequest {
     /// Exactly one of these fields must be specified in each `AssistRequest`.
@@ -13,6 +14,7 @@ pub struct AssistRequest {
 /// Nested message and enum types in `AssistRequest`.
 pub mod assist_request {
     /// Exactly one of these fields must be specified in each `AssistRequest`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// The `config` message provides information to the recognizer that
@@ -34,6 +36,7 @@ pub mod assist_request {
 }
 /// The top-level message received by the client. A series of one or more
 /// `AssistResponse` messages are streamed back to the client.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistResponse {
     /// *Output-only* Indicates the type of event.
@@ -69,6 +72,7 @@ pub struct AssistResponse {
 /// Nested message and enum types in `AssistResponse`.
 pub mod assist_response {
     /// Indicates the type of event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -115,6 +119,7 @@ pub mod assist_response {
 }
 /// Debug info for developer. Only returned if request set `return_debug_info`
 /// to true.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugInfo {
     /// The original JSON response from an Action-on-Google agent to Google server.
@@ -126,6 +131,7 @@ pub struct DebugInfo {
     pub aog_agent_to_assistant_json: ::prost::alloc::string::String,
 }
 /// Specifies how to process the `AssistRequest` messages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistConfig {
     /// *Required* Specifies how to format the audio that will be returned.
@@ -149,6 +155,7 @@ pub struct AssistConfig {
 }
 /// Nested message and enum types in `AssistConfig`.
 pub mod assist_config {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// Specifies how to process the subsequent incoming audio. Required if
@@ -166,6 +173,7 @@ pub mod assist_config {
 /// subsequent requests. For recommended settings, see the Google Assistant SDK
 /// [best
 /// practices](<https://developers.google.com/assistant/sdk/guides/service/python/best-practices/audio>).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
@@ -183,6 +191,7 @@ pub struct AudioInConfig {
 pub mod audio_in_config {
     /// Audio encoding of the data sent in the audio message.
     /// Audio must be one-channel (mono).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -235,6 +244,7 @@ pub mod audio_in_config {
 }
 /// Specifies the desired format for the server to use when it returns
 /// `audio_out` messages.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
@@ -254,6 +264,7 @@ pub struct AudioOutConfig {
 pub mod audio_out_config {
     /// Audio encoding of the data returned in the audio message. All encodings are
     /// raw audio bytes with no header, except as indicated below.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -306,6 +317,7 @@ pub mod audio_out_config {
 }
 /// Specifies the desired format for the server to use when it returns
 /// `screen_out` response.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScreenOutConfig {
     /// Current visual screen-mode for the device while issuing the query.
@@ -315,6 +327,7 @@ pub struct ScreenOutConfig {
 /// Nested message and enum types in `ScreenOutConfig`.
 pub mod screen_out_config {
     /// Possible modes for visual screen-output on the device.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -363,6 +376,7 @@ pub mod screen_out_config {
     }
 }
 /// Provides information about the current dialog state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogStateIn {
     /// *Required* This field must always be set to the
@@ -404,6 +418,7 @@ pub struct DialogStateIn {
 ///   Schemas](<https://developers.google.com/assistant/sdk/reference/device-registration/model-and-instance-schemas>)
 /// * [Device
 ///   Proto](<https://developers.google.com/assistant/sdk/reference/rpc/google.assistant.devices.v1alpha2#device>)
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceConfig {
     /// *Required* Unique identifier for the device. The id length must be 128
@@ -423,6 +438,7 @@ pub struct DeviceConfig {
 }
 /// The audio containing the Assistant's response to the query. Sequential chunks
 /// of audio data are received in sequential `AssistResponse` messages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioOut {
     /// *Output-only* The audio data containing the Assistant's response to the
@@ -433,6 +449,7 @@ pub struct AudioOut {
 }
 /// The Assistant's visual output response to query. Enabled by
 /// `screen_out_config`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScreenOut {
     /// *Output-only* The format of the provided screen data.
@@ -446,6 +463,7 @@ pub struct ScreenOut {
 /// Nested message and enum types in `ScreenOut`.
 pub mod screen_out {
     /// Possible formats of the screen data.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -492,6 +510,7 @@ pub mod screen_out {
 /// Action. For example, a device which supports the query *Turn on the light*
 /// would receive a `DeviceAction` with a JSON payload containing the semantics
 /// of the request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceAction {
     /// JSON containing the device command response generated from the triggered
@@ -503,6 +522,7 @@ pub struct DeviceAction {
 }
 /// The estimated transcription of a phrase the user has spoken. This could be
 /// a single segment or the full guess of the user's spoken query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionResult {
     /// *Output-only* Transcript text representing the words that the user spoke.
@@ -517,6 +537,7 @@ pub struct SpeechRecognitionResult {
 }
 /// The dialog state resulting from the user's query. Multiple of these messages
 /// may be received.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DialogStateOut {
     /// *Output-only* Supplemental display text from the Assistant. This could be
@@ -552,6 +573,7 @@ pub struct DialogStateOut {
 /// Nested message and enum types in `DialogStateOut`.
 pub mod dialog_state_out {
     /// Possible states of the microphone after a `Assist` RPC completes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -599,6 +621,7 @@ pub mod dialog_state_out {
     }
 }
 /// Debugging parameters for the current request.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugConfig {
     /// When this field is set to true, the `debug_info` field in `AssistResponse`
@@ -615,6 +638,7 @@ pub struct DebugConfig {
 ///    device. This location is used if `DeviceLocation` is not specified.
 /// 1. Inferred location based on IP address. This is used only if neither of the
 ///    above are specified.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeviceLocation {
     #[prost(oneof = "device_location::Type", tags = "1")]
@@ -622,6 +646,7 @@ pub struct DeviceLocation {
 }
 /// Nested message and enum types in `DeviceLocation`.
 pub mod device_location {
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Latitude and longitude of device.

@@ -2,6 +2,7 @@
 /// Represents a Workload Manager Evaluation configuration.
 /// An Evaluation defines a set of rules to be validated against a scope
 /// of Cloud resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Evaluation {
     /// Name of resource that has the form
@@ -66,6 +67,7 @@ pub struct Evaluation {
 /// Nested message and enum types in `Evaluation`.
 pub mod evaluation {
     /// Possible types of workload evaluations like SAP, SQL Server, etc.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -115,6 +117,7 @@ pub mod evaluation {
 }
 /// Resource filter for an evaluation defining the scope of resources to be
 /// evaluated.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceFilter {
     /// The scopes of evaluation resource.
@@ -144,6 +147,7 @@ pub struct ResourceFilter {
     pub gce_instance_filter: ::core::option::Option<GceInstanceFilter>,
 }
 /// A filter for matching Compute Engine instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GceInstanceFilter {
     /// If non-empty, only Compute Engine instances associated with at least one of
@@ -152,6 +156,7 @@ pub struct GceInstanceFilter {
     pub service_accounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The lifecycle status of an Evaluation resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceStatus {
     /// State of the Evaluation resource.
@@ -161,6 +166,7 @@ pub struct ResourceStatus {
 /// Nested message and enum types in `ResourceStatus`.
 pub mod resource_status {
     /// Possible states of an evaluation, such as CREATING, ACTIVE, and DELETING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -210,6 +216,7 @@ pub mod resource_status {
     }
 }
 /// BigQuery destination for evaluation results.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryDestination {
     /// Optional. Destination dataset to save evaluation results.
@@ -221,6 +228,7 @@ pub struct BigQueryDestination {
     pub create_new_results_table: bool,
 }
 /// Request message for the ListEvaluations RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEvaluationsRequest {
     /// Required. Parent value for ListEvaluationsRequest.
@@ -241,6 +249,7 @@ pub struct ListEvaluationsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the ListEvaluations RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEvaluationsResponse {
     /// The list of evaluations.
@@ -254,6 +263,7 @@ pub struct ListEvaluationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for the GetEvaluation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEvaluationRequest {
     /// Required. Name of the resource.
@@ -261,6 +271,7 @@ pub struct GetEvaluationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the CreateEvaluation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEvaluationRequest {
     /// Required. The resource prefix of the evaluation location using the form:
@@ -290,6 +301,7 @@ pub struct CreateEvaluationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for the UpdateEvaluation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEvaluationRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -318,6 +330,7 @@ pub struct UpdateEvaluationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteEvaluation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEvaluationRequest {
     /// Required. Name of the resource.
@@ -344,6 +357,7 @@ pub struct DeleteEvaluationRequest {
     pub force: bool,
 }
 /// Execution that represents a single run of an Evaluation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// The name of execution resource. The format is
@@ -394,6 +408,7 @@ pub struct Execution {
 /// Nested message and enum types in `Execution`.
 pub mod execution {
     /// External data sources for an execution.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExternalDataSources {
         /// Optional. Name of external data source. The name will be used inside the
@@ -418,6 +433,7 @@ pub mod execution {
     /// Nested message and enum types in `ExternalDataSources`.
     pub mod external_data_sources {
         /// Possible types of external data sources like BigQuery table, etc.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -458,6 +474,7 @@ pub mod execution {
         }
     }
     /// Additional information generated by an execution.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Notice {
         /// Output only. Message of the notice.
@@ -465,6 +482,7 @@ pub mod execution {
         pub message: ::prost::alloc::string::String,
     }
     /// Execution summary.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Summary {
         /// Output only. Number of failures.
@@ -478,6 +496,7 @@ pub mod execution {
         pub new_fixes: i64,
     }
     /// The possible states of an execution like RUNNING, SUCCEEDED, FAILED, etc.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -525,6 +544,7 @@ pub mod execution {
         }
     }
     /// The type of execution, could be on demand execute or scheduled execute.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -568,6 +588,7 @@ pub mod execution {
         }
     }
     /// The engine used for the execution.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -612,6 +633,7 @@ pub mod execution {
     }
 }
 /// Execution result summary per rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuleExecutionResult {
     /// Rule name as plain text like `sap-hana-configured`.
@@ -633,6 +655,7 @@ pub struct RuleExecutionResult {
 /// Nested message and enum types in `RuleExecutionResult`.
 pub mod rule_execution_result {
     /// Possible states of a rule execution like SUCCESS, FAILURE, etc.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -681,6 +704,7 @@ pub mod rule_execution_result {
     }
 }
 /// Request message for the ListExecutions RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. The resource prefix of the Execution using the form:
@@ -702,6 +726,7 @@ pub struct ListExecutionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the ListExecutions RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
     /// The list of Execution.
@@ -715,6 +740,7 @@ pub struct ListExecutionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for the GetExecution RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. Name of the resource.
@@ -722,6 +748,7 @@ pub struct GetExecutionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the RunEvaluation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunEvaluationRequest {
     /// Required. The resource name of the Evaluation using the form:
@@ -751,6 +778,7 @@ pub struct RunEvaluationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteExecution RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteExecutionRequest {
     /// Required. Name of the resource.
@@ -773,6 +801,7 @@ pub struct DeleteExecutionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for the ListExecutionResults RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExecutionResultsRequest {
     /// Required. The execution results.
@@ -791,6 +820,7 @@ pub struct ListExecutionResultsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the ListExecutionResults RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionResultsResponse {
     /// The versions from the specified publisher.
@@ -802,6 +832,7 @@ pub struct ListExecutionResultsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The result of an execution.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionResult {
     /// The violation message of an execution.
@@ -832,6 +863,7 @@ pub struct ExecutionResult {
 /// Nested message and enum types in `ExecutionResult`.
 pub mod execution_result {
     /// Enum of execution result type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -876,6 +908,7 @@ pub mod execution_result {
     }
 }
 /// Command specifies the type of command to execute.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Command {
     /// The type of command.
@@ -885,6 +918,7 @@ pub struct Command {
 /// Nested message and enum types in `Command`.
 pub mod command {
     /// The type of command.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CommandType {
         /// AgentCommand specifies a one-time executable program for the agent to
@@ -897,6 +931,7 @@ pub mod command {
     }
 }
 /// An AgentCommand specifies a one-time executable program for the agent to run.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentCommand {
     /// The name of the agent one-time executable that will be invoked.
@@ -911,6 +946,7 @@ pub struct AgentCommand {
     >,
 }
 /// A ShellCommand is invoked via the agent's command line executor.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShellCommand {
     /// The name of the command to be executed.
@@ -924,6 +960,7 @@ pub struct ShellCommand {
     pub timeout_seconds: i32,
 }
 /// The rule output of the violation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleOutput {
     /// Output only. Violation details generated by rule.
@@ -937,6 +974,7 @@ pub struct RuleOutput {
     pub message: ::prost::alloc::string::String,
 }
 /// The violation in an evaluation result.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ViolationDetails {
     /// The name of the asset.
@@ -956,6 +994,7 @@ pub struct ViolationDetails {
     pub rule_output: ::prost::alloc::vec::Vec<RuleOutput>,
 }
 /// Resource in execution result.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Resource {
     /// The type of resource.
@@ -969,6 +1008,7 @@ pub struct Resource {
     pub service_account: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -998,6 +1038,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// A rule to be evaluated.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Rule {
     /// Rule name.
@@ -1044,6 +1085,7 @@ pub struct Rule {
 /// Nested message and enum types in `Rule`.
 pub mod rule {
     /// The type of the rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1088,6 +1130,7 @@ pub mod rule {
     }
 }
 /// Request message for the ListRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRulesRequest {
     /// Required. The \[project\] on which to execute the request. The format is:
@@ -1115,6 +1158,7 @@ pub struct ListRulesRequest {
     pub evaluation_type: i32,
 }
 /// Response message for the ListRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
     /// All rules in response.
@@ -1122,6 +1166,7 @@ pub struct ListRulesResponse {
     pub rules: ::prost::alloc::vec::Vec<Rule>,
 }
 /// Request message for the ListScannedResources RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListScannedResourcesRequest {
     /// Required. Parent for ListScannedResourcesRequest.
@@ -1145,6 +1190,7 @@ pub struct ListScannedResourcesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the ListScannedResources RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScannedResourcesResponse {
     /// All scanned resources in response.
@@ -1156,6 +1202,7 @@ pub struct ListScannedResourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A scanned resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScannedResource {
     /// Resource name.

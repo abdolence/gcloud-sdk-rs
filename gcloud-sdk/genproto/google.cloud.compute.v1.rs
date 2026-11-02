@@ -5,6 +5,7 @@
 /// private storage buckets that support Signature Version 4 for authentication.
 /// The service name for generating the authentication header will always default
 /// to 's3'.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Awsv4Signature {
     /// The access key used for s3 bucket authentication. Required for updating or
@@ -29,6 +30,7 @@ pub struct Awsv4Signature {
     pub origin_region: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.AbandonInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AbandonInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -63,6 +65,7 @@ pub struct AbandonInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.AbandonInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AbandonInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -97,6 +100,7 @@ pub struct AbandonInstancesRegionInstanceGroupManagerRequest {
 }
 /// A specification of the type and number of accelerator cards attached to the
 /// instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// The number of the guest accelerator cards exposed to this instance.
@@ -112,6 +116,7 @@ pub struct AcceleratorConfig {
     pub accelerator_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Info for accelerator topologies within a densely packed reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTopologiesInfo {
     /// Info for each accelerator topology.
@@ -121,6 +126,7 @@ pub struct AcceleratorTopologiesInfo {
     >,
 }
 /// Info for a slice of a given topology.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTopologiesInfoAcceleratorTopologyInfo {
     /// The accelerator topology.
@@ -133,6 +139,7 @@ pub struct AcceleratorTopologiesInfoAcceleratorTopologyInfo {
     >,
 }
 /// Info for each topology state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceleratorTopologiesInfoAcceleratorTopologyInfoInfoPerTopologyState {
     /// The number of accelerator topologies in this state.
@@ -146,6 +153,7 @@ pub struct AcceleratorTopologiesInfoAcceleratorTopologyInfoInfoPerTopologyState 
 /// Nested message and enum types in `AcceleratorTopologiesInfoAcceleratorTopologyInfoInfoPerTopologyState`.
 pub mod accelerator_topologies_info_accelerator_topology_info_info_per_topology_state {
     /// The state of the accelerator topology.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -208,6 +216,7 @@ pub mod accelerator_topologies_info_accelerator_topology_info_info_per_topology_
 /// Google Cloud Platform provides graphics processing units (accelerators) that
 /// you can add to VM instances to improve or accelerate performance when working
 /// with intensive workloads. For more information, readGPUs on Compute Engine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceleratorType {
     /// \[Output Only\] Creation timestamp inRFC3339 text format.
@@ -249,6 +258,7 @@ pub struct AcceleratorType {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypeAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -282,6 +292,7 @@ pub struct AcceleratorTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of accelerator types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -307,6 +318,7 @@ pub struct AcceleratorTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypesScopedList {
     /// \[Output Only\] A list of accelerator types contained in this scope.
@@ -317,6 +329,7 @@ pub struct AcceleratorTypesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Accelerators {
     /// Number of accelerator cards exposed to the guest.
@@ -328,6 +341,7 @@ pub struct Accelerators {
 }
 /// An access configuration attached to an instance's network interface.
 /// Only one access config per instance is supported.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessConfig {
     /// Applies to ipv6AccessConfigs only.
@@ -405,6 +419,7 @@ pub mod access_config {
     /// If an AccessConfig with a valid external IP address is specified, it must
     /// match that of the networkTier associated with the Address resource owning
     /// that IP.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -464,6 +479,7 @@ pub mod access_config {
     }
     /// The type of configuration. In accessConfigs (IPv4), the
     /// default and only option is ONE_TO_ONE_NAT. Inipv6AccessConfigs, the default and only option isDIRECT_IPV6.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -506,6 +522,7 @@ pub mod access_config {
     }
 }
 /// A request message for Instances.AddAccessConfig. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAccessConfigInstanceRequest {
     /// The body resource for this request
@@ -540,6 +557,7 @@ pub struct AddAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -572,6 +590,7 @@ pub struct AddAssociationFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -607,6 +626,7 @@ pub struct AddAssociationNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAssociationOrganizationSecurityPolicyRequest {
     /// Indicates whether or not to replace it if an association of the attachment
@@ -639,6 +659,7 @@ pub struct AddAssociationOrganizationSecurityPolicyRequest {
     >,
 }
 /// A request message for RegionNetworkFirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy associated with the target network to swap
@@ -684,6 +705,7 @@ pub struct AddAssociationRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for TargetPools.AddHealthCheck. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddHealthCheckTargetPoolRequest {
     /// Project ID for this request.
@@ -717,6 +739,7 @@ pub struct AddHealthCheckTargetPoolRequest {
     >,
 }
 /// A request message for TargetPools.AddInstance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddInstanceTargetPoolRequest {
     /// Project ID for this request.
@@ -750,6 +773,7 @@ pub struct AddInstanceTargetPoolRequest {
     >,
 }
 /// A request message for InstanceGroups.AddInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddInstancesInstanceGroupRequest {
     /// The name of the instance group where you are adding instances.
@@ -784,6 +808,7 @@ pub struct AddInstancesInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.AddNetworkInterface. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddNetworkInterfaceInstanceRequest {
     /// The instance name for this request stored as resource_id.
@@ -816,6 +841,7 @@ pub struct AddNetworkInterfaceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.AddNodes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddNodesNodeGroupRequest {
     /// Name of the NodeGroup resource.
@@ -849,6 +875,7 @@ pub struct AddNodesNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.AddPacketMirroringRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPacketMirroringRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -885,6 +912,7 @@ pub struct AddPacketMirroringRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.AddPeering. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddPeeringNetworkRequest {
     /// Name of the network resource to add peering to.
@@ -915,6 +943,7 @@ pub struct AddPeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.AddResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddResourcePoliciesDiskRequest {
     /// The disk name for this request.
@@ -948,6 +977,7 @@ pub struct AddResourcePoliciesDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.AddResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddResourcePoliciesInstanceRequest {
     /// The instance name for this request.
@@ -981,6 +1011,7 @@ pub struct AddResourcePoliciesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.AddResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddResourcePoliciesRegionDiskRequest {
     /// The disk name for this request.
@@ -1014,6 +1045,7 @@ pub struct AddResourcePoliciesRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -1039,6 +1071,7 @@ pub struct AddRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -1075,6 +1108,7 @@ pub struct AddRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleOrganizationSecurityPolicyRequest {
     /// An optional request ID to identify requests. Specify a unique request ID so
@@ -1100,6 +1134,7 @@ pub struct AddRuleOrganizationSecurityPolicyRequest {
     pub security_policy_rule_resource: ::core::option::Option<SecurityPolicyRule>,
 }
 /// A request message for RegionNetworkFirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -1139,6 +1174,7 @@ pub struct AddRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -1158,6 +1194,7 @@ pub struct AddRuleRegionSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.AddRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleSecurityPolicyRequest {
     /// Project ID for this request.
@@ -1174,6 +1211,7 @@ pub struct AddRuleSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for BackendBuckets.AddSignedUrlKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddSignedUrlKeyBackendBucketRequest {
     /// Name of the BackendBucket resource to which the Signed URL Key should be
@@ -1203,6 +1241,7 @@ pub struct AddSignedUrlKeyBackendBucketRequest {
     pub signed_url_key_resource: ::core::option::Option<SignedUrlKey>,
 }
 /// A request message for BackendServices.AddSignedUrlKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddSignedUrlKeyBackendServiceRequest {
     /// Name of the BackendService resource to which the Signed URL Key should be
@@ -1242,6 +1281,7 @@ pub struct AddSignedUrlKeyBackendServiceRequest {
 ///
 /// For more information, see
 /// Reserving a static external IP address.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
     /// The static IP address represented by this resource.
@@ -1419,6 +1459,7 @@ pub struct Address {
 /// Nested message and enum types in `Address`.
 pub mod address {
     /// The type of address to reserve, either INTERNAL orEXTERNAL. If unspecified, defaults to EXTERNAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1466,6 +1507,7 @@ pub mod address {
         }
     }
     /// The IP version that will be used by this address. Valid options areIPV4 or IPV6.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1512,6 +1554,7 @@ pub mod address {
     /// The endpoint type of this address, which should be VM
     /// or NETLB. This is used for deciding which type of endpoint
     /// this address can be used after the external IPv6 address reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1560,6 +1603,7 @@ pub mod address {
     /// addresses can be either Standard or Premium Tier.
     ///
     /// If this field is not specified, it is assumed to be PREMIUM.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1649,6 +1693,7 @@ pub mod address {
     ///   can only be assigned to global external Passthrough Network Load Balancer
     ///   forwarding rules, as an Availability Group 1 address.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1728,6 +1773,7 @@ pub mod address {
     /// being reserved. A RESERVED address is currently reserved and
     /// available to use. An IN_USE address is currently being used
     /// by another resource and is not available.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1775,6 +1821,7 @@ pub mod address {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -1808,6 +1855,7 @@ pub struct AddressAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of addresses.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -1834,6 +1882,7 @@ pub struct AddressList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressesScopedList {
     /// \[Output Only\] A list of addresses contained in this scope.
@@ -1845,6 +1894,7 @@ pub struct AddressesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Rollouts.Advance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceRolloutRequest {
     /// Required. Wave number of the current wave.
@@ -1877,6 +1927,7 @@ pub struct AdvanceRolloutRequest {
 /// here. Features that require operating system support may have
 /// corresponding entries in the GuestOsFeatures of anImage (e.g., whether or not the OS in theImage supports nested virtualization being enabled or
 /// disabled).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvancedMachineFeatures {
     /// Whether to enable nested virtualization or not (default is false).
@@ -1917,6 +1968,7 @@ pub struct AdvancedMachineFeatures {
 /// Nested message and enum types in `AdvancedMachineFeatures`.
 pub mod advanced_machine_features {
     /// Type of Performance Monitoring Unit requested on instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1972,6 +2024,7 @@ pub mod advanced_machine_features {
     }
 }
 /// A request message for AcceleratorTypes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListAcceleratorTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2081,6 +2134,7 @@ pub struct AggregatedListAcceleratorTypesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Addresses.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2190,6 +2244,7 @@ pub struct AggregatedListAddressesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Autoscalers.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2299,6 +2354,7 @@ pub struct AggregatedListAutoscalersRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for BackendBuckets.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2408,6 +2464,7 @@ pub struct AggregatedListBackendBucketsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for BackendServices.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2517,6 +2574,7 @@ pub struct AggregatedListBackendServicesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for DiskTypes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2626,6 +2684,7 @@ pub struct AggregatedListDiskTypesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Disks.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListDisksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2735,6 +2794,7 @@ pub struct AggregatedListDisksRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for ForwardingRules.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2844,6 +2904,7 @@ pub struct AggregatedListForwardingRulesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for FutureReservations.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListFutureReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -2953,6 +3014,7 @@ pub struct AggregatedListFutureReservationsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for GlobalOperations.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListGlobalOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3062,6 +3124,7 @@ pub struct AggregatedListGlobalOperationsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for GlobalVmExtensionPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListGlobalVmExtensionPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3171,6 +3234,7 @@ pub struct AggregatedListGlobalVmExtensionPoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for HealthChecks.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3280,6 +3344,7 @@ pub struct AggregatedListHealthChecksRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for InstanceGroupManagers.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3389,6 +3454,7 @@ pub struct AggregatedListInstanceGroupManagersRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for InstanceGroups.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3498,6 +3564,7 @@ pub struct AggregatedListInstanceGroupsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for InstanceTemplates.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInstanceTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3607,6 +3674,7 @@ pub struct AggregatedListInstanceTemplatesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Instances.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3716,6 +3784,7 @@ pub struct AggregatedListInstancesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for InstantSnapshots.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInstantSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3825,6 +3894,7 @@ pub struct AggregatedListInstantSnapshotsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for InterconnectAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListInterconnectAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -3934,6 +4004,7 @@ pub struct AggregatedListInterconnectAttachmentsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for MachineTypes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListMachineTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4043,6 +4114,7 @@ pub struct AggregatedListMachineTypesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NetworkAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNetworkAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4152,6 +4224,7 @@ pub struct AggregatedListNetworkAttachmentsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NetworkEdgeSecurityServices.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNetworkEdgeSecurityServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4261,6 +4334,7 @@ pub struct AggregatedListNetworkEdgeSecurityServicesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NetworkEndpointGroups.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4370,6 +4444,7 @@ pub struct AggregatedListNetworkEndpointGroupsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NetworkFirewallPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNetworkFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4479,6 +4554,7 @@ pub struct AggregatedListNetworkFirewallPoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NodeGroups.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4588,6 +4664,7 @@ pub struct AggregatedListNodeGroupsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NodeTemplates.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNodeTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4697,6 +4774,7 @@ pub struct AggregatedListNodeTemplatesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for NodeTypes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListNodeTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4806,6 +4884,7 @@ pub struct AggregatedListNodeTypesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for PacketMirrorings.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListPacketMirroringsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -4915,6 +4994,7 @@ pub struct AggregatedListPacketMirroringsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for PublicDelegatedPrefixes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5024,6 +5104,7 @@ pub struct AggregatedListPublicDelegatedPrefixesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionCommitments.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionCommitmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5133,6 +5214,7 @@ pub struct AggregatedListRegionCommitmentsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionCompositeHealthChecks.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionCompositeHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5242,6 +5324,7 @@ pub struct AggregatedListRegionCompositeHealthChecksRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionHealthAggregationPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionHealthAggregationPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5351,6 +5434,7 @@ pub struct AggregatedListRegionHealthAggregationPoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionHealthCheckServices.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionHealthCheckServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5460,6 +5544,7 @@ pub struct AggregatedListRegionHealthCheckServicesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionHealthSources.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionHealthSourcesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5569,6 +5654,7 @@ pub struct AggregatedListRegionHealthSourcesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for RegionNotificationEndpoints.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRegionNotificationEndpointsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5678,6 +5764,7 @@ pub struct AggregatedListRegionNotificationEndpointsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Reservations.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5787,6 +5874,7 @@ pub struct AggregatedListReservationsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for ResourcePolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListResourcePoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -5896,6 +5984,7 @@ pub struct AggregatedListResourcePoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Routers.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6005,6 +6094,7 @@ pub struct AggregatedListRoutersRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for SecurityPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6114,6 +6204,7 @@ pub struct AggregatedListSecurityPoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for ServiceAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListServiceAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6223,6 +6314,7 @@ pub struct AggregatedListServiceAttachmentsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for SslCertificates.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6332,6 +6424,7 @@ pub struct AggregatedListSslCertificatesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for SslPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6441,6 +6534,7 @@ pub struct AggregatedListSslPoliciesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for StoragePoolTypes.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListStoragePoolTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6550,6 +6644,7 @@ pub struct AggregatedListStoragePoolTypesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for StoragePools.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListStoragePoolsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6659,6 +6754,7 @@ pub struct AggregatedListStoragePoolsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for Subnetworks.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6787,6 +6883,7 @@ pub mod aggregated_list_subnetworks_request {
     /// - WITH_UTILIZATION: Utilization data is included in the
     /// response.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6830,6 +6927,7 @@ pub mod aggregated_list_subnetworks_request {
     }
 }
 /// A request message for TargetHttpProxies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -6939,6 +7037,7 @@ pub struct AggregatedListTargetHttpProxiesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for TargetHttpsProxies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7048,6 +7147,7 @@ pub struct AggregatedListTargetHttpsProxiesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for TargetInstances.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7157,6 +7257,7 @@ pub struct AggregatedListTargetInstancesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for TargetPools.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetPoolsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7266,6 +7367,7 @@ pub struct AggregatedListTargetPoolsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for TargetTcpProxies.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7375,6 +7477,7 @@ pub struct AggregatedListTargetTcpProxiesRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for TargetVpnGateways.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListTargetVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7484,6 +7587,7 @@ pub struct AggregatedListTargetVpnGatewaysRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for UrlMaps.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7593,6 +7697,7 @@ pub struct AggregatedListUrlMapsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for VpnGateways.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7702,6 +7807,7 @@ pub struct AggregatedListVpnGatewaysRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// A request message for VpnTunnels.AggregatedList. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregatedListVpnTunnelsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -7811,6 +7917,7 @@ pub struct AggregatedListVpnTunnelsRequest {
     pub service_project_number: ::core::option::Option<i64>,
 }
 /// An alias IP range attached to an instance's network interface.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AliasIpRange {
     /// The IP alias ranges to allocate for this interface. This IP CIDR range
@@ -7827,6 +7934,7 @@ pub struct AliasIpRange {
 /// This reservation type is specified by total resource amounts (e.g. total
 /// count of CPUs) and can account for multiple instance SKUs. In other words,
 /// one can create instances of varying shapes against this reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationAggregateReservation {
     /// Output only. \[Output only\] List of resources currently in use.
@@ -7853,6 +7961,7 @@ pub struct AllocationAggregateReservation {
 pub mod allocation_aggregate_reservation {
     /// The VM family that all instances scheduled against this reservation must
     /// belong to.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7924,6 +8033,7 @@ pub mod allocation_aggregate_reservation {
         }
     }
     /// The workload type of the instances that will target this reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7972,6 +8082,7 @@ pub mod allocation_aggregate_reservation {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllocationAggregateReservationReservedResourceInfo {
     /// Properties of accelerator resources in this reservation.
@@ -7980,6 +8091,7 @@ pub struct AllocationAggregateReservationReservedResourceInfo {
         AllocationAggregateReservationReservedResourceInfoAccelerator,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllocationAggregateReservationReservedResourceInfoAccelerator {
     /// Number of accelerators of specified type.
@@ -7990,6 +8102,7 @@ pub struct AllocationAggregateReservationReservedResourceInfoAccelerator {
     #[prost(string, optional, tag = "138031246")]
     pub accelerator_type: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllocationReservationSharingPolicy {
     /// Sharing config for all Google Cloud services.
@@ -8000,6 +8113,7 @@ pub struct AllocationReservationSharingPolicy {
 /// Nested message and enum types in `AllocationReservationSharingPolicy`.
 pub mod allocation_reservation_sharing_policy {
     /// Sharing config for all Google Cloud services.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8047,6 +8161,7 @@ pub mod allocation_reservation_sharing_policy {
     }
 }
 /// \[Output Only\] Contains output only fields.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationResourceStatus {
     /// \[Output only\] Health information for the reservation.
@@ -8065,6 +8180,7 @@ pub struct AllocationResourceStatus {
     >,
 }
 /// Health information for the reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllocationResourceStatusHealthInfo {
     /// The number of reservation blocks that are degraded.
@@ -8081,6 +8197,7 @@ pub struct AllocationResourceStatusHealthInfo {
 /// Nested message and enum types in `AllocationResourceStatusHealthInfo`.
 pub mod allocation_resource_status_health_info {
     /// The health status of the reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8129,6 +8246,7 @@ pub mod allocation_resource_status_health_info {
     }
 }
 /// Contains Properties set for the reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationResourceStatusSpecificSkuAllocation {
     /// ID of the instance template used to populate reservation properties.
@@ -8141,6 +8259,7 @@ pub struct AllocationResourceStatusSpecificSkuAllocation {
     #[prost(map = "string, int64", tag = "402495121")]
     pub utilizations: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
     /// Specifies the size of the disk in base-2 GB.
@@ -8158,6 +8277,7 @@ pub mod allocation_specific_sku_allocation_allocated_instance_properties_reserve
     /// Specifies the disk interface to use for attaching this disk, which is
     /// either SCSI or NVME. The default isSCSI.
     /// For performance characteristics of SCSI over NVMe, seeLocal SSD performance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8201,6 +8321,7 @@ pub mod allocation_specific_sku_allocation_allocated_instance_properties_reserve
 }
 /// Properties of the SKU instances being reserved.
 /// Next ID: 10
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuAllocationReservedInstanceProperties {
     /// Specifies accelerator type and count.
@@ -8228,6 +8349,7 @@ pub struct AllocationSpecificSkuAllocationReservedInstanceProperties {
 }
 /// This reservation type allows to pre allocate specific instance
 /// configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuReservation {
     /// Output only. \[Output Only\] Indicates how many instances are actually usable currently.
@@ -8258,6 +8380,7 @@ pub struct AllocationSpecificSkuReservation {
     #[prost(string, optional, tag = "332423616")]
     pub source_instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Allowed {
     /// The IP protocol to which this rule applies. The protocol type is
@@ -8276,6 +8399,7 @@ pub struct Allowed {
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for PublicAdvertisedPrefixes.Announce. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnnouncePublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -8301,6 +8425,7 @@ pub struct AnnouncePublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Announce. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnnouncePublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -8330,6 +8455,7 @@ pub struct AnnouncePublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.ApplyUpdatesToInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyUpdatesToInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group, should conform to RFC1035.
@@ -8349,6 +8475,7 @@ pub struct ApplyUpdatesToInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ApplyUpdatesToInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group, should conform to RFC1035.
@@ -8367,6 +8494,7 @@ pub struct ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest {
     >,
 }
 /// A request message for Instances.AttachDisk. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachDiskInstanceRequest {
     /// The body resource for this request
@@ -8403,6 +8531,7 @@ pub struct AttachDiskInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.AttachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -8434,6 +8563,7 @@ pub struct AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.AttachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachNetworkEndpointsNetworkEndpointGroupRequest {
     /// The name of the network endpoint group where you are attaching network
@@ -8469,6 +8599,7 @@ pub struct AttachNetworkEndpointsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.AttachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachNetworkEndpointsRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group where you are attaching network
@@ -8505,6 +8636,7 @@ pub struct AttachNetworkEndpointsRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An instance-attached disk resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDisk {
     /// Output only. \[Output Only\] The architecture of the attached disk. Valid values are ARM64
@@ -8635,6 +8767,7 @@ pub struct AttachedDisk {
 pub mod attached_disk {
     /// Output only. \[Output Only\] The architecture of the attached disk. Valid values are ARM64
     /// or X86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8687,6 +8820,7 @@ pub mod attached_disk {
     /// In certain configurations, persistent disks can use NVMe. For more
     /// information, seeAbout
     /// persistent disks.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8729,6 +8863,7 @@ pub mod attached_disk {
     }
     /// The mode in which to attach this disk, either READ_WRITE orREAD_ONLY. If not specified, the default is to attach the disk
     /// in READ_WRITE mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8778,6 +8913,7 @@ pub mod attached_disk {
     /// to a persistent location by customer request.  (see the
     /// discard_local_ssd option on Stop/Suspend).
     /// Read-only in the api.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8821,6 +8957,7 @@ pub mod attached_disk {
         }
     }
     /// Specifies the type of the disk, either SCRATCH orPERSISTENT. If not specified, the default isPERSISTENT.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -8871,6 +9008,7 @@ pub mod attached_disk {
 ///
 /// This property is mutually exclusive with the source property;
 /// you can only define one or the other, but not both.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDiskInitializeParams {
     /// The architecture of the attached disk. Valid values are
@@ -9063,6 +9201,7 @@ pub struct AttachedDiskInitializeParams {
 pub mod attached_disk_initialize_params {
     /// The architecture of the attached disk. Valid values are
     /// arm64 or x86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9111,6 +9250,7 @@ pub mod attached_disk_initialize_params {
     }
     /// Specifies which action to take on instance update with this disk. Default
     /// is to use the existing disk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9214,6 +9354,7 @@ pub mod attached_disk_initialize_params {
 /// For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ
 /// logging. It also exempts `jose@example.com` from DATA_READ logging, and
 /// `aliya@example.com` from DATA_WRITE logging.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditConfig {
     /// The configuration for logging of each type of permission.
@@ -9246,6 +9387,7 @@ pub struct AuditConfig {
 ///
 /// This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting
 /// jose@example.com from DATA_READ logging.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuditLogConfig {
     /// Specifies the identities that do not cause logging for this type of
@@ -9261,6 +9403,7 @@ pub struct AuditLogConfig {
 /// Nested message and enum types in `AuditLogConfig`.
 pub mod audit_log_config {
     /// The log type that this config enables.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9327,6 +9470,7 @@ pub mod audit_log_config {
 /// resource.
 ///
 /// For regional managed instance groups, use theregionAutoscalers resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Autoscaler {
     /// The configuration parameters for the autoscaling algorithm. You can define
@@ -9435,6 +9579,7 @@ pub mod autoscaler {
     /// ```
     ///
     /// New values might be added in the future.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9486,6 +9631,7 @@ pub mod autoscaler {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -9520,6 +9666,7 @@ pub struct AutoscalerAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Autoscaler resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -9546,6 +9693,7 @@ pub struct AutoscalerList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoscalerStatusDetails {
     /// The status message.
@@ -9667,6 +9815,7 @@ pub mod autoscaler_status_details {
     ///
     /// New values might be added in the future. Some of the values might not be
     /// available in all API versions.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9826,6 +9975,7 @@ pub mod autoscaler_status_details {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalersScopedList {
     /// \[Output Only\] A list of autoscalers contained in this scope.
@@ -9837,6 +9987,7 @@ pub struct AutoscalersScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Cloud Autoscaler policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicy {
     /// The number of seconds that your application takes to initialize on a VM
@@ -9933,6 +10084,7 @@ pub mod autoscaling_policy {
     ///
     /// For more information, see
     /// "Turning off or restricting an autoscaler"
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9990,6 +10142,7 @@ pub mod autoscaling_policy {
     }
 }
 /// CPU utilization policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyCpuUtilization {
     /// Indicates whether predictive autoscaling based on CPU metric is enabled.
@@ -10028,6 +10181,7 @@ pub mod autoscaling_policy_cpu_utilization {
     /// * OPTIMIZE_AVAILABILITY. Predictive autoscaling improves availability by
     ///   monitoring daily and weekly load patterns and scaling out ahead of
     ///   anticipated demand.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10074,6 +10228,7 @@ pub mod autoscaling_policy_cpu_utilization {
     }
 }
 /// Custom utilization metric policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyCustomMetricUtilization {
     /// A filter string, compatible with a Stackdriver Monitoringfilter string forTimeSeries.list API call. This filter is
@@ -10158,6 +10313,7 @@ pub struct AutoscalingPolicyCustomMetricUtilization {
 pub mod autoscaling_policy_custom_metric_utilization {
     /// Defines how target utilization value is expressed for a Stackdriver
     /// Monitoring metric. Either GAUGE,DELTA_PER_SECOND, or DELTA_PER_MINUTE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10215,6 +10371,7 @@ pub mod autoscaling_policy_custom_metric_utilization {
     }
 }
 /// Configuration parameters of autoscaling based on load balancing.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyLoadBalancingUtilization {
     /// Fraction of backend capacity utilization (set in HTTP(S) load balancing
@@ -10226,6 +10383,7 @@ pub struct AutoscalingPolicyLoadBalancingUtilization {
 /// Configuration that allows for slower scale in so that even if Autoscaler
 /// recommends an abrupt scale in of a MIG, it will be throttled as specified
 /// by the parameters below.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoscalingPolicyScaleInControl {
     /// Maximum allowed number (or %) of VMs that can be deducted from the peak
@@ -10242,6 +10400,7 @@ pub struct AutoscalingPolicyScaleInControl {
 /// Scaling based on user-defined schedule. The message describes a single
 /// scaling schedule. A scaling schedule changes the minimum number of VM
 /// instances an autoscaler can recommend, which can trigger scaling out.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoscalingPolicyScalingSchedule {
     /// A description of a scaling schedule.
@@ -10280,6 +10439,7 @@ pub struct AutoscalingPolicyScalingSchedule {
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message containing information of one individual backend.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backend {
     /// Specifies how to determine whether the backend of a load balancer can
@@ -10455,6 +10615,7 @@ pub mod backend {
     /// and is ignored. Specifically, Backend.maxUtilization is ignored when
     /// Backend.balancingMode is RATE. In the future, this incompatible combination
     /// will be rejected.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10530,6 +10691,7 @@ pub mod backend {
     /// - PREFERRED and DEFAULT backends cannot reside
     /// in the same Cloud region.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10576,6 +10738,7 @@ pub mod backend {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10626,6 +10789,7 @@ pub mod backend {
 }
 /// A message containing information about the resource or system that manages
 /// the backend.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendBackendOrchestrationInfo {
     /// The URI of the resource or system that manages the backend.
@@ -10636,6 +10800,7 @@ pub struct BackendBackendOrchestrationInfo {
 ///
 /// This Cloud Storage bucket resource is referenced by a URL map of a load
 /// balancer. For more information, readBackend Buckets.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucket {
     /// Cloud Storage bucket name.
@@ -10714,6 +10879,7 @@ pub struct BackendBucket {
 pub mod backend_bucket {
     /// Compress text responses using Brotli or gzip compression, based on
     /// the client's Accept-Encoding header.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10764,6 +10930,7 @@ pub mod backend_bucket {
     /// If loadBalancingScheme is not specified, the backend bucket can be used by
     /// classic global external load balancers, or global application external load
     /// balancers, or both.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10810,6 +10977,7 @@ pub mod backend_bucket {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -10839,6 +11007,7 @@ pub struct BackendBucketAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Message containing Cloud CDN configuration for a backend bucket.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketCdnPolicy {
     /// Bypass the cache when the specified request headers are matched - e.g.
@@ -10992,6 +11161,7 @@ pub mod backend_bucket_cdn_policy {
     ///
     /// If no value is provided for cdnPolicy.cacheMode, it defaults
     /// to CACHE_ALL_STATIC.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11055,6 +11225,7 @@ pub mod backend_bucket_cdn_policy {
 /// Bypass the cache when the specified request headers are present,
 /// e.g. Pragma or Authorization headers. Values are case insensitive.
 /// The presence of such a header overrides the cache_mode setting.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendBucketCdnPolicyBypassCacheOnRequestHeader {
     /// The header field name to match on when bypassing cache.
@@ -11064,6 +11235,7 @@ pub struct BackendBucketCdnPolicyBypassCacheOnRequestHeader {
 }
 /// Message containing what to include in the cache key for a request for
 /// Cloud CDN.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendBucketCdnPolicyCacheKeyPolicy {
     /// Allows HTTP request headers (by name) to be used in the cache key.
@@ -11076,6 +11248,7 @@ pub struct BackendBucketCdnPolicyCacheKeyPolicy {
     pub query_string_whitelist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Specify CDN TTLs for response error codes.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendBucketCdnPolicyNegativeCachingPolicy {
     /// The HTTP status code to define a TTL against. Only HTTP status codes
@@ -11093,6 +11266,7 @@ pub struct BackendBucketCdnPolicyNegativeCachingPolicy {
     pub ttl: ::core::option::Option<i32>,
 }
 /// Contains a list of BackendBucket resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -11118,6 +11292,7 @@ pub struct BackendBucketList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketListUsable {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -11145,6 +11320,7 @@ pub struct BackendBucketListUsable {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional Backend Bucket parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketParams {
     /// Tag keys/values directly bound to this resource.
@@ -11166,6 +11342,7 @@ pub struct BackendBucketParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendBucketUsedBy {
     /// Output only. \[Output Only\] Server-defined URL for UrlMaps referencing that
@@ -11173,6 +11350,7 @@ pub struct BackendBucketUsedBy {
     #[prost(string, optional, tag = "148586315")]
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketsScopedList {
     /// A list of BackendBuckets contained in this scope.
@@ -11184,6 +11362,7 @@ pub struct BackendBucketsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Custom Metrics are used for CUSTOM_METRICS balancing_mode.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendCustomMetric {
     /// If true, the metric data is collected and reported to Cloud
@@ -11224,6 +11403,7 @@ pub struct BackendCustomMetric {
 ///
 /// For more information, seeBackend
 /// Services.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendService {
     /// Lifetime of cookies in seconds. This setting is applicable to Application
@@ -11763,6 +11943,7 @@ pub struct BackendService {
 pub mod backend_service {
     /// Compress text responses using Brotli or gzip compression, based on
     /// the client's Accept-Encoding header.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11821,6 +12002,7 @@ pub mod backend_service {
     /// be set to TEST_ALL_TRAFFIC at the same time. Optionally, the
     /// TEST_BY_PERCENTAGE state can be used to migrate some traffic back to
     /// EXTERNAL or PREPARE can be used to migrate all traffic back to EXTERNAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11902,6 +12084,7 @@ pub mod backend_service {
     /// Director with Envoy proxies and proxyless gRPC (load balancing scheme
     /// INTERNAL_SELF_MANAGED).
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11968,6 +12151,7 @@ pub mod backend_service {
     /// created for one type of load balancer cannot be used with another.
     /// For more information, refer to
     /// Backend services product and scheme table.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12094,6 +12278,7 @@ pub mod backend_service {
     /// target gRPC proxy that has validateForProxyless field set to true.
     ///
     /// localityLbPolicy cannot be specified with haPolicy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12206,6 +12391,7 @@ pub mod backend_service {
     ///
     /// Must be set to GRPC when the backend service is referenced by a URL map
     /// that is bound to target gRPC proxy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12286,6 +12472,7 @@ pub mod backend_service {
     /// Affinity](<https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>).
     ///
     /// sessionAffinity cannot be specified with haPolicy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12375,6 +12562,7 @@ pub mod backend_service {
     }
 }
 /// Contains a list of BackendServicesScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -12407,6 +12595,7 @@ pub struct BackendServiceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Message containing Cloud CDN configuration for a backend service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceCdnPolicy {
     /// Bypass the cache when the specified request headers are matched - e.g.
@@ -12560,6 +12749,7 @@ pub mod backend_service_cdn_policy {
     ///
     /// If no value is provided for cdnPolicy.cacheMode, it defaults
     /// to CACHE_ALL_STATIC.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12623,6 +12813,7 @@ pub mod backend_service_cdn_policy {
 /// Bypass the cache when the specified request headers are present,
 /// e.g. Pragma or Authorization headers. Values are case insensitive.
 /// The presence of such a header overrides the cache_mode setting.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceCdnPolicyBypassCacheOnRequestHeader {
     /// The header field name to match on when bypassing cache.
@@ -12631,6 +12822,7 @@ pub struct BackendServiceCdnPolicyBypassCacheOnRequestHeader {
     pub header_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specify CDN TTLs for response error codes.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceCdnPolicyNegativeCachingPolicy {
     /// The HTTP status code to define a TTL against. Only HTTP status codes
@@ -12648,6 +12840,7 @@ pub struct BackendServiceCdnPolicyNegativeCachingPolicy {
     pub ttl: ::core::option::Option<i32>,
 }
 /// Connection Tracking configuration for this BackendService.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceConnectionTrackingPolicy {
     /// Specifies connection persistence when backends are unhealthy. The default
@@ -12741,6 +12934,7 @@ pub mod backend_service_connection_tracking_policy {
     /// Balancing](<https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence>)
     /// and [Connection Persistence for Internal TCP/UDP Load
     /// Balancing](<https://cloud.google.com/load-balancing/docs/internal#connection-persistence>).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12804,6 +12998,7 @@ pub mod backend_service_connection_tracking_policy {
     /// Balancing](<https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode>)
     /// and [Tracking Mode for Internal TCP/UDP Load
     /// Balancing](<https://cloud.google.com/load-balancing/docs/internal#tracking-mode>).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12850,6 +13045,7 @@ pub mod backend_service_connection_tracking_policy {
 }
 /// Custom Metrics are used for WEIGHTED_ROUND_ROBIN
 /// locality_lb_policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceCustomMetric {
     /// If true, the metric data is not used for load balancing.
@@ -12881,6 +13077,7 @@ pub struct BackendServiceCustomMetric {
 /// draining traffic. A setting of false allows existing TCP
 /// connections to persist, even on VMs no longer in the active pool, for up
 /// to the duration of the connection draining timeout (10 minutes).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BackendServiceFailoverPolicy {
     /// This can be set to true if the protocol isTCP, UDP, or UNSPECIFIED.
@@ -12917,6 +13114,7 @@ pub struct BackendServiceFailoverPolicy {
     #[prost(float, optional, tag = "212667006")]
     pub failover_ratio: ::core::option::Option<f32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceGroupHealth {
     /// Metadata defined as annotations on the network endpoint group.
@@ -12934,6 +13132,7 @@ pub struct BackendServiceGroupHealth {
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceHaPolicy {
     /// Specifies whether fast IP move is enabled, and if so, the mechanism to
@@ -12952,6 +13151,9 @@ pub struct BackendServiceHaPolicy {
     /// Advertisement(RA) packet (IPv6).  Google Cloud immediately but
     /// temporarily associates the forwarding rule IP address with that VM, and
     /// both new and in-flight packets are quickly delivered to that VM.
+    /// - HA_CONTROLLER: The Backend Service is managed by a High Availability
+    /// Controller. Failover and leader election are exclusively managed by the
+    /// HA Controller service.
     /// ```
     ///
     /// Note the important properties of the Fast IP Move functionality:
@@ -13047,6 +13249,9 @@ pub mod backend_service_ha_policy {
     /// Advertisement(RA) packet (IPv6).  Google Cloud immediately but
     /// temporarily associates the forwarding rule IP address with that VM, and
     /// both new and in-flight packets are quickly delivered to that VM.
+    /// - HA_CONTROLLER: The Backend Service is managed by a High Availability
+    /// Controller. Failover and leader election are exclusively managed by the
+    /// HA Controller service.
     /// ```
     ///
     /// Note the important properties of the Fast IP Move functionality:
@@ -13107,6 +13312,7 @@ pub mod backend_service_ha_policy {
     /// Once set, it cannot be updated.
     ///
     /// By default, fastIpMove is set to DISABLED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13148,6 +13354,7 @@ pub mod backend_service_ha_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceHaPolicyLeader {
     /// A fully-qualified URL (starting with <https://www.googleapis.com/>)
@@ -13170,6 +13377,7 @@ pub struct BackendServiceHaPolicyLeader {
         BackendServiceHaPolicyLeaderNetworkEndpoint,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceHaPolicyLeaderNetworkEndpoint {
     /// The name of the VM instance of the leader network endpoint. The
@@ -13184,6 +13392,7 @@ pub struct BackendServiceHaPolicyLeaderNetworkEndpoint {
     pub instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The HTTP cookie used for stateful session affinity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceHttpCookie {
     /// Name of the cookie.
@@ -13197,6 +13406,7 @@ pub struct BackendServiceHttpCookie {
     pub ttl: ::core::option::Option<Duration>,
 }
 /// Identity-Aware Proxy
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceIap {
     /// Whether the serving infrastructure will authenticate and authorize all
@@ -13221,6 +13431,7 @@ pub struct BackendServiceIap {
     >,
 }
 /// Contains a list of BackendService resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -13247,6 +13458,7 @@ pub struct BackendServiceList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of usable BackendService resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceListUsable {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -13275,6 +13487,7 @@ pub struct BackendServiceListUsable {
 }
 /// Container for either a built-in LB policy supported by gRPC or Envoy or
 /// a custom one implemented by the end user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfig {
     #[prost(message, optional, tag = "4818368")]
@@ -13288,6 +13501,7 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfig {
 }
 /// The configuration for a custom policy implemented by the user and
 /// deployed with the client.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     /// An optional, arbitrary JSON object with configuration data, understood
@@ -13310,6 +13524,7 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The configuration for a built-in load balancing policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigPolicy {
     /// The name of a locality load-balancing policy. Valid values include
@@ -13330,6 +13545,7 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
     ///
     /// Do not specify the same policy more than once for a
     /// backend. If you do, the configuration is rejected.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13435,6 +13651,7 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
 }
 /// The available logging options for the load balancer traffic served by this
 /// backend service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLogConfig {
     /// Denotes whether to enable logging for the load balancer
@@ -13479,6 +13696,7 @@ pub mod backend_service_log_config {
     /// service. Configures whether all, none or a subset of optional fields
     /// should be added to the reported logs. One of \[INCLUDE_ALL_OPTIONAL,
     /// EXCLUDE_ALL_OPTIONAL, CUSTOM\]. Default is EXCLUDE_ALL_OPTIONAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13527,12 +13745,14 @@ pub mod backend_service_log_config {
     }
 }
 /// Determines which HTTP headers will be logged to Stackdriver.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceLogConfigLoggingHttpHeader {
     /// The name of the header to be logged.
     #[prost(string, optional, tag = "110223613")]
     pub header_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceNetworkPassThroughLbTrafficPolicy {
     /// When configured, new connections are load balanced across healthy backend
@@ -13542,6 +13762,7 @@ pub struct BackendServiceNetworkPassThroughLbTrafficPolicy {
         BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity {
     /// This field indicates whether zonal affinity is enabled or not. The
@@ -13599,6 +13820,7 @@ pub mod backend_service_network_pass_through_lb_traffic_policy_zonal_affinity {
     /// distributes new connections to all healthy backend endpoints across all
     /// zones.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13649,6 +13871,7 @@ pub mod backend_service_network_pass_through_lb_traffic_policy_zonal_affinity {
 }
 /// A message containing information about the resource or system that manages
 /// the backend service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceOrchestrationInfo {
     /// The resource URI of the resource or system that manages the backend
@@ -13657,6 +13880,7 @@ pub struct BackendServiceOrchestrationInfo {
     pub resource_uri: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional Backend Service parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceParams {
     /// Tag keys/values directly bound to this resource.
@@ -13678,11 +13902,13 @@ pub struct BackendServiceParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceReference {
     #[prost(string, optional, tag = "306946058")]
     pub backend_service: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceTlsSettings {
     /// Reference to the BackendAuthenticationConfig resource from the
@@ -13758,6 +13984,7 @@ pub struct BackendServiceTlsSettings {
 /// A Subject Alternative Name that the load balancer matches against the SAN
 /// field in the TLS certificate provided by the backend, specified as either
 /// a DNS name or a URI, in accordance with RFC 5280 4.2.1.6
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceTlsSettingsSubjectAltName {
     /// The SAN specified as a DNS Name.
@@ -13769,6 +13996,7 @@ pub struct BackendServiceTlsSettingsSubjectAltName {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendServiceUsedBy {
     /// Output only. \[Output Only\] Server-defined URL for resources referencing given
@@ -13777,6 +14005,7 @@ pub struct BackendServiceUsedBy {
     #[prost(string, optional, tag = "148586315")]
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServicesScopedList {
     /// A list of BackendServices contained in this scope.
@@ -13787,6 +14016,7 @@ pub struct BackendServicesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BfdPacket {
     /// The Authentication Present bit of the BFD packet. This is specified in
@@ -13859,6 +14089,7 @@ pub mod bfd_packet {
     /// in session state. This allows remote systems to determine the reason that
     /// the previous session failed, for example. These diagnostic codes are
     /// specified in section 4.1 ofRFC5880
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13931,6 +14162,7 @@ pub mod bfd_packet {
     }
     /// The current BFD session state as seen by the transmitting system. These
     /// states are specified in section 4.1 ofRFC5880
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -13982,6 +14214,7 @@ pub mod bfd_packet {
     }
 }
 /// Next free: 15
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BfdStatus {
     /// The BFD session initialization mode for this BGP peer.
@@ -14035,6 +14268,7 @@ pub mod bfd_status {
     /// this BGP peer. If set to PASSIVE, the Cloud Router will wait for the
     /// peer router to initiate the BFD session for this BGP peer. If set to
     /// DISABLED, BFD is disabled for this BGP peer.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14086,6 +14320,7 @@ pub mod bfd_status {
     /// in session state. This allows remote systems to determine the reason that
     /// the previous session failed, for example. These diagnostic codes are
     /// specified in section 4.1 ofRFC5880
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14158,6 +14393,7 @@ pub mod bfd_status {
     }
     /// The current BFD session state as seen by the transmitting system. These
     /// states are specified in section 4.1 ofRFC5880
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14208,6 +14444,7 @@ pub mod bfd_status {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BfdStatusPacketCounts {
     /// Number of packets received since the beginning of the current BFD
@@ -14227,6 +14464,7 @@ pub struct BfdStatusPacketCounts {
     #[prost(uint32, optional, tag = "39375325")]
     pub num_tx: ::core::option::Option<u32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BgpRoute {
     /// Output only. \[Output only\] AS-PATH for the route
@@ -14250,6 +14488,7 @@ pub struct BgpRoute {
 /// Nested message and enum types in `BgpRoute`.
 pub mod bgp_route {
     /// Output only. \[Output only\] BGP origin (EGP, IGP or INCOMPLETE)
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14294,6 +14533,7 @@ pub mod bgp_route {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BgpRouteAsPath {
     /// Output only. \[Output only\] ASNs in the path segment. When type is SEQUENCE, these are
@@ -14313,6 +14553,7 @@ pub struct BgpRouteAsPath {
 /// Nested message and enum types in `BgpRouteAsPath`.
 pub mod bgp_route_as_path {
     /// Output only. \[Output only\] Type of AS-PATH segment (SEQUENCE or SET)
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14355,6 +14596,7 @@ pub mod bgp_route_as_path {
     }
 }
 /// Network Layer Reachability Information (NLRI) for a route.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BgpRouteNetworkLayerReachabilityInformation {
     /// If the BGP session supports multiple paths (RFC 7911), the path
@@ -14366,6 +14608,7 @@ pub struct BgpRouteNetworkLayerReachabilityInformation {
     pub prefix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Associates `members`, or principals, with a `role`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Binding {
     /// The condition that is associated with this binding.
@@ -14472,6 +14715,7 @@ pub struct Binding {
     pub role: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.BulkInsert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkInsertDiskRequest {
     /// The body resource for this request
@@ -14504,6 +14748,7 @@ pub struct BulkInsertDiskRequest {
 /// A transient resource used in compute.disks.bulkInsert and
 /// compute.regionDisks.bulkInsert. It is only used to process
 /// requests and is not persisted.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkInsertDiskResource {
     /// The parameters for the instant snapshot group.
@@ -14534,6 +14779,7 @@ pub struct BulkInsertDiskResource {
     >,
 }
 /// A request message for Instances.BulkInsert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertInstanceRequest {
     /// The body resource for this request
@@ -14566,12 +14812,18 @@ pub struct BulkInsertInstanceRequest {
 /// A transient resource used in compute.instances.bulkInsert and
 /// compute.regionInstances.bulkInsert . This resource is not persisted
 /// anywhere, it is used only for processing the requests.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertInstanceResource {
     /// The maximum number of instances to create.
     #[prost(int64, optional, tag = "94851343")]
     pub count: ::core::option::Option<i64>,
-    /// A flexible specification of machine type of instances to create.
+    /// A specification of alternative machine types to use when creating
+    /// instances. A single bulkInsert request can create instances with multiple
+    /// different machine types based on capacity and quota availability. This
+    /// field is supported only for regional bulkInsert requests. For more
+    /// information, see About
+    /// instance flexibility for VMs created in bulk.
     #[prost(message, optional, tag = "26937090")]
     pub instance_flexibility_policy: ::core::option::Option<InstanceFlexibilityPolicy>,
     /// The instance properties defining the VM instances to be created. Required
@@ -14628,6 +14880,7 @@ pub struct BulkInsertInstanceResource {
 }
 /// Per-instance properties to be set on individual instances.
 /// To be extended in the future.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkInsertInstanceResourcePerInstanceProperties {
     /// Specifies the hostname of the instance. More details in:
@@ -14638,6 +14891,7 @@ pub struct BulkInsertInstanceResourcePerInstanceProperties {
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkInsertOperationStatus {
     /// \[Output Only\] Count of VMs successfully created so far.
@@ -14663,6 +14917,7 @@ pub struct BulkInsertOperationStatus {
 pub mod bulk_insert_operation_status {
     /// \[Output Only\] Creation status of BulkInsert operation - information
     /// if the flow is rolling forward or rolling back.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -14714,6 +14969,7 @@ pub mod bulk_insert_operation_status {
     }
 }
 /// A request message for RegionDisks.BulkInsert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkInsertRegionDiskRequest {
     /// The body resource for this request
@@ -14744,6 +15000,7 @@ pub struct BulkInsertRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstances.BulkInsert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertRegionInstanceRequest {
     /// The body resource for this request
@@ -14774,6 +15031,7 @@ pub struct BulkInsertRegionInstanceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.BulkSetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkSetLabelsDiskRequest {
     /// The body resource for this request
@@ -14806,6 +15064,7 @@ pub struct BulkSetLabelsDiskRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource,
@@ -14823,11 +15082,13 @@ pub struct BulkSetLabelsRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkZoneSetLabelsRequest {
     #[prost(message, repeated, tag = "143613892")]
     pub requests: ::prost::alloc::vec::Vec<BulkSetLabelsRequest>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BundledLocalSsds {
     /// The default disk interface if the interface is not specified.
@@ -14837,6 +15098,7 @@ pub struct BundledLocalSsds {
     #[prost(int32, optional, tag = "408514426")]
     pub partition_count: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CacheInvalidationRule {
     /// A list of cache tags used to identify cached objects.
@@ -14854,7 +15116,9 @@ pub struct CacheInvalidationRule {
     #[prost(string, repeated, tag = "29073078")]
     pub cache_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If set, this invalidation rule will only apply to requests with a Host
-    /// header matching host.
+    /// header matching host. This field also accepts wildcards (\*) to replace the
+    /// leftmost (or first) label of a hostname. For example, \*.example.com will
+    /// match www.example.com, but not sub1.dev.example.com.
     #[prost(string, optional, tag = "3208616")]
     pub host: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3433509")]
@@ -14862,6 +15126,7 @@ pub struct CacheInvalidationRule {
 }
 /// Message containing what to include in the cache key for a request for Cloud
 /// CDN.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CacheKeyPolicy {
     /// If true, requests to different hosts will be cached separately.
@@ -14897,6 +15162,7 @@ pub struct CacheKeyPolicy {
     pub query_string_whitelist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message containing CachePolicy configuration for URL Map's Route Action.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CachePolicy {
     /// Bypass the cache when the specified request headers are matched by name,
@@ -15010,6 +15276,7 @@ pub struct CachePolicy {
 pub mod cache_policy {
     /// Specifies the cache setting for all responses from this route. If not
     /// specified, Cloud CDN uses `CACHE_ALL_STATIC` mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15068,6 +15335,7 @@ pub mod cache_policy {
 }
 /// Message containing what to include in the cache key for a request for Cache
 /// Policy defined on Route Action.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CachePolicyCacheKeyPolicy {
     /// Names of query string parameters to exclude in cache keys. All other
@@ -15137,6 +15405,7 @@ pub struct CachePolicyCacheKeyPolicy {
     >,
 }
 /// Specify CDN TTLs for response error codes.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CachePolicyNegativeCachingPolicy {
     /// The HTTP status code to define a TTL against. Only HTTP status codes
@@ -15154,6 +15423,7 @@ pub struct CachePolicyNegativeCachingPolicy {
 }
 /// A request to recommend the best way to consume the specified resources in the
 /// future.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarModeAdviceRequest {
     /// Specification of resources to create in the future.
@@ -15169,6 +15439,7 @@ pub struct CalendarModeAdviceRequest {
 /// A response containing the recommended way of creating the specified resources
 /// in the future. It contains (will contain) multiple recommendations that can
 /// be analyzed by the customer and the best one can be picked.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarModeAdviceResponse {
     /// Recommendations where, how and when to create the requested resources
@@ -15177,6 +15448,7 @@ pub struct CalendarModeAdviceResponse {
     pub recommendations: ::prost::alloc::vec::Vec<CalendarModeRecommendation>,
 }
 /// A request message for Advice.CalendarMode. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarModeAdviceRpcRequest {
     /// The body resource for this request
@@ -15194,6 +15466,7 @@ pub struct CalendarModeAdviceRpcRequest {
 /// A single recommendation to create requested resources. Contains detailed
 /// recommendations for every future resources specification specified in
 /// CalendarModeAdviceRequest.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarModeRecommendation {
     /// Recommendations for every future resource specification passed in
@@ -15206,6 +15479,7 @@ pub struct CalendarModeRecommendation {
     >,
 }
 /// A request message for FutureReservations.Cancel. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelFutureReservationRequest {
     /// Name of the future reservation to retrieve. Name should conform to RFC1035.
@@ -15234,6 +15508,7 @@ pub struct CancelFutureReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagerResizeRequests.Cancel. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -15268,6 +15543,7 @@ pub struct CancelInstanceGroupManagerResizeRequestRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagerResizeRequests.Cancel. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelRegionInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -15302,6 +15578,7 @@ pub struct CancelRegionInstanceGroupManagerResizeRequestRequest {
     pub resize_request: ::prost::alloc::string::String,
 }
 /// A request message for Networks.CancelRequestRemovePeering. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelRequestRemovePeeringNetworkRequest {
     /// Name of the network resource to remove peering from.
@@ -15332,6 +15609,7 @@ pub struct CancelRequestRemovePeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Rollouts.Cancel. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelRolloutRequest {
     /// Project ID for this request.
@@ -15364,6 +15642,7 @@ pub struct CancelRolloutRequest {
 }
 /// A request to provide Assistant Scores. These scores determine VM
 /// obtainability and preemption likelihood.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceRequest {
     /// Policy specifying the distribution of instances across
@@ -15387,6 +15666,7 @@ pub struct CapacityAdviceRequest {
     pub size: ::core::option::Option<i32>,
 }
 /// Distribution policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceRequestDistributionPolicy {
     /// Target distribution shape. You can specify the following values:ANY, ANY_SINGLE_ZONE, or BALANCED.
@@ -15402,6 +15682,7 @@ pub struct CapacityAdviceRequestDistributionPolicy {
 /// Nested message and enum types in `CapacityAdviceRequestDistributionPolicy`.
 pub mod capacity_advice_request_distribution_policy {
     /// Target distribution shape. You can specify the following values:ANY, ANY_SINGLE_ZONE, or BALANCED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15458,6 +15739,7 @@ pub mod capacity_advice_request_distribution_policy {
     }
 }
 /// Zone configuration for the distribution policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityAdviceRequestDistributionPolicyZoneConfiguration {
     /// The URL of the zone. It can be a
@@ -15472,6 +15754,7 @@ pub struct CapacityAdviceRequestDistributionPolicyZoneConfiguration {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specification of alternative, flexible instance configurations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceRequestInstanceFlexibilityPolicy {
     /// Named instance selections to configure properties.
@@ -15484,6 +15767,7 @@ pub struct CapacityAdviceRequestInstanceFlexibilityPolicy {
     >,
 }
 /// Machine specification.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection {
     /// Local SSDs.
@@ -15504,6 +15788,7 @@ pub struct CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection {
     pub rank: ::core::option::Option<i64>,
 }
 /// Attached disk configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk {
     /// Specifies the type of the disk.
@@ -15514,6 +15799,7 @@ pub struct CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttach
 /// Nested message and enum types in `CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk`.
 pub mod capacity_advice_request_instance_flexibility_policy_instance_selection_attached_disk {
     /// Specifies the type of the disk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15558,6 +15844,7 @@ pub mod capacity_advice_request_instance_flexibility_policy_instance_selection_a
     }
 }
 /// Instance provisioning properties.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityAdviceRequestInstanceProperties {
     /// Specifies the scheduling options.
@@ -15567,6 +15854,7 @@ pub struct CapacityAdviceRequestInstanceProperties {
     >,
 }
 /// Defines the instance scheduling options.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityAdviceRequestInstancePropertiesScheduling {
     /// Specifies the provisioning model.
@@ -15577,6 +15865,7 @@ pub struct CapacityAdviceRequestInstancePropertiesScheduling {
 /// Nested message and enum types in `CapacityAdviceRequestInstancePropertiesScheduling`.
 pub mod capacity_advice_request_instance_properties_scheduling {
     /// Specifies the provisioning model.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15630,6 +15919,7 @@ pub mod capacity_advice_request_instance_properties_scheduling {
     }
 }
 /// A response contains scoring recommendations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceResponse {
     /// Initially the API will provide one recommendation which balances the
@@ -15638,6 +15928,7 @@ pub struct CapacityAdviceResponse {
     pub recommendations: ::prost::alloc::vec::Vec<CapacityAdviceResponseRecommendation>,
 }
 /// Recommendation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceResponseRecommendation {
     /// Scores for the recommendation.
@@ -15648,6 +15939,7 @@ pub struct CapacityAdviceResponseRecommendation {
     pub shards: ::prost::alloc::vec::Vec<CapacityAdviceResponseRecommendationShard>,
 }
 /// Groups information about a shard of capacity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceResponseRecommendationScores {
     /// The estimated run time of the majority of Spot VMs in the request
@@ -15664,6 +15956,7 @@ pub struct CapacityAdviceResponseRecommendationScores {
 /// Shards represent blocks of uniform capacity in recommendations.
 /// Each shard is for a single zone and a single machine shape. Each shard
 /// defines a size expressed as the number of VMs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityAdviceResponseRecommendationShard {
     /// The number of instances.
@@ -15683,6 +15976,7 @@ pub struct CapacityAdviceResponseRecommendationShard {
 /// Nested message and enum types in `CapacityAdviceResponseRecommendationShard`.
 pub mod capacity_advice_response_recommendation_shard {
     /// The provisioning model that you want to view recommendations for.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15736,6 +16030,7 @@ pub mod capacity_advice_response_recommendation_shard {
     }
 }
 /// A request message for Advice.Capacity. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityAdviceRpcRequest {
     /// The body resource for this request
@@ -15749,6 +16044,7 @@ pub struct CapacityAdviceRpcRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Advice.CapacityHistory. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityHistoryAdviceRequest {
     /// The body resource for this request
@@ -15764,6 +16060,7 @@ pub struct CapacityHistoryAdviceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request to get the capacity history.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityHistoryRequest {
     /// Instance properties for this request.
@@ -15781,6 +16078,7 @@ pub struct CapacityHistoryRequest {
 }
 /// Nested message and enum types in `CapacityHistoryRequest`.
 pub mod capacity_history_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15829,6 +16127,7 @@ pub mod capacity_history_request {
     }
 }
 /// Instance properties for this request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityHistoryRequestInstanceProperties {
     /// Local SSDs.
@@ -15849,6 +16148,7 @@ pub struct CapacityHistoryRequestInstanceProperties {
     >,
 }
 /// AttachedDisk modeled after Instance's AttachedDisk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityHistoryRequestInstancePropertiesAttachedDisk {
     /// Specifies the type of the disk.
@@ -15859,6 +16159,7 @@ pub struct CapacityHistoryRequestInstancePropertiesAttachedDisk {
 /// Nested message and enum types in `CapacityHistoryRequestInstancePropertiesAttachedDisk`.
 pub mod capacity_history_request_instance_properties_attached_disk {
     /// Specifies the type of the disk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15903,6 +16204,7 @@ pub mod capacity_history_request_instance_properties_attached_disk {
     }
 }
 /// Scheduling options.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityHistoryRequestInstancePropertiesScheduling {
     /// The provisioning model to get capacity history for.
@@ -15921,6 +16223,7 @@ pub mod capacity_history_request_instance_properties_scheduling {
     ///
     /// For more information, see
     /// Compute Engine instances provisioning models.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -15974,6 +16277,7 @@ pub mod capacity_history_request_instance_properties_scheduling {
     }
 }
 /// Location policy for this request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityHistoryRequestLocationPolicy {
     /// The region or zone to get capacity history for.
@@ -15992,6 +16296,7 @@ pub struct CapacityHistoryRequestLocationPolicy {
     pub location: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains the capacity history.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityHistoryResponse {
     /// Output only. The location (region or zone) for which the capacity history is returned.
@@ -16011,6 +16316,7 @@ pub struct CapacityHistoryResponse {
     pub price_history: ::prost::alloc::vec::Vec<CapacityHistoryResponsePriceRecord>,
 }
 /// A record of Spot VM preemption history.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityHistoryResponsePreemptionRecord {
     /// The time interval for this preemption record.
@@ -16024,6 +16330,7 @@ pub struct CapacityHistoryResponsePreemptionRecord {
     pub preemption_rate: ::core::option::Option<f64>,
 }
 /// A record of price history.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapacityHistoryResponsePriceRecord {
     /// The time interval for this price record.
@@ -16035,6 +16342,7 @@ pub struct CapacityHistoryResponsePriceRecord {
 }
 /// Settings controlling the volume of requests, connections and retries to this
 /// backend service.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CircuitBreakers {
     /// The maximum number of connections to the backend service. If not specified,
@@ -16073,6 +16381,7 @@ pub struct CircuitBreakers {
     pub max_retries: ::core::option::Option<i32>,
 }
 /// A request message for FirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloneRulesFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -16098,6 +16407,7 @@ pub struct CloneRulesFirewallPolicyRequest {
     pub source_firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloneRulesNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -16126,6 +16436,7 @@ pub struct CloneRulesNetworkFirewallPolicyRequest {
     pub source_firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloneRulesRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -16163,6 +16474,7 @@ pub struct CloneRulesRegionNetworkFirewallPolicyRequest {
 /// You can purchase resource-based commitments for both hardware and software
 /// resources. For more information, read
 /// Resource-based committed use discounts
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Commitment {
     /// Specifies whether to automatically renew the commitment at the end of its
@@ -16312,6 +16624,7 @@ pub mod commitment {
     /// Note that if you specify MACHINE commitments, then you must
     /// also specify a type to indicate the machine series of the
     /// hardware resource that you are committing to.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -16361,6 +16674,7 @@ pub mod commitment {
     /// you receive for your resources. Committing to a longer time duration
     /// typically gives you a higher discount rate. The supported values for this
     /// field are TWELVE_MONTH (1 year), andTHIRTY_SIX_MONTH (3 years).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -16407,6 +16721,7 @@ pub mod commitment {
     /// Output only. \[Output Only\] Status of the commitment with regards to eventual expiration
     /// (each commitment has an end date defined). Status can be one of the
     /// following values: NOT_YET_ACTIVE, ACTIVE, orEXPIRED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -16469,6 +16784,7 @@ pub mod commitment {
     /// applies only to eligible resources of memory optimized M1 and M2 machine
     /// series. Type GENERAL_PURPOSE specifies a commitment that
     /// applies only to eligible resources of general purpose N1 machine series.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -16495,6 +16811,8 @@ pub mod commitment {
         ComputeOptimizedC3d = 383246484,
         ComputeOptimizedH3 = 428004939,
         ComputeOptimizedH4d = 383251320,
+        /// CUD bucket for COMPUTE_OPTIMIZED_H4D_3TB machines.
+        ComputeOptimizedH4d3tb = 443379866,
         GeneralPurpose = 299793543,
         GeneralPurposeC4 = 301911817,
         GeneralPurposeC4a = 232460888,
@@ -16512,6 +16830,10 @@ pub mod commitment {
         MemoryOptimized = 281753417,
         MemoryOptimizedM3 = 276301372,
         MemoryOptimizedM4 = 276301373,
+        /// CUD bucket for M4N machines with less than 6TB of memory.
+        MemoryOptimizedM4n = 512278961,
+        /// CUD bucket for M4N machines with 6TB of memory.
+        MemoryOptimizedM4n6tb = 69895574,
         MemoryOptimizedM46tb = 210543650,
         /// CUD bucket for X4 machine with 1440 vCPUs and 24TB of memory.
         MemoryOptimizedX4144024t = 206669823,
@@ -16569,6 +16891,7 @@ pub mod commitment {
                 Self::ComputeOptimizedC3d => "COMPUTE_OPTIMIZED_C3D",
                 Self::ComputeOptimizedH3 => "COMPUTE_OPTIMIZED_H3",
                 Self::ComputeOptimizedH4d => "COMPUTE_OPTIMIZED_H4D",
+                Self::ComputeOptimizedH4d3tb => "COMPUTE_OPTIMIZED_H4D_3TB",
                 Self::GeneralPurpose => "GENERAL_PURPOSE",
                 Self::GeneralPurposeC4 => "GENERAL_PURPOSE_C4",
                 Self::GeneralPurposeC4a => "GENERAL_PURPOSE_C4A",
@@ -16586,6 +16909,8 @@ pub mod commitment {
                 Self::MemoryOptimized => "MEMORY_OPTIMIZED",
                 Self::MemoryOptimizedM3 => "MEMORY_OPTIMIZED_M3",
                 Self::MemoryOptimizedM4 => "MEMORY_OPTIMIZED_M4",
+                Self::MemoryOptimizedM4n => "MEMORY_OPTIMIZED_M4N",
+                Self::MemoryOptimizedM4n6tb => "MEMORY_OPTIMIZED_M4N_6TB",
                 Self::MemoryOptimizedM46tb => "MEMORY_OPTIMIZED_M4_6TB",
                 Self::MemoryOptimizedX4144024t => "MEMORY_OPTIMIZED_X4_1440_24T",
                 Self::MemoryOptimizedX416tb => "MEMORY_OPTIMIZED_X4_16TB",
@@ -16625,6 +16950,7 @@ pub mod commitment {
                 "COMPUTE_OPTIMIZED_C3D" => Some(Self::ComputeOptimizedC3d),
                 "COMPUTE_OPTIMIZED_H3" => Some(Self::ComputeOptimizedH3),
                 "COMPUTE_OPTIMIZED_H4D" => Some(Self::ComputeOptimizedH4d),
+                "COMPUTE_OPTIMIZED_H4D_3TB" => Some(Self::ComputeOptimizedH4d3tb),
                 "GENERAL_PURPOSE" => Some(Self::GeneralPurpose),
                 "GENERAL_PURPOSE_C4" => Some(Self::GeneralPurposeC4),
                 "GENERAL_PURPOSE_C4A" => Some(Self::GeneralPurposeC4a),
@@ -16642,6 +16968,8 @@ pub mod commitment {
                 "MEMORY_OPTIMIZED" => Some(Self::MemoryOptimized),
                 "MEMORY_OPTIMIZED_M3" => Some(Self::MemoryOptimizedM3),
                 "MEMORY_OPTIMIZED_M4" => Some(Self::MemoryOptimizedM4),
+                "MEMORY_OPTIMIZED_M4N" => Some(Self::MemoryOptimizedM4n),
+                "MEMORY_OPTIMIZED_M4N_6TB" => Some(Self::MemoryOptimizedM4n6tb),
                 "MEMORY_OPTIMIZED_M4_6TB" => Some(Self::MemoryOptimizedM46tb),
                 "MEMORY_OPTIMIZED_X4_1440_24T" => Some(Self::MemoryOptimizedX4144024t),
                 "MEMORY_OPTIMIZED_X4_16TB" => Some(Self::MemoryOptimizedX416tb),
@@ -16667,6 +16995,7 @@ pub mod commitment {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -16700,6 +17029,7 @@ pub struct CommitmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Commitment resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -16727,6 +17057,7 @@ pub struct CommitmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional commitment params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentParams {
     /// Input only. Resource manager tags to be bound to the commitment. Tag keys and
@@ -16743,6 +17074,7 @@ pub struct CommitmentParams {
     >,
 }
 /// \[Output Only\] Contains output only fields.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommitmentResourceStatus {
     /// Output only. \[Output Only\] Indicates the end time of customer's eligibility to send
@@ -16753,6 +17085,7 @@ pub struct CommitmentResourceStatus {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentsScopedList {
     /// \[Output Only\] The list of commitments contained in this scope.
@@ -16768,6 +17101,7 @@ pub struct CommitmentsScopedList {
 /// A composite health check resource specifies the health source resources and
 /// the health destination resource to which the aggregated health result from
 /// the health source resources is delivered.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompositeHealthCheck {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -16828,6 +17162,7 @@ pub struct CompositeHealthCheck {
     pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of CompositeHealthChecksScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompositeHealthCheckAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -16860,6 +17195,7 @@ pub struct CompositeHealthCheckAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Response message for RegionCompositeHealthChecks.GetHealth
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompositeHealthCheckHealth {
     /// Health sources and their corresponding health states.
@@ -16879,6 +17215,7 @@ pub struct CompositeHealthCheckHealth {
 /// Nested message and enum types in `CompositeHealthCheckHealth`.
 pub mod composite_health_check_health {
     /// Health state of the CompositeHealthCheck.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -16923,6 +17260,7 @@ pub mod composite_health_check_health {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompositeHealthCheckList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -16948,6 +17286,7 @@ pub struct CompositeHealthCheckList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompositeHealthChecksGetHealthResponseHealthSourceHealth {
     /// Health state of the associated HealthSource resource.
@@ -16961,6 +17300,7 @@ pub struct CompositeHealthChecksGetHealthResponseHealthSourceHealth {
 /// Nested message and enum types in `CompositeHealthChecksGetHealthResponseHealthSourceHealth`.
 pub mod composite_health_checks_get_health_response_health_source_health {
     /// Health state of the associated HealthSource resource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -17005,6 +17345,7 @@ pub mod composite_health_checks_get_health_response_health_source_health {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompositeHealthChecksScopedList {
     /// A list of CompositeHealthChecks contained in this scope.
@@ -17016,6 +17357,7 @@ pub struct CompositeHealthChecksScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A set of Confidential Instance options.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfidentialInstanceConfig {
     /// Defines the type of technology used by the confidential instance.
@@ -17031,6 +17373,7 @@ pub struct ConfidentialInstanceConfig {
 /// Nested message and enum types in `ConfidentialInstanceConfig`.
 pub mod confidential_instance_config {
     /// Defines the type of technology used by the confidential instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -17095,6 +17438,7 @@ pub mod confidential_instance_config {
     }
 }
 /// Message containing connection draining configuration.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectionDraining {
     /// Configures a duration timeout for existing requests on a removed backend
@@ -17104,6 +17448,7 @@ pub struct ConnectionDraining {
     pub draining_timeout_sec: ::core::option::Option<i32>,
 }
 /// This message defines settings for a consistent hash style load balancer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConsistentHashLoadBalancerSettings {
     /// Hash is based on HTTP Cookie. This field describes a HTTP cookie that will
@@ -17130,6 +17475,7 @@ pub struct ConsistentHashLoadBalancerSettings {
 }
 /// The information about the HTTP Cookie on which the hash function is based
 /// for load balancing policies that use a consistent hash.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConsistentHashLoadBalancerSettingsHttpCookie {
     /// Name of the cookie.
@@ -17143,6 +17489,7 @@ pub struct ConsistentHashLoadBalancerSettingsHttpCookie {
     pub ttl: ::core::option::Option<Duration>,
 }
 /// A request message for OrganizationSecurityPolicies.CopyRules. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CopyRulesOrganizationSecurityPolicyRequest {
     /// An optional request ID to identify requests. Specify a unique request ID so
@@ -17171,6 +17518,7 @@ pub struct CopyRulesOrganizationSecurityPolicyRequest {
 /// information about the W3C recommendation for cross-origin resource sharing
 /// (CORS), see Fetch API Living
 /// Standard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CorsPolicy {
     /// In response to a preflight request, setting this to true
@@ -17219,6 +17567,7 @@ pub struct CorsPolicy {
     pub max_age: ::core::option::Option<i32>,
 }
 /// A request message for InstanceGroupManagers.CreateInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -17254,6 +17603,7 @@ pub struct CreateInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.CreateInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancesRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -17289,6 +17639,7 @@ pub struct CreateInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectGroups.CreateMembers. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMembersInterconnectGroupRequest {
     /// Name of the group resource to create members for.
@@ -17304,6 +17655,7 @@ pub struct CreateMembersInterconnectGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Disks.CreateSnapshot. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotDiskRequest {
     /// Name of the persistent disk to snapshot.
@@ -17339,6 +17691,7 @@ pub struct CreateSnapshotDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.CreateSnapshot. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotRegionDiskRequest {
     /// Name of the regional persistent disk to snapshot.
@@ -17373,6 +17726,7 @@ pub struct CreateSnapshotRegionDiskRequest {
 ///
 /// You can use cross-site networks to connect your on-premises networks to
 /// each other through Interconnect connections.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CrossSiteNetwork {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -17403,6 +17757,7 @@ pub struct CrossSiteNetwork {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response to the list request that contains a list of cross-site networks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CrossSiteNetworkList {
     #[prost(string, optional, tag = "3123477")]
@@ -17436,6 +17791,7 @@ pub struct CrossSiteNetworkList {
 }
 /// Specifies the custom error response policy that must be applied when the
 /// backend service or backend bucket responds with an error.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomErrorResponsePolicy {
     /// Specifies rules for returning error responses.
@@ -17473,6 +17829,7 @@ pub struct CustomErrorResponsePolicy {
 /// Specifies the mapping between the response code that will be returned along
 /// with the custom error content and the response code returned by the backend
 /// service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomErrorResponsePolicyCustomErrorResponseRule {
     /// Valid values include:
@@ -17512,6 +17869,7 @@ pub struct CustomErrorResponsePolicyCustomErrorResponseRule {
     #[prost(string, optional, tag = "3433509")]
     pub path: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomerEncryptionKey {
     /// The name of the encryption key that is stored in Google Cloud KMS.
@@ -17579,6 +17937,7 @@ pub struct CustomerEncryptionKey {
     #[prost(string, optional, tag = "170112551")]
     pub sha256: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomerEncryptionKeyProtectedDisk {
     /// Decrypts data associated with the disk with acustomer-supplied
@@ -17594,6 +17953,7 @@ pub struct CustomerEncryptionKeyProtectedDisk {
     #[prost(string, optional, tag = "177235995")]
     pub source: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Data {
     /// \[Output Only\] A key that provides more detail on the warning being
@@ -17625,6 +17985,7 @@ pub struct Data {
 /// * google.type.TimeOfDay
 /// * google.type.DateTime
 /// * google.protobuf.Timestamp
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Date {
     /// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
@@ -17665,6 +18026,7 @@ pub struct Date {
 ///
 /// This type is more flexible than some applications may want. Make sure to
 /// document and validate your application's limitations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateTime {
     /// Optional. Day of month. Must be from 1 to 31 and valid for the year and
@@ -17705,6 +18067,7 @@ pub struct DateTime {
     pub year: ::core::option::Option<i32>,
 }
 /// A request message for Instances.DeleteAccessConfig. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAccessConfigInstanceRequest {
     /// The name of the access config to delete.
@@ -17739,6 +18102,7 @@ pub struct DeleteAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAddressRequest {
     /// Name of the address resource to delete.
@@ -17767,6 +18131,7 @@ pub struct DeleteAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAutoscalerRequest {
     /// Name of the autoscaler to delete.
@@ -17795,6 +18160,7 @@ pub struct DeleteAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackendBucketRequest {
     /// Name of the BackendBucket resource to delete.
@@ -17820,6 +18186,7 @@ pub struct DeleteBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackendServiceRequest {
     /// Name of the BackendService resource to delete.
@@ -17845,6 +18212,7 @@ pub struct DeleteBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for CrossSiteNetworks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCrossSiteNetworkRequest {
     /// Name of the cross-site network to delete.
@@ -17871,6 +18239,7 @@ pub struct DeleteCrossSiteNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDiskRequest {
     /// Name of the persistent disk to delete.
@@ -17899,6 +18268,7 @@ pub struct DeleteDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteExternalVpnGatewayRequest {
     /// Name of the externalVpnGateways to delete.
@@ -17924,6 +18294,7 @@ pub struct DeleteExternalVpnGatewayRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -17946,6 +18317,7 @@ pub struct DeleteFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFirewallRequest {
     /// Name of the firewall rule to delete.
@@ -17971,6 +18343,7 @@ pub struct DeleteFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteForwardingRuleRequest {
     /// Name of the ForwardingRule resource to delete.
@@ -17999,6 +18372,7 @@ pub struct DeleteForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FutureReservations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFutureReservationRequest {
     /// Name of the future reservation to retrieve. Name should conform to RFC1035.
@@ -18027,6 +18401,7 @@ pub struct DeleteFutureReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalAddressRequest {
     /// Name of the address resource to delete.
@@ -18052,6 +18427,7 @@ pub struct DeleteGlobalAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to delete.
@@ -18077,6 +18453,7 @@ pub struct DeleteGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalNetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with
@@ -18103,6 +18480,7 @@ pub struct DeleteGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalOperationRequest {
     /// Name of the Operations resource to delete, or its unique numeric
@@ -18114,9 +18492,11 @@ pub struct DeleteGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A response message for GlobalOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalOperationResponse {}
 /// A request message for GlobalOrganizationOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalOrganizationOperationRequest {
     /// Name of the Operations resource to delete, or its unique numeric
@@ -18128,9 +18508,11 @@ pub struct DeleteGlobalOrganizationOperationRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A response message for GlobalOrganizationOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalOrganizationOperationResponse {}
 /// A request message for GlobalPublicDelegatedPrefixes.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -18156,6 +18538,7 @@ pub struct DeleteGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalVmExtensionPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGlobalVmExtensionPolicyRequest {
     /// Name of the global VM extension policy to purge scoped resources for.
@@ -18186,6 +18569,7 @@ pub struct DeleteGlobalVmExtensionPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteHealthCheckRequest {
     /// Name of the HealthCheck resource to delete.
@@ -18211,6 +18595,7 @@ pub struct DeleteHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteImageRequest {
     /// Name of the image resource to delete.
@@ -18236,6 +18621,7 @@ pub struct DeleteImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceGroupManagerRequest {
     /// The name of the managed instance group to delete.
@@ -18269,6 +18655,7 @@ pub struct DeleteInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagerResizeRequests.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -18303,6 +18690,7 @@ pub struct DeleteInstanceGroupManagerResizeRequestRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceGroupRequest {
     /// The name of the instance group to delete.
@@ -18332,6 +18720,7 @@ pub struct DeleteInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Name of the instance resource to delete.
@@ -18363,6 +18752,7 @@ pub struct DeleteInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceTemplateRequest {
     /// The name of the instance template to delete.
@@ -18388,6 +18778,7 @@ pub struct DeleteInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.DeleteInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -18426,6 +18817,7 @@ pub struct DeleteInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.DeleteInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -18463,6 +18855,7 @@ pub struct DeleteInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstantSnapshotGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstantSnapshotGroupRequest {
     /// Name of the InstantSnapshot resource to delete.
@@ -18491,6 +18884,7 @@ pub struct DeleteInstantSnapshotGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstantSnapshotRequest {
     /// Name of the InstantSnapshot resource to delete.
@@ -18519,6 +18913,7 @@ pub struct DeleteInstantSnapshotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInterconnectAttachmentGroupRequest {
     /// Name of the InterconnectAttachmentGroup resource to delete.
@@ -18545,6 +18940,7 @@ pub struct DeleteInterconnectAttachmentGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectAttachments.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to delete.
@@ -18573,6 +18969,7 @@ pub struct DeleteInterconnectAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInterconnectGroupRequest {
     /// Name of the InterconnectGroup resource to delete.
@@ -18599,6 +18996,7 @@ pub struct DeleteInterconnectGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Interconnects.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInterconnectRequest {
     /// Name of the interconnect to delete.
@@ -18624,6 +19022,7 @@ pub struct DeleteInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Licenses.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLicenseRequest {
     /// Name of the license resource to delete.
@@ -18649,6 +19048,7 @@ pub struct DeleteLicenseRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for MachineImages.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMachineImageRequest {
     /// The name of the machine image to delete.
@@ -18674,6 +19074,7 @@ pub struct DeleteMachineImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Routers.DeleteNamedSet. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNamedSetRouterRequest {
     /// The Named Set name for this request. Name must conform to RFC1035
@@ -18705,6 +19106,7 @@ pub struct DeleteNamedSetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkAttachmentRequest {
     /// Name of the NetworkAttachment resource to delete.
@@ -18734,6 +19136,7 @@ pub struct DeleteNetworkAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to delete.
@@ -18762,6 +19165,7 @@ pub struct DeleteNetworkEdgeSecurityServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with
@@ -18792,6 +19196,7 @@ pub struct DeleteNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -18817,6 +19222,7 @@ pub struct DeleteNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.DeleteNetworkInterface. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkInterfaceInstanceRequest {
     /// The instance name for this request stored as resource_id.
@@ -18849,6 +19255,7 @@ pub struct DeleteNetworkInterfaceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkRequest {
     /// Name of the network to delete.
@@ -18874,6 +19281,7 @@ pub struct DeleteNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodeGroupRequest {
     /// Name of the NodeGroup resource to delete.
@@ -18902,6 +19310,7 @@ pub struct DeleteNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodeTemplateRequest {
     /// Name of the NodeTemplate resource to delete.
@@ -18930,6 +19339,7 @@ pub struct DeleteNodeTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.DeleteNodes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodesNodeGroupRequest {
     /// Name of the NodeGroup resource whose nodes will be deleted.
@@ -18963,6 +19373,7 @@ pub struct DeleteNodesNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteOrganizationSecurityPolicyRequest {
     /// An optional request ID to identify requests. Specify a unique request ID so
@@ -18985,6 +19396,7 @@ pub struct DeleteOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePacketMirroringRequest {
     /// Name of the PacketMirroring resource to delete.
@@ -19013,6 +19425,7 @@ pub struct DeletePacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.DeletePerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -19035,6 +19448,7 @@ pub struct DeletePerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.DeletePerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -19053,6 +19467,7 @@ pub struct DeletePerInstanceConfigsRegionInstanceGroupManagerRequest {
     >,
 }
 /// A request message for PublicAdvertisedPrefixes.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -19078,6 +19493,7 @@ pub struct DeletePublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -19106,6 +19522,7 @@ pub struct DeletePublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionAutoscalerRequest {
     /// Name of the autoscaler to delete.
@@ -19134,6 +19551,7 @@ pub struct DeleteRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendBuckets.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionBackendBucketRequest {
     /// Name of the BackendBucket resource to delete.
@@ -19163,6 +19581,7 @@ pub struct DeleteRegionBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionBackendServiceRequest {
     /// Name of the BackendService resource to delete.
@@ -19191,6 +19610,7 @@ pub struct DeleteRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCompositeHealthChecks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionCompositeHealthCheckRequest {
     /// Name of the CompositeHealthCheck resource to delete.
@@ -19219,6 +19639,7 @@ pub struct DeleteRegionCompositeHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionDisks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionDiskRequest {
     /// Name of the regional persistent disk to delete.
@@ -19247,6 +19668,7 @@ pub struct DeleteRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthAggregationPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionHealthAggregationPolicyRequest {
     /// Name of the HealthAggregationPolicy resource to delete.
@@ -19275,6 +19697,7 @@ pub struct DeleteRegionHealthAggregationPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to delete.
@@ -19303,6 +19726,7 @@ pub struct DeleteRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to delete. The name
@@ -19332,6 +19756,7 @@ pub struct DeleteRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthSources.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionHealthSourceRequest {
     /// Name of the HealthSource resource to delete.
@@ -19360,6 +19785,7 @@ pub struct DeleteRegionHealthSourceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group to delete.
@@ -19392,6 +19818,7 @@ pub struct DeleteRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagerResizeRequests.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -19426,6 +19853,7 @@ pub struct DeleteRegionInstanceGroupManagerResizeRequestRequest {
     pub resize_request: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceTemplates.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionInstanceTemplateRequest {
     /// The name of the instance template to delete.
@@ -19454,6 +19882,7 @@ pub struct DeleteRegionInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstantSnapshotGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionInstantSnapshotGroupRequest {
     /// Name of the InstantSnapshotGroup resource to delete.
@@ -19482,6 +19911,7 @@ pub struct DeleteRegionInstantSnapshotGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstantSnapshots.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionInstantSnapshotRequest {
     /// Name of the InstantSnapshot resource to delete.
@@ -19510,6 +19940,7 @@ pub struct DeleteRegionInstantSnapshotRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with
@@ -19540,6 +19971,7 @@ pub struct DeleteRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -19568,6 +20000,7 @@ pub struct DeleteRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNotificationEndpoints.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionNotificationEndpointRequest {
     /// Name of the NotificationEndpoint resource to delete.
@@ -19596,6 +20029,7 @@ pub struct DeleteRegionNotificationEndpointRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionOperationRequest {
     /// Name of the Operations resource to delete, or its unique numeric
@@ -19610,9 +20044,11 @@ pub struct DeleteRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A response message for RegionOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionOperationResponse {}
 /// A request message for RegionSecurityPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -19641,6 +20077,7 @@ pub struct DeleteRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionSnapshotRequest {
     /// Project ID for this request.
@@ -19669,6 +20106,7 @@ pub struct DeleteRegionSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslCertificates.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -19697,6 +20135,7 @@ pub struct DeleteRegionSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -19726,6 +20165,7 @@ pub struct DeleteRegionSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -19754,6 +20194,7 @@ pub struct DeleteRegionTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -19782,6 +20223,7 @@ pub struct DeleteRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetTcpProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -19810,6 +20252,7 @@ pub struct DeleteRegionTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionUrlMaps.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionUrlMapRequest {
     /// Project ID for this request.
@@ -19827,6 +20270,7 @@ pub struct DeleteRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Project ID for this request.
@@ -19855,6 +20299,7 @@ pub struct DeleteReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteResourcePolicyRequest {
     /// Project ID for this request.
@@ -19883,6 +20328,7 @@ pub struct DeleteResourcePolicyRequest {
     pub resource_policy: ::prost::alloc::string::String,
 }
 /// A request message for RolloutPlans.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRolloutPlanRequest {
     /// Project ID for this request.
@@ -19908,6 +20354,7 @@ pub struct DeleteRolloutPlanRequest {
     pub rollout_plan: ::prost::alloc::string::String,
 }
 /// A request message for Rollouts.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRolloutRequest {
     /// Project ID for this request.
@@ -19933,6 +20380,7 @@ pub struct DeleteRolloutRequest {
     pub rollout: ::prost::alloc::string::String,
 }
 /// A request message for Routers.DeleteRoutePolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRoutePolicyRouterRequest {
     /// The Policy name for this request. Name must conform to RFC1035
@@ -19964,6 +20412,7 @@ pub struct DeleteRoutePolicyRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routes.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRouteRequest {
     /// Project ID for this request.
@@ -19989,6 +20438,7 @@ pub struct DeleteRouteRequest {
     pub route: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRouterRequest {
     /// Project ID for this request.
@@ -20017,6 +20467,7 @@ pub struct DeleteRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSecurityPolicyRequest {
     /// Project ID for this request.
@@ -20042,6 +20493,7 @@ pub struct DeleteSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceAttachmentRequest {
     /// Project ID for this request.
@@ -20070,6 +20522,7 @@ pub struct DeleteServiceAttachmentRequest {
     pub service_attachment: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.DeleteSignedUrlKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSignedUrlKeyBackendBucketRequest {
     /// Name of the BackendBucket resource to which the Signed URL Key should be
@@ -20099,6 +20552,7 @@ pub struct DeleteSignedUrlKeyBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.DeleteSignedUrlKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSignedUrlKeyBackendServiceRequest {
     /// Name of the BackendService resource to which the Signed URL Key should be
@@ -20128,6 +20582,7 @@ pub struct DeleteSignedUrlKeyBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Snapshots.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
     /// Project ID for this request.
@@ -20153,6 +20608,7 @@ pub struct DeleteSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for SslCertificates.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSslCertificateRequest {
     /// Project ID for this request.
@@ -20178,6 +20634,7 @@ pub struct DeleteSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSslPolicyRequest {
     /// Project ID for this request.
@@ -20204,6 +20661,7 @@ pub struct DeleteSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStoragePoolRequest {
     /// Project ID for this request.
@@ -20232,6 +20690,7 @@ pub struct DeleteStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubnetworkRequest {
     /// Project ID for this request.
@@ -20260,6 +20719,7 @@ pub struct DeleteSubnetworkRequest {
     pub subnetwork: ::prost::alloc::string::String,
 }
 /// A request message for TargetGrpcProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -20285,6 +20745,7 @@ pub struct DeleteTargetGrpcProxyRequest {
     pub target_grpc_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -20310,6 +20771,7 @@ pub struct DeleteTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -20335,6 +20797,7 @@ pub struct DeleteTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetInstances.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetInstanceRequest {
     /// Project ID for this request.
@@ -20363,6 +20826,7 @@ pub struct DeleteTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetPoolRequest {
     /// Project ID for this request.
@@ -20391,6 +20855,7 @@ pub struct DeleteTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetSslProxyRequest {
     /// Project ID for this request.
@@ -20416,6 +20881,7 @@ pub struct DeleteTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -20441,6 +20907,7 @@ pub struct DeleteTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -20469,6 +20936,7 @@ pub struct DeleteTargetVpnGatewayRequest {
     pub target_vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUrlMapRequest {
     /// Project ID for this request.
@@ -20494,6 +20962,7 @@ pub struct DeleteUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVpnGatewayRequest {
     /// Project ID for this request.
@@ -20522,6 +20991,7 @@ pub struct DeleteVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVpnTunnelRequest {
     /// Project ID for this request.
@@ -20550,6 +21020,7 @@ pub struct DeleteVpnTunnelRequest {
     pub vpn_tunnel: ::prost::alloc::string::String,
 }
 /// A request message for WireGroups.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWireGroupRequest {
     #[prost(string, tag = "108192469")]
@@ -20578,6 +21049,7 @@ pub struct DeleteWireGroupRequest {
     pub wire_group: ::prost::alloc::string::String,
 }
 /// A request message for ZoneOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteZoneOperationRequest {
     /// Name of the Operations resource to delete, or its unique numeric
@@ -20592,9 +21064,11 @@ pub struct DeleteZoneOperationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A response message for ZoneOperations.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteZoneOperationResponse {}
 /// A request message for ZoneVmExtensionPolicies.Delete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteZoneVmExtensionPolicyRequest {
     /// Project ID for this request.
@@ -20622,6 +21096,7 @@ pub struct DeleteZoneVmExtensionPolicyRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Denied {
     /// The IP protocol to which this rule applies. The protocol type is
@@ -20640,6 +21115,7 @@ pub struct Denied {
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for Images.Deprecate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeprecateImageRequest {
     /// The body resource for this request
@@ -20668,6 +21144,7 @@ pub struct DeprecateImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Deprecation status for a public resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeprecationStatus {
     /// An optional RFC3339 timestamp on or after which the state of this
@@ -20707,6 +21184,7 @@ pub mod deprecation_status {
     /// Operations which communicate the end of life date for an image, can useACTIVE. Operations which create a new resource using aDEPRECATED resource will return successfully, but with a
     /// warning indicating the deprecated resource and recommending its
     /// replacement. Operations which use OBSOLETE orDELETED resources will be rejected and result in an error.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -20755,6 +21233,7 @@ pub mod deprecation_status {
     }
 }
 /// A request message for Instances.DetachDisk. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetachDiskInstanceRequest {
     /// The device name of the disk to detach. Make a get() request on
@@ -20787,6 +21266,7 @@ pub struct DetachDiskInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.DetachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -20818,6 +21298,7 @@ pub struct DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.DetachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachNetworkEndpointsNetworkEndpointGroupRequest {
     /// The name of the network endpoint group where you are removing network
@@ -20853,6 +21334,7 @@ pub struct DetachNetworkEndpointsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.DetachNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachNetworkEndpointsRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group you are detaching network
@@ -20890,6 +21372,7 @@ pub struct DetachNetworkEndpointsRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.DisableXpnHost. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableXpnHostProjectRequest {
     /// Project ID for this request.
@@ -20912,6 +21395,7 @@ pub struct DisableXpnHostProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.DisableXpnResource. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableXpnResourceProjectRequest {
     /// Project ID for this request.
@@ -20956,6 +21440,7 @@ pub struct DisableXpnResourceProjectRequest {
 /// The regionDisks resource represents a
 /// regional persistent disk.  For more information, read
 /// Regional resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// The access mode of the disk.
@@ -21330,6 +21815,7 @@ pub mod disk {
     /// ```
     ///
     /// The AccessMode is only valid for Hyperdisk disk types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -21381,6 +21867,7 @@ pub mod disk {
     }
     /// The architecture of the disk. Valid values are
     /// ARM64 or X86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -21437,6 +21924,7 @@ pub mod disk {
     ///   - READY: Disk is ready for use.
     ///   - DELETING: Disk is deleting.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -21497,6 +21985,7 @@ pub mod disk {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -21529,6 +22018,7 @@ pub struct DiskAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskAsyncReplication {
     /// Output only. \[Output Only\] URL of the DiskConsistencyGroupPolicy if replication was
@@ -21561,6 +22051,7 @@ pub struct DiskAsyncReplication {
     #[prost(string, optional, tag = "60990205")]
     pub disk_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskAsyncReplicationList {
     #[prost(message, optional, tag = "231794067")]
@@ -21568,6 +22059,7 @@ pub struct DiskAsyncReplicationList {
 }
 /// A specification of the desired way to instantiate a disk in the instance
 /// template when its created from a source instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskInstantiationConfig {
     /// Specifies whether the disk will be auto-deleted when the instance is
@@ -21626,6 +22118,7 @@ pub mod disk_instantiation_config {
     ///   Applicable to additional read-write disks, local SSDs, and read-only
     ///   disks.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -21704,6 +22197,7 @@ pub mod disk_instantiation_config {
     }
 }
 /// A list of Disk resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -21730,6 +22224,7 @@ pub struct DiskList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskMoveRequest {
     /// The URL of the destination zone to move the disk. This can be a full or
@@ -21754,6 +22249,7 @@ pub struct DiskMoveRequest {
     pub target_disk: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional disk params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskParams {
     /// Input only. Resource manager tags to be bound to the disk. Tag keys and values
@@ -21769,6 +22265,7 @@ pub struct DiskParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskResourceStatus {
     #[prost(message, optional, tag = "180517533")]
@@ -21782,6 +22279,7 @@ pub struct DiskResourceStatus {
         DiskResourceStatusAsyncReplicationStatus,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskResourceStatusAsyncReplicationStatus {
     /// Check the State enum for the list of possible values.
@@ -21790,6 +22288,7 @@ pub struct DiskResourceStatusAsyncReplicationStatus {
 }
 /// Nested message and enum types in `DiskResourceStatusAsyncReplicationStatus`.
 pub mod disk_resource_status_async_replication_status {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -21864,6 +22363,7 @@ pub mod disk_resource_status_async_replication_status {
 ///
 /// The regionDiskTypes resource represents disk types for a
 /// regional persistent disk. For more information, read Regional persistent disks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskType {
     /// \[Output Only\] Creation timestamp inRFC3339
@@ -21909,6 +22409,7 @@ pub struct DiskType {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypeAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -21941,6 +22442,7 @@ pub struct DiskTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of disk types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -21967,6 +22469,7 @@ pub struct DiskTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypesScopedList {
     /// \[Output Only\] A list of disk types contained in this scope.
@@ -21977,6 +22480,7 @@ pub struct DiskTypesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiskUpdateKmsKeyRequest {
     /// Optional. The new KMS key to replace the current one on the disk. If empty, the disk
@@ -21994,6 +22498,7 @@ pub struct DiskUpdateKmsKeyRequest {
     #[prost(string, optional, tag = "484373913")]
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisksAddResourcePoliciesRequest {
     /// Full or relative path to the resource policy to be added to this disk. You
@@ -22001,18 +22506,21 @@ pub struct DisksAddResourcePoliciesRequest {
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisksRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this disk.
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisksResizeRequest {
     /// The new size of the persistent disk, which is specified in GB.
     #[prost(int64, optional, tag = "494929369")]
     pub size_gb: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisksScopedList {
     /// \[Output Only\] A list of disks contained in this scope.
@@ -22023,6 +22531,7 @@ pub struct DisksScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisksStartAsyncReplicationRequest {
     /// The secondary disk to start asynchronous replication to.
@@ -22054,6 +22563,7 @@ pub struct DisksStartAsyncReplicationRequest {
 /// A transient resource used in compute.disks.stopGroupAsyncReplication and
 /// compute.regionDisks.stopGroupAsyncReplication. It is only used to process
 /// requests and is not persisted.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisksStopGroupAsyncReplicationResource {
     /// The URL of the DiskConsistencyGroupPolicy for the group of disks to stop.
@@ -22073,12 +22583,14 @@ pub struct DisksStopGroupAsyncReplicationResource {
     pub resource_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A set of Display Device options
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayDevice {
     /// Defines whether the instance has Display enabled.
     #[prost(bool, optional, tag = "14266886")]
     pub enable_display: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistributionPolicy {
     /// The distribution shape to which the group converges either proactively or
@@ -22100,6 +22612,7 @@ pub struct DistributionPolicy {
 pub mod distribution_policy {
     /// The distribution shape to which the group converges either proactively or
     /// on resize events (depending on the value set inupdatePolicy.instanceRedistributionType).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -22164,6 +22677,7 @@ pub mod distribution_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DistributionPolicyZoneConfiguration {
     /// The URL of thezone.
@@ -22176,6 +22690,7 @@ pub struct DistributionPolicyZoneConfiguration {
 /// as a count of seconds and fractions of seconds at nanosecond
 /// resolution. It is independent of any calendar and concepts like "day"
 /// or "month". Range is approximately 10,000 years.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Duration {
     /// Span of time that's a fraction of a second at nanosecond resolution.
@@ -22191,6 +22706,7 @@ pub struct Duration {
     pub seconds: ::core::option::Option<i64>,
 }
 /// A request message for Projects.EnableXpnHost. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableXpnHostProjectRequest {
     /// Project ID for this request.
@@ -22213,6 +22729,7 @@ pub struct EnableXpnHostProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.EnableXpnResource. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableXpnResourceProjectRequest {
     /// Project ID for this request.
@@ -22240,6 +22757,7 @@ pub struct EnableXpnResourceProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Output only. Encountered errors.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
     /// \[Output Only\] The array of errors encountered while processing this
@@ -22249,6 +22767,7 @@ pub struct Error {
 }
 /// Container for structured error details providing additional context
 /// specific to the encountered error code.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorDetails {
     /// Error information containing structured domain, reason, and metadata.
@@ -22292,6 +22811,7 @@ pub struct ErrorDetails {
 ///    }
 /// }
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorInfo {
     /// The logical grouping to which the "reason" belongs. The error domain
@@ -22326,6 +22846,7 @@ pub struct ErrorInfo {
 }
 /// Represents a single error encountered during the processing of an
 /// operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Errors {
     /// \[Output Only\] The error type identifier for this error.
@@ -22346,6 +22867,7 @@ pub struct Errors {
     #[prost(string, optional, tag = "418054151")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExchangedPeeringRoute {
     /// The destination range of the route.
@@ -22372,6 +22894,7 @@ pub struct ExchangedPeeringRoute {
 /// Nested message and enum types in `ExchangedPeeringRoute`.
 pub mod exchanged_peering_route {
     /// The type of the peering route.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -22419,6 +22942,7 @@ pub mod exchanged_peering_route {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExchangedPeeringRoutesList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -22446,6 +22970,7 @@ pub struct ExchangedPeeringRoutesList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Subnetworks.ExpandIpCidrRange. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpandIpCidrRangeSubnetworkRequest {
     /// Project ID for this request.
@@ -22517,6 +23042,7 @@ pub struct ExpandIpCidrRangeSubnetworkRequest {
 /// The exact variables and functions that may be referenced within an expression
 /// are determined by the service that evaluates it. See the service
 /// documentation for additional information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Expr {
     /// Optional. Description of the expression. This is a longer text which
@@ -22548,6 +23074,7 @@ pub struct Expr {
 ///
 /// For more information about using external VPN gateways, see
 /// Creating an HA VPN gateway and tunnel pair to a peer VPN.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGateway {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -22615,6 +23142,7 @@ pub struct ExternalVpnGateway {
 /// Nested message and enum types in `ExternalVpnGateway`.
 pub mod external_vpn_gateway {
     /// Indicates the user-supplied redundancy type of this external VPN gateway.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -22685,6 +23213,7 @@ pub mod external_vpn_gateway {
     }
 }
 /// The interface for the external VPN gateway.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalVpnGatewayInterface {
     /// The numeric ID of this interface.
@@ -22714,6 +23243,7 @@ pub struct ExternalVpnGatewayInterface {
     pub ipv6_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response to the list request, and contains a list of externalVpnGateways.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGatewayList {
     #[prost(string, optional, tag = "3123477")]
@@ -22741,6 +23271,7 @@ pub struct ExternalVpnGatewayList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGatewayParams {
     /// Tag keys/values directly bound to this resource.
@@ -22764,6 +23295,7 @@ pub struct ExternalVpnGatewayParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FileContentBuffer {
     /// The raw content in the secure keys file.
@@ -22777,6 +23309,7 @@ pub struct FileContentBuffer {
 /// Nested message and enum types in `FileContentBuffer`.
 pub mod file_content_buffer {
     /// The file type of source file.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -22825,6 +23358,7 @@ pub mod file_content_buffer {
 ///
 /// Firewall rules allow or deny ingress traffic to, and egress traffic from your
 /// instances. For more information, readFirewall rules.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Firewall {
     /// The list of ALLOW rules specified by this firewall. Each rule specifies a
@@ -22976,6 +23510,7 @@ pub mod firewall {
     /// Direction of traffic to which this firewall applies, either `INGRESS` or
     /// `EGRESS`. The default is `INGRESS`. For `EGRESS` traffic, you cannot
     /// specify the sourceTags fields.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23020,6 +23555,7 @@ pub mod firewall {
     }
 }
 /// Contains a list of firewalls.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -23047,6 +23583,7 @@ pub struct FirewallList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The available logging options for a firewall rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallLogConfig {
     /// This field denotes whether to enable logging for a particular firewall
@@ -23065,6 +23602,7 @@ pub mod firewall_log_config {
     /// This field can only be specified for a particular firewall rule if
     /// logging is enabled for that rule. This field denotes whether to include
     /// or exclude metadata for firewall logs.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23107,6 +23645,7 @@ pub mod firewall_log_config {
     }
 }
 /// Additional firewall parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallParams {
     /// Tag keys/values directly bound to this resource.
@@ -23128,6 +23667,7 @@ pub struct FirewallParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPoliciesListAssociationsResponse {
     /// A list of associations.
@@ -23138,6 +23678,7 @@ pub struct FirewallPoliciesListAssociationsResponse {
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPoliciesScopedList {
     /// A list of firewall policies contained in this scope.
@@ -23149,6 +23690,7 @@ pub struct FirewallPoliciesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Firewall Policy resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicy {
     /// A list of associations that belong to this firewall policy.
@@ -23253,6 +23795,7 @@ pub mod firewall_policy {
     /// VPC_POLICY, RDMA_ROCE_POLICY or ULL_POLICY.
     ///
     /// Note: if not specified then VPC_POLICY will be used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23297,6 +23840,7 @@ pub mod firewall_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallPolicyAssociation {
     /// The target that the firewall policy is attached to.
@@ -23324,6 +23868,7 @@ pub struct FirewallPolicyAssociation {
     #[prost(string, optional, tag = "492051566")]
     pub short_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -23348,6 +23893,7 @@ pub struct FirewallPolicyList {
 }
 /// Represents a rule that describes one or more match conditions along with
 /// the action to be taken when traffic matches this condition (allow or deny).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRule {
     /// The Action to perform when the client connection triggers the rule.
@@ -23458,6 +24004,7 @@ pub struct FirewallPolicyRule {
 /// Nested message and enum types in `FirewallPolicyRule`.
 pub mod firewall_policy_rule {
     /// The direction in which this rule applies.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23500,6 +24047,7 @@ pub mod firewall_policy_rule {
     }
     /// Target types of the firewall policy rule.
     /// Default value is INSTANCES.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23543,6 +24091,7 @@ pub mod firewall_policy_rule {
 }
 /// Represents a match condition that incoming traffic is evaluated against.
 /// Exactly one field must be specified.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRuleMatcher {
     /// Address groups which should be matched against the traffic destination.
@@ -23673,6 +24222,7 @@ pub mod firewall_policy_rule_matcher {
     /// NON_INTERNET
     /// UNSPECIFIED
     /// VPC_NETWORKS
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23723,6 +24273,7 @@ pub mod firewall_policy_rule_matcher {
     /// NON_INTERNET
     /// UNSPECIFIED
     /// VPC_NETWORKS
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23773,6 +24324,7 @@ pub mod firewall_policy_rule_matcher {
     /// NON_INTERNET
     /// UNSPECIFIED
     /// VPC_NETWORKS
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23823,6 +24375,7 @@ pub mod firewall_policy_rule_matcher {
     /// NON_INTERNET
     /// UNSPECIFIED
     /// VPC_NETWORKS
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23858,6 +24411,7 @@ pub mod firewall_policy_rule_matcher {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallPolicyRuleMatcherLayer4Config {
     /// The IP protocol to which this rule applies. The protocol type is
@@ -23875,6 +24429,7 @@ pub struct FirewallPolicyRuleMatcherLayer4Config {
     #[prost(string, repeated, tag = "106854418")]
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallPolicyRuleSecureTag {
     /// Name of the secure tag, created with TagManager's TagValue API.
@@ -23892,6 +24447,7 @@ pub mod firewall_policy_rule_secure_tag {
     /// Output only. \[Output Only\] State of the secure tag, either `EFFECTIVE` or
     /// `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted
     /// or its network is deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -23934,6 +24490,7 @@ pub mod firewall_policy_rule_secure_tag {
     }
 }
 /// Encapsulates numeric value that can be either absolute or relative.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FixedOrPercent {
     /// Output only. Absolute value of VM instances calculated based on the specific mode.
@@ -23962,6 +24519,7 @@ pub struct FixedOrPercent {
 ///
 /// It is possible to specify a contradictory time range that cannot be matched
 /// by any Interval. This causes a validation error.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FlexibleTimeRange {
     #[prost(string, optional, tag = "39954959")]
@@ -23993,6 +24551,7 @@ pub struct FlexibleTimeRange {
 /// For more information, read
 /// Forwarding rule concepts and
 /// Using protocol forwarding.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRule {
     /// IP address for which this forwarding rule accepts traffic. When a client
@@ -24457,6 +25016,7 @@ pub mod forwarding_rule {
     /// be set to TEST_ALL_TRAFFIC at the same time. Optionally, the
     /// TEST_BY_PERCENTAGE state can be used to migrate some traffic back to
     /// EXTERNAL or PREPARE can be used to migrate all traffic back to EXTERNAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24512,6 +25072,7 @@ pub mod forwarding_rule {
     /// The valid IP protocols are different for different load balancing products
     /// as described in [Load balancing
     /// features](<https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends>).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24569,6 +25130,7 @@ pub mod forwarding_rule {
     }
     /// The IP Version that will be used by this forwarding rule.  Valid options
     /// are IPV4 or IPV6.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24616,6 +25178,7 @@ pub mod forwarding_rule {
     ///
     /// For more information, refer to
     /// Forwarding rule product and scheme table.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24678,6 +25241,7 @@ pub mod forwarding_rule {
     /// If this field is not specified, it is assumed to be PREMIUM.
     /// If IPAddress is specified, this value must be equal to the
     /// networkTier of the Address.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24735,6 +25299,7 @@ pub mod forwarding_rule {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -24797,6 +25362,7 @@ pub mod forwarding_rule {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -24829,6 +25395,7 @@ pub struct ForwardingRuleAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Reference to an extension resource that is attached to this ForwardingRule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardingRuleAttachedExtension {
     /// Output only. The resource name.
@@ -24836,6 +25403,7 @@ pub struct ForwardingRuleAttachedExtension {
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of ForwardingRule resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -24861,6 +25429,7 @@ pub struct ForwardingRuleList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardingRuleReference {
     #[prost(string, optional, tag = "269964030")]
@@ -24869,6 +25438,7 @@ pub struct ForwardingRuleReference {
 /// Describes the auto-registration of the forwarding rule to Service Directory.
 /// The region and project of the Service Directory resource generated from
 /// this registration will be the same as this forwarding rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardingRuleServiceDirectoryRegistration {
     /// Service Directory namespace to register the forwarding rule under.
@@ -24884,6 +25454,7 @@ pub struct ForwardingRuleServiceDirectoryRegistration {
     #[prost(string, optional, tag = "74030416")]
     pub service_directory_region: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRulesScopedList {
     /// A list of forwarding rules contained in this scope.
@@ -24894,6 +25465,7 @@ pub struct ForwardingRulesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservation {
     /// Aggregate reservation details for the future reservation.
@@ -25048,6 +25620,7 @@ pub struct FutureReservation {
 }
 /// Nested message and enum types in `FutureReservation`.
 pub mod future_reservation {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25098,6 +25671,7 @@ pub mod future_reservation {
         }
     }
     /// Type of the deployment requested as part of future reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25140,6 +25714,7 @@ pub mod future_reservation {
         }
     }
     /// Planning state before being submitted for evaluation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25187,6 +25762,7 @@ pub mod future_reservation {
     }
     /// The reservation mode which determines reservation-termination behavior and
     /// expected pricing.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25236,6 +25812,7 @@ pub mod future_reservation {
         }
     }
     /// Maintenance information for this reservation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25288,6 +25865,7 @@ pub mod future_reservation {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationCommitmentInfo {
     /// name of the commitment where capacity is being delivered to.
@@ -25313,6 +25891,7 @@ pub mod future_reservation_commitment_info {
     /// Indicates if a Commitment needs to be created as part of FR delivery. If
     /// this field is not present, then no
     /// commitment needs to be created.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25359,6 +25938,7 @@ pub mod future_reservation_commitment_info {
     /// Only applicable if FR is delivering to the same reservation. If set, all
     /// parent commitments will be extended to match the end date of the plan for
     /// this commitment.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25413,6 +25993,7 @@ pub mod future_reservation_commitment_info {
     }
 }
 /// Additional future reservation params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationParams {
     /// Input only. Resource manager tags to be bound to the future reservation. Tag keys and
@@ -25428,6 +26009,7 @@ pub struct FutureReservationParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationSpecificSkuProperties {
     /// Properties of the SKU instances being reserved.
@@ -25445,6 +26027,7 @@ pub struct FutureReservationSpecificSkuProperties {
     pub total_count: ::core::option::Option<i64>,
 }
 /// \[Output only\] Represents status related to the future reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationStatus {
     /// Output only. \[Output Only\] The current status of the requested amendment.
@@ -25506,6 +26089,7 @@ pub struct FutureReservationStatus {
 /// Nested message and enum types in `FutureReservationStatus`.
 pub mod future_reservation_status {
     /// Output only. \[Output Only\] The current status of the requested amendment.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25559,6 +26143,7 @@ pub mod future_reservation_status {
         }
     }
     /// Output only. Current state of this Future Reservation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25655,6 +26240,7 @@ pub mod future_reservation_status {
 }
 /// \[Output Only\] Represents the existing matching usage for the future
 /// reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationStatusExistingMatchingUsageInfo {
     /// Output only. Count to represent min(FR total_count,
@@ -25667,6 +26253,7 @@ pub struct FutureReservationStatusExistingMatchingUsageInfo {
 }
 /// The state that the future reservation will be reverted to should the
 /// amendment be declined.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationStatusLastKnownGoodState {
     /// Output only. \[Output Only\] The description of the FutureReservation before an
@@ -25701,6 +26288,7 @@ pub struct FutureReservationStatusLastKnownGoodState {
 pub mod future_reservation_status_last_known_good_state {
     /// Output only. \[Output Only\] The status of the last known good state for the Future
     /// Reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -25796,6 +26384,7 @@ pub mod future_reservation_status_last_known_good_state {
     }
 }
 /// The properties of the last known good state for the Future Reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationStatusLastKnownGoodStateFutureReservationSpecs {
     /// Output only. \[Output Only\] The previous share settings of the Future Reservation.
@@ -25812,6 +26401,7 @@ pub struct FutureReservationStatusLastKnownGoodStateFutureReservationSpecs {
     pub time_window: ::core::option::Option<FutureReservationTimeWindow>,
 }
 /// Properties to be set for the Future Reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationStatusSpecificSkuProperties {
     /// ID of the instance template used to populate the Future Reservation
@@ -25822,6 +26412,7 @@ pub struct FutureReservationStatusSpecificSkuProperties {
     >,
 }
 /// Storage pool properties for the future reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationStoragePoolProperties {
     /// Requested exapool provisioned capacity in GiB.
@@ -25839,6 +26430,7 @@ pub struct FutureReservationStoragePoolProperties {
     pub storage_pool_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Storage pool provisioned capacities for each SKU type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationStoragePoolProvisionedCapacity {
     /// Size of the storage pool in GiB.
@@ -25853,6 +26445,7 @@ pub struct FutureReservationStoragePoolProvisionedCapacity {
     #[prost(int64, optional, tag = "169215640")]
     pub pool_provisioned_throughput: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureReservationTimeWindow {
     #[prost(message, optional, tag = "155471252")]
@@ -25865,6 +26458,7 @@ pub struct FutureReservationTimeWindow {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of future reservations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationsAggregatedListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -25899,6 +26493,7 @@ pub struct FutureReservationsAggregatedListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -25931,6 +26526,7 @@ pub struct FutureReservationsListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureReservationsScopedList {
     /// A list of future reservations contained in this scope.
@@ -25943,6 +26539,7 @@ pub struct FutureReservationsScopedList {
 }
 /// Recommendation for single resources specification, to be created in the
 /// future.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureResourcesRecommendation {
     #[prost(string, optional, tag = "114938801")]
@@ -25974,6 +26571,7 @@ pub struct FutureResourcesRecommendation {
 /// Nested message and enum types in `FutureResourcesRecommendation`.
 pub mod future_resources_recommendation {
     /// Type of recommendation. Currently only FUTURE_RESERVATION is supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26021,6 +26619,7 @@ pub mod future_resources_recommendation {
 }
 /// Information about recommendation status for locations
 /// that were allowed but not used by the response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureResourcesRecommendationOtherLocation {
     /// Details (human readable) describing the situation.
@@ -26037,6 +26636,7 @@ pub struct FutureResourcesRecommendationOtherLocation {
 /// Nested message and enum types in `FutureResourcesRecommendationOtherLocation`.
 pub mod future_resources_recommendation_other_location {
     /// Status of recommendation in this location.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26102,6 +26702,7 @@ pub mod future_resources_recommendation_other_location {
 }
 /// Specification of resources to be created at some time in the future within an
 /// optionally specified set of locations, and within the specified time range.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureResourcesSpec {
     /// Indicates if the reservation allocation strategy is static (DENSE) or
@@ -26126,6 +26727,7 @@ pub struct FutureResourcesSpec {
 pub mod future_resources_spec {
     /// Indicates if the reservation allocation strategy is static (DENSE) or
     /// dynamic (STANDARD). Defaults to DENSE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26168,6 +26770,7 @@ pub mod future_resources_spec {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureResourcesSpecAggregateResources {
     /// Size of the request, in accelerator (chip) count.
@@ -26187,6 +26790,7 @@ pub struct FutureResourcesSpecAggregateResources {
 pub mod future_resources_spec_aggregate_resources {
     /// The VM family that all instances scheduled against this reservation
     /// must belong to. Use for TPU reservations.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26258,6 +26862,7 @@ pub mod future_resources_spec_aggregate_resources {
         }
     }
     /// Workload type. Use for TPU reservations.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26306,6 +26911,7 @@ pub mod future_resources_spec_aggregate_resources {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureResourcesSpecLocalSsdPartition {
     /// Disk interface. Defaults to SCSI.
@@ -26319,6 +26925,7 @@ pub struct FutureResourcesSpecLocalSsdPartition {
 /// Nested message and enum types in `FutureResourcesSpecLocalSsdPartition`.
 pub mod future_resources_spec_local_ssd_partition {
     /// Disk interface. Defaults to SCSI.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26361,6 +26968,7 @@ pub mod future_resources_spec_local_ssd_partition {
     }
 }
 /// Specification of locations to create resources in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureResourcesSpecLocationPolicy {
     /// Preferences for specified locations.
@@ -26374,6 +26982,7 @@ pub struct FutureResourcesSpecLocationPolicy {
     >,
 }
 /// Preference for a single specified location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FutureResourcesSpecLocationPolicyLocation {
     /// Preference for this location.
@@ -26384,6 +26993,7 @@ pub struct FutureResourcesSpecLocationPolicyLocation {
 /// Nested message and enum types in `FutureResourcesSpecLocationPolicyLocation`.
 pub mod future_resources_spec_location_policy_location {
     /// Preference for this location.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26431,6 +27041,7 @@ pub mod future_resources_spec_location_policy_location {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureResourcesSpecSpecificSkuResources {
     /// Size of the request, in instance count.
@@ -26451,6 +27062,7 @@ pub struct FutureResourcesSpecSpecificSkuResources {
     pub machine_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specification of reserved resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FutureResourcesSpecTargetResources {
     #[prost(message, optional, tag = "180868005")]
@@ -26462,6 +27074,7 @@ pub struct FutureResourcesSpecTargetResources {
         FutureResourcesSpecSpecificSkuResources,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrpcHealthCheck {
     /// The gRPC service name for the health check. This field is optional. The
@@ -26533,6 +27146,7 @@ pub mod grpc_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26584,6 +27198,7 @@ pub mod grpc_health_check {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrpctlsHealthCheck {
     /// The gRPC service name for the health check. This field is optional. The
@@ -26652,6 +27267,7 @@ pub mod grpctls_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26704,6 +27320,7 @@ pub mod grpctls_health_check {
     }
 }
 /// A request message for AcceleratorTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAcceleratorTypeRequest {
     /// Name of the accelerator type to return.
@@ -26717,6 +27334,7 @@ pub struct GetAcceleratorTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAddressRequest {
     /// Name of the address resource to return.
@@ -26730,6 +27348,7 @@ pub struct GetAddressRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -26740,6 +27359,7 @@ pub struct GetAssociationFirewallPolicyRequest {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried association belongs.
@@ -26753,6 +27373,7 @@ pub struct GetAssociationNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssociationOrganizationSecurityPolicyRequest {
     /// The name of the association to get from the security policy.
@@ -26763,6 +27384,7 @@ pub struct GetAssociationOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried association belongs.
@@ -26779,6 +27401,7 @@ pub struct GetAssociationRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Autoscalers.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutoscalerRequest {
     /// Name of the autoscaler to return.
@@ -26792,6 +27415,7 @@ pub struct GetAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackendBucketRequest {
     /// Name of the BackendBucket resource to return.
@@ -26802,6 +27426,7 @@ pub struct GetBackendBucketRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackendServiceRequest {
     /// Name of the BackendService resource to return.
@@ -26812,6 +27437,7 @@ pub struct GetBackendServiceRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for CrossSiteNetworks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCrossSiteNetworkRequest {
     /// Name of the cross-site network to return.
@@ -26822,6 +27448,7 @@ pub struct GetCrossSiteNetworkRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.GetDiagnostics. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiagnosticsInterconnectRequest {
     /// Name of the interconnect resource to query.
@@ -26832,6 +27459,7 @@ pub struct GetDiagnosticsInterconnectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Disks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiskRequest {
     /// Name of the persistent disk to return.
@@ -26845,6 +27473,7 @@ pub struct GetDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for DiskTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiskTypeRequest {
     /// Name of the disk type to return.
@@ -26858,6 +27487,7 @@ pub struct GetDiskTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveFirewallsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -26874,6 +27504,7 @@ pub struct GetEffectiveFirewallsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveFirewallsNetworkRequest {
     /// Name of the network for this request.
@@ -26884,6 +27515,7 @@ pub struct GetEffectiveFirewallsNetworkRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest {
     /// Network reference
@@ -26897,6 +27529,7 @@ pub struct GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.GetEffectiveSecurityPolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveSecurityPoliciesBackendServiceRequest {
     /// Name of the Backend Service for this request.
@@ -26907,9 +27540,11 @@ pub struct GetEffectiveSecurityPoliciesBackendServiceRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A response message for BackendServices.GetEffectiveSecurityPolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveSecurityPoliciesBackendServiceResponse {}
 /// A request message for ExternalVpnGateways.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExternalVpnGatewayRequest {
     /// Name of the externalVpnGateway to return.
@@ -26920,6 +27555,7 @@ pub struct GetExternalVpnGatewayRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -26927,6 +27563,7 @@ pub struct GetFirewallPolicyRequest {
     pub firewall_policy: ::prost::alloc::string::String,
 }
 /// A request message for Firewalls.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFirewallRequest {
     /// Name of the firewall rule to return.
@@ -26937,6 +27574,7 @@ pub struct GetFirewallRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetForwardingRuleRequest {
     /// Name of the ForwardingRule resource to return.
@@ -26954,6 +27592,7 @@ pub struct GetForwardingRuleRequest {
 }
 /// Nested message and enum types in `GetForwardingRuleRequest`.
 pub mod get_forwarding_rule_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -26998,6 +27637,7 @@ pub mod get_forwarding_rule_request {
     }
 }
 /// A request message for Images.GetFromFamily. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFromFamilyImageRequest {
     /// Name of the image family to search for.
@@ -27009,6 +27649,7 @@ pub struct GetFromFamilyImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for FutureReservations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFutureReservationRequest {
     /// Name of the future reservation to retrieve. Name should conform to RFC1035.
@@ -27022,6 +27663,7 @@ pub struct GetFutureReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalAddressRequest {
     /// Name of the address resource to return.
@@ -27032,6 +27674,7 @@ pub struct GetGlobalAddressRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalForwardingRules.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to return.
@@ -27046,6 +27689,7 @@ pub struct GetGlobalForwardingRuleRequest {
 }
 /// Nested message and enum types in `GetGlobalForwardingRuleRequest`.
 pub mod get_global_forwarding_rule_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -27090,6 +27734,7 @@ pub mod get_global_forwarding_rule_request {
     }
 }
 /// A request message for GlobalFrontendSettingsService.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalFrontendSettingRequest {
     /// Required. Project ID for this request.
@@ -27097,6 +27742,7 @@ pub struct GetGlobalFrontendSettingRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -27107,6 +27753,7 @@ pub struct GetGlobalNetworkEndpointGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOperations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -27118,6 +27765,7 @@ pub struct GetGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOrganizationOperations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalOrganizationOperationRequest {
     /// Name of the Operations resource to return. Parent is derived from this
@@ -27129,6 +27777,7 @@ pub struct GetGlobalOrganizationOperationRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -27139,6 +27788,7 @@ pub struct GetGlobalPublicDelegatedPrefixeRequest {
     pub public_delegated_prefix: ::prost::alloc::string::String,
 }
 /// A request message for GlobalVmExtensionPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalVmExtensionPolicyRequest {
     /// Name of the GlobalVmExtensionPolicy resource to return.
@@ -27149,6 +27799,7 @@ pub struct GetGlobalVmExtensionPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetGuestAttributes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGuestAttributesInstanceRequest {
     /// Name of the instance scoping this request.
@@ -27168,6 +27819,7 @@ pub struct GetGuestAttributesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthBackendServiceRequest {
     /// Name of the BackendService resource to which the queried instance belongs.
@@ -27182,6 +27834,7 @@ pub struct GetHealthBackendServiceRequest {
     >,
 }
 /// A request message for HealthChecks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthCheckRequest {
     /// Name of the HealthCheck resource to return.
@@ -27192,6 +27845,7 @@ pub struct GetHealthCheckRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Metadata for GetHealth operations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthOperationMetadata {
     /// Output only. The health information.
@@ -27199,6 +27853,7 @@ pub struct GetHealthOperationMetadata {
     pub health_info: ::core::option::Option<GetHealthOperationMetadataHealthInfo>,
 }
 /// Health information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthOperationMetadataHealthInfo {
     /// Output only. The availability SLO status.
@@ -27224,6 +27879,7 @@ pub struct GetHealthOperationMetadataHealthInfo {
 /// Nested message and enum types in `GetHealthOperationMetadataHealthInfo`.
 pub mod get_health_operation_metadata_health_info {
     /// Output only. The availability SLO status.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -27279,6 +27935,7 @@ pub mod get_health_operation_metadata_health_info {
         }
     }
     /// Output only. The health status.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -27326,6 +27983,7 @@ pub mod get_health_operation_metadata_health_info {
         }
     }
     /// Output only. The repair category.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -27382,6 +28040,7 @@ pub mod get_health_operation_metadata_health_info {
         }
     }
     /// Output only. The reason for unhealthy status.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -27438,6 +28097,7 @@ pub mod get_health_operation_metadata_health_info {
     }
 }
 /// A request message for RegionBackendServices.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthRegionBackendServiceRequest {
     /// Name of the BackendService resource for which to get health.
@@ -27455,6 +28115,7 @@ pub struct GetHealthRegionBackendServiceRequest {
     >,
 }
 /// A request message for RegionCompositeHealthChecks.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthRegionCompositeHealthCheckRequest {
     /// Name of the CompositeHealthCheck resource to get health for.
@@ -27468,6 +28129,7 @@ pub struct GetHealthRegionCompositeHealthCheckRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthSources.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthRegionHealthSourceRequest {
     /// Name of the HealthSource resource to get health for.
@@ -27481,6 +28143,7 @@ pub struct GetHealthRegionHealthSourceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSlots.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthReservationSlotRequest {
     /// The name of the parent reservation, parent block and parent sub-block. In
@@ -27503,6 +28166,7 @@ pub struct GetHealthReservationSlotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.GetHealth. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHealthTargetPoolRequest {
     /// The body resource for this request
@@ -27519,6 +28183,7 @@ pub struct GetHealthTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for Hosts.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHostRequest {
     /// The parent resource association for the Host. This field specifies the
@@ -27540,6 +28205,7 @@ pub struct GetHostRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyBackendBucketRequest {
     /// Requested IAM Policy version.
@@ -27553,6 +28219,7 @@ pub struct GetIamPolicyBackendBucketRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyBackendServiceRequest {
     /// Requested IAM Policy version.
@@ -27566,6 +28233,7 @@ pub struct GetIamPolicyBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyDiskRequest {
     /// Requested IAM Policy version.
@@ -27582,6 +28250,7 @@ pub struct GetIamPolicyDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -27592,6 +28261,7 @@ pub struct GetIamPolicyFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyImageRequest {
     /// Requested IAM Policy version.
@@ -27605,6 +28275,7 @@ pub struct GetIamPolicyImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInstanceRequest {
     /// Requested IAM Policy version.
@@ -27621,6 +28292,7 @@ pub struct GetIamPolicyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInstanceTemplateRequest {
     /// Requested IAM Policy version.
@@ -27634,6 +28306,7 @@ pub struct GetIamPolicyInstanceTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshotGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInstantSnapshotGroupRequest {
     /// Requested IAM Policy version.
@@ -27650,6 +28323,7 @@ pub struct GetIamPolicyInstantSnapshotGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInstantSnapshotRequest {
     /// Requested IAM Policy version.
@@ -27666,6 +28340,7 @@ pub struct GetIamPolicyInstantSnapshotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInterconnectAttachmentGroupRequest {
     /// Requested IAM Policy version.
@@ -27679,6 +28354,7 @@ pub struct GetIamPolicyInterconnectAttachmentGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyInterconnectGroupRequest {
     /// Requested IAM Policy version.
@@ -27692,6 +28368,7 @@ pub struct GetIamPolicyInterconnectGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for LicenseCodes.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyLicenseCodeRequest {
     /// Requested IAM Policy version.
@@ -27705,6 +28382,7 @@ pub struct GetIamPolicyLicenseCodeRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyLicenseRequest {
     /// Requested IAM Policy version.
@@ -27718,6 +28396,7 @@ pub struct GetIamPolicyLicenseRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyMachineImageRequest {
     /// Requested IAM Policy version.
@@ -27731,6 +28410,7 @@ pub struct GetIamPolicyMachineImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyNetworkAttachmentRequest {
     /// Requested IAM Policy version.
@@ -27747,6 +28427,7 @@ pub struct GetIamPolicyNetworkAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyNetworkFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -27760,6 +28441,7 @@ pub struct GetIamPolicyNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyNodeGroupRequest {
     /// Requested IAM Policy version.
@@ -27776,6 +28458,7 @@ pub struct GetIamPolicyNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyNodeTemplateRequest {
     /// Requested IAM Policy version.
@@ -27792,6 +28475,7 @@ pub struct GetIamPolicyNodeTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendBuckets.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionBackendBucketRequest {
     /// Requested IAM Policy version.
@@ -27808,6 +28492,7 @@ pub struct GetIamPolicyRegionBackendBucketRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionBackendServiceRequest {
     /// Requested IAM Policy version.
@@ -27824,6 +28509,7 @@ pub struct GetIamPolicyRegionBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionDiskRequest {
     /// Requested IAM Policy version.
@@ -27840,6 +28526,7 @@ pub struct GetIamPolicyRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshotGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionInstantSnapshotGroupRequest {
     /// Requested IAM Policy version.
@@ -27856,6 +28543,7 @@ pub struct GetIamPolicyRegionInstantSnapshotGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshots.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionInstantSnapshotRequest {
     /// Requested IAM Policy version.
@@ -27872,6 +28560,7 @@ pub struct GetIamPolicyRegionInstantSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionNetworkFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -27888,6 +28577,7 @@ pub struct GetIamPolicyRegionNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRegionSnapshotRequest {
     /// Requested IAM Policy version.
@@ -27904,6 +28594,7 @@ pub struct GetIamPolicyRegionSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ReservationBlocks.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyReservationBlockRequest {
     /// Requested IAM Policy version.
@@ -27923,6 +28614,7 @@ pub struct GetIamPolicyReservationBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyReservationRequest {
     /// Requested IAM Policy version.
@@ -27939,6 +28631,7 @@ pub struct GetIamPolicyReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyReservationSubBlockRequest {
     /// Requested IAM Policy version.
@@ -27958,6 +28651,7 @@ pub struct GetIamPolicyReservationSubBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyResourcePolicyRequest {
     /// Requested IAM Policy version.
@@ -27974,6 +28668,7 @@ pub struct GetIamPolicyResourcePolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyServiceAttachmentRequest {
     /// Requested IAM Policy version.
@@ -27990,6 +28685,7 @@ pub struct GetIamPolicyServiceAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicySnapshotRequest {
     /// Requested IAM Policy version.
@@ -28003,6 +28699,7 @@ pub struct GetIamPolicySnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyStoragePoolRequest {
     /// Requested IAM Policy version.
@@ -28019,6 +28716,7 @@ pub struct GetIamPolicyStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.GetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicySubnetworkRequest {
     /// Requested IAM Policy version.
@@ -28035,6 +28733,7 @@ pub struct GetIamPolicySubnetworkRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ImageFamilyViews.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetImageFamilyViewRequest {
     /// Name of the image family to search for.
@@ -28048,6 +28747,7 @@ pub struct GetImageFamilyViewRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Images.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetImageRequest {
     /// Name of the image resource to return.
@@ -28058,6 +28758,7 @@ pub struct GetImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ImageViews.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetImageViewRequest {
     /// Required. Project ID for this request.
@@ -28071,6 +28772,7 @@ pub struct GetImageViewRequest {
     pub resource_id: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -28085,6 +28787,7 @@ pub struct GetInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagerResizeRequests.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -28104,6 +28807,7 @@ pub struct GetInstanceGroupManagerResizeRequestRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceGroupRequest {
     /// The name of the instance group.
@@ -28118,6 +28822,7 @@ pub struct GetInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Name of the instance resource to return.
@@ -28131,6 +28836,7 @@ pub struct GetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceSettingsService.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceSettingRequest {
     /// Project ID for this request.
@@ -28141,6 +28847,7 @@ pub struct GetInstanceSettingRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceTemplateRequest {
     /// The name of the instance template.
@@ -28151,6 +28858,7 @@ pub struct GetInstanceTemplateRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshotGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstantSnapshotGroupRequest {
     /// Name of the InstantSnapshotGroup resource to return.
@@ -28164,6 +28872,7 @@ pub struct GetInstantSnapshotGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstantSnapshotRequest {
     /// Name of the InstantSnapshot resource to return.
@@ -28177,6 +28886,7 @@ pub struct GetInstantSnapshotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectAttachmentGroupRequest {
     /// Name of the InterconnectAttachmentGroup resource to return.
@@ -28187,6 +28897,7 @@ pub struct GetInterconnectAttachmentGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to return.
@@ -28200,6 +28911,7 @@ pub struct GetInterconnectAttachmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectGroupRequest {
     /// Name of the InterconnectGroup resource to return.
@@ -28210,6 +28922,7 @@ pub struct GetInterconnectGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectLocations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectLocationRequest {
     /// Name of the interconnect location to return.
@@ -28220,6 +28933,7 @@ pub struct GetInterconnectLocationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectRemoteLocations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectRemoteLocationRequest {
     /// Name of the interconnect remote location to return.
@@ -28230,6 +28944,7 @@ pub struct GetInterconnectRemoteLocationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectRequest {
     /// Name of the interconnect to return.
@@ -28240,6 +28955,7 @@ pub struct GetInterconnectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for LicenseCodes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLicenseCodeRequest {
     /// Number corresponding to the License code resource to return.
@@ -28250,6 +28966,7 @@ pub struct GetLicenseCodeRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLicenseRequest {
     /// Name of the License resource to return.
@@ -28260,6 +28977,7 @@ pub struct GetLicenseRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMachineImageRequest {
     /// The name of the machine image.
@@ -28270,6 +28988,7 @@ pub struct GetMachineImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMachineTypeRequest {
     /// Name of the machine type to return.
@@ -28283,6 +29002,7 @@ pub struct GetMachineTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.GetMacsecConfig. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMacsecConfigInterconnectRequest {
     /// Name of the interconnect resource to query.
@@ -28293,6 +29013,7 @@ pub struct GetMacsecConfigInterconnectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ManagedRulesets.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetManagedRulesetRequest {
     /// Name of the managed ruleset to return.
@@ -28303,6 +29024,7 @@ pub struct GetManagedRulesetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetNamedSet. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNamedSetRouterRequest {
     /// The Named Set name for this request. Name must conform to RFC1035
@@ -28320,6 +29042,7 @@ pub struct GetNamedSetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetNatIpInfo. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNatIpInfoRouterRequest {
     /// Name of the nat service to filter the NAT IP information.
@@ -28339,6 +29062,7 @@ pub struct GetNatIpInfoRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetNatMappingInfo. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNatMappingInfoRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -28447,6 +29171,7 @@ pub struct GetNatMappingInfoRoutersRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkAttachmentRequest {
     /// Name of the NetworkAttachment resource to return.
@@ -28460,6 +29185,7 @@ pub struct GetNetworkAttachmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEdgeSecurityServices.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to get.
@@ -28473,6 +29199,7 @@ pub struct GetNetworkEdgeSecurityServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -28487,6 +29214,7 @@ pub struct GetNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -28497,6 +29225,7 @@ pub struct GetNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NetworkProfiles.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkProfileRequest {
     /// Name of the network profile to return.
@@ -28507,6 +29236,7 @@ pub struct GetNetworkProfileRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Networks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkRequest {
     /// Name of the network to return.
@@ -28517,6 +29247,7 @@ pub struct GetNetworkRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodeGroupRequest {
     /// Name of the node group to return.
@@ -28530,6 +29261,7 @@ pub struct GetNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodeTemplateRequest {
     /// Name of the node template to return.
@@ -28543,6 +29275,7 @@ pub struct GetNodeTemplateRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NodeTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodeTypeRequest {
     /// Name of the node type to return.
@@ -28556,6 +29289,7 @@ pub struct GetNodeTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.GetOperationalStatus. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOperationalStatusInterconnectAttachmentGroupRequest {
     /// Name of the interconnectAttachmentGroup resource to query.
@@ -28566,6 +29300,7 @@ pub struct GetOperationalStatusInterconnectAttachmentGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectGroups.GetOperationalStatus. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOperationalStatusInterconnectGroupRequest {
     /// Name of the interconnectGroup resource to query.
@@ -28576,6 +29311,7 @@ pub struct GetOperationalStatusInterconnectGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationSecurityPolicyRequest {
     /// Name of the security policy to get.
@@ -28583,6 +29319,7 @@ pub struct GetOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPacketMirroringRequest {
     /// Name of the PacketMirroring resource to return.
@@ -28596,6 +29333,7 @@ pub struct GetPacketMirroringRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.GetPacketMirroringRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPacketMirroringRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -28609,6 +29347,7 @@ pub struct GetPacketMirroringRuleNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for PreviewFeatures.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreviewFeatureRequest {
     /// Name of the PreviewFeature for this request.
@@ -28619,6 +29358,7 @@ pub struct GetPreviewFeatureRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Projects.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProjectRequest {
     /// Project ID for this request.
@@ -28626,6 +29366,7 @@ pub struct GetProjectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ProjectViews.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProjectViewRequest {
     /// Required. Project ID for this request. This is part of the URL path.
@@ -28636,6 +29377,7 @@ pub struct GetProjectViewRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for PublicAdvertisedPrefixes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -28646,6 +29388,7 @@ pub struct GetPublicAdvertisedPrefixeRequest {
     pub public_advertised_prefix: ::prost::alloc::string::String,
 }
 /// A request message for PublicDelegatedPrefixes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -28659,6 +29402,7 @@ pub struct GetPublicDelegatedPrefixeRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionAutoscalers.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionAutoscalerRequest {
     /// Name of the autoscaler to return.
@@ -28672,6 +29416,7 @@ pub struct GetRegionAutoscalerRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendBuckets.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionBackendBucketRequest {
     /// Name of the BackendBucket resource to return.
@@ -28685,6 +29430,7 @@ pub struct GetRegionBackendBucketRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionBackendServiceRequest {
     /// Name of the BackendService resource to return.
@@ -28698,6 +29444,7 @@ pub struct GetRegionBackendServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionCommitments.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionCommitmentRequest {
     /// Name of the commitment to return.
@@ -28711,6 +29458,7 @@ pub struct GetRegionCommitmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionCompositeHealthChecks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionCompositeHealthCheckRequest {
     /// Name of the CompositeHealthCheck resource to return.
@@ -28724,6 +29472,7 @@ pub struct GetRegionCompositeHealthCheckRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionDiskRequest {
     /// Name of the regional persistent disk to return.
@@ -28737,6 +29486,7 @@ pub struct GetRegionDiskRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDiskTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionDiskTypeRequest {
     /// Name of the disk type to return.
@@ -28750,6 +29500,7 @@ pub struct GetRegionDiskTypeRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthAggregationPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionHealthAggregationPolicyRequest {
     /// Name of the HealthAggregationPolicy resource to return.
@@ -28763,6 +29514,7 @@ pub struct GetRegionHealthAggregationPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthChecks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to return.
@@ -28776,6 +29528,7 @@ pub struct GetRegionHealthCheckRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthCheckServices.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to update. The name
@@ -28790,6 +29543,7 @@ pub struct GetRegionHealthCheckServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthSources.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionHealthSourceRequest {
     /// Name of the HealthSource resource to return.
@@ -28803,6 +29557,7 @@ pub struct GetRegionHealthSourceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group to return.
@@ -28816,6 +29571,7 @@ pub struct GetRegionInstanceGroupManagerRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagerResizeRequests.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group.
@@ -28835,6 +29591,7 @@ pub struct GetRegionInstanceGroupManagerResizeRequestRequest {
     pub resize_request: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstanceGroupRequest {
     /// Name of the instance group resource to return.
@@ -28848,6 +29605,7 @@ pub struct GetRegionInstanceGroupRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceTemplates.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstanceTemplateRequest {
     /// The name of the instance template.
@@ -28861,6 +29619,7 @@ pub struct GetRegionInstanceTemplateRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshotGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstantSnapshotGroupRequest {
     /// Name of the InstantSnapshotGroup resource to return.
@@ -28874,6 +29633,7 @@ pub struct GetRegionInstantSnapshotGroupRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshots.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionInstantSnapshotRequest {
     /// Name of the InstantSnapshot resource to return.
@@ -28887,6 +29647,7 @@ pub struct GetRegionInstantSnapshotRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -28901,6 +29662,7 @@ pub struct GetRegionNetworkEndpointGroupRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -28914,6 +29676,7 @@ pub struct GetRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNotificationEndpoints.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionNotificationEndpointRequest {
     /// Name of the NotificationEndpoint resource to return.
@@ -28927,6 +29690,7 @@ pub struct GetRegionNotificationEndpointRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionOperations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -28941,6 +29705,7 @@ pub struct GetRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Regions.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionRequest {
     /// Project ID for this request.
@@ -28951,6 +29716,7 @@ pub struct GetRegionRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSecurityPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -28964,6 +29730,7 @@ pub struct GetRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionSnapshotRequest {
     /// Project ID for this request.
@@ -28977,6 +29744,7 @@ pub struct GetRegionSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshotSettings.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionSnapshotSettingRequest {
     /// Project ID for this request.
@@ -28987,6 +29755,7 @@ pub struct GetRegionSnapshotSettingRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslCertificates.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -29000,6 +29769,7 @@ pub struct GetRegionSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -29014,6 +29784,7 @@ pub struct GetRegionSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -29027,6 +29798,7 @@ pub struct GetRegionTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -29040,6 +29812,7 @@ pub struct GetRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetTcpProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -29053,6 +29826,7 @@ pub struct GetRegionTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionUrlMaps.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionUrlMapRequest {
     /// Project ID for this request.
@@ -29066,6 +29840,7 @@ pub struct GetRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for ReliabilityRisks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReliabilityRiskRequest {
     /// Project ID for this request.
@@ -29076,6 +29851,7 @@ pub struct GetReliabilityRiskRequest {
     pub reliability_risk: ::prost::alloc::string::String,
 }
 /// A request message for ReservationBlocks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReservationBlockRequest {
     /// Project ID for this request.
@@ -29100,6 +29876,7 @@ pub struct GetReservationBlockRequest {
 /// Nested message and enum types in `GetReservationBlockRequest`.
 pub mod get_reservation_block_request {
     /// View of the Block.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -29148,6 +29925,7 @@ pub mod get_reservation_block_request {
     }
 }
 /// A request message for Reservations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Project ID for this request.
@@ -29161,6 +29939,7 @@ pub struct GetReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSlots.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReservationSlotRequest {
     /// The name of the parent reservation and parent block, formatted as
@@ -29179,6 +29958,7 @@ pub struct GetReservationSlotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReservationSubBlockRequest {
     /// The name of the parent reservation and parent block. In the format of
@@ -29203,6 +29983,7 @@ pub struct GetReservationSubBlockRequest {
 /// Nested message and enum types in `GetReservationSubBlockRequest`.
 pub mod get_reservation_sub_block_request {
     /// View of the subBlock.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -29251,6 +30032,7 @@ pub mod get_reservation_sub_block_request {
     }
 }
 /// A request message for ResourcePolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetResourcePolicyRequest {
     /// Project ID for this request.
@@ -29264,6 +30046,7 @@ pub struct GetResourcePolicyRequest {
     pub resource_policy: ::prost::alloc::string::String,
 }
 /// A request message for RolloutPlans.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRolloutPlanRequest {
     /// Project ID for this request.
@@ -29274,6 +30057,7 @@ pub struct GetRolloutPlanRequest {
     pub rollout_plan: ::prost::alloc::string::String,
 }
 /// A request message for Rollouts.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRolloutRequest {
     /// Project ID for this request.
@@ -29284,6 +30068,7 @@ pub struct GetRolloutRequest {
     pub rollout: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetRoutePolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRoutePolicyRouterRequest {
     /// The Policy name for this request. Name must conform to RFC1035
@@ -29301,6 +30086,7 @@ pub struct GetRoutePolicyRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouteRequest {
     /// Project ID for this request.
@@ -29311,6 +30097,7 @@ pub struct GetRouteRequest {
     pub route: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouterRequest {
     /// Project ID for this request.
@@ -29324,6 +30111,7 @@ pub struct GetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetRouterStatus. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouterStatusRouterRequest {
     /// Project ID for this request.
@@ -29337,6 +30125,7 @@ pub struct GetRouterStatusRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -29347,6 +30136,7 @@ pub struct GetRuleFirewallPolicyRequest {
     pub priority: ::core::option::Option<i32>,
 }
 /// A request message for NetworkFirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -29360,6 +30150,7 @@ pub struct GetRuleNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleOrganizationSecurityPolicyRequest {
     /// The priority of the rule to get from the security policy.
@@ -29370,6 +30161,7 @@ pub struct GetRuleOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -29386,6 +30178,7 @@ pub struct GetRuleRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSecurityPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleRegionSecurityPolicyRequest {
     /// The priority of the rule to get from the security policy.
@@ -29402,6 +30195,7 @@ pub struct GetRuleRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.GetRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleSecurityPolicyRequest {
     /// The priority of the rule to get from the security policy.
@@ -29415,6 +30209,7 @@ pub struct GetRuleSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetScreenshot. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetScreenshotInstanceRequest {
     /// Name of the instance scoping this request.
@@ -29428,6 +30223,7 @@ pub struct GetScreenshotInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecurityPolicyRequest {
     /// Project ID for this request.
@@ -29438,6 +30234,7 @@ pub struct GetSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetSerialPortOutput. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSerialPortOutputInstanceRequest {
     /// Name of the instance for this request.
@@ -29473,6 +30270,7 @@ pub struct GetSerialPortOutputInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceAttachmentRequest {
     /// Project ID for this request.
@@ -29489,6 +30287,7 @@ pub struct GetServiceAttachmentRequest {
     pub show_nat_ips: ::core::option::Option<bool>,
 }
 /// A request message for Instances.GetShieldedInstanceIdentity. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetShieldedInstanceIdentityInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -29502,6 +30301,7 @@ pub struct GetShieldedInstanceIdentityInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSnapshotRequest {
     /// Project ID for this request.
@@ -29512,6 +30312,7 @@ pub struct GetSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for SnapshotSettingsService.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSnapshotSettingRequest {
     /// Project ID for this request.
@@ -29519,6 +30320,7 @@ pub struct GetSnapshotSettingRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for SslCertificates.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSslCertificateRequest {
     /// Project ID for this request.
@@ -29529,6 +30331,7 @@ pub struct GetSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSslPolicyRequest {
     /// Project ID for this request.
@@ -29540,6 +30343,7 @@ pub struct GetSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.GetStatus. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStatusVpnGatewayRequest {
     /// Project ID for this request.
@@ -29553,6 +30357,7 @@ pub struct GetStatusVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStoragePoolRequest {
     /// Project ID for this request.
@@ -29566,6 +30371,7 @@ pub struct GetStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for StoragePoolTypes.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStoragePoolTypeRequest {
     /// Project ID for this request.
@@ -29579,6 +30385,7 @@ pub struct GetStoragePoolTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubnetworkRequest {
     /// Project ID for this request.
@@ -29611,6 +30418,7 @@ pub mod get_subnetwork_request {
     /// - WITH_UTILIZATION: Utilization data is included in the
     /// response.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -29654,6 +30462,7 @@ pub mod get_subnetwork_request {
     }
 }
 /// A request message for TargetGrpcProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -29664,6 +30473,7 @@ pub struct GetTargetGrpcProxyRequest {
     pub target_grpc_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -29674,6 +30484,7 @@ pub struct GetTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -29684,6 +30495,7 @@ pub struct GetTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetInstances.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetInstanceRequest {
     /// Project ID for this request.
@@ -29697,6 +30509,7 @@ pub struct GetTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetPoolRequest {
     /// Project ID for this request.
@@ -29710,6 +30523,7 @@ pub struct GetTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetSslProxyRequest {
     /// Project ID for this request.
@@ -29720,6 +30534,7 @@ pub struct GetTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -29730,6 +30545,7 @@ pub struct GetTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -29743,6 +30559,7 @@ pub struct GetTargetVpnGatewayRequest {
     pub target_vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUrlMapRequest {
     /// Project ID for this request.
@@ -29753,6 +30570,7 @@ pub struct GetUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for Hosts.GetVersion. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVersionHostRequest {
     /// The parent resource association for the Host. This field specifies the
@@ -29781,11 +30599,13 @@ pub struct GetVersionHostRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionOperationMetadata {
     #[prost(message, optional, tag = "7079706")]
     pub inline_sbom_info: ::core::option::Option<GetVersionOperationMetadataSbomInfo>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionOperationMetadataSbomInfo {
     /// A mapping of components to their currently-applied versions or other
@@ -29804,6 +30624,7 @@ pub struct GetVersionOperationMetadataSbomInfo {
     >,
 }
 /// A request message for ReservationSlots.GetVersion. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVersionReservationSlotRequest {
     /// The name of the parent reservation and parent block. In the format of
@@ -29842,6 +30663,7 @@ pub struct GetVersionReservationSlotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.GetVersion. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVersionReservationSubBlockRequest {
     /// The name of the parent reservation and parent block. In the format of
@@ -29880,6 +30702,7 @@ pub struct GetVersionReservationSubBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpnGatewayRequest {
     /// Project ID for this request.
@@ -29893,6 +30716,7 @@ pub struct GetVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpnTunnelRequest {
     /// Project ID for this request.
@@ -29906,6 +30730,7 @@ pub struct GetVpnTunnelRequest {
     pub vpn_tunnel: ::prost::alloc::string::String,
 }
 /// A request message for WireGroups.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWireGroupRequest {
     #[prost(string, tag = "108192469")]
@@ -29918,6 +30743,7 @@ pub struct GetWireGroupRequest {
     pub wire_group: ::prost::alloc::string::String,
 }
 /// A request message for Projects.GetXpnHost. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetXpnHostProjectRequest {
     /// Project ID for this request.
@@ -29925,6 +30751,7 @@ pub struct GetXpnHostProjectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Projects.GetXpnResources. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetXpnResourcesProjectsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -30021,6 +30848,7 @@ pub struct GetXpnResourcesProjectsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ZoneOperations.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetZoneOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -30035,6 +30863,7 @@ pub struct GetZoneOperationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Zones.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetZoneRequest {
     /// Project ID for this request.
@@ -30045,6 +30874,7 @@ pub struct GetZoneRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ZoneVmExtensionPolicies.Get. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetZoneVmExtensionPolicyRequest {
     /// Project ID for this request.
@@ -30057,6 +30887,7 @@ pub struct GetZoneVmExtensionPolicyRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalAddressesMoveRequest {
     /// An optional destination address description if intended to be different
@@ -30076,6 +30907,7 @@ pub struct GlobalAddressesMoveRequest {
     pub destination_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents the Global Frontend Bundle settings for a single project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalFrontendSettings {
     /// Customer-settable bundle type.
@@ -30110,6 +30942,7 @@ pub struct GlobalFrontendSettings {
 /// Nested message and enum types in `GlobalFrontendSettings`.
 pub mod global_frontend_settings {
     /// Customer-settable bundle type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30158,24 +30991,28 @@ pub mod global_frontend_settings {
     }
 }
 /// Response to an UpdateGlobalFrontendSettingsRequest.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalFrontendSettingsPatchResponse {
     /// The Operation resource for this long-running operation.
     #[prost(message, optional, tag = "52090215")]
     pub operation: ::core::option::Option<Operation>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalNetworkEndpointGroupsAttachEndpointsRequest {
     /// The list of network endpoints to be attached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalNetworkEndpointGroupsDetachEndpointsRequest {
     /// The list of network endpoints to be detached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalOrganizationSetPolicyRequest {
     /// Flatten Policy to create a backward compatible wire-format.
@@ -30192,6 +31029,7 @@ pub struct GlobalOrganizationSetPolicyRequest {
     #[prost(message, optional, tag = "91071794")]
     pub policy: ::core::option::Option<Policy>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource,
@@ -30212,6 +31050,7 @@ pub struct GlobalSetLabelsRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSetPolicyRequest {
     /// Flatten Policy to create a backward compatible wire-format.
@@ -30229,6 +31068,7 @@ pub struct GlobalSetPolicyRequest {
     pub policy: ::core::option::Option<Policy>,
 }
 /// Message describing GlobalVmExtensionPolicy object.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -30300,6 +31140,7 @@ pub struct GlobalVmExtensionPolicy {
 pub mod global_vm_extension_policy {
     /// Output only. \[Output Only\] The scoped resource status. It's only for tracking the
     /// purging status of the policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30346,6 +31187,7 @@ pub mod global_vm_extension_policy {
     }
 }
 /// Policy for a single extension.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyExtensionPolicy {
     /// Optional. The version pinning for the extension.
@@ -30359,6 +31201,7 @@ pub struct GlobalVmExtensionPolicyExtensionPolicy {
     pub string_config: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Selector to target VMs for a zone VM extension policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyInstanceSelector {
     /// Optional. Labels within the LabelSelector are OR'd.
@@ -30367,6 +31210,7 @@ pub struct GlobalVmExtensionPolicyInstanceSelector {
 }
 /// A LabelSelector is applicable for a VM only if it matches all labels in
 /// the LabelSelector.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyLabelSelector {
     /// Optional. Labels as key value pairs.
@@ -30379,6 +31223,7 @@ pub struct GlobalVmExtensionPolicyLabelSelector {
     >,
 }
 /// Response to list global VM extension policy resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyList {
     #[prost(string, optional, tag = "3123477")]
@@ -30410,6 +31255,7 @@ pub struct GlobalVmExtensionPolicyList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents the rollout operation
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyRolloutOperation {
     /// Required. The rollout input which defines the rollout plan.
@@ -30423,6 +31269,7 @@ pub struct GlobalVmExtensionPolicyRolloutOperation {
         GlobalVmExtensionPolicyRolloutOperationRolloutStatus,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyRolloutOperationRolloutInput {
     /// Optional. Specifies the behavior of the rollout if a conflict is detected in a
@@ -30475,6 +31322,7 @@ pub mod global_vm_extension_policy_rollout_operation_rollout_input {
     /// are `SLOW_ROLLOUT` and `FAST_ROLLOUT`. The recommended value is
     /// `SLOW_ROLLOUT` for progressive rollout. For more information, see Rollout
     /// plans for global policies.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30523,6 +31371,7 @@ pub mod global_vm_extension_policy_rollout_operation_rollout_input {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatus {
     /// Output only. \[Output Only\] The current rollouts for the latest version of the
@@ -30539,6 +31388,7 @@ pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatus {
         GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata {
     /// Output only. \[Output Only\] The rollout status for each location. The list of the
@@ -30565,6 +31415,7 @@ pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata {
 /// Nested message and enum types in `GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata`.
 pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_metadata {
     /// Output only. \[Output Only\] The overall state of the rollout.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30628,6 +31479,7 @@ pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_meta
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus {
     /// Output only. \[Output Only\] The state of the location rollout.
@@ -30638,6 +31490,7 @@ pub struct GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLo
 /// Nested message and enum types in `GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus`.
 pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_metadata_location_rollout_status {
     /// Output only. \[Output Only\] The state of the location rollout.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30706,6 +31559,7 @@ pub mod global_vm_extension_policy_rollout_operation_rollout_status_rollout_meta
     }
 }
 /// Maintenance Info for ReservationBlocks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupMaintenanceInfo {
     /// Describes number of instances that have ongoing maintenance.
@@ -30745,6 +31599,7 @@ pub struct GroupMaintenanceInfo {
 /// Nested message and enum types in `GroupMaintenanceInfo`.
 pub mod group_maintenance_info {
     /// The type of maintenance for the reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30798,6 +31653,7 @@ pub mod group_maintenance_info {
     }
 }
 /// A guest attributes entry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestAttributes {
     /// Output only. \[Output Only\] Type of the resource. Alwayscompute#guestAttributes for guest attributes entry.
@@ -30822,6 +31678,7 @@ pub struct GuestAttributes {
     pub variable_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A guest attributes namespace/key/value entry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GuestAttributesEntry {
     /// Key for the guest attribute entry.
@@ -30835,12 +31692,14 @@ pub struct GuestAttributesEntry {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Array of guest attribute namespace/key/value tuples.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestAttributesValue {
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<GuestAttributesEntry>,
 }
 /// Guest OS features.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GuestOsFeature {
     /// The ID of a supported feature. To add multiple values, use commas to
@@ -30893,6 +31752,7 @@ pub mod guest_os_feature {
     ///
     /// For more information, see
     /// Enabling guest operating system features.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -30986,6 +31846,7 @@ pub mod guest_os_feature {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Http2HealthCheck {
     /// The value of the host header in the HTTP/2 health check request. If left
@@ -31068,6 +31929,7 @@ pub mod http2_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31121,6 +31983,7 @@ pub mod http2_health_check {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31162,6 +32025,7 @@ pub mod http2_health_check {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpHealthCheck {
     /// The value of the host header in the HTTP health check request. If left
@@ -31242,6 +32106,7 @@ pub mod http_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31295,6 +32160,7 @@ pub mod http_health_check {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31336,6 +32202,7 @@ pub mod http_health_check {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpsHealthCheck {
     /// The value of the host header in the HTTPS health check request. If left
@@ -31418,6 +32285,7 @@ pub mod https_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31471,6 +32339,7 @@ pub mod https_health_check {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31512,6 +32381,7 @@ pub mod https_health_check {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthAggregationPoliciesScopedList {
     /// A list of HealthAggregationPolicys contained in this scope.
@@ -31528,6 +32398,7 @@ pub struct HealthAggregationPoliciesScopedList {
 ///
 /// For more information, see
 /// Health checks overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthAggregationPolicy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -31614,6 +32485,7 @@ pub mod health_aggregation_policy {
     /// value for regional resources is BACKEND_SERVICE_POLICY. Must
     /// be specified when the healthAggregationPolicy is created, and cannot be
     /// mutated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31656,6 +32528,7 @@ pub mod health_aggregation_policy {
     }
 }
 /// Contains a list of HealthAggregationPoliciesScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthAggregationPolicyAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -31687,6 +32560,7 @@ pub struct HealthAggregationPolicyAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthAggregationPolicyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -31739,6 +32613,7 @@ pub struct HealthAggregationPolicyList {
 ///
 /// For more information, seeHealth checks
 /// overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheck {
     /// How often (in seconds) to send a health check. The default value is 5
@@ -31837,6 +32712,7 @@ pub mod health_check {
     /// Specifies the type of the healthCheck, either TCP,SSL, HTTP, HTTPS,HTTP2, GRPC or GRPC_WITH_TLS.
     /// Exactly one of the protocol-specific health check fields must be specified,
     /// which must match type field.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -31897,6 +32773,7 @@ pub mod health_check {
     }
 }
 /// Contains a list of HealthCheck resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -31924,6 +32801,7 @@ pub struct HealthCheckList {
 }
 /// Configuration of logging on a health check. If logging is enabled, logs
 /// will be exported to Stackdriver.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckLogConfig {
     /// Indicates whether or not to export logs. This is false by default, which
@@ -31939,12 +32817,14 @@ pub struct HealthCheckLogConfig {
 /// - projects/project-id/global/httpHealthChecks/health-check
 /// - global/httpHealthChecks/health-check
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckReference {
     #[prost(string, optional, tag = "308876645")]
     pub health_check: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Health-Check as a Service resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckService {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -32046,6 +32926,7 @@ pub mod health_check_service {
     ///
     /// .
     /// This is only allowed with regional HealthCheckService.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32098,6 +32979,7 @@ pub mod health_check_service {
     }
 }
 /// Contains a list of HealthCheckServicesScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckServiceAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -32137,11 +33019,13 @@ pub struct HealthCheckServiceAggregatedList {
 /// - projects/project-id/regions/us-west1/healthCheckServices/health-check-service
 /// - regions/us-west1/healthCheckServices/health-check-service
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckServiceReference {
     #[prost(string, optional, tag = "408374747")]
     pub health_check_service: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckServicesList {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -32168,6 +33052,7 @@ pub struct HealthCheckServicesList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckServicesScopedList {
     /// A list of HealthCheckServices contained in this scope.
@@ -32178,6 +33063,7 @@ pub struct HealthCheckServicesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthChecksAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -32209,6 +33095,7 @@ pub struct HealthChecksAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthChecksScopedList {
     /// A list of HealthChecks contained in this scope.
@@ -32224,6 +33111,7 @@ pub struct HealthChecksScopedList {
 /// A health source resource specifies the source resources and the health
 /// aggregation policy applied to the source resources to determine the
 /// aggregated health status.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthSource {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -32295,6 +33183,7 @@ pub struct HealthSource {
 pub mod health_source {
     /// Specifies the type of the HealthSource. The only allowed value
     /// is BACKEND_SERVICE. Must be specified when theHealthSource is created, and cannot be mutated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32334,6 +33223,7 @@ pub mod health_source {
     }
 }
 /// Contains a list of HealthSourcesScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthSourceAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -32366,6 +33256,7 @@ pub struct HealthSourceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Response message for RegionHealthSources.GetHealth
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthSourceHealth {
     /// Health state of the HealthSource.
@@ -32382,6 +33273,7 @@ pub struct HealthSourceHealth {
 /// Nested message and enum types in `HealthSourceHealth`.
 pub mod health_source_health {
     /// Health state of the HealthSource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32426,6 +33318,7 @@ pub mod health_source_health {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthSourceList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -32451,6 +33344,7 @@ pub struct HealthSourceList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthSourcesGetHealthResponseSourceInfo {
     /// Represents an instance group or network endpoint group behind the source
@@ -32469,6 +33363,7 @@ pub struct HealthSourcesGetHealthResponseSourceInfo {
     #[prost(string, optional, tag = "177235995")]
     pub source: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthSourcesGetHealthResponseSourceInfoBackendInfo {
     /// Total number of endpoints when determining the health of the
@@ -32484,6 +33379,7 @@ pub struct HealthSourcesGetHealthResponseSourceInfoBackendInfo {
     #[prost(int32, optional, tag = "291284167")]
     pub healthy_endpoint_count: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthSourcesScopedList {
     /// A list of HealthSources contained in this scope.
@@ -32494,6 +33390,7 @@ pub struct HealthSourcesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthStatus {
     /// Metadata defined as annotations for network endpoint.
@@ -32540,6 +33437,7 @@ pub struct HealthStatus {
 /// Nested message and enum types in `HealthStatus`.
 pub mod health_status {
     /// Health state of the IPv4 address of the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32584,6 +33482,7 @@ pub mod health_status {
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// HEALTHY
     /// UNHEALTHY
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32618,6 +33517,7 @@ pub mod health_status {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32681,6 +33581,7 @@ pub mod health_status {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthStatusForNetworkEndpoint {
     /// URL of the backend service associated with the health state of the network
@@ -32714,6 +33615,7 @@ pub struct HealthStatusForNetworkEndpoint {
 pub mod health_status_for_network_endpoint {
     /// Health state of the network endpoint determined based on the health checks
     /// configured.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32771,6 +33673,7 @@ pub mod health_status_for_network_endpoint {
     /// HEALTHY
     /// UNHEALTHY
     /// UNKNOWN
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32811,6 +33714,7 @@ pub mod health_status_for_network_endpoint {
 /// For example, if a quota check failed with an error indicating the calling
 /// project hasn't enabled the accessed service, this can contain a URL pointing
 /// directly to the right place in the developer console to flip the bit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Help {
     /// URL(s) pointing to additional information on handling the current error.
@@ -32818,6 +33722,7 @@ pub struct Help {
     pub links: ::prost::alloc::vec::Vec<HelpLink>,
 }
 /// Describes a URL link.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HelpLink {
     /// Describes what the link offers.
@@ -32828,6 +33733,7 @@ pub struct HelpLink {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a host resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Host {
     /// Output only. All aliases for this resource.
@@ -32871,6 +33777,7 @@ pub struct Host {
 /// Nested message and enum types in `Host`.
 pub mod host {
     /// Output only. The state of the host.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -32925,6 +33832,7 @@ pub mod host {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostPhysicalTopology {
     /// The unique identifier of the capacity block within the cluster.
@@ -32943,6 +33851,7 @@ pub struct HostPhysicalTopology {
 }
 /// UrlMaps
 /// A host-matching rule for a URL. If matched, will use the namedPathMatcher to select the BackendService.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostRule {
     /// An optional description of this resource. Provide this property when you
@@ -32965,6 +33874,7 @@ pub struct HostRule {
     #[prost(string, optional, tag = "337813272")]
     pub path_matcher: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostStatus {
     /// Output only. The physical topology of the reservation sub-block, if
@@ -32975,6 +33885,7 @@ pub struct HostStatus {
     #[prost(string, repeated, tag = "536292350")]
     pub running_instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostsGetVersionRequest {
     /// The SBOM selection to return. Duplicate values in the list will be ignored.
@@ -32984,6 +33895,7 @@ pub struct HostsGetVersionRequest {
 }
 /// Nested message and enum types in `HostsGetVersionRequest`.
 pub mod hosts_get_version_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -33028,6 +33940,7 @@ pub mod hosts_get_version_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HostsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -33060,6 +33973,7 @@ pub struct HostsListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Specification for how requests are aborted as part of fault injection.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpFaultAbort {
     /// The HTTP status code used to abort the request.
@@ -33082,6 +33996,7 @@ pub struct HttpFaultAbort {
 }
 /// Specifies the delay introduced by the load balancer before forwarding the
 /// request to the backend service as part of fault injection.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpFaultDelay {
     /// Specifies the value of the fixed delay interval.
@@ -33100,6 +34015,7 @@ pub struct HttpFaultDelay {
 /// introduced by the load balancer on a percentage of requests before sending
 /// those request to the backend service. Similarly requests from clients can be
 /// aborted by the load balancer for a percentage of requests.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpFaultInjection {
     /// The specification for how client requests are aborted as part of fault
@@ -33113,6 +34029,7 @@ pub struct HttpFaultInjection {
 }
 /// The request and response header transformations that take effect before
 /// the request is passed along to the selected backendService.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeaderAction {
     /// Headers to add to a matching request before forwarding the request to thebackendService.
@@ -33136,6 +34053,7 @@ pub struct HttpHeaderAction {
     >,
 }
 /// matchRule criteria for request header matches.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpHeaderMatch {
     /// The value should exactly match contents of exactMatch.
@@ -33221,6 +34139,7 @@ pub struct HttpHeaderMatch {
     pub suffix_match: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specification determining how headers are added to requests or responses.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpHeaderOption {
     /// The name of the header.
@@ -33242,6 +34161,7 @@ pub struct HttpHeaderOption {
     pub replace: ::core::option::Option<bool>,
 }
 /// HttpRouteRuleMatch criteria for a request's query parameter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpQueryParameterMatch {
     /// The queryParameterMatch matches if the value of the
@@ -33274,6 +34194,7 @@ pub struct HttpQueryParameterMatch {
     pub regex_match: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specifies settings for an HTTP redirect.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpRedirectAction {
     /// The host that is used in the redirect response instead of the one that
@@ -33355,6 +34276,7 @@ pub mod http_redirect_action {
     /// - PERMANENT_REDIRECT, which corresponds to 308. In this case, the request
     /// method is retained.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -33413,6 +34335,7 @@ pub mod http_redirect_action {
     }
 }
 /// The retry policy associates with HttpRouteRule
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpRetryPolicy {
     /// Specifies the allowed number retries. This number must be > 0.
@@ -33474,6 +34397,7 @@ pub struct HttpRetryPolicy {
     #[prost(string, repeated, tag = "28815535")]
     pub retry_conditions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteAction {
     /// Specifies the cache policy configuration for matched traffic. Available
@@ -33569,6 +34493,7 @@ pub struct HttpRouteAction {
 }
 /// The HttpRouteRule setting specifies how to match an HTTP request
 /// and the corresponding routing action that load balancing proxies perform.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteRule {
     /// customErrorResponsePolicy specifies how the Load
@@ -33680,6 +34605,7 @@ pub struct HttpRouteRule {
 /// HttpRouteRuleMatch specifies a set of criteria for matching
 /// requests to an HttpRouteRule. All specified criteria must
 /// be satisfied for a match to occur.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteRuleMatch {
     /// For satisfying the matchRule condition, the path of the
@@ -33784,6 +34710,7 @@ pub struct HttpRouteRuleMatch {
 ///
 /// You can use images to create boot disks for your VM instances.
 /// For more information, read Images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// The architecture of the image. Valid values are
@@ -34015,6 +34942,7 @@ pub struct Image {
 pub mod image {
     /// The architecture of the image. Valid values are
     /// ARM64 or X86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -34063,6 +34991,7 @@ pub mod image {
     }
     /// The type of the image used to create this disk. The
     /// default and only valid value is RAW.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -34104,6 +35033,7 @@ pub mod image {
     /// resources, such as instances, only after the image has been successfully
     /// created and the status is set to READY. Possible
     /// values are FAILED, PENDING, orREADY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -34155,6 +35085,7 @@ pub mod image {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageFamilyView {
     /// The latest image that is part of the specified image family in the
@@ -34163,6 +35094,7 @@ pub struct ImageFamilyView {
     pub image: ::core::option::Option<Image>,
 }
 /// Contains a list of images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -34189,6 +35121,7 @@ pub struct ImageList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional image params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageParams {
     /// Input only. Resource manager tags to be bound to the image. Tag keys and values have
@@ -34205,6 +35138,7 @@ pub struct ImageParams {
     >,
 }
 /// Represents a read-only view of a global Image resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageView {
     /// The Image resource.
@@ -34212,6 +35146,7 @@ pub struct ImageView {
     pub image: ::core::option::Option<Image>,
 }
 /// Response message for ImageViewsService.List
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageViewsListResponse {
     /// Etag of the resource.
@@ -34239,6 +35174,7 @@ pub struct ImageViewsListResponse {
 }
 /// Initial State for shielded instance,
 /// these are public keys which are safe to store in public
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InitialStateConfig {
     /// The Key Database (db).
@@ -34255,6 +35191,7 @@ pub struct InitialStateConfig {
     pub pk: ::core::option::Option<FileContentBuffer>,
 }
 /// A request message for Addresses.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertAddressRequest {
     /// The body resource for this request
@@ -34283,6 +35220,7 @@ pub struct InsertAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertAutoscalerRequest {
     /// The body resource for this request
@@ -34311,6 +35249,7 @@ pub struct InsertAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBackendBucketRequest {
     /// The body resource for this request
@@ -34336,6 +35275,7 @@ pub struct InsertBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBackendServiceRequest {
     /// The body resource for this request
@@ -34361,6 +35301,7 @@ pub struct InsertBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for CrossSiteNetworks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertCrossSiteNetworkRequest {
     /// The body resource for this request
@@ -34390,6 +35331,7 @@ pub struct InsertCrossSiteNetworkRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for Disks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertDiskRequest {
     /// The body resource for this request
@@ -34421,6 +35363,7 @@ pub struct InsertDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertExternalVpnGatewayRequest {
     /// The body resource for this request
@@ -34446,6 +35389,7 @@ pub struct InsertExternalVpnGatewayRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertFirewallPolicyRequest {
     /// The body resource for this request
@@ -34473,6 +35417,7 @@ pub struct InsertFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertFirewallRequest {
     /// The body resource for this request
@@ -34498,6 +35443,7 @@ pub struct InsertFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertForwardingRuleRequest {
     /// The body resource for this request
@@ -34526,6 +35472,7 @@ pub struct InsertForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FutureReservations.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertFutureReservationRequest {
     /// The body resource for this request
@@ -34554,6 +35501,7 @@ pub struct InsertFutureReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalAddressRequest {
     /// The body resource for this request
@@ -34579,6 +35527,7 @@ pub struct InsertGlobalAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalForwardingRuleRequest {
     /// The body resource for this request
@@ -34604,6 +35553,7 @@ pub struct InsertGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalNetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -34629,6 +35579,7 @@ pub struct InsertGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -34654,6 +35605,7 @@ pub struct InsertGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalVmExtensionPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalVmExtensionPolicyRequest {
     /// The body resource for this request
@@ -34681,6 +35633,7 @@ pub struct InsertGlobalVmExtensionPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertHealthCheckRequest {
     /// The body resource for this request
@@ -34706,6 +35659,7 @@ pub struct InsertHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertImageRequest {
     /// Force image creation if true.
@@ -34734,6 +35688,7 @@ pub struct InsertImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceGroupManagerRequest {
     /// The body resource for this request
@@ -34763,6 +35718,7 @@ pub struct InsertInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagerResizeRequests.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceGroupManagerResizeRequestRequest {
     /// The name of the managed instance group to which the resize request will
@@ -34800,6 +35756,7 @@ pub struct InsertInstanceGroupManagerResizeRequestRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceGroupRequest {
     /// The body resource for this request
@@ -34829,6 +35786,7 @@ pub struct InsertInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceRequest {
     /// The body resource for this request
@@ -34881,6 +35839,7 @@ pub struct InsertInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceTemplateRequest {
     /// The body resource for this request
@@ -34906,6 +35865,7 @@ pub struct InsertInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstantSnapshotGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertInstantSnapshotGroupRequest {
     /// The body resource for this request
@@ -34937,6 +35897,7 @@ pub struct InsertInstantSnapshotGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstantSnapshotRequest {
     /// The body resource for this request
@@ -34965,6 +35926,7 @@ pub struct InsertInstantSnapshotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectAttachmentGroupRequest {
     /// The body resource for this request
@@ -34993,6 +35955,7 @@ pub struct InsertInterconnectAttachmentGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectAttachments.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectAttachmentRequest {
     /// The body resource for this request
@@ -35024,6 +35987,7 @@ pub struct InsertInterconnectAttachmentRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for InterconnectGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectGroupRequest {
     /// The body resource for this request
@@ -35050,6 +36014,7 @@ pub struct InsertInterconnectGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Interconnects.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectRequest {
     /// The body resource for this request
@@ -35075,6 +36040,7 @@ pub struct InsertInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Licenses.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertLicenseRequest {
     /// The body resource for this request
@@ -35100,6 +36066,7 @@ pub struct InsertLicenseRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for MachineImages.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertMachineImageRequest {
     /// The body resource for this request
@@ -35128,6 +36095,7 @@ pub struct InsertMachineImageRequest {
     pub source_instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkAttachments.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkAttachmentRequest {
     /// The body resource for this request
@@ -35157,6 +36125,7 @@ pub struct InsertNetworkAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertNetworkEdgeSecurityServiceRequest {
     /// The body resource for this request
@@ -35190,6 +36159,7 @@ pub struct InsertNetworkEdgeSecurityServiceRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -35220,6 +36190,7 @@ pub struct InsertNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -35245,6 +36216,7 @@ pub struct InsertNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkRequest {
     /// The body resource for this request
@@ -35270,6 +36242,7 @@ pub struct InsertNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNodeGroupRequest {
     /// Initial count of nodes in the node group.
@@ -35301,6 +36274,7 @@ pub struct InsertNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNodeTemplateRequest {
     /// The body resource for this request
@@ -35329,6 +36303,7 @@ pub struct InsertNodeTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertOrganizationSecurityPolicyRequest {
     /// Parent ID for this request. The ID can be either be "folders/\[FOLDER_ID\]"
@@ -35356,6 +36331,7 @@ pub struct InsertOrganizationSecurityPolicyRequest {
     pub security_policy_resource: ::core::option::Option<SecurityPolicy>,
 }
 /// A request message for PacketMirrorings.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPacketMirroringRequest {
     /// The body resource for this request
@@ -35384,6 +36360,7 @@ pub struct InsertPacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicAdvertisedPrefixes.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -35411,6 +36388,7 @@ pub struct InsertPublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -35439,6 +36417,7 @@ pub struct InsertPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionAutoscalerRequest {
     /// The body resource for this request
@@ -35467,6 +36446,7 @@ pub struct InsertRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendBuckets.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionBackendBucketRequest {
     /// The body resource for this request
@@ -35495,6 +36475,7 @@ pub struct InsertRegionBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionBackendServiceRequest {
     /// The body resource for this request
@@ -35523,6 +36504,7 @@ pub struct InsertRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCommitments.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionCommitmentRequest {
     /// The body resource for this request
@@ -35551,6 +36533,7 @@ pub struct InsertRegionCommitmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCompositeHealthChecks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionCompositeHealthCheckRequest {
     /// The body resource for this request
@@ -35579,6 +36562,7 @@ pub struct InsertRegionCompositeHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionDisks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionDiskRequest {
     /// The body resource for this request
@@ -35610,6 +36594,7 @@ pub struct InsertRegionDiskRequest {
     pub source_image: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthAggregationPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionHealthAggregationPolicyRequest {
     /// The body resource for this request
@@ -35640,6 +36625,7 @@ pub struct InsertRegionHealthAggregationPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionHealthCheckRequest {
     /// The body resource for this request
@@ -35668,6 +36654,7 @@ pub struct InsertRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionHealthCheckServiceRequest {
     /// The body resource for this request
@@ -35696,6 +36683,7 @@ pub struct InsertRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthSources.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionHealthSourceRequest {
     /// The body resource for this request
@@ -35724,6 +36712,7 @@ pub struct InsertRegionHealthSourceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionInstanceGroupManagerRequest {
     /// The body resource for this request
@@ -35752,6 +36741,7 @@ pub struct InsertRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagerResizeRequests.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionInstanceGroupManagerResizeRequestRequest {
     /// Name of the managed instance group to which the resize request is scoped.
@@ -35787,6 +36777,7 @@ pub struct InsertRegionInstanceGroupManagerResizeRequestRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceTemplates.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionInstanceTemplateRequest {
     /// The body resource for this request
@@ -35815,6 +36806,7 @@ pub struct InsertRegionInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstantSnapshotGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionInstantSnapshotGroupRequest {
     /// The body resource for this request
@@ -35846,6 +36838,7 @@ pub struct InsertRegionInstantSnapshotGroupRequest {
     pub source_consistency_group: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstantSnapshots.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionInstantSnapshotRequest {
     /// The body resource for this request
@@ -35874,6 +36867,7 @@ pub struct InsertRegionInstantSnapshotRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -35904,6 +36898,7 @@ pub struct InsertRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -35932,6 +36927,7 @@ pub struct InsertRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNotificationEndpoints.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionNotificationEndpointRequest {
     /// The body resource for this request
@@ -35960,6 +36956,7 @@ pub struct InsertRegionNotificationEndpointRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -35991,6 +36988,7 @@ pub struct InsertRegionSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for RegionSnapshots.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSnapshotRequest {
     /// Project ID for this request.
@@ -36019,6 +37017,7 @@ pub struct InsertRegionSnapshotRequest {
     pub snapshot_resource: ::core::option::Option<Snapshot>,
 }
 /// A request message for RegionSslCertificates.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -36047,6 +37046,7 @@ pub struct InsertRegionSslCertificateRequest {
     pub ssl_certificate_resource: ::core::option::Option<SslCertificate>,
 }
 /// A request message for RegionSslPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -36075,6 +37075,7 @@ pub struct InsertRegionSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for RegionTargetHttpProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -36103,6 +37104,7 @@ pub struct InsertRegionTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for RegionTargetHttpsProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -36131,6 +37133,7 @@ pub struct InsertRegionTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for RegionTargetTcpProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -36159,6 +37162,7 @@ pub struct InsertRegionTargetTcpProxyRequest {
     pub target_tcp_proxy_resource: ::core::option::Option<TargetTcpProxy>,
 }
 /// A request message for RegionUrlMaps.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionUrlMapRequest {
     /// Project ID for this request.
@@ -36176,6 +37180,7 @@ pub struct InsertRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for Reservations.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertReservationRequest {
     /// Project ID for this request.
@@ -36204,6 +37209,7 @@ pub struct InsertReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertResourcePolicyRequest {
     /// Project ID for this request.
@@ -36232,6 +37238,7 @@ pub struct InsertResourcePolicyRequest {
     pub resource_policy_resource: ::core::option::Option<ResourcePolicy>,
 }
 /// A request message for RolloutPlans.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRolloutPlanRequest {
     /// Project ID for this request.
@@ -36257,6 +37264,7 @@ pub struct InsertRolloutPlanRequest {
     pub rollout_plan_resource: ::core::option::Option<RolloutPlan>,
 }
 /// A request message for Routes.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRouteRequest {
     /// Project ID for this request.
@@ -36282,6 +37290,7 @@ pub struct InsertRouteRequest {
     pub route_resource: ::core::option::Option<Route>,
 }
 /// A request message for Routers.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRouterRequest {
     /// Project ID for this request.
@@ -36310,6 +37319,7 @@ pub struct InsertRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for SecurityPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSecurityPolicyRequest {
     /// Project ID for this request.
@@ -36338,6 +37348,7 @@ pub struct InsertSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for ServiceAttachments.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertServiceAttachmentRequest {
     /// Project ID for this request.
@@ -36366,6 +37377,7 @@ pub struct InsertServiceAttachmentRequest {
     pub service_attachment_resource: ::core::option::Option<ServiceAttachment>,
 }
 /// A request message for Snapshots.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSnapshotRequest {
     /// Project ID for this request.
@@ -36391,6 +37403,7 @@ pub struct InsertSnapshotRequest {
     pub snapshot_resource: ::core::option::Option<Snapshot>,
 }
 /// A request message for SslCertificates.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSslCertificateRequest {
     /// Project ID for this request.
@@ -36416,6 +37429,7 @@ pub struct InsertSslCertificateRequest {
     pub ssl_certificate_resource: ::core::option::Option<SslCertificate>,
 }
 /// A request message for SslPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSslPolicyRequest {
     /// Project ID for this request.
@@ -36441,6 +37455,7 @@ pub struct InsertSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for StoragePools.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertStoragePoolRequest {
     /// Project ID for this request.
@@ -36469,6 +37484,7 @@ pub struct InsertStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSubnetworkRequest {
     /// Project ID for this request.
@@ -36497,6 +37513,7 @@ pub struct InsertSubnetworkRequest {
     pub subnetwork_resource: ::core::option::Option<Subnetwork>,
 }
 /// A request message for TargetGrpcProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -36522,6 +37539,7 @@ pub struct InsertTargetGrpcProxyRequest {
     pub target_grpc_proxy_resource: ::core::option::Option<TargetGrpcProxy>,
 }
 /// A request message for TargetHttpProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -36547,6 +37565,7 @@ pub struct InsertTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for TargetHttpsProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -36572,6 +37591,7 @@ pub struct InsertTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for TargetInstances.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetInstanceRequest {
     /// Project ID for this request.
@@ -36600,6 +37620,7 @@ pub struct InsertTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetPoolRequest {
     /// Project ID for this request.
@@ -36628,6 +37649,7 @@ pub struct InsertTargetPoolRequest {
     pub target_pool_resource: ::core::option::Option<TargetPool>,
 }
 /// A request message for TargetSslProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetSslProxyRequest {
     /// Project ID for this request.
@@ -36653,6 +37675,7 @@ pub struct InsertTargetSslProxyRequest {
     pub target_ssl_proxy_resource: ::core::option::Option<TargetSslProxy>,
 }
 /// A request message for TargetTcpProxies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -36678,6 +37701,7 @@ pub struct InsertTargetTcpProxyRequest {
     pub target_tcp_proxy_resource: ::core::option::Option<TargetTcpProxy>,
 }
 /// A request message for TargetVpnGateways.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -36706,6 +37730,7 @@ pub struct InsertTargetVpnGatewayRequest {
     pub target_vpn_gateway_resource: ::core::option::Option<TargetVpnGateway>,
 }
 /// A request message for UrlMaps.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertUrlMapRequest {
     /// Project ID for this request.
@@ -36731,6 +37756,7 @@ pub struct InsertUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for VpnGateways.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertVpnGatewayRequest {
     /// Project ID for this request.
@@ -36759,6 +37785,7 @@ pub struct InsertVpnGatewayRequest {
     pub vpn_gateway_resource: ::core::option::Option<VpnGateway>,
 }
 /// A request message for VpnTunnels.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertVpnTunnelRequest {
     /// Project ID for this request.
@@ -36787,6 +37814,7 @@ pub struct InsertVpnTunnelRequest {
     pub vpn_tunnel_resource: ::core::option::Option<VpnTunnel>,
 }
 /// A request message for WireGroups.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertWireGroupRequest {
     #[prost(string, tag = "108192469")]
@@ -36818,6 +37846,7 @@ pub struct InsertWireGroupRequest {
     pub wire_group_resource: ::core::option::Option<WireGroup>,
 }
 /// A request message for ZoneVmExtensionPolicies.Insert. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertZoneVmExtensionPolicyRequest {
     /// Project ID for this request.
@@ -36849,6 +37878,7 @@ pub struct InsertZoneVmExtensionPolicyRequest {
 ///
 /// An instance is a virtual machine that is hosted on Google Cloud Platform.
 /// For more information, readVirtual Machine Instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Controls for advanced machine-related behavior features.
@@ -37103,6 +38133,7 @@ pub struct Instance {
 pub mod instance {
     /// KeyRevocationActionType of the instance. Supported options are "STOP" and
     /// "NONE". The default value is "NONE" if it is not specified.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -37155,6 +38186,7 @@ pub mod instance {
     }
     /// Specifies which method should be used for encrypting the
     /// Local SSDs attached to the VM.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -37214,6 +38246,7 @@ pub mod instance {
     }
     /// The private IPv6 google access type for the VM.
     /// If not specified, use  INHERIT_FROM_SUBNETWORK as default.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -37283,6 +38316,7 @@ pub mod instance {
     /// following values: PROVISIONING, STAGING,RUNNING, STOPPING, SUSPENDING,SUSPENDED, REPAIRING, andTERMINATED. For more information about the status of the
     /// instance, see
     /// Instance life cycle.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -37370,6 +38404,7 @@ pub mod instance {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -37402,6 +38437,7 @@ pub struct InstanceAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceConsumptionData {
     /// Output only. Resources consumed by the instance.
@@ -37411,6 +38447,7 @@ pub struct InstanceConsumptionData {
     #[prost(string, optional, tag = "18257045")]
     pub instance: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceConsumptionInfo {
     /// Output only. The number of virtual CPUs that are available to the instance.
@@ -37429,20 +38466,13 @@ pub struct InstanceConsumptionInfo {
     pub min_node_cpus: ::core::option::Option<i32>,
 }
 /// A flexible specification of machine types for instances to create.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceFlexibilityPolicy {
-    /// Specification of alternative, flexible instance subsets.
-    /// One of them will be selected to create the instances
-    /// based on various criteria, like:
-    ///
-    /// * ranks,
-    /// * location policy,
-    /// * current capacity,
-    /// * available reservations (you can specify affinity in
-    ///   InstanceProperties),
-    /// * SWAN/GOOSE limitations.
-    ///   Key is an arbitrary, unique RFC1035 string that identifies the instance
-    ///   selection.
+    /// Specifies named instance selections that define properties for instances
+    /// created in bulk.
+    /// Key is an arbitrary, unique RFC1035 string that identifies the instance
+    /// selection.
     #[prost(map = "string, message", tag = "22954577")]
     pub instance_selections: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -37454,6 +38484,7 @@ pub struct InstanceFlexibilityPolicy {
 /// The count specified in the shape flexibility must not exceed the number
 /// of entries in per_instance_properties or the capacity of the
 /// name_pattern, if used.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceFlexibilityPolicyInstanceSelection {
     /// Disks to be attached to the instances created from in this selection.
@@ -37492,6 +38523,7 @@ pub struct InstanceFlexibilityPolicyInstanceSelection {
 ///
 /// For more information, readInstance
 /// groups.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroup {
     /// Output only. \[Output Only\] The creation timestamp for this instance group inRFC3339
@@ -37557,6 +38589,7 @@ pub struct InstanceGroup {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupAggregatedList {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -37590,6 +38623,7 @@ pub struct InstanceGroupAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A list of InstanceGroup resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupList {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -37624,6 +38658,7 @@ pub struct InstanceGroupList {
 /// resource.
 ///
 /// For regional Managed Instance Group, use theregionInstanceGroupManagers resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManager {
     /// Specifies configuration that overrides the instance template configuration
@@ -37808,6 +38843,7 @@ pub struct InstanceGroupManager {
 pub mod instance_group_manager {
     /// Pagination behavior of the listManagedInstances API method for
     /// this managed instance group.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -37859,6 +38895,7 @@ pub mod instance_group_manager {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerActionsSummary {
     /// Output only. The total number of instances in the managed instance group
@@ -37928,6 +38965,7 @@ pub struct InstanceGroupManagerActionsSummary {
     #[prost(int32, optional, tag = "451612873")]
     pub verifying: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerAggregatedList {
     /// Output only. Unique identifier for the resource; defined by the server.
@@ -37960,6 +38998,7 @@ pub struct InstanceGroupManagerAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerAllInstancesConfig {
     /// Properties to set on all instances in the group.
@@ -37971,6 +39010,7 @@ pub struct InstanceGroupManagerAllInstancesConfig {
     #[prost(message, optional, tag = "147688755")]
     pub properties: ::core::option::Option<InstancePropertiesPatch>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerAutoHealingPolicy {
     /// The URL for the health check that signals autohealing.
@@ -37987,6 +39027,7 @@ pub struct InstanceGroupManagerAutoHealingPolicy {
     #[prost(int32, optional, tag = "263207002")]
     pub initial_delay_sec: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerInstanceFlexibilityPolicy {
     /// Named instance selections configuring properties that the group will use
@@ -37997,6 +39038,7 @@ pub struct InstanceGroupManagerInstanceFlexibilityPolicy {
         InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection {
     /// List of disks to be attached to the instances created from this
@@ -38018,6 +39060,7 @@ pub struct InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection {
     #[prost(int32, optional, tag = "3492908")]
     pub rank: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerInstanceLifecyclePolicy {
     /// The action that a MIG performs on a failed VM. If the value of the
@@ -38088,6 +39131,7 @@ pub mod instance_group_manager_instance_lifecycle_policy {
     /// repairing VMs in a MIG.
     /// - DO_NOTHING: MIG does not repair a failed VM.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38147,6 +39191,7 @@ pub mod instance_group_manager_instance_lifecycle_policy {
     ///   -  YES: If configuration updates are available, they are applied
     ///   during repair.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38206,6 +39251,7 @@ pub mod instance_group_manager_instance_lifecycle_policy {
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// DO_NOTHING
     /// REPAIR
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38249,6 +39295,7 @@ pub mod instance_group_manager_instance_lifecycle_policy {
     }
 }
 /// Configuration for VM repairs in the MIG.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerInstanceLifecyclePolicyOnRepair {
     /// Specifies whether the MIG can change a VM's zone during a repair.
@@ -38276,6 +39323,7 @@ pub mod instance_group_manager_instance_lifecycle_policy_on_repair {
     /// - YES: MIG can select a different zone for the VM during
     /// a repair.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38320,6 +39368,7 @@ pub mod instance_group_manager_instance_lifecycle_policy_on_repair {
     }
 }
 /// \[Output Only\] A list of managed instance groups.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerList {
     /// Output only. Unique identifier for the resource; defined by the server.
@@ -38351,6 +39400,7 @@ pub struct InstanceGroupManagerList {
 /// specified time. This resize request is nested under InstanceGroupManager
 /// and the VMs created by this request are added to the owning
 /// InstanceGroupManager.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerResizeRequest {
     /// Output only. The creation timestamp for this resize request inRFC3339
@@ -38413,6 +39463,7 @@ pub struct InstanceGroupManagerResizeRequest {
 /// Nested message and enum types in `InstanceGroupManagerResizeRequest`.
 pub mod instance_group_manager_resize_request {
     /// Output only. Current state of the request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38475,6 +39526,7 @@ pub mod instance_group_manager_resize_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerResizeRequestStatus {
     /// Output only. Fatal errors encountered during the queueing or provisioning phases of
@@ -38496,6 +39548,7 @@ pub struct InstanceGroupManagerResizeRequestStatus {
         InstanceGroupManagerResizeRequestStatusLastAttempt,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerResizeRequestStatusLastAttempt {
     /// Output only. Errors that prevented the ResizeRequest to be fulfilled.
@@ -38503,6 +39556,7 @@ pub struct InstanceGroupManagerResizeRequestStatusLastAttempt {
     pub error: ::core::option::Option<Error>,
 }
 /// \[Output Only\] A list of resize requests.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerResizeRequestsListResponse {
     /// Output only. Unique identifier for the resource; defined by the server.
@@ -38528,6 +39582,7 @@ pub struct InstanceGroupManagerResizeRequestsListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerResourcePolicies {
     /// The URL of the workload policy that is specified for this managed
@@ -38543,6 +39598,7 @@ pub struct InstanceGroupManagerResourcePolicies {
     #[prost(string, optional, tag = "114721530")]
     pub workload_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStandbyPolicy {
     /// Specifies the number of seconds that the MIG should wait to suspend or
@@ -38562,6 +39618,7 @@ pub struct InstanceGroupManagerStandbyPolicy {
 pub mod instance_group_manager_standby_policy {
     /// Defines how a MIG resumes or starts VMs from a standby pool when the
     /// group scales out. The default mode is `MANUAL`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38607,6 +39664,7 @@ pub mod instance_group_manager_standby_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatus {
     /// Output only. Status of all-instances configuration on the group.
@@ -38653,6 +39711,7 @@ pub struct InstanceGroupManagerStatus {
     #[prost(message, optional, tag = "289386200")]
     pub version_target: ::core::option::Option<InstanceGroupManagerStatusVersionTarget>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusAcceleratorTopology {
     /// Output only. Topology in the format of: "16x16", "4x4x4", etc.
@@ -38673,6 +39732,7 @@ pub struct InstanceGroupManagerStatusAcceleratorTopology {
 /// Nested message and enum types in `InstanceGroupManagerStatusAcceleratorTopology`.
 pub mod instance_group_manager_status_accelerator_topology {
     /// Output only. The state of the accelerator topology.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38733,6 +39793,7 @@ pub mod instance_group_manager_status_accelerator_topology {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusAcceleratorTopologyAcceleratorTopologyStateDetails {
     /// Output only. Encountered errors.
@@ -38744,6 +39805,7 @@ pub struct InstanceGroupManagerStatusAcceleratorTopologyAcceleratorTopologyState
     #[prost(string, optional, tag = "55126294")]
     pub timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStatusAllInstancesConfig {
     /// Output only. Current all-instances configuration revision.
@@ -38757,6 +39819,7 @@ pub struct InstanceGroupManagerStatusAllInstancesConfig {
 }
 /// Bulk instance operation is the creation of VMs in a MIG when the
 /// targetSizePolicy.mode is set to BULK.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusBulkInstanceOperation {
     /// Output only. Informs whether bulk instance operation is in progress.
@@ -38769,6 +39832,7 @@ pub struct InstanceGroupManagerStatusBulkInstanceOperation {
         InstanceGroupManagerStatusBulkInstanceOperationLastProgressCheck,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusBulkInstanceOperationLastProgressCheck {
     /// Output only. Errors encountered during bulk instance operation.
@@ -38783,6 +39847,7 @@ pub struct InstanceGroupManagerStatusBulkInstanceOperationLastProgressCheck {
 /// instance group that have the status. For more information about how to
 /// interpret each status check the instance lifecycle documentation.
 /// Currently only shown for TPU MIGs.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStatusInstanceStatusSummary {
     /// Output only. The number of instances in the managed instance group
@@ -38844,6 +39909,7 @@ pub struct InstanceGroupManagerStatusInstanceStatusSummary {
     #[prost(int32, optional, tag = "301796899")]
     pub terminated: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStatusStateful {
     /// Output only. A bit indicating whether the managed instance group
@@ -38860,6 +39926,7 @@ pub struct InstanceGroupManagerStatusStateful {
         InstanceGroupManagerStatusStatefulPerInstanceConfigs,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStatusStatefulPerInstanceConfigs {
     /// Output only. A bit indicating if all of the group's per-instance configurations
@@ -38868,6 +39935,7 @@ pub struct InstanceGroupManagerStatusStatefulPerInstanceConfigs {
     #[prost(bool, optional, tag = "516540553")]
     pub all_effective: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerStatusVersionTarget {
     /// Output only. A bit indicating whether version target has been reached
@@ -38876,6 +39944,7 @@ pub struct InstanceGroupManagerStatusVersionTarget {
     #[prost(bool, optional, tag = "433209149")]
     pub is_reached: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerTargetSizePolicy {
     /// The mode of target size policy based on which the MIG creates its VMs
@@ -38888,6 +39957,7 @@ pub struct InstanceGroupManagerTargetSizePolicy {
 pub mod instance_group_manager_target_size_policy {
     /// The mode of target size policy based on which the MIG creates its VMs
     /// individually or all at once.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -38940,6 +40010,7 @@ pub mod instance_group_manager_target_size_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerUpdatePolicy {
     /// The
@@ -39049,6 +40120,7 @@ pub mod instance_group_manager_update_policy {
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// NONE
     /// PROACTIVE
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39107,6 +40179,7 @@ pub mod instance_group_manager_update_policy {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39153,6 +40226,7 @@ pub mod instance_group_manager_update_policy {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39193,6 +40267,7 @@ pub mod instance_group_manager_update_policy {
     }
     /// What action should be used to replace instances.
     /// See minimal_action.REPLACE
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39241,6 +40316,7 @@ pub mod instance_group_manager_update_policy {
     /// to update.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// PROACTIVE
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39282,6 +40358,7 @@ pub mod instance_group_manager_update_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagerVersion {
     /// The URL of the instance template that is specified for this managed
@@ -39316,6 +40393,7 @@ pub struct InstanceGroupManagerVersion {
     #[prost(message, optional, tag = "62880239")]
     pub target_size: ::core::option::Option<FixedOrPercent>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersAbandonInstancesRequest {
     /// The URLs of one or more instances to abandon. This can be a full URL or
@@ -39324,6 +40402,7 @@ pub struct InstanceGroupManagersAbandonInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InstanceGroupManagers.applyUpdatesToInstances
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersApplyUpdatesRequest {
     /// Flag to update all instances instead of specified list of "instances".
@@ -39400,6 +40479,7 @@ pub mod instance_group_managers_apply_updates_request {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39454,6 +40534,7 @@ pub mod instance_group_managers_apply_updates_request {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39494,12 +40575,14 @@ pub mod instance_group_managers_apply_updates_request {
     }
 }
 /// InstanceGroupManagers.createInstances
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersCreateInstancesRequest {
     /// \[Required\] List of specifications of per-instance configs.
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersDeleteInstancesRequest {
     /// The URLs of one or more instances to delete. This can be a full URL or
@@ -39519,6 +40602,7 @@ pub struct InstanceGroupManagersDeleteInstancesRequest {
     pub skip_instances_on_validation_error: ::core::option::Option<bool>,
 }
 /// InstanceGroupManagers.deletePerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersDeletePerInstanceConfigsReq {
     /// The list of instance names for which we want to delete per-instance configs
@@ -39526,6 +40610,7 @@ pub struct InstanceGroupManagersDeletePerInstanceConfigsReq {
     #[prost(string, repeated, tag = "104585032")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListErrorsResponse {
     /// Output only. The list of errors of the managed instance group.
@@ -39540,6 +40625,7 @@ pub struct InstanceGroupManagersListErrorsResponse {
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListManagedInstancesResponse {
     /// Output only. \[Output Only\] The list of instances in the managed instance group.
@@ -39553,6 +40639,7 @@ pub struct InstanceGroupManagersListManagedInstancesResponse {
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListPerInstanceConfigsResp {
     /// Output only. \[Output Only\] The list of PerInstanceConfig.
@@ -39570,6 +40657,7 @@ pub struct InstanceGroupManagersListPerInstanceConfigsResp {
     pub warning: ::core::option::Option<Warning>,
 }
 /// InstanceGroupManagers.patchPerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersPatchPerInstanceConfigsReq {
     /// The list of per-instance configurations to insert or patch on this managed
@@ -39577,6 +40665,7 @@ pub struct InstanceGroupManagersPatchPerInstanceConfigsReq {
     #[prost(message, repeated, tag = "526265001")]
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersRecreateInstancesRequest {
     /// The URLs of one or more instances to recreate. This can be a full URL or
@@ -39584,6 +40673,7 @@ pub struct InstanceGroupManagersRecreateInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersResumeInstancesRequest {
     /// The URLs of one or more instances to resume. This can be a full URL or
@@ -39591,6 +40681,7 @@ pub struct InstanceGroupManagersResumeInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersScopedList {
     /// Output only. The list of managed instance groups that are contained in the specified
@@ -39602,6 +40693,7 @@ pub struct InstanceGroupManagersScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersSetInstanceTemplateRequest {
     /// The URL of the instance template that is specified for this managed
@@ -39611,6 +40703,7 @@ pub struct InstanceGroupManagersSetInstanceTemplateRequest {
     #[prost(string, optional, tag = "309248228")]
     pub instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersSetTargetPoolsRequest {
     /// The fingerprint of the target pools information. Use this optional
@@ -39628,6 +40721,7 @@ pub struct InstanceGroupManagersSetTargetPoolsRequest {
     #[prost(string, repeated, tag = "336072617")]
     pub target_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersStartInstancesRequest {
     /// The URLs of one or more instances to start. This can be a full URL or
@@ -39635,6 +40729,7 @@ pub struct InstanceGroupManagersStartInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersStopInstancesRequest {
     /// If this flag is set to true, the Instance Group Manager will proceed to
@@ -39646,6 +40741,7 @@ pub struct InstanceGroupManagersStopInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupManagersSuspendInstancesRequest {
     /// If this flag is set to true, the Instance Group Manager will proceed to
@@ -39658,6 +40754,7 @@ pub struct InstanceGroupManagersSuspendInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InstanceGroupManagers.updatePerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersUpdatePerInstanceConfigsReq {
     /// The list of per-instance configurations to insert or patch on this managed
@@ -39665,12 +40762,14 @@ pub struct InstanceGroupManagersUpdatePerInstanceConfigsReq {
     #[prost(message, repeated, tag = "526265001")]
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsAddInstancesRequest {
     /// The list of instances to add to the instance group.
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsListInstances {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -39697,6 +40796,7 @@ pub struct InstanceGroupsListInstances {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceGroupsListInstancesRequest {
     /// A filter for the state of the instances in the instance group. Valid
@@ -39711,6 +40811,7 @@ pub mod instance_groups_list_instances_request {
     /// A filter for the state of the instances in the instance group. Valid
     /// options are ALL or RUNNING. If you do not specify
     /// this parameter the list includes all instances regardless of their state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39755,12 +40856,14 @@ pub mod instance_groups_list_instances_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsRemoveInstancesRequest {
     /// The list of instances to remove from the instance group.
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsScopedList {
     /// Output only. \[Output Only\] The list ofinstance
@@ -39772,6 +40875,7 @@ pub struct InstanceGroupsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsSetNamedPortsRequest {
     /// The fingerprint of the named ports information for this instance group.
@@ -39787,6 +40891,7 @@ pub struct InstanceGroupsSetNamedPortsRequest {
     pub named_ports: ::prost::alloc::vec::Vec<NamedPort>,
 }
 /// Contains a list of instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -39814,6 +40919,7 @@ pub struct InstanceList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of instance referrers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceListReferrers {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -39839,6 +40945,7 @@ pub struct InstanceListReferrers {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceManagedByIgmError {
     /// Output only. Contents of the error.
@@ -39855,6 +40962,7 @@ pub struct InstanceManagedByIgmError {
     #[prost(string, optional, tag = "55126294")]
     pub timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceManagedByIgmErrorInstanceActionDetails {
     /// Output only. Action that managed instance group was executing on the instance when the
@@ -39877,6 +40985,7 @@ pub struct InstanceManagedByIgmErrorInstanceActionDetails {
 pub mod instance_managed_by_igm_error_instance_action_details {
     /// Output only. Action that managed instance group was executing on the instance when the
     /// error occurred. Possible values:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -39982,6 +41091,7 @@ pub mod instance_managed_by_igm_error_instance_action_details {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceManagedByIgmErrorManagedInstanceError {
     /// Output only. Error code.
@@ -39991,6 +41101,7 @@ pub struct InstanceManagedByIgmErrorManagedInstanceError {
     #[prost(string, optional, tag = "418054151")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceMoveRequest {
     /// The URL of the destination zone to move the instance. This can be a full or
@@ -40015,6 +41126,7 @@ pub struct InstanceMoveRequest {
     pub target_instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional instance params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceParams {
     /// Relative deadline for waiting for capacity. Relevant only for
@@ -40034,6 +41146,7 @@ pub struct InstanceParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceProperties {
     /// Controls for advanced machine-related behavior features.
@@ -40166,6 +41279,7 @@ pub struct InstanceProperties {
 pub mod instance_properties {
     /// KeyRevocationActionType of the instance. Supported options are "STOP" and
     /// "NONE". The default value is "NONE" if it is not specified.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40218,6 +41332,7 @@ pub mod instance_properties {
     }
     /// Specifies which method should be used for encrypting the
     /// Local SSDs attached to the VM.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40278,6 +41393,7 @@ pub mod instance_properties {
     /// The private IPv6 google access type for VMs.
     /// If not specified, use  INHERIT_FROM_SUBNETWORK as default.
     /// Note that for MachineImage, this is not supported yet.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40345,6 +41461,7 @@ pub mod instance_properties {
     }
 }
 /// Represents the change that you want to make to the instance properties.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancePropertiesPatch {
     /// This optional flag exposes the hashed physical host ID.
@@ -40365,6 +41482,7 @@ pub struct InstancePropertiesPatch {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceReference {
     /// The URL for a specific instance.
@@ -40375,6 +41493,7 @@ pub struct InstanceReference {
 /// Represents a Instance Settings resource. You can use instance settings to
 /// configure default settings for Compute Engine VM instances. For example, you
 /// can use it to configure default machine type of Compute Engine VM instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceSettings {
     /// Specifies a fingerprint for instance settings, which is essentially a hash
@@ -40402,6 +41521,7 @@ pub struct InstanceSettings {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceSettingsMetadata {
     /// A metadata key/value items map.
@@ -40432,6 +41552,7 @@ pub struct InstanceSettingsMetadata {
 /// global or regional instance templates.
 ///
 /// For more information, readInstance Templates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplate {
     /// Output only. \[Output Only\] The creation timestamp for this instance template inRFC3339
@@ -40484,6 +41605,7 @@ pub struct InstanceTemplate {
     pub source_instance_params: ::core::option::Option<SourceInstanceParams>,
 }
 /// Contains a list of InstanceTemplatesScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplateAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -40513,6 +41635,7 @@ pub struct InstanceTemplateAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A list of instance templates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplateList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -40539,6 +41662,7 @@ pub struct InstanceTemplateList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplatesScopedList {
     /// \[Output Only\] A list of instance templates that are contained within
@@ -40550,6 +41674,7 @@ pub struct InstanceTemplatesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceWithNamedPorts {
     /// Output only. \[Output Only\] The URL of the instance.
@@ -40566,6 +41691,7 @@ pub struct InstanceWithNamedPorts {
 /// Nested message and enum types in `InstanceWithNamedPorts`.
 pub mod instance_with_named_ports {
     /// Output only. \[Output Only\] The status of the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40653,12 +41779,14 @@ pub mod instance_with_named_ports {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesAddResourcePoliciesRequest {
     /// Resource policies to be added to this instance.
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesBulkInsertOperationMetadata {
     /// Status information per location (location name is key).
@@ -40669,6 +41797,7 @@ pub struct InstancesBulkInsertOperationMetadata {
         BulkInsertOperationStatus,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesGetEffectiveFirewallsResponse {
     /// \[Output Only\] Effective firewalls from firewall policies.
@@ -40680,6 +41809,7 @@ pub struct InstancesGetEffectiveFirewallsResponse {
     #[prost(message, repeated, tag = "272245619")]
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// Output only. \[Output Only\] Deprecated, please use short name instead. The display name
@@ -40714,6 +41844,7 @@ pub struct InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
 pub mod instances_get_effective_firewalls_response_effective_firewall_policy {
     /// Output only. \[Output Only\] The type of the firewall policy. Can be one of HIERARCHY,
     /// NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL, SYSTEM_REGIONAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40767,12 +41898,14 @@ pub mod instances_get_effective_firewalls_response_effective_firewall_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this instance.
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesReportHostAsFaultyRequest {
     /// The disruption schedule for the VM. Required field, only allows IMMEDIATE.
@@ -40787,6 +41920,7 @@ pub struct InstancesReportHostAsFaultyRequest {
 /// Nested message and enum types in `InstancesReportHostAsFaultyRequest`.
 pub mod instances_report_host_as_faulty_request {
     /// The disruption schedule for the VM. Required field, only allows IMMEDIATE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40836,6 +41970,7 @@ pub mod instances_report_host_as_faulty_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesReportHostAsFaultyRequestFaultReason {
     /// Check the Behavior enum for the list of possible values.
@@ -40846,6 +41981,7 @@ pub struct InstancesReportHostAsFaultyRequestFaultReason {
 }
 /// Nested message and enum types in `InstancesReportHostAsFaultyRequestFaultReason`.
 pub mod instances_report_host_as_faulty_request_fault_reason {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -40899,6 +42035,7 @@ pub mod instances_report_host_as_faulty_request_fault_reason {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesScopedList {
     /// \[Output Only\] A list of instances contained in this scope.
@@ -40909,6 +42046,7 @@ pub struct InstancesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetLabelsRequest {
     /// Fingerprint of the previous set of labels for this resource,
@@ -40922,12 +42060,14 @@ pub struct InstancesSetLabelsRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetMachineResourcesRequest {
     /// A list of the type and count of accelerator cards attached to the instance.
     #[prost(message, repeated, tag = "463595119")]
     pub guest_accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesSetMachineTypeRequest {
     /// Full or partial URL of the machine type resource. See Machine Types for a full list of
@@ -40935,12 +42075,14 @@ pub struct InstancesSetMachineTypeRequest {
     #[prost(string, optional, tag = "227711026")]
     pub machine_type: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesSetMinCpuPlatformRequest {
     /// Minimum cpu/platform this instance should be started at.
     #[prost(string, optional, tag = "242912759")]
     pub min_cpu_platform: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesSetNameRequest {
     /// The current name of this resource, used to prevent conflicts. Provide the
@@ -40951,6 +42093,7 @@ pub struct InstancesSetNameRequest {
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesSetSecurityPolicyRequest {
     /// The network interfaces that the security policy will be applied to. Network
@@ -40964,6 +42107,7 @@ pub struct InstancesSetSecurityPolicyRequest {
     #[prost(string, optional, tag = "171082513")]
     pub security_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstancesSetServiceAccountRequest {
     /// Email address of the service account.
@@ -40973,6 +42117,7 @@ pub struct InstancesSetServiceAccountRequest {
     #[prost(string, repeated, tag = "165973151")]
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesStartWithEncryptionKeyRequest {
     /// Array of disks associated with this instance that are protected with acustomer-supplied
@@ -40989,6 +42134,7 @@ pub struct InstancesStartWithEncryptionKeyRequest {
 /// Represents a InstantSnapshot resource.
 ///
 /// You can use instant snapshots to create disk rollback points quickly..
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantSnapshot {
     /// Output only. \[Output Only\] The architecture of the instant snapshot. Valid values are
@@ -41126,6 +42272,7 @@ pub struct InstantSnapshot {
 pub mod instant_snapshot {
     /// Output only. \[Output Only\] The architecture of the instant snapshot. Valid values are
     /// ARM64 or X86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41173,6 +42320,7 @@ pub mod instant_snapshot {
         }
     }
     /// Output only. \[Output Only\] The status of the instantSnapshot. This can beCREATING, DELETING, FAILED, orREADY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41229,6 +42377,7 @@ pub mod instant_snapshot {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantSnapshotAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -41265,6 +42414,7 @@ pub struct InstantSnapshotAggregatedList {
 ///
 /// An instant snapshot group is a set of instant snapshots that represents a
 /// point in time state of a consistency group.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstantSnapshotGroup {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -41320,6 +42470,7 @@ pub struct InstantSnapshotGroup {
 /// Nested message and enum types in `InstantSnapshotGroup`.
 pub mod instant_snapshot_group {
     /// Output only. \[Output Only\]
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41373,6 +42524,7 @@ pub mod instant_snapshot_group {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstantSnapshotGroupParameters {
     /// The source instant snapshot group used to create disks. You can provide
@@ -41389,6 +42541,7 @@ pub struct InstantSnapshotGroupParameters {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstantSnapshotGroupResourceStatus {
     /// Output only. \[Output Only\]
@@ -41400,6 +42553,7 @@ pub struct InstantSnapshotGroupResourceStatus {
     #[prost(message, optional, tag = "451907154")]
     pub source_info: ::core::option::Option<InstantSnapshotGroupSourceInfo>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstantSnapshotGroupSourceInfo {
     #[prost(string, optional, tag = "508183960")]
@@ -41408,6 +42562,7 @@ pub struct InstantSnapshotGroupSourceInfo {
     pub consistency_group_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of InstantSnapshot resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantSnapshotList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -41434,6 +42589,7 @@ pub struct InstantSnapshotList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional instant snapshot params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantSnapshotParams {
     /// Input only. Resource manager tags to be bound to the instant snapshot. Tag keys and
@@ -41449,12 +42605,14 @@ pub struct InstantSnapshotParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstantSnapshotResourceStatus {
     /// \[Output Only\] The storage size of this instant snapshot.
     #[prost(int64, optional, tag = "387548913")]
     pub storage_size_bytes: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantSnapshotsScopedList {
     /// \[Output Only\] A list of instantSnapshots contained in this scope.
@@ -41467,6 +42625,7 @@ pub struct InstantSnapshotsScopedList {
 }
 /// HttpRouteRuleMatch criteria for field values that must stay
 /// within the specified integer range.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Int64RangeMatch {
     /// The end of the range (exclusive) in signed long integer format.
@@ -41481,6 +42640,7 @@ pub struct Int64RangeMatch {
 /// An Interconnect resource is a dedicated connection between the Google
 /// Cloud network and your on-premises network. For more information, read the
 /// Dedicated Interconnect Overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Interconnect {
     /// Enable or disable the application awareness feature on this Cloud
@@ -41732,6 +42892,7 @@ pub mod interconnect {
     /// IF_CROSS_SITE_NETWORK
     /// IF_L2_FORWARDING
     /// IF_MACSEC
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41776,6 +42937,7 @@ pub mod interconnect {
     /// ```
     ///
     /// Note that a value IT_PRIVATE has been deprecated in favor of DEDICATED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41832,6 +42994,7 @@ pub mod interconnect {
     ///
     /// Note that this field indicates the speed of each of
     /// the links in the bundle, not the speed of the entire bundle.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41892,6 +43055,7 @@ pub mod interconnect {
     /// * OS_UNDER_MAINTENANCE: An Interconnect that is undergoing internal
     ///   maintenance. No attachments may be provisioned or updated on this
     ///   Interconnect.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41940,6 +43104,7 @@ pub mod interconnect {
     /// IF_CROSS_SITE_NETWORK
     /// IF_L2_FORWARDING
     /// IF_MACSEC
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -41986,6 +43151,7 @@ pub mod interconnect {
     /// No attachments may be provisioned or updated on this
     /// Interconnect.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42031,6 +43197,7 @@ pub mod interconnect {
         }
     }
     /// To be deprecated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42076,6 +43243,7 @@ pub mod interconnect {
 }
 /// Configuration information for application awareness on this Cloud
 /// Interconnect.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectApplicationAwareInterconnect {
     #[prost(message, optional, tag = "187018857")]
@@ -42101,6 +43269,7 @@ pub struct InterconnectApplicationAwareInterconnect {
 /// Specify bandwidth percentages \[1-100\] for various traffic classes in
 /// BandwidthPercentagePolicy. The sum of all percentages must equal 100.
 /// All traffic classes must have a percentage value specified.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectApplicationAwareInterconnectBandwidthPercentage {
     /// Bandwidth percentage for a specific traffic class.
@@ -42114,6 +43283,7 @@ pub struct InterconnectApplicationAwareInterconnectBandwidthPercentage {
 /// Nested message and enum types in `InterconnectApplicationAwareInterconnectBandwidthPercentage`.
 pub mod interconnect_application_aware_interconnect_bandwidth_percentage {
     /// TrafficClass whose bandwidth percentage is being specified.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42173,6 +43343,7 @@ pub mod interconnect_application_aware_interconnect_bandwidth_percentage {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy {
     /// Specify bandwidth percentages for various traffic classes for queuing
@@ -42183,6 +43354,7 @@ pub struct InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy {
     >,
 }
 /// Specify configuration for StrictPriorityPolicy.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectApplicationAwareInterconnectStrictPriorityPolicy {}
 /// Represents an Interconnect Attachment (VLAN) resource.
@@ -42191,6 +43363,7 @@ pub struct InterconnectApplicationAwareInterconnectStrictPriorityPolicy {}
 /// Cloud networks to your on-premises networks through an Interconnect.
 /// For more information, read
 /// Creating VLAN Attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachment {
     /// Determines whether this Attachment will carry packets.
@@ -42615,6 +43788,7 @@ pub mod interconnect_attachment {
     /// - BPS_100G: 100 Gbit/s
     /// - BPS_400G: 400 Gbit/s
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42719,6 +43893,7 @@ pub mod interconnect_attachment {
     /// provided to the Partner via the pairing key, so that the provisioned
     /// circuit will lie in the specified domain. If not specified, the value will
     /// default to AVAILABILITY_DOMAIN_ANY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42782,6 +43957,7 @@ pub mod interconnect_attachment {
     /// Interconnect*, the VLAN attachment must be created with this
     /// option.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42839,6 +44015,7 @@ pub mod interconnect_attachment {
     /// - OS_UNPROVISIONED: The attachment is not ready to use yet,
     /// because turnup is not complete.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42889,6 +44066,7 @@ pub mod interconnect_attachment {
     ///
     /// This field can be both set at interconnect attachments creation and
     /// update interconnect attachment operations.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -42954,6 +44132,7 @@ pub mod interconnect_attachment {
     /// could be because the associated Interconnect was removed, or because the
     /// other side of a Partner attachment was deleted.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43033,6 +44212,7 @@ pub mod interconnect_attachment {
     /// ```
     ///
     /// * L2_DEDICATED: a L2 attachment to a Dedicated Interconnect.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43084,6 +44264,7 @@ pub mod interconnect_attachment {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -43116,6 +44297,7 @@ pub struct InterconnectAttachmentAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentConfigurationConstraints {
     /// Output only. \[Output Only\] Whether the attachment's BGP session
@@ -43155,6 +44337,7 @@ pub mod interconnect_attachment_configuration_constraints {
     /// field set to MD5_REQUIRED, and that property is propagated to the
     /// attachment. Similarly, if BGP MD5 is MD5_UNSUPPORTED, an error is
     /// returned if MD5 is requested.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43203,6 +44386,7 @@ pub mod interconnect_attachment_configuration_constraints {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentConfigurationConstraintsBgpPeerAsnRange {
     #[prost(uint32, optional, tag = "107876")]
@@ -43212,6 +44396,7 @@ pub struct InterconnectAttachmentConfigurationConstraintsBgpPeerAsnRange {
 }
 /// An interconnect attachment group resource allows customers to create,
 /// analyze, and expand highly available deployments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroup {
     /// Attachments in the AttachmentGroup. Keys are arbitrary user-specified
@@ -43274,6 +44459,7 @@ pub struct InterconnectAttachmentGroup {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An Attachment in this AttachmentGroup.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentGroupAttachment {
     #[prost(string, optional, tag = "183982371")]
@@ -43282,6 +44468,7 @@ pub struct InterconnectAttachmentGroupAttachment {
 /// \[Output Only\] The redundancy this group is configured to support. The way a
 /// user queries what SLA their Attachment gets is by looking at this field of
 /// the Attachment's AttachmentGroup.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupConfigured {
     #[prost(message, optional, tag = "472702020")]
@@ -43291,6 +44478,7 @@ pub struct InterconnectAttachmentGroupConfigured {
 }
 /// \[Output Only\] Which SLA this group is configured to support, and why this
 /// group does or does not meet that SLA's requirements.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupConfiguredAvailabilitySla {
     /// Check the EffectiveSla enum for the list of possible values.
@@ -43303,6 +44491,7 @@ pub struct InterconnectAttachmentGroupConfiguredAvailabilitySla {
 }
 /// Nested message and enum types in `InterconnectAttachmentGroupConfiguredAvailabilitySLA`.
 pub mod interconnect_attachment_group_configured_availability_sla {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43353,6 +44542,7 @@ pub mod interconnect_attachment_group_configured_availability_sla {
 /// \[Output Only\] Reasons why configuration.availabilitySLA.sla differs from
 /// intent.availabilitySLA. This list is empty if and only if those are the
 /// same.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlockers {
     /// Output only. \[Output Only\] URLs of any particular Attachments to explain this
@@ -43390,6 +44580,7 @@ pub struct InterconnectAttachmentGroupConfiguredAvailabilitySlaIntendedSlaBlocke
 }
 /// Nested message and enum types in `InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers`.
 pub mod interconnect_attachment_group_configured_availability_sla_intended_sla_blockers {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43450,6 +44641,7 @@ pub mod interconnect_attachment_group_configured_availability_sla_intended_sla_b
 }
 /// The user's intent for this AttachmentGroup. This is the only required field
 /// besides the name that must be specified on group creation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentGroupIntent {
     /// Check the AvailabilitySla enum for the list of possible values.
@@ -43458,6 +44650,7 @@ pub struct InterconnectAttachmentGroupIntent {
 }
 /// Nested message and enum types in `InterconnectAttachmentGroupIntent`.
 pub mod interconnect_attachment_group_intent {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43507,6 +44700,7 @@ pub mod interconnect_attachment_group_intent {
 }
 /// \[Output Only\] An analysis of the logical layout of Attachments in this
 /// group. Every Attachment in the group is shown once in this structure.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupLogicalStructure {
     #[prost(message, repeated, tag = "12367871")]
@@ -43515,6 +44709,7 @@ pub struct InterconnectAttachmentGroupLogicalStructure {
     >,
 }
 /// \[Output Only\] The regions Attachments in this group are in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupLogicalStructureRegion {
     #[prost(message, repeated, tag = "533067386")]
@@ -43526,6 +44721,7 @@ pub struct InterconnectAttachmentGroupLogicalStructureRegion {
     pub region: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// \[Output Only\] The metros of Attachments in this group in this region.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupLogicalStructureRegionMetro {
     #[prost(message, repeated, tag = "536683137")]
@@ -43540,6 +44736,7 @@ pub struct InterconnectAttachmentGroupLogicalStructureRegionMetro {
 }
 /// \[Output Only\] The facilities used for this group's Attachments'
 /// Interconnects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
     /// Output only. \[Output Only\] The name of a facility, like "iad-1234".
@@ -43553,6 +44750,7 @@ pub struct InterconnectAttachmentGroupLogicalStructureRegionMetroFacility {
 /// \[Output Only\] The zones that Attachments in this group are present
 /// in, in the given facilities.  This is inherited from their
 /// Interconnects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
     /// Output only. \[Output Only\] URLs of Attachments in the given zone, to the given
@@ -43565,6 +44763,7 @@ pub struct InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response for the InterconnectAttachmentGroupsGetOperationalStatusResponse.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupsGetOperationalStatusResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -43572,6 +44771,7 @@ pub struct InterconnectAttachmentGroupsGetOperationalStatusResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<InterconnectAttachmentGroupsOperationalStatus>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -43603,6 +44803,7 @@ pub struct InterconnectAttachmentGroupsListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentGroupsOperationalStatus {
     #[prost(message, repeated, tag = "491132860")]
@@ -43624,6 +44825,7 @@ pub struct InterconnectAttachmentGroupsOperationalStatus {
 /// Nested message and enum types in `InterconnectAttachmentGroupsOperationalStatus`.
 pub mod interconnect_attachment_groups_operational_status {
     /// Output only. Summarizes the status of the group.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43672,6 +44874,7 @@ pub mod interconnect_attachment_groups_operational_status {
     }
 }
 /// The status of one Attachment in the group. List order is arbitrary.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentGroupsOperationalStatusAttachmentStatus {
     /// Output only. Whether this Attachment is enabled. This becomes false when the customer
@@ -43699,6 +44902,7 @@ pub mod interconnect_attachment_groups_operational_status_attachment_status {
     /// This will be ACTIVE if and only if the status below is CONNECTION_UP.
     /// Any INACTIVE Attachments are excluded from the analysis that generates
     /// operational.availabilitySLA.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43743,6 +44947,7 @@ pub mod interconnect_attachment_groups_operational_status_attachment_status {
         }
     }
     /// Output only. Whether this Attachment is active, and if so, whether BGP is up.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -43830,6 +45035,7 @@ pub mod interconnect_attachment_groups_operational_status_attachment_status {
     }
 }
 /// L2 Interconnect Attachment related configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentL2Forwarding {
     /// Optional. A map of VLAN tags to appliances and optional inner mapping
@@ -43877,6 +45083,7 @@ pub struct InterconnectAttachmentL2Forwarding {
     >,
 }
 /// Two-level VLAN-to-Appliance mapping rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentL2ForwardingApplianceMapping {
     /// Optional. A single IPv4 or IPv6 address used as the destination IP
@@ -43902,6 +45109,7 @@ pub struct InterconnectAttachmentL2ForwardingApplianceMapping {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The inner VLAN-to-Appliance mapping.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentL2ForwardingApplianceMappingInnerVlanToApplianceMapping {
     /// Required in this object. A single IPv4 or IPv6 address used as the
@@ -43922,6 +45130,7 @@ pub struct InterconnectAttachmentL2ForwardingApplianceMappingInnerVlanToApplianc
     pub inner_vlan_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GeneveHeader related configurations.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentL2ForwardingGeneveHeader {
     /// Optional. VNI is a 24-bit unique virtual network identifier, from 0 to
@@ -43931,6 +45140,7 @@ pub struct InterconnectAttachmentL2ForwardingGeneveHeader {
 }
 /// Response to the list request, and contains a list of interconnect
 /// attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -43958,6 +45168,7 @@ pub struct InterconnectAttachmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional interconnect attachment parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentParams {
     /// Tag keys/values directly bound to this resource.
@@ -43984,6 +45195,7 @@ pub struct InterconnectAttachmentParams {
 /// Informational metadata about Partner attachments from Partners to display
 /// to customers.  These fields are propagated from PARTNER_PROVIDER
 /// attachments to their corresponding PARTNER attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentPartnerMetadata {
     /// Plain text name of the Interconnect this attachment is connected to, as
@@ -44003,6 +45215,7 @@ pub struct InterconnectAttachmentPartnerMetadata {
 }
 /// Information for an interconnect attachment when this belongs to an
 /// interconnect of type DEDICATED.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentPrivateInfo {
     /// \[Output Only\] 802.1q encapsulation tag to be used for traffic between
@@ -44010,6 +45223,7 @@ pub struct InterconnectAttachmentPrivateInfo {
     #[prost(uint32, optional, tag = "271820992")]
     pub tag8021q: ::core::option::Option<u32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentsScopedList {
     /// A list of interconnect attachments contained in this scope.
@@ -44022,6 +45236,7 @@ pub struct InterconnectAttachmentsScopedList {
 }
 /// Describes a single physical circuit between the Customer and Google.
 /// CircuitInfo objects are created by Google, so all fields are output only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectCircuitInfo {
     /// Customer-side demarc ID for this circuit.
@@ -44038,6 +45253,7 @@ pub struct InterconnectCircuitInfo {
 /// Diagnostics information about the Interconnect connection, which contains
 /// detailed and current technical information about Google's side of the
 /// connection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnostics {
     /// A list of InterconnectDiagnostics.ARPEntry objects,
@@ -44067,6 +45283,7 @@ pub struct InterconnectDiagnostics {
 /// Nested message and enum types in `InterconnectDiagnostics`.
 pub mod interconnect_diagnostics {
     /// The aggregation type of the bundle interface.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44114,6 +45331,7 @@ pub mod interconnect_diagnostics {
         }
     }
     /// The operational status of the bundle interface.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44168,6 +45386,7 @@ pub mod interconnect_diagnostics {
     }
 }
 /// Describing the ARP neighbor entries seen on this link
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectDiagnosticsArpEntry {
     /// The IP address of this ARP neighbor.
@@ -44177,6 +45396,7 @@ pub struct InterconnectDiagnosticsArpEntry {
     #[prost(string, optional, tag = "332540164")]
     pub mac_address: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkLacpStatus {
     /// System ID of the port on Google's side of the LACP exchange.
@@ -44206,6 +45426,7 @@ pub mod interconnect_diagnostics_link_lacp_status {
     /// - DETACHED: The link is not configured within the bundle. This means
     /// that the rest of the object should be empty.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44250,6 +45471,7 @@ pub mod interconnect_diagnostics_link_lacp_status {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkOpticalPower {
     /// The status of the current value when compared to the warning and alarm
@@ -44295,6 +45517,7 @@ pub mod interconnect_diagnostics_link_optical_power {
     /// - HIGH_ALARM: The value has crossed above the high alarm
     /// threshold.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44354,6 +45577,7 @@ pub mod interconnect_diagnostics_link_optical_power {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkStatus {
     /// A list of InterconnectDiagnostics.ARPEntry objects,
@@ -44392,6 +45616,7 @@ pub struct InterconnectDiagnosticsLinkStatus {
 /// Nested message and enum types in `InterconnectDiagnosticsLinkStatus`.
 pub mod interconnect_diagnostics_link_status {
     /// The operational status of the link.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44436,6 +45661,7 @@ pub mod interconnect_diagnostics_link_status {
     }
 }
 /// Describes the status of MACsec encryption on the link.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectDiagnosticsMacsecStatus {
     /// Indicates the Connectivity Association Key Name (CKN)
@@ -44448,6 +45674,7 @@ pub struct InterconnectDiagnosticsMacsecStatus {
 }
 /// An interconnect group resource allows customers to create, analyze, and
 /// expand their redundant connections.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroup {
     #[prost(message, optional, tag = "295631422")]
@@ -44505,6 +45732,7 @@ pub struct InterconnectGroup {
 /// structure as the operational field reported by the OperationalStatus
 /// method, but does not take into account the operational status of each
 /// resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupConfigured {
     #[prost(message, optional, tag = "144190696")]
@@ -44515,6 +45743,7 @@ pub struct InterconnectGroupConfigured {
 /// \[Output Only\] How reliable this topology is configured to be, and why
 /// this group does or does not meet the requirements for the intended
 /// capability.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupConfiguredTopologyCapability {
     #[prost(message, repeated, tag = "531644140")]
@@ -44527,6 +45756,7 @@ pub struct InterconnectGroupConfiguredTopologyCapability {
 }
 /// Nested message and enum types in `InterconnectGroupConfiguredTopologyCapability`.
 pub mod interconnect_group_configured_topology_capability {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44577,6 +45807,7 @@ pub mod interconnect_group_configured_topology_capability {
 /// \[Output Only\] Reasons why configuration.topologyCapability.sla differs
 /// from intent.topologyCapability. This list is empty if and only if those
 /// are the same.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers {
     /// Check the BlockerType enum for the list of possible values.
@@ -44612,6 +45843,7 @@ pub struct InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlocke
 }
 /// Nested message and enum types in `InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers`.
 pub mod interconnect_group_configured_topology_capability_intended_capability_blockers {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44671,6 +45903,7 @@ pub mod interconnect_group_configured_topology_capability_intended_capability_bl
 }
 /// The user's intent for this group. This is the only required field besides
 /// the name that must be specified on group creation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupIntent {
     /// Check the TopologyCapability enum for the list of possible values.
@@ -44679,6 +45912,7 @@ pub struct InterconnectGroupIntent {
 }
 /// Nested message and enum types in `InterconnectGroupIntent`.
 pub mod interconnect_group_intent {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44729,6 +45963,7 @@ pub mod interconnect_group_intent {
     }
 }
 /// An Interconnect in this InterconnectGroup.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupInterconnect {
     /// The URL of an Interconnect in this group. All Interconnects in the group
@@ -44738,12 +45973,14 @@ pub struct InterconnectGroupInterconnect {
 }
 /// \[Output Only\] An analysis of the physical layout of Interconnects in this
 /// group. Every Interconnect in the group is shown once in this structure.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupPhysicalStructure {
     #[prost(message, repeated, tag = "533067386")]
     pub metros: ::prost::alloc::vec::Vec<InterconnectGroupPhysicalStructureMetros>,
 }
 /// \[Output Only\] The metros Interconnects in this group are in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupPhysicalStructureMetros {
     #[prost(message, repeated, tag = "536683137")]
@@ -44758,6 +45995,7 @@ pub struct InterconnectGroupPhysicalStructureMetros {
 }
 /// \[Output Only\] The facilities Interconnects in this metro are present
 /// in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupPhysicalStructureMetrosFacilities {
     /// Output only. \[Output Only\] The ID of this facility, as a numeric string like
@@ -44772,6 +46010,7 @@ pub struct InterconnectGroupPhysicalStructureMetrosFacilities {
 }
 /// \[Output Only\] The zones that Interconnects in this facility are
 /// present in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
     /// Output only. \[Output Only\] URLs of Interconnects in this redundancy group in the
@@ -44784,6 +46023,7 @@ pub struct InterconnectGroupPhysicalStructureMetrosFacilitiesZones {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsCreateMembers {
     /// How to behave when configured.topologyCapability.supportedSLA would not
@@ -44805,6 +46045,7 @@ pub struct InterconnectGroupsCreateMembers {
 pub mod interconnect_groups_create_members {
     /// How to behave when configured.topologyCapability.supportedSLA would not
     /// equal intent.topologyCapability after this call.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -44853,6 +46094,7 @@ pub mod interconnect_groups_create_members {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectGroupsCreateMembersInterconnectInput {
     /// Administrative status of the interconnect. When this is set to true, the
@@ -44958,6 +46200,7 @@ pub mod interconnect_groups_create_members_interconnect_input {
     ///
     /// Note that a value IT_PRIVATE
     /// has been deprecated in favor of DEDICATED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45015,6 +46258,7 @@ pub mod interconnect_groups_create_members_interconnect_input {
     ///
     /// Note that this field indicates the speed of each of the
     /// links in the bundle, not the speed of the entire bundle.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45062,6 +46306,7 @@ pub mod interconnect_groups_create_members_interconnect_input {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45109,12 +46354,14 @@ pub mod interconnect_groups_create_members_interconnect_input {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsCreateMembersRequest {
     #[prost(message, optional, tag = "21951119")]
     pub request: ::core::option::Option<InterconnectGroupsCreateMembers>,
 }
 /// Response for the InterconnectGroupsGetOperationalStatusResponse.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsGetOperationalStatusResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -45122,6 +46369,7 @@ pub struct InterconnectGroupsGetOperationalStatusResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<InterconnectGroupsOperationalStatus>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -45153,6 +46401,7 @@ pub struct InterconnectGroupsListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Request to get the status of the interconnect group with extra detail.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsOperationalStatus {
     /// Output only. The configuration analysis, as returned by Get.
@@ -45176,6 +46425,7 @@ pub struct InterconnectGroupsOperationalStatus {
 /// Nested message and enum types in `InterconnectGroupsOperationalStatus`.
 pub mod interconnect_groups_operational_status {
     /// Output only. Summarizes the status of the group.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45224,6 +46474,7 @@ pub mod interconnect_groups_operational_status {
     }
 }
 /// The status of one Interconnect in the group. The order is arbitrary.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectGroupsOperationalStatusInterconnectStatus {
     /// Output only. Whether the Interconnect is enabled.
@@ -45246,6 +46497,7 @@ pub struct InterconnectGroupsOperationalStatusInterconnectStatus {
 pub mod interconnect_groups_operational_status_interconnect_status {
     /// Output only. Whether this interconnect is participating in the redundant
     /// configuration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45291,6 +46543,7 @@ pub mod interconnect_groups_operational_status_interconnect_status {
     }
 }
 /// Response to the list request, and contains a list of interconnects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -45321,6 +46574,7 @@ pub struct InterconnectList {
 /// You can use this resource to find location details about an Interconnect
 /// attachment (VLAN). For more information about interconnect attachments, read
 /// Creating VLAN Attachments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectLocation {
     /// Output only. \[Output Only\] The postal address of the Point of Presence, each line in
@@ -45446,6 +46700,7 @@ pub struct InterconnectLocation {
 }
 /// Nested message and enum types in `InterconnectLocation`.
 pub mod interconnect_location {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45492,6 +46747,7 @@ pub mod interconnect_location {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45551,6 +46807,7 @@ pub mod interconnect_location {
     /// - NORTH_AMERICA
     /// - SOUTH_AMERICA
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45624,6 +46881,7 @@ pub mod interconnect_location {
     /// - AVAILABLE: The InterconnectLocation is available for provisioning new
     /// Interconnects.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45669,6 +46927,7 @@ pub mod interconnect_location {
 }
 /// Information about Cross-Site Interconnect wires which may be created
 /// between the containing location and another remote location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectLocationCrossSiteInterconnectInfo {
     /// Output only. The remote location for Cross-Site Interconnect wires. This specifies an
@@ -45686,6 +46945,7 @@ pub struct InterconnectLocationCrossSiteInterconnectInfo {
     pub max_fixed_path_bandwidth_gbps: ::core::option::Option<i64>,
 }
 /// Response to the list request, and contains a list of interconnect locations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectLocationList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -45715,6 +46975,7 @@ pub struct InterconnectLocationList {
 /// Information about any potential InterconnectAttachments between an
 /// Interconnect at a specific InterconnectLocation, and a specific Cloud
 /// Region.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectLocationRegionInfo {
     /// Output only. Expected round-trip time in milliseconds, from this InterconnectLocation
@@ -45736,6 +46997,7 @@ pub struct InterconnectLocationRegionInfo {
 /// Nested message and enum types in `InterconnectLocationRegionInfo`.
 pub mod interconnect_location_region_info {
     /// Output only. Identifies the network presence of this location.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -45794,6 +47056,7 @@ pub mod interconnect_location_region_info {
 /// Configuration information for enabling Media Access Control security
 /// (MACsec) on this Cloud Interconnect connection between Google and your
 /// on-premises router.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectMacsec {
     /// If set to true, the Interconnect connection is configured with ashould-secure MACsec security policy, that allows the Google
@@ -45813,6 +47076,7 @@ pub struct InterconnectMacsec {
 /// MACsec configuration information for the Interconnect connection. Contains
 /// the generated Connectivity Association Key Name (CKN) and the key (CAK) for
 /// this Interconnect connection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectMacsecConfig {
     /// A keychain placeholder describing a set of named key objects
@@ -45824,6 +47088,7 @@ pub struct InterconnectMacsecConfig {
 }
 /// Describes a pre-shared key used to setup MACsec in static connectivity
 /// association key (CAK) mode.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectMacsecConfigPreSharedKey {
     /// An auto-generated Connectivity Association Key (CAK) for this key.
@@ -45841,6 +47106,7 @@ pub struct InterconnectMacsecConfigPreSharedKey {
 }
 /// Describes a pre-shared key used to setup MACsec in static connectivity
 /// association key (CAK) mode.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectMacsecPreSharedKey {
     /// Required. A name for this pre-shared key.
@@ -45862,6 +47128,7 @@ pub struct InterconnectMacsecPreSharedKey {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Description of a planned outage on this Interconnect.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectOutageNotification {
     /// If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit
@@ -45940,6 +47207,7 @@ pub mod interconnect_outage_notification {
     ///
     /// Note that the versions of this enum prefixed with "IT\_" have been
     /// deprecated in favor of the unprefixed values.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46005,6 +47273,7 @@ pub mod interconnect_outage_notification {
     ///
     /// Note that the value of NSRC_GOOGLE has been deprecated in favor of
     /// GOOGLE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46060,6 +47329,7 @@ pub mod interconnect_outage_notification {
     ///
     /// Note that the versions of this enum prefixed with "NS\_" have been
     /// deprecated in favor of the unprefixed values.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46121,6 +47391,7 @@ pub mod interconnect_outage_notification {
     }
 }
 /// Additional interconnect parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectParams {
     /// Tag keys/values directly bound to this resource.
@@ -46148,6 +47419,7 @@ pub struct InterconnectParams {
 ///
 /// You can use this resource to find remote location details about an
 /// Interconnect attachment (VLAN).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectRemoteLocation {
     /// Output only. \[Output Only\] The postal address of the Point of Presence, each line in
@@ -46277,6 +47549,7 @@ pub mod interconnect_remote_location {
     /// - NORTH_AMERICA
     /// - SOUTH_AMERICA
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46328,6 +47601,7 @@ pub mod interconnect_remote_location {
     }
     /// Output only. \[Output Only\] Link Aggregation Control Protocol (LACP) constraints, which
     /// can take one of the following values: LACP_SUPPORTED, LACP_UNSUPPORTED
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46383,6 +47657,7 @@ pub mod interconnect_remote_location {
     /// InterconnectRemoteLocation is available for provisioning new
     /// Cross-Cloud Interconnects.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46428,6 +47703,7 @@ pub mod interconnect_remote_location {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectRemoteLocationConstraints {
     /// Output only. \[Output Only\] Port pair remote location constraints, which can take one
@@ -46484,6 +47760,7 @@ pub mod interconnect_remote_location_constraints {
     /// ports, and one of them uses a remote location with
     /// portPairMatchingRemoteLocation set to matching, the UI requires that
     /// both ports use the same remote location.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46544,6 +47821,7 @@ pub mod interconnect_remote_location_constraints {
     }
     /// Output only. \[Output Only\] Port pair VLAN constraints, which can take one of the
     /// following values: PORT_PAIR_UNCONSTRAINED_VLAN, PORT_PAIR_MATCHING_VLAN
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46592,6 +47870,7 @@ pub mod interconnect_remote_location_constraints {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectRemoteLocationConstraintsSubnetLengthRange {
     #[prost(int32, optional, tag = "107876")]
@@ -46601,6 +47880,7 @@ pub struct InterconnectRemoteLocationConstraintsSubnetLengthRange {
 }
 /// Response to the list request, and contains a list of interconnect remote
 /// locations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectRemoteLocationList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -46627,6 +47907,7 @@ pub struct InterconnectRemoteLocationList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectRemoteLocationPermittedConnections {
     /// Output only. \[Output Only\] URL of an Interconnect location that is permitted to
@@ -46635,12 +47916,14 @@ pub struct InterconnectRemoteLocationPermittedConnections {
     pub interconnect_location: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response for the InterconnectsGetDiagnosticsRequest.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectsGetDiagnosticsResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<InterconnectDiagnostics>,
 }
 /// Response for the InterconnectsGetMacsecConfigRequest.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectsGetMacsecConfigResponse {
     /// end_interface: MixerGetResponseWithEtagBuilder
@@ -46650,6 +47933,7 @@ pub struct InterconnectsGetMacsecConfigResponse {
     pub result: ::core::option::Option<InterconnectMacsecConfig>,
 }
 /// Request to rename an interconnect.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectsSetNameRequest {
     /// The current name of the interconnect.
@@ -46667,6 +47951,7 @@ pub struct InterconnectsSetNameRequest {
 /// The start must be less than or equal to the end.
 /// When the start equals the end, the interval is empty (matches no time).
 /// When both start and end are unspecified, the interval matches any time.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Interval {
     /// Optional. Exclusive end of the interval.
@@ -46683,6 +47968,7 @@ pub struct Interval {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for UrlMaps.InvalidateCache. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InvalidateCacheUrlMapRequest {
     /// The body resource for this request
@@ -46711,6 +47997,7 @@ pub struct InvalidateCacheUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// Metadata
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Items {
     /// Key for the metadata entry. Keys must conform to the following
@@ -46733,6 +48020,7 @@ pub struct Items {
 /// *Caution* This resource is intended for
 /// use only by third-party partners who are creatingCloud Marketplace
 /// images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct License {
     /// Specifies licenseCodes of licenses that can replace this license. Note:
@@ -46832,6 +48120,7 @@ pub struct License {
 /// *Caution* This resource is intended for
 /// use only by third-party partners who are creatingCloud Marketplace
 /// images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseCode {
     /// Specifies licenseCodes of licenses that can replace this license. Note:
@@ -46916,6 +48205,7 @@ pub struct LicenseCode {
 /// Nested message and enum types in `LicenseCode`.
 pub mod license_code {
     /// Output only. \[Output Only\] Current state of this License Code.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -46971,6 +48261,7 @@ pub mod license_code {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LicenseCodeLicenseAlias {
     /// Output only. \[Output Only\] Description of this License Code.
@@ -46981,6 +48272,7 @@ pub struct LicenseCodeLicenseAlias {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional license params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseParams {
     /// Input only. Resource manager tags to be bound to the license. Tag keys and values
@@ -46997,6 +48289,7 @@ pub struct LicenseParams {
     >,
 }
 /// Commitment for a particular license resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LicenseResourceCommitment {
     /// The number of licenses you plan to purchase.
@@ -47009,6 +48302,7 @@ pub struct LicenseResourceCommitment {
     #[prost(string, optional, tag = "166757441")]
     pub license: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LicenseResourceRequirements {
     /// \[Input Only\] Deprecated. This field no longer reflects the minimum number
@@ -47020,6 +48314,7 @@ pub struct LicenseResourceRequirements {
     #[prost(int32, optional, tag = "504785894")]
     pub min_memory_mb: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicensesListResponse {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -47043,6 +48338,7 @@ pub struct LicensesListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for AcceleratorTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47142,6 +48438,7 @@ pub struct ListAcceleratorTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47241,6 +48538,7 @@ pub struct ListAddressesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.ListAssociations. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssociationsFirewallPolicyRequest {
     /// If set to "true", the response will contain a list of all associations for
@@ -47254,6 +48552,7 @@ pub struct ListAssociationsFirewallPolicyRequest {
     pub target_resource: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.ListAssociations. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssociationsOrganizationSecurityPolicyRequest {
     /// The target resource to list associations. It is an organization, or a
@@ -47262,6 +48561,7 @@ pub struct ListAssociationsOrganizationSecurityPolicyRequest {
     pub target_resource: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47361,6 +48661,7 @@ pub struct ListAutoscalersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.ListAvailableFeatures. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAvailableFeaturesRegionSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47460,6 +48761,7 @@ pub struct ListAvailableFeaturesRegionSslPoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.ListAvailableFeatures. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAvailableFeaturesSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47556,6 +48858,7 @@ pub struct ListAvailableFeaturesSslPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47652,6 +48955,7 @@ pub struct ListBackendBucketsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -47748,6 +49052,7 @@ pub struct ListBackendServicesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Routers.ListBgpRoutes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBgpRoutesRoutersRequest {
     /// (Required) limit results to this address family (either IPv4 or IPv6)
@@ -47873,6 +49178,7 @@ pub struct ListBgpRoutesRoutersRequest {
 /// Nested message and enum types in `ListBgpRoutesRoutersRequest`.
 pub mod list_bgp_routes_routers_request {
     /// (Required) limit results to this address family (either IPv4 or IPv6)
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -47918,6 +49224,7 @@ pub mod list_bgp_routes_routers_request {
     }
     /// (Required) limit results to this type of route (either LEARNED or
     /// ADVERTISED)
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -47963,6 +49270,7 @@ pub mod list_bgp_routes_routers_request {
     }
 }
 /// A request message for CrossSiteNetworks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCrossSiteNetworksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48059,6 +49367,7 @@ pub struct ListCrossSiteNetworksRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for DiskTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48158,6 +49467,7 @@ pub struct ListDiskTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Disks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDisksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48257,6 +49567,7 @@ pub struct ListDisksRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.ListDisks. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDisksStoragePoolsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48359,6 +49670,7 @@ pub struct ListDisksStoragePoolsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.ListErrors. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListErrorsInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48466,6 +49778,7 @@ pub struct ListErrorsInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListErrors. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListErrorsRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48572,6 +49885,7 @@ pub struct ListErrorsRegionInstanceGroupManagersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExternalVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48668,6 +49982,7 @@ pub struct ListExternalVpnGatewaysRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48766,6 +50081,7 @@ pub struct ListFirewallPoliciesRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFirewallsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48862,6 +50178,7 @@ pub struct ListFirewallsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -48961,6 +50278,7 @@ pub struct ListForwardingRulesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for FutureReservations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFutureReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49060,6 +50378,7 @@ pub struct ListFutureReservationsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49156,6 +50475,7 @@ pub struct ListGlobalAddressesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalForwardingRules.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49252,6 +50572,7 @@ pub struct ListGlobalForwardingRulesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49348,6 +50669,7 @@ pub struct ListGlobalNetworkEndpointGroupsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOperations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49444,6 +50766,7 @@ pub struct ListGlobalOperationsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOrganizationOperations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalOrganizationOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49540,6 +50863,7 @@ pub struct ListGlobalOrganizationOperationsRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49636,6 +50960,7 @@ pub struct ListGlobalPublicDelegatedPrefixesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalVmExtensionPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGlobalVmExtensionPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49732,6 +51057,7 @@ pub struct ListGlobalVmExtensionPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for HealthChecks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -49828,6 +51154,7 @@ pub struct ListHealthChecksRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Hosts.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListHostsRequest {
     /// The parent resource association for the Host. This field specifies the
@@ -49934,6 +51261,7 @@ pub struct ListHostsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ImageViews.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListImageViewsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50033,6 +51361,7 @@ pub struct ListImageViewsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Images.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListImagesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50129,6 +51458,7 @@ pub struct ListImagesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagerResizeRequests.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstanceGroupManagerResizeRequestsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50232,6 +51562,7 @@ pub struct ListInstanceGroupManagerResizeRequestsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50332,6 +51663,7 @@ pub struct ListInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50432,6 +51764,7 @@ pub struct ListInstanceGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstanceTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50528,6 +51861,7 @@ pub struct ListInstanceTemplatesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.ListInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50637,6 +51971,7 @@ pub struct ListInstancesInstanceGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.ListInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRegionInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50745,6 +52080,7 @@ pub struct ListInstancesRegionInstanceGroupsRequest {
     >,
 }
 /// A request message for Instances.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50844,6 +52180,7 @@ pub struct ListInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Contains a list of InstantSnapshotGroup resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstantSnapshotGroups {
     #[prost(string, optional, tag = "3123477")]
@@ -50876,6 +52213,7 @@ pub struct ListInstantSnapshotGroups {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for InstantSnapshotGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstantSnapshotGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -50975,6 +52313,7 @@ pub struct ListInstantSnapshotGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstantSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51074,6 +52413,7 @@ pub struct ListInstantSnapshotsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectAttachmentGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51170,6 +52510,7 @@ pub struct ListInterconnectAttachmentGroupsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51269,6 +52610,7 @@ pub struct ListInterconnectAttachmentsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51365,6 +52707,7 @@ pub struct ListInterconnectGroupsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectLocations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectLocationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51461,6 +52804,7 @@ pub struct ListInterconnectLocationsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectRemoteLocations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectRemoteLocationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51557,6 +52901,7 @@ pub struct ListInterconnectRemoteLocationsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51653,6 +52998,7 @@ pub struct ListInterconnectsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLicensesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51749,6 +53095,7 @@ pub struct ListLicensesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMachineImagesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51845,6 +53192,7 @@ pub struct ListMachineImagesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMachineTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -51944,6 +53292,7 @@ pub struct ListMachineTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.ListManagedInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListManagedInstancesInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52047,6 +53396,7 @@ pub struct ListManagedInstancesInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListManagedInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListManagedInstancesRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52149,6 +53499,7 @@ pub struct ListManagedInstancesRegionInstanceGroupManagersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ManagedRulesets.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListManagedRulesetsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52245,6 +53596,7 @@ pub struct ListManagedRulesetsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Routers.ListNamedSets. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNamedSetsRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52348,6 +53700,7 @@ pub struct ListNamedSetsRoutersRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52447,6 +53800,7 @@ pub struct ListNetworkAttachmentsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52547,6 +53901,7 @@ pub struct ListNetworkEndpointGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.ListNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52647,6 +54002,7 @@ pub struct ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEndpointGroups.ListNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkEndpointsNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52756,6 +54112,7 @@ pub struct ListNetworkEndpointsNetworkEndpointGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.ListNetworkEndpoints. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkEndpointsRegionNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52860,6 +54217,7 @@ pub struct ListNetworkEndpointsRegionNetworkEndpointGroupsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -52956,6 +54314,7 @@ pub struct ListNetworkFirewallPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NetworkProfiles.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkProfilesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53052,6 +54411,7 @@ pub struct ListNetworkProfilesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Networks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53148,6 +54508,7 @@ pub struct ListNetworksRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53247,6 +54608,7 @@ pub struct ListNodeGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodeTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53346,6 +54708,7 @@ pub struct ListNodeTemplatesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NodeTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodeTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53445,6 +54808,7 @@ pub struct ListNodeTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.ListNodes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodesNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53547,6 +54911,7 @@ pub struct ListNodesNodeGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrganizationSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53643,6 +55008,7 @@ pub struct ListOrganizationSecurityPoliciesRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PacketMirrorings.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPacketMirroringsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -53742,6 +55108,7 @@ pub struct ListPacketMirroringsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Networks.ListPeeringRoutes. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPeeringRoutesNetworksRequest {
     /// The direction of the exchanged routes.
@@ -53854,6 +55221,7 @@ pub struct ListPeeringRoutesNetworksRequest {
 /// Nested message and enum types in `ListPeeringRoutesNetworksRequest`.
 pub mod list_peering_routes_networks_request {
     /// The direction of the exchanged routes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -53898,6 +55266,7 @@ pub mod list_peering_routes_networks_request {
     }
 }
 /// A request message for InstanceGroupManagers.ListPerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPerInstanceConfigsInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54002,6 +55371,7 @@ pub struct ListPerInstanceConfigsInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListPerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPerInstanceConfigsRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54104,6 +55474,7 @@ pub struct ListPerInstanceConfigsRegionInstanceGroupManagersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.ListPreconfiguredExpressionSets. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54200,6 +55571,7 @@ pub struct ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for SecurityPolicies.ListPreconfiguredExpressionSets. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPreconfiguredExpressionSetsSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54296,6 +55668,7 @@ pub struct ListPreconfiguredExpressionSetsSecurityPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for PreviewFeatures.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPreviewFeaturesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54392,6 +55765,7 @@ pub struct ListPreviewFeaturesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for PublicAdvertisedPrefixes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPublicAdvertisedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54488,6 +55862,7 @@ pub struct ListPublicAdvertisedPrefixesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for PublicDelegatedPrefixes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54587,6 +55962,7 @@ pub struct ListPublicDelegatedPrefixesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Instances.ListReferrers. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReferrersInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54690,6 +56066,7 @@ pub struct ListReferrersInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionAutoscalers.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54789,6 +56166,7 @@ pub struct ListRegionAutoscalersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendBuckets.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54888,6 +56266,7 @@ pub struct ListRegionBackendBucketsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -54987,6 +56366,7 @@ pub struct ListRegionBackendServicesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionCommitments.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionCommitmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55086,6 +56466,7 @@ pub struct ListRegionCommitmentsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionCompositeHealthChecks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionCompositeHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55185,6 +56566,7 @@ pub struct ListRegionCompositeHealthChecksRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDiskTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55284,6 +56666,7 @@ pub struct ListRegionDiskTypesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionDisksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55383,6 +56766,7 @@ pub struct ListRegionDisksRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthAggregationPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionHealthAggregationPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55482,6 +56866,7 @@ pub struct ListRegionHealthAggregationPoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthCheckServices.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionHealthCheckServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55581,6 +56966,7 @@ pub struct ListRegionHealthCheckServicesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthChecks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55680,6 +57066,7 @@ pub struct ListRegionHealthChecksRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthSources.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionHealthSourcesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55779,6 +57166,7 @@ pub struct ListRegionHealthSourcesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagerResizeRequests.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstanceGroupManagerResizeRequestsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55882,6 +57270,7 @@ pub struct ListRegionInstanceGroupManagerResizeRequestsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -55981,6 +57370,7 @@ pub struct ListRegionInstanceGroupManagersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56080,6 +57470,7 @@ pub struct ListRegionInstanceGroupsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceTemplates.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstanceTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56179,6 +57570,7 @@ pub struct ListRegionInstanceTemplatesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshotGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstantSnapshotGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56278,6 +57670,7 @@ pub struct ListRegionInstantSnapshotGroupsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshots.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionInstantSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56377,6 +57770,7 @@ pub struct ListRegionInstantSnapshotsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56477,6 +57871,7 @@ pub struct ListRegionNetworkEndpointGroupsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionNetworkFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56576,6 +57971,7 @@ pub struct ListRegionNetworkFirewallPoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNotificationEndpoints.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionNotificationEndpointsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56675,6 +58071,7 @@ pub struct ListRegionNotificationEndpointsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionOperations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56774,6 +58171,7 @@ pub struct ListRegionOperationsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSecurityPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56873,6 +58271,7 @@ pub struct ListRegionSecurityPoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -56972,6 +58371,7 @@ pub struct ListRegionSnapshotsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslCertificates.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57071,6 +58471,7 @@ pub struct ListRegionSslCertificatesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57170,6 +58571,7 @@ pub struct ListRegionSslPoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57269,6 +58671,7 @@ pub struct ListRegionTargetHttpProxiesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57368,6 +58771,7 @@ pub struct ListRegionTargetHttpsProxiesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetTcpProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57467,6 +58871,7 @@ pub struct ListRegionTargetTcpProxiesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionUrlMaps.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57566,6 +58971,7 @@ pub struct ListRegionUrlMapsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionZones.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionZonesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57665,6 +59071,7 @@ pub struct ListRegionZonesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Regions.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57761,6 +59168,7 @@ pub struct ListRegionsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ReliabilityRisks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReliabilityRisksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57857,6 +59265,7 @@ pub struct ListReliabilityRisksRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ReservationBlocks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReservationBlocksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -57960,6 +59369,7 @@ pub struct ListReservationBlocksRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSlots.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReservationSlotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58063,6 +59473,7 @@ pub struct ListReservationSlotsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReservationSubBlocksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58166,6 +59577,7 @@ pub struct ListReservationSubBlocksRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58265,6 +59677,7 @@ pub struct ListReservationsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListResourcePoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58364,6 +59777,7 @@ pub struct ListResourcePoliciesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RolloutPlans.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolloutPlansRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58460,6 +59874,7 @@ pub struct ListRolloutPlansRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Rollouts.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolloutsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58556,6 +59971,7 @@ pub struct ListRolloutsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Routers.ListRoutePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutePoliciesRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58659,6 +60075,7 @@ pub struct ListRoutePoliciesRoutersRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58758,6 +60175,7 @@ pub struct ListRoutersRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Routes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58854,6 +60272,7 @@ pub struct ListRoutesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -58950,6 +60369,7 @@ pub struct ListSecurityPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServiceAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59049,6 +60469,7 @@ pub struct ListServiceAttachmentsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59145,6 +60566,7 @@ pub struct ListSnapshotsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for SslCertificates.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59241,6 +60663,7 @@ pub struct ListSslCertificatesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59337,6 +60760,7 @@ pub struct ListSslPoliciesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for StoragePoolTypes.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStoragePoolTypesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59436,6 +60860,7 @@ pub struct ListStoragePoolTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStoragePoolsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59535,6 +60960,7 @@ pub struct ListStoragePoolsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59653,6 +61079,7 @@ pub mod list_subnetworks_request {
     /// - WITH_UTILIZATION: Utilization data is included in the
     /// response.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -59696,6 +61123,7 @@ pub mod list_subnetworks_request {
     }
 }
 /// A request message for TargetGrpcProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetGrpcProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59792,6 +61220,7 @@ pub struct ListTargetGrpcProxiesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59888,6 +61317,7 @@ pub struct ListTargetHttpProxiesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -59984,6 +61414,7 @@ pub struct ListTargetHttpsProxiesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for TargetInstances.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60083,6 +61514,7 @@ pub struct ListTargetInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetPoolsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60182,6 +61614,7 @@ pub struct ListTargetPoolsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetSslProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60278,6 +61711,7 @@ pub struct ListTargetSslProxiesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60374,6 +61808,7 @@ pub struct ListTargetTcpProxiesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60473,6 +61908,7 @@ pub struct ListTargetVpnGatewaysRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60569,6 +62005,7 @@ pub struct ListUrlMapsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.ListUsable. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60665,6 +62102,7 @@ pub struct ListUsableBackendBucketsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.ListUsable. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60761,6 +62199,7 @@ pub struct ListUsableBackendServicesRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendBuckets.ListUsable. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableRegionBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60861,6 +62300,7 @@ pub struct ListUsableRegionBackendBucketsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.ListUsable. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableRegionBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -60961,6 +62401,7 @@ pub struct ListUsableRegionBackendServicesRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.ListUsable. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61062,6 +62503,7 @@ pub struct ListUsableSubnetworksRequest {
     pub service_project: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for VpnGateways.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61161,6 +62603,7 @@ pub struct ListVpnGatewaysRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpnTunnelsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61260,6 +62703,7 @@ pub struct ListVpnTunnelsRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for WireGroups.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWireGroupsRequest {
     #[prost(string, tag = "108192469")]
@@ -61358,6 +62802,7 @@ pub struct ListWireGroupsRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Projects.ListXpnHosts. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListXpnHostsProjectsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61459,6 +62904,7 @@ pub struct ListXpnHostsProjectsRequest {
     >,
 }
 /// A request message for ZoneOperations.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZoneOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61558,6 +63004,7 @@ pub struct ListZoneOperationsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ZoneVmExtensionPolicies.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZoneVmExtensionPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61657,6 +63104,7 @@ pub struct ListZoneVmExtensionPoliciesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Zones.List. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZonesRequest {
     /// A filter expression that filters resources listed in the response. Most
@@ -61752,6 +63200,7 @@ pub struct ListZonesRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalDisk {
     /// Specifies the number of such disks.
@@ -61769,6 +63218,7 @@ pub struct LocalDisk {
 }
 /// Provides a localized error message that is safe to return to the user
 /// which can be attached to an RPC error.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedMessage {
     /// The locale used following the specification defined at
@@ -61782,6 +63232,7 @@ pub struct LocalizedMessage {
 }
 /// Configuration for location policy among multiple possible locations
 /// (e.g. preferences for zone selection among zones in a single region).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicy {
     /// Location configurations mapped by location name.
@@ -61812,6 +63263,7 @@ pub struct LocationPolicy {
 /// Nested message and enum types in `LocationPolicy`.
 pub mod location_policy {
     /// Strategy for distributing VMs across zones in a region.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -61868,6 +63320,7 @@ pub mod location_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationPolicyLocation {
     /// Constraints that the caller requires on the result distribution
@@ -61882,6 +63335,7 @@ pub struct LocationPolicyLocation {
 /// Nested message and enum types in `LocationPolicyLocation`.
 pub mod location_policy_location {
     /// Preference for a given location. Set to either ALLOW orDENY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -61930,6 +63384,7 @@ pub mod location_policy_location {
     }
 }
 /// Per-zone constraints on location policy for this zone.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationPolicyLocationConstraints {
     /// Maximum number of items that are allowed to be placed in this zone.
@@ -61937,6 +63392,7 @@ pub struct LocationPolicyLocationConstraints {
     #[prost(int32, optional, tag = "287620724")]
     pub max_count: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationPolicyZoneConfiguration {
     /// The URL of the zone.
@@ -61951,6 +63407,7 @@ pub struct LocationPolicyZoneConfiguration {
 /// A machine image is a Compute Engine resource that stores all the
 /// configuration, metadata, permissions, and data from one or more disks
 /// required to create a Virtual machine (VM) instance. For more information, seeMachine images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineImage {
     /// Output only. \[Output Only\] The creation timestamp for this machine image inRFC3339
@@ -62069,6 +63526,7 @@ pub struct MachineImage {
 /// Nested message and enum types in `MachineImage`.
 pub mod machine_image {
     /// Output only. \[Output Only\] The status of the machine image. One of the following values:INVALID, CREATING, READY,DELETING, and UPLOADING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62120,6 +63578,7 @@ pub mod machine_image {
     }
 }
 /// A list of machine images.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineImageList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -62146,6 +63605,7 @@ pub struct MachineImageList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Machine Image parameters
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineImageParams {
     /// Input only. Resource manager tags to be bound to the machine image. Tag keys and values
@@ -62165,6 +63625,7 @@ pub struct MachineImageParams {
 ///
 /// You can use specific machine types for your VM instances based on performance
 /// and pricing requirements. For more information, readMachine Types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineType {
     /// \[Output Only\] A list of accelerator configurations assigned to this
@@ -62232,6 +63693,7 @@ pub struct MachineType {
 /// Nested message and enum types in `MachineType`.
 pub mod machine_type {
     /// \[Output Only\] The architecture of the machine type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62279,6 +63741,7 @@ pub mod machine_type {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypeAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -62312,6 +63775,7 @@ pub struct MachineTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of machine types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -62338,6 +63802,7 @@ pub struct MachineTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypesScopedList {
     /// \[Output Only\] A list of machine types contained in this scope.
@@ -62349,6 +63814,7 @@ pub struct MachineTypesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A Managed Instance resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstance {
     /// Output only. \[Output Only\] The current action that the managed instance group has
@@ -62472,6 +63938,7 @@ pub mod managed_instance {
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// STOPPING
     /// SUSPENDING
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62570,6 +64037,7 @@ pub mod managed_instance {
     }
     /// Output only. \[Output Only\] The status of the instance. This field is empty when
     /// the instance does not exist.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62663,6 +64131,7 @@ pub mod managed_instance {
     /// RUNNING
     /// STOPPED
     /// SUSPENDED
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62711,6 +64180,7 @@ pub mod managed_instance {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagedInstanceInstanceHealth {
     /// Output only. \[Output Only\] The current detailed instance health state.
@@ -62725,6 +64195,7 @@ pub struct ManagedInstanceInstanceHealth {
 /// Nested message and enum types in `ManagedInstanceInstanceHealth`.
 pub mod managed_instance_instance_health {
     /// Output only. \[Output Only\] The current detailed instance health state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -62789,6 +64260,7 @@ pub mod managed_instance_instance_health {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstanceLastAttempt {
     /// Output only. \[Output Only\] Encountered errors during the last attempt to create or
@@ -62798,6 +64270,7 @@ pub struct ManagedInstanceLastAttempt {
 }
 /// Output only. \[Output Only\] Encountered errors during the last attempt to create or
 /// delete the instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstanceLastAttemptErrors {
     /// \[Output Only\] The array of errors encountered while processing this
@@ -62805,6 +64278,7 @@ pub struct ManagedInstanceLastAttemptErrors {
     #[prost(message, repeated, tag = "315977579")]
     pub errors: ::prost::alloc::vec::Vec<Errors>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstancePropertiesFromFlexibilityPolicy {
     /// List of disks to be attached to the instance.
@@ -62818,6 +64292,7 @@ pub struct ManagedInstancePropertiesFromFlexibilityPolicy {
     #[prost(string, optional, tag = "242912759")]
     pub min_cpu_platform: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagedInstanceScheduling {
     /// Output only. The timestamp at which the underlying instance will be
@@ -62832,6 +64307,7 @@ pub struct ManagedInstanceScheduling {
     #[prost(string, optional, tag = "364180891")]
     pub termination_timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagedInstanceShutdownDetails {
     /// Output only. The duration for graceful shutdown. Only applicable when the instance is
@@ -62844,6 +64320,7 @@ pub struct ManagedInstanceShutdownDetails {
     #[prost(string, optional, tag = "521301862")]
     pub request_timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagedInstanceVersion {
     /// Output only. \[Output Only\] The intended template of the instance. This field is empty
@@ -62860,6 +64337,7 @@ pub struct ManagedInstanceVersion {
 /// Customers can only view these resources to modify their Security Policies.
 /// For more information, see
 /// <https://cloud.google.com/armor/docs/.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagedRuleset {
     /// Output only. \[Output Only\] The change log for this managed ruleset.
@@ -62896,6 +64374,7 @@ pub struct ManagedRuleset {
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedRulesetList {
     #[prost(string, optional, tag = "3355")]
@@ -62909,6 +64388,7 @@ pub struct ManagedRulesetList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A metadata key/value entry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// Specifies a fingerprint for this request, which is essentially a hash of
@@ -62947,6 +64427,7 @@ pub struct Metadata {
 /// An example for using metadataFilters would be: if
 /// load balancing involves
 /// Envoys, they receive routing configuration when values inmetadataFilters match values supplied in  of their XDS requests to loadbalancers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataFilter {
     /// The list of label value pairs that must match labels in the provided
@@ -62986,6 +64467,7 @@ pub mod metadata_filter {
     /// - MATCH_ALL: all filterLabels must have
     /// matching labels in the provided metadata.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63037,6 +64519,7 @@ pub mod metadata_filter {
 }
 /// MetadataFilter label name value pairs that are expected
 /// to match corresponding labels presented as metadata to the load balancer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MetadataFilterLabelMatch {
     /// Name of metadata label.
@@ -63052,6 +64535,7 @@ pub struct MetadataFilterLabelMatch {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an amount of money with its currency type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Money {
     /// The three-letter currency code defined in ISO 4217.
@@ -63071,6 +64555,7 @@ pub struct Money {
     pub units: ::core::option::Option<i64>,
 }
 /// A request message for Addresses.Move. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveAddressRequest {
     /// Name of the address resource to move.
@@ -63104,6 +64589,7 @@ pub struct MoveAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.MoveDisk. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveDiskProjectRequest {
     /// The body resource for this request
@@ -63129,6 +64615,7 @@ pub struct MoveDiskProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Move. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -63156,6 +64643,7 @@ pub struct MoveFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalAddresses.Move. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveGlobalAddressRequest {
     /// Name of the address resource to move.
@@ -63186,6 +64674,7 @@ pub struct MoveGlobalAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.MoveInstance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveInstanceProjectRequest {
     /// The body resource for this request
@@ -63211,6 +64700,7 @@ pub struct MoveInstanceProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.Move. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveOrganizationSecurityPolicyRequest {
     /// The new parent of the security policy.
@@ -63236,6 +64726,7 @@ pub struct MoveOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// The named port. For example: \<"http", 80>.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NamedPort {
     /// The name for this named port.
@@ -63246,6 +64737,7 @@ pub struct NamedPort {
     #[prost(int32, optional, tag = "3446913")]
     pub port: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamedSet {
     /// An optional description of named set.
@@ -63278,6 +64770,7 @@ pub struct NamedSet {
 /// Nested message and enum types in `NamedSet`.
 pub mod named_set {
     /// This named set's type
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63322,6 +64815,7 @@ pub mod named_set {
     }
 }
 /// Contains NAT IP information of a NAT config (i.e. usage status, mode).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NatIpInfo {
     /// Output only. A list of all NAT IPs assigned to this NAT config.
@@ -63332,6 +64826,7 @@ pub struct NatIpInfo {
     pub nat_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains information of a NAT IP.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NatIpInfoNatIpInfoMapping {
     /// Output only. Specifies whether NAT IP is auto or manual.
@@ -63350,6 +64845,7 @@ pub struct NatIpInfoNatIpInfoMapping {
 /// Nested message and enum types in `NatIpInfoNatIpInfoMapping`.
 pub mod nat_ip_info_nat_ip_info_mapping {
     /// Output only. Specifies whether NAT IP is auto or manual.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63392,6 +64888,7 @@ pub mod nat_ip_info_nat_ip_info_mapping {
     }
     /// Output only. Specifies whether NAT IP is currently serving at least one endpoint or
     /// not.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63433,6 +64930,7 @@ pub mod nat_ip_info_nat_ip_info_mapping {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NatIpInfoResponse {
     /// \[Output Only\] A list of NAT IP information.
@@ -63443,6 +64941,7 @@ pub struct NatIpInfoResponse {
 ///
 /// Networks connect resources to each other and to the internet. For more
 /// information, readVirtual Private Cloud (VPC) Network.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Network {
     /// Deprecated in favor of subnet mode networks.
@@ -63562,6 +65061,7 @@ pub mod network {
     /// The network firewall policy enforcement order. Can be either
     /// AFTER_CLASSIC_FIREWALL or BEFORE_CLASSIC_FIREWALL. Defaults to
     /// AFTER_CLASSIC_FIREWALL if the field is not specified.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63609,6 +65109,7 @@ pub mod network {
 }
 /// NetworkAttachments
 /// A network attachment resource ...
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachment {
     /// Output only. \[Output Only\] An array of connections for all the producers connected
@@ -63686,6 +65187,7 @@ pub struct NetworkAttachment {
 }
 /// Nested message and enum types in `NetworkAttachment`.
 pub mod network_attachment {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63733,6 +65235,7 @@ pub mod network_attachment {
     }
 }
 /// Contains a list of NetworkAttachmentsScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -63761,6 +65264,7 @@ pub struct NetworkAttachmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// \[Output Only\] A connection connected to this network attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkAttachmentConnectedEndpoint {
     /// The IPv4 address assigned to the producer instance network interface.
@@ -63800,6 +65304,7 @@ pub struct NetworkAttachmentConnectedEndpoint {
 /// Nested message and enum types in `NetworkAttachmentConnectedEndpoint`.
 pub mod network_attachment_connected_endpoint {
     /// The status of a connected endpoint to this network attachment.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -63859,6 +65364,7 @@ pub mod network_attachment_connected_endpoint {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -63883,6 +65389,7 @@ pub struct NetworkAttachmentList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentsScopedList {
     /// A list of NetworkAttachments contained in this scope.
@@ -63894,6 +65401,7 @@ pub struct NetworkAttachmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Google Cloud Armor network edge security service resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEdgeSecurityService {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -63947,6 +65455,7 @@ pub struct NetworkEdgeSecurityService {
     #[prost(string, optional, tag = "44520962")]
     pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityServiceAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -63981,6 +65490,7 @@ pub struct NetworkEdgeSecurityServiceAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityServicesScopedList {
     /// A list of NetworkEdgeSecurityServices contained in this scope.
@@ -63994,6 +65504,7 @@ pub struct NetworkEdgeSecurityServicesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The network endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpoint {
     /// Optional metadata defined as annotations on the network endpoint.
@@ -64067,6 +65578,7 @@ pub struct NetworkEndpoint {
 /// To manage NEGs with global scope (such as global internet NEGs):global
 /// API
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroup {
     /// Optional. Metadata defined as annotations on the network endpoint group.
@@ -64159,6 +65671,7 @@ pub struct NetworkEndpointGroup {
 /// Nested message and enum types in `NetworkEndpointGroup`.
 pub mod network_endpoint_group {
     /// Type of network endpoints in this network endpoint group. Can be one ofGCE_VM_IP, GCE_VM_IP_PORT,NON_GCP_PRIVATE_IP_PORT, INTERNET_FQDN_PORT,INTERNET_IP_PORT, SERVERLESS,PRIVATE_SERVICE_CONNECT, GCE_VM_IP_PORTMAP.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64239,6 +65752,7 @@ pub mod network_endpoint_group {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -64278,6 +65792,7 @@ pub struct NetworkEndpointGroupAggregatedList {
 ///
 /// Note: App Engine service must be in the same project and located in the
 /// same region as the Serverless NEG.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpointGroupAppEngine {
     /// Optional serving service.
@@ -64317,6 +65832,7 @@ pub struct NetworkEndpointGroupAppEngine {
 ///
 /// Note: Cloud Function must be in the same project and located in the same
 /// region as the Serverless NEG.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpointGroupCloudFunction {
     /// A user-defined name of the Cloud Function.
@@ -64347,6 +65863,7 @@ pub struct NetworkEndpointGroupCloudFunction {
 ///
 /// Note: Cloud Run service must be in the same project and located in the same
 /// region as the Serverless NEG.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpointGroupCloudRun {
     /// Cloud Run service is the main resource of Cloud Run.
@@ -64378,6 +65895,7 @@ pub struct NetworkEndpointGroupCloudRun {
     #[prost(string, optional, tag = "103352252")]
     pub url_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -64406,6 +65924,7 @@ pub struct NetworkEndpointGroupList {
 }
 /// All data that is specifically relevant to only network endpoint groups of
 /// type PRIVATE_SERVICE_CONNECT.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpointGroupPscData {
     /// Output only. \[Output Only\] Address allocated from given subnetwork for PSC. This IP
@@ -64430,6 +65949,7 @@ pub struct NetworkEndpointGroupPscData {
 /// Nested message and enum types in `NetworkEndpointGroupPscData`.
 pub mod network_endpoint_group_psc_data {
     /// Output only. \[Output Only\] The connection status of the PSC Forwarding Rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64493,18 +66013,21 @@ pub mod network_endpoint_group_psc_data {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsAttachEndpointsRequest {
     /// The list of network endpoints to be attached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsDetachEndpointsRequest {
     /// The list of network endpoints to be detached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpointGroupsListEndpointsRequest {
     /// Optional query parameter for showing the health status of each network
@@ -64521,6 +66044,7 @@ pub mod network_endpoint_groups_list_endpoints_request {
     /// endpoint. Valid options are SKIP or SHOW. If you
     /// don't specify this parameter, the health status of network endpoints will
     /// not be provided.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64565,6 +66089,7 @@ pub mod network_endpoint_groups_list_endpoints_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsListNetworkEndpoints {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -64588,6 +66113,7 @@ pub struct NetworkEndpointGroupsListNetworkEndpoints {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsScopedList {
     /// Output only. \[Output Only\] The list ofnetwork
@@ -64599,6 +66125,7 @@ pub struct NetworkEndpointGroupsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointWithHealthStatus {
     /// Output only. \[Output only\] The health status of network endpoint.
@@ -64611,6 +66138,7 @@ pub struct NetworkEndpointWithHealthStatus {
     #[prost(message, optional, tag = "56789126")]
     pub network_endpoint: ::core::option::Option<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkFirewallPolicyAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -64644,6 +66172,7 @@ pub struct NetworkFirewallPolicyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A network interface resource attached to an instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInterface {
     /// An array of configurations for this interface. Currently, only one access
@@ -64782,6 +66311,7 @@ pub struct NetworkInterface {
 pub mod network_interface {
     /// Indicate whether igmp query is enabled on the network interface
     /// or not. If enabled, also indicates the version of IGMP supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64829,6 +66359,7 @@ pub mod network_interface {
     /// subnetwork.
     ///
     /// Valid only if stackType is IPV4_IPV6.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64873,6 +66404,7 @@ pub mod network_interface {
     }
     /// The type of vNIC to be used on this interface. This may be gVNIC or
     /// VirtioNet.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64936,6 +66468,7 @@ pub mod network_interface {
     ///
     /// This field can be both set at instance creation and update network
     /// interface operations.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -64984,6 +66517,7 @@ pub mod network_interface {
     }
 }
 /// Contains a list of networks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -65011,6 +66545,7 @@ pub struct NetworkList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional network parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkParams {
     /// Tag keys/values directly bound to this resource.
@@ -65035,6 +66570,7 @@ pub struct NetworkParams {
 /// A network peering attached to a network resource. The message includes the
 /// peering name, peer network, peering state, and a flag indicating whether
 /// Google Compute Engine should automatically create routes for the peering.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPeering {
     /// This field will be deprecated soon. Use theexchange_subnet_routes field instead.
@@ -65114,6 +66650,7 @@ pub struct NetworkPeering {
 pub mod network_peering {
     /// Which IP version(s) of traffic and routes are allowed to be imported or
     /// exported between peer networks. The default value is IPV4_ONLY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65161,6 +66698,7 @@ pub mod network_peering {
         }
     }
     /// Output only. \[Output Only\] State for the peering.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65206,6 +66744,7 @@ pub mod network_peering {
     }
     /// The update strategy determines the semantics for updates and deletes to the
     /// peering connection configuration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65265,6 +66804,7 @@ pub mod network_peering {
 /// local peering. This field provides information about the effective settings
 /// for the connection as a whole, including pending delete/update requests for
 /// CONSENSUS peerings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPeeringConnectionStatus {
     /// The consensus state contains information about the status of update
@@ -65289,6 +66829,7 @@ pub struct NetworkPeeringConnectionStatus {
 pub mod network_peering_connection_status {
     /// The update strategy determines the update/delete semantics for this
     /// peering connection.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65347,6 +66888,7 @@ pub mod network_peering_connection_status {
 /// The status of update/delete for a consensus peering connection. Only set
 /// when connection_status.update_strategy isCONSENSUS or a network peering is proposing to update the
 /// strategy to CONSENSUS.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPeeringConnectionStatusConsensusState {
     /// The status of the delete request.
@@ -65361,6 +66903,7 @@ pub struct NetworkPeeringConnectionStatusConsensusState {
 /// Nested message and enum types in `NetworkPeeringConnectionStatusConsensusState`.
 pub mod network_peering_connection_status_consensus_state {
     /// The status of the delete request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65423,6 +66966,7 @@ pub mod network_peering_connection_status_consensus_state {
         }
     }
     /// The status of the update request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65475,6 +67019,7 @@ pub mod network_peering_connection_status_consensus_state {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPeeringConnectionStatusTrafficConfiguration {
     /// Whether custom routes are being exported to the peer network.
@@ -65501,6 +67046,7 @@ pub struct NetworkPeeringConnectionStatusTrafficConfiguration {
 pub mod network_peering_connection_status_traffic_configuration {
     /// Which IP version(s) of traffic and routes are being imported or
     /// exported between peer networks.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65548,6 +67094,7 @@ pub mod network_peering_connection_status_traffic_configuration {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPerformanceConfig {
     /// Check the TotalEgressBandwidthTier enum for the list of possible values.
@@ -65558,6 +67105,7 @@ pub struct NetworkPerformanceConfig {
 }
 /// Nested message and enum types in `NetworkPerformanceConfig`.
 pub mod network_performance_config {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65604,6 +67152,7 @@ pub mod network_performance_config {
     }
 }
 /// NetworkProfile represents a Google managed network profile resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkProfile {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -65639,6 +67188,7 @@ pub struct NetworkProfile {
     #[prost(string, optional, tag = "44520962")]
     pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkProfileLocation {
     #[prost(string, optional, tag = "3373707")]
@@ -65649,6 +67199,7 @@ pub struct NetworkProfileLocation {
 }
 /// Nested message and enum types in `NetworkProfileLocation`.
 pub mod network_profile_location {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65690,6 +67241,7 @@ pub mod network_profile_location {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkProfileNetworkFeatures {
     /// Specifies what address purposes are supported. If empty, all address
@@ -65864,6 +67416,7 @@ pub struct NetworkProfileNetworkFeatures {
 }
 /// Nested message and enum types in `NetworkProfileNetworkFeatures`.
 pub mod network_profile_network_features {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65939,6 +67492,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether address creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -65983,6 +67537,7 @@ pub mod network_profile_network_features {
     }
     /// Specifies whether alias IP ranges (and secondary address ranges) are
     /// allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66026,6 +67581,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether auto mode subnet creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66069,6 +67625,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether firewalls for Class D address ranges are supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66114,6 +67671,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether cloud NAT creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66155,6 +67713,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether cloud router creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66196,6 +67755,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether default NIC attachment is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66246,6 +67806,7 @@ pub mod network_profile_network_features {
     }
     /// Specifies whether VMs are allowed to have external IP access on network
     /// interfaces connected to this VPC.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66291,6 +67852,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether firewall policy can be attached to the network.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66334,6 +67896,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether Cloud Interconnect creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66375,6 +67938,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether IP forwarding is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66416,6 +67980,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether cloud load balancing is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66459,6 +68024,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether multi-nic in the same network is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66508,6 +68074,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether multi-nic in the same subnetwork is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66561,6 +68128,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether multicast is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66602,6 +68170,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether NCC is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66643,6 +68212,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether VM network migration is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66688,6 +68258,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether Packet Mirroring 1.0 is supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66731,6 +68302,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether private Google access is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66776,6 +68348,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether PSC creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66817,6 +68390,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether unicast within the same network is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66862,6 +68436,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether static route creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66903,6 +68478,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether sub interfaces are allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66946,6 +68522,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether subnetwork creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -66991,6 +68568,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether VPC firewall rules can be created under the network.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67036,6 +68614,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether VPC peering is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67077,6 +68656,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies whether VPN creation is allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67117,6 +68697,7 @@ pub mod network_profile_network_features {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67162,6 +68743,7 @@ pub mod network_profile_network_features {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67221,6 +68803,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies which type of multicast is supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67261,6 +68844,7 @@ pub mod network_profile_network_features {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67303,6 +68887,7 @@ pub mod network_profile_network_features {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67348,6 +68933,7 @@ pub mod network_profile_network_features {
     }
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// PRIVATE_SERVICE_CONNECT
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67415,6 +69001,7 @@ pub mod network_profile_network_features {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67464,6 +69051,7 @@ pub mod network_profile_network_features {
         }
     }
     /// Specifies which type of unicast is supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67505,6 +69093,7 @@ pub mod network_profile_network_features {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkProfileNetworkFeaturesPredefinedSubnetworkRange {
     /// The IPv6 range of the predefined subnetwork.
@@ -67514,6 +69103,7 @@ pub struct NetworkProfileNetworkFeaturesPredefinedSubnetworkRange {
     #[prost(string, optional, tag = "236409542")]
     pub name_prefix: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkProfileProfileType {
     /// Check the NetworkType enum for the list of possible values.
@@ -67531,6 +69121,7 @@ pub struct NetworkProfileProfileType {
 }
 /// Nested message and enum types in `NetworkProfileProfileType`.
 pub mod network_profile_profile_type {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67577,6 +69168,7 @@ pub mod network_profile_profile_type {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67623,6 +69215,7 @@ pub mod network_profile_profile_type {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67665,6 +69258,7 @@ pub mod network_profile_profile_type {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67705,6 +69299,7 @@ pub mod network_profile_profile_type {
     }
 }
 /// Contains a list of network profiles.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkProfilesListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -67741,6 +69336,7 @@ pub struct NetworkProfilesListResponse {
 /// A routing configuration attached to a network resource. The message
 /// includes the list of routers associated with the network, and a flag
 /// indicating the type of routing behavior to enforce network-wide.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkRoutingConfig {
     /// Enable comparison of Multi-Exit Discriminators (MED) across routes with
@@ -67786,6 +69382,7 @@ pub mod network_routing_config {
     /// The BGP best path selection algorithm to be employed within this network
     /// for dynamic routes learned by Cloud Routers. Can be LEGACY
     /// (default) or STANDARD.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67833,6 +69430,7 @@ pub mod network_routing_config {
     /// Allows to define a preferred approach for handling inter-region cost in
     /// the selection process when using the STANDARD BGP best path
     /// selection algorithm. Can be DEFAULT orADD_COST_TO_MED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67880,6 +69478,7 @@ pub mod network_routing_config {
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
     /// ADD_COST_TO_MED
     /// DEFAULT
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67922,6 +69521,7 @@ pub mod network_routing_config {
     /// this network's Cloud Routers will only advertise routes with subnets
     /// of this network in the same region as the router. If set toGLOBAL, this network's Cloud Routers will advertise
     /// routes with all subnets of this network, across regions.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67963,6 +69563,7 @@ pub mod network_routing_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworksAddPeeringRequest {
     /// This field will be deprecated soon. Useexchange_subnet_routes in network_peering
@@ -67992,12 +69593,14 @@ pub struct NetworksAddPeeringRequest {
     #[prost(string, optional, tag = "500625489")]
     pub peer_network: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworksCancelRequestRemovePeeringRequest {
     /// Name of the peering, which should conform to RFC1035.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksGetEffectiveFirewallsResponse {
     /// \[Output Only\] Effective firewalls from firewall policy. It returns Global
@@ -68011,6 +69614,7 @@ pub struct NetworksGetEffectiveFirewallsResponse {
     #[prost(message, repeated, tag = "272245619")]
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// Output only. \[Output Only\] Deprecated, please use short name instead. The display name
@@ -68041,6 +69645,7 @@ pub struct NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
 /// Nested message and enum types in `NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy`.
 pub mod networks_get_effective_firewalls_response_effective_firewall_policy {
     /// Output only. \[Output Only\] The type of the firewall policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68088,18 +69693,21 @@ pub mod networks_get_effective_firewalls_response_effective_firewall_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworksRemovePeeringRequest {
     /// Name of the peering, which should conform to RFC1035.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworksRequestRemovePeeringRequest {
     /// Name of the peering, which should conform to RFC1035.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworksUpdatePeeringRequest {
     #[prost(message, optional, tag = "328926767")]
@@ -68112,6 +69720,7 @@ pub struct NetworksUpdatePeeringRequest {
 /// keep your instances physically separated from instances in other projects, or
 /// to group your instances together on the same host hardware. For more
 /// information, readSole-tenant nodes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroup {
     /// Specifies how autoscaling should behave.
@@ -68189,6 +69798,7 @@ pub struct NodeGroup {
 pub mod node_group {
     /// Specifies the frequency of planned maintenance events. The accepted values
     /// are: `AS_NEEDED` and `RECURRENT`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68244,6 +69854,7 @@ pub mod node_group {
     /// maintenance. Set to one of: DEFAULT,RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP.
     /// The default value is DEFAULT. For more information, see
     /// Maintenance policies.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68301,6 +69912,7 @@ pub mod node_group {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68348,6 +69960,7 @@ pub mod node_group {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -68380,6 +69993,7 @@ pub struct NodeGroupAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupAutoscalingPolicy {
     /// The maximum number of nodes that the group should have. Must be set if
@@ -68401,6 +70015,7 @@ pub mod node_group_autoscaling_policy {
     /// The autoscaling mode. Set to one of: ON, OFF,
     /// or ONLY_SCALE_OUT. For more information, see
     /// Autoscaler modes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68452,6 +70067,7 @@ pub mod node_group_autoscaling_policy {
     }
 }
 /// Contains a list of nodeGroups.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -68480,6 +70096,7 @@ pub struct NodeGroupList {
 }
 /// Time window specified for daily maintenance operations. GCE's internal
 /// maintenance will be performed within this window.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupMaintenanceWindow {
     /// Output only. \[Output only\] A predetermined duration for the window, automatically
@@ -68492,6 +70109,7 @@ pub struct NodeGroupMaintenanceWindow {
     #[prost(string, optional, tag = "37467274")]
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupNode {
     /// Accelerators for this node.
@@ -68541,6 +70159,7 @@ pub struct NodeGroupNode {
 /// Nested message and enum types in `NodeGroupNode`.
 pub mod node_group_node {
     /// CPU overcommit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68584,6 +70203,7 @@ pub mod node_group_node {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68634,18 +70254,21 @@ pub mod node_group_node {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupsAddNodesRequest {
     /// Count of additional nodes to be added to the node group.
     #[prost(int32, optional, tag = "134997930")]
     pub additional_node_count: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupsDeleteNodesRequest {
     /// Names of the nodes to delete.
     #[prost(string, repeated, tag = "104993457")]
     pub nodes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsListNodes {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -68672,6 +70295,7 @@ pub struct NodeGroupsListNodes {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupsPerformMaintenanceRequest {
     /// \[Required\] List of nodes affected by the call.
@@ -68681,6 +70305,7 @@ pub struct NodeGroupsPerformMaintenanceRequest {
     #[prost(string, optional, tag = "37467274")]
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsScopedList {
     /// \[Output Only\] A list of node groups contained in this scope.
@@ -68691,6 +70316,7 @@ pub struct NodeGroupsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupsSetNodeTemplateRequest {
     /// Full or partial URL of the node template resource to be updated for this
@@ -68698,6 +70324,7 @@ pub struct NodeGroupsSetNodeTemplateRequest {
     #[prost(string, optional, tag = "323154455")]
     pub node_template: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeGroupsSimulateMaintenanceEventRequest {
     /// Names of the nodes to go under maintenance simulation.
@@ -68709,6 +70336,7 @@ pub struct NodeGroupsSimulateMaintenanceEventRequest {
 /// You can use a template to define properties for nodes in a node group. For
 /// more information, readCreating node groups
 /// and instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplate {
     #[prost(message, repeated, tag = "269577064")]
@@ -68788,6 +70416,7 @@ pub struct NodeTemplate {
 /// Nested message and enum types in `NodeTemplate`.
 pub mod node_template {
     /// CPU overcommit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68832,6 +70461,7 @@ pub mod node_template {
         }
     }
     /// Output only. \[Output Only\] The status of the node template. One of the following values:CREATING, READY, and DELETING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68883,6 +70513,7 @@ pub mod node_template {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplateAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -68916,6 +70547,7 @@ pub struct NodeTemplateAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of node templates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplateList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -68942,6 +70574,7 @@ pub struct NodeTemplateList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeTemplateNodeTypeFlexibility {
     #[prost(string, optional, tag = "3060683")]
@@ -68951,6 +70584,7 @@ pub struct NodeTemplateNodeTypeFlexibility {
     #[prost(string, optional, tag = "532856065")]
     pub memory: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplatesScopedList {
     /// \[Output Only\] A list of node templates contained in this scope.
@@ -68968,6 +70602,7 @@ pub struct NodeTemplatesScopedList {
 /// available node type is n1-node-96-624 node type that has 96
 /// vCPUs and 624 GB of memory, available in multiple zones. For more information
 /// readNode types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeType {
     /// \[Output Only\] The CPU platform used by this node type.
@@ -69015,6 +70650,7 @@ pub struct NodeType {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypeAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69048,6 +70684,7 @@ pub struct NodeTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of node types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69074,6 +70711,7 @@ pub struct NodeTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypesScopedList {
     /// \[Output Only\] A list of node types contained in this scope.
@@ -69092,6 +70730,7 @@ pub struct NodeTypesScopedList {
 ///
 /// For more information, see
 /// Health checks overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NotificationEndpoint {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -69133,6 +70772,7 @@ pub struct NotificationEndpoint {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of NotificationEndpointsScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpointAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69166,6 +70806,7 @@ pub struct NotificationEndpointAggregatedList {
 }
 /// Represents a gRPC setting that describes one gRPC notification endpoint and
 /// the retry duration attempting to send notification to this endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NotificationEndpointGrpcSettings {
     /// Optional. If specified, this field is used to set the authority header by
@@ -69194,6 +70835,7 @@ pub struct NotificationEndpointGrpcSettings {
     #[prost(uint32, optional, tag = "115681117")]
     pub retry_duration_sec: ::core::option::Option<u32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpointList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69219,6 +70861,7 @@ pub struct NotificationEndpointList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpointsScopedList {
     /// A list of NotificationEndpoints contained in this scope.
@@ -69257,6 +70900,7 @@ pub struct NotificationEndpointsScopedList {
 ///
 /// Note that completed Operation resources have a limited
 /// retention period.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// \[Output Only\] The value of `requestId` if you provided it in the request.
@@ -69387,6 +71031,7 @@ pub mod operation {
     /// \[Output Only\] The status of the operation, which can be one of the
     /// following:
     /// `PENDING`, `RUNNING`, or `DONE`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -69434,6 +71079,7 @@ pub mod operation {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationAggregatedList {
     /// \[Output Only\] The unique identifier for the resource. This identifier is
@@ -69469,6 +71115,7 @@ pub struct OperationAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Operation resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationList {
     /// \[Output Only\] The unique identifier for the resource. This identifier is
@@ -69497,6 +71144,7 @@ pub struct OperationList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationsScopedList {
     /// \[Output Only\] A list of operations contained in this scope.
@@ -69507,6 +71155,7 @@ pub struct OperationsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSecurityPoliciesListAssociationsResponse {
     /// A list of associations.
@@ -69519,6 +71168,7 @@ pub struct OrganizationSecurityPoliciesListAssociationsResponse {
 }
 /// Settings controlling the eviction of unhealthy hosts from the load balancing
 /// pool for the backend service.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutlierDetection {
     /// The base time that a backend endpoint is ejected for. Defaults to 30000ms
@@ -69600,6 +71250,7 @@ pub struct OutlierDetection {
     pub success_rate_stdev_factor: ::core::option::Option<i32>,
 }
 /// Next free: 7
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketIntervals {
     /// Average observed inter-packet interval in milliseconds.
@@ -69626,6 +71277,7 @@ pub struct PacketIntervals {
 /// Nested message and enum types in `PacketIntervals`.
 pub mod packet_intervals {
     /// From how long ago in the past these intervals were observed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -69674,6 +71326,7 @@ pub mod packet_intervals {
         }
     }
     /// The type of packets for which inter-packet intervals were computed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -69732,6 +71385,7 @@ pub mod packet_intervals {
 /// such as an instance group of an internal TCP/UDP load balancer, for analysis
 /// or examination.
 /// For more information about setting up Packet Mirroring, seeUsing Packet Mirroring.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroring {
     /// The Forwarding Rule resource of typeloadBalancingScheme=INTERNAL that will be used as collector
@@ -69807,6 +71461,7 @@ pub mod packet_mirroring {
     /// network.
     ///
     /// The default is TRUE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -69849,6 +71504,7 @@ pub mod packet_mirroring {
     }
 }
 /// Contains a list of packetMirrorings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69880,6 +71536,7 @@ pub struct PacketMirroringAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketMirroringFilter {
     /// Protocols that apply as filter on mirrored traffic.
@@ -69907,6 +71564,7 @@ pub struct PacketMirroringFilter {
 pub mod packet_mirroring_filter {
     /// Direction of traffic to mirror, either INGRESS, EGRESS, or BOTH.
     /// The default is BOTH.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -69954,6 +71612,7 @@ pub mod packet_mirroring_filter {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketMirroringForwardingRuleInfo {
     /// Output only. \[Output Only\] Unique identifier for the forwarding rule; defined by the
@@ -69966,6 +71625,7 @@ pub struct PacketMirroringForwardingRuleInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of PacketMirroring resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -69992,6 +71652,7 @@ pub struct PacketMirroringList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfo {
     /// A set of virtual machine instances that are being mirrored.
@@ -70019,6 +71680,7 @@ pub struct PacketMirroringMirroredResourceInfo {
     #[prost(string, repeated, tag = "3552281")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfoInstanceInfo {
     /// Output only. \[Output Only\] Unique identifier for the instance; defined by the
@@ -70029,6 +71691,7 @@ pub struct PacketMirroringMirroredResourceInfoInstanceInfo {
     #[prost(string, optional, tag = "116079")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfoSubnetInfo {
     /// Output only. \[Output Only\] Unique identifier for the subnetwork; defined by the
@@ -70040,6 +71703,7 @@ pub struct PacketMirroringMirroredResourceInfoSubnetInfo {
     #[prost(string, optional, tag = "116079")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketMirroringNetworkInfo {
     /// Output only. \[Output Only\] Unique identifier for the network; defined by the server.
@@ -70049,6 +71713,7 @@ pub struct PacketMirroringNetworkInfo {
     #[prost(string, optional, tag = "116079")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringsScopedList {
     /// A list of packetMirrorings contained in this scope.
@@ -70060,6 +71725,7 @@ pub struct PacketMirroringsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for RegionNetworkFirewallPolicies.PatchAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -70093,6 +71759,7 @@ pub struct PatchAssociationRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchAutoscalerRequest {
     /// Name of the autoscaler to patch.
@@ -70124,6 +71791,7 @@ pub struct PatchAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBackendBucketRequest {
     /// Name of the BackendBucket resource to patch.
@@ -70152,6 +71820,7 @@ pub struct PatchBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBackendServiceRequest {
     /// Name of the BackendService resource to patch.
@@ -70180,6 +71849,7 @@ pub struct PatchBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for CrossSiteNetworks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchCrossSiteNetworkRequest {
     /// Name of the cross-site network to update.
@@ -70215,6 +71885,7 @@ pub struct PatchCrossSiteNetworkRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for FirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -70240,6 +71911,7 @@ pub struct PatchFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchFirewallRequest {
     /// Name of the firewall rule to patch.
@@ -70268,6 +71940,7 @@ pub struct PatchFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchForwardingRuleRequest {
     /// Name of the ForwardingRule resource to patch.
@@ -70299,6 +71972,7 @@ pub struct PatchForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to patch.
@@ -70327,6 +72001,7 @@ pub struct PatchGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalFrontendSettingsService.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchGlobalFrontendSettingRequest {
     /// The body resource for this request
@@ -70345,6 +72020,7 @@ pub struct PatchGlobalFrontendSettingRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -70373,6 +72049,7 @@ pub struct PatchGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchHealthCheckRequest {
     /// Name of the HealthCheck resource to patch.
@@ -70401,6 +72078,7 @@ pub struct PatchHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchImageRequest {
     /// Name of the image resource to patch.
@@ -70429,6 +72107,7 @@ pub struct PatchImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInstanceGroupManagerRequest {
     /// The name of the instance group manager.
@@ -70461,6 +72140,7 @@ pub struct PatchInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceSettingsService.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInstanceSettingRequest {
     /// The body resource for this request
@@ -70492,6 +72172,7 @@ pub struct PatchInstanceSettingRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectAttachmentGroupRequest {
     /// Name of the InterconnectAttachmentGroup resource to patch.
@@ -70526,6 +72207,7 @@ pub struct PatchInterconnectAttachmentGroupRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectAttachments.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to patch.
@@ -70557,6 +72239,7 @@ pub struct PatchInterconnectAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectGroups.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectGroupRequest {
     /// Name of the InterconnectGroup resource to patch.
@@ -70589,6 +72272,7 @@ pub struct PatchInterconnectGroupRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Interconnects.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectRequest {
     /// Name of the interconnect to update.
@@ -70617,6 +72301,7 @@ pub struct PatchInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Routers.PatchNamedSet. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNamedSetRouterRequest {
     /// The body resource for this request
@@ -70648,6 +72333,7 @@ pub struct PatchNamedSetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkAttachmentRequest {
     /// Name of the NetworkAttachment resource to patch.
@@ -70680,6 +72366,7 @@ pub struct PatchNetworkAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to update.
@@ -70718,6 +72405,7 @@ pub struct PatchNetworkEdgeSecurityServiceRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -70746,6 +72434,7 @@ pub struct PatchNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkRequest {
     /// Name of the network to update.
@@ -70774,6 +72463,7 @@ pub struct PatchNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNodeGroupRequest {
     /// Name of the NodeGroup resource to update.
@@ -70805,6 +72495,7 @@ pub struct PatchNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for OrganizationSecurityPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchOrganizationSecurityPolicyRequest {
     /// An optional request ID to identify requests. Specify a unique request ID so
@@ -70830,6 +72521,7 @@ pub struct PatchOrganizationSecurityPolicyRequest {
     pub security_policy_resource: ::core::option::Option<SecurityPolicy>,
 }
 /// A request message for PacketMirrorings.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPacketMirroringRequest {
     /// Name of the PacketMirroring resource to patch.
@@ -70861,6 +72553,7 @@ pub struct PatchPacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.PatchPacketMirroringRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPacketMirroringRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -70892,6 +72585,7 @@ pub struct PatchPacketMirroringRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.PatchPerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -70928,6 +72622,7 @@ pub struct PatchPerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.PatchPerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -70962,6 +72657,7 @@ pub struct PatchPerInstanceConfigsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicAdvertisedPrefixes.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -70992,6 +72688,7 @@ pub struct PatchPublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -71023,6 +72720,7 @@ pub struct PatchPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionAutoscalerRequest {
     /// Name of the autoscaler to patch.
@@ -71054,6 +72752,7 @@ pub struct PatchRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendBuckets.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionBackendBucketRequest {
     /// Name of the BackendBucket resource to patch.
@@ -71086,6 +72785,7 @@ pub struct PatchRegionBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionBackendServiceRequest {
     /// Name of the BackendService resource to patch.
@@ -71117,6 +72817,7 @@ pub struct PatchRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCompositeHealthChecks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionCompositeHealthCheckRequest {
     /// Name of the CompositeHealthCheck to update. The name
@@ -71149,6 +72850,7 @@ pub struct PatchRegionCompositeHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthAggregationPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionHealthAggregationPolicyRequest {
     /// Name of the HealthAggregationPolicy to update. The name
@@ -71183,6 +72885,7 @@ pub struct PatchRegionHealthAggregationPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to patch.
@@ -71214,6 +72917,7 @@ pub struct PatchRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to update. The name
@@ -71246,6 +72950,7 @@ pub struct PatchRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthSources.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionHealthSourceRequest {
     /// Name of the HealthSource to update. The name
@@ -71278,6 +72983,7 @@ pub struct PatchRegionHealthSourceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionInstanceGroupManagerRequest {
     /// The name of the instance group manager.
@@ -71309,6 +73015,7 @@ pub struct PatchRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -71340,6 +73047,7 @@ pub struct PatchRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -71374,6 +73082,7 @@ pub struct PatchRegionSecurityPolicyRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSnapshotSettings.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionSnapshotSettingRequest {
     /// Project ID for this request.
@@ -71405,6 +73114,7 @@ pub struct PatchRegionSnapshotSettingRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSslPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -71437,6 +73147,7 @@ pub struct PatchRegionSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for RegionTargetHttpsProxies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -71468,6 +73179,7 @@ pub struct PatchRegionTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for RegionUrlMaps.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionUrlMapRequest {
     /// Project ID for this request.
@@ -71488,6 +73200,7 @@ pub struct PatchRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for ResourcePolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchResourcePolicyRequest {
     /// Project ID for this request.
@@ -71522,6 +73235,7 @@ pub struct PatchResourcePolicyRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Routers.PatchRoutePolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRoutePolicyRouterRequest {
     /// Project ID for this request.
@@ -71553,6 +73267,7 @@ pub struct PatchRoutePolicyRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRouterRequest {
     /// Project ID for this request.
@@ -71584,6 +73299,7 @@ pub struct PatchRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for FirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -71612,6 +73328,7 @@ pub struct PatchRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -71643,6 +73360,7 @@ pub struct PatchRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleOrganizationSecurityPolicyRequest {
     /// The priority of the rule to patch.
@@ -71671,6 +73389,7 @@ pub struct PatchRuleOrganizationSecurityPolicyRequest {
     pub security_policy_rule_resource: ::core::option::Option<SecurityPolicyRule>,
 }
 /// A request message for RegionNetworkFirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -71705,6 +73424,7 @@ pub struct PatchRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleRegionSecurityPolicyRequest {
     /// The priority of the rule to patch.
@@ -71730,6 +73450,7 @@ pub struct PatchRuleRegionSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.PatchRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleSecurityPolicyRequest {
     /// The priority of the rule to patch.
@@ -71752,6 +73473,7 @@ pub struct PatchRuleSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSecurityPolicyRequest {
     /// Project ID for this request.
@@ -71783,6 +73505,7 @@ pub struct PatchSecurityPolicyRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ServiceAttachments.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchServiceAttachmentRequest {
     /// Project ID for this request.
@@ -71815,6 +73538,7 @@ pub struct PatchServiceAttachmentRequest {
     pub service_attachment_resource: ::core::option::Option<ServiceAttachment>,
 }
 /// A request message for SnapshotSettingsService.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSnapshotSettingRequest {
     /// Project ID for this request.
@@ -71843,6 +73567,7 @@ pub struct PatchSnapshotSettingRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for SslPolicies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSslPolicyRequest {
     /// Project ID for this request.
@@ -71872,6 +73597,7 @@ pub struct PatchSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for Subnetworks.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSubnetworkRequest {
     /// The drain timeout specifies the upper bound in seconds on the amount of
@@ -71915,6 +73641,7 @@ pub struct PatchSubnetworkRequest {
     pub subnetwork_resource: ::core::option::Option<Subnetwork>,
 }
 /// A request message for TargetGrpcProxies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -71943,6 +73670,7 @@ pub struct PatchTargetGrpcProxyRequest {
     pub target_grpc_proxy_resource: ::core::option::Option<TargetGrpcProxy>,
 }
 /// A request message for TargetHttpProxies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -71971,6 +73699,7 @@ pub struct PatchTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for TargetHttpsProxies.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -71999,6 +73728,7 @@ pub struct PatchTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for UrlMaps.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchUrlMapRequest {
     /// Project ID for this request.
@@ -72027,6 +73757,7 @@ pub struct PatchUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for WireGroups.Patch. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchWireGroupRequest {
     #[prost(string, tag = "108192469")]
@@ -72066,6 +73797,7 @@ pub struct PatchWireGroupRequest {
 /// A matcher for the path portion of the URL. The BackendService
 /// from the longest-matched rule will serve the URL. If no rule was matched, the
 /// default service is used.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PathMatcher {
     /// defaultCustomErrorResponsePolicy specifies how the Load
@@ -72200,6 +73932,7 @@ pub struct PathMatcher {
     pub route_rules: ::prost::alloc::vec::Vec<HttpRouteRule>,
 }
 /// A path-matching rule for a URL. If matched, will use the specifiedBackendService to handle the traffic arriving at this URL.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PathRule {
     /// customErrorResponsePolicy specifies how the Load
@@ -72267,6 +74000,7 @@ pub struct PathRule {
     pub url_redirect: ::core::option::Option<HttpRedirectAction>,
 }
 /// A request message for Rollouts.Pause. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PauseRolloutRequest {
     /// The etag of the Rollout.
@@ -72296,6 +74030,7 @@ pub struct PauseRolloutRequest {
     #[prost(string, tag = "303366577")]
     pub rollout: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PerInstanceConfig {
     /// Fingerprint of this per-instance config. This field can be used in
@@ -72327,6 +74062,7 @@ pub struct PerInstanceConfig {
 pub mod per_instance_config {
     /// The status of applying this per-instance configuration on the corresponding
     /// managed instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -72394,6 +74130,7 @@ pub mod per_instance_config {
     }
 }
 /// A request message for Instances.PerformMaintenance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformMaintenanceInstanceRequest {
     /// Name of the instance scoping this request.
@@ -72422,6 +74159,7 @@ pub struct PerformMaintenanceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.PerformMaintenance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformMaintenanceNodeGroupRequest {
     /// Name of the node group scoping this request.
@@ -72455,6 +74193,7 @@ pub struct PerformMaintenanceNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationBlocks.PerformMaintenance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformMaintenanceReservationBlockRequest {
     /// Project ID for this request.
@@ -72493,6 +74232,7 @@ pub struct PerformMaintenanceReservationBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.PerformMaintenance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformMaintenanceReservationRequest {
     /// Project ID for this request.
@@ -72527,6 +74267,7 @@ pub struct PerformMaintenanceReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.PerformMaintenance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerformMaintenanceReservationSubBlockRequest {
     /// The name of the parent reservation and parent block. In the format of
@@ -72562,6 +74303,7 @@ pub struct PerformMaintenanceReservationSubBlockRequest {
 /// The periodic partial maintenance schedule includes 52 weeks worth of
 /// maintenance windows.
 /// LINT.IfChange(PeriodicPartialMaintenanceSchedule)
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PeriodicPartialMaintenanceSchedule {
     /// The maintenance type in which the zone is during the given window.
@@ -72587,6 +74329,7 @@ pub struct PeriodicPartialMaintenanceSchedule {
 /// Nested message and enum types in `PeriodicPartialMaintenanceSchedule`.
 pub mod periodic_partial_maintenance_schedule {
     /// The maintenance type in which the zone is during the given window.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -72654,6 +74397,7 @@ pub mod periodic_partial_maintenance_schedule {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -72767,6 +74511,7 @@ pub mod periodic_partial_maintenance_schedule {
 ///
 /// For a description of IAM and its features, see the
 /// [IAM documentation](<https://cloud.google.com/iam/docs/>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Specifies cloud audit logging configuration for this policy.
@@ -72825,6 +74570,7 @@ pub struct Policy {
     #[prost(int32, optional, tag = "351608024")]
     pub version: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreconfiguredWafSet {
     /// List of entities that are currently supported for WAF rules.
@@ -72832,6 +74578,7 @@ pub struct PreconfiguredWafSet {
     pub expression_sets: ::prost::alloc::vec::Vec<WafExpressionSet>,
 }
 /// Preserved state for a given instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreservedState {
     /// Preserved disks defined for this instance.
@@ -72862,6 +74609,7 @@ pub struct PreservedState {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreservedStatePreservedDisk {
     /// These stateful disks will never be deleted during autohealing,
@@ -72891,6 +74639,7 @@ pub mod preserved_state_preserved_disk {
     /// e.g. when the given instance or the whole MIG is deleted.
     /// Note: disks attached in READ_ONLY mode cannot be
     /// auto-deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -72935,6 +74684,7 @@ pub mod preserved_state_preserved_disk {
     }
     /// The mode in which to attach this disk, either READ_WRITE orREAD_ONLY. If not specified, the default is to attach the
     /// disk in READ_WRITE mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -72980,6 +74730,7 @@ pub mod preserved_state_preserved_disk {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreservedStatePreservedNetworkIp {
     /// These stateful IPs will never be released during autohealing,
@@ -73001,6 +74752,7 @@ pub mod preserved_state_preserved_network_ip {
     /// This flag is used to configure if the IP reservation should be deleted
     /// after it is no longer used by the group, e.g. when the given instance
     /// or the whole group is deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73044,6 +74796,7 @@ pub mod preserved_state_preserved_network_ip {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreservedStatePreservedNetworkIpIpAddress {
     /// The URL of the reservation for this IP address.
@@ -73055,6 +74808,7 @@ pub struct PreservedStatePreservedNetworkIpIpAddress {
     pub literal: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a single Google Compute Engine preview feature.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewFeature {
     /// Specifies whether the feature is enabled or disabled.
@@ -73092,6 +74846,7 @@ pub struct PreviewFeature {
 /// Nested message and enum types in `PreviewFeature`.
 pub mod preview_feature {
     /// Specifies whether the feature is enabled or disabled.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73136,6 +74891,7 @@ pub mod preview_feature {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreviewFeatureList {
     #[prost(string, optional, tag = "3123477")]
@@ -73165,6 +74921,7 @@ pub struct PreviewFeatureList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents the rollout operation
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewFeatureRolloutOperation {
     /// Input only. The input for the rollout operation.
@@ -73174,6 +74931,7 @@ pub struct PreviewFeatureRolloutOperation {
     >,
 }
 /// Represents the input for the rollout operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewFeatureRolloutOperationRolloutInput {
     /// The name of the rollout plan
@@ -73193,6 +74951,7 @@ pub struct PreviewFeatureRolloutOperationRolloutInput {
 /// Nested message and enum types in `PreviewFeatureRolloutOperationRolloutInput`.
 pub mod preview_feature_rollout_operation_rollout_input {
     /// Predefined rollout plan.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73242,6 +75001,7 @@ pub mod preview_feature_rollout_operation_rollout_input {
     }
 }
 /// \[Output Only\] The status of the feature.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewFeatureStatus {
     /// Output only. \[Output Only\] The description of the feature.
@@ -73254,6 +75014,7 @@ pub struct PreviewFeatureStatus {
     pub release_status: ::core::option::Option<PreviewFeatureStatusReleaseStatus>,
 }
 /// \[Output Only\] The release status of the feature.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewFeatureStatusReleaseStatus {
     /// Output only. \[Output Only\] The stage of the feature.
@@ -73267,6 +75028,7 @@ pub struct PreviewFeatureStatusReleaseStatus {
 /// Nested message and enum types in `PreviewFeatureStatusReleaseStatus`.
 pub mod preview_feature_status_release_status {
     /// Output only. \[Output Only\] The stage of the feature.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73315,6 +75077,7 @@ pub mod preview_feature_status_release_status {
     }
 }
 /// A request message for Routers.Preview. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreviewRouterRequest {
     /// Project ID for this request.
@@ -73335,6 +75098,7 @@ pub struct PreviewRouterRequest {
 /// A project is used to organize resources in a Google Cloud Platform
 /// environment. For more information, read about the
 /// Resource Hierarchy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Project {
     /// Output only. \[Output Only\] The Cloud Armor tier for this project. It can be one of the
@@ -73409,6 +75173,7 @@ pub mod project {
     /// following values: CA_STANDARD,CA_ENTERPRISE_PAYGO.
     ///
     /// If this field is not specified, it is assumed to beCA_STANDARD.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73458,6 +75223,7 @@ pub mod project {
     /// This signifies the default network tier used for configuring resources of
     /// the project and can only take the following values:PREMIUM, STANDARD. Initially the default network
     /// tier is PREMIUM.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73519,6 +75285,7 @@ pub mod project {
     }
     /// Output only. \[Output Only\] Default internal DNS setting used by VMs running in
     /// this project.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73568,6 +75335,7 @@ pub mod project {
     /// \[Output Only\] The role this project has in a shared VPC configuration.
     /// Currently, only projects with the host role, which is specified by the
     /// value HOST, are differentiated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73615,6 +75383,7 @@ pub mod project {
 ///
 /// A ProjectView resource contains read-only project data which is available
 /// globally.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectView {
     /// The project data.
@@ -73626,18 +75395,21 @@ pub struct ProjectView {
     #[prost(message, optional, tag = "227560217")]
     pub project: ::core::option::Option<Project>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectsDisableXpnResourceRequest {
     /// Service resource (a.k.a service project) ID.
     #[prost(message, optional, tag = "133384631")]
     pub xpn_resource: ::core::option::Option<XpnResourceId>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectsEnableXpnResourceRequest {
     /// Service resource (a.k.a service project) ID.
     #[prost(message, optional, tag = "133384631")]
     pub xpn_resource: ::core::option::Option<XpnResourceId>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsGetXpnResources {
     /// Output only. \[Output Only\] Type of resource. Alwayscompute#projectsGetXpnResources for lists of service resources
@@ -73656,6 +75428,7 @@ pub struct ProjectsGetXpnResources {
     #[prost(message, repeated, tag = "164412965")]
     pub resources: ::prost::alloc::vec::Vec<XpnResourceId>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectsListXpnHostsRequest {
     /// Optional organization ID managed by Cloud Resource Manager, for which to
@@ -73664,6 +75437,7 @@ pub struct ProjectsListXpnHostsRequest {
     #[prost(string, optional, tag = "105180467")]
     pub organization: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectsSetCloudArmorTierRequest {
     /// Managed protection tier to be set.
@@ -73674,6 +75448,7 @@ pub struct ProjectsSetCloudArmorTierRequest {
 /// Nested message and enum types in `ProjectsSetCloudArmorTierRequest`.
 pub mod projects_set_cloud_armor_tier_request {
     /// Managed protection tier to be set.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73721,6 +75496,7 @@ pub mod projects_set_cloud_armor_tier_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectsSetDefaultNetworkTierRequest {
     /// Default network tier to be set.
@@ -73731,6 +75507,7 @@ pub struct ProjectsSetDefaultNetworkTierRequest {
 /// Nested message and enum types in `ProjectsSetDefaultNetworkTierRequest`.
 pub mod projects_set_default_network_tier_request {
     /// Default network tier to be set.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73792,6 +75569,7 @@ pub mod projects_set_default_network_tier_request {
 /// A public advertised prefix represents an aggregated IP prefix or netblock
 /// which customers bring to cloud. The IP prefix is a single unit of route
 /// advertisement and is announced globally to the internet.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicAdvertisedPrefix {
     /// Output only. \[Output Only\] The version of BYOIP API.
@@ -73891,6 +75669,7 @@ pub struct PublicAdvertisedPrefix {
 /// Nested message and enum types in `PublicAdvertisedPrefix`.
 pub mod public_advertised_prefix {
     /// Output only. \[Output Only\] The version of BYOIP API.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73938,6 +75717,7 @@ pub mod public_advertised_prefix {
         }
     }
     /// The internet access type for IPv6 Public Advertised Prefixes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -73996,6 +75776,7 @@ pub mod public_advertised_prefix {
     ///    BYOIP V1 legacy prefix. This is output only value and no longer
     ///    supported in BYOIP V2.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74057,6 +75838,7 @@ pub mod public_advertised_prefix {
     ///   - `PREFIX_CONFIGURATION_COMPLETE`: The prefix is fully configured.
     ///   - `PREFIX_REMOVAL_IN_PROGRESS`: The prefix is being removed.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74132,6 +75914,7 @@ pub mod public_advertised_prefix {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicAdvertisedPrefixList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -74158,6 +75941,7 @@ pub struct PublicAdvertisedPrefixList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a CIDR range which can be used to assign addresses.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicAdvertisedPrefixPublicDelegatedPrefix {
     /// The IP address range of the public delegated prefix
@@ -74185,6 +75969,7 @@ pub struct PublicAdvertisedPrefixPublicDelegatedPrefix {
 /// (global or region). IPs in the block can be allocated to resources within
 /// that scope. Public delegated prefixes may be further broken up into
 /// smaller IP blocks in the same scope as the parent block.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefix {
     /// The allocatable prefix length supported by this public delegated prefix.
@@ -74290,6 +76075,7 @@ pub struct PublicDelegatedPrefix {
 /// Nested message and enum types in `PublicDelegatedPrefix`.
 pub mod public_delegated_prefix {
     /// Output only. \[Output Only\] The version of BYOIP API.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74337,6 +76123,7 @@ pub mod public_delegated_prefix {
     }
     /// Output only. \[Output Only\] The internet access type for IPv6 Public Delegated Prefixes.
     /// Inherited from parent prefix.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74384,6 +76171,7 @@ pub mod public_delegated_prefix {
         }
     }
     /// The public delegated prefix mode for IPv6 only.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74467,6 +76255,7 @@ pub mod public_delegated_prefix {
     ///   - `DELETING` The public delegated prefix is being deprovsioned.
     ///   - `ACTIVE` The public delegated prefix is ready to use.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74532,6 +76321,7 @@ pub mod public_delegated_prefix {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -74564,6 +76354,7 @@ pub struct PublicDelegatedPrefixAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -74591,6 +76382,7 @@ pub struct PublicDelegatedPrefixList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a sub PublicDelegatedPrefix.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicDelegatedPrefixPublicDelegatedSubPrefix {
     /// The allocatable prefix length supported by this PublicDelegatedSubPrefix.
@@ -74640,6 +76432,7 @@ pub struct PublicDelegatedPrefixPublicDelegatedSubPrefix {
 pub mod public_delegated_prefix_public_delegated_sub_prefix {
     /// Output only. \[Output Only\] The internet access type for IPv6 Public Delegated Sub
     /// Prefixes. Inherited from parent prefix.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74687,6 +76480,7 @@ pub mod public_delegated_prefix_public_delegated_sub_prefix {
         }
     }
     /// The PublicDelegatedSubPrefix mode for IPv6 only.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74758,6 +76552,7 @@ pub mod public_delegated_prefix_public_delegated_sub_prefix {
         }
     }
     /// Output only. \[Output Only\] The status of the sub public delegated prefix.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -74799,6 +76594,7 @@ pub mod public_delegated_prefix_public_delegated_sub_prefix {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixesScopedList {
     /// \[Output Only\] A list of PublicDelegatedPrefixes contained in this scope.
@@ -74810,6 +76606,7 @@ pub struct PublicDelegatedPrefixesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A quotas entry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
     /// \[Output Only\] Quota limit for this metric.
@@ -74830,6 +76627,7 @@ pub struct Quota {
 /// Nested message and enum types in `Quota`.
 pub mod quota {
     /// \[Output Only\] Name of the quota metric.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -75480,6 +77278,7 @@ pub mod quota {
     }
 }
 /// Additional details for quota exceeded error for resource quota.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaExceededInfo {
     /// The map holding related quota dimensions.
@@ -75510,6 +77309,7 @@ pub struct QuotaExceededInfo {
 /// Nested message and enum types in `QuotaExceededInfo`.
 pub mod quota_exceeded_info {
     /// Rollout status of the future quota limit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -75557,6 +77357,7 @@ pub mod quota_exceeded_info {
 }
 /// Output only. \[Output Only\] Warning of fetching the `quotas` field for this region. This
 /// field is populated only if fetching of the `quotas` field fails.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaStatusWarning {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
@@ -75584,6 +77385,7 @@ pub mod quota_status_warning {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
     /// Engine returns NO_RESULTS_ON_PAGE if there
     /// are no results in the response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -75772,6 +77574,7 @@ pub mod quota_status_warning {
     }
 }
 /// The parameters of the raw disk image.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RawDisk {
     /// The format used to encode and transmit the block device, which should beTAR. This is just a container and transmission format and not
@@ -75811,6 +77614,7 @@ pub struct RawDisk {
 pub mod raw_disk {
     /// The format used to encode and transmit the block device, which should beTAR. This is just a container and transmission format and not
     /// a runtime format. Provided by the client when the disk image is created.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -75850,6 +77654,7 @@ pub mod raw_disk {
     }
 }
 /// A request message for InstanceGroupManagers.RecreateInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecreateInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -75888,6 +77693,7 @@ pub struct RecreateInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.RecreateInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecreateInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -75925,6 +77731,7 @@ pub struct RecreateInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a reference to a resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Reference {
     /// Output only. \[Output Only\] Type of the resource. Always compute#reference
@@ -75947,6 +77754,7 @@ pub struct Reference {
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The spec for modifying the path using a regular expression.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegexRewrite {
     /// Required. The regular expression used to match against the URL path.
@@ -75986,6 +77794,7 @@ pub struct RegexRewrite {
 /// A region is a geographical area where a resource is located. For more
 /// information, readRegions
 /// and Zones.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Region {
     /// \[Output Only\] Creation timestamp inRFC3339
@@ -76034,6 +77843,7 @@ pub struct Region {
 /// Nested message and enum types in `Region`.
 pub mod region {
     /// \[Output Only\] Status of the region, either UP orDOWN.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -76075,6 +77885,7 @@ pub mod region {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionAddressesMoveRequest {
     /// An optional destination address description if intended to be different
@@ -76094,6 +77905,7 @@ pub struct RegionAddressesMoveRequest {
     pub destination_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of autoscalers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionAutoscalerList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -76119,6 +77931,7 @@ pub struct RegionAutoscalerList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionDiskTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -76144,6 +77957,7 @@ pub struct RegionDiskTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionDiskUpdateKmsKeyRequest {
     /// Optional. The new KMS key to replace the current one on the disk. If empty, the disk
@@ -76161,24 +77975,28 @@ pub struct RegionDiskUpdateKmsKeyRequest {
     #[prost(string, optional, tag = "484373913")]
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionDisksAddResourcePoliciesRequest {
     /// Resource policies to be added to this disk.
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionDisksRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this disk.
     #[prost(string, repeated, tag = "22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionDisksResizeRequest {
     /// The new size of the regional persistent disk, which is specified in GB.
     #[prost(int64, optional, tag = "494929369")]
     pub size_gb: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionDisksStartAsyncReplicationRequest {
     /// The secondary disk to start asynchronous replication to.
@@ -76208,6 +78026,7 @@ pub struct RegionDisksStartAsyncReplicationRequest {
     pub async_secondary_disk: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of InstanceGroup resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupList {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -76234,6 +78053,7 @@ pub struct RegionInstanceGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// RegionInstanceGroupManagers.deletePerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
     /// The list of instance names for which we want to delete per-instance configs
@@ -76242,6 +78062,7 @@ pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Contains a list of managed instance groups.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerList {
     /// Output only. Unique identifier for the resource; defined by the server.
@@ -76269,6 +78090,7 @@ pub struct RegionInstanceGroupManagerList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// RegionInstanceGroupManagers.patchPerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerPatchInstanceConfigReq {
     /// The list of per-instance configurations to insert or patch on this managed
@@ -76276,6 +78098,7 @@ pub struct RegionInstanceGroupManagerPatchInstanceConfigReq {
     #[prost(message, repeated, tag = "526265001")]
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerResizeRequestsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -76309,6 +78132,7 @@ pub struct RegionInstanceGroupManagerResizeRequestsListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// RegionInstanceGroupManagers.updatePerInstanceConfigs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerUpdateInstanceConfigReq {
     /// The list of per-instance configurations to insert or patch on this managed
@@ -76316,6 +78140,7 @@ pub struct RegionInstanceGroupManagerUpdateInstanceConfigReq {
     #[prost(message, repeated, tag = "526265001")]
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersAbandonInstancesRequest {
     /// The URLs of one or more instances to abandon. This can be a full URL or
@@ -76324,6 +78149,7 @@ pub struct RegionInstanceGroupManagersAbandonInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// RegionInstanceGroupManagers.applyUpdatesToInstances
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersApplyUpdatesRequest {
     /// Flag to update all instances instead of specified list of "instances".
@@ -76400,6 +78226,7 @@ pub mod region_instance_group_managers_apply_updates_request {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -76454,6 +78281,7 @@ pub mod region_instance_group_managers_apply_updates_request {
     /// REFRESH
     /// REPLACE
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -76494,12 +78322,14 @@ pub mod region_instance_group_managers_apply_updates_request {
     }
 }
 /// RegionInstanceGroupManagers.createInstances
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersCreateInstancesRequest {
     /// \[Required\] List of specifications of per-instance configs.
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersDeleteInstancesRequest {
     /// The URLs of one or more instances to delete. This can be a full URL or
@@ -76516,6 +78346,7 @@ pub struct RegionInstanceGroupManagersDeleteInstancesRequest {
     #[prost(bool, optional, tag = "40631073")]
     pub skip_instances_on_validation_error: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListErrorsResponse {
     /// \[Output Only\] The list of errors of the managed instance group.
@@ -76529,6 +78360,7 @@ pub struct RegionInstanceGroupManagersListErrorsResponse {
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListInstanceConfigsResp {
     /// Output only. \[Output Only\] The list of PerInstanceConfig.
@@ -76545,6 +78377,7 @@ pub struct RegionInstanceGroupManagersListInstanceConfigsResp {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListInstancesResponse {
     /// A list of managed instances.
@@ -76558,6 +78391,7 @@ pub struct RegionInstanceGroupManagersListInstancesResponse {
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersRecreateRequest {
     /// The URLs of one or more instances to recreate. This can be a full URL or
@@ -76565,6 +78399,7 @@ pub struct RegionInstanceGroupManagersRecreateRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersResumeInstancesRequest {
     /// The URLs of one or more instances to resume. This can be a full URL or
@@ -76572,6 +78407,7 @@ pub struct RegionInstanceGroupManagersResumeInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersSetTargetPoolsRequest {
     /// Fingerprint of the target pools information, which is a hash of the
@@ -76584,6 +78420,7 @@ pub struct RegionInstanceGroupManagersSetTargetPoolsRequest {
     #[prost(string, repeated, tag = "336072617")]
     pub target_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersSetTemplateRequest {
     /// URL of the InstanceTemplate resource from which all new instances will be
@@ -76591,6 +78428,7 @@ pub struct RegionInstanceGroupManagersSetTemplateRequest {
     #[prost(string, optional, tag = "309248228")]
     pub instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersStartInstancesRequest {
     /// The URLs of one or more instances to start. This can be a full URL or
@@ -76598,6 +78436,7 @@ pub struct RegionInstanceGroupManagersStartInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersStopInstancesRequest {
     /// If this flag is set to true, the Instance Group Manager will proceed to
@@ -76609,6 +78448,7 @@ pub struct RegionInstanceGroupManagersStopInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupManagersSuspendInstancesRequest {
     /// If this flag is set to true, the Instance Group Manager will proceed to
@@ -76620,6 +78460,7 @@ pub struct RegionInstanceGroupManagersSuspendInstancesRequest {
     #[prost(string, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupsListInstances {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -76645,6 +78486,7 @@ pub struct RegionInstanceGroupsListInstances {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionInstanceGroupsListInstancesRequest {
     /// Instances in which state should be returned. Valid options are:
@@ -76663,6 +78505,7 @@ pub struct RegionInstanceGroupsListInstancesRequest {
 pub mod region_instance_groups_list_instances_request {
     /// Instances in which state should be returned. Valid options are:
     /// 'ALL', 'RUNNING'. By default, it lists all instances.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -76706,6 +78549,7 @@ pub mod region_instance_groups_list_instances_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupsSetNamedPortsRequest {
     /// The fingerprint of the named ports information for this instance group.
@@ -76721,6 +78565,7 @@ pub struct RegionInstanceGroupsSetNamedPortsRequest {
     pub named_ports: ::prost::alloc::vec::Vec<NamedPort>,
 }
 /// Contains a list of region resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -76747,18 +78592,21 @@ pub struct RegionList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkEndpointGroupsAttachEndpointsRequest {
     /// The list of network endpoints to be attached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkEndpointGroupsDetachEndpointsRequest {
     /// The list of network endpoints to be detached.
     #[prost(message, repeated, tag = "149850285")]
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse {
     /// Output only. \[Output only\] Effective firewalls from firewall policy. It applies to
@@ -76773,6 +78621,7 @@ pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse {
     #[prost(message, repeated, tag = "272245619")]
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// Output only. \[Output Only\] The display name of the firewall policy.
@@ -76801,6 +78650,7 @@ pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFi
 pub mod region_network_firewall_policies_get_effective_firewalls_response_effective_firewall_policy {
     /// Output only. \[Output Only\] The type of the firewall policy. Can be one of HIERARCHY,
     /// NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL, SYSTEM_REGIONAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -76854,6 +78704,7 @@ pub mod region_network_firewall_policies_get_effective_firewalls_response_effect
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource,
@@ -76871,6 +78722,7 @@ pub struct RegionSetLabelsRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSetPolicyRequest {
     /// Flatten Policy to create a backwacd compatible wire-format.
@@ -76887,6 +78739,7 @@ pub struct RegionSetPolicyRequest {
     #[prost(message, optional, tag = "91071794")]
     pub policy: ::core::option::Option<Policy>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionSnapshotUpdateKmsKeyRequest {
     /// Optional. The new KMS key to replace the current one on the snapshot. If empty, the
@@ -76901,6 +78754,7 @@ pub struct RegionSnapshotUpdateKmsKeyRequest {
     #[prost(string, optional, tag = "484373913")]
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionTargetHttpsProxiesSetSslCertificatesRequest {
     /// New set of SslCertificate resources to associate
@@ -76908,6 +78762,7 @@ pub struct RegionTargetHttpsProxiesSetSslCertificatesRequest {
     #[prost(string, repeated, tag = "366006543")]
     pub ssl_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionUrlMapsValidateRequest {
     /// Content of the UrlMap to be validated.
@@ -76915,6 +78770,7 @@ pub struct RegionUrlMapsValidateRequest {
     pub resource: ::core::option::Option<UrlMap>,
 }
 /// Represents a ReliabilityRisk resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReliabilityRisk {
     /// Output only. \[Output Only\] Creation timestamp in RFC3339
@@ -76951,6 +78807,7 @@ pub struct ReliabilityRisk {
     pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response message for the List method of ReliabilityRisksService.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReliabilityRisksListResponse {
     /// \[Output Only\] An ETag of the resource.
@@ -76981,6 +78838,7 @@ pub struct ReliabilityRisksListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for FirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77006,6 +78864,7 @@ pub struct RemoveAssociationFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77034,6 +78893,7 @@ pub struct RemoveAssociationNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAssociationOrganizationSecurityPolicyRequest {
     /// Name for the attachment that will be removed.
@@ -77059,6 +78919,7 @@ pub struct RemoveAssociationOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77090,6 +78951,7 @@ pub struct RemoveAssociationRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for TargetPools.RemoveHealthCheck. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveHealthCheckTargetPoolRequest {
     /// Project ID for this request.
@@ -77123,6 +78985,7 @@ pub struct RemoveHealthCheckTargetPoolRequest {
     >,
 }
 /// A request message for TargetPools.RemoveInstance. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveInstanceTargetPoolRequest {
     /// Project ID for this request.
@@ -77156,6 +79019,7 @@ pub struct RemoveInstanceTargetPoolRequest {
     >,
 }
 /// A request message for InstanceGroups.RemoveInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveInstancesInstanceGroupRequest {
     /// The name of the instance group where the specified instances will be
@@ -77191,6 +79055,7 @@ pub struct RemoveInstancesInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.RemovePacketMirroringRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemovePacketMirroringRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77219,6 +79084,7 @@ pub struct RemovePacketMirroringRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.RemovePeering. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemovePeeringNetworkRequest {
     /// Name of the network resource to remove peering from.
@@ -77249,6 +79115,7 @@ pub struct RemovePeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveResourcePoliciesDiskRequest {
     /// The disk name for this request.
@@ -77282,6 +79149,7 @@ pub struct RemoveResourcePoliciesDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveResourcePoliciesInstanceRequest {
     /// The instance name for this request.
@@ -77315,6 +79183,7 @@ pub struct RemoveResourcePoliciesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveResourcePoliciesRegionDiskRequest {
     /// The disk name for this request.
@@ -77348,6 +79217,7 @@ pub struct RemoveResourcePoliciesRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77373,6 +79243,7 @@ pub struct RemoveRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77401,6 +79272,7 @@ pub struct RemoveRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for OrganizationSecurityPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleOrganizationSecurityPolicyRequest {
     /// The priority of the rule to remove from the security policy.
@@ -77426,6 +79298,7 @@ pub struct RemoveRuleOrganizationSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -77457,6 +79330,7 @@ pub struct RemoveRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleRegionSecurityPolicyRequest {
     /// The priority of the rule to remove from the security policy.
@@ -77473,6 +79347,7 @@ pub struct RemoveRuleRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveRuleSecurityPolicyRequest {
     /// The priority of the rule to remove from the security policy.
@@ -77486,6 +79361,7 @@ pub struct RemoveRuleSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.ReportFaulty. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportFaultyReservationSubBlockRequest {
     /// The name of the parent reservation and parent block. In the format of
@@ -77524,6 +79400,7 @@ pub struct ReportFaultyReservationSubBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.ReportHostAsFaulty. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportHostAsFaultyInstanceRequest {
     /// Name of the instance scoping this request.
@@ -77560,6 +79437,7 @@ pub struct ReportHostAsFaultyInstanceRequest {
 /// are shadowed to a separate mirrored backend service. The load balancer
 /// doesn't wait for responses from the shadow service. Before sending traffic
 /// to the shadow service, the host or authority header is suffixed with-shadow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMirrorPolicy {
     /// The full or partial URL to the BackendService resource being
@@ -77578,6 +79456,7 @@ pub struct RequestMirrorPolicy {
     pub mirror_percent: ::core::option::Option<f64>,
 }
 /// A request message for Networks.RequestRemovePeering. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestRemovePeeringNetworkRequest {
     /// Name of the network resource to remove peering from.
@@ -77611,6 +79490,7 @@ pub struct RequestRemovePeeringNetworkRequest {
 /// held in a specific zone even if the reserved VMs are not running. For more
 /// information, read  Reserving zonal
 /// resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
     /// Advanced control for cluster management, applicable only to DENSE
@@ -77761,6 +79641,7 @@ pub struct Reservation {
 }
 /// Nested message and enum types in `Reservation`.
 pub mod reservation {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -77811,6 +79692,7 @@ pub mod reservation {
         }
     }
     /// Specifies the deployment strategy for this reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -77855,6 +79737,7 @@ pub mod reservation {
     /// Indicates the early access maintenance for the reservation.
     /// If this field is absent or set to NO_EARLY_ACCESS, the reservation is not
     /// enrolled in early access maintenance and the standard notice applies.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -77908,6 +79791,7 @@ pub mod reservation {
     /// Protection tier for the workload which specifies the workload expectations
     /// in the event of infrastructure failures at data center (e.g. power
     /// and/or cooling failures).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -77963,6 +79847,7 @@ pub mod reservation {
         }
     }
     /// The type of maintenance for the reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78024,6 +79909,7 @@ pub mod reservation {
     ///   - DELETING: Reservation deletion is in progress.
     ///   - UPDATING: Reservation update is in progress.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78081,6 +79967,7 @@ pub mod reservation {
 }
 /// Advance control for cluster management, applicable only to DENSE deployment
 /// type reservations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationAdvancedDeploymentControl {
     /// Indicates chosen reservation operational mode for the reservation.
@@ -78093,6 +79980,7 @@ pub struct ReservationAdvancedDeploymentControl {
 /// Nested message and enum types in `ReservationAdvancedDeploymentControl`.
 pub mod reservation_advanced_deployment_control {
     /// Indicates chosen reservation operational mode for the reservation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78146,6 +80034,7 @@ pub mod reservation_advanced_deployment_control {
     }
 }
 /// Specifies the reservations that this instance can consume from.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Specifies the type of reservation from which this instance can consume
@@ -78170,6 +80059,7 @@ pub mod reservation_affinity {
     /// Specifies the type of reservation from which this instance can consume
     /// resources: ANY_RESERVATION (default),SPECIFIC_RESERVATION, or NO_RESERVATION. See
     /// Consuming reserved instances for examples.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78226,6 +80116,7 @@ pub mod reservation_affinity {
     }
 }
 /// Contains a list of reservations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -78258,6 +80149,7 @@ pub struct ReservationAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a reservation block resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationBlock {
     /// Output only. \[Output Only\] The number of resources that are allocated in this
@@ -78322,6 +80214,7 @@ pub struct ReservationBlock {
 /// Nested message and enum types in `ReservationBlock`.
 pub mod reservation_block {
     /// Output only. \[Output Only\] Status of the reservation block.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78373,6 +80266,7 @@ pub mod reservation_block {
     }
 }
 /// Health information for the reservation block.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationBlockHealthInfo {
     /// The number of subBlocks that are degraded.
@@ -78389,6 +80283,7 @@ pub struct ReservationBlockHealthInfo {
 /// Nested message and enum types in `ReservationBlockHealthInfo`.
 pub mod reservation_block_health_info {
     /// The health status of the reservation block.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78436,6 +80331,7 @@ pub mod reservation_block_health_info {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationBlockPhysicalTopology {
     /// The hash of the capacity block within the cluster.
@@ -78449,6 +80345,7 @@ pub struct ReservationBlockPhysicalTopology {
     pub instances: ::prost::alloc::vec::Vec<ReservationBlockPhysicalTopologyInstance>,
 }
 /// The instances information for a given Block
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationBlockPhysicalTopologyInstance {
     /// The InstanceId of the instance
@@ -78464,6 +80361,7 @@ pub struct ReservationBlockPhysicalTopologyInstance {
     pub project_id: ::core::option::Option<u64>,
 }
 /// The PhysicalHostTopology of the instance within a Block resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationBlockPhysicalTopologyInstancePhysicalHostTopology {
     /// Host hash for a given instance
@@ -78473,12 +80371,14 @@ pub struct ReservationBlockPhysicalTopologyInstancePhysicalHostTopology {
     #[prost(string, optional, tag = "478033358")]
     pub sub_block: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationBlocksGetResponse {
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<ReservationBlock>,
 }
 /// A list of reservation blocks under a single reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationBlocksListResponse {
     /// Unique identifier for the resource; defined by the server.
@@ -78504,6 +80404,7 @@ pub struct ReservationBlocksListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationList {
     /// \[Output Only\] The unique identifier for the resource. This identifier is
@@ -78532,6 +80433,7 @@ pub struct ReservationList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional reservation params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationParams {
     /// Input only. Resource manager tags to be bound to the reservation. Tag keys and
@@ -78548,6 +80450,7 @@ pub struct ReservationParams {
     >,
 }
 /// Represents a reservation slot resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSlot {
     /// Output only. \[Output Only\] The creation timestamp, formatted asRFC3339 text.
@@ -78590,6 +80493,7 @@ pub struct ReservationSlot {
 /// Nested message and enum types in `ReservationSlot`.
 pub mod reservation_slot {
     /// Output only. \[Output Only\] The state of the reservation slot.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78644,6 +80548,7 @@ pub mod reservation_slot {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSlotPhysicalTopology {
     /// The unique identifier of the capacity block within the cluster.
@@ -78660,6 +80565,7 @@ pub struct ReservationSlotPhysicalTopology {
     #[prost(string, optional, tag = "478033358")]
     pub sub_block: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSlotStatus {
     /// Output only. \[Output Only\] The physical topology of the reservation sub-block.
@@ -78672,11 +80578,13 @@ pub struct ReservationSlotStatus {
     #[prost(string, repeated, tag = "536292350")]
     pub running_instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSlotsGetResponse {
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<ReservationSlot>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSlotsGetVersionRequest {
     /// The SBOM selection to return. Duplicate values in the list will be ignored.
@@ -78686,6 +80594,7 @@ pub struct ReservationSlotsGetVersionRequest {
 }
 /// Nested message and enum types in `ReservationSlotsGetVersionRequest`.
 pub mod reservation_slots_get_version_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78731,6 +80640,7 @@ pub mod reservation_slots_get_version_request {
     }
 }
 /// A list of reservation slots within a single reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSlotsListResponse {
     /// The unique identifier for the resource; defined by the server.
@@ -78758,6 +80668,7 @@ pub struct ReservationSlotsListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a reservation subBlock resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSubBlock {
     /// Output only. \[Output Only\] Slice info for the reservation subBlock.
@@ -78816,6 +80727,7 @@ pub struct ReservationSubBlock {
 /// Nested message and enum types in `ReservationSubBlock`.
 pub mod reservation_sub_block {
     /// Output only. \[Output Only\] Status of the reservation subBlock.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78867,6 +80779,7 @@ pub mod reservation_sub_block {
     }
 }
 /// Health information for the reservation subBlock.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSubBlockHealthInfo {
     /// The number of degraded hosts in the reservation subBlock.
@@ -78891,6 +80804,7 @@ pub struct ReservationSubBlockHealthInfo {
 /// Nested message and enum types in `ReservationSubBlockHealthInfo`.
 pub mod reservation_sub_block_health_info {
     /// The health status of the reservation subBlock.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -78938,6 +80852,7 @@ pub mod reservation_sub_block_health_info {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSubBlockPhysicalTopology {
     /// The hash of the capacity block within the cluster.
@@ -78950,11 +80865,13 @@ pub struct ReservationSubBlockPhysicalTopology {
     #[prost(string, optional, tag = "478033358")]
     pub sub_block: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSubBlocksGetResponse {
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<ReservationSubBlock>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSubBlocksGetVersionRequest {
     /// The SBOM selection to return.
@@ -78964,6 +80881,7 @@ pub struct ReservationSubBlocksGetVersionRequest {
 }
 /// Nested message and enum types in `ReservationSubBlocksGetVersionRequest`.
 pub mod reservation_sub_blocks_get_version_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79009,6 +80927,7 @@ pub mod reservation_sub_blocks_get_version_request {
     }
 }
 /// A list of reservation subBlocks under a single reservation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSubBlocksListResponse {
     /// Unique identifier for the resource; defined by the server.
@@ -79035,6 +80954,7 @@ pub struct ReservationSubBlocksListResponse {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationSubBlocksReportFaultyRequest {
     /// The disruption schedule for the subBlock.
@@ -79054,6 +80974,7 @@ pub struct ReservationSubBlocksReportFaultyRequest {
 /// Nested message and enum types in `ReservationSubBlocksReportFaultyRequest`.
 pub mod reservation_sub_blocks_report_faulty_request {
     /// The disruption schedule for the subBlock.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79098,6 +81019,7 @@ pub mod reservation_sub_blocks_report_faulty_request {
         }
     }
     /// The component that experienced the fault.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79145,6 +81067,7 @@ pub mod reservation_sub_blocks_report_faulty_request {
     }
 }
 /// The reason for the fault experienced with the subBlock.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationSubBlocksReportFaultyRequestFaultReason {
     /// The behavior of the fault experienced with the subBlock.
@@ -79158,6 +81081,7 @@ pub struct ReservationSubBlocksReportFaultyRequestFaultReason {
 /// Nested message and enum types in `ReservationSubBlocksReportFaultyRequestFaultReason`.
 pub mod reservation_sub_blocks_report_faulty_request_fault_reason {
     /// The behavior of the fault experienced with the subBlock.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79230,6 +81154,7 @@ pub mod reservation_sub_blocks_report_faulty_request_fault_reason {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationsBlocksPerformMaintenanceRequest {
     /// Specifies if all, running or unused hosts are in scope for this request.
@@ -79240,6 +81165,7 @@ pub struct ReservationsBlocksPerformMaintenanceRequest {
 /// Nested message and enum types in `ReservationsBlocksPerformMaintenanceRequest`.
 pub mod reservations_blocks_perform_maintenance_request {
     /// Specifies if all, running or unused hosts are in scope for this request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79294,6 +81220,7 @@ pub mod reservations_blocks_perform_maintenance_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationsPerformMaintenanceRequest {
     /// Specifies if all, running or unused hosts are in scope for this request.
@@ -79304,6 +81231,7 @@ pub struct ReservationsPerformMaintenanceRequest {
 /// Nested message and enum types in `ReservationsPerformMaintenanceRequest`.
 pub mod reservations_perform_maintenance_request {
     /// Specifies if all, running or unused hosts are in scope for this request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79358,6 +81286,7 @@ pub mod reservations_perform_maintenance_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReservationsResizeRequest {
     /// Number of allocated resources can be resized with minimum = 1 and
@@ -79365,6 +81294,7 @@ pub struct ReservationsResizeRequest {
     #[prost(int64, optional, tag = "13890720")]
     pub specific_sku_count: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationsScopedList {
     /// A list of reservations contained in this scope.
@@ -79376,6 +81306,7 @@ pub struct ReservationsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Instances.Reset. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetInstanceRequest {
     /// Name of the instance scoping this request.
@@ -79404,6 +81335,7 @@ pub struct ResetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Disks.Resize. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeDiskRequest {
     /// The name of the persistent disk.
@@ -79435,6 +81367,7 @@ pub struct ResizeDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.Resize. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -79469,6 +81402,7 @@ pub struct ResizeInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.Resize. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeRegionDiskRequest {
     /// Name of the regional persistent disk.
@@ -79502,6 +81436,7 @@ pub struct ResizeRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Resize. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -79534,6 +81469,7 @@ pub struct ResizeRegionInstanceGroupManagerRequest {
     pub size: i32,
 }
 /// A request message for Reservations.Resize. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeReservationRequest {
     /// Project ID for this request.
@@ -79568,6 +81504,7 @@ pub struct ResizeReservationRequest {
 }
 /// Commitment for a particular hardware resource (a commitment is composed of
 /// one or more of these).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceCommitment {
     /// Name of the accelerator type or GPU resource. Specify this field only when
@@ -79618,6 +81555,7 @@ pub mod resource_commitment {
     ///
     /// Specify as a separate entry in the list for each
     /// individual resource type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79668,6 +81606,7 @@ pub mod resource_commitment {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceGroupReference {
     /// A URI referencing one of the instance groups or network endpoint groups
@@ -79676,6 +81615,7 @@ pub struct ResourceGroupReference {
     pub group: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Standardized resource metadata common to all compute resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceMetadata {
     /// The version of the API interface that this resource was retrieved through.
@@ -79688,6 +81628,7 @@ pub struct ResourceMetadata {
     #[prost(string, optional, tag = "442752203")]
     pub resource_type: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePoliciesScopedList {
     /// A list of resourcePolicies contained in this scope.
@@ -79702,6 +81643,7 @@ pub struct ResourcePoliciesScopedList {
 /// schedule actions for some Compute Engine resources. For example, you can
 /// use them toschedule persistent disk
 /// snapshots.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -79766,6 +81708,7 @@ pub struct ResourcePolicy {
 /// Nested message and enum types in `ResourcePolicy`.
 pub mod resource_policy {
     /// Output only. \[Output Only\] The status of resource policy creation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79821,6 +81764,7 @@ pub mod resource_policy {
     }
 }
 /// Contains a list of resourcePolicies.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -79855,6 +81799,7 @@ pub struct ResourcePolicyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Time window specified for daily operations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyDailyCycle {
     /// Defines a schedule with units measured in days. The value determines
@@ -79872,10 +81817,12 @@ pub struct ResourcePolicyDailyCycle {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Resource policy for disk consistency groups.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyDiskConsistencyGroupPolicy {}
 /// A GroupPlacementPolicy specifies resource placement configuration.
 /// It specifies the failure bucket separation
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyGroupPlacementPolicy {
     /// Specifies the connection mode for the accelerator topology. If not
@@ -79908,6 +81855,7 @@ pub struct ResourcePolicyGroupPlacementPolicy {
 pub mod resource_policy_group_placement_policy {
     /// Specifies the connection mode for the accelerator topology. If not
     /// specified, the default is AUTO_CONNECT.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79956,6 +81904,7 @@ pub mod resource_policy_group_placement_policy {
         }
     }
     /// Specifies network collocation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79998,6 +81947,7 @@ pub mod resource_policy_group_placement_policy {
     }
 }
 /// Time window specified for hourly operations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyHourlyCycle {
     /// Output only. \[Output only\] Duration of the time window, automatically chosen to be
@@ -80015,6 +81965,7 @@ pub struct ResourcePolicyHourlyCycle {
 }
 /// An InstanceSchedulePolicy specifies when and how frequent certain
 /// operations are performed on the instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyInstanceSchedulePolicy {
     /// The expiration time of the schedule. The timestamp is an RFC3339 string.
@@ -80040,12 +81991,14 @@ pub struct ResourcePolicyInstanceSchedulePolicy {
     >,
 }
 /// Schedule for an instance operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyInstanceSchedulePolicySchedule {
     /// Specifies the frequency for the operation, using the unix-cron format.
     #[prost(string, optional, tag = "375820951")]
     pub schedule: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyList {
     #[prost(string, optional, tag = "3123477")]
@@ -80078,6 +82031,7 @@ pub struct ResourcePolicyList {
 /// Use this sub-message for all output fields set on ResourcePolicy.
 /// The internal structure of this "status" field should mimic the structure
 /// of ResourcePolicy proto specification.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyResourceStatus {
     /// Output only. \[Output Only\] Specifies a set of output values reffering to
@@ -80088,6 +82042,7 @@ pub struct ResourcePolicyResourceStatus {
         ResourcePolicyResourceStatusInstanceSchedulePolicyStatus,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
     /// Output only. \[Output Only\] The last time the schedule successfully ran.
@@ -80103,6 +82058,7 @@ pub struct ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
 /// A snapshot schedule policy specifies when and how frequently snapshots are
 /// to be created for the target disk. Also specifies how many and how long
 /// these scheduled snapshots should be retained.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicy {
     /// Retention policy applied to snapshots created by this resource policy.
@@ -80123,6 +82079,7 @@ pub struct ResourcePolicySnapshotSchedulePolicy {
     >,
 }
 /// Policy for retention of scheduled snapshots.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicyRetentionPolicy {
     /// Maximum age of the snapshot that is allowed to be kept.
@@ -80138,6 +82095,7 @@ pub struct ResourcePolicySnapshotSchedulePolicyRetentionPolicy {
 pub mod resource_policy_snapshot_schedule_policy_retention_policy {
     /// Specifies the behavior to apply to scheduled snapshots when
     /// the source disk is deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80189,6 +82147,7 @@ pub mod resource_policy_snapshot_schedule_policy_retention_policy {
     }
 }
 /// A schedule for disks where the schedueled operations are performed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicySchedule {
     #[prost(message, optional, tag = "86159869")]
@@ -80200,6 +82159,7 @@ pub struct ResourcePolicySnapshotSchedulePolicySchedule {
 }
 /// Specified snapshot properties for scheduled snapshots created by this
 /// policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicySnapshotProperties {
     /// Chain name that the snapshot is created in.
@@ -80221,12 +82181,14 @@ pub struct ResourcePolicySnapshotSchedulePolicySnapshotProperties {
     pub storage_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Time window specified for weekly operations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyWeeklyCycle {
     /// Up to 7 intervals/windows, one for each day of the week.
     #[prost(message, repeated, tag = "257871834")]
     pub day_of_weeks: ::prost::alloc::vec::Vec<ResourcePolicyWeeklyCycleDayOfWeek>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyWeeklyCycleDayOfWeek {
     /// Defines a schedule that runs on specific days of the week. Specify
@@ -80249,6 +82211,7 @@ pub mod resource_policy_weekly_cycle_day_of_week {
     /// Defines a schedule that runs on specific days of the week. Specify
     /// one or more days. The following options are available:
     /// MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80309,6 +82272,7 @@ pub mod resource_policy_weekly_cycle_day_of_week {
     }
 }
 /// Represents the workload policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourcePolicyWorkloadPolicy {
     /// Specifies the topology required to create a partition for VMs that have
@@ -80335,6 +82299,7 @@ pub struct ResourcePolicyWorkloadPolicy {
 pub mod resource_policy_workload_policy {
     /// Specifies the connection mode for the accelerator topology. If not
     /// specified, the default is AUTO_CONNECT.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80383,6 +82348,7 @@ pub mod resource_policy_workload_policy {
         }
     }
     /// Specifies the maximum distance between instances.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80432,6 +82398,7 @@ pub mod resource_policy_workload_policy {
         }
     }
     /// Specifies the intent of the instance placement in the MIG.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80479,6 +82446,7 @@ pub mod resource_policy_workload_policy {
 /// Contains output only fields.
 /// Use this sub-message for actual values set on Instance attributes as compared
 /// to the value requested by the user (intent) in their instance CRUD calls.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceStatus {
     /// Output only. \[Output Only\] Effective metadata is a field that consolidates project,
@@ -80514,6 +82482,7 @@ pub struct ResourceStatus {
     pub upcoming_maintenance: ::core::option::Option<UpcomingMaintenance>,
 }
 /// Effective values of predefined metadata keys for an instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceStatusEffectiveInstanceMetadata {
     /// Effective block-project-ssh-keys value at Instance level.
@@ -80548,6 +82517,7 @@ pub struct ResourceStatusEffectiveInstanceMetadata {
 }
 /// Represents the physical host topology of the host on which the VM is
 /// running.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceStatusPhysicalHostTopology {
     /// Output only. \[Output Only\] Additional location information of the running instance.
@@ -80575,6 +82545,7 @@ pub struct ResourceStatusPhysicalHostTopology {
     pub subblock: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional location information of the running instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceStatusPhysicalHostTopologyAdditionalAttributes {
     /// Output only. The IDs of the accelerator topologies the instance belongs to. For
@@ -80588,6 +82559,7 @@ pub struct ResourceStatusPhysicalHostTopologyAdditionalAttributes {
     >,
 }
 /// Reservation consumption information that the instance is consuming from.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceStatusReservationConsumptionInfo {
     /// Output only. \[Output Only\] The full resource name of the reservation that this
@@ -80607,6 +82579,7 @@ pub struct ResourceStatusReservationConsumptionInfo {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceStatusScheduling {
     /// Specifies the availability domain to place the instance in. The value
@@ -80626,6 +82599,7 @@ pub struct ResourceStatusScheduling {
 }
 /// Specifies if the instance is in `PENDING_STOP` state or there is a
 /// programmed stop scheduled.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceStatusShutdownDetails {
     /// The duration for graceful shutdown. Only applicable when
@@ -80647,6 +82621,7 @@ pub struct ResourceStatusShutdownDetails {
 /// Nested message and enum types in `ResourceStatusShutdownDetails`.
 pub mod resource_status_shutdown_details {
     /// Current stopping state of the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80690,6 +82665,7 @@ pub mod resource_status_shutdown_details {
         }
     }
     /// Target instance state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80734,6 +82710,7 @@ pub mod resource_status_shutdown_details {
     }
 }
 /// A request message for Instances.Resume. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResumeInstanceRequest {
     /// Name of the instance resource to resume.
@@ -80762,6 +82739,7 @@ pub struct ResumeInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.ResumeInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResumeInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -80796,6 +82774,7 @@ pub struct ResumeInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ResumeInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResumeInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -80829,6 +82808,7 @@ pub struct ResumeInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Rollouts.Resume. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResumeRolloutRequest {
     /// The etag of the Rollout.
@@ -80859,6 +82839,7 @@ pub struct ResumeRolloutRequest {
     pub rollout: ::prost::alloc::string::String,
 }
 /// Detailed insights and metrics about a detected reliability risk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiskDetails {
     /// The duration of the risk since it was detected.
@@ -80882,6 +82863,7 @@ pub struct RiskDetails {
 /// Nested message and enum types in `RiskDetails`.
 pub mod risk_details {
     /// The severity of the risk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80937,6 +82919,7 @@ pub mod risk_details {
         }
     }
     /// The type of risk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -80981,6 +82964,7 @@ pub mod risk_details {
     }
 }
 /// Detailed insights for a global DNS reliability risk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiskDetailsGlobalDnsInsight {
     /// Indicates whether the project's default DNS setting is global DNS.
@@ -80998,6 +82982,7 @@ pub struct RiskDetailsGlobalDnsInsight {
     pub total_query_count: ::core::option::Option<i64>,
 }
 /// Recommendation for mitigating a reliability risk, including a reference URL.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiskRecommendation {
     /// Mitigation guide for the risk.
@@ -81012,6 +82997,7 @@ pub struct RiskRecommendation {
 /// A Rollout is a specific instance of a RolloutPlan. It represents a single
 /// execution of a strategy to roll out a specific resource. It also provides
 /// APIs to interact with the rollout.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rollout {
     /// Output only. The timestamp at which the Rollout was cancelled.
@@ -81083,6 +83069,7 @@ pub struct Rollout {
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
     /// Output only. The current state of the Rollout.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81196,6 +83183,7 @@ pub mod rollout {
 /// into smaller increments, referred to as "waves". Each wave targets a specific
 /// portion of the overall affected area and defines criteria that must be met
 /// before progressing to the subsequent wave.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutPlan {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -81242,6 +83230,7 @@ pub struct RolloutPlan {
 pub mod rollout_plan {
     /// The location scope of the rollout plan. If not specified, the location
     /// scope is considered as ZONAL.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81290,6 +83279,7 @@ pub mod rollout_plan {
     }
 }
 /// A single wave in a rollout plan.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutPlanWave {
     /// Optional. The display name of this wave of the rollout plan.
@@ -81315,6 +83305,7 @@ pub struct RolloutPlanWave {
 /// Options to control the pace of orchestration of a wave. These options are
 /// required only if the resource being rolled out follows the Orchestrated
 /// pattern.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutPlanWaveOrchestrationOptions {
     /// Optional. Delays, if any, to be added between batches of projects. We allow
@@ -81332,6 +83323,7 @@ pub struct RolloutPlanWaveOrchestrationOptions {
     pub max_concurrent_resources_per_location: ::core::option::Option<i64>,
 }
 /// Options to control the delay, if any, between batches of projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveOrchestrationOptionsDelay {
     /// Optional. Controls whether the delay should only be added between batches of
@@ -81362,6 +83354,7 @@ pub mod rollout_plan_wave_orchestration_options_delay {
     /// batches of projects corresponding to the same location.
     ///
     /// Must be set to DELIMITER_UNSPECIFIED if no delay is to be added.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81417,6 +83410,7 @@ pub mod rollout_plan_wave_orchestration_options_delay {
     /// padded if needed to meet the specified duration.
     ///
     /// Must be set to TYPE_UNSPECIFIED if no delay is to be added.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81469,6 +83463,7 @@ pub mod rollout_plan_wave_orchestration_options_delay {
     }
 }
 /// A selector which specifies what resource(s) are included in a given wave.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveSelector {
     /// Optional. Roll out to resources by Cloud locations.
@@ -81483,6 +83478,7 @@ pub struct RolloutPlanWaveSelector {
     >,
 }
 /// Roll out to resources by location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveSelectorLocationSelector {
     /// Optional. Example: "us-central1-a"
@@ -81491,6 +83487,7 @@ pub struct RolloutPlanWaveSelectorLocationSelector {
 }
 /// Roll out to resources by Cloud Resource Manager resource hierarchy
 /// nodes such as projects, folders, orgs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveSelectorResourceHierarchySelector {
     /// Optional. Format: "folders/{folder_id}"
@@ -81504,6 +83501,7 @@ pub struct RolloutPlanWaveSelectorResourceHierarchySelector {
     pub included_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The validation to be performed before progressing to the next wave.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveValidation {
     /// Optional. Metadata required if type = "time".
@@ -81523,6 +83521,7 @@ pub struct RolloutPlanWaveValidation {
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Metadata required if type = "time".
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutPlanWaveValidationTimeBasedValidationMetadata {
     /// Optional. The duration that the system waits in between waves. This wait starts
@@ -81531,6 +83530,7 @@ pub struct RolloutPlanWaveValidationTimeBasedValidationMetadata {
     pub wait_duration: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of RolloutPlan resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutPlansListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -81560,6 +83560,7 @@ pub struct RolloutPlansListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Specifications of the resource to roll out.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutRolloutEntity {
     /// Optional. Entity details for products using the Orchestrated Integration model.
@@ -81570,6 +83571,7 @@ pub struct RolloutRolloutEntity {
 }
 /// This message is used if the resource type follows the Orchestrated
 /// integration model with ProgressiveRollout.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutRolloutEntityOrchestratedEntity {
     /// Required. Specifies the behavior of the Rollout if an out of band update is
@@ -81601,6 +83603,7 @@ pub struct RolloutRolloutEntityOrchestratedEntity {
     pub orchestration_source: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional metadata about the status of each wave provided by the server.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutWaveDetails {
     /// Output only. Additional details of the wave for products using the Orchestrated
@@ -81619,6 +83622,7 @@ pub struct RolloutWaveDetails {
 }
 /// Details of the wave for products using the Orchestrated integration
 /// model.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutWaveDetailsOrchestratedWaveDetails {
     /// Output only. Resource completed so far.
@@ -81650,6 +83654,7 @@ pub struct RolloutWaveDetailsOrchestratedWaveDetails {
     >,
 }
 /// Represents the status of a location in a wave.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus {
     /// Output only. Location state of the wave.
@@ -81660,6 +83665,7 @@ pub struct RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus {
 /// Nested message and enum types in `RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus`.
 pub mod rollout_wave_details_orchestrated_wave_details_location_status {
     /// Output only. Location state of the wave.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81719,6 +83725,7 @@ pub mod rollout_wave_details_orchestrated_wave_details_location_status {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutsListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -81752,6 +83759,7 @@ pub struct RolloutsListResponse {
 /// A route defines a path from VM instances in the VPC network to a specific
 /// destination. This destination can be inside or outside the VPC network.
 /// For more information, read theRoutes overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// Output only. \[Output Only\] AS path.
@@ -81917,6 +83925,7 @@ pub mod route {
     /// Output only. \[Output Only\] Indicates the origin of the route. Can be IGP
     /// (Interior Gateway Protocol), EGP (Exterior Gateway Protocol),
     /// or INCOMPLETE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -81963,6 +83972,7 @@ pub mod route {
     /// \[Output only\] The status of the route. This status applies to
     /// dynamic routes learned by Cloud Routers. It is also applicable to routes
     /// undergoing migration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82025,6 +84035,7 @@ pub mod route {
     /// * 'SUBNET' for a route from a subnet of the VPC
     /// * 'BGP' for a route learned from a BGP peer of this router
     /// * 'STATIC' for a static route
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82072,6 +84083,7 @@ pub mod route {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteAsPath {
     /// \[Output Only\] The AS numbers of the AS Path.
@@ -82109,6 +84121,7 @@ pub mod route_as_path {
     /// * 'AS_CONFED_SET': unordered set of
     ///   Member Autonomous Systems in the local confederation that the route has
     ///   traversed
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82157,6 +84170,7 @@ pub mod route_as_path {
     }
 }
 /// Contains a list of Route resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -82183,6 +84197,7 @@ pub struct RouteList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional route parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteParams {
     /// Tag keys/values directly bound to this resource.
@@ -82204,6 +84219,7 @@ pub struct RouteParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutePolicy {
     /// An optional description of route policy.
@@ -82235,6 +84251,7 @@ pub struct RoutePolicy {
 }
 /// Nested message and enum types in `RoutePolicy`.
 pub mod route_policy {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82278,6 +84295,7 @@ pub mod route_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutePolicyPolicyTerm {
     /// CEL expressions to evaluate to modify a route when this term matches.
@@ -82297,6 +84315,7 @@ pub struct RoutePolicyPolicyTerm {
 ///
 /// For more information about Cloud Router, read theCloud
 /// Router overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Router {
     /// BGP information specific to this router.
@@ -82376,6 +84395,7 @@ pub struct Router {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Description-tagged IP ranges for the router to advertise.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterAdvertisedIpRange {
     /// User-specified description for the IP range.
@@ -82386,6 +84406,7 @@ pub struct RouterAdvertisedIpRange {
     pub range: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of routers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -82417,6 +84438,7 @@ pub struct RouterAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterBgp {
     /// User-specified flag to indicate which mode to use for advertisement.
@@ -82473,6 +84495,7 @@ pub struct RouterBgp {
 pub mod router_bgp {
     /// User-specified flag to indicate which mode to use for advertisement.
     /// The options are DEFAULT or CUSTOM.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82513,6 +84536,7 @@ pub mod router_bgp {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82552,6 +84576,7 @@ pub mod router_bgp {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterBgpPeer {
     /// User-specified flag to indicate which mode to use for advertisement.
@@ -82700,6 +84725,7 @@ pub struct RouterBgpPeer {
 /// Nested message and enum types in `RouterBgpPeer`.
 pub mod router_bgp_peer {
     /// User-specified flag to indicate which mode to use for advertisement.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82740,6 +84766,7 @@ pub mod router_bgp_peer {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82784,6 +84811,7 @@ pub mod router_bgp_peer {
     /// all associated routing information is removed. If set to TRUE, the
     /// peer connection can be established with routing information. The default
     /// is TRUE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82835,6 +84863,7 @@ pub mod router_bgp_peer {
     /// BGP peer when the PARTNER InterconnectAttachment is created, updated,
     /// or deleted.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82884,6 +84913,7 @@ pub mod router_bgp_peer {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterBgpPeerBfd {
     /// The minimum interval, in milliseconds, between BFD control packets
@@ -82934,6 +84964,7 @@ pub mod router_bgp_peer_bfd {
     /// this BGP peer. If set to PASSIVE, the Cloud Router will wait for the
     /// peer router to initiate the BFD session for this BGP peer. If set to
     /// DISABLED, BFD is disabled for this BGP peer. The default is DISABLED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -82982,6 +85013,7 @@ pub mod router_bgp_peer_bfd {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterBgpPeerCustomLearnedIpRange {
     /// The custom learned route IP address range. Must be a valid
@@ -82991,6 +85023,7 @@ pub struct RouterBgpPeerCustomLearnedIpRange {
     #[prost(string, optional, tag = "108280125")]
     pub range: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterInterface {
     /// IP address and range of the interface.
@@ -83077,6 +85110,7 @@ pub struct RouterInterface {
 /// Nested message and enum types in `RouterInterface`.
 pub mod router_interface {
     /// IP version of this interface.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83128,6 +85162,7 @@ pub mod router_interface {
     /// this type of interface when the PARTNER InterconnectAttachment is
     /// created, updated, or deleted.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83176,6 +85211,7 @@ pub mod router_interface {
     }
 }
 /// Contains a list of Router resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -83202,6 +85238,7 @@ pub struct RouterList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterMd5AuthenticationKey {
     /// \[Input only\] Value of the key.
@@ -83224,6 +85261,7 @@ pub struct RouterMd5AuthenticationKey {
 /// a list of subnetworks (and the ranges within) that want to use NAT.
 /// Customers can also provide the external IPs that would be used for NAT. GCP
 /// would auto-allocate ephemeral IPs if no external IPs are provided.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNat {
     /// The network tier to use when automatically reserving NAT IP addresses.
@@ -83398,6 +85436,7 @@ pub mod router_nat {
     /// Must be one of: PREMIUM, STANDARD.
     /// If not specified, then the current
     /// project-level default tier is used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83455,6 +85494,7 @@ pub mod router_nat {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83516,6 +85556,7 @@ pub mod router_nat {
     /// can't specify any Nat IPs. When choosing AUTO_ONLY, then nat_ip should
     /// be empty.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83576,6 +85617,7 @@ pub mod router_nat {
     /// Note that if this field contains ALL_SUBNETWORKS_ALL_IP_RANGES then there
     /// should not be any other Router.Nat section in any Router for this network
     /// in this region.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83646,6 +85688,7 @@ pub mod router_nat {
     /// Router.Nat section in this region can also enable NAT64 for any
     /// Subnetworks in this network. Other Router.Nat sections can still be
     /// present to enable NAT44 only.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83697,6 +85740,7 @@ pub mod router_nat {
     }
     /// Indicates whether this NAT is used for public or private IP
     /// translation. If unspecified, it defaults to PUBLIC.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83742,6 +85786,7 @@ pub mod router_nat {
     }
 }
 /// Configuration of logging on a NAT.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterNatLogConfig {
     /// Indicates whether or not to export logs. This is false by default.
@@ -83776,6 +85821,7 @@ pub mod router_nat_log_config {
     /// - ALL: Export logs for all connections, successful and
     /// unsuccessful.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83823,6 +85869,7 @@ pub mod router_nat_log_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterNatRule {
     /// The action to be enforced for traffic that matches this rule.
@@ -83858,6 +85905,7 @@ pub struct RouterNatRule {
     #[prost(uint32, optional, tag = "535211500")]
     pub rule_number: ::core::option::Option<u32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterNatRuleAction {
     /// A list of URLs of the IP resources used for this NAT rule. These IP
@@ -83890,6 +85938,7 @@ pub struct RouterNatRuleAction {
     >,
 }
 /// Defines the IP ranges that want to use NAT for a subnetwork.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterNatSubnetworkToNat {
     /// URL for the subnetwork resource that will use NAT.
@@ -83916,6 +85965,7 @@ pub struct RouterNatSubnetworkToNat {
 }
 /// Nested message and enum types in `RouterNatSubnetworkToNat`.
 pub mod router_nat_subnetwork_to_nat {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -83966,6 +86016,7 @@ pub mod router_nat_subnetwork_to_nat {
     }
 }
 /// Specifies a subnetwork to enable NAT64.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterNatSubnetworkToNat64 {
     /// URL for the subnetwork resource that will use NAT64.
@@ -83973,6 +86024,7 @@ pub struct RouterNatSubnetworkToNat64 {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional router parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterParams {
     /// Tag keys/values directly bound to this resource.
@@ -83995,6 +86047,7 @@ pub struct RouterParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatus {
     /// A list of the best dynamic routes for this Cloud Router's Virtual Private
@@ -84026,6 +86079,7 @@ pub struct RouterStatus {
     #[prost(string, optional, tag = "232872494")]
     pub network: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusBgpPeerStatus {
     /// Routes that were advertised to the remote BGP peer
@@ -84109,6 +86163,7 @@ pub struct RouterStatusBgpPeerStatus {
 /// Nested message and enum types in `RouterStatusBgpPeerStatus`.
 pub mod router_status_bgp_peer_status {
     /// Output only. Status of the BGP peer: {UP, DOWN}
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84153,6 +86208,7 @@ pub mod router_status_bgp_peer_status {
         }
     }
     /// Indicates why particular status was returned.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84212,6 +86268,7 @@ pub mod router_status_bgp_peer_status {
     }
 }
 /// Status of a NAT contained in this router.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusNatStatus {
     /// Output only. A list of IPs auto-allocated for NAT. Example: \["1.1.1.1", "129.2.16.89"\]
@@ -84255,6 +86312,7 @@ pub struct RouterStatusNatStatus {
     pub user_allocated_nat_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Status of a NAT Rule contained in this NAT.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouterStatusNatStatusNatRuleStatus {
     /// Output only. A list of active IPs for NAT.
@@ -84278,6 +86336,7 @@ pub struct RouterStatusNatStatusNatRuleStatus {
     #[prost(int32, optional, tag = "535211500")]
     pub rule_number: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusResponse {
     /// Output only. Type of resource.
@@ -84286,6 +86345,7 @@ pub struct RouterStatusResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<RouterStatus>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersGetNamedSetResponse {
     /// end_interface: MixerGetResponseWithEtagBuilder
@@ -84294,11 +86354,13 @@ pub struct RoutersGetNamedSetResponse {
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<NamedSet>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersGetRoutePolicyResponse {
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<RoutePolicy>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersListBgpRoutes {
     #[prost(string, optional, tag = "3123477")]
@@ -84330,6 +86392,7 @@ pub struct RoutersListBgpRoutes {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersListNamedSets {
     #[prost(string, optional, tag = "3123477")]
@@ -84361,6 +86424,7 @@ pub struct RoutersListNamedSets {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersListRoutePolicies {
     #[prost(string, optional, tag = "3123477")]
@@ -84392,12 +86456,14 @@ pub struct RoutersListRoutePolicies {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersPreviewResponse {
     /// Preview of given router.
     #[prost(message, optional, tag = "195806222")]
     pub resource: ::core::option::Option<Router>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersScopedList {
     /// A list of routers contained in this scope.
@@ -84408,6 +86474,7 @@ pub struct RoutersScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SslHealthCheck {
     /// The TCP port number to which the health check prober sends packets. The
@@ -84485,6 +86552,7 @@ pub mod ssl_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84538,6 +86606,7 @@ pub mod ssl_health_check {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84581,6 +86650,7 @@ pub mod ssl_health_check {
 }
 /// DEPRECATED: Please use compute#savedDisk instead.
 /// An instance-attached disk resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedAttachedDisk {
     /// Specifies whether the disk will be auto-deleted when the instance is
@@ -84653,6 +86723,7 @@ pub struct SavedAttachedDisk {
 pub mod saved_attached_disk {
     /// Specifies the disk interface to use for attaching this disk, which is
     /// either SCSI or NVME.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84694,6 +86765,7 @@ pub mod saved_attached_disk {
         }
     }
     /// The mode in which this disk is attached to the source instance, eitherREAD_WRITE or READ_ONLY.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84743,6 +86815,7 @@ pub mod saved_attached_disk {
     /// reallocation. This status can either be UPDATING, meaning
     /// the size of the snapshot is being updated, or UP_TO_DATE,
     /// meaning the size of the snapshot is up-to-date.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84786,6 +86859,7 @@ pub mod saved_attached_disk {
         }
     }
     /// Specifies the type of the attached disk, either SCRATCH orPERSISTENT.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84828,6 +86902,7 @@ pub mod saved_attached_disk {
     }
 }
 /// An instance-attached disk resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SavedDisk {
     /// Output only. \[Output Only\] The architecture of the attached disk.
@@ -84857,6 +86932,7 @@ pub struct SavedDisk {
 /// Nested message and enum types in `SavedDisk`.
 pub mod saved_disk {
     /// Output only. \[Output Only\] The architecture of the attached disk.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84908,6 +86984,7 @@ pub mod saved_disk {
     /// reallocation. This status can either be UPDATING, meaning
     /// the size of the snapshot is being updated, or UP_TO_DATE,
     /// meaning the size of the snapshot is up-to-date.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -84951,6 +87028,7 @@ pub mod saved_disk {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScalingScheduleStatus {
     /// \[Output Only\] The last time the scaling schedule became active.
@@ -84975,6 +87053,7 @@ pub struct ScalingScheduleStatus {
 /// Nested message and enum types in `ScalingScheduleStatus`.
 pub mod scaling_schedule_status {
     /// \[Output Only\] The current state of a scaling schedule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85029,6 +87108,7 @@ pub mod scaling_schedule_status {
     }
 }
 /// Sets the scheduling options for an Instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     /// Specifies whether the instance should be automatically restarted if it is
@@ -85113,7 +87193,10 @@ pub struct Scheduling {
     /// Check the ProvisioningModel enum for the list of possible values.
     #[prost(string, optional, tag = "494423")]
     pub provisioning_model: ::core::option::Option<::prost::alloc::string::String>,
-    /// Default is false and there will be 120 seconds between GCE ACPI G2 Soft
+    /// Defines whether GCE ACPI G2 Soft
+    /// Off signal should be skipped during shutdown operation of VM.
+    ///
+    /// Default is false, meaning there will be 120 seconds between GCE ACPI G2 Soft
     /// Off and ACPI G3 Mechanical
     /// Off for Standard VMs and 30 seconds for Spot VMs.
     #[prost(bool, optional, tag = "201662378")]
@@ -85126,6 +87209,7 @@ pub struct Scheduling {
 /// Nested message and enum types in `Scheduling`.
 pub mod scheduling {
     /// Specifies the termination action for the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85182,6 +87266,7 @@ pub mod scheduling {
     /// information, see
     /// Set
     /// VM host maintenance policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85230,6 +87315,7 @@ pub mod scheduling {
         }
     }
     /// Specifies the provisioning model of the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85283,6 +87369,7 @@ pub mod scheduling {
     }
 }
 /// The configuration for gracefully shutting down the instance.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchedulingGracefulShutdown {
     /// Opts-in for graceful shutdown.
@@ -85296,6 +87383,7 @@ pub struct SchedulingGracefulShutdown {
 }
 /// Node Affinity: the configuration of desired nodes onto which this Instance
 /// could be scheduled.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchedulingNodeAffinity {
     /// Corresponds to the label key of Node resource.
@@ -85312,6 +87400,7 @@ pub struct SchedulingNodeAffinity {
 /// Nested message and enum types in `SchedulingNodeAffinity`.
 pub mod scheduling_node_affinity {
     /// Defines the operation of node selection. Valid operators areIN for affinity and NOT_IN for anti-affinity.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85359,6 +87448,7 @@ pub mod scheduling_node_affinity {
     }
 }
 /// Defines the behaviour for instances with the instance_termination_actionSTOP.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchedulingOnInstanceStopAction {
     /// If true, the contents of any attached Local SSD disks will be discarded
@@ -85368,6 +87458,7 @@ pub struct SchedulingOnInstanceStopAction {
     pub discard_local_ssd: ::core::option::Option<bool>,
 }
 /// An instance's screenshot.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Screenshot {
     /// \[Output Only\] The Base64-encoded screenshot data.
@@ -85378,6 +87469,7 @@ pub struct Screenshot {
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -85412,11 +87504,13 @@ pub struct SecurityPoliciesAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesListPreconfiguredExpressionSetsResponse {
     #[prost(message, optional, tag = "536200826")]
     pub preconfigured_expression_sets: ::core::option::Option<SecurityPoliciesWafConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesScopedList {
     /// A list of SecurityPolicies contained in this scope.
@@ -85427,6 +87521,7 @@ pub struct SecurityPoliciesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesWafConfig {
     #[prost(message, optional, tag = "74899924")]
@@ -85437,6 +87532,7 @@ pub struct SecurityPoliciesWafConfig {
 /// Only external backend services that use load balancers can
 /// reference a security policy. For more information, see
 /// Google Cloud Armor security policy overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicy {
     #[prost(message, optional, tag = "150240735")]
@@ -85609,6 +87705,7 @@ pub mod security_policy {
     ///   served from the application.
     ///
     /// This field can be set only at resource creation time.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85654,6 +87751,7 @@ pub mod security_policy {
     }
 }
 /// Configuration options for Cloud Armor Adaptive Protection (CAAP).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfig {
     /// If set to true, enables Cloud Armor Machine Learning.
@@ -85665,6 +87763,7 @@ pub struct SecurityPolicyAdaptiveProtectionConfig {
 /// Configuration options for L7 DDoS detection.
 /// This field is only supported in Global Security Policies of type
 /// CLOUD_ARMOR.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig {
     /// If set to true, enables CAAP for L7 DDoS detection.
@@ -85694,6 +87793,7 @@ pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config {
     /// PREMIUM - transparent rules.
     /// This field is only supported in Global Security Policies of type
     /// CLOUD_ARMOR.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85735,6 +87835,7 @@ pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
     #[prost(float, optional, tag = "84309694")]
@@ -85764,6 +87865,7 @@ pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThreshol
 }
 /// Configurations to specifc granular traffic units processed by
 /// Adaptive Protection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig {
     /// If enabled, traffic matching each unique value for the specified
@@ -85782,6 +87884,7 @@ pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThreshol
 /// Nested message and enum types in `SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig`.
 pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config_threshold_config_traffic_granularity_config {
     /// Type of this configuration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85826,6 +87929,7 @@ pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config_th
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyAdvancedOptionsConfig {
     /// Custom configuration to apply the JSON parsing. Only applicable when
@@ -85856,6 +87960,7 @@ pub struct SecurityPolicyAdvancedOptionsConfig {
 }
 /// Nested message and enum types in `SecurityPolicyAdvancedOptionsConfig`.
 pub mod security_policy_advanced_options_config {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85899,6 +88004,7 @@ pub mod security_policy_advanced_options_config {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -85940,6 +88046,7 @@ pub mod security_policy_advanced_options_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
     /// A list of custom Content-Type header values to apply the JSON parsing.
@@ -85954,6 +88061,7 @@ pub struct SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
     #[prost(string, repeated, tag = "17428787")]
     pub content_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyAssociation {
     /// The resource that the security policy is attached to.
@@ -85978,6 +88086,7 @@ pub struct SecurityPolicyAssociation {
     #[prost(string, optional, tag = "492051566")]
     pub short_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyDdosProtectionConfig {
     /// Check the DdosAdaptiveProtection enum for the list of possible values.
@@ -86006,6 +88115,7 @@ pub struct SecurityPolicyDdosProtectionConfig {
 }
 /// Nested message and enum types in `SecurityPolicyDdosProtectionConfig`.
 pub mod security_policy_ddos_protection_config {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86061,6 +88171,7 @@ pub mod security_policy_ddos_protection_config {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86105,6 +88216,7 @@ pub mod security_policy_ddos_protection_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -86127,6 +88239,7 @@ pub struct SecurityPolicyList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRecaptchaOptionsConfig {
     /// An optional field to supply a reCAPTCHA site key to be used for all the
@@ -86139,6 +88252,7 @@ pub struct SecurityPolicyRecaptchaOptionsConfig {
     #[prost(string, optional, tag = "447677034")]
     pub redirect_site_key: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyReference {
     #[prost(string, optional, tag = "171082513")]
@@ -86146,6 +88260,7 @@ pub struct SecurityPolicyReference {
 }
 /// Represents a rule that describes one or more match conditions along with
 /// the action to be taken when traffic matches this condition (allow or deny).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRule {
     /// The Action to perform when the rule is matched.
@@ -86259,6 +88374,7 @@ pub struct SecurityPolicyRule {
     #[prost(message, optional, tag = "163285307")]
     pub redirect_options: ::core::option::Option<SecurityPolicyRuleRedirectOptions>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleHttpHeaderAction {
     /// The list of request headers to add or overwrite if they're already
@@ -86268,6 +88384,7 @@ pub struct SecurityPolicyRuleHttpHeaderAction {
         SecurityPolicyRuleHttpHeaderActionHttpHeaderOption,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleHttpHeaderActionHttpHeaderOption {
     /// The name of the header to set.
@@ -86279,6 +88396,7 @@ pub struct SecurityPolicyRuleHttpHeaderActionHttpHeaderOption {
 }
 /// Represents a match condition that incoming traffic is evaluated against.
 /// Exactly one field must be specified.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcher {
     /// The configuration options available when specifying versioned_expr.
@@ -86317,6 +88435,7 @@ pub mod security_policy_rule_matcher {
     /// Available preconfigured expressions along with their requirements are:
     /// SRC_IPS_V1 - must specify the corresponding src_ip_range field in
     /// config.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86357,6 +88476,7 @@ pub mod security_policy_rule_matcher {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcherConfig {
     /// CIDR IP address range.
@@ -86364,6 +88484,7 @@ pub struct SecurityPolicyRuleMatcherConfig {
     #[prost(string, repeated, tag = "432128083")]
     pub src_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcherExprOptions {
     /// reCAPTCHA configuration options to be applied for the rule. If the
@@ -86373,6 +88494,7 @@ pub struct SecurityPolicyRuleMatcherExprOptions {
         SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions {
     /// A list of site keys to be used during the validation of reCAPTCHA
@@ -86392,6 +88514,7 @@ pub struct SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions {
 }
 /// Represents a match condition that incoming network traffic is evaluated
 /// against.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleNetworkMatcher {
     /// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text
@@ -86429,6 +88552,7 @@ pub struct SecurityPolicyRuleNetworkMatcher {
         SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch {
     /// Name of the user-defined field, as given in the definition.
@@ -86440,6 +88564,7 @@ pub struct SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch {
     #[prost(string, repeated, tag = "249928994")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRulePreconfiguredWafConfig {
     /// A list of exclusions to apply during preconfigured WAF evaluation.
@@ -86448,6 +88573,7 @@ pub struct SecurityPolicyRulePreconfiguredWafConfig {
         SecurityPolicyRulePreconfiguredWafConfigExclusion,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRulePreconfiguredWafConfigExclusion {
     /// A list of request body fields to be excluded from inspection during
@@ -86491,6 +88617,7 @@ pub struct SecurityPolicyRulePreconfiguredWafConfigExclusion {
     #[prost(string, optional, tag = "498440077")]
     pub target_rule_set: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams {
     /// The match operator for the field.
@@ -86504,6 +88631,7 @@ pub struct SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams {
 /// Nested message and enum types in `SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams`.
 pub mod security_policy_rule_preconfigured_waf_config_exclusion_field_params {
     /// The match operator for the field.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86563,6 +88691,7 @@ pub mod security_policy_rule_preconfigured_waf_config_exclusion_field_params {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptions {
     /// Can only be specified if the action for the rule is
@@ -86721,6 +88850,7 @@ pub mod security_policy_rule_rate_limit_options {
     ///
     /// For "fairshare" action, this value is limited to ALL i.e. a single rate
     /// limit threshold is enforced for all the requests matching the rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86792,6 +88922,7 @@ pub mod security_policy_rule_rate_limit_options {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig {
     /// Rate limit key name applicable only for the following key types:
@@ -86893,6 +89024,7 @@ pub mod security_policy_rule_rate_limit_options_enforce_on_key_config {
     /// client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
     /// key type defaults to ALL.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -86964,6 +89096,7 @@ pub mod security_policy_rule_rate_limit_options_enforce_on_key_config {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptionsThreshold {
     /// Number of HTTP(S) requests for calculating the threshold.
@@ -86973,6 +89106,7 @@ pub struct SecurityPolicyRuleRateLimitOptionsThreshold {
     #[prost(int32, optional, tag = "41084375")]
     pub interval_sec: ::core::option::Option<i32>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyRuleRedirectOptions {
     /// Target for the redirect action. This is required if the type is
@@ -87002,6 +89136,7 @@ pub mod security_policy_rule_redirect_options {
     /// - EXTERNAL_302: redirect to a different URL via a 302
     /// response.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87043,6 +89178,7 @@ pub mod security_policy_rule_redirect_options {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicyUserDefinedField {
     /// The base relative to which 'offset' is measured. Possible values are:
@@ -87095,6 +89231,7 @@ pub mod security_policy_user_defined_field {
     /// ```
     ///
     /// required
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87143,6 +89280,7 @@ pub mod security_policy_user_defined_field {
     }
 }
 /// The authentication and authorization settings for a BackendService.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecuritySettings {
     /// The configuration needed to generate a signature for access to private
@@ -87178,6 +89316,7 @@ pub struct SecuritySettings {
     pub subject_alt_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SendDiagnosticInterrupt. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendDiagnosticInterruptInstanceRequest {
     /// Name of the instance scoping this request.
@@ -87191,9 +89330,11 @@ pub struct SendDiagnosticInterruptInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A response message for Instances.SendDiagnosticInterrupt. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendDiagnosticInterruptInstanceResponse {}
 /// An instance serial console output.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SerialPortOutput {
     /// \[Output Only\] The contents of the console output.
@@ -87220,6 +89361,7 @@ pub struct SerialPortOutput {
     #[prost(int64, optional, tag = "109757538")]
     pub start: ::core::option::Option<i64>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerBinding {
     /// Check the Type enum for the list of possible values.
@@ -87228,6 +89370,7 @@ pub struct ServerBinding {
 }
 /// Nested message and enum types in `ServerBinding`.
 pub mod server_binding {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87279,6 +89422,7 @@ pub mod server_binding {
     }
 }
 /// A service account.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account.
@@ -87294,6 +89438,7 @@ pub struct ServiceAccount {
 /// It encapsulates the load balancer which fronts the service runs and
 /// a list of NAT IP ranges that the producers uses to represent
 /// the consumers connecting to the service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachment {
     /// Output only. \[Output Only\] An array of connections for all the consumers connected to
@@ -87443,6 +89588,7 @@ pub mod service_attachment {
     /// to ACCEPT_AUTOMATIC. An ACCEPT_AUTOMATIC
     /// service attachment is one that always accepts the connection from consumer
     /// forwarding rules.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87490,6 +89636,7 @@ pub mod service_attachment {
     }
 }
 /// Contains a list of ServiceAttachmentsScopedList.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -87522,6 +89669,7 @@ pub struct ServiceAttachmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// \[Output Only\] A connection connected to this service attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAttachmentConnectedEndpoint {
     /// The url of the consumer network.
@@ -87552,6 +89700,7 @@ pub struct ServiceAttachmentConnectedEndpoint {
 /// Nested message and enum types in `ServiceAttachmentConnectedEndpoint`.
 pub mod service_attachment_connected_endpoint {
     /// The status of a connected endpoint to this service attachment.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87612,6 +89761,7 @@ pub mod service_attachment_connected_endpoint {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAttachmentConsumerProjectLimit {
     /// The value of the limit to set. For endpoint_url, the limit should be no
@@ -87628,6 +89778,7 @@ pub struct ServiceAttachmentConsumerProjectLimit {
     #[prost(string, optional, tag = "349783336")]
     pub project_id_or_num: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -87653,6 +89804,7 @@ pub struct ServiceAttachmentList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentsScopedList {
     /// A list of ServiceAttachments contained in this scope.
@@ -87664,6 +89816,7 @@ pub struct ServiceAttachmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for TargetSslProxies.SetBackendService. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetBackendServiceTargetSslProxyRequest {
     /// Project ID for this request.
@@ -87695,6 +89848,7 @@ pub struct SetBackendServiceTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.SetBackendService. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetBackendServiceTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -87726,6 +89880,7 @@ pub struct SetBackendServiceTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.SetBackup. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetBackupTargetPoolRequest {
     /// New failoverRatio value for the target pool.
@@ -87760,6 +89915,7 @@ pub struct SetBackupTargetPoolRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for TargetHttpsProxies.SetCertificateMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetCertificateMapTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -87791,6 +89947,7 @@ pub struct SetCertificateMapTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetCertificateMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetCertificateMapTargetSslProxyRequest {
     /// Project ID for this request.
@@ -87822,6 +89979,7 @@ pub struct SetCertificateMapTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Projects.SetCloudArmorTier. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetCloudArmorTierProjectRequest {
     /// Project ID for this request.
@@ -87848,6 +90006,7 @@ pub struct SetCloudArmorTierProjectRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCommonInstanceMetadataOperationMetadata {
     /// \[Output Only\] The client operation id.
@@ -87861,6 +90020,7 @@ pub struct SetCommonInstanceMetadataOperationMetadata {
         SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo {
     /// \[Output Only\] If state is `ABANDONED` or `FAILED`, this field is
@@ -87877,6 +90037,7 @@ pub struct SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo {
 pub mod set_common_instance_metadata_operation_metadata_per_location_operation_info {
     /// \[Output Only\] Status of the action, which can be one of the following:
     /// `PROPAGATING`, `PROPAGATED`, `ABANDONED`, `FAILED`, or `DONE`.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -87936,6 +90097,7 @@ pub mod set_common_instance_metadata_operation_metadata_per_location_operation_i
     }
 }
 /// A request message for Projects.SetCommonInstanceMetadata. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCommonInstanceMetadataProjectRequest {
     /// The body resource for this request
@@ -87961,6 +90123,7 @@ pub struct SetCommonInstanceMetadataProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.SetDefaultNetworkTier. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetDefaultNetworkTierProjectRequest {
     /// Project ID for this request.
@@ -87988,6 +90151,7 @@ pub struct SetDefaultNetworkTierProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SetDeletionProtection. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetDeletionProtectionInstanceRequest {
     /// Whether the resource should be protected against deletion.
@@ -88019,6 +90183,7 @@ pub struct SetDeletionProtectionInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetDiskAutoDelete. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetDiskAutoDeleteInstanceRequest {
     /// Whether to auto-delete the disk when the instance is deleted.
@@ -88054,6 +90219,7 @@ pub struct SetDiskAutoDeleteInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.SetEdgeSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetEdgeSecurityPolicyBackendBucketRequest {
     /// Name of the BackendBucket resource to which the security policy should be
@@ -88085,6 +90251,7 @@ pub struct SetEdgeSecurityPolicyBackendBucketRequest {
     >,
 }
 /// A request message for BackendServices.SetEdgeSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetEdgeSecurityPolicyBackendServiceRequest {
     /// Name of the BackendService resource to which the edge security policy
@@ -88116,6 +90283,7 @@ pub struct SetEdgeSecurityPolicyBackendServiceRequest {
     >,
 }
 /// A request message for BackendBuckets.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyBackendBucketRequest {
     /// The body resource for this request
@@ -88131,6 +90299,7 @@ pub struct SetIamPolicyBackendBucketRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyBackendServiceRequest {
     /// The body resource for this request
@@ -88146,6 +90315,7 @@ pub struct SetIamPolicyBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyDiskRequest {
     /// Project ID for this request.
@@ -88162,6 +90332,7 @@ pub struct SetIamPolicyDiskRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for FirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyFirewallPolicyRequest {
     /// The body resource for this request
@@ -88174,6 +90345,7 @@ pub struct SetIamPolicyFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyImageRequest {
     /// The body resource for this request
@@ -88189,6 +90361,7 @@ pub struct SetIamPolicyImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstanceRequest {
     /// Project ID for this request.
@@ -88205,6 +90378,7 @@ pub struct SetIamPolicyInstanceRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for InstanceTemplates.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstanceTemplateRequest {
     /// The body resource for this request
@@ -88220,6 +90394,7 @@ pub struct SetIamPolicyInstanceTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshotGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstantSnapshotGroupRequest {
     /// Project ID for this request.
@@ -88236,6 +90411,7 @@ pub struct SetIamPolicyInstantSnapshotGroupRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for InstantSnapshots.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstantSnapshotRequest {
     /// Project ID for this request.
@@ -88252,6 +90428,7 @@ pub struct SetIamPolicyInstantSnapshotRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for InterconnectAttachmentGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInterconnectAttachmentGroupRequest {
     /// The body resource for this request
@@ -88267,6 +90444,7 @@ pub struct SetIamPolicyInterconnectAttachmentGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInterconnectGroupRequest {
     /// The body resource for this request
@@ -88282,6 +90460,7 @@ pub struct SetIamPolicyInterconnectGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for LicenseCodes.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyLicenseCodeRequest {
     /// The body resource for this request
@@ -88297,6 +90476,7 @@ pub struct SetIamPolicyLicenseCodeRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyLicenseRequest {
     /// The body resource for this request
@@ -88312,6 +90492,7 @@ pub struct SetIamPolicyLicenseRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyMachineImageRequest {
     /// The body resource for this request
@@ -88327,6 +90508,7 @@ pub struct SetIamPolicyMachineImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNetworkAttachmentRequest {
     /// Project ID for this request.
@@ -88345,6 +90527,7 @@ pub struct SetIamPolicyNetworkAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -88360,6 +90543,7 @@ pub struct SetIamPolicyNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNodeGroupRequest {
     /// Project ID for this request.
@@ -88376,6 +90560,7 @@ pub struct SetIamPolicyNodeGroupRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for NodeTemplates.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNodeTemplateRequest {
     /// Project ID for this request.
@@ -88394,6 +90579,7 @@ pub struct SetIamPolicyNodeTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendBuckets.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionBackendBucketRequest {
     /// Project ID for this request.
@@ -88412,6 +90598,7 @@ pub struct SetIamPolicyRegionBackendBucketRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionBackendServiceRequest {
     /// Project ID for this request.
@@ -88430,6 +90617,7 @@ pub struct SetIamPolicyRegionBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionDiskRequest {
     /// Project ID for this request.
@@ -88448,6 +90636,7 @@ pub struct SetIamPolicyRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshotGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionInstantSnapshotGroupRequest {
     /// Project ID for this request.
@@ -88466,6 +90655,7 @@ pub struct SetIamPolicyRegionInstantSnapshotGroupRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshots.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionInstantSnapshotRequest {
     /// Project ID for this request.
@@ -88484,6 +90674,7 @@ pub struct SetIamPolicyRegionInstantSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -88502,6 +90693,7 @@ pub struct SetIamPolicyRegionNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionSnapshotRequest {
     /// Project ID for this request.
@@ -88520,6 +90712,7 @@ pub struct SetIamPolicyRegionSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ReservationBlocks.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyReservationBlockRequest {
     /// Name or id of parent resource of the resource for this request.
@@ -88541,6 +90734,7 @@ pub struct SetIamPolicyReservationBlockRequest {
     >,
 }
 /// A request message for Reservations.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyReservationRequest {
     /// Project ID for this request.
@@ -88557,6 +90751,7 @@ pub struct SetIamPolicyReservationRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for ReservationSubBlocks.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyReservationSubBlockRequest {
     /// Name or id of parent resource of the resource for this request.
@@ -88578,6 +90773,7 @@ pub struct SetIamPolicyReservationSubBlockRequest {
     >,
 }
 /// A request message for ResourcePolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyResourcePolicyRequest {
     /// Project ID for this request.
@@ -88596,6 +90792,7 @@ pub struct SetIamPolicyResourcePolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyServiceAttachmentRequest {
     /// Project ID for this request.
@@ -88614,6 +90811,7 @@ pub struct SetIamPolicyServiceAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicySnapshotRequest {
     /// The body resource for this request
@@ -88629,6 +90827,7 @@ pub struct SetIamPolicySnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyStoragePoolRequest {
     /// Project ID for this request.
@@ -88645,6 +90844,7 @@ pub struct SetIamPolicyStoragePoolRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for Subnetworks.SetIamPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicySubnetworkRequest {
     /// Project ID for this request.
@@ -88663,6 +90863,7 @@ pub struct SetIamPolicySubnetworkRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.SetInstanceTemplate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetInstanceTemplateInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -88697,6 +90898,7 @@ pub struct SetInstanceTemplateInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.SetInstanceTemplate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetInstanceTemplateRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -88730,6 +90932,7 @@ pub struct SetInstanceTemplateRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Addresses.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsAddressRequest {
     /// Project ID for this request.
@@ -88763,6 +90966,7 @@ pub struct SetLabelsAddressRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsDiskRequest {
     /// Project ID for this request.
@@ -88794,6 +90998,7 @@ pub struct SetLabelsDiskRequest {
     pub zone_set_labels_request_resource: ::core::option::Option<ZoneSetLabelsRequest>,
 }
 /// A request message for ExternalVpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsExternalVpnGatewayRequest {
     /// The body resource for this request
@@ -88809,6 +91014,7 @@ pub struct SetLabelsExternalVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsForwardingRuleRequest {
     /// Project ID for this request.
@@ -88842,6 +91048,7 @@ pub struct SetLabelsForwardingRuleRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsGlobalAddressRequest {
     /// The body resource for this request
@@ -88857,6 +91064,7 @@ pub struct SetLabelsGlobalAddressRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for GlobalForwardingRules.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsGlobalForwardingRuleRequest {
     /// The body resource for this request
@@ -88872,6 +91080,7 @@ pub struct SetLabelsGlobalForwardingRuleRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsImageRequest {
     /// The body resource for this request
@@ -88887,6 +91096,7 @@ pub struct SetLabelsImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -88920,6 +91130,7 @@ pub struct SetLabelsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInstantSnapshotRequest {
     /// Project ID for this request.
@@ -88951,6 +91162,7 @@ pub struct SetLabelsInstantSnapshotRequest {
     pub zone_set_labels_request_resource: ::core::option::Option<ZoneSetLabelsRequest>,
 }
 /// A request message for InterconnectAttachments.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInterconnectAttachmentRequest {
     /// Project ID for this request.
@@ -88984,6 +91196,7 @@ pub struct SetLabelsInterconnectAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInterconnectRequest {
     /// The body resource for this request
@@ -88999,6 +91212,7 @@ pub struct SetLabelsInterconnectRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsMachineImageRequest {
     /// The body resource for this request
@@ -89014,6 +91228,7 @@ pub struct SetLabelsMachineImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRegionDiskRequest {
     /// Project ID for this request.
@@ -89047,6 +91262,7 @@ pub struct SetLabelsRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstantSnapshots.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRegionInstantSnapshotRequest {
     /// Project ID for this request.
@@ -89080,6 +91296,7 @@ pub struct SetLabelsRegionInstantSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionSecurityPolicies.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -89113,6 +91330,7 @@ pub struct SetLabelsRegionSecurityPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionSnapshots.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRegionSnapshotRequest {
     /// Project ID for this request.
@@ -89146,6 +91364,7 @@ pub struct SetLabelsRegionSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsSecurityPolicyRequest {
     /// The body resource for this request
@@ -89161,6 +91380,7 @@ pub struct SetLabelsSecurityPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsSnapshotRequest {
     /// The body resource for this request
@@ -89176,6 +91396,7 @@ pub struct SetLabelsSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -89209,6 +91430,7 @@ pub struct SetLabelsTargetVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsVpnGatewayRequest {
     /// Project ID for this request.
@@ -89242,6 +91464,7 @@ pub struct SetLabelsVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.SetLabels. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsVpnTunnelRequest {
     /// Project ID for this request.
@@ -89275,6 +91498,7 @@ pub struct SetLabelsVpnTunnelRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMachineResources. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMachineResourcesInstanceRequest {
     /// Name of the instance scoping this request.
@@ -89308,6 +91532,7 @@ pub struct SetMachineResourcesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMachineType. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMachineTypeInstanceRequest {
     /// Name of the instance scoping this request.
@@ -89341,6 +91566,7 @@ pub struct SetMachineTypeInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMetadata. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMetadataInstanceRequest {
     /// Name of the instance scoping this request.
@@ -89372,6 +91598,7 @@ pub struct SetMetadataInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMinCpuPlatform. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMinCpuPlatformInstanceRequest {
     /// Name of the instance scoping this request.
@@ -89405,6 +91632,7 @@ pub struct SetMinCpuPlatformInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetName. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNameInstanceRequest {
     /// The instance name for this request.
@@ -89438,6 +91666,7 @@ pub struct SetNameInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.SetName. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNameInterconnectRequest {
     /// Name of the interconnect to update.
@@ -89468,6 +91697,7 @@ pub struct SetNameInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroups.SetNamedPorts. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNamedPortsInstanceGroupRequest {
     /// The name of the instance group where the named ports are updated.
@@ -89502,6 +91732,7 @@ pub struct SetNamedPortsInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.SetNamedPorts. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNamedPortsRegionInstanceGroupRequest {
     /// The name of the regional instance group where the named ports are updated.
@@ -89535,6 +91766,7 @@ pub struct SetNamedPortsRegionInstanceGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.SetNodeTemplate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNodeTemplateNodeGroupRequest {
     /// Name of the NodeGroup resource to update.
@@ -89568,6 +91800,7 @@ pub struct SetNodeTemplateNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.SetPrivateIpGoogleAccess. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetPrivateIpGoogleAccessSubnetworkRequest {
     /// Project ID for this request.
@@ -89601,6 +91834,7 @@ pub struct SetPrivateIpGoogleAccessSubnetworkRequest {
     >,
 }
 /// A request message for TargetSslProxies.SetProxyHeader. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetProxyHeaderTargetSslProxyRequest {
     /// Project ID for this request.
@@ -89631,6 +91865,7 @@ pub struct SetProxyHeaderTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.SetProxyHeader. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetProxyHeaderTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -89661,6 +91896,7 @@ pub struct SetProxyHeaderTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetQuicOverride. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetQuicOverrideTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -89692,6 +91928,7 @@ pub struct SetQuicOverrideTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetScheduling. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSchedulingInstanceRequest {
     /// Instance name for this request.
@@ -89723,6 +91960,7 @@ pub struct SetSchedulingInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSecurityPolicyBackendServiceRequest {
     /// Name of the BackendService resource to which the security policy should be
@@ -89754,6 +91992,7 @@ pub struct SetSecurityPolicyBackendServiceRequest {
     >,
 }
 /// A request message for Instances.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSecurityPolicyInstanceRequest {
     /// Name of the Instance resource to which the security policy should be
@@ -89788,6 +92027,7 @@ pub struct SetSecurityPolicyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSecurityPolicyRegionBackendServiceRequest {
     /// Name of the BackendService resource to which the security policy should be
@@ -89822,6 +92062,7 @@ pub struct SetSecurityPolicyRegionBackendServiceRequest {
     >,
 }
 /// A request message for TargetInstances.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSecurityPolicyTargetInstanceRequest {
     /// Project ID for this request.
@@ -89856,6 +92097,7 @@ pub struct SetSecurityPolicyTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSecurityPolicyTargetPoolRequest {
     /// Project ID for this request.
@@ -89890,6 +92132,7 @@ pub struct SetSecurityPolicyTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetServiceAccount. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetServiceAccountInstanceRequest {
     /// Name of the instance resource to start.
@@ -89923,6 +92166,7 @@ pub struct SetServiceAccountInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetShieldedInstanceIntegrityPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetShieldedInstanceIntegrityPolicyInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -89956,6 +92200,7 @@ pub struct SetShieldedInstanceIntegrityPolicyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSslCertificatesRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -89990,6 +92235,7 @@ pub struct SetSslCertificatesRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSslCertificatesTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -90021,6 +92267,7 @@ pub struct SetSslCertificatesTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSslCertificatesTargetSslProxyRequest {
     /// Project ID for this request.
@@ -90052,6 +92299,7 @@ pub struct SetSslCertificatesTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetSslPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSslPolicyTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -90081,6 +92329,7 @@ pub struct SetSslPolicyTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetSslPolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetSslPolicyTargetSslProxyRequest {
     /// Project ID for this request.
@@ -90110,6 +92359,7 @@ pub struct SetSslPolicyTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetTags. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetTagsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -90141,6 +92391,7 @@ pub struct SetTagsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.SetTarget. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetTargetForwardingRuleRequest {
     /// Name of the ForwardingRule resource in which target is to be set.
@@ -90172,6 +92423,7 @@ pub struct SetTargetForwardingRuleRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for GlobalForwardingRules.SetTarget. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetTargetGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource in which target is to be set.
@@ -90200,6 +92452,7 @@ pub struct SetTargetGlobalForwardingRuleRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for InstanceGroupManagers.SetTargetPools. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetTargetPoolsInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -90234,6 +92487,7 @@ pub struct SetTargetPoolsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.SetTargetPools. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetTargetPoolsRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -90267,6 +92521,7 @@ pub struct SetTargetPoolsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionTargetHttpProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetUrlMapRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -90298,6 +92553,7 @@ pub struct SetUrlMapRegionTargetHttpProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for RegionTargetHttpsProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetUrlMapRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -90329,6 +92585,7 @@ pub struct SetUrlMapRegionTargetHttpsProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for TargetHttpProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetUrlMapTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -90357,6 +92614,7 @@ pub struct SetUrlMapTargetHttpProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for TargetHttpsProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetUrlMapTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -90386,6 +92644,7 @@ pub struct SetUrlMapTargetHttpsProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for Projects.SetUsageExportBucket. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetUsageExportBucketProjectRequest {
     /// Project ID for this request.
@@ -90411,6 +92670,7 @@ pub struct SetUsageExportBucketProjectRequest {
     pub usage_export_location_resource: ::core::option::Option<UsageExportLocation>,
 }
 /// The share setting for reservations and sole tenancy node groups.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShareSettings {
     /// A map of project id and project config. This is only valid when
@@ -90428,6 +92688,7 @@ pub struct ShareSettings {
 /// Nested message and enum types in `ShareSettings`.
 pub mod share_settings {
     /// Type of sharing for this shared-reservation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -90480,6 +92741,7 @@ pub mod share_settings {
     }
 }
 /// Config for each project in the share settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShareSettingsProjectConfig {
     /// The project ID, should be same as the key of this project config in the
@@ -90488,6 +92750,7 @@ pub struct ShareSettingsProjectConfig {
     pub project_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A set of Shielded Instance options.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has integrity monitoring enabled.Enabled by
@@ -90504,6 +92767,7 @@ pub struct ShieldedInstanceConfig {
     pub enable_vtpm: ::core::option::Option<bool>,
 }
 /// A Shielded Instance Identity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShieldedInstanceIdentity {
     /// An Endorsement Key (EK) made by the ECC P256 algorithm
@@ -90528,6 +92792,7 @@ pub struct ShieldedInstanceIdentity {
     pub signing_key: ::core::option::Option<ShieldedInstanceIdentityEntry>,
 }
 /// A Shielded Instance Identity Entry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShieldedInstanceIdentityEntry {
     /// A PEM-encoded X.509 certificate. This field can be empty.
@@ -90539,6 +92804,7 @@ pub struct ShieldedInstanceIdentityEntry {
 }
 /// The policy describes the baseline against which
 /// Instance boot integrity is measured.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShieldedInstanceIntegrityPolicy {
     /// Updates the integrity policy baseline using the
@@ -90547,6 +92813,7 @@ pub struct ShieldedInstanceIntegrityPolicy {
     pub update_auto_learn_policy: ::core::option::Option<bool>,
 }
 /// Represents a customer-supplied Signing Key used by Cloud CDN Signed URLs
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SignedUrlKey {
     /// Name of the key. The name must be 1-63 characters long, and comply withRFC1035.
@@ -90563,6 +92830,7 @@ pub struct SignedUrlKey {
     pub key_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SimulateMaintenanceEvent. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SimulateMaintenanceEventInstanceRequest {
     /// Name of the instance scoping this request.
@@ -90595,6 +92863,7 @@ pub struct SimulateMaintenanceEventInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.SimulateMaintenanceEvent. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SimulateMaintenanceEventNodeGroupRequest {
     /// Name of the NodeGroup resource whose nodes will go under maintenance
@@ -90633,6 +92902,7 @@ pub struct SimulateMaintenanceEventNodeGroupRequest {
 /// You can use snapshots to back up data on a regular interval. For more
 /// information, read  Creating
 /// persistent disk snapshots.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
     /// Output only. \[Output Only\] The architecture of the snapshot. Valid values are
@@ -90864,6 +93134,7 @@ pub struct Snapshot {
 pub mod snapshot {
     /// Output only. \[Output Only\] The architecture of the snapshot. Valid values are
     /// ARM64 or X86_64.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -90911,6 +93182,7 @@ pub mod snapshot {
         }
     }
     /// Indicates the type of the snapshot.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -90952,6 +93224,7 @@ pub mod snapshot {
         }
     }
     /// Output only. \[Output Only\] The status of the snapshot. This can beCREATING, DELETING, FAILED,READY, or UPLOADING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91013,6 +93286,7 @@ pub mod snapshot {
     /// reallocation. This status can either be unset, meaning the snapshot is
     /// being created, or UP_TO_DATE, meaning the size of the snapshot
     /// is up-to-date.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91056,6 +93330,7 @@ pub mod snapshot {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotGroupParameters {
     /// URLs of the zones where disks should be replicated to. Only applicable
@@ -91080,6 +93355,7 @@ pub struct SnapshotGroupParameters {
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of Snapshot resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -91106,6 +93382,7 @@ pub struct SnapshotList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional snapshot params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotParams {
     /// Input only. Resource manager tags to be bound to the snapshot. Tag keys and values have
@@ -91121,6 +93398,7 @@ pub struct SnapshotParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotSettings {
     /// (Regional snapshots use only)Policy of which location is allowed to access
@@ -91134,6 +93412,7 @@ pub struct SnapshotSettings {
         SnapshotSettingsStorageLocationSettings,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotSettingsAccessLocation {
     /// List of regions that can restore a regional
@@ -91151,6 +93430,7 @@ pub struct SnapshotSettingsAccessLocation {
 /// Nested message and enum types in `SnapshotSettingsAccessLocation`.
 pub mod snapshot_settings_access_location {
     /// Policy of which location is allowed to access snapshot.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91199,12 +93479,14 @@ pub mod snapshot_settings_access_location {
     }
 }
 /// A structure for specifying an allowed target region.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotSettingsAccessLocationAccessLocationPreference {
     /// Accessible region name
     #[prost(string, optional, tag = "138946292")]
     pub region: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotSettingsStorageLocationSettings {
     /// When the policy is SPECIFIC_LOCATIONS, snapshots will be stored
@@ -91223,6 +93505,7 @@ pub struct SnapshotSettingsStorageLocationSettings {
 /// Nested message and enum types in `SnapshotSettingsStorageLocationSettings`.
 pub mod snapshot_settings_storage_location_settings {
     /// The chosen location policy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91282,6 +93565,7 @@ pub mod snapshot_settings_storage_location_settings {
     }
 }
 /// A structure for specifying storage locations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotSettingsStorageLocationSettingsStorageLocationPreference {
     /// Name of the location. It should be one of the Cloud Storage buckets.
@@ -91289,6 +93573,7 @@ pub struct SnapshotSettingsStorageLocationSettingsStorageLocationPreference {
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotUpdateKmsKeyRequest {
     /// Optional. The new KMS key to replace the current one on the snapshot. If empty, the
@@ -91303,6 +93588,7 @@ pub struct SnapshotUpdateKmsKeyRequest {
     #[prost(string, optional, tag = "484373913")]
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceDiskEncryptionKey {
     /// Thecustomer-supplied
@@ -91323,6 +93609,7 @@ pub struct SourceDiskEncryptionKey {
 }
 /// A specification of the parameters to use when creating the instance template
 /// from a source instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInstanceParams {
     /// Attached disks configuration. If not provided, defaults are applied:
@@ -91334,6 +93621,7 @@ pub struct SourceInstanceParams {
 }
 /// DEPRECATED: Please use compute#instanceProperties instead.
 /// New properties will not be added to this field.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInstanceProperties {
     /// Enables instances created based on this machine image to send packets with
@@ -91421,6 +93709,7 @@ pub struct SourceInstanceProperties {
 pub mod source_instance_properties {
     /// KeyRevocationActionType of the instance. Supported options are "STOP" and
     /// "NONE". The default value is "NONE" if it is not specified.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91472,6 +93761,7 @@ pub mod source_instance_properties {
         }
     }
     /// PostKeyRevocationActionType of the instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91555,6 +93845,7 @@ pub mod source_instance_properties {
 /// Creating and using SSL certificates,SSL certificates
 /// quotas and limits, and
 /// Troubleshooting SSL certificates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificate {
     /// A value read into memory from a certificate file. The certificate file must
@@ -91623,6 +93914,7 @@ pub struct SslCertificate {
 pub mod ssl_certificate {
     /// (Optional) Specifies the type of SSL certificate, either "SELF_MANAGED" or
     /// "MANAGED". If not specified, the certificate is self-managed and the fieldscertificate and private_key are used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91669,6 +93961,7 @@ pub mod ssl_certificate {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -91702,6 +93995,7 @@ pub struct SslCertificateAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of SslCertificate resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -91728,6 +94022,7 @@ pub struct SslCertificateList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration and status of a managed SSL certificate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateManagedSslCertificate {
     /// Output only. \[Output only\] Detailed statuses of the domains specified for managed
@@ -91751,6 +94046,7 @@ pub struct SslCertificateManagedSslCertificate {
 /// Nested message and enum types in `SslCertificateManagedSslCertificate`.
 pub mod ssl_certificate_managed_ssl_certificate {
     /// Output only. \[Output only\] Status of the managed certificate resource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -91827,6 +94123,7 @@ pub mod ssl_certificate_managed_ssl_certificate {
     }
 }
 /// Configuration and status of a self-managed SSL certificate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SslCertificateSelfManagedSslCertificate {
     /// A local certificate file. The certificate must be in
@@ -91839,6 +94136,7 @@ pub struct SslCertificateSelfManagedSslCertificate {
     #[prost(string, optional, tag = "361331107")]
     pub private_key: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificatesScopedList {
     /// List of SslCertificates contained in this scope.
@@ -91849,6 +94147,7 @@ pub struct SslCertificatesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -91882,6 +94181,7 @@ pub struct SslPoliciesAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesList {
     /// Output only. \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -91907,11 +94207,13 @@ pub struct SslPoliciesList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SslPoliciesListAvailableFeaturesResponse {
     #[prost(string, repeated, tag = "246211645")]
     pub features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesScopedList {
     /// A list of SslPolicies contained in this scope.
@@ -91928,6 +94230,7 @@ pub struct SslPoliciesScopedList {
 /// suites, that are offered by Application Load Balancers and proxy Network Load
 /// Balancers. For more information, read
 /// SSL policies overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPolicy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -92014,6 +94317,7 @@ pub mod ssl_policy {
     /// The minimum version of SSL protocol that can be used by the clients to
     /// establish a connection with the load balancer. This can be one ofTLS_1_0, TLS_1_1, TLS_1_2,TLS_1_3. When set to TLS_1_3, the profile field
     /// must be set to RESTRICTED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92071,6 +94375,7 @@ pub mod ssl_policy {
     /// October 2026, and allows it afterward. When set to ENABLED,
     /// the load balancer allows X25519MLKEM768 key exchange. When set toDEFERRED, the load balancer disallows X25519MLKEM768 key
     /// exchange until October 2027, and allows it afterward.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92125,6 +94430,7 @@ pub mod ssl_policy {
     /// balancer when negotiating SSL with clients. This can be one ofCOMPATIBLE, MODERN, RESTRICTED,FIPS_202205, or CUSTOM. If usingCUSTOM, the set of SSL features to enable must be specified in
     /// the customFeatures field. If using FIPS_202205,
     /// the min_tls_version field must be set to TLS_1_2.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92186,12 +94492,14 @@ pub mod ssl_policy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SslPolicyReference {
     #[prost(string, optional, tag = "295190213")]
     pub ssl_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.StartAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartAsyncReplicationDiskRequest {
     /// The name of the persistent disk.
@@ -92225,6 +94533,7 @@ pub struct StartAsyncReplicationDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.StartAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartAsyncReplicationRegionDiskRequest {
     /// The name of the persistent disk.
@@ -92258,6 +94567,7 @@ pub struct StartAsyncReplicationRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Start. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartInstanceRequest {
     /// Name of the instance resource to start.
@@ -92286,6 +94596,7 @@ pub struct StartInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.StartInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -92320,6 +94631,7 @@ pub struct StartInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.StartInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -92353,6 +94665,7 @@ pub struct StartInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.StartWithEncryptionKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartWithEncryptionKeyInstanceRequest {
     /// Name of the instance resource to start.
@@ -92385,12 +94698,14 @@ pub struct StartWithEncryptionKeyInstanceRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatefulPolicy {
     #[prost(message, optional, tag = "2634026")]
     pub preserved_state: ::core::option::Option<StatefulPolicyPreservedState>,
 }
 /// Configuration of preserved resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatefulPolicyPreservedState {
     /// Disks created on the instances that will be preserved on instance
@@ -92418,6 +94733,7 @@ pub struct StatefulPolicyPreservedState {
         StatefulPolicyPreservedStateNetworkIp,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StatefulPolicyPreservedStateDiskDevice {
     /// These stateful disks will never be deleted during autohealing,
@@ -92436,6 +94752,7 @@ pub mod stateful_policy_preserved_state_disk_device {
     /// This flag is used to configure if the disk should be deleted after it
     /// is no longer used by the group, e.g. when the given instance or
     /// the whole group is deleted. Note: disks attached inREAD_ONLY mode cannot be auto-deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92479,6 +94796,7 @@ pub mod stateful_policy_preserved_state_disk_device {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StatefulPolicyPreservedStateNetworkIp {
     /// These stateful IPs will never be released during autohealing,
@@ -92497,6 +94815,7 @@ pub mod stateful_policy_preserved_state_network_ip {
     /// This flag is used to configure if the IP reservation should be deleted
     /// after it is no longer used by the group, e.g. when the given instance
     /// or the whole group is deleted.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92547,6 +94866,7 @@ pub mod stateful_policy_preserved_state_network_ip {
 ///
 /// You can find out more about this error model and how to work with it in the
 /// [API Design Guide](<https://cloud.google.com/apis/design/errors>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Status {
     /// The status code, which should be an enum value of google.rpc.Code.
@@ -92563,6 +94883,7 @@ pub struct Status {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.StopAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopAsyncReplicationDiskRequest {
     /// The name of the persistent disk.
@@ -92591,6 +94912,7 @@ pub struct StopAsyncReplicationDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.StopAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopAsyncReplicationRegionDiskRequest {
     /// The name of the persistent disk.
@@ -92619,6 +94941,7 @@ pub struct StopAsyncReplicationRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.StopGroupAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopGroupAsyncReplicationDiskRequest {
     /// The body resource for this request
@@ -92650,6 +94973,7 @@ pub struct StopGroupAsyncReplicationDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.StopGroupAsyncReplication. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopGroupAsyncReplicationRegionDiskRequest {
     /// The body resource for this request
@@ -92681,6 +95005,7 @@ pub struct StopGroupAsyncReplicationRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Stop. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopInstanceRequest {
     /// This property is required if the instance has any attached Local SSD disks.
@@ -92717,6 +95042,7 @@ pub struct StopInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.StopInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -92755,6 +95081,7 @@ pub struct StopInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.StopInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopInstancesRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -92792,6 +95119,7 @@ pub struct StopInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a zonal storage pool resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePool {
     /// Provisioning type of the byte capacity of the pool.
@@ -92915,6 +95243,7 @@ pub mod storage_pool {
     /// ADVANCED
     /// STANDARD
     /// UNSPECIFIED
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -92959,6 +95288,7 @@ pub mod storage_pool {
     /// ADVANCED
     /// STANDARD
     /// UNSPECIFIED
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93006,6 +95336,7 @@ pub mod storage_pool {
     ///   - READY: Storage pool is ready for use.
     ///   - DELETING: Storage pool is deleting.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93057,6 +95388,7 @@ pub mod storage_pool {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -93091,6 +95423,7 @@ pub struct StoragePoolAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoragePoolDisk {
     /// Output only. \[Output Only\] Instances this disk is attached to.
@@ -93133,6 +95466,7 @@ pub struct StoragePoolDisk {
 /// Nested message and enum types in `StoragePoolDisk`.
 pub mod storage_pool_disk {
     /// Output only. \[Output Only\] The disk status.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93194,6 +95528,7 @@ pub mod storage_pool_disk {
     }
 }
 /// Exapool provisioned capacities for each SKU type
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoragePoolExapoolProvisionedCapacityGb {
     /// Size, in GiB, of provisioned capacity-optimized capacity for this Exapool
@@ -93207,6 +95542,7 @@ pub struct StoragePoolExapoolProvisionedCapacityGb {
     pub write_optimized: ::core::option::Option<i64>,
 }
 /// A list of StoragePool resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolList {
     #[prost(string, optional, tag = "3123477")]
@@ -93239,6 +95575,7 @@ pub struct StoragePoolList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolListDisks {
     #[prost(string, optional, tag = "3123477")]
@@ -93272,6 +95609,7 @@ pub struct StoragePoolListDisks {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Additional storage pool params.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolParams {
     /// Input only. Resource manager tags to be bound to the storage pool. Tag keys and values
@@ -93288,6 +95626,7 @@ pub struct StoragePoolParams {
     >,
 }
 /// \[Output Only\] Contains output only fields.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoragePoolResourceStatus {
     /// \[Output Only\] Number of disks used.
@@ -93346,6 +95685,7 @@ pub struct StoragePoolResourceStatus {
     pub total_provisioned_disk_throughput: ::core::option::Option<i64>,
 }
 /// Share settings for the storage pool.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolShareSettings {
     /// A map of project id and project config.
@@ -93356,6 +95696,7 @@ pub struct StoragePoolShareSettings {
     >,
 }
 /// Config for each project in the share settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoragePoolShareSettingsProjectConfig {
     /// The project ID, should be same as the key of this project config in the
@@ -93363,6 +95704,7 @@ pub struct StoragePoolShareSettingsProjectConfig {
     #[prost(string, optional, tag = "177513473")]
     pub project_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoragePoolType {
     /// \[Output Only\] Creation timestamp inRFC3339
@@ -93423,6 +95765,7 @@ pub struct StoragePoolType {
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolTypeAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -93452,6 +95795,7 @@ pub struct StoragePoolTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of storage pool types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolTypeList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -93477,6 +95821,7 @@ pub struct StoragePoolTypeList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolTypesScopedList {
     /// \[Output Only\] A list of storage pool types contained in this scope.
@@ -93487,6 +95832,7 @@ pub struct StoragePoolTypesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoragePoolsScopedList {
     /// \[Output Only\] A list of storage pool contained in this scope.
@@ -93503,6 +95849,7 @@ pub struct StoragePoolsScopedList {
 /// Private Cloud network with one primary IP range and zero or more secondary
 /// IP ranges. For more information, read
 /// Virtual Private Cloud (VPC) Network.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subnetwork {
     /// Whether this subnetwork's ranges can conflict with existing custom routes.
@@ -93728,6 +96075,7 @@ pub mod subnetwork {
     /// The access type of IPv6 address this subnet holds. It's immutable and can
     /// only be specified during creation or the first time the subnet is updated
     /// into IPV4_IPV6 dual stack.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93784,6 +96132,7 @@ pub mod subnetwork {
     /// addresses with both VM and FR endpoint types. Such a subnetwork gets its
     /// IPv6 range from Google IP Pool directly.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93827,6 +96176,7 @@ pub mod subnetwork {
     /// This field is for internal use.
     ///
     /// This field can be both set at resource creation time and updated usingpatch.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93885,6 +96235,7 @@ pub mod subnetwork {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93955,6 +96306,7 @@ pub mod subnetwork {
         }
     }
     /// Configures subnet mask resolution for this subnetwork.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94020,6 +96372,7 @@ pub mod subnetwork {
     /// balancers in a region. A BACKUP subnetwork is one that is
     /// ready to be promoted to ACTIVE or is currently draining.
     /// This field can be updated with a patch request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94067,6 +96420,7 @@ pub mod subnetwork {
     /// IPv6 addresses. If not specified, IPV4_ONLY is used.
     ///
     /// This field can be both set at resource creation time and updated usingpatch.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94118,6 +96472,7 @@ pub mod subnetwork {
     /// purpose set to INTERNAL_HTTPS_LOAD_BALANCER and indicates that
     /// connections to the load balancer are being drained. A subnetwork that is
     /// draining cannot be used or modified until it reaches a status ofREADY
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94161,6 +96516,7 @@ pub mod subnetwork {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -94194,6 +96550,7 @@ pub struct SubnetworkAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Subnetwork resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -94221,6 +96578,7 @@ pub struct SubnetworkList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The available logging options for this subnetwork.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkLogConfig {
     /// Can only be specified if VPC flow logging for this subnetwork is enabled.
@@ -94268,6 +96626,7 @@ pub mod subnetwork_log_config {
     /// Toggles the aggregation interval for collecting flow logs. Increasing the
     /// interval time will reduce the amount of generated flow logs for long
     /// lasting connections. Default is an interval of 5 seconds per connection.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94325,6 +96684,7 @@ pub mod subnetwork_log_config {
     /// Can only be specified if VPC flow logs for this subnetwork is enabled.
     /// Configures whether all, none or a subset of metadata fields should be
     /// added to the reported VPC flow logs. Default isEXCLUDE_ALL_METADATA.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94370,6 +96730,7 @@ pub mod subnetwork_log_config {
     }
 }
 /// Additional subnetwork parameters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkParams {
     /// Tag keys/values directly bound to this resource.
@@ -94392,6 +96753,7 @@ pub struct SubnetworkParams {
     >,
 }
 /// Represents a secondary IP range of a subnetwork.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range.
@@ -94439,6 +96801,7 @@ pub struct SubnetworkSecondaryRange {
 }
 /// Nested message and enum types in `SubnetworkSecondaryRange`.
 pub mod subnetwork_secondary_range {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94486,6 +96849,7 @@ pub mod subnetwork_secondary_range {
 }
 /// The current IP utilization of all subnetwork ranges. Contains the total
 /// number of allocated and free IPs in each range.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkUtilizationDetails {
     /// Utilizations of external IPV6 IP range.
@@ -94511,6 +96875,7 @@ pub struct SubnetworkUtilizationDetails {
     >,
 }
 /// The IPV4 utilization of a single IP range.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubnetworkUtilizationDetailsIpv4Utilization {
     /// Will be set for secondary range. Empty for primary IPv4 range.
@@ -94522,6 +96887,7 @@ pub struct SubnetworkUtilizationDetailsIpv4Utilization {
     pub total_free_ip: ::core::option::Option<i64>,
 }
 /// The IPV6 utilization of a single IP range.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubnetworkUtilizationDetailsIpv6Utilization {
     #[prost(message, optional, tag = "279055546")]
@@ -94529,6 +96895,7 @@ pub struct SubnetworkUtilizationDetailsIpv6Utilization {
     #[prost(message, optional, tag = "105624031")]
     pub total_free_ip: ::core::option::Option<Uint128>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubnetworksExpandIpCidrRangeRequest {
     /// The IP (in CIDR format or netmask) of internal addresses that are legal on
@@ -94538,6 +96905,7 @@ pub struct SubnetworksExpandIpCidrRangeRequest {
     #[prost(string, optional, tag = "98117322")]
     pub ip_cidr_range: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworksScopedList {
     /// A list of subnetworks contained in this scope.
@@ -94548,6 +96916,7 @@ pub struct SubnetworksScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworksScopedWarning {
     /// Name of the scope containing this set of Subnetworks.
@@ -94557,6 +96926,7 @@ pub struct SubnetworksScopedWarning {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubnetworksSetPrivateIpGoogleAccessRequest {
     #[prost(bool, optional, tag = "421491790")]
@@ -94565,6 +96935,7 @@ pub struct SubnetworksSetPrivateIpGoogleAccessRequest {
 /// Subsetting configuration for this BackendService.
 /// Currently this is applicable only for Internal TCP/UDP load balancing,
 /// Internal HTTP(S) load balancing and Traffic Director.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Subsetting {
     /// Check the Policy enum for the list of possible values.
@@ -94573,6 +96944,7 @@ pub struct Subsetting {
 }
 /// Nested message and enum types in `Subsetting`.
 pub mod subsetting {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94633,6 +97005,7 @@ pub mod subsetting {
     }
 }
 /// A request message for Instances.Suspend. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SuspendInstanceRequest {
     /// This property is required if the instance has any attached Local SSD disks.
@@ -94666,6 +97039,7 @@ pub struct SuspendInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.SuspendInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SuspendInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -94700,6 +97074,7 @@ pub struct SuspendInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.SuspendInstances. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SuspendInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -94733,6 +97108,7 @@ pub struct SuspendInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.SwitchToCustomMode. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SwitchToCustomModeNetworkRequest {
     /// Name of the network to be updated.
@@ -94757,6 +97133,7 @@ pub struct SwitchToCustomModeNetworkRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TcpHealthCheck {
     /// The TCP port number to which the health check prober sends packets. The
@@ -94833,6 +97210,7 @@ pub mod tcp_health_check {
     /// endpoint group.  For instance group backends, the health check uses the
     /// port number determined by looking up the backend service's named port in
     /// the instance group's list of named ports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94886,6 +97264,7 @@ pub mod tcp_health_check {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -94928,6 +97307,7 @@ pub mod tcp_health_check {
     }
 }
 /// A set of instance tags.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Tags {
     /// Specifies a fingerprint for this request, which is essentially a hash of
@@ -94952,6 +97332,7 @@ pub struct Tags {
 /// scheme INTERNAL_SELF_MANAGED can reference a target gRPC proxy. The target
 /// gRPC Proxy references a URL map that specifies how traffic is routed to
 /// gRPC backend services.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetGrpcProxy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -95011,6 +97392,7 @@ pub struct TargetGrpcProxy {
     #[prost(bool, optional, tag = "101822888")]
     pub validate_for_proxyless: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetGrpcProxyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95036,6 +97418,7 @@ pub struct TargetGrpcProxyList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxiesScopedList {
     /// A list of TargetHttpProxies contained in this scope.
@@ -95065,6 +97448,7 @@ pub struct TargetHttpProxiesScopedList {
 /// then references a URL map. For more information, readUsing Target Proxies
 /// and
 /// Forwarding rule concepts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetHttpProxy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -95136,6 +97520,7 @@ pub struct TargetHttpProxy {
     #[prost(string, optional, tag = "367020684")]
     pub url_map: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxyAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95166,6 +97551,7 @@ pub struct TargetHttpProxyAggregatedList {
     pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A list of TargetHttpProxy resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95192,6 +97578,7 @@ pub struct TargetHttpProxyList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxiesScopedList {
     /// A list of TargetHttpsProxies contained in this scope.
@@ -95202,6 +97589,7 @@ pub struct TargetHttpsProxiesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetHttpsProxiesSetCertificateMapRequest {
     /// URL of the Certificate Map to associate with this TargetHttpsProxy.
@@ -95210,6 +97598,7 @@ pub struct TargetHttpsProxiesSetCertificateMapRequest {
     #[prost(string, optional, tag = "156463796")]
     pub certificate_map: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetHttpsProxiesSetQuicOverrideRequest {
     /// QUIC policy for the TargetHttpsProxy resource.
@@ -95220,6 +97609,7 @@ pub struct TargetHttpsProxiesSetQuicOverrideRequest {
 /// Nested message and enum types in `TargetHttpsProxiesSetQuicOverrideRequest`.
 pub mod target_https_proxies_set_quic_override_request {
     /// QUIC policy for the TargetHttpsProxy resource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -95268,6 +97658,7 @@ pub mod target_https_proxies_set_quic_override_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetHttpsProxiesSetSslCertificatesRequest {
     /// New set of SslCertificate resources to associate
@@ -95296,6 +97687,7 @@ pub struct TargetHttpsProxiesSetSslCertificatesRequest {
 /// then references a URL map. For more information, readUsing Target Proxies
 /// and
 /// Forwarding rule concepts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetHttpsProxy {
     /// Optional. A URL referring to a networksecurity.AuthorizationPolicy resource
@@ -95496,6 +97888,7 @@ pub mod target_https_proxy {
     /// load balancer doesn't use QUIC.
     /// - If the quic-override flag is not specified,NONE is implied.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -95565,6 +97958,7 @@ pub mod target_https_proxy {
     /// compliant.
     ///
     /// The default value is DISABLED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -95628,6 +98022,7 @@ pub mod target_https_proxy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxyAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95661,6 +98056,7 @@ pub struct TargetHttpsProxyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetHttpsProxy resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95694,6 +98090,7 @@ pub struct TargetHttpsProxyList {
 /// single source. For example, ESP, AH, TCP, or UDP.
 /// For more information, readTarget
 /// instances.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetInstance {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -95761,6 +98158,7 @@ pub mod target_instance {
     /// Must have a value of NO_NAT.
     /// Protocol forwarding delivers packets while preserving the destination IP
     /// address of the forwarding rule referencing the target instance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -95800,6 +98198,7 @@ pub mod target_instance {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstanceAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95832,6 +98231,7 @@ pub struct TargetInstanceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetInstance resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstanceList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -95857,6 +98257,7 @@ pub struct TargetInstanceList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstancesScopedList {
     /// A list of target instances contained in this scope.
@@ -95873,6 +98274,7 @@ pub struct TargetInstancesScopedList {
 /// A target pool references member instances, an associated legacy
 /// HttpHealthCheck resource, and, optionally, a backup target pool.
 /// For more information, readUsing target pools.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPool {
     /// The server-defined URL for the resource. This field is applicable only when
@@ -95977,6 +98379,7 @@ pub mod target_pool {
     /// CLIENT_IP_PROTO: Connections from the same client IP
     /// with the same IP protocol will go to the same instance in the
     /// pool while that instance remains healthy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96065,6 +98468,7 @@ pub mod target_pool {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96097,6 +98501,7 @@ pub struct TargetPoolAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolInstanceHealth {
     #[prost(message, repeated, tag = "380545845")]
@@ -96107,6 +98512,7 @@ pub struct TargetPoolInstanceHealth {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of TargetPool resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96133,12 +98539,14 @@ pub struct TargetPoolList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsAddHealthCheckRequest {
     /// The HttpHealthCheck to add to the target pool.
     #[prost(message, repeated, tag = "448370606")]
     pub health_checks: ::prost::alloc::vec::Vec<HealthCheckReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsAddInstanceRequest {
     /// A full or partial URL to an instance to add to this target pool. This can
@@ -96152,6 +98560,7 @@ pub struct TargetPoolsAddInstanceRequest {
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsRemoveHealthCheckRequest {
     /// Health check URL to be removed. This can be a full or valid partial URL.
@@ -96165,12 +98574,14 @@ pub struct TargetPoolsRemoveHealthCheckRequest {
     #[prost(message, repeated, tag = "448370606")]
     pub health_checks: ::prost::alloc::vec::Vec<HealthCheckReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsRemoveInstanceRequest {
     /// URLs of the instances to be removed from target pool.
     #[prost(message, repeated, tag = "29097598")]
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsScopedList {
     /// A list of target pools contained in this scope.
@@ -96181,17 +98592,20 @@ pub struct TargetPoolsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetReference {
     #[prost(string, optional, tag = "192835985")]
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSslProxiesSetBackendServiceRequest {
     /// The URL of the new BackendService resource for the targetSslProxy.
     #[prost(string, optional, tag = "373540533")]
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSslProxiesSetCertificateMapRequest {
     /// URL of the Certificate Map to associate with this TargetSslProxy.
@@ -96200,6 +98614,7 @@ pub struct TargetSslProxiesSetCertificateMapRequest {
     #[prost(string, optional, tag = "156463796")]
     pub certificate_map: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSslProxiesSetProxyHeaderRequest {
     /// The new type of proxy header to append before sending data to the
@@ -96212,6 +98627,7 @@ pub struct TargetSslProxiesSetProxyHeaderRequest {
 pub mod target_ssl_proxies_set_proxy_header_request {
     /// The new type of proxy header to append before sending data to the
     /// backend.  NONE or PROXY_V1 are allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96253,6 +98669,7 @@ pub mod target_ssl_proxies_set_proxy_header_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSslProxiesSetSslCertificatesRequest {
     /// New set of URLs to SslCertificate resources to associate with this
@@ -96267,6 +98684,7 @@ pub struct TargetSslProxiesSetSslCertificatesRequest {
 /// The forwarding rule references the target SSL proxy, and the target proxy
 /// then references a backend service. For more information, readProxy Network
 /// Load Balancer overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSslProxy {
     /// URL of a certificate map that identifies a certificate map associated with
@@ -96331,6 +98749,7 @@ pub mod target_ssl_proxy {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96373,6 +98792,7 @@ pub mod target_ssl_proxy {
     }
 }
 /// Contains a list of TargetSslProxy resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96398,6 +98818,7 @@ pub struct TargetSslProxyList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxiesScopedList {
     /// A list of TargetTcpProxies contained in this scope.
@@ -96408,12 +98829,14 @@ pub struct TargetTcpProxiesScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetTcpProxiesSetBackendServiceRequest {
     /// The URL of the new BackendService resource for the targetTcpProxy.
     #[prost(string, optional, tag = "373540533")]
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetTcpProxiesSetProxyHeaderRequest {
     /// The new type of proxy header to append before sending data to the
@@ -96426,6 +98849,7 @@ pub struct TargetTcpProxiesSetProxyHeaderRequest {
 pub mod target_tcp_proxies_set_proxy_header_request {
     /// The new type of proxy header to append before sending data to the
     /// backend.  NONE or PROXY_V1 are allowed.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96473,6 +98897,7 @@ pub mod target_tcp_proxies_set_proxy_header_request {
 /// The forwarding rule references the target TCP proxy, and the target proxy
 /// then references a backend service. For more information, readProxy Network
 /// Load Balancer overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetTcpProxy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -96536,6 +98961,7 @@ pub struct TargetTcpProxy {
 /// Nested message and enum types in `TargetTcpProxy`.
 pub mod target_tcp_proxy {
     /// Specifies the type of load balancing scheme used by this target proxy.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96587,6 +99013,7 @@ pub mod target_tcp_proxy {
     /// Specifies the type of proxy header to append before sending data to the
     /// backend, either NONE or PROXY_V1. The default
     /// is NONE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96628,6 +99055,7 @@ pub mod target_tcp_proxy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxyAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96661,6 +99089,7 @@ pub struct TargetTcpProxyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetTcpProxy resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxyList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96691,6 +99120,7 @@ pub struct TargetTcpProxyList {
 /// The target VPN gateway resource represents a Classic Cloud VPN gateway.
 /// For more information, read thethe
 /// Cloud VPN Overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGateway {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -96771,6 +99201,7 @@ pub struct TargetVpnGateway {
 pub mod target_vpn_gateway {
     /// \[Output Only\] The status of the VPN gateway,
     /// which can be one of the following: CREATING, READY, FAILED, or DELETING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -96818,6 +99249,7 @@ pub mod target_vpn_gateway {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewayAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96850,6 +99282,7 @@ pub struct TargetVpnGatewayAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetVpnGateway resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewayList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -96875,6 +99308,7 @@ pub struct TargetVpnGatewayList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewayParams {
     /// Tag keys/values directly bound to this resource.
@@ -96898,6 +99332,7 @@ pub struct TargetVpnGatewayParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewaysScopedList {
     /// \[Output Only\] A list of target VPN gateways contained in this scope.
@@ -96908,6 +99343,7 @@ pub struct TargetVpnGatewaysScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestFailure {
     /// The actual output URL evaluated by a load balancer containing the scheme,
@@ -96945,6 +99381,7 @@ pub struct TestFailure {
     pub path: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Addresses.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsAddressRequest {
     /// Project ID for this request.
@@ -96963,6 +99400,7 @@ pub struct TestIamPermissionsAddressRequest {
     >,
 }
 /// A request message for Autoscalers.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsAutoscalerRequest {
     /// Project ID for this request.
@@ -96981,6 +99419,7 @@ pub struct TestIamPermissionsAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsBackendBucketRequest {
     /// Project ID for this request.
@@ -96996,6 +99435,7 @@ pub struct TestIamPermissionsBackendBucketRequest {
     >,
 }
 /// A request message for BackendServices.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsBackendServiceRequest {
     /// Project ID for this request.
@@ -97011,6 +99451,7 @@ pub struct TestIamPermissionsBackendServiceRequest {
     >,
 }
 /// A request message for Disks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsDiskRequest {
     /// Project ID for this request.
@@ -97029,6 +99470,7 @@ pub struct TestIamPermissionsDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsExternalVpnGatewayRequest {
     /// Project ID for this request.
@@ -97044,6 +99486,7 @@ pub struct TestIamPermissionsExternalVpnGatewayRequest {
     >,
 }
 /// A request message for FirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsFirewallPolicyRequest {
     /// Name or id of the resource for this request.
@@ -97056,6 +99499,7 @@ pub struct TestIamPermissionsFirewallPolicyRequest {
     >,
 }
 /// A request message for Firewalls.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsFirewallRequest {
     /// Project ID for this request.
@@ -97071,6 +99515,7 @@ pub struct TestIamPermissionsFirewallRequest {
     >,
 }
 /// A request message for GlobalAddresses.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsGlobalAddressRequest {
     /// Project ID for this request.
@@ -97086,6 +99531,7 @@ pub struct TestIamPermissionsGlobalAddressRequest {
     >,
 }
 /// A request message for HealthChecks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsHealthCheckRequest {
     /// Project ID for this request.
@@ -97101,6 +99547,7 @@ pub struct TestIamPermissionsHealthCheckRequest {
     >,
 }
 /// A request message for Images.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsImageRequest {
     /// Project ID for this request.
@@ -97116,6 +99563,7 @@ pub struct TestIamPermissionsImageRequest {
     >,
 }
 /// A request message for InstanceGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInstanceGroupRequest {
     /// Project ID for this request.
@@ -97134,6 +99582,7 @@ pub struct TestIamPermissionsInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInstanceRequest {
     /// Project ID for this request.
@@ -97152,6 +99601,7 @@ pub struct TestIamPermissionsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInstanceTemplateRequest {
     /// Project ID for this request.
@@ -97167,6 +99617,7 @@ pub struct TestIamPermissionsInstanceTemplateRequest {
     >,
 }
 /// A request message for InstantSnapshotGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInstantSnapshotGroupRequest {
     /// Project ID for this request.
@@ -97185,6 +99636,7 @@ pub struct TestIamPermissionsInstantSnapshotGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstantSnapshots.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInstantSnapshotRequest {
     /// Project ID for this request.
@@ -97203,6 +99655,7 @@ pub struct TestIamPermissionsInstantSnapshotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachmentGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInterconnectAttachmentGroupRequest {
     /// Project ID for this request.
@@ -97218,6 +99671,7 @@ pub struct TestIamPermissionsInterconnectAttachmentGroupRequest {
     >,
 }
 /// A request message for InterconnectGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsInterconnectGroupRequest {
     /// Project ID for this request.
@@ -97233,6 +99687,7 @@ pub struct TestIamPermissionsInterconnectGroupRequest {
     >,
 }
 /// A request message for LicenseCodes.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsLicenseCodeRequest {
     /// Project ID for this request.
@@ -97248,6 +99703,7 @@ pub struct TestIamPermissionsLicenseCodeRequest {
     >,
 }
 /// A request message for Licenses.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsLicenseRequest {
     /// Project ID for this request.
@@ -97263,6 +99719,7 @@ pub struct TestIamPermissionsLicenseRequest {
     >,
 }
 /// A request message for MachineImages.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsMachineImageRequest {
     /// Project ID for this request.
@@ -97278,6 +99735,7 @@ pub struct TestIamPermissionsMachineImageRequest {
     >,
 }
 /// A request message for NetworkAttachments.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsNetworkAttachmentRequest {
     /// Project ID for this request.
@@ -97296,6 +99754,7 @@ pub struct TestIamPermissionsNetworkAttachmentRequest {
     >,
 }
 /// A request message for NetworkEndpointGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsNetworkEndpointGroupRequest {
     /// Project ID for this request.
@@ -97314,6 +99773,7 @@ pub struct TestIamPermissionsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -97329,6 +99789,7 @@ pub struct TestIamPermissionsNetworkFirewallPolicyRequest {
     >,
 }
 /// A request message for NodeGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsNodeGroupRequest {
     /// Project ID for this request.
@@ -97347,6 +99808,7 @@ pub struct TestIamPermissionsNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsNodeTemplateRequest {
     /// Project ID for this request.
@@ -97365,6 +99827,7 @@ pub struct TestIamPermissionsNodeTemplateRequest {
     >,
 }
 /// A request message for PacketMirrorings.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsPacketMirroringRequest {
     /// Project ID for this request.
@@ -97383,6 +99846,7 @@ pub struct TestIamPermissionsPacketMirroringRequest {
     >,
 }
 /// A request message for RegionAutoscalers.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionAutoscalerRequest {
     /// Project ID for this request.
@@ -97401,6 +99865,7 @@ pub struct TestIamPermissionsRegionAutoscalerRequest {
     >,
 }
 /// A request message for RegionBackendBuckets.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionBackendBucketRequest {
     /// Project ID for this request.
@@ -97419,6 +99884,7 @@ pub struct TestIamPermissionsRegionBackendBucketRequest {
     >,
 }
 /// A request message for RegionBackendServices.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionBackendServiceRequest {
     /// Project ID for this request.
@@ -97437,6 +99903,7 @@ pub struct TestIamPermissionsRegionBackendServiceRequest {
     >,
 }
 /// A request message for RegionCompositeHealthChecks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionCompositeHealthCheckRequest {
     /// Project ID for this request.
@@ -97455,6 +99922,7 @@ pub struct TestIamPermissionsRegionCompositeHealthCheckRequest {
     >,
 }
 /// A request message for RegionDisks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionDiskRequest {
     /// Project ID for this request.
@@ -97473,6 +99941,7 @@ pub struct TestIamPermissionsRegionDiskRequest {
     >,
 }
 /// A request message for RegionHealthAggregationPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionHealthAggregationPolicyRequest {
     /// Project ID for this request.
@@ -97491,6 +99960,7 @@ pub struct TestIamPermissionsRegionHealthAggregationPolicyRequest {
     >,
 }
 /// A request message for RegionHealthChecks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionHealthCheckRequest {
     /// Project ID for this request.
@@ -97509,6 +99979,7 @@ pub struct TestIamPermissionsRegionHealthCheckRequest {
     >,
 }
 /// A request message for RegionHealthCheckServices.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionHealthCheckServiceRequest {
     /// Project ID for this request.
@@ -97527,6 +99998,7 @@ pub struct TestIamPermissionsRegionHealthCheckServiceRequest {
     >,
 }
 /// A request message for RegionHealthSources.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionHealthSourceRequest {
     /// Project ID for this request.
@@ -97545,6 +100017,7 @@ pub struct TestIamPermissionsRegionHealthSourceRequest {
     >,
 }
 /// A request message for RegionInstanceGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionInstanceGroupRequest {
     /// Project ID for this request.
@@ -97563,6 +100036,7 @@ pub struct TestIamPermissionsRegionInstanceGroupRequest {
     >,
 }
 /// A request message for RegionInstantSnapshotGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionInstantSnapshotGroupRequest {
     /// Project ID for this request.
@@ -97581,6 +100055,7 @@ pub struct TestIamPermissionsRegionInstantSnapshotGroupRequest {
     >,
 }
 /// A request message for RegionInstantSnapshots.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionInstantSnapshotRequest {
     /// Project ID for this request.
@@ -97599,6 +100074,7 @@ pub struct TestIamPermissionsRegionInstantSnapshotRequest {
     >,
 }
 /// A request message for RegionNetworkFirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -97617,6 +100093,7 @@ pub struct TestIamPermissionsRegionNetworkFirewallPolicyRequest {
     >,
 }
 /// A request message for RegionNotificationEndpoints.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionNotificationEndpointRequest {
     /// Project ID for this request.
@@ -97635,6 +100112,7 @@ pub struct TestIamPermissionsRegionNotificationEndpointRequest {
     >,
 }
 /// A request message for RegionSnapshots.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRegionSnapshotRequest {
     /// Project ID for this request.
@@ -97653,6 +100131,7 @@ pub struct TestIamPermissionsRegionSnapshotRequest {
     >,
 }
 /// A request message for ReservationBlocks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsReservationBlockRequest {
     /// Name or id of parent resource of the resource for this request.
@@ -97674,6 +100153,7 @@ pub struct TestIamPermissionsReservationBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsReservationRequest {
     /// Project ID for this request.
@@ -97692,6 +100172,7 @@ pub struct TestIamPermissionsReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSubBlocks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsReservationSubBlockRequest {
     /// Name or id of parent resource of the resource for this request.
@@ -97713,6 +100194,7 @@ pub struct TestIamPermissionsReservationSubBlockRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsResourcePolicyRequest {
     /// Project ID for this request.
@@ -97731,6 +100213,7 @@ pub struct TestIamPermissionsResourcePolicyRequest {
     >,
 }
 /// A request message for Routes.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRouteRequest {
     /// Project ID for this request.
@@ -97746,6 +100229,7 @@ pub struct TestIamPermissionsRouteRequest {
     >,
 }
 /// A request message for ServiceAttachments.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsServiceAttachmentRequest {
     /// Project ID for this request.
@@ -97764,6 +100248,7 @@ pub struct TestIamPermissionsServiceAttachmentRequest {
     >,
 }
 /// A request message for Snapshots.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsSnapshotRequest {
     /// Project ID for this request.
@@ -97779,6 +100264,7 @@ pub struct TestIamPermissionsSnapshotRequest {
     >,
 }
 /// A request message for StoragePools.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsStoragePoolRequest {
     /// Project ID for this request.
@@ -97797,6 +100283,7 @@ pub struct TestIamPermissionsStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsSubnetworkRequest {
     /// Project ID for this request.
@@ -97815,6 +100302,7 @@ pub struct TestIamPermissionsSubnetworkRequest {
     >,
 }
 /// A request message for TargetInstances.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsTargetInstanceRequest {
     /// Project ID for this request.
@@ -97833,6 +100321,7 @@ pub struct TestIamPermissionsTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsTargetPoolRequest {
     /// Project ID for this request.
@@ -97851,6 +100340,7 @@ pub struct TestIamPermissionsTargetPoolRequest {
     >,
 }
 /// A request message for TargetSslProxies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsTargetSslProxyRequest {
     /// Project ID for this request.
@@ -97866,6 +100356,7 @@ pub struct TestIamPermissionsTargetSslProxyRequest {
     >,
 }
 /// A request message for TargetTcpProxies.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -97881,6 +100372,7 @@ pub struct TestIamPermissionsTargetTcpProxyRequest {
     >,
 }
 /// A request message for UrlMaps.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsUrlMapRequest {
     /// Project ID for this request.
@@ -97896,6 +100388,7 @@ pub struct TestIamPermissionsUrlMapRequest {
     >,
 }
 /// A request message for VpnGateways.TestIamPermissions. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsVpnGatewayRequest {
     /// Project ID for this request.
@@ -97913,6 +100406,7 @@ pub struct TestIamPermissionsVpnGatewayRequest {
         TestPermissionsRequest,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestPermissionsRequest {
     /// The set of permissions to check for the 'resource'. Permissions with
@@ -97920,6 +100414,7 @@ pub struct TestPermissionsRequest {
     #[prost(string, repeated, tag = "59962500")]
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestPermissionsResponse {
     /// A subset of `TestPermissionsRequest.permissions` that the caller is
@@ -97929,6 +100424,7 @@ pub struct TestPermissionsResponse {
 }
 /// Represents a time zone from the
 /// [IANA Time Zone Database](<https://www.iana.org/time-zones>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeZone {
     /// IANA Time Zone Database time zone. For example "America/New_York".
@@ -97938,6 +100434,7 @@ pub struct TimeZone {
     #[prost(string, optional, tag = "351608024")]
     pub version: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Uint128 {
     #[prost(uint64, optional, tag = "3202466")]
@@ -97946,6 +100443,7 @@ pub struct Uint128 {
     pub low: ::core::option::Option<u64>,
 }
 /// Upcoming Maintenance notification information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpcomingMaintenance {
     /// Indicates if the maintenance can be customer triggered.
@@ -97980,6 +100478,7 @@ pub struct UpcomingMaintenance {
 }
 /// Nested message and enum types in `UpcomingMaintenance`.
 pub mod upcoming_maintenance {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -98096,6 +100595,7 @@ pub mod upcoming_maintenance {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -98143,6 +100643,7 @@ pub mod upcoming_maintenance {
         }
     }
     /// Defines the type of maintenance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -98198,6 +100699,7 @@ pub mod upcoming_maintenance {
     }
 }
 /// A request message for Instances.UpdateAccessConfig. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAccessConfigInstanceRequest {
     /// The body resource for this request
@@ -98232,6 +100734,7 @@ pub struct UpdateAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Autoscalers.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAutoscalerRequest {
     /// Name of the autoscaler to update.
@@ -98263,6 +100766,7 @@ pub struct UpdateAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackendBucketRequest {
     /// Name of the BackendBucket resource to update.
@@ -98291,6 +100795,7 @@ pub struct UpdateBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackendServiceRequest {
     /// Name of the BackendService resource to update.
@@ -98319,6 +100824,7 @@ pub struct UpdateBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDiskRequest {
     /// The disk name for this request.
@@ -98355,6 +100861,7 @@ pub struct UpdateDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.UpdateDisplayDevice. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDisplayDeviceInstanceRequest {
     /// The body resource for this request
@@ -98386,6 +100893,7 @@ pub struct UpdateDisplayDeviceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Firewalls.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFirewallRequest {
     /// Name of the firewall rule to update.
@@ -98414,6 +100922,7 @@ pub struct UpdateFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FutureReservations.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFutureReservationRequest {
     /// Name of the reservation to update. Name should conform to RFC1035.
@@ -98448,6 +100957,7 @@ pub struct UpdateFutureReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalVmExtensionPolicies.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGlobalVmExtensionPolicyRequest {
     /// Name of the global VM extension policy to update.
@@ -98478,6 +100988,7 @@ pub struct UpdateGlobalVmExtensionPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateHealthCheckRequest {
     /// Name of the HealthCheck resource to update.
@@ -98506,6 +101017,7 @@ pub struct UpdateHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Whether to discard local SSDs from the instance during restart
@@ -98568,6 +101080,7 @@ pub mod update_instance_request {
     /// NO_EFFECT
     /// REFRESH
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -98612,6 +101125,7 @@ pub mod update_instance_request {
     /// NO_EFFECT
     /// REFRESH
     /// RESTART
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -98652,6 +101166,7 @@ pub mod update_instance_request {
     }
 }
 /// A request message for Disks.UpdateKmsKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateKmsKeyDiskRequest {
     /// Name of the Disk resource, should conform to RFC1035.
@@ -98685,6 +101200,7 @@ pub struct UpdateKmsKeyDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.UpdateKmsKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateKmsKeyRegionDiskRequest {
     /// Name of the Disk resource, should conform to RFC1035.
@@ -98718,6 +101234,7 @@ pub struct UpdateKmsKeyRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSnapshots.UpdateKmsKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateKmsKeyRegionSnapshotRequest {
     /// Project ID for this request.
@@ -98751,6 +101268,7 @@ pub struct UpdateKmsKeyRegionSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.UpdateKmsKey. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateKmsKeySnapshotRequest {
     /// Project ID for this request.
@@ -98781,6 +101299,7 @@ pub struct UpdateKmsKeySnapshotRequest {
     >,
 }
 /// A request message for Licenses.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateLicenseRequest {
     /// The license name for this request.
@@ -98812,6 +101331,7 @@ pub struct UpdateLicenseRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Routers.UpdateNamedSet. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamedSetRouterRequest {
     /// The body resource for this request
@@ -98843,6 +101363,7 @@ pub struct UpdateNamedSetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Instances.UpdateNetworkInterface. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNetworkInterfaceInstanceRequest {
     /// The instance name for this request.
@@ -98877,6 +101398,7 @@ pub struct UpdateNetworkInterfaceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.UpdatePeering. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePeeringNetworkRequest {
     /// Name of the network resource which the updated peering is belonging to.
@@ -98907,6 +101429,7 @@ pub struct UpdatePeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.UpdatePerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -98943,6 +101466,7 @@ pub struct UpdatePerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.UpdatePerInstanceConfigs. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -98977,6 +101501,7 @@ pub struct UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PreviewFeatures.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePreviewFeatureRequest {
     /// Name of the PreviewFeature for this request.
@@ -99005,6 +101530,7 @@ pub struct UpdatePreviewFeatureRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionAutoscalerRequest {
     /// Name of the autoscaler to update.
@@ -99036,6 +101562,7 @@ pub struct UpdateRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionBackendServiceRequest {
     /// Name of the BackendService resource to update.
@@ -99067,6 +101594,7 @@ pub struct UpdateRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCommitments.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionCommitmentRequest {
     /// Name of the commitment that you want to update.
@@ -99103,6 +101631,7 @@ pub struct UpdateRegionCommitmentRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionDisks.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionDiskRequest {
     /// The disk name for this request.
@@ -99139,6 +101668,7 @@ pub struct UpdateRegionDiskRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to update.
@@ -99170,6 +101700,7 @@ pub struct UpdateRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionUrlMaps.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionUrlMapRequest {
     /// Project ID for this request.
@@ -99190,6 +101721,7 @@ pub struct UpdateRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for Reservations.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     #[prost(string, optional, tag = "106438894")]
@@ -99226,6 +101758,7 @@ pub struct UpdateReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ReservationSlots.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationSlotRequest {
     /// The name of the sub-block resource.
@@ -99248,6 +101781,7 @@ pub struct UpdateReservationSlotRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Routers.UpdateRoutePolicy. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRoutePolicyRouterRequest {
     /// Project ID for this request.
@@ -99279,6 +101813,7 @@ pub struct UpdateRoutePolicyRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRouterRequest {
     /// Project ID for this request.
@@ -99310,6 +101845,7 @@ pub struct UpdateRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for Instances.UpdateShieldedInstanceConfig. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateShieldedInstanceConfigInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -99343,6 +101879,7 @@ pub struct UpdateShieldedInstanceConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for StoragePools.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateStoragePoolRequest {
     /// Project ID for this request.
@@ -99377,6 +101914,7 @@ pub struct UpdateStoragePoolRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUrlMapRequest {
     /// Project ID for this request.
@@ -99405,6 +101943,7 @@ pub struct UpdateUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for ZoneVmExtensionPolicies.Update. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateZoneVmExtensionPolicyRequest {
     /// Project ID for this request.
@@ -99466,6 +102005,7 @@ pub struct UpdateZoneVmExtensionPolicyRequest {
 /// the regionUrlMaps resource, the backend service must have aloadBalancingScheme of INTERNAL_MANAGED. For more
 /// information, read URL
 /// Map Concepts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMap {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -99615,6 +102155,7 @@ pub struct UrlMap {
     pub tests: ::prost::alloc::vec::Vec<UrlMapTest>,
 }
 /// Contains a list of UrlMap resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -99640,12 +102181,14 @@ pub struct UrlMapList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UrlMapReference {
     #[prost(string, optional, tag = "367020684")]
     pub url_map: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message for the expected URL mappings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapTest {
     /// Description of this test case.
@@ -99693,6 +102236,7 @@ pub struct UrlMapTest {
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// HTTP headers used in UrlMapTests.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UrlMapTestHeader {
     /// Header name.
@@ -99703,6 +102247,7 @@ pub struct UrlMapTestHeader {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message representing the validation result for a UrlMap.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapValidationResult {
     #[prost(string, repeated, tag = "310147300")]
@@ -99718,6 +102263,7 @@ pub struct UrlMapValidationResult {
     #[prost(bool, optional, tag = "192708797")]
     pub test_passed: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -99749,6 +102295,7 @@ pub struct UrlMapsAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsScopedList {
     /// A list of UrlMaps contained in this scope.
@@ -99759,6 +102306,7 @@ pub struct UrlMapsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsValidateRequest {
     /// Specifies the load balancer type(s) this validation request is for. UseEXTERNAL_MANAGED for global external Application Load
@@ -99785,6 +102333,7 @@ pub struct UrlMapsValidateRequest {
 }
 /// Nested message and enum types in `UrlMapsValidateRequest`.
 pub mod url_maps_validate_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -99841,6 +102390,7 @@ pub mod url_maps_validate_request {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsValidateResponse {
     #[prost(message, optional, tag = "139315229")]
@@ -99848,6 +102398,7 @@ pub struct UrlMapsValidateResponse {
 }
 /// The spec for modifying the path before sending the request to the matched
 /// backend service.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UrlRewrite {
     /// Before forwarding the request to the selected service, the request's
@@ -99895,6 +102446,7 @@ pub struct UrlRewrite {
     pub regex_rewrite: ::core::option::Option<RegexRewrite>,
 }
 /// Subnetwork which the current user has compute.subnetworks.use permission on.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsableSubnetwork {
     /// Output only. \[Output Only\] The external IPv6 address range that is assigned to this
@@ -99949,6 +102501,7 @@ pub mod usable_subnetwork {
     /// The access type of IPv6 address this subnet holds. It's immutable and can
     /// only be specified during creation or the first time the subnet is updated
     /// into IPV4_IPV6 dual stack.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -99993,6 +102546,7 @@ pub mod usable_subnetwork {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100068,6 +102622,7 @@ pub mod usable_subnetwork {
     /// balancers in a region. A BACKUP subnetwork is one that is
     /// ready to be promoted to ACTIVE or is currently draining.
     /// This field can be updated with a patch request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100115,6 +102670,7 @@ pub mod usable_subnetwork {
     /// IPv6 addresses. If not specified, IPV4_ONLY is used.
     ///
     /// This field can be both set at resource creation time and updated usingpatch.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100163,6 +102719,7 @@ pub mod usable_subnetwork {
     }
 }
 /// Secondary IP range of a usable subnetwork.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UsableSubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range.
@@ -100176,6 +102733,7 @@ pub struct UsableSubnetworkSecondaryRange {
     #[prost(string, optional, tag = "332216397")]
     pub range_name: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsableSubnetworksAggregatedList {
     /// \[Output Only\] The unique identifier for the resource. This identifier is
@@ -100214,6 +102772,7 @@ pub struct UsableSubnetworksAggregatedList {
 }
 /// The location in Cloud Storage and naming method of the daily usage
 /// report. Contains bucket_name and report_name prefix.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UsageExportLocation {
     /// The name of an existing bucket in Cloud Storage where the usage report
@@ -100230,6 +102789,7 @@ pub struct UsageExportLocation {
     pub report_name_prefix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionUrlMaps.Validate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateRegionUrlMapRequest {
     /// Project ID for this request.
@@ -100248,6 +102808,7 @@ pub struct ValidateRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Validate. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateUrlMapRequest {
     /// Project ID for this request.
@@ -100263,6 +102824,7 @@ pub struct ValidateUrlMapRequest {
     >,
 }
 /// Contain information of Nat mapping for a VM endpoint (i.e., NIC).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappings {
     /// Output only. Name of the VM instance which the endpoint belongs to
@@ -100274,6 +102836,7 @@ pub struct VmEndpointNatMappings {
     >,
 }
 /// Contain information of Nat mapping for an interface of this endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappingsInterfaceNatMappings {
     /// Output only. List of all drain IP:port-range mappings assigned to this interface.
@@ -100314,6 +102877,7 @@ pub struct VmEndpointNatMappingsInterfaceNatMappings {
     pub source_virtual_ip: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains information of NAT Mappings provided by a NAT Rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings {
     /// Output only. List of all drain IP:port-range mappings assigned to this interface
@@ -100348,6 +102912,7 @@ pub struct VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings {
     pub rule_number: ::core::option::Option<i32>,
 }
 /// Contains a list of VmEndpointNatMappings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappingsList {
     /// \[Output Only\] The unique identifier for the resource. This identifier is
@@ -100375,6 +102940,7 @@ pub struct VmEndpointNatMappingsList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPoliciesScopedList {
     /// List of VmExtensionPolicy resources contained in this scope.
@@ -100386,6 +102952,7 @@ pub struct VmExtensionPoliciesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a VM extension policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicy {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -100456,6 +103023,7 @@ pub struct VmExtensionPolicy {
 /// Nested message and enum types in `VmExtensionPolicy`.
 pub mod vm_extension_policy {
     /// Optional. Output only. \[Output Only\] Current state of the policy: ACTIVE or DELETING.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100507,6 +103075,7 @@ pub mod vm_extension_policy {
     }
 }
 /// Response for the aggregated list of VM extension policies.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicyAggregatedListResponse {
     #[prost(string, optional, tag = "3123477")]
@@ -100542,6 +103111,7 @@ pub struct VmExtensionPolicyAggregatedListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration for a specific VM extension.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VmExtensionPolicyExtensionPolicy {
     /// Optional. The specific version of the extension to install. If not set, the latest
@@ -100553,6 +103123,7 @@ pub struct VmExtensionPolicyExtensionPolicy {
     pub string_config: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Defines how to select VMs to apply a zone VM extension policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicyInstanceSelector {
     /// Optional. LabelSelector selects VMs based on their labels.
@@ -100561,6 +103132,7 @@ pub struct VmExtensionPolicyInstanceSelector {
 }
 /// A LabelSelector is applied to a VM only if it matches all the specified
 /// labels.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicyLabelSelector {
     /// Optional. A map of key-value pairs representing VM labels.
@@ -100579,6 +103151,7 @@ pub struct VmExtensionPolicyLabelSelector {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmExtensionPolicyList {
     /// Output only. \[Output Only\] Fingerprint of this resource. A hash of the contents stored
@@ -100623,6 +103196,7 @@ pub struct VmExtensionPolicyList {
 /// network through an IPsec VPN connection in a single region.
 /// For more information about Cloud HA VPN solutions, see
 /// Cloud VPN topologies .
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGateway {
     /// Output only. \[Output Only\] Creation timestamp inRFC3339
@@ -100700,6 +103274,7 @@ pub struct VpnGateway {
 pub mod vpn_gateway {
     /// The IP family of the gateway IPs for the HA-VPN gateway interfaces. If not
     /// specified, IPV4 will be used.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100744,6 +103319,7 @@ pub mod vpn_gateway {
     }
     /// The stack type for this VPN gateway to identify the IP protocols that are
     /// enabled. Possible values are: IPV4_ONLY,IPV4_IPV6, IPV6_ONLY. If not specified,IPV4_ONLY is used if the gateway IP version isIPV4, or IPV4_IPV6 if the gateway IP version isIPV6.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100791,6 +103367,7 @@ pub mod vpn_gateway {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -100824,6 +103401,7 @@ pub struct VpnGatewayAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of VpnGateway resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -100850,6 +103428,7 @@ pub struct VpnGatewayList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayParams {
     /// Tag keys/values directly bound to this resource.
@@ -100873,6 +103452,7 @@ pub struct VpnGatewayParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatus {
     /// Output only. List of VPN connection for this VpnGateway.
@@ -100881,6 +103461,7 @@ pub struct VpnGatewayStatus {
 }
 /// Describes the high availability requirement state for the VPN connection
 /// between this Cloud VPN gateway and a peer gateway.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayStatusHighAvailabilityRequirementState {
     /// Indicates the high availability requirement state for the VPN connection.
@@ -100899,6 +103480,7 @@ pub struct VpnGatewayStatusHighAvailabilityRequirementState {
 pub mod vpn_gateway_status_high_availability_requirement_state {
     /// Indicates the high availability requirement state for the VPN connection.
     /// Valid values are CONNECTION_REDUNDANCY_MET,CONNECTION_REDUNDANCY_NOT_MET.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100950,6 +103532,7 @@ pub mod vpn_gateway_status_high_availability_requirement_state {
     /// Indicates the reason why the VPN connection does not meet the high
     /// availability redundancy criteria/requirement.
     /// Valid values is INCOMPLETE_TUNNELS_COVERAGE.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -100989,6 +103572,7 @@ pub mod vpn_gateway_status_high_availability_requirement_state {
     }
 }
 /// Contains some information about a VPN tunnel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayStatusTunnel {
     /// Output only. The VPN gateway interface this VPN tunnel is associated with.
@@ -101006,6 +103590,7 @@ pub struct VpnGatewayStatusTunnel {
 /// A VPN connection contains all VPN tunnels connected from this VpnGateway
 /// to the same peer gateway. The peer gateway could either be an external VPN
 /// gateway or a Google Cloud VPN gateway.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatusVpnConnection {
     /// Output only. URL reference to the peer external VPN gateways to which the VPN tunnels
@@ -101026,6 +103611,7 @@ pub struct VpnGatewayStatusVpnConnection {
     pub tunnels: ::prost::alloc::vec::Vec<VpnGatewayStatusTunnel>,
 }
 /// A VPN gateway interface.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayVpnGatewayInterface {
     /// Output only. \[Output Only\] Numeric identifier for this VPN interface associated with
@@ -101059,11 +103645,13 @@ pub struct VpnGatewayVpnGatewayInterface {
     #[prost(string, optional, tag = "341563804")]
     pub ipv6_address: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewaysGetStatusResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<VpnGatewayStatus>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewaysScopedList {
     /// \[Output Only\] A list of VPN gateways contained in this scope.
@@ -101078,6 +103666,7 @@ pub struct VpnGatewaysScopedList {
 ///
 /// For more information about VPN, read the
 /// the Cloud VPN Overview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnel {
     /// User specified list of ciphers to use for the phase 1 and phase 2 of the
@@ -101288,6 +103877,7 @@ pub mod vpn_tunnel {
     /// - TS_NARROWING_NOT_ALLOWED: Traffic selector
     /// narrowing not allowed for an HA-VPN tunnel.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -101378,6 +103968,7 @@ pub mod vpn_tunnel {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelAggregatedList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -101410,14 +104001,18 @@ pub struct VpnTunnelAggregatedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnTunnelCipherSuite {
+    /// Cipher algorithms for IKE phase 1.
     #[prost(message, optional, tag = "84289046")]
     pub phase1: ::core::option::Option<VpnTunnelPhase1Algorithms>,
+    /// Cipher algorithms for IKE phase 2.
     #[prost(message, optional, tag = "84289047")]
     pub phase2: ::core::option::Option<VpnTunnelPhase2Algorithms>,
 }
 /// Contains a list of VpnTunnel resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -101444,6 +104039,7 @@ pub struct VpnTunnelList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelParams {
     /// Tag keys/values directly bound to this resource.
@@ -101467,26 +104063,36 @@ pub struct VpnTunnelParams {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnTunnelPhase1Algorithms {
+    /// Diffie-Hellman groups for IKE phase 1.
     #[prost(string, repeated, tag = "3204")]
     pub dh: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Encryption algorithms for IKE phase 1.
     #[prost(string, repeated, tag = "97980291")]
     pub encryption: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Integrity algorithms for IKE phase 1.
     #[prost(string, repeated, tag = "492830541")]
     pub integrity: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Pseudo-random functions (PRF) for IKE phase 1.
     #[prost(string, repeated, tag = "111268")]
     pub prf: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnTunnelPhase2Algorithms {
+    /// Encryption algorithms for IKE phase 2.
     #[prost(string, repeated, tag = "97980291")]
     pub encryption: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Integrity algorithms for IKE phase 2.
     #[prost(string, repeated, tag = "492830541")]
     pub integrity: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Perfect Forward Secrecy (PFS) groups for IKE phase 2.
     #[prost(string, repeated, tag = "110909")]
     pub pfs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelsScopedList {
     /// A list of VPN tunnels contained in this scope.
@@ -101497,6 +104103,7 @@ pub struct VpnTunnelsScopedList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WafExpressionSet {
     /// A list of alternate IDs. The format should be:
@@ -101518,6 +104125,7 @@ pub struct WafExpressionSet {
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WafExpressionSetExpression {
     /// Expression ID should uniquely identify the origin of the expression.
@@ -101536,6 +104144,7 @@ pub struct WafExpressionSetExpression {
     pub sensitivity: ::core::option::Option<i32>,
 }
 /// A request message for GlobalOperations.Wait. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitGlobalOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -101547,6 +104156,7 @@ pub struct WaitGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionOperations.Wait. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitRegionOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -101561,6 +104171,7 @@ pub struct WaitRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ZoneOperations.Wait. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitZoneOperationRequest {
     /// Name of the Operations resource to return, or its unique numeric
@@ -101574,6 +104185,7 @@ pub struct WaitZoneOperationRequest {
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warning {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
@@ -101601,6 +104213,7 @@ pub mod warning {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
     /// Engine returns NO_RESULTS_ON_PAGE if there
     /// are no results in the response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -101788,6 +104401,7 @@ pub mod warning {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warnings {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
@@ -101815,6 +104429,7 @@ pub mod warnings {
     /// \[Output Only\] A warning code, if applicable. For example, Compute
     /// Engine returns NO_RESULTS_ON_PAGE if there
     /// are no results in the response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -102007,6 +104622,7 @@ pub mod warnings {
 /// multiple backend services. The volume of traffic for each
 /// backend service is proportional to the weight specified
 /// in each WeightedBackendService
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WeightedBackendService {
     /// The full or partial URL to the default BackendService
@@ -102043,6 +104659,7 @@ pub struct WeightedBackendService {
     pub weight: ::core::option::Option<u32>,
 }
 /// A pseudowire that connects two Interconnect connections.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Wire {
     /// Output only. \[Output Only\] Indicates whether the wire is enabled.
@@ -102073,6 +104690,7 @@ pub struct Wire {
     pub wire_properties: ::core::option::Option<WireProperties>,
 }
 /// Wire endpoints are specific Interconnect connections.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WireEndpoint {
     #[prost(string, optional, tag = "224601230")]
@@ -102081,6 +104699,7 @@ pub struct WireEndpoint {
     pub vlan_tag: ::core::option::Option<i32>,
 }
 /// A resource that represents a group of redundant wires.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WireGroup {
     /// Indicates whether the wires in the wire group are enabled. When false, the
@@ -102143,6 +104762,7 @@ pub struct WireGroup {
 /// A logical endpoint for the wire group. An endpoint represents a metro that
 /// contains redundant Interconnect connections. A wire group is created
 /// between two endpoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WireGroupEndpoint {
     /// A map that contains the redundant Interconnect connections. Specify
@@ -102159,6 +104779,7 @@ pub struct WireGroupEndpoint {
     >,
 }
 /// The redundant Interconnect connections for this endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WireGroupEndpointInterconnect {
     /// Required. An Interconnect connection. You can specify the connection as
@@ -102198,6 +104819,7 @@ pub struct WireGroupEndpointInterconnect {
     pub vlan_tags: ::prost::alloc::vec::Vec<i32>,
 }
 /// Response for the list request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WireGroupList {
     #[prost(string, optional, tag = "3123477")]
@@ -102230,6 +104852,7 @@ pub struct WireGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Topology details for the wire group.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WireGroupTopology {
     /// Output only. Topology details for all endpoints in the wire group.
@@ -102237,6 +104860,7 @@ pub struct WireGroupTopology {
     pub endpoints: ::prost::alloc::vec::Vec<WireGroupTopologyEndpoint>,
 }
 /// Topology details for a single wire group endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WireGroupTopologyEndpoint {
     /// Output only. The InterconnectLocation.city (metropolitan area designator) that all
@@ -102248,6 +104872,7 @@ pub struct WireGroupTopologyEndpoint {
     pub label: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The properties of a wire.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WireProperties {
     /// The configuration of the bandwidth allocation, one of the following:
@@ -102295,6 +104920,7 @@ pub mod wire_properties {
     /// throttling reallocates unused unmetered bandwidth from unused or underused
     /// wires to other wires in the group.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -102352,6 +104978,7 @@ pub mod wire_properties {
     /// detect a fault. This setting is only permitted on port mode
     /// pseudowires.
     /// ```
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -102397,6 +105024,7 @@ pub mod wire_properties {
     }
 }
 /// A request message for PublicAdvertisedPrefixes.Withdraw. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WithdrawPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -102422,6 +105050,7 @@ pub struct WithdrawPublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Withdraw. See the method description for details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WithdrawPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -102450,6 +105079,7 @@ pub struct WithdrawPublicDelegatedPrefixeRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkloadIdentityConfig {
     #[prost(string, optional, tag = "401109182")]
@@ -102457,6 +105087,7 @@ pub struct WorkloadIdentityConfig {
     #[prost(bool, optional, tag = "342892440")]
     pub identity_certificate_enabled: ::core::option::Option<bool>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XpnHostList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -102484,6 +105115,7 @@ pub struct XpnHostList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Service resource (a.k.a service project) ID.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct XpnResourceId {
     /// The ID of the service resource. In the case of projects, this field
@@ -102499,6 +105131,7 @@ pub struct XpnResourceId {
 /// Nested message and enum types in `XpnResourceId`.
 pub mod xpn_resource_id {
     /// The type of the service resource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -102545,6 +105178,7 @@ pub mod xpn_resource_id {
 /// A zone is a deployment area. These deployment areas are subsets of a region.
 /// For example the zone us-east1-b is located in theus-east1 region. For more information, readRegions and
 /// Zones.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Zone {
     /// \[Output Only\] Available cpu/platform selections for the zone.
@@ -102592,6 +105226,7 @@ pub struct Zone {
 /// Nested message and enum types in `Zone`.
 pub mod zone {
     /// \[Output Only\] Status of the zone, either UP orDOWN.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -102634,6 +105269,7 @@ pub mod zone {
     }
 }
 /// Contains a list of zone resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneList {
     /// \[Output Only\] Unique identifier for the resource; defined by the server.
@@ -102659,6 +105295,7 @@ pub struct ZoneList {
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneResourceStatus {
     /// Output only. \[Output Only\] The upcoming maintenance schedule.
@@ -102667,6 +105304,7 @@ pub struct ZoneResourceStatus {
         PeriodicPartialMaintenanceSchedule,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource,
@@ -102684,6 +105322,7 @@ pub struct ZoneSetLabelsRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneSetNestedPolicyRequest {
     /// Flatten Policy to create a backwacd compatible wire-format.
@@ -102700,6 +105339,7 @@ pub struct ZoneSetNestedPolicyRequest {
     #[prost(message, optional, tag = "91071794")]
     pub policy: ::core::option::Option<Policy>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneSetPolicyRequest {
     /// Flatten Policy to create a backwacd compatible wire-format.

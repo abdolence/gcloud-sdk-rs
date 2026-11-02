@@ -2,6 +2,7 @@
 /// Dimensions are attributes of your data. For example, the dimension
 /// `userEmail` indicates the email of the user that accessed reporting data.
 /// Dimension values in report responses are strings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimension {
     /// The API name of the dimension. See [Data Access
@@ -14,6 +15,7 @@ pub struct AccessDimension {
 }
 /// The quantitative measurements of a report. For example, the metric
 /// `accessCount` is the total number of data access records.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetric {
     /// The API name of the metric. See [Data Access
@@ -25,6 +27,7 @@ pub struct AccessMetric {
     pub metric_name: ::prost::alloc::string::String,
 }
 /// A contiguous range of days: startDate, startDate + 1, ..., endDate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDateRange {
     /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
@@ -42,6 +45,7 @@ pub struct AccessDateRange {
 }
 /// Expresses dimension or metric filters. The fields in the same expression need
 /// to be either all dimensions or all metrics.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilterExpression {
     /// Specify one type of filter expression for `FilterExpression`.
@@ -51,6 +55,7 @@ pub struct AccessFilterExpression {
 /// Nested message and enum types in `AccessFilterExpression`.
 pub mod access_filter_expression {
     /// Specify one type of filter expression for `FilterExpression`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneExpression {
         /// Each of the FilterExpressions in the and_group has an AND relationship.
@@ -69,6 +74,7 @@ pub mod access_filter_expression {
     }
 }
 /// A list of filter expressions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilterExpressionList {
     /// A list of filter expressions.
@@ -76,6 +82,7 @@ pub struct AccessFilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<AccessFilterExpression>,
 }
 /// An expression to filter dimension or metric values.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilter {
     /// The dimension name or metric name.
@@ -88,6 +95,7 @@ pub struct AccessFilter {
 /// Nested message and enum types in `AccessFilter`.
 pub mod access_filter {
     /// Specify one type of filter for `Filter`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -105,6 +113,7 @@ pub mod access_filter {
     }
 }
 /// The filter for strings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessStringFilter {
     /// The match type for this filter.
@@ -120,6 +129,7 @@ pub struct AccessStringFilter {
 /// Nested message and enum types in `AccessStringFilter`.
 pub mod access_string_filter {
     /// The match type of a string filter.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -180,6 +190,7 @@ pub mod access_string_filter {
     }
 }
 /// The result needs to be in a list of string values.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessInListFilter {
     /// The list of string values. Must be non-empty.
@@ -190,6 +201,7 @@ pub struct AccessInListFilter {
     pub case_sensitive: bool,
 }
 /// Filters for numeric or date values.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessNumericFilter {
     /// The operation type for this filter.
@@ -202,6 +214,7 @@ pub struct AccessNumericFilter {
 /// Nested message and enum types in `AccessNumericFilter`.
 pub mod access_numeric_filter {
     /// The operation applied to a numeric filter.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -258,6 +271,7 @@ pub mod access_numeric_filter {
     }
 }
 /// To express that the result needs to be between two numbers (inclusive).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessBetweenFilter {
     /// Begins with this number.
@@ -268,6 +282,7 @@ pub struct AccessBetweenFilter {
     pub to_value: ::core::option::Option<NumericValue>,
 }
 /// To represent a number.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
@@ -277,6 +292,7 @@ pub struct NumericValue {
 /// Nested message and enum types in `NumericValue`.
 pub mod numeric_value {
     /// One of a numeric value
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
@@ -290,6 +306,7 @@ pub mod numeric_value {
 /// Order bys define how rows will be sorted in the response. For example,
 /// ordering rows by descending access count is one ordering, and ordering rows
 /// by the country string is a different ordering.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessOrderBy {
     /// If true, sorts by descending order. If false or unspecified, sorts in
@@ -303,6 +320,7 @@ pub struct AccessOrderBy {
 /// Nested message and enum types in `AccessOrderBy`.
 pub mod access_order_by {
     /// Sorts by metric values.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MetricOrderBy {
         /// A metric name in the request to order by.
@@ -310,6 +328,7 @@ pub mod access_order_by {
         pub metric_name: ::prost::alloc::string::String,
     }
     /// Sorts by dimension values.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DimensionOrderBy {
         /// A dimension name in the request to order by.
@@ -322,6 +341,7 @@ pub mod access_order_by {
     /// Nested message and enum types in `DimensionOrderBy`.
     pub mod dimension_order_by {
         /// Rule to order the string dimension values by.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -377,6 +397,7 @@ pub mod access_order_by {
         }
     }
     /// Specify one type of order by for `OrderBy`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OneOrderBy {
         /// Sorts results by a metric's values.
@@ -391,6 +412,7 @@ pub mod access_order_by {
 /// produce column entries within rows and DimensionHeaders. However, dimensions
 /// used exclusively within filters or expressions do not produce columns in a
 /// report; correspondingly, those dimensions do not produce headers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimensionHeader {
     /// The dimension's name; for example 'userEmail'.
@@ -401,6 +423,7 @@ pub struct AccessDimensionHeader {
 /// report produce column entries within rows and MetricHeaders. However,
 /// metrics used exclusively within filters or expressions do not produce columns
 /// in a report; correspondingly, those metrics do not produce headers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetricHeader {
     /// The metric's name; for example 'accessCount'.
@@ -408,6 +431,7 @@ pub struct AccessMetricHeader {
     pub metric_name: ::prost::alloc::string::String,
 }
 /// Access report data for each row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessRow {
     /// List of dimension values. These values are in the same order as specified
@@ -420,6 +444,7 @@ pub struct AccessRow {
     pub metric_values: ::prost::alloc::vec::Vec<AccessMetricValue>,
 }
 /// The value of a dimension.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimensionValue {
     /// The dimension value. For example, this value may be 'France' for the
@@ -428,6 +453,7 @@ pub struct AccessDimensionValue {
     pub value: ::prost::alloc::string::String,
 }
 /// The value of a metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetricValue {
     /// The measurement value. For example, this value may be '13'.
@@ -437,6 +463,7 @@ pub struct AccessMetricValue {
 /// Current state of all quotas for this Analytics property. If any quota for a
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessQuota {
     /// Properties can use 250,000 tokens per day. Most requests consume fewer than
@@ -463,6 +490,7 @@ pub struct AccessQuota {
     pub tokens_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
 }
 /// Current state for a particular quota group.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessQuotaStatus {
     /// Quota consumed by this request.
@@ -473,6 +501,7 @@ pub struct AccessQuotaStatus {
     pub remaining: i32,
 }
 /// A specific filter for a single dimension or metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceDimensionOrMetricFilter {
     /// Required. Immutable. The dimension name or metric name to filter. If the
@@ -516,6 +545,7 @@ pub struct AudienceDimensionOrMetricFilter {
 /// Nested message and enum types in `AudienceDimensionOrMetricFilter`.
 pub mod audience_dimension_or_metric_filter {
     /// A filter for a string-type dimension that matches a particular pattern.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringFilter {
         /// Required. The match type for the string filter.
@@ -532,6 +562,7 @@ pub mod audience_dimension_or_metric_filter {
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
         /// The match type for the string filter.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -588,6 +619,7 @@ pub mod audience_dimension_or_metric_filter {
         }
     }
     /// A filter for a string dimension that matches a particular list of options.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InListFilter {
         /// Required. The list of possible string values to match against. Must be
@@ -600,6 +632,7 @@ pub mod audience_dimension_or_metric_filter {
         pub case_sensitive: bool,
     }
     /// To represent a number.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NumericValue {
         /// One of a numeric value.
@@ -609,6 +642,7 @@ pub mod audience_dimension_or_metric_filter {
     /// Nested message and enum types in `NumericValue`.
     pub mod numeric_value {
         /// One of a numeric value.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum OneValue {
             /// Integer value.
@@ -620,6 +654,7 @@ pub mod audience_dimension_or_metric_filter {
         }
     }
     /// A filter for numeric or date values on a dimension or metric.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// Required. The operation applied to a numeric filter.
@@ -632,6 +667,7 @@ pub mod audience_dimension_or_metric_filter {
     /// Nested message and enum types in `NumericFilter`.
     pub mod numeric_filter {
         /// The operation applied to a numeric filter.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -681,6 +717,7 @@ pub mod audience_dimension_or_metric_filter {
     }
     /// A filter for numeric or date values between certain values on a dimension
     /// or metric.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
         /// Required. Begins with this number, inclusive.
@@ -691,6 +728,7 @@ pub mod audience_dimension_or_metric_filter {
         pub to_value: ::core::option::Option<NumericValue>,
     }
     /// One of the above filters.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// A filter for a string-type dimension that matches a particular pattern.
@@ -712,6 +750,7 @@ pub mod audience_dimension_or_metric_filter {
 /// A filter that matches events of a single event name. If an event parameter
 /// is specified, only the subset of events that match both the single event name
 /// and the parameter filter expressions match this event filter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceEventFilter {
     /// Required. Immutable. The name of the event to match against.
@@ -730,6 +769,7 @@ pub struct AudienceEventFilter {
     >,
 }
 /// A logical expression of Audience dimension, metric, or event filters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterExpression {
     /// The expression applied to a filter.
@@ -739,6 +779,7 @@ pub struct AudienceFilterExpression {
 /// Nested message and enum types in `AudienceFilterExpression`.
 pub mod audience_filter_expression {
     /// The expression applied to a filter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// A list of expressions to be AND’ed together. It can only contain
@@ -766,6 +807,7 @@ pub mod audience_filter_expression {
     }
 }
 /// A list of Audience filter expressions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterExpressionList {
     /// A list of Audience filter expressions.
@@ -774,6 +816,7 @@ pub struct AudienceFilterExpressionList {
 }
 /// Defines a simple filter that a user must satisfy to be a member of the
 /// Audience.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSimpleFilter {
     /// Required. Immutable. Specifies the scope for this filter.
@@ -786,6 +829,7 @@ pub struct AudienceSimpleFilter {
 }
 /// Defines filters that must occur in a specific order for the user to be a
 /// member of the Audience.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSequenceFilter {
     /// Required. Immutable. Specifies the scope for this filter.
@@ -805,6 +849,7 @@ pub struct AudienceSequenceFilter {
 pub mod audience_sequence_filter {
     /// A condition that must occur in the specified step order for this user
     /// to match the sequence.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudienceSequenceStep {
         /// Required. Immutable. Specifies the scope for this step.
@@ -833,6 +878,7 @@ pub mod audience_sequence_filter {
 /// inclusive (For example, users satisfying the filter clause are included in
 /// the Audience) or exclusive (For example, users satisfying the filter clause
 /// are excluded from the Audience).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterClause {
     /// Required. Specifies whether this is an include or exclude filter clause.
@@ -844,6 +890,7 @@ pub struct AudienceFilterClause {
 /// Nested message and enum types in `AudienceFilterClause`.
 pub mod audience_filter_clause {
     /// Specifies whether this is an include or exclude filter clause.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -886,6 +933,7 @@ pub mod audience_filter_clause {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
         /// A simple filter that a user must satisfy to be a member of the Audience.
@@ -898,6 +946,7 @@ pub mod audience_filter_clause {
     }
 }
 /// Specifies an event to log when a user joins the Audience.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudienceEventTrigger {
     /// Required. The event name that will be logged.
@@ -910,6 +959,7 @@ pub struct AudienceEventTrigger {
 /// Nested message and enum types in `AudienceEventTrigger`.
 pub mod audience_event_trigger {
     /// Determines when to log the event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -955,6 +1005,7 @@ pub mod audience_event_trigger {
     }
 }
 /// A resource message representing an Audience.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Audience {
     /// Output only. The resource name for this Audience resource.
@@ -996,6 +1047,7 @@ pub struct Audience {
 pub mod audience {
     /// Specifies how long an exclusion lasts for users that meet the exclusion
     /// filter.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1041,6 +1093,7 @@ pub mod audience {
     }
 }
 /// Specifies how to evaluate users for joining an Audience.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudienceFilterScope {
@@ -1081,6 +1134,7 @@ impl AudienceFilterScope {
     }
 }
 /// A specific filter for a single dimension.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChannelGroupFilter {
     /// Required. Immutable. The dimension name to filter.
@@ -1093,6 +1147,7 @@ pub struct ChannelGroupFilter {
 /// Nested message and enum types in `ChannelGroupFilter`.
 pub mod channel_group_filter {
     /// Filter where the field value is a String. The match is case insensitive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringFilter {
         /// Required. The match type for the string filter.
@@ -1105,6 +1160,7 @@ pub mod channel_group_filter {
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
         /// How the filter will be used to determine a match.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1166,6 +1222,7 @@ pub mod channel_group_filter {
     }
     /// A filter for a string dimension that matches a particular list of options.
     /// The match is case insensitive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InListFilter {
         /// Required. The list of possible string values to match against. Must be
@@ -1174,6 +1231,7 @@ pub mod channel_group_filter {
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// A StringFilter or InListFilter that defines this filters behavior.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ValueFilter {
         /// A filter for a string-type dimension that matches a particular pattern.
@@ -1186,6 +1244,7 @@ pub mod channel_group_filter {
     }
 }
 /// A logical expression of Channel Group dimension filters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelGroupFilterExpression {
     /// The expression applied to a filter.
@@ -1195,6 +1254,7 @@ pub struct ChannelGroupFilterExpression {
 /// Nested message and enum types in `ChannelGroupFilterExpression`.
 pub mod channel_group_filter_expression {
     /// The expression applied to a filter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// A list of expressions to be AND’ed together. It can only contain
@@ -1218,6 +1278,7 @@ pub mod channel_group_filter_expression {
     }
 }
 /// A list of Channel Group filter expressions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelGroupFilterExpressionList {
     /// A list of Channel Group filter expressions.
@@ -1225,6 +1286,7 @@ pub struct ChannelGroupFilterExpressionList {
     pub filter_expressions: ::prost::alloc::vec::Vec<ChannelGroupFilterExpression>,
 }
 /// The rules that govern how traffic is grouped into one channel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupingRule {
     /// Required. Customer defined display name for the channel.
@@ -1235,6 +1297,7 @@ pub struct GroupingRule {
     pub expression: ::core::option::Option<ChannelGroupFilterExpression>,
 }
 /// A resource message representing a Channel Group.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelGroup {
     /// Output only. The resource name for this Channel Group resource.
@@ -1266,6 +1329,7 @@ pub struct ChannelGroup {
     pub primary: bool,
 }
 /// Defines an event parameter to mutate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ParameterMutation {
     /// Required. The name of the parameter to mutate.
@@ -1297,6 +1361,7 @@ pub struct ParameterMutation {
 ///
 /// Event Edit and Event Create rules can't be used to modify an event created
 /// from an Event Create rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventCreateRule {
     /// Output only. Resource name for this EventCreateRule resource.
@@ -1338,6 +1403,7 @@ pub struct EventCreateRule {
 ///
 /// Event Edit rules can't be used to modify an event created from an Event
 /// Create rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventEditRule {
     /// Identifier. Resource name for this EventEditRule resource.
@@ -1368,6 +1434,7 @@ pub struct EventEditRule {
 }
 /// Defines a condition for when an Event Edit or Event Creation rule applies to
 /// an event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MatchingCondition {
     /// Required. The name of the field that is compared against for the condition.
@@ -1395,6 +1462,7 @@ pub struct MatchingCondition {
 /// Nested message and enum types in `MatchingCondition`.
 pub mod matching_condition {
     /// Comparison type for matching condition
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1491,6 +1559,7 @@ pub mod matching_condition {
     }
 }
 /// A specific filter for a single dimension
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpandedDataSetFilter {
     /// Required. The dimension name to filter.
@@ -1503,6 +1572,7 @@ pub struct ExpandedDataSetFilter {
 /// Nested message and enum types in `ExpandedDataSetFilter`.
 pub mod expanded_data_set_filter {
     /// A filter for a string-type dimension that matches a particular pattern.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringFilter {
         /// Required. The match type for the string filter.
@@ -1521,6 +1591,7 @@ pub mod expanded_data_set_filter {
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
         /// The match type for the string filter.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1565,6 +1636,7 @@ pub mod expanded_data_set_filter {
         }
     }
     /// A filter for a string dimension that matches a particular list of options.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InListFilter {
         /// Required. The list of possible string values to match against. Must be
@@ -1578,6 +1650,7 @@ pub mod expanded_data_set_filter {
         pub case_sensitive: bool,
     }
     /// One of the above filters.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OneFilter {
         /// A filter for a string-type dimension that matches a particular pattern.
@@ -1590,6 +1663,7 @@ pub mod expanded_data_set_filter {
     }
 }
 /// A logical expression of EnhancedDataSet dimension filters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedDataSetFilterExpression {
     /// The expression applied to a filter.
@@ -1599,6 +1673,7 @@ pub struct ExpandedDataSetFilterExpression {
 /// Nested message and enum types in `ExpandedDataSetFilterExpression`.
 pub mod expanded_data_set_filter_expression {
     /// The expression applied to a filter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// A list of expressions to be AND’ed together. It must contain a
@@ -1621,6 +1696,7 @@ pub mod expanded_data_set_filter_expression {
     }
 }
 /// A list of ExpandedDataSet filter expressions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedDataSetFilterExpressionList {
     /// A list of ExpandedDataSet filter expressions.
@@ -1628,6 +1704,7 @@ pub struct ExpandedDataSetFilterExpressionList {
     pub filter_expressions: ::prost::alloc::vec::Vec<ExpandedDataSetFilterExpression>,
 }
 /// A resource message representing an `ExpandedDataSet`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedDataSet {
     /// Output only. The resource name for this ExpandedDataSet resource.
@@ -1667,6 +1744,7 @@ pub struct ExpandedDataSet {
     pub data_collection_start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A resource message representing a Google Analytics account.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Account {
     /// Identifier. Resource name of this account.
@@ -1697,6 +1775,7 @@ pub struct Account {
     pub gmp_organization: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Property {
     /// Identifier. Resource name of this property.
@@ -1768,6 +1847,7 @@ pub struct Property {
     pub account: ::prost::alloc::string::String,
 }
 /// A resource message representing a data stream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataStream {
     /// Identifier. Resource name of this Data Stream.
@@ -1799,6 +1879,7 @@ pub struct DataStream {
 /// Nested message and enum types in `DataStream`.
 pub mod data_stream {
     /// Data specific to web streams.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct WebStreamData {
         /// Output only. Analytics Measurement ID.
@@ -1816,6 +1897,7 @@ pub mod data_stream {
         pub default_uri: ::prost::alloc::string::String,
     }
     /// Data specific to Android app streams.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AndroidAppStreamData {
         /// Output only. ID of the corresponding Android app in Firebase, if any.
@@ -1828,6 +1910,7 @@ pub mod data_stream {
         pub package_name: ::prost::alloc::string::String,
     }
     /// Data specific to iOS app streams.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IosAppStreamData {
         /// Output only. ID of the corresponding iOS app in Firebase, if any.
@@ -1840,6 +1923,7 @@ pub mod data_stream {
         pub bundle_id: ::prost::alloc::string::String,
     }
     /// The type of the data stream.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1888,6 +1972,7 @@ pub mod data_stream {
     }
     /// Data for specific data stream types. The message that will be
     /// set corresponds to the type of this stream.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamData {
         /// Data specific to web streams. Must be populated if type is
@@ -1905,6 +1990,7 @@ pub mod data_stream {
     }
 }
 /// A link between a Google Analytics property and a Firebase project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirebaseLink {
     /// Identifier. Example format: properties/1234/firebaseLinks/5678
@@ -1925,6 +2011,7 @@ pub struct FirebaseLink {
 }
 /// Read-only resource with the tag for sending data from a website to a
 /// DataStream. Only present for web DataStream resources.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GlobalSiteTag {
     /// Identifier. Resource name for this GlobalSiteTag resource.
@@ -1938,6 +2025,7 @@ pub struct GlobalSiteTag {
     pub snippet: ::prost::alloc::string::String,
 }
 /// A link between a Google Analytics property and a Google Ads account.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleAdsLink {
     /// Identifier. Format:
@@ -1971,6 +2059,7 @@ pub struct GoogleAdsLink {
 }
 /// A resource message representing data sharing settings of a Google Analytics
 /// account.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSharingSettings {
     /// Identifier. Resource name.
@@ -2020,6 +2109,7 @@ pub struct DataSharingSettings {
 }
 /// A virtual resource representing an overview of an account and
 /// all its child Google Analytics properties.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountSummary {
     /// Identifier. Resource name for this account summary.
@@ -2040,6 +2130,7 @@ pub struct AccountSummary {
     pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
 /// A virtual resource representing metadata for a Google Analytics property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropertySummary {
     /// Resource name of property referred to by this property summary
@@ -2066,6 +2157,7 @@ pub struct PropertySummary {
     pub can_edit: bool,
 }
 /// A secret value used for sending hits to Measurement Protocol.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MeasurementProtocolSecret {
     /// Identifier. Resource name of this secret. This secret may be a child of any
@@ -2083,6 +2175,7 @@ pub struct MeasurementProtocolSecret {
     pub secret_value: ::prost::alloc::string::String,
 }
 /// SKAdNetwork conversion value schema of an iOS stream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkConversionValueSchema {
     /// Identifier. Resource name of the schema. This will be child of ONLY an iOS
@@ -2125,6 +2218,7 @@ pub struct SkAdNetworkConversionValueSchema {
     pub apply_conversion_values: bool,
 }
 /// Settings for a SKAdNetwork conversion postback window.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostbackWindow {
     /// Ordering of the repeated field will be used to prioritize the conversion
@@ -2145,6 +2239,7 @@ pub struct PostbackWindow {
 }
 /// Conversion value settings for a postback window for SKAdNetwork conversion
 /// value schema.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValues {
     /// Display name of the SKAdNetwork conversion value.
@@ -2176,6 +2271,7 @@ pub struct ConversionValues {
     pub lock_enabled: bool,
 }
 /// Event setting conditions to match an event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventMapping {
     /// Required. Name of the Google Analytics event. It must always be set.
@@ -2207,6 +2303,7 @@ pub struct EventMapping {
 /// that resulted from the same cause. Common causes would be updates made in the
 /// Google Analytics UI, changes from customer support, or automatic Google
 /// Analytics system changes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeHistoryEvent {
     /// ID of this change history event. This ID is unique across Google Analytics.
@@ -2233,6 +2330,7 @@ pub struct ChangeHistoryEvent {
     pub changes: ::prost::alloc::vec::Vec<ChangeHistoryChange>,
 }
 /// A description of a change to a single Google Analytics resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeHistoryChange {
     /// Resource name of the resource whose changes are described by this entry.
@@ -2258,6 +2356,7 @@ pub struct ChangeHistoryChange {
 pub mod change_history_change {
     /// A snapshot of a resource as before or after the result of a change in
     /// change history.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ChangeHistoryResource {
         #[prost(
@@ -2268,6 +2367,7 @@ pub mod change_history_change {
     }
     /// Nested message and enum types in `ChangeHistoryResource`.
     pub mod change_history_resource {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resource {
             /// A snapshot of an Account resource in change history.
@@ -2372,6 +2472,7 @@ pub mod change_history_change {
 }
 /// A link between a Google Analytics property and a Display & Video 360
 /// advertiser.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLink {
     /// Identifier. The resource name for this DisplayVideo360AdvertiserLink
@@ -2411,6 +2512,7 @@ pub struct DisplayVideo360AdvertiserLink {
 /// A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
 /// Google Analytics admins approve inbound proposals while Display & Video 360
 /// admins approve outbound proposals.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLinkProposal {
     /// Identifier. The resource name for this
@@ -2453,6 +2555,7 @@ pub struct DisplayVideo360AdvertiserLinkProposal {
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
 /// A link between a Google Analytics property and a Search Ads 360 entity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAds360Link {
     /// Identifier. The resource name for this SearchAds360Link resource.
@@ -2492,6 +2595,7 @@ pub struct SearchAds360Link {
     pub site_stats_sharing_enabled: ::core::option::Option<bool>,
 }
 /// Status information for a link proposal.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkProposalStatusDetails {
     /// Output only. The source of this proposal.
@@ -2505,6 +2609,7 @@ pub struct LinkProposalStatusDetails {
     pub link_proposal_state: i32,
 }
 /// A conversion event in a Google Analytics property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionEvent {
     /// Identifier. Resource name of this conversion event.
@@ -2545,6 +2650,7 @@ pub struct ConversionEvent {
 pub mod conversion_event {
     /// Defines a default value/currency for a conversion event. Both value and
     /// currency must be provided.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DefaultConversionValue {
         /// This value will be used to populate the value for all conversions
@@ -2560,6 +2666,7 @@ pub mod conversion_event {
     }
     /// The method by which conversions will be counted across multiple events
     /// within a session.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2605,6 +2712,7 @@ pub mod conversion_event {
     }
 }
 /// A key event in a Google Analytics property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyEvent {
     /// Output only. Resource name of this key event.
@@ -2640,6 +2748,7 @@ pub struct KeyEvent {
 /// Nested message and enum types in `KeyEvent`.
 pub mod key_event {
     /// Defines a default value/currency for a key event.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DefaultValue {
         /// Required. This will be used to populate the "value" parameter for all
@@ -2657,6 +2766,7 @@ pub mod key_event {
     }
     /// The method by which Key Events will be counted across multiple events
     /// within a session.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2702,6 +2812,7 @@ pub mod key_event {
     }
 }
 /// Settings values for Google Signals.  This is a singleton resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleSignalsSettings {
     /// Output only. Resource name of this setting.
@@ -2717,6 +2828,7 @@ pub struct GoogleSignalsSettings {
     pub consent: i32,
 }
 /// A definition for a CustomDimension.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomDimension {
     /// Identifier. Resource name for this CustomDimension resource.
@@ -2761,6 +2873,7 @@ pub struct CustomDimension {
 /// Nested message and enum types in `CustomDimension`.
 pub mod custom_dimension {
     /// Valid values for the scope of this dimension.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2809,6 +2922,7 @@ pub mod custom_dimension {
     }
 }
 /// A definition for a custom metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomMetric {
     /// Identifier. Resource name for this CustomMetric resource.
@@ -2858,6 +2972,7 @@ pub mod custom_metric {
     ///
     /// Currency representation may change in the future, requiring a breaking API
     /// change.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2933,6 +3048,7 @@ pub mod custom_metric {
         }
     }
     /// The scope of this metric.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2973,6 +3089,7 @@ pub mod custom_metric {
     }
     /// Labels that mark the data in this custom metric as data that should be
     /// restricted to specific users.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3017,6 +3134,7 @@ pub mod custom_metric {
     }
 }
 /// A definition for a calculated metric.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CalculatedMetric {
     /// Identifier. Resource name for this CalculatedMetric.
@@ -3068,6 +3186,7 @@ pub struct CalculatedMetric {
 /// Nested message and enum types in `CalculatedMetric`.
 pub mod calculated_metric {
     /// Possible types of representing the calculated metric's value.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3144,6 +3263,7 @@ pub mod calculated_metric {
     }
     /// Labels that mark the data in calculated metric used in conjunction with
     /// user roles that restrict access to cost and/or revenue metrics.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3188,6 +3308,7 @@ pub mod calculated_metric {
     }
 }
 /// Settings values for data retention. This is a singleton resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataRetentionSettings {
     /// Identifier. Resource name for this DataRetentionSetting resource.
@@ -3208,6 +3329,7 @@ pub struct DataRetentionSettings {
 /// Nested message and enum types in `DataRetentionSettings`.
 pub mod data_retention_settings {
     /// Valid values for the data retention duration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3268,6 +3390,7 @@ pub mod data_retention_settings {
 }
 /// The attribution settings used for a given property. This is a singleton
 /// resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AttributionSettings {
     /// Output only. Resource name of this attribution settings resource.
@@ -3310,6 +3433,7 @@ pub mod attribution_settings {
     /// How far back in time events should be considered for inclusion in a
     /// converting path which leads to the first install of an app or the first
     /// visit to a site.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3367,6 +3491,7 @@ pub mod attribution_settings {
     /// How far back in time events should be considered for inclusion in a
     /// converting path for all conversions other than first app install/first site
     /// visit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3429,6 +3554,7 @@ pub mod attribution_settings {
     }
     /// The reporting attribution model used to calculate conversion credit in this
     /// property's reports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3494,6 +3620,7 @@ pub mod attribution_settings {
         }
     }
     /// The Conversion Export Scope for data exported to linked Ads Accounts.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3550,6 +3677,7 @@ pub mod attribution_settings {
     }
 }
 /// A binding of a user to a set of roles.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessBinding {
     /// Output only. Resource name of this binding.
@@ -3582,6 +3710,7 @@ pub struct AccessBinding {
 /// Nested message and enum types in `AccessBinding`.
 pub mod access_binding {
     /// The target for which to set roles for.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AccessTarget {
         /// If set, the email address of the user to set roles for.
@@ -3591,6 +3720,7 @@ pub mod access_binding {
     }
 }
 /// A link between a Google Analytics property and BigQuery project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryLink {
     /// Output only. Resource name of this BigQuery link.
@@ -3639,6 +3769,7 @@ pub struct BigQueryLink {
 }
 /// Singleton resource under a web DataStream, configuring measurement of
 /// additional site interactions and content.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnhancedMeasurementSettings {
     /// Output only. Resource name of the Enhanced Measurement Settings.
@@ -3694,6 +3825,7 @@ pub struct EnhancedMeasurementSettings {
 }
 /// Settings for client-side data redaction. Singleton resource under a Web
 /// Stream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataRedactionSettings {
     /// Output only. Name of this Data Redaction Settings resource.
@@ -3723,6 +3855,7 @@ pub struct DataRedactionSettings {
 }
 /// A link between a Google Analytics property and an AdSense for Content ad
 /// client.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdSenseLink {
     /// Output only. The resource name for this AdSense Link resource.
@@ -3736,6 +3869,7 @@ pub struct AdSenseLink {
     pub ad_client_code: ::prost::alloc::string::String,
 }
 /// A link that references a source property under the parent rollup property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollupPropertySourceLink {
     /// Output only. Resource name of this RollupPropertySourceLink.
@@ -3752,6 +3886,7 @@ pub struct RollupPropertySourceLink {
 }
 /// A Reporting Data Annotation is a comment connected to certain dates for
 /// reporting data.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportingDataAnnotation {
     /// Required. Identifier. Resource name of this Reporting Data Annotation.
@@ -3781,6 +3916,7 @@ pub struct ReportingDataAnnotation {
 pub mod reporting_data_annotation {
     /// Represents a Reporting Data Annotation's date range, both start and end
     /// dates are inclusive. Time zones are based on the parent property.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DateRange {
         /// Required. The start date for this range. Must be a valid date with
@@ -3795,6 +3931,7 @@ pub mod reporting_data_annotation {
         pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
     }
     /// Colors that may be used for this Reporting Data Annotation
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3858,6 +3995,7 @@ pub mod reporting_data_annotation {
         }
     }
     /// Target for this Reporting Data Annotation
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Target {
         /// If set, the Reporting Data Annotation is for a specific date represented
@@ -3874,6 +4012,7 @@ pub mod reporting_data_annotation {
 /// Subproperty synchronization configuration controls how ordinary property
 /// configurations are synchronized to subproperties. This resource is
 /// provisioned automatically for each subproperty.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubpropertySyncConfig {
     /// Output only. Identifier. Format:
@@ -3902,6 +4041,7 @@ pub struct SubpropertySyncConfig {
 /// Nested message and enum types in `SubpropertySyncConfig`.
 pub mod subproperty_sync_config {
     /// Synchronization modes for a subproperty
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3949,6 +4089,7 @@ pub mod subproperty_sync_config {
     }
 }
 /// A resource containing settings related to reporting identity.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportingIdentitySettings {
     /// Output only. Identifier. Resource name for this reporting identity settings
@@ -3964,6 +4105,7 @@ pub struct ReportingIdentitySettings {
 /// Nested message and enum types in `ReportingIdentitySettings`.
 pub mod reporting_identity_settings {
     /// Various strategies for identifying user identities in reports.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4017,6 +4159,7 @@ pub mod reporting_identity_settings {
 }
 /// Configuration for user-provided data collection. This is a singleton resource
 /// for a Google Analytics property.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserProvidedDataSettings {
     /// Identifier. Resource name of this setting.
@@ -4034,6 +4177,7 @@ pub struct UserProvidedDataSettings {
     pub automatically_detected_data_collection_enabled: bool,
 }
 /// The category selected for this property, used for industry benchmarking.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum IndustryCategory {
@@ -4163,6 +4307,7 @@ impl IndustryCategory {
     }
 }
 /// Various levels of service for Google Analytics.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceLevel {
@@ -4197,6 +4342,7 @@ impl ServiceLevel {
 }
 /// Different kinds of actors that can make changes to Google Analytics
 /// resources.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ActorType {
@@ -4234,6 +4380,7 @@ impl ActorType {
     }
 }
 /// Types of actions that may change a resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ActionType {
@@ -4271,6 +4418,7 @@ impl ActionType {
     }
 }
 /// Types of resources whose changes may be returned from change history.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ChangeHistoryResourceType {
@@ -4426,6 +4574,7 @@ impl ChangeHistoryResourceType {
     }
 }
 /// Status of the Google Signals settings.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsState {
@@ -4460,6 +4609,7 @@ impl GoogleSignalsState {
     }
 }
 /// Consent field of the Google Signals settings.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsConsent {
@@ -4495,6 +4645,7 @@ impl GoogleSignalsConsent {
     }
 }
 /// An indication of which product the user initiated a link proposal from.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LinkProposalInitiatingProduct {
@@ -4529,6 +4680,7 @@ impl LinkProposalInitiatingProduct {
     }
 }
 /// The state of a link proposal resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LinkProposalState {
@@ -4594,6 +4746,7 @@ impl LinkProposalState {
     }
 }
 /// Types of `Property` resources.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PropertyType {
@@ -4634,6 +4787,7 @@ impl PropertyType {
 /// when a ConversionValues.event_mappings conditions are satisfied. For
 /// more information, see
 /// [SKAdNetwork.CoarseConversionValue](<https://developer.apple.com/documentation/storekit/skadnetwork/coarseconversionvalue>).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CoarseValue {
@@ -4671,6 +4825,7 @@ impl CoarseValue {
     }
 }
 /// A specific filter expression
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubpropertyEventFilterCondition {
     /// Required. The field that is being filtered.
@@ -4684,6 +4839,7 @@ pub struct SubpropertyEventFilterCondition {
 /// Nested message and enum types in `SubpropertyEventFilterCondition`.
 pub mod subproperty_event_filter_condition {
     /// A filter for a string-type dimension that matches a particular pattern.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringFilter {
         /// Required. The match type for the string filter.
@@ -4700,6 +4856,7 @@ pub mod subproperty_event_filter_condition {
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
         /// How the filter will be used to determine a match.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -4759,6 +4916,7 @@ pub mod subproperty_event_filter_condition {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OneFilter {
         /// A filter for null values.
@@ -4770,6 +4928,7 @@ pub mod subproperty_event_filter_condition {
     }
 }
 /// A logical expression of Subproperty event filters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubpropertyEventFilterExpression {
     /// The expression applied to a filter.
@@ -4779,6 +4938,7 @@ pub struct SubpropertyEventFilterExpression {
 /// Nested message and enum types in `SubpropertyEventFilterExpression`.
 pub mod subproperty_event_filter_expression {
     /// The expression applied to a filter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// A list of expressions to OR’ed together. Must only contain
@@ -4799,6 +4959,7 @@ pub mod subproperty_event_filter_expression {
     }
 }
 /// A list of Subproperty event filter expressions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubpropertyEventFilterExpressionList {
     /// Required. Unordered list. A list of Subproperty event filter expressions
@@ -4809,6 +4970,7 @@ pub struct SubpropertyEventFilterExpressionList {
 /// the filter clause are included in the subproperty's data) or exclusive
 /// (events satisfying the filter clause are excluded from the subproperty's
 /// data).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubpropertyEventFilterClause {
     /// Required. The type for the filter clause.
@@ -4825,6 +4987,7 @@ pub struct SubpropertyEventFilterClause {
 /// Nested message and enum types in `SubpropertyEventFilterClause`.
 pub mod subproperty_event_filter_clause {
     /// Specifies whether this is an include or exclude filter clause.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4870,6 +5033,7 @@ pub mod subproperty_event_filter_clause {
     }
 }
 /// A resource message representing a Google Analytics subproperty event filter.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubpropertyEventFilter {
     /// Output only. Format:
@@ -4887,6 +5051,7 @@ pub struct SubpropertyEventFilter {
     pub filter_clauses: ::prost::alloc::vec::Vec<SubpropertyEventFilterClause>,
 }
 /// The request for a Data Access Record Report.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAccessReportRequest {
     /// The Data Access Report supports requesting at the property level or account
@@ -4981,6 +5146,7 @@ pub struct RunAccessReportRequest {
     pub expand_groups: bool,
 }
 /// The customized Data Access Record Report response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAccessReportResponse {
     /// The header for a column in the report that corresponds to a specific
@@ -5012,6 +5178,7 @@ pub struct RunAccessReportResponse {
     pub quota: ::core::option::Option<AccessQuota>,
 }
 /// Request message for GetAccount RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAccountRequest {
     /// Required. The name of the account to lookup.
@@ -5021,6 +5188,7 @@ pub struct GetAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccounts RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountsRequest {
     /// Optional. The maximum number of resources to return. The service may return
@@ -5042,6 +5210,7 @@ pub struct ListAccountsRequest {
     pub show_deleted: bool,
 }
 /// Request message for ListAccounts RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountsResponse {
     /// Results that were accessible to the caller.
@@ -5053,6 +5222,7 @@ pub struct ListAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAccount RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAccountRequest {
     /// Required. The name of the Account to soft-delete.
@@ -5062,6 +5232,7 @@ pub struct DeleteAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAccount RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAccountRequest {
     /// Required. The account to update.
@@ -5076,6 +5247,7 @@ pub struct UpdateAccountRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ProvisionAccountTicket RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisionAccountTicketRequest {
     /// The account to create.
@@ -5087,6 +5259,7 @@ pub struct ProvisionAccountTicketRequest {
     pub redirect_uri: ::prost::alloc::string::String,
 }
 /// Response message for ProvisionAccountTicket RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisionAccountTicketResponse {
     /// The param to be passed in the ToS link.
@@ -5094,6 +5267,7 @@ pub struct ProvisionAccountTicketResponse {
     pub account_ticket_id: ::prost::alloc::string::String,
 }
 /// Request message for GetProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPropertyRequest {
     /// Required. The name of the property to lookup.
@@ -5103,6 +5277,7 @@ pub struct GetPropertyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListProperties RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPropertiesRequest {
     /// Required. An expression for filtering the results of the request.
@@ -5142,6 +5317,7 @@ pub struct ListPropertiesRequest {
     pub show_deleted: bool,
 }
 /// Response message for ListProperties RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPropertiesResponse {
     /// Results that matched the filter criteria and were accessible to the caller.
@@ -5153,6 +5329,7 @@ pub struct ListPropertiesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePropertyRequest {
     /// Required. The property to update.
@@ -5168,6 +5345,7 @@ pub struct UpdatePropertyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreatePropertyRequest {
     /// Required. The property to create.
@@ -5176,6 +5354,7 @@ pub struct CreatePropertyRequest {
     pub property: ::core::option::Option<Property>,
 }
 /// Request message for DeleteProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePropertyRequest {
     /// Required. The name of the Property to soft-delete.
@@ -5185,6 +5364,7 @@ pub struct DeletePropertyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateFirebaseLink RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}
@@ -5197,6 +5377,7 @@ pub struct CreateFirebaseLinkRequest {
     pub firebase_link: ::core::option::Option<FirebaseLink>,
 }
 /// Request message for DeleteFirebaseLink RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
@@ -5206,6 +5387,7 @@ pub struct DeleteFirebaseLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListFirebaseLinks RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFirebaseLinksRequest {
     /// Required. Format: properties/{property_id}
@@ -5227,6 +5409,7 @@ pub struct ListFirebaseLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListFirebaseLinks RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksResponse {
     /// List of FirebaseLinks. This will have at most one value.
@@ -5240,6 +5423,7 @@ pub struct ListFirebaseLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetGlobalSiteTag RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGlobalSiteTagRequest {
     /// Required. The name of the site tag to lookup.
@@ -5251,6 +5435,7 @@ pub struct GetGlobalSiteTagRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateGoogleAdsLink RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234
@@ -5261,6 +5446,7 @@ pub struct CreateGoogleAdsLinkRequest {
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
 }
 /// Request message for UpdateGoogleAdsLink RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateGoogleAdsLinkRequest {
     /// The GoogleAdsLink to update
@@ -5274,6 +5460,7 @@ pub struct UpdateGoogleAdsLinkRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteGoogleAdsLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234/googleAdsLinks/5678
@@ -5281,6 +5468,7 @@ pub struct DeleteGoogleAdsLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListGoogleAdsLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGoogleAdsLinksRequest {
     /// Required. Example format: properties/1234
@@ -5300,6 +5488,7 @@ pub struct ListGoogleAdsLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListGoogleAdsLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleAdsLinksResponse {
     /// List of GoogleAdsLinks.
@@ -5311,6 +5500,7 @@ pub struct ListGoogleAdsLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDataSharingSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataSharingSettingsRequest {
     /// Required. The name of the settings to lookup.
@@ -5321,6 +5511,7 @@ pub struct GetDataSharingSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccountSummaries RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountSummariesRequest {
     /// Optional. The maximum number of AccountSummary resources to return. The
@@ -5337,6 +5528,7 @@ pub struct ListAccountSummariesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAccountSummaries RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountSummariesResponse {
     /// Account summaries of all accounts the caller has access to.
@@ -5348,6 +5540,7 @@ pub struct ListAccountSummariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for AcknowledgeUserDataCollection RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionRequest {
     /// Required. The property for which to acknowledge user data collection.
@@ -5365,9 +5558,11 @@ pub struct AcknowledgeUserDataCollectionRequest {
     pub acknowledgement: ::prost::alloc::string::String,
 }
 /// Response message for AcknowledgeUserDataCollection RPC.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionResponse {}
 /// Request message for SearchChangeHistoryEvents RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
     /// Required. The account resource for which to return change history
@@ -5426,6 +5621,7 @@ pub struct SearchChangeHistoryEventsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for SearchAccounts RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsResponse {
     /// Results that were accessible to the caller.
@@ -5437,6 +5633,7 @@ pub struct SearchChangeHistoryEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetMeasurementProtocolSecret RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMeasurementProtocolSecretRequest {
     /// Required. The name of the measurement protocol secret to lookup.
@@ -5446,6 +5643,7 @@ pub struct GetMeasurementProtocolSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateMeasurementProtocolSecret RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateMeasurementProtocolSecretRequest {
     /// Required. The parent resource where this secret will be created.
@@ -5457,6 +5655,7 @@ pub struct CreateMeasurementProtocolSecretRequest {
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
 }
 /// Request message for DeleteMeasurementProtocolSecret RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMeasurementProtocolSecretRequest {
     /// Required. The name of the MeasurementProtocolSecret to delete.
@@ -5466,6 +5665,7 @@ pub struct DeleteMeasurementProtocolSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateMeasurementProtocolSecret RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateMeasurementProtocolSecretRequest {
     /// Required. The measurement protocol secret to update.
@@ -5477,6 +5677,7 @@ pub struct UpdateMeasurementProtocolSecretRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListMeasurementProtocolSecret RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsRequest {
     /// Required. The resource name of the parent stream.
@@ -5498,6 +5699,7 @@ pub struct ListMeasurementProtocolSecretsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListMeasurementProtocolSecret RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsResponse {
     /// A list of secrets for the parent stream specified in the request.
@@ -5511,6 +5713,7 @@ pub struct ListMeasurementProtocolSecretsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSkAdNetworkConversionValueSchemaRequest {
     /// Required. The resource name of SKAdNetwork conversion value schema to look
@@ -5520,6 +5723,7 @@ pub struct GetSkAdNetworkConversionValueSchemaRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSkAdNetworkConversionValueSchemaRequest {
     /// Required. The parent resource where this schema will be created.
@@ -5533,6 +5737,7 @@ pub struct CreateSkAdNetworkConversionValueSchemaRequest {
     >,
 }
 /// Request message for DeleteSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSkAdNetworkConversionValueSchemaRequest {
     /// Required. The name of the SKAdNetworkConversionValueSchema to delete.
@@ -5542,6 +5747,7 @@ pub struct DeleteSkAdNetworkConversionValueSchemaRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSkAdNetworkConversionValueSchemaRequest {
     /// Required. SKAdNetwork conversion value schema to update.
@@ -5555,6 +5761,7 @@ pub struct UpdateSkAdNetworkConversionValueSchemaRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListSKAdNetworkConversionValueSchemas RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSkAdNetworkConversionValueSchemasRequest {
     /// Required. The DataStream resource to list schemas for.
@@ -5578,6 +5785,7 @@ pub struct ListSkAdNetworkConversionValueSchemasRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSKAdNetworkConversionValueSchemas RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkAdNetworkConversionValueSchemasResponse {
     /// List of SKAdNetworkConversionValueSchemas. This will have at most one
@@ -5595,6 +5803,7 @@ pub struct ListSkAdNetworkConversionValueSchemasResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetGoogleSignalsSettings RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGoogleSignalsSettingsRequest {
     /// Required. The name of the google signals settings to retrieve.
@@ -5603,6 +5812,7 @@ pub struct GetGoogleSignalsSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateGoogleSignalsSettings RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateGoogleSignalsSettingsRequest {
     /// Required. The settings to update.
@@ -5617,6 +5827,7 @@ pub struct UpdateGoogleSignalsSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateConversionEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversionEventRequest {
     /// Required. The conversion event to create.
@@ -5628,6 +5839,7 @@ pub struct CreateConversionEventRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for UpdateConversionEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConversionEventRequest {
     /// Required. The conversion event to update.
@@ -5642,6 +5854,7 @@ pub struct UpdateConversionEventRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetConversionEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConversionEventRequest {
     /// Required. The resource name of the conversion event to retrieve.
@@ -5651,6 +5864,7 @@ pub struct GetConversionEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteConversionEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConversionEventRequest {
     /// Required. The resource name of the conversion event to delete.
@@ -5660,6 +5874,7 @@ pub struct DeleteConversionEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListConversionEvents RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConversionEventsRequest {
     /// Required. The resource name of the parent property.
@@ -5679,6 +5894,7 @@ pub struct ListConversionEventsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListConversionEvents RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversionEventsResponse {
     /// The requested conversion events
@@ -5690,6 +5906,7 @@ pub struct ListConversionEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateKeyEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKeyEventRequest {
     /// Required. The Key Event to create.
@@ -5701,6 +5918,7 @@ pub struct CreateKeyEventRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for UpdateKeyEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateKeyEventRequest {
     /// Required. The Key Event to update.
@@ -5715,6 +5933,7 @@ pub struct UpdateKeyEventRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetKeyEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyEventRequest {
     /// Required. The resource name of the Key Event to retrieve.
@@ -5724,6 +5943,7 @@ pub struct GetKeyEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteKeyEvent RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteKeyEventRequest {
     /// Required. The resource name of the Key Event to delete.
@@ -5733,6 +5953,7 @@ pub struct DeleteKeyEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListKeyEvents RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListKeyEventsRequest {
     /// Required. The resource name of the parent property.
@@ -5752,6 +5973,7 @@ pub struct ListKeyEventsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListKeyEvents RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeyEventsResponse {
     /// The requested Key Events
@@ -5763,6 +5985,7 @@ pub struct ListKeyEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDisplayVideo360AdvertiserLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDisplayVideo360AdvertiserLinkRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLink to get.
@@ -5771,6 +5994,7 @@ pub struct GetDisplayVideo360AdvertiserLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDisplayVideo360AdvertiserLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinksRequest {
     /// Required. Example format: properties/1234
@@ -5791,6 +6015,7 @@ pub struct ListDisplayVideo360AdvertiserLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDisplayVideo360AdvertiserLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinksResponse {
     /// List of DisplayVideo360AdvertiserLinks.
@@ -5804,6 +6029,7 @@ pub struct ListDisplayVideo360AdvertiserLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateDisplayVideo360AdvertiserLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDisplayVideo360AdvertiserLinkRequest {
     /// Required. Example format: properties/1234
@@ -5816,6 +6042,7 @@ pub struct CreateDisplayVideo360AdvertiserLinkRequest {
     >,
 }
 /// Request message for DeleteDisplayVideo360AdvertiserLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDisplayVideo360AdvertiserLinkRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLink to delete.
@@ -5824,6 +6051,7 @@ pub struct DeleteDisplayVideo360AdvertiserLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDisplayVideo360AdvertiserLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDisplayVideo360AdvertiserLinkRequest {
     /// The DisplayVideo360AdvertiserLink to update
@@ -5838,6 +6066,7 @@ pub struct UpdateDisplayVideo360AdvertiserLinkRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDisplayVideo360AdvertiserLinkProposalRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to get.
@@ -5846,6 +6075,7 @@ pub struct GetDisplayVideo360AdvertiserLinkProposalRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinkProposalsRequest {
     /// Required. Example format: properties/1234
@@ -5867,6 +6097,7 @@ pub struct ListDisplayVideo360AdvertiserLinkProposalsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinkProposalsResponse {
     /// List of DisplayVideo360AdvertiserLinkProposals.
@@ -5880,6 +6111,7 @@ pub struct ListDisplayVideo360AdvertiserLinkProposalsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDisplayVideo360AdvertiserLinkProposalRequest {
     /// Required. Example format: properties/1234
@@ -5892,6 +6124,7 @@ pub struct CreateDisplayVideo360AdvertiserLinkProposalRequest {
     >,
 }
 /// Request message for DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDisplayVideo360AdvertiserLinkProposalRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to delete.
@@ -5900,6 +6133,7 @@ pub struct DeleteDisplayVideo360AdvertiserLinkProposalRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApproveDisplayVideo360AdvertiserLinkProposalRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to approve.
@@ -5908,6 +6142,7 @@ pub struct ApproveDisplayVideo360AdvertiserLinkProposalRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApproveDisplayVideo360AdvertiserLinkProposalResponse {
     /// The DisplayVideo360AdvertiserLink created as a result of approving the
@@ -5918,6 +6153,7 @@ pub struct ApproveDisplayVideo360AdvertiserLinkProposalResponse {
     >,
 }
 /// Request message for CancelDisplayVideo360AdvertiserLinkProposal RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelDisplayVideo360AdvertiserLinkProposalRequest {
     /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to cancel.
@@ -5926,6 +6162,7 @@ pub struct CancelDisplayVideo360AdvertiserLinkProposalRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetSearchAds360Link RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSearchAds360LinkRequest {
     /// Required. The name of the SearchAds360Link to get.
@@ -5934,6 +6171,7 @@ pub struct GetSearchAds360LinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSearchAds360Links RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSearchAds360LinksRequest {
     /// Required. Example format: properties/1234
@@ -5954,6 +6192,7 @@ pub struct ListSearchAds360LinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSearchAds360Links RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSearchAds360LinksResponse {
     /// List of SearchAds360Links.
@@ -5965,6 +6204,7 @@ pub struct ListSearchAds360LinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateSearchAds360Link RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSearchAds360LinkRequest {
     /// Required. Example format: properties/1234
@@ -5975,6 +6215,7 @@ pub struct CreateSearchAds360LinkRequest {
     pub search_ads_360_link: ::core::option::Option<SearchAds360Link>,
 }
 /// Request message for DeleteSearchAds360Link RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSearchAds360LinkRequest {
     /// Required. The name of the SearchAds360Link to delete.
@@ -5983,6 +6224,7 @@ pub struct DeleteSearchAds360LinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSearchAds360Link RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSearchAds360LinkRequest {
     /// The SearchAds360Link to update
@@ -5995,6 +6237,7 @@ pub struct UpdateSearchAds360LinkRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateCustomDimension RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomDimensionRequest {
     /// Required. Example format: properties/1234
@@ -6005,6 +6248,7 @@ pub struct CreateCustomDimensionRequest {
     pub custom_dimension: ::core::option::Option<CustomDimension>,
 }
 /// Request message for UpdateCustomDimension RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomDimensionRequest {
     /// The CustomDimension to update
@@ -6017,6 +6261,7 @@ pub struct UpdateCustomDimensionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCustomDimensions RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomDimensionsRequest {
     /// Required. Example format: properties/1234
@@ -6036,6 +6281,7 @@ pub struct ListCustomDimensionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListCustomDimensions RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomDimensionsResponse {
     /// List of CustomDimensions.
@@ -6047,6 +6293,7 @@ pub struct ListCustomDimensionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ArchiveCustomDimension RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArchiveCustomDimensionRequest {
     /// Required. The name of the CustomDimension to archive.
@@ -6055,6 +6302,7 @@ pub struct ArchiveCustomDimensionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetCustomDimension RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomDimensionRequest {
     /// Required. The name of the CustomDimension to get.
@@ -6063,6 +6311,7 @@ pub struct GetCustomDimensionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateCustomMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomMetricRequest {
     /// Required. Example format: properties/1234
@@ -6073,6 +6322,7 @@ pub struct CreateCustomMetricRequest {
     pub custom_metric: ::core::option::Option<CustomMetric>,
 }
 /// Request message for UpdateCustomMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomMetricRequest {
     /// The CustomMetric to update
@@ -6085,6 +6335,7 @@ pub struct UpdateCustomMetricRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCustomMetrics RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomMetricsRequest {
     /// Required. Example format: properties/1234
@@ -6104,6 +6355,7 @@ pub struct ListCustomMetricsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListCustomMetrics RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomMetricsResponse {
     /// List of CustomMetrics.
@@ -6115,6 +6367,7 @@ pub struct ListCustomMetricsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ArchiveCustomMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArchiveCustomMetricRequest {
     /// Required. The name of the CustomMetric to archive.
@@ -6123,6 +6376,7 @@ pub struct ArchiveCustomMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetCustomMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomMetricRequest {
     /// Required. The name of the CustomMetric to get.
@@ -6131,6 +6385,7 @@ pub struct GetCustomMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateCalculatedMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCalculatedMetricRequest {
     /// Required. Format: properties/{property_id}
@@ -6152,6 +6407,7 @@ pub struct CreateCalculatedMetricRequest {
     pub calculated_metric: ::core::option::Option<CalculatedMetric>,
 }
 /// Request message for UpdateCalculatedMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCalculatedMetricRequest {
     /// Required. The CalculatedMetric to update
@@ -6164,6 +6420,7 @@ pub struct UpdateCalculatedMetricRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteCalculatedMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCalculatedMetricRequest {
     /// Required. The name of the CalculatedMetric to delete.
@@ -6173,6 +6430,7 @@ pub struct DeleteCalculatedMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListCalculatedMetrics RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCalculatedMetricsRequest {
     /// Required. Example format: properties/1234
@@ -6192,6 +6450,7 @@ pub struct ListCalculatedMetricsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListCalculatedMetrics RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCalculatedMetricsResponse {
     /// List of CalculatedMetrics.
@@ -6203,6 +6462,7 @@ pub struct ListCalculatedMetricsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetCalculatedMetric RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCalculatedMetricRequest {
     /// Required. The name of the CalculatedMetric to get.
@@ -6212,6 +6472,7 @@ pub struct GetCalculatedMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetDataRetentionSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataRetentionSettingsRequest {
     /// Required. The name of the settings to lookup.
@@ -6222,6 +6483,7 @@ pub struct GetDataRetentionSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataRetentionSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataRetentionSettingsRequest {
     /// Required. The settings to update.
@@ -6236,6 +6498,7 @@ pub struct UpdateDataRetentionSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateDataStream RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataStreamRequest {
     /// Required. Example format: properties/1234
@@ -6246,6 +6509,7 @@ pub struct CreateDataStreamRequest {
     pub data_stream: ::core::option::Option<DataStream>,
 }
 /// Request message for DeleteDataStream RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataStreamRequest {
     /// Required. The name of the DataStream to delete.
@@ -6254,6 +6518,7 @@ pub struct DeleteDataStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataStream RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataStreamRequest {
     /// The DataStream to update
@@ -6266,6 +6531,7 @@ pub struct UpdateDataStreamRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListDataStreams RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataStreamsRequest {
     /// Required. Example format: properties/1234
@@ -6285,6 +6551,7 @@ pub struct ListDataStreamsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDataStreams RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataStreamsResponse {
     /// List of DataStreams.
@@ -6296,6 +6563,7 @@ pub struct ListDataStreamsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDataStream RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataStreamRequest {
     /// Required. The name of the DataStream to get.
@@ -6304,6 +6572,7 @@ pub struct GetDataStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetAudience RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAudienceRequest {
     /// Required. The name of the Audience to get.
@@ -6312,6 +6581,7 @@ pub struct GetAudienceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAudiences RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAudiencesRequest {
     /// Required. Example format: properties/1234
@@ -6331,6 +6601,7 @@ pub struct ListAudiencesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAudiences RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudiencesResponse {
     /// List of Audiences.
@@ -6342,6 +6613,7 @@ pub struct ListAudiencesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateAudience RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAudienceRequest {
     /// Required. Example format: properties/1234
@@ -6352,6 +6624,7 @@ pub struct CreateAudienceRequest {
     pub audience: ::core::option::Option<Audience>,
 }
 /// Request message for UpdateAudience RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAudienceRequest {
     /// Required. The audience to update.
@@ -6366,6 +6639,7 @@ pub struct UpdateAudienceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ArchiveAudience RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArchiveAudienceRequest {
     /// Required. Example format: properties/1234/audiences/5678
@@ -6373,6 +6647,7 @@ pub struct ArchiveAudienceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetAttributionSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAttributionSettingsRequest {
     /// Required. The name of the attribution settings to retrieve.
@@ -6381,6 +6656,7 @@ pub struct GetAttributionSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAttributionSettings RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAttributionSettingsRequest {
     /// Required. The attribution settings to update.
@@ -6395,6 +6671,7 @@ pub struct UpdateAttributionSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetAccessBinding RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAccessBindingRequest {
     /// Required. The name of the access binding to retrieve.
@@ -6406,6 +6683,7 @@ pub struct GetAccessBindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
@@ -6426,6 +6704,7 @@ pub struct BatchGetAccessBindingsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for BatchGetAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetAccessBindingsResponse {
     /// The requested access bindings.
@@ -6433,6 +6712,7 @@ pub struct BatchGetAccessBindingsResponse {
     pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
 }
 /// Request message for ListAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccessBindingsRequest {
     /// Required. Formats:
@@ -6455,6 +6735,7 @@ pub struct ListAccessBindingsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccessBindingsResponse {
     /// List of AccessBindings. These will be ordered stably, but in an arbitrary
@@ -6467,6 +6748,7 @@ pub struct ListAccessBindingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateAccessBinding RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAccessBindingRequest {
     /// Required. Formats:
@@ -6480,6 +6762,7 @@ pub struct CreateAccessBindingRequest {
     pub access_binding: ::core::option::Option<AccessBinding>,
 }
 /// Request message for BatchCreateAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
@@ -6496,6 +6779,7 @@ pub struct BatchCreateAccessBindingsRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateAccessBindingRequest>,
 }
 /// Response message for BatchCreateAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAccessBindingsResponse {
     /// The access bindings created.
@@ -6503,6 +6787,7 @@ pub struct BatchCreateAccessBindingsResponse {
     pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
 }
 /// Request message for UpdateAccessBinding RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAccessBindingRequest {
     /// Required. The access binding to update.
@@ -6510,6 +6795,7 @@ pub struct UpdateAccessBindingRequest {
     pub access_binding: ::core::option::Option<AccessBinding>,
 }
 /// Request message for BatchUpdateAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
@@ -6527,6 +6813,7 @@ pub struct BatchUpdateAccessBindingsRequest {
     pub requests: ::prost::alloc::vec::Vec<UpdateAccessBindingRequest>,
 }
 /// Response message for BatchUpdateAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateAccessBindingsResponse {
     /// The access bindings updated.
@@ -6534,6 +6821,7 @@ pub struct BatchUpdateAccessBindingsResponse {
     pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
 }
 /// Request message for DeleteAccessBinding RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAccessBindingRequest {
     /// Required. Formats:
@@ -6544,6 +6832,7 @@ pub struct DeleteAccessBindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchDeleteAccessBindings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
@@ -6560,6 +6849,7 @@ pub struct BatchDeleteAccessBindingsRequest {
     pub requests: ::prost::alloc::vec::Vec<DeleteAccessBindingRequest>,
 }
 /// Request message for CreateExpandedDataSet RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExpandedDataSetRequest {
     /// Required. Example format: properties/1234
@@ -6570,6 +6860,7 @@ pub struct CreateExpandedDataSetRequest {
     pub expanded_data_set: ::core::option::Option<ExpandedDataSet>,
 }
 /// Request message for UpdateExpandedDataSet RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExpandedDataSetRequest {
     /// Required. The ExpandedDataSet to update.
@@ -6585,6 +6876,7 @@ pub struct UpdateExpandedDataSetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteExpandedDataSet RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteExpandedDataSetRequest {
     /// Required. Example format: properties/1234/expandedDataSets/5678
@@ -6592,6 +6884,7 @@ pub struct DeleteExpandedDataSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetExpandedDataSet RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExpandedDataSetRequest {
     /// Required. The name of the ExpandedDataSet to get.
@@ -6600,6 +6893,7 @@ pub struct GetExpandedDataSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListExpandedDataSets RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExpandedDataSetsRequest {
     /// Required. Example format: properties/1234
@@ -6619,6 +6913,7 @@ pub struct ListExpandedDataSetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListExpandedDataSets RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExpandedDataSetsResponse {
     /// List of ExpandedDataSet. These will be ordered stably, but in an arbitrary
@@ -6631,6 +6926,7 @@ pub struct ListExpandedDataSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateChannelGroup RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelGroupRequest {
     /// Required. The property for which to create a ChannelGroup.
@@ -6642,6 +6938,7 @@ pub struct CreateChannelGroupRequest {
     pub channel_group: ::core::option::Option<ChannelGroup>,
 }
 /// Request message for UpdateChannelGroup RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelGroupRequest {
     /// Required. The ChannelGroup to update.
@@ -6657,6 +6954,7 @@ pub struct UpdateChannelGroupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteChannelGroup RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelGroupRequest {
     /// Required. The ChannelGroup to delete.
@@ -6665,6 +6963,7 @@ pub struct DeleteChannelGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetChannelGroup RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelGroupRequest {
     /// Required. The ChannelGroup to get.
@@ -6673,6 +6972,7 @@ pub struct GetChannelGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListChannelGroups RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelGroupsRequest {
     /// Required. The property for which to list ChannelGroups.
@@ -6693,6 +6993,7 @@ pub struct ListChannelGroupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListChannelGroups RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelGroupsResponse {
     /// List of ChannelGroup. These will be ordered stably, but in an arbitrary
@@ -6705,6 +7006,7 @@ pub struct ListChannelGroupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateBigQueryLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateBigQueryLinkRequest {
     /// Required. Example format: properties/1234
@@ -6715,6 +7017,7 @@ pub struct CreateBigQueryLinkRequest {
     pub bigquery_link: ::core::option::Option<BigQueryLink>,
 }
 /// Request message for GetBigQueryLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBigQueryLinkRequest {
     /// Required. The name of the BigQuery link to lookup.
@@ -6724,6 +7027,7 @@ pub struct GetBigQueryLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListBigQueryLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBigQueryLinksRequest {
     /// Required. The name of the property to list BigQuery links under.
@@ -6745,6 +7049,7 @@ pub struct ListBigQueryLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListBigQueryLinks RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBigQueryLinksResponse {
     /// List of BigQueryLinks.
@@ -6756,6 +7061,7 @@ pub struct ListBigQueryLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateBigQueryLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBigQueryLinkRequest {
     /// Required. The settings to update.
@@ -6770,6 +7076,7 @@ pub struct UpdateBigQueryLinkRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteBigQueryLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBigQueryLinkRequest {
     /// Required. The BigQueryLink to delete.
@@ -6778,6 +7085,7 @@ pub struct DeleteBigQueryLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetEnhancedMeasurementSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEnhancedMeasurementSettingsRequest {
     /// Required. The name of the settings to lookup.
@@ -6788,6 +7096,7 @@ pub struct GetEnhancedMeasurementSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateEnhancedMeasurementSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateEnhancedMeasurementSettingsRequest {
     /// Required. The settings to update.
@@ -6804,6 +7113,7 @@ pub struct UpdateEnhancedMeasurementSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDataRedactionSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataRedactionSettingsRequest {
     /// Required. The name of the settings to lookup.
@@ -6814,6 +7124,7 @@ pub struct GetDataRedactionSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataRedactionSettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataRedactionSettingsRequest {
     /// Required. The settings to update.
@@ -6828,6 +7139,7 @@ pub struct UpdateDataRedactionSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message to be passed to CreateAdSenseLink method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAdSenseLinkRequest {
     /// Required. The property for which to create an AdSense Link.
@@ -6840,6 +7152,7 @@ pub struct CreateAdSenseLinkRequest {
     pub adsense_link: ::core::option::Option<AdSenseLink>,
 }
 /// Request message to be passed to GetAdSenseLink method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAdSenseLinkRequest {
     /// Required. Unique identifier for the AdSense Link requested.
@@ -6849,6 +7162,7 @@ pub struct GetAdSenseLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to be passed to DeleteAdSenseLink method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAdSenseLinkRequest {
     /// Required. Unique identifier for the AdSense Link to be deleted.
@@ -6858,6 +7172,7 @@ pub struct DeleteAdSenseLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to be passed to ListAdSenseLinks method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAdSenseLinksRequest {
     /// Required. Resource name of the parent property.
@@ -6879,6 +7194,7 @@ pub struct ListAdSenseLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAdSenseLinks method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdSenseLinksResponse {
     /// List of AdSenseLinks.
@@ -6890,6 +7206,7 @@ pub struct ListAdSenseLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateEventCreateRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventCreateRuleRequest {
     /// Required. Example format: properties/123/dataStreams/456
@@ -6900,6 +7217,7 @@ pub struct CreateEventCreateRuleRequest {
     pub event_create_rule: ::core::option::Option<EventCreateRule>,
 }
 /// Request message for UpdateEventCreateRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEventCreateRuleRequest {
     /// Required. The EventCreateRule to update.
@@ -6915,6 +7233,7 @@ pub struct UpdateEventCreateRuleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteEventCreateRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventCreateRuleRequest {
     /// Required. Example format:
@@ -6923,6 +7242,7 @@ pub struct DeleteEventCreateRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetEventCreateRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventCreateRuleRequest {
     /// Required. The name of the EventCreateRule to get.
@@ -6931,6 +7251,7 @@ pub struct GetEventCreateRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListEventCreateRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventCreateRulesRequest {
     /// Required. Example format: properties/123/dataStreams/456
@@ -6950,6 +7271,7 @@ pub struct ListEventCreateRulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListEventCreateRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventCreateRulesResponse {
     /// List of EventCreateRules. These will be ordered stably, but in an arbitrary
@@ -6962,6 +7284,7 @@ pub struct ListEventCreateRulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateEventEditRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventEditRuleRequest {
     /// Required. Example format: properties/123/dataStreams/456
@@ -6972,6 +7295,7 @@ pub struct CreateEventEditRuleRequest {
     pub event_edit_rule: ::core::option::Option<EventEditRule>,
 }
 /// Request message for UpdateEventEditRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEventEditRuleRequest {
     /// Required. The EventEditRule to update.
@@ -6987,6 +7311,7 @@ pub struct UpdateEventEditRuleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteEventEditRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventEditRuleRequest {
     /// Required. Example format: properties/123/dataStreams/456/eventEditRules/789
@@ -6994,6 +7319,7 @@ pub struct DeleteEventEditRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetEventEditRule RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventEditRuleRequest {
     /// Required. The name of the EventEditRule to get.
@@ -7002,6 +7328,7 @@ pub struct GetEventEditRuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListEventEditRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventEditRulesRequest {
     /// Required. Example format: properties/123/dataStreams/456
@@ -7021,6 +7348,7 @@ pub struct ListEventEditRulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListEventEditRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventEditRulesResponse {
     /// List of EventEditRules. These will be ordered stably, but in an arbitrary
@@ -7033,6 +7361,7 @@ pub struct ListEventEditRulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ReorderEventEditRules RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReorderEventEditRulesRequest {
     /// Required. Example format: properties/123/dataStreams/456
@@ -7045,6 +7374,7 @@ pub struct ReorderEventEditRulesRequest {
     pub event_edit_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for CreateRollupProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRollupPropertyRequest {
     /// Required. The roll-up property to create.
@@ -7056,6 +7386,7 @@ pub struct CreateRollupPropertyRequest {
     pub source_properties: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for CreateRollupProperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRollupPropertyResponse {
     /// The created roll-up property.
@@ -7066,6 +7397,7 @@ pub struct CreateRollupPropertyResponse {
     pub rollup_property_source_links: ::prost::alloc::vec::Vec<RollupPropertySourceLink>,
 }
 /// Request message for GetRollupPropertySourceLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRollupPropertySourceLinkRequest {
     /// Required. The name of the roll-up property source link to lookup.
@@ -7076,6 +7408,7 @@ pub struct GetRollupPropertySourceLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListRollupPropertySourceLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRollupPropertySourceLinksRequest {
     /// Required. The name of the roll-up property to list roll-up property source
@@ -7097,6 +7430,7 @@ pub struct ListRollupPropertySourceLinksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListRollupPropertySourceLinks RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRollupPropertySourceLinksResponse {
     /// List of RollupPropertySourceLinks.
@@ -7108,6 +7442,7 @@ pub struct ListRollupPropertySourceLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateRollupPropertySourceLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRollupPropertySourceLinkRequest {
     /// Required. Format: properties/{property_id}
@@ -7119,6 +7454,7 @@ pub struct CreateRollupPropertySourceLinkRequest {
     pub rollup_property_source_link: ::core::option::Option<RollupPropertySourceLink>,
 }
 /// Request message for DeleteRollupPropertySourceLink RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRollupPropertySourceLinkRequest {
     /// Required. Format:
@@ -7128,6 +7464,7 @@ pub struct DeleteRollupPropertySourceLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateSubproperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionSubpropertyRequest {
     /// Required. The subproperty to create.
@@ -7142,6 +7479,7 @@ pub struct ProvisionSubpropertyRequest {
     pub custom_dimension_and_metric_synchronization_mode: i32,
 }
 /// Response message for ProvisionSubproperty RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionSubpropertyResponse {
     /// The created subproperty.
@@ -7152,6 +7490,7 @@ pub struct ProvisionSubpropertyResponse {
     pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
 }
 /// Request message for CreateSubpropertyEventFilter RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSubpropertyEventFilterRequest {
     /// Required. The ordinary property for which to create a subproperty event
@@ -7163,6 +7502,7 @@ pub struct CreateSubpropertyEventFilterRequest {
     pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
 }
 /// Request message for GetSubpropertyEventFilter RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubpropertyEventFilterRequest {
     /// Required. Resource name of the subproperty event filter to lookup.
@@ -7173,6 +7513,7 @@ pub struct GetSubpropertyEventFilterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSubpropertyEventFilters RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubpropertyEventFiltersRequest {
     /// Required. Resource name of the ordinary property.
@@ -7195,6 +7536,7 @@ pub struct ListSubpropertyEventFiltersRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSubpropertyEventFilter RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubpropertyEventFiltersResponse {
     /// List of subproperty event filters.
@@ -7206,6 +7548,7 @@ pub struct ListSubpropertyEventFiltersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSubpropertyEventFilter RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSubpropertyEventFilterRequest {
     /// Required. The subproperty event filter to update.
@@ -7219,6 +7562,7 @@ pub struct UpdateSubpropertyEventFilterRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteSubpropertyEventFilter RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubpropertyEventFilterRequest {
     /// Required. Resource name of the subproperty event filter to delete.
@@ -7229,6 +7573,7 @@ pub struct DeleteSubpropertyEventFilterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateReportingDataAnnotationRequest {
     /// Required. The property for which to create a Reporting Data Annotation.
@@ -7241,6 +7586,7 @@ pub struct CreateReportingDataAnnotationRequest {
     pub reporting_data_annotation: ::core::option::Option<ReportingDataAnnotation>,
 }
 /// Request message for GetReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReportingDataAnnotationRequest {
     /// Required. Resource name of the Reporting Data Annotation to lookup.
@@ -7251,6 +7597,7 @@ pub struct GetReportingDataAnnotationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReportingDataAnnotationsRequest {
     /// Required. Resource name of the property.
@@ -7319,6 +7666,7 @@ pub struct ListReportingDataAnnotationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReportingDataAnnotationsResponse {
     /// List of Reporting Data Annotations.
@@ -7330,6 +7678,7 @@ pub struct ListReportingDataAnnotationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateReportingDataAnnotationRequest {
     /// Required. The Reporting Data Annotation to update.
@@ -7343,6 +7692,7 @@ pub struct UpdateReportingDataAnnotationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteReportingDataAnnotation RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReportingDataAnnotationRequest {
     /// Required. Resource name of the Reporting Data Annotation to delete.
@@ -7353,6 +7703,7 @@ pub struct DeleteReportingDataAnnotationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SubmitUserDeletion RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubmitUserDeletionRequest {
     /// Required. The name of the property to submit user deletion for.
@@ -7365,6 +7716,7 @@ pub struct SubmitUserDeletionRequest {
 /// Nested message and enum types in `SubmitUserDeletionRequest`.
 pub mod submit_user_deletion_request {
     /// The user to submit a deletion request for
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum User {
         /// Google Analytics [user
@@ -7398,6 +7750,7 @@ pub mod submit_user_deletion_request {
     }
 }
 /// Response message for SubmitUserDeletion RPC.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubmitUserDeletionResponse {
     /// Marks the moment for which all visitor data before this point should be
@@ -7407,6 +7760,7 @@ pub struct SubmitUserDeletionResponse {
     pub deletion_request_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for GetSubpropertySyncConfig RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubpropertySyncConfigRequest {
     /// Required. Resource name of the SubpropertySyncConfig to lookup.
@@ -7417,6 +7771,7 @@ pub struct GetSubpropertySyncConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSubpropertySyncConfigs RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubpropertySyncConfigsRequest {
     /// Required. Resource name of the property.
@@ -7439,6 +7794,7 @@ pub struct ListSubpropertySyncConfigsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSubpropertySyncConfigs RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubpropertySyncConfigsResponse {
     /// List of `SubpropertySyncConfig` resources.
@@ -7450,6 +7806,7 @@ pub struct ListSubpropertySyncConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSubpropertySyncConfig RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSubpropertySyncConfigRequest {
     /// Required. The `SubpropertySyncConfig` to update.
@@ -7463,6 +7820,7 @@ pub struct UpdateSubpropertySyncConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetReportingIdentitySettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReportingIdentitySettingsRequest {
     /// Required. The name of the settings to lookup.
@@ -7473,6 +7831,7 @@ pub struct GetReportingIdentitySettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateReportingIdentitySettings RPC.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateReportingIdentitySettingsRequest {
     /// Required. The reporting identity settings to update.
@@ -7488,6 +7847,7 @@ pub struct UpdateReportingIdentitySettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetUserProvidedDataSettings RPC
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserProvidedDataSettingsRequest {
     /// Required. The name of the user provided data settings to retrieve.

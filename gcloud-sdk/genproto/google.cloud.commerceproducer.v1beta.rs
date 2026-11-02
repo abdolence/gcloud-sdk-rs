@@ -5,6 +5,7 @@
 /// fields are categorized as OPTIONAL irrespective of whether they are necessary
 /// for a private offer to be valid. Many fields labeled OPTIONAL must be set to
 /// publish the offer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateOffer {
     /// Identifier. Name of the resource.
@@ -134,6 +135,7 @@ pub struct PrivateOffer {
 /// Nested message and enum types in `PrivateOffer`.
 pub mod private_offer {
     /// Information about the Google review process.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PublishRequirementGoogleReview {
         /// Output only. The approval time of the Google review process.
@@ -141,6 +143,7 @@ pub mod private_offer {
         pub review_approve_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Contact information for a reseller.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResellerContact {
         /// Output only. The name of the reseller contact for this offer.
@@ -151,6 +154,7 @@ pub mod private_offer {
         pub email: ::prost::alloc::string::String,
     }
     /// Contact information for the partner representative.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PartnerContact {
         /// Optional. Display text identifying the partner sales contact.
@@ -168,6 +172,7 @@ pub mod private_offer {
         pub email: ::prost::alloc::string::String,
     }
     /// Information about the customer.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Customer {
         /// Optional. A string identifying the customer's entity (for example, the
@@ -213,6 +218,7 @@ pub mod private_offer {
     /// Extending a private offer to a customer that covers a given term
     /// constitutes a guarantee to the customer that the product will remain
     /// available to them for the duration of the term.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Term {
         /// Optional. Defines when the resulting order should start.
@@ -284,6 +290,7 @@ pub mod private_offer {
     /// Nested message and enum types in `Term`.
     pub mod term {
         /// Defines when an offer should start.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -330,6 +337,7 @@ pub mod private_offer {
             }
         }
         /// Defines when an offer should end.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -415,6 +423,7 @@ pub mod private_offer {
             }
         }
         /// Extra data for the end policy.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum EndPolicyData {
             /// Optional. Duration in months of the offer term.
@@ -441,6 +450,7 @@ pub mod private_offer {
             ScheduledEndTime(super::super::super::super::super::r#type::DateTime),
         }
         /// Defines the renewal policy for the offer.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Renewal {
             /// Optional. The max number of renewals allowed, after the initial term
@@ -470,6 +480,7 @@ pub mod private_offer {
         }
     }
     /// Configurations for the offer that is associated with a single product.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SingleProductOffer {
         /// Optional. The StandardOffer this PrivateOffer is based on.
@@ -543,6 +554,7 @@ pub mod private_offer {
         /// private offer may include customization of partner-managed product
         /// behavior. When this is the case, the details of the custom behavior are
         /// described using features.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Feature {
             /// Optional. Human readable display text characterizing the feature.
@@ -581,6 +593,7 @@ pub mod private_offer {
         /// See
         /// <https://docs.cloud.google.com/marketplace/docs/partners/offers/select-pricing-model#CUD>
         /// for the price models.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PriceModel {
             /// Optional. The price configurations for the usage part.
@@ -598,6 +611,7 @@ pub mod private_offer {
         /// Nested message and enum types in `PriceModel`.
         pub mod price_model {
             /// The discount for a specific SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct SkuDiscount {
                 /// Required. The SKU to which the discount applies.
@@ -610,6 +624,7 @@ pub mod private_offer {
             /// Nested message and enum types in `SkuDiscount`.
             pub mod sku_discount {
                 /// Required. The SKU to which the discount applies.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum Target {
                     /// Optional. The name of a partner SKU from this API.
@@ -640,6 +655,7 @@ pub mod private_offer {
                     CloudBillingSku(::prost::alloc::string::String),
                 }
                 /// The discount for the SKU.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum Discount {
                     /// Optional. The discount percent for the SKU.
@@ -661,6 +677,7 @@ pub mod private_offer {
                 }
             }
             /// The price for the usage SKUs.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Usage {
                 /// Optional. The default discount percent for usage SKUs.
@@ -681,6 +698,7 @@ pub mod private_offer {
                 pub sku_discounts: ::prost::alloc::vec::Vec<SkuDiscount>,
             }
             /// The price configurations for the flat fee subscriptions.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct FlatFee {
                 /// Optional. Flat fee overriding the default flat fee in the base
@@ -694,6 +712,7 @@ pub mod private_offer {
                 >,
             }
             /// The price configurations for the commitment based subscriptions.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Commitment {
                 /// Optional. The commitment balance that the customer will receive.
@@ -756,6 +775,7 @@ pub mod private_offer {
                 pub discard_previous_credit_balance: bool,
             }
             /// The price configurations for the subscription part.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Subscription {
                 /// Optional. The price configurations for the flat fee subscription.
@@ -771,6 +791,7 @@ pub mod private_offer {
             }
         }
         /// Price configurations for offers with standard intervals.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct StandardIntervalPrice {
             /// Optional. The standard interval of the offer.
@@ -788,6 +809,7 @@ pub mod private_offer {
         /// Nested message and enum types in `StandardIntervalPrice`.
         pub mod standard_interval_price {
             /// The options for offers with standard intervals.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -928,6 +950,7 @@ pub mod private_offer {
             }
         }
         /// An installment of the offer.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Installment {
             /// Optional. The start time of the installment.
@@ -962,6 +985,7 @@ pub mod private_offer {
             pub price_model: ::core::option::Option<PriceModel>,
         }
         /// Price configurations for offers with custom intervals.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CustomIntervalPrice {
             /// Optional. The installments that make up the installment timeline.
@@ -974,6 +998,7 @@ pub mod private_offer {
             pub installments: ::prost::alloc::vec::Vec<Installment>,
         }
         /// The contract value of the offer.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ContractValue {
             /// Output only. The total contract value of the offer.
@@ -1002,6 +1027,7 @@ pub mod private_offer {
         /// * Offers published on or before April 20, 2025 will only have revenue
         ///   share fields populated if they were associated with an active,
         ///   unexpired order on that date.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RevenueShare {
             /// Output only. The revenue share currently in effect.
@@ -1028,6 +1054,7 @@ pub mod private_offer {
         }
         /// Additional contract value that represents a spend obligation or target
         /// contract value tracked out-of-band by the partner.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AdditionalContractValue {
             /// Optional. The absolute, cumulative contract value of the customer's
@@ -1076,6 +1103,7 @@ pub mod private_offer {
             pub eligible_skus: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// An existing offer to be superseded by this private offer.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum AmendedOffer {
             /// Optional. An existing private offer that will be superseded by this
@@ -1152,6 +1180,7 @@ pub mod private_offer {
         }
         /// The price of the offer.
         /// A price must be set when publishing the offer.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Price {
             /// Optional. Price configurations for offers with standard intervals.
@@ -1168,6 +1197,7 @@ pub mod private_offer {
         }
     }
     /// State of an offer.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1239,6 +1269,7 @@ pub mod private_offer {
     }
     /// The type of the deal transacted with the offer. The deal type of an offer
     /// is a factor in determining the offer's revenue share.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1302,6 +1333,7 @@ pub mod private_offer {
     /// The content for the offer.
     /// Additional forms of content may be supported in future.
     /// To publish the offer a content value must be provided.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// Optional. Configurations for the offer that is associated with a single
@@ -1321,6 +1353,7 @@ pub mod private_offer {
 ///
 /// Which document types are required, optional, or not permitted depends on the
 /// service the offer is for, and is returned in `Service.document_requirement`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivateOfferDocument {
     /// Identifier. Name of the resource.
@@ -1355,6 +1388,7 @@ pub mod private_offer_document {
     /// Google Cloud Marketplace Standard EULA may be published in future, which
     /// may result in changes to the subset of Standard EULA versions permitted
     /// to be used in new offers.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1447,6 +1481,7 @@ pub mod private_offer_document {
         }
     }
     /// Mechanism for storing the document content.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Content {
         /// Optional. Byte content of an unstructured document.
@@ -1456,6 +1491,7 @@ pub mod private_offer_document {
     }
 }
 /// Message describing Service resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Identifier. Name of resource.
@@ -1480,6 +1516,7 @@ pub struct Service {
 /// Nested message and enum types in `Service`.
 pub mod service {
     /// Requirements and constraints for documents attached to private offers.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DocumentRequirement {
         /// Document requirements for private offers on this service.
@@ -1495,6 +1532,7 @@ pub mod service {
     /// Nested message and enum types in `DocumentRequirement`.
     pub mod document_requirement {
         /// Requirement specification for a specific document type.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DocumentTypeRequirement {
             /// The document type.
@@ -1513,6 +1551,7 @@ pub mod service {
         /// Nested message and enum types in `DocumentTypeRequirement`.
         pub mod document_type_requirement {
             /// Requirement level for the document type.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1577,6 +1616,7 @@ pub mod service {
     /// Values may be added over time. Clients must handle unrecognized values.
     /// When new values are added, the ProductType for an existing service may
     /// change. Clients must also be able to handle a change in ProductType.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1645,6 +1685,7 @@ pub mod service {
 /// 'SKU' it is named 'Sku' for consistency with other resource type names, and
 /// may be rendered variously as 'Sku', 'sku', or 'SKU' across this and other
 /// documentation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sku {
     /// Output only. Identifier. Name of the SKU.
@@ -1673,6 +1714,7 @@ pub mod sku {
     /// Prices are in all cases in USD. Customers are billed in the currency of
     /// their billing account, subject to the currency conversion rate in effect
     /// at the time.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SkuPrice {
         /// Output only. The start of the time interval during which this price is
@@ -1686,6 +1728,7 @@ pub mod sku {
     /// Nested message and enum types in `SkuPrice`.
     pub mod sku_price {
         /// Representation for a SKU that is not active and has no price.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct InactiveSkuPrice {}
         /// Details about a SKU pricing usage of a [partner-reported custom billing
@@ -1696,6 +1739,7 @@ pub mod sku {
         /// The customer's usage charge is computed by converting the customer's
         /// reported consumption to the SKU's composite price unit and applying the
         /// graduated price from the appropriate price tier.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ManagedServiceMetricUsageFee {
             /// Output only. The name of the metric, in canonical format.
@@ -1726,6 +1770,7 @@ pub mod sku {
         /// Nested message and enum types in `ManagedServiceMetricUsageFee`.
         pub mod managed_service_metric_usage_fee {
             /// The billing model applied to bill the customer's usage.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// Output only. [Tiered
@@ -1750,6 +1795,7 @@ pub mod sku {
         /// resource type and size range, allowing a single running instance to be
         /// charged by up to one SKU per machine resource type, with pricing tiered
         /// according to machine shape.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ComputeEngineLicenseUsageFee {
             /// Output only. The license code of the target Compute Engine License.
@@ -1810,6 +1856,7 @@ pub mod sku {
         /// Nested message and enum types in `ComputeEngineLicenseUsageFee`.
         pub mod compute_engine_license_usage_fee {
             /// The range of machine resource values that the SKU applies to.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct MachineResourceRange {
                 /// Output only. The inclusive lower bound of the range.
@@ -1825,6 +1872,7 @@ pub mod sku {
                 pub end_value: ::core::option::Option<i64>,
             }
             /// The machine resource type that the SKU applies to, if any.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1874,6 +1922,7 @@ pub mod sku {
                 }
             }
             /// Determines how the customer's usage is calculated.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1944,6 +1993,7 @@ pub mod sku {
             }
             /// The billing model applied to bill the customer's usage
             /// arising from running instances covered by the scope of the SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// The price per unit of usage.
@@ -1966,6 +2016,7 @@ pub mod sku {
         /// type and size range, allowing a single running pod to be charged by up to
         /// one SKU per pod resource type, with pricing tiered according to pod
         /// shape.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct KubernetesEnginePodUsageFee {
             /// Output only. The pod resource type that the SKU applies to.
@@ -2016,6 +2067,7 @@ pub mod sku {
         /// Nested message and enum types in `KubernetesEnginePodUsageFee`.
         pub mod kubernetes_engine_pod_usage_fee {
             /// The range of pod resource values that the SKU applies to.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct PodResourceRange {
                 /// Output only. The inclusive lower bound of the range.
@@ -2029,6 +2081,7 @@ pub mod sku {
             /// The pod [resource
             /// type](<https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>)
             /// that the SKU applies to.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -2084,6 +2137,7 @@ pub mod sku {
                 }
             }
             /// Determines how the customer's usage is calculated.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -2153,6 +2207,7 @@ pub mod sku {
             }
             /// The billing model applied to meter and bill the customer's usage
             /// arising from running k8s pods covered by the scope of the SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// The price per unit of usage.
@@ -2164,6 +2219,7 @@ pub mod sku {
         }
         /// Details about a SKU pricing usage of an [AI Platform Managed Model
         /// (MaaS)](<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models>).
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AiPlatformManagedModelUsageFee {
             /// Output only. The usage metric that the SKU applies to.
@@ -2219,6 +2275,7 @@ pub mod sku {
         /// Nested message and enum types in `AiPlatformManagedModelUsageFee`.
         pub mod ai_platform_managed_model_usage_fee {
             /// The usage metric that the SKU applies to.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct AiPlatformManagedModelUsageMetric {
                 /// The usage metric that the SKU applies to.
@@ -2234,14 +2291,17 @@ pub mod sku {
             pub mod ai_platform_managed_model_usage_metric {
                 /// Input tokens read from the input to the prediction endpoint.
                 /// The unit for this metric is dimensionless.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct InputTokensMetric {}
                 /// Input tokens read from the cache.
                 /// The unit for this metric is dimensionless.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct CacheReadInputTokensMetric {}
                 /// Input tokens written to the cache.
                 /// The unit for this metric is dimensionless.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct CacheWriteInputTokensMetric {
                     /// Output only. The duration the write is retained in the cache.
@@ -2250,13 +2310,16 @@ pub mod sku {
                 }
                 /// Output tokens returned from the prediction endpoint.
                 /// The unit for this metric is dimensionless.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct OutputTokensMetric {}
                 /// Web search requests executed by the model.
                 /// The unit for this metric is dimensionless.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct WebSearchRequestsMetric {}
                 /// The usage metric that the SKU applies to.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum Metric {
                     /// Output only. Input tokens read from the prediction endpoint input.
@@ -2284,6 +2347,7 @@ pub mod sku {
             /// * input tokens
             /// * cache read input tokens
             /// * cache write input tokens
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct CombinedRequestInputTokensRange {
                 /// Output only. The inclusive lower bound of the range.
@@ -2297,6 +2361,7 @@ pub mod sku {
             /// Additional details present for historical provisioned throughput
             /// "overage" SKUs that applied charges only to usage above the customer's
             /// provisioned throughput quota threshold.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct ProvisionedThroughputOverage {
                 /// Output only. The service whose usage the overage SKU applied to.
@@ -2304,6 +2369,7 @@ pub mod sku {
                 pub service: ::prost::alloc::string::String,
             }
             /// The prediction modes of requests that the SKU applies to.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -2347,6 +2413,7 @@ pub mod sku {
                 }
             }
             /// The billing model applied to bill the customer's usage.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// Output only. [Tiered
@@ -2364,6 +2431,7 @@ pub mod sku {
         /// provisioned throughput quota for a particular model and location. Model
         /// usage below the provisioned throughput quota threshold is voided and is
         /// not charged by the product's managed model usage fees.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AiPlatformProvisionedThroughputFee {
             /// Output only. The location where provisioned throughput is priced by
@@ -2408,6 +2476,7 @@ pub mod sku {
         /// Nested message and enum types in `AiPlatformProvisionedThroughputFee`.
         pub mod ai_platform_provisioned_throughput_fee {
             /// The provisioned throughput reservation term priced by this SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Term {
                 /// Output only. The duration of the provisioned throughput reservation
@@ -2416,6 +2485,7 @@ pub mod sku {
                 TermDurationMonths(i32),
             }
             /// The billing model applied to bill the customer's usage.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// The price per [Generative AI Scale Unit
@@ -2430,6 +2500,7 @@ pub mod sku {
         }
         /// Details about a SKU pricing usage of an [AI Platform Self Deployed
         /// Model](<https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/self-deployed-models>).
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AiPlatformDeployedModelUsageFee {
             /// Output only. The price unit of the SKU.
@@ -2467,6 +2538,7 @@ pub mod sku {
         /// Nested message and enum types in `AiPlatformDeployedModelUsageFee`.
         pub mod ai_platform_deployed_model_usage_fee {
             /// Determines how the customer's usage is calculated.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -2519,6 +2591,7 @@ pub mod sku {
             /// Models are deployed with a customer-specified
             /// [MachineSpec](<https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/rest/v1/MachineSpec>)
             /// that determines the hardware resources used by the model.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum HardwareResource {
                 /// Output only. The SKU applies to a specific accelerator type.
@@ -2530,6 +2603,7 @@ pub mod sku {
             }
             /// The billing model applied to bill the customer's usage
             /// arising from running deployed models covered by the scope of the SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// Output only. The price per unit of usage.
@@ -2540,6 +2614,7 @@ pub mod sku {
             }
         }
         /// Details about a SKU charging a flat subscription fee.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct FlatSubscriptionFee {
             /// Output only. The unit of the subscription SKU.
@@ -2571,6 +2646,7 @@ pub mod sku {
         /// Nested message and enum types in `FlatSubscriptionFee`.
         pub mod flat_subscription_fee {
             /// The billing model applied to bill the customer's subscription.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum PriceStructure {
                 /// Output only. The price per time unit the subscription is active.
@@ -2580,6 +2656,7 @@ pub mod sku {
         }
         /// Price structure for a SKU charging a [tiered
         /// price](<https://cloud.google.com/billing/docs/how-to/pricing-table#tiered-pricing>).
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TieredPrice {
             /// Output only. Usage unit used for defining price tiers and for scaling
@@ -2635,6 +2712,7 @@ pub mod sku {
             ///
             /// Each marginal unit of usage is priced according to the price tier in
             /// which it falls.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct PriceTier {
                 /// Output only. Inclusive lower bound of the tier interval, denominated
@@ -2654,6 +2732,7 @@ pub mod sku {
         }
         /// Location scope for a SKU that applies to an AI Platform Managed Model
         /// endpoint.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AiPlatformManagedModelEndpointLocation {
             /// The location scope of the SKU.
@@ -2668,6 +2747,7 @@ pub mod sku {
         /// Nested message and enum types in `AiPlatformManagedModelEndpointLocation`.
         pub mod ai_platform_managed_model_endpoint_location {
             /// The location scope of the SKU.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Location {
                 /// Output only. The SKU applies to a region.
@@ -2685,6 +2765,7 @@ pub mod sku {
             }
         }
         /// The type of the SKU.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum SkuType {
             /// Output only. The SKU has been disabled and has no price.
@@ -2727,6 +2808,7 @@ pub mod sku {
     }
 }
 /// Message describing SkuGroup resource
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SkuGroup {
     /// Output only. Identifier. Name of the SkuGroup.
@@ -2749,6 +2831,7 @@ pub struct SkuGroup {
     pub cloud_billing_skus: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message describing the StandardOffer resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StandardOffer {
     /// Identifier. Name of resource.
@@ -2799,6 +2882,7 @@ pub struct StandardOffer {
 /// Nested message and enum types in `StandardOffer`.
 pub mod standard_offer {
     /// Price model of the offer.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PriceModel {
         /// Output only. Price configurations for the usage part.
@@ -2811,6 +2895,7 @@ pub mod standard_offer {
     /// Nested message and enum types in `PriceModel`.
     pub mod price_model {
         /// A collection of SKUs.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SkuList {
             /// Output only. List of SKUs by name.
@@ -2818,6 +2903,7 @@ pub mod standard_offer {
             pub skus: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// A collection of SkuGroups.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SkuGroupList {
             /// Output only. List of SkuGroups by name.
@@ -2825,6 +2911,7 @@ pub mod standard_offer {
             pub sku_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Price configurations for the usage part.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Usage {
             /// The SKUs that the offer's usage fees are charged against.
@@ -2834,6 +2921,7 @@ pub mod standard_offer {
         /// Nested message and enum types in `Usage`.
         pub mod usage {
             /// The SKUs that the offer's usage fees are charged against.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Skus {
                 /// Output only. The offer's usage fees are charged against these SKUs.
@@ -2846,6 +2934,7 @@ pub mod standard_offer {
             }
         }
         /// Price configurations for flat fee subscriptions.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct FlatFeeSubscription {
             /// Output only. Flat fee subscription SKU for the offer.
@@ -2853,6 +2942,7 @@ pub mod standard_offer {
             pub sku: ::prost::alloc::string::String,
         }
         /// Price configurations for the subscription part.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Subscription {
             /// Output only. Price configurations for the flat fee subscription.
@@ -2862,6 +2952,7 @@ pub mod standard_offer {
     }
     /// Term of the offer.
     /// Applicable only to subscription offers.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Term {
         /// Output only. Term duration of the offer in months.
@@ -2872,6 +2963,7 @@ pub mod standard_offer {
     }
 }
 /// Message for requesting list of PrivateOffers
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPrivateOffersRequest {
     /// Required. Parent value for ListPrivateOffersRequest
@@ -2906,6 +2998,7 @@ pub struct ListPrivateOffersRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing PrivateOffers
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateOffersResponse {
     /// The list of PrivateOffer
@@ -2917,6 +3010,7 @@ pub struct ListPrivateOffersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPrivateOfferRequest {
     /// Required. Name of the resource
@@ -2928,6 +3022,7 @@ pub struct GetPrivateOfferRequest {
     pub view: i32,
 }
 /// Message for resolving an amended offer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResolveAmendmentTargetRequest {
     /// Required. Parent value for ResolveAmendmentTargetRequest
@@ -2945,6 +3040,7 @@ pub struct ResolveAmendmentTargetRequest {
     pub base_standard_offer: ::prost::alloc::string::String,
 }
 /// Message in response to ResolveAmendmentTarget.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResolveAmendmentTargetResponse {
     /// The amendment requirements for the new private offer.
@@ -2961,6 +3057,7 @@ pub struct ResolveAmendmentTargetResponse {
 /// Nested message and enum types in `ResolveAmendmentTargetResponse`.
 pub mod resolve_amendment_target_response {
     /// A wrapper message containing offers that can optionally be amended.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OptionalOffers {
         /// A list of existing private offers that are eligible to be amended.
@@ -2975,6 +3072,7 @@ pub mod resolve_amendment_target_response {
     /// The amendment requirements for the new private offer.
     ///
     /// If this oneof is empty, the client should create a brand new offer.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AmendmentRequirement {
         /// The resource name of an existing private offer that MUST be amended.
@@ -2995,6 +3093,7 @@ pub mod resolve_amendment_target_response {
     }
 }
 /// Message for creating a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePrivateOfferRequest {
     /// Required. Value for parent.
@@ -3005,6 +3104,7 @@ pub struct CreatePrivateOfferRequest {
     pub private_offer: ::core::option::Option<PrivateOffer>,
 }
 /// Message for updating a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePrivateOfferRequest {
     /// Optional. The list of fields to update.
@@ -3019,6 +3119,7 @@ pub struct UpdatePrivateOfferRequest {
     pub private_offer: ::core::option::Option<PrivateOffer>,
 }
 /// Message for publishing a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishPrivateOfferRequest {
     /// Required. Name of the resource
@@ -3029,6 +3130,7 @@ pub struct PublishPrivateOfferRequest {
     pub validate_only: bool,
 }
 /// Message for cancelling a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelPrivateOfferRequest {
     /// Required. Name of the resource
@@ -3040,6 +3142,7 @@ pub struct CancelPrivateOfferRequest {
     pub cancellation_note: ::prost::alloc::string::String,
 }
 /// Message for deleting a PrivateOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePrivateOfferRequest {
     /// Required. Name of the resource
@@ -3051,6 +3154,7 @@ pub struct DeletePrivateOfferRequest {
     pub force: bool,
 }
 /// Message for requesting list of PrivateOfferDocuments
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPrivateOfferDocumentsRequest {
     /// Required. Parent value for ListPrivateOfferDocumentsRequest.
@@ -3070,6 +3174,7 @@ pub struct ListPrivateOfferDocumentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to listing PrivateOfferDocuments
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateOfferDocumentsResponse {
     /// The list of PrivateOfferDocuments.
@@ -3081,6 +3186,7 @@ pub struct ListPrivateOfferDocumentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a PrivateOfferDocument
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPrivateOfferDocumentRequest {
     /// Required. Name of the resource.
@@ -3088,6 +3194,7 @@ pub struct GetPrivateOfferDocumentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a PrivateOfferDocument.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreatePrivateOfferDocumentRequest {
     /// Required. Value for parent.
@@ -3098,6 +3205,7 @@ pub struct CreatePrivateOfferDocumentRequest {
     pub private_offer_document: ::core::option::Option<PrivateOfferDocument>,
 }
 /// Message for updating a PrivateOfferDocument
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePrivateOfferDocumentRequest {
     /// Required. The resource being updated.
@@ -3112,6 +3220,7 @@ pub struct UpdatePrivateOfferDocumentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message for deleting a PrivateOfferDocument
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePrivateOfferDocumentRequest {
     /// Required. Name of the resource.
@@ -3119,6 +3228,7 @@ pub struct DeletePrivateOfferDocumentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Services
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. Parent value for ListServicesRequest
@@ -3134,6 +3244,7 @@ pub struct ListServicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to listing Services
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of Service
@@ -3145,6 +3256,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a Service
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. Name of the resource
@@ -3156,6 +3268,7 @@ pub struct GetServiceRequest {
     pub view: i32,
 }
 /// Message for requesting list of StandardOffers
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStandardOffersRequest {
     /// Required. Parent value for ListStandardOffersRequest
@@ -3193,6 +3306,7 @@ pub struct ListStandardOffersRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing StandardOffers
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStandardOffersResponse {
     /// The list of StandardOffer
@@ -3204,6 +3318,7 @@ pub struct ListStandardOffersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a StandardOffer
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStandardOfferRequest {
     /// Required. Name of the resource
@@ -3215,6 +3330,7 @@ pub struct GetStandardOfferRequest {
     pub view: i32,
 }
 /// Message for requesting list of Skus
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSkusRequest {
     /// Required. Parent value for ListSkusRequest
@@ -3234,6 +3350,7 @@ pub struct ListSkusRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to listing Skus
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkusResponse {
     /// The list of Sku
@@ -3245,6 +3362,7 @@ pub struct ListSkusResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a Sku
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSkuRequest {
     /// Required. Name of the resource
@@ -3252,6 +3370,7 @@ pub struct GetSkuRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for getting a SkuGroup
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSkuGroupRequest {
     /// Required. Name of the resource
@@ -3259,6 +3378,7 @@ pub struct GetSkuGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of SkuGroups
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSkuGroupsRequest {
     /// Required. Parent value for ListSkuGroupsRequest
@@ -3278,6 +3398,7 @@ pub struct ListSkuGroupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to listing SkuGroups
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkuGroupsResponse {
     /// The list of SkuGroup
@@ -3290,6 +3411,7 @@ pub struct ListSkuGroupsResponse {
 }
 /// Controls which fields are returned in a PrivateOffer returned by the API.
 /// <https://google.aip.dev/157>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PrivateOfferView {
@@ -3326,6 +3448,7 @@ impl PrivateOfferView {
 }
 /// Controls which fields are returned in a StandardOffer returned by the API.
 /// <https://google.aip.dev/157>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum StandardOfferView {
@@ -3362,6 +3485,7 @@ impl StandardOfferView {
 }
 /// Controls which fields are returned in a Service returned by the API.
 /// <https://google.aip.dev/157>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceView {

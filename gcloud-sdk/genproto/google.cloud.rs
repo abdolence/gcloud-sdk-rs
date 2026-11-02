@@ -3,6 +3,7 @@
 /// API-specific Operation object. A custom Operation object may contain many
 /// different fields, but only few of them are essential to conduct a successful
 /// polling process.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperationResponseMapping {

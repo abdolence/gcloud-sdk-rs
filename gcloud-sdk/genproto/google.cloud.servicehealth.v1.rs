@@ -2,6 +2,7 @@
 /// Represents service health events that may affect Google Cloud products.
 /// Event resource is a read-only view and does not allow any modifications. All
 /// fields are output only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Output only. Identifier. Name of the event. Unique name of the event in
@@ -59,6 +60,7 @@ pub struct Event {
 pub mod event {
     /// The category of the event. This enum lists all possible categories of
     /// event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -99,6 +101,7 @@ pub mod event {
     }
     /// The detailed category of an event. Contains all possible states for all
     /// event categories.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -144,6 +147,7 @@ pub mod event {
         }
     }
     /// The state of the event. This enum lists all possible states of event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -190,6 +194,7 @@ pub mod event {
     }
     /// The detailed state of the incident. This enum lists all possible detailed
     /// states of an incident.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -263,6 +268,7 @@ pub mod event {
     }
     /// Communicates why a given incident is deemed relevant in the context of a
     /// given project. This enum lists all possible detailed states of relevance.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -325,6 +331,7 @@ pub mod event {
 /// Represents service health events that may affect Google Cloud products used
 /// across the organization. It is a read-only view and does not allow any
 /// modifications.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationEvent {
     /// Output only. Identifier. Name of the event. Unique name of the event in
@@ -386,6 +393,7 @@ pub struct OrganizationEvent {
 pub mod organization_event {
     /// The category of the event. This enum lists all possible categories of
     /// event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -426,6 +434,7 @@ pub mod organization_event {
     }
     /// The detailed category of an event. Contains all possible states for all
     /// event categories.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -472,6 +481,7 @@ pub mod organization_event {
     }
     /// The state of the organization event. This enum lists all possible states of
     /// event.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -518,6 +528,7 @@ pub mod organization_event {
     }
     /// The detailed state of the incident. This enum lists all possible detailed
     /// states of an incident.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -591,6 +602,7 @@ pub mod organization_event {
     }
 }
 /// Records an update made to the event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventUpdate {
     /// Output only. The time the update was posted.
@@ -610,6 +622,7 @@ pub struct EventUpdate {
     pub workaround: ::prost::alloc::string::String,
 }
 /// Represents the locations impacted by the event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Location {
     /// Location impacted by the event. Example: `"us-central1"`
@@ -617,6 +630,7 @@ pub struct Location {
     pub location_name: ::prost::alloc::string::String,
 }
 /// Represents the Google Cloud product impacted by the event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Product {
     /// Google Cloud product impacted by the event. Example: `"Google Cloud SQL"`
@@ -627,6 +641,7 @@ pub struct Product {
     pub id: ::prost::alloc::string::String,
 }
 /// Represents the Google Cloud products and locations impacted by the event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventImpact {
     /// Google Cloud product impacted by the event.
@@ -638,6 +653,7 @@ pub struct EventImpact {
 }
 /// Represents impact to assets at organizational level. It is a read-only view
 /// and does not allow any modifications.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OrganizationImpact {
     /// Output only. Identifier. Unique name of the organization impact in this
@@ -663,6 +679,7 @@ pub struct OrganizationImpact {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents the asset impacted by the events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Asset {
     /// Output only. Full name of the resource as defined in
@@ -676,6 +693,7 @@ pub struct Asset {
     pub asset_type: ::prost::alloc::string::String,
 }
 /// Requests list of events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value using the form
@@ -725,6 +743,7 @@ pub struct ListEventsRequest {
     pub view: i32,
 }
 /// Response to request for listing events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// Output only. List of events.
@@ -742,6 +761,7 @@ pub struct ListEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about a specific event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Unique name of the event in this scope including project
@@ -755,6 +775,7 @@ pub struct GetEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Requests list of events that affect an organization.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrganizationEventsRequest {
     /// Required. Parent value using the form
@@ -808,6 +829,7 @@ pub struct ListOrganizationEventsRequest {
     pub view: i32,
 }
 /// Response to request for listing organization events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationEventsResponse {
     /// Output only. List of organization events affecting an organization.
@@ -825,6 +847,7 @@ pub struct ListOrganizationEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about a specific event affecting an organization.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationEventRequest {
     /// Required. Unique name of the event in this scope including organization and
@@ -840,6 +863,7 @@ pub struct GetOrganizationEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Requests list of projects under an organization affected by an event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrganizationImpactsRequest {
     /// Required. Parent value using the form
@@ -891,6 +915,7 @@ pub struct ListOrganizationImpactsRequest {
 }
 /// Response to request for listing projects under an organization affected by an
 /// event.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationImpactsResponse {
     /// Output only. List of
@@ -910,6 +935,7 @@ pub struct ListOrganizationImpactsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about an event that affects a project under an organization.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationImpactRequest {
     /// Required. Name of the resource using the form
@@ -926,6 +952,7 @@ pub struct GetOrganizationImpactRequest {
 }
 /// The event fields to include in ListEvents API response. This enum lists all
 /// possible event views.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EventView {
@@ -961,6 +988,7 @@ impl EventView {
 }
 /// The organization event fields to include in ListOrganizationEvents API
 /// response. This enum lists all possible organization event views.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OrganizationEventView {

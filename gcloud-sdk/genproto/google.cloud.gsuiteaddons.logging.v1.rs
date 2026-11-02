@@ -2,6 +2,7 @@
 /// JSON payload of error messages that are logged to Cloud Logging. An error
 /// message (in English) is written to Cloud Logging (if not disabled) when an
 /// error is encountered while using an add-on.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GSuiteAddOnsLogEntry {
     /// The deployment that caused the error. For add-ons built in Apps Script,

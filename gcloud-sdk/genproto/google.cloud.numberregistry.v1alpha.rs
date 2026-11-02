@@ -2,6 +2,7 @@
 /// An IpamAdminScope defines the administrative boundary for IP address
 /// discovery and management. It configures which platforms and organizational
 /// scopes are enabled for IP tracking.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpamAdminScope {
     /// Required. Identifier. The resource name of the IpamAdminScope.
@@ -40,6 +41,7 @@ pub struct IpamAdminScope {
 /// Nested message and enum types in `IpamAdminScope`.
 pub mod ipam_admin_scope {
     /// Enum for add-on platforms.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -79,6 +81,7 @@ pub mod ipam_admin_scope {
         }
     }
     /// Enum for IpamAdminScope discovery pipeline state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -161,6 +164,7 @@ pub mod ipam_admin_scope {
 /// Request message for the
 /// \[CloudNumberRegistry.ListIpamAdminScopes\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListIpamAdminScopes\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIpamAdminScopesRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -183,6 +187,7 @@ pub struct ListIpamAdminScopesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ListIpamAdminScopes\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListIpamAdminScopes\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIpamAdminScopesResponse {
     /// The list of IpamAdminScopes.
@@ -199,6 +204,7 @@ pub struct ListIpamAdminScopesResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.GetIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.GetIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIpamAdminScopeRequest {
     /// Required. The resource name of the IpamAdminScope to retrieve.
@@ -208,6 +214,7 @@ pub struct GetIpamAdminScopeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.CheckAvailabilityIpamAdminScopes\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CheckAvailabilityIpamAdminScopes\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckAvailabilityIpamAdminScopesRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -220,6 +227,7 @@ pub struct CheckAvailabilityIpamAdminScopesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.CheckAvailabilityIpamAdminScopes\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CheckAvailabilityIpamAdminScopes\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckAvailabilityIpamAdminScopesResponse {
     /// The details of the requested scopes.
@@ -227,6 +235,7 @@ pub struct CheckAvailabilityIpamAdminScopesResponse {
     pub scope_availabilities: ::prost::alloc::vec::Vec<IpamAdminScopeAvailability>,
 }
 /// Availability details for a specific IpamAdminScope.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IpamAdminScopeAvailability {
     /// The scope of the IpamAdminScope.
@@ -242,6 +251,7 @@ pub struct IpamAdminScopeAvailability {
 /// Nested message and enum types in `IpamAdminScopeAvailability`.
 pub mod ipam_admin_scope_availability {
     /// Enum for the availability of a given scope.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -288,6 +298,7 @@ pub mod ipam_admin_scope_availability {
 /// Request message for the
 /// \[CloudNumberRegistry.CreateIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CreateIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIpamAdminScopeRequest {
     /// Required. The parent resource name where the IpamAdminScope will be
@@ -320,6 +331,7 @@ pub struct CreateIpamAdminScopeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.DisableIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.DisableIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableIpamAdminScopeRequest {
     /// Required. The resource name of the IpamAdminScope to disable.
@@ -344,6 +356,7 @@ pub struct DisableIpamAdminScopeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.CleanupIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CleanupIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CleanupIpamAdminScopeRequest {
     /// Required. The resource name of the IpamAdminScope to clean up.
@@ -368,6 +381,7 @@ pub struct CleanupIpamAdminScopeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.UpdateIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.UpdateIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIpamAdminScopeRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -399,6 +413,7 @@ pub struct UpdateIpamAdminScopeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.DeleteIpamAdminScope\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.DeleteIpamAdminScope\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIpamAdminScopeRequest {
     /// Required. The resource name of the IpamAdminScope to delete.
@@ -426,6 +441,7 @@ pub struct DeleteIpamAdminScopeRequest {
 /// A RegistryBook organizes and manages IP address space.
 /// It claims specific scopes (such as projects) and groups related Realms and
 /// Ranges.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegistryBook {
     /// Required. Identifier. The resource name of the RegistryBook.
@@ -459,6 +475,7 @@ pub struct RegistryBook {
 /// Nested message and enum types in `RegistryBook`.
 pub mod registry_book {
     /// Aggregated data for the RegistryBook.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AggregatedData {
         /// Output only. Number of scopes unique to the RegistryBook.
@@ -481,6 +498,7 @@ pub mod registry_book {
 /// Request message for the
 /// \[CloudNumberRegistry.ListRegistryBooks\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListRegistryBooks\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegistryBooksRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -506,6 +524,7 @@ pub struct ListRegistryBooksRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ListRegistryBooks\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListRegistryBooks\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegistryBooksResponse {
     /// The list of RegistryBook
@@ -521,6 +540,7 @@ pub struct ListRegistryBooksResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.GetRegistryBook\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.GetRegistryBook\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegistryBookRequest {
     /// Required. The resource name of the RegistryBook to retrieve.
@@ -533,6 +553,7 @@ pub struct GetRegistryBookRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.SearchIpResources\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.SearchIpResources\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchIpResourcesRequest {
     /// Required. The resource name of the RegistryBook to search in.
@@ -605,6 +626,7 @@ pub struct SearchIpResourcesRequest {
 /// Nested message and enum types in `SearchIpResourcesRequest`.
 pub mod search_ip_resources_request {
     /// The type of resources to search for.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -649,6 +671,7 @@ pub mod search_ip_resources_request {
     }
 }
 /// Represents either a CustomRange or a DiscoveredRange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Range {
     /// The utilization of the Range.
@@ -661,6 +684,7 @@ pub struct Range {
 /// Nested message and enum types in `Range`.
 pub mod range {
     /// The Range.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Range {
         /// A CustomRange.
@@ -674,6 +698,7 @@ pub mod range {
 /// Response message for the
 /// \[CloudNumberRegistry.SearchIpResources\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.SearchIpResources\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchIpResourcesResponse {
     /// Deprecated: Use results field instead.
@@ -696,6 +721,7 @@ pub struct SearchIpResourcesResponse {
 /// Nested message and enum types in `SearchIpResourcesResponse`.
 pub mod search_ip_resources_response {
     /// A result matching the search query, which can be either a Range or a Realm.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SearchIpResourcesResult {
         /// Either a Range or a Realm matching the search query.
@@ -705,6 +731,7 @@ pub mod search_ip_resources_response {
     /// Nested message and enum types in `SearchIpResourcesResult`.
     pub mod search_ip_resources_result {
         /// Either a Range or a Realm matching the search query.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Result {
             /// A Range matching the search query.
@@ -719,6 +746,7 @@ pub mod search_ip_resources_response {
 /// Request message for the
 /// \[CloudNumberRegistry.CreateRegistryBook\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CreateRegistryBook\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRegistryBookRequest {
     /// Required. The parent resource name where the RegistryBook will be created.
@@ -750,6 +778,7 @@ pub struct CreateRegistryBookRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.UpdateRegistryBook\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.UpdateRegistryBook\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegistryBookRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -781,6 +810,7 @@ pub struct UpdateRegistryBookRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.DeleteRegistryBook\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.DeleteRegistryBook\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegistryBookRequest {
     /// Required. The resource name of the RegistryBook to delete.
@@ -809,6 +839,7 @@ pub struct DeleteRegistryBookRequest {
 /// It groups Ranges that share the same traffic and management characteristics.
 /// All the ranges in a Realm are routable to each other, meaning that they
 /// cannot overlap.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Realm {
     /// Required. Identifier. The resource name of the Realm.
@@ -849,6 +880,7 @@ pub struct Realm {
 /// Nested message and enum types in `Realm`.
 pub mod realm {
     /// Aggregated data for the Realm.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RealmAggregatedData {
         /// Output only. Number of DiscoveredRanges in the Realm.
@@ -859,6 +891,7 @@ pub mod realm {
         pub custom_ranges_count: i32,
     }
     /// Traffic type of the Realm.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -910,6 +943,7 @@ pub mod realm {
         }
     }
     /// Management type of the Realm.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -953,6 +987,7 @@ pub mod realm {
         }
     }
     /// Enum for the view of the Realm.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1002,6 +1037,7 @@ pub mod realm {
 }
 /// Metadata about a discovered resource, tracking event times, state, and source
 /// information.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiscoveryMetadata {
     /// Output only. The time when the event happened.
@@ -1037,6 +1073,7 @@ pub struct DiscoveryMetadata {
 /// Nested message and enum types in `DiscoveryMetadata`.
 pub mod discovery_metadata {
     /// The state of the resource.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1093,6 +1130,7 @@ pub mod discovery_metadata {
 /// Request message for the
 /// \[CloudNumberRegistry.ListRealms\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListRealms\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRealmsRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -1118,6 +1156,7 @@ pub struct ListRealmsRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ListRealms\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListRealms\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRealmsResponse {
     /// The list of Realms.
@@ -1133,6 +1172,7 @@ pub struct ListRealmsResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.GetRealm\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.GetRealm\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRealmRequest {
     /// Required. The resource name of the Realm to retrieve.
@@ -1145,6 +1185,7 @@ pub struct GetRealmRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.CreateRealm\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CreateRealm\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRealmRequest {
     /// Required. The parent resource name where the Realm will be created.
@@ -1167,6 +1208,7 @@ pub struct CreateRealmRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.UpdateRealm\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.UpdateRealm\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRealmRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1186,6 +1228,7 @@ pub struct UpdateRealmRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.DeleteRealm\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.DeleteRealm\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRealmRequest {
     /// Required. The resource name of the Realm to delete.
@@ -1203,6 +1246,7 @@ pub struct DeleteRealmRequest {
 }
 /// A DiscoveredRange represents an IP address range automatically detected by
 /// the discovery pipeline.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveredRange {
     /// Required. Identifier. The resource name of the DiscoveredRange, in the
@@ -1258,6 +1302,7 @@ pub struct DiscoveredRange {
 /// Nested message and enum types in `DiscoveredRange`.
 pub mod discovered_range {
     /// The IP CIDR range of the DiscoveredRange.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum IpCidrRange {
         /// Optional. The IPv4 CIDR range of the DiscoveredRange.
@@ -1271,6 +1316,7 @@ pub mod discovered_range {
 /// Request message for the
 /// \[CloudNumberRegistry.ListDiscoveredRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListDiscoveredRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDiscoveredRangesRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -1293,6 +1339,7 @@ pub struct ListDiscoveredRangesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ListDiscoveredRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListDiscoveredRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiscoveredRangesResponse {
     /// The list of DiscoveredRanges.
@@ -1309,6 +1356,7 @@ pub struct ListDiscoveredRangesResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.GetDiscoveredRange\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.GetDiscoveredRange\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiscoveredRangeRequest {
     /// Required. The resource name of the DiscoveredRange to retrieve.
@@ -1318,6 +1366,7 @@ pub struct GetDiscoveredRangeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.FindDiscoveredRangeFreeIpRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.FindDiscoveredRangeFreeIpRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindDiscoveredRangeFreeIpRangesRequest {
     /// Required. The resource name of the DiscoveredRange to search within.
@@ -1348,6 +1397,7 @@ pub struct FindDiscoveredRangeFreeIpRangesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.FindDiscoveredRangeFreeIpRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.FindDiscoveredRangeFreeIpRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindDiscoveredRangeFreeIpRangesResponse {
     /// Output only. The free IP CIDR ranges found.
@@ -1355,6 +1405,7 @@ pub struct FindDiscoveredRangeFreeIpRangesResponse {
     pub free_ip_cidr_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A CustomRange represents a user-defined IP address range.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomRange {
     /// Required. Identifier. The resource name of the CustomRange, in the format
@@ -1398,6 +1449,7 @@ pub struct CustomRange {
 /// Nested message and enum types in `CustomRange`.
 pub mod custom_range {
     /// The IP CIDR range of the CustomRange.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum IpCidrRange {
         /// Optional. The IPv4 CIDR range of the CustomRange.
@@ -1409,6 +1461,7 @@ pub mod custom_range {
     }
 }
 /// A key-value pair representing a custom attribute associated with a resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Attribute {
     /// Required. The key of the attribute.
@@ -1421,6 +1474,7 @@ pub struct Attribute {
 /// Request message for the
 /// \[CloudNumberRegistry.ListCustomRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListCustomRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomRangesRequest {
     /// Required. The parent resource name, for example `projects/*/locations/*`.
@@ -1443,6 +1497,7 @@ pub struct ListCustomRangesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ListCustomRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ListCustomRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomRangesResponse {
     /// The list of CustomRanges.
@@ -1459,6 +1514,7 @@ pub struct ListCustomRangesResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.GetCustomRange\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.GetCustomRange\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomRangeRequest {
     /// Required. The resource name of the CustomRange to retrieve.
@@ -1468,6 +1524,7 @@ pub struct GetCustomRangeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.ShowCustomRangeUtilization\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ShowCustomRangeUtilization\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShowCustomRangeUtilizationRequest {
     /// Required. The resource name of the CustomRange.
@@ -1477,6 +1534,7 @@ pub struct ShowCustomRangeUtilizationRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ShowCustomRangeUtilization\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ShowCustomRangeUtilization\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowCustomRangeUtilizationResponse {
     /// The CustomRange resource.
@@ -1489,6 +1547,7 @@ pub struct ShowCustomRangeUtilizationResponse {
 /// Request message for the
 /// \[CloudNumberRegistry.ShowDiscoveredRangeUtilization\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ShowDiscoveredRangeUtilization\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShowDiscoveredRangeUtilizationRequest {
     /// Required. The resource name of the DiscoveredRange.
@@ -1498,6 +1557,7 @@ pub struct ShowDiscoveredRangeUtilizationRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.ShowDiscoveredRangeUtilization\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.ShowDiscoveredRangeUtilization\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowDiscoveredRangeUtilizationResponse {
     /// The DiscoveredRange resource.
@@ -1509,6 +1569,7 @@ pub struct ShowDiscoveredRangeUtilizationResponse {
 }
 /// Utilization metrics for an IP Range, including consumed and produced address
 /// counts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RangeUtilization {
     /// Output only. The total number of IP addresses consumed in the Range.
@@ -1526,6 +1587,7 @@ pub struct RangeUtilization {
 /// Request message for the
 /// \[CloudNumberRegistry.CreateCustomRange\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.CreateCustomRange\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomRangeRequest {
     /// Required. The parent resource name where the CustomRange will be created.
@@ -1557,6 +1619,7 @@ pub struct CreateCustomRangeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.UpdateCustomRange\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.UpdateCustomRange\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCustomRangeRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1588,6 +1651,7 @@ pub struct UpdateCustomRangeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.DeleteCustomRange\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.DeleteCustomRange\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCustomRangeRequest {
     /// Required. The resource name of the CustomRange to delete.
@@ -1615,6 +1679,7 @@ pub struct DeleteCustomRangeRequest {
 /// Request message for the
 /// \[CloudNumberRegistry.FindCustomRangeFreeIpRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.FindCustomRangeFreeIpRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindCustomRangeFreeIpRangesRequest {
     /// Required. The resource name of the CustomRange to search within.
@@ -1645,6 +1710,7 @@ pub struct FindCustomRangeFreeIpRangesRequest {
 /// Response message for the
 /// \[CloudNumberRegistry.FindCustomRangeFreeIpRanges\]\[google.cloud.numberregistry.v1alpha.CloudNumberRegistry.FindCustomRangeFreeIpRanges\]
 /// method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindCustomRangeFreeIpRangesResponse {
     /// Output only. The free IP CIDR ranges found.
@@ -1652,6 +1718,7 @@ pub struct FindCustomRangeFreeIpRangesResponse {
     pub free_ip_cidr_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// IP version of the Realm.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum IpVersion {
@@ -1685,6 +1752,7 @@ impl IpVersion {
     }
 }
 /// Enum for the view of the RegistryBook.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RegistryBookView {
@@ -1722,6 +1790,7 @@ impl RegistryBookView {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
