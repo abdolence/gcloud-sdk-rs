@@ -2,6 +2,7 @@
 /// An Actor represents an entity that performed an action. For example, an actor
 /// could be a user who posted a comment on a support case, a user who
 /// uploaded an attachment, or a service account that created a support case.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Actor {
     /// The name to display for the actor. If not provided, it is inferred from
@@ -38,6 +39,7 @@ pub struct Actor {
 /// While attachments can be uploaded in the console at the
 /// same time as a comment, they're associated on a "case" level, not a
 /// "comment" level.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Attachment {
     /// Output only. Identifier. The resource name of the attachment.
@@ -61,6 +63,7 @@ pub struct Attachment {
     pub size_bytes: i64,
 }
 /// The request message for the ListAttachments endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAttachmentsRequest {
     /// Required. The name of the case for which attachments should be listed.
@@ -82,6 +85,7 @@ pub struct ListAttachmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Request for getting an attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAttachmentRequest {
     /// Required. The name of the attachment to get.
@@ -89,6 +93,7 @@ pub struct GetAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response message for the ListAttachments endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttachmentsResponse {
     /// The list of attachments associated with a case.
@@ -308,6 +313,7 @@ pub mod case_attachment_service_client {
 ///
 /// You can use either of them when calling the API. To learn more
 /// about project identifiers, see [AIP-2510](<https://google.aip.dev/cloud/2510>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Case {
     /// Identifier. The resource name for the case.
@@ -376,6 +382,7 @@ pub struct Case {
 /// Nested message and enum types in `Case`.
 pub mod case {
     /// The status of a support case.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -431,6 +438,7 @@ pub mod case {
         }
     }
     /// The case Priority. P0 is most urgent and P4 the least.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -495,6 +503,7 @@ pub mod case {
 ///
 /// A classification always has an ID that is its unique identifier.
 /// A valid ID is required when creating a case.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CaseClassification {
     /// The unique ID for a classification. Must be specified for case creation.
@@ -516,6 +525,7 @@ pub struct CaseClassification {
     pub display_name: ::prost::alloc::string::String,
 }
 /// An escalation of a support case.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Escalation {
     /// Required. The reason why the Case is being escalated.
@@ -529,6 +539,7 @@ pub struct Escalation {
 /// Nested message and enum types in `Escalation`.
 pub mod escalation {
     /// An enum detailing the possible reasons a case may be escalated.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -578,6 +589,7 @@ pub mod escalation {
     }
 }
 /// The request message for the GetCase endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCaseRequest {
     /// Required. The full name of a case to be retrieved.
@@ -585,6 +597,7 @@ pub struct GetCaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the CreateCase endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCaseRequest {
     /// Required. The name of the parent under which the case should be created.
@@ -595,6 +608,7 @@ pub struct CreateCaseRequest {
     pub case: ::core::option::Option<Case>,
 }
 /// The request message for the ListCases endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCasesRequest {
     /// Required. The name of a parent to list cases under.
@@ -630,6 +644,7 @@ pub struct ListCasesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the ListCases endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCasesResponse {
     /// The list of cases associated with the parent after any
@@ -643,6 +658,7 @@ pub struct ListCasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the SearchCases endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCasesRequest {
     /// The name of the parent resource to search for cases under.
@@ -708,6 +724,7 @@ pub struct SearchCasesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the SearchCases endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCasesResponse {
     /// The list of cases associated with the parent after any
@@ -721,6 +738,7 @@ pub struct SearchCasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the EscalateCase endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EscalateCaseRequest {
     /// Required. The name of the case to be escalated.
@@ -731,6 +749,7 @@ pub struct EscalateCaseRequest {
     pub escalation: ::core::option::Option<Escalation>,
 }
 /// The request message for the UpdateCase endpoint
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCaseRequest {
     /// Required. The case to update.
@@ -748,6 +767,7 @@ pub struct UpdateCaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for the CloseCase endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloseCaseRequest {
     /// Required. The name of the case to close.
@@ -755,6 +775,7 @@ pub struct CloseCaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the SearchCaseClassifications endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCaseClassificationsRequest {
     /// An expression used to filter case classifications.
@@ -772,6 +793,7 @@ pub struct SearchCaseClassificationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for SearchCaseClassifications endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCaseClassificationsResponse {
     /// The classifications retrieved.
@@ -1112,6 +1134,7 @@ pub mod case_service_client {
 /// Case comments are the primary way for Google Support to communicate with a
 /// user who has opened a case. When a user responds to Google Support, the
 /// user's responses also appear as comments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Comment {
     /// Output only. Identifier. The resource name of the comment.
@@ -1138,6 +1161,7 @@ pub struct Comment {
     pub plain_text_body: ::prost::alloc::string::String,
 }
 /// The request message for the ListComments endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCommentsRequest {
     /// Required. The name of the case for which to list comments.
@@ -1152,6 +1176,7 @@ pub struct ListCommentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the ListComments endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCommentsResponse {
     /// List of the comments associated with the case.
@@ -1164,6 +1189,7 @@ pub struct ListCommentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the CreateComment endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCommentRequest {
     /// Required. The name of the case to which the comment should be added.
@@ -1174,6 +1200,7 @@ pub struct CreateCommentRequest {
     pub comment: ::core::option::Option<Comment>,
 }
 /// The request message for the GetComment endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCommentRequest {
     /// Required. The name of the comment to retrieve.
@@ -1401,6 +1428,7 @@ pub mod comment_service_client {
 ///   (or [google-beta
 ///   provider](<https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>)
 ///   for beta)
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SupportEventSubscription {
     /// Identifier. The resource name of the support event subscription.
@@ -1433,6 +1461,7 @@ pub struct SupportEventSubscription {
 /// Nested message and enum types in `SupportEventSubscription`.
 pub mod support_event_subscription {
     /// The state of the subscription.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1483,6 +1512,7 @@ pub mod support_event_subscription {
         }
     }
     /// The reason why the subscription is failing.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1533,6 +1563,7 @@ pub mod support_event_subscription {
     }
 }
 /// Request message for CreateSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSupportEventSubscriptionRequest {
     /// Required. The parent resource name where the support event subscription
@@ -1544,6 +1575,7 @@ pub struct CreateSupportEventSubscriptionRequest {
     pub support_event_subscription: ::core::option::Option<SupportEventSubscription>,
 }
 /// Request message for GetSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSupportEventSubscriptionRequest {
     /// Required. The name of the support event subscription to retrieve.
@@ -1553,6 +1585,7 @@ pub struct GetSupportEventSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSupportEventSubscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSupportEventSubscriptionsRequest {
     /// Required. The fully qualified name of the Cloud resource to list support
@@ -1589,6 +1622,7 @@ pub struct ListSupportEventSubscriptionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSupportEventSubscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSupportEventSubscriptionsResponse {
     /// The support event subscriptions.
@@ -1600,6 +1634,7 @@ pub struct ListSupportEventSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSupportEventSubscriptionRequest {
     /// Required. The support event subscription to update.
@@ -1612,6 +1647,7 @@ pub struct UpdateSupportEventSubscriptionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSupportEventSubscriptionRequest {
     /// Required. The name of the support event subscription to delete.
@@ -1621,6 +1657,7 @@ pub struct DeleteSupportEventSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteSupportEventSubscriptionRequest {
     /// Required. The name of the support event subscription to undelete.
@@ -1630,6 +1667,7 @@ pub struct UndeleteSupportEventSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ExpungeSupportEventSubscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpungeSupportEventSubscriptionRequest {
     /// Required. The name of the support event subscription to expunge.

@@ -4,6 +4,7 @@
 /// blueprint (e.g. terraform, helm etc) and version will come from the image
 /// manifest. If the hostname is omitted, it will be assumed to be the regional
 /// path to Artifact Registry (eg. us-east1-docker.pkg.dev).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Blueprint {
     /// Optional. Immutable. URI to a blueprint used by the Unit (required unless
@@ -19,6 +20,7 @@ pub struct Blueprint {
     pub version: ::prost::alloc::string::String,
 }
 /// UnitVariable describes a parameter for a Unit.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnitVariable {
     /// Required. Immutable. Name of the variable from actuation configs.
@@ -36,6 +38,7 @@ pub struct UnitVariable {
 pub mod unit_variable {
     /// Enumeration of variable types.
     /// `STRUCT` and `LIST` values should be JSON-encoded strings.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -93,6 +96,7 @@ pub mod unit_variable {
 }
 /// UnitCondition describes the status of an Unit. UnitCondition is individual
 /// components that contribute to an overall state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnitCondition {
     /// Required. Status of the condition.
@@ -115,6 +119,7 @@ pub struct UnitCondition {
 /// Nested message and enum types in `UnitCondition`.
 pub mod unit_condition {
     /// Enumeration of condition statuses.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -162,6 +167,7 @@ pub mod unit_condition {
         }
     }
     /// Enumeration of condition types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -228,6 +234,7 @@ pub mod unit_condition {
 /// UnitOperationCondition describes the status of an Unit Operation.
 /// UnitOperationCondition is individual components that contribute to an overall
 /// state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnitOperationCondition {
     /// Required. Status of the condition.
@@ -250,6 +257,7 @@ pub struct UnitOperationCondition {
 /// Nested message and enum types in `UnitOperationCondition`.
 pub mod unit_operation_condition {
     /// Enumeration of condition statuses.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -297,6 +305,7 @@ pub mod unit_operation_condition {
         }
     }
     /// Enumeration of condition types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -365,6 +374,7 @@ pub mod unit_operation_condition {
     }
 }
 /// SaasCondition describes the status of a Saas.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SaasCondition {
     /// Required. Status of the condition.
@@ -387,6 +397,7 @@ pub struct SaasCondition {
 /// Nested message and enum types in `SaasCondition`.
 pub mod saas_condition {
     /// Enumeration of condition statuses.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -434,6 +445,7 @@ pub mod saas_condition {
         }
     }
     /// Enumeration of condition types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -480,6 +492,7 @@ pub mod saas_condition {
 /// Represents the aggregation of a set of population of like records by a
 /// certain group. For example, a collection of unit counts can be aggregated and
 /// grouped by their state.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Aggregate {
     /// Required. Group by which to aggregate.
@@ -491,6 +504,7 @@ pub struct Aggregate {
 }
 /// UnitOperationErrorCategory describes the error category of the unit
 /// operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum UnitOperationErrorCategory {
@@ -537,6 +551,7 @@ impl UnitOperationErrorCategory {
     }
 }
 /// Location information that the service is available in.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Location {
     /// Optional. Name of location.
@@ -544,6 +559,7 @@ pub struct Location {
     pub name: ::prost::alloc::string::String,
 }
 /// Saas is a representation of a SaaS service managed by the Producer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Saas {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -622,6 +638,7 @@ pub struct Saas {
 /// Nested message and enum types in `Saas`.
 pub mod saas {
     /// State of the Saas.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -683,6 +700,7 @@ pub mod saas {
 ///   name: "projects/svc1/locations/loc/tenants/inst-068afff8"
 ///   consumer_resource: "projects/gshoe/locations/loc/shoes/black-shoe"
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tenant {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -746,6 +764,7 @@ pub struct Tenant {
 /// Definition of a Unit. Units belonging to the same UnitKind are managed
 /// together; for example they follow the same release model (blueprints,
 /// versions etc.) and are typically rolled out together.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnitKind {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -831,6 +850,7 @@ pub struct UnitKind {
 /// engine under the hood (e.g. based on Terraform, Helm or a custom
 /// implementation provided by a service producer). A building block of a SaaS
 /// Tenant.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Unit {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -962,6 +982,7 @@ pub mod unit {
     /// unit. This includes a request for the unit to skip maintenance for a period
     /// of time and remain pinned to its current release as well as controls for
     /// postponing maintenance scheduled in future.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MaintenanceSettings {
         /// Optional. If present, it fixes the release on the unit until the given
@@ -972,6 +993,7 @@ pub mod unit {
         pub pinned_until_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// UnitState annotates what is the current state of the unit itself.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1034,6 +1056,7 @@ pub mod unit {
         }
     }
     /// ManagementMode describes who is responsible for the management of the unit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1076,6 +1099,7 @@ pub mod unit {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1123,6 +1147,7 @@ pub mod unit {
     }
 }
 /// Set of dependencies for this unit. Maximum 10.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnitDependency {
     /// Output only. Alias for the name of the dependency.
@@ -1143,6 +1168,7 @@ pub struct UnitDependency {
 ///
 /// This is a base object that contains the common fields in all unit operations.
 /// Next: 22
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnitOperation {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -1238,6 +1264,7 @@ pub struct UnitOperation {
 /// Nested message and enum types in `UnitOperation`.
 pub mod unit_operation {
     /// UnitOperationState describes the current state of the unit operation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1295,6 +1322,7 @@ pub mod unit_operation {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UnitOperationType {
         #[prost(message, tag = "8")]
@@ -1308,6 +1336,7 @@ pub mod unit_operation {
 /// Provision is the unit operation that provision the underlying resources
 /// represented by a Unit. Can only execute if the Unit is not currently
 /// provisioned.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Provision {
     /// Optional. Reference to the Release object to use for the Unit. (optional).
@@ -1320,11 +1349,13 @@ pub struct Provision {
 /// Deprovision is the unit operation that deprovision the underlying
 /// resources represented by a Unit. Can only execute if the Unit is currently
 /// provisioned.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Deprovision {}
 /// Upgrade is the unit operation that upgrades a provisioned unit, which may
 /// also include the underlying resources represented by a Unit. Can only execute
 /// if the Unit is currently provisioned.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Upgrade {
     /// Optional. Reference to the Release object to use for the Unit. (optional).
@@ -1335,6 +1366,7 @@ pub struct Upgrade {
     pub input_variables: ::prost::alloc::vec::Vec<UnitVariable>,
 }
 /// A time specification to schedule the maintenance.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Schedule {
     /// Optional. Start of operation. If not set, will be set to the start of the
@@ -1345,6 +1377,7 @@ pub struct Schedule {
 /// A new version to be propagated and deployed to units. This includes pointers
 /// to packaged blueprints for actuation (e.g Helm or Terraform configuration
 /// packages) via artifact registry.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Release {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -1422,6 +1455,7 @@ pub struct Release {
 /// Nested message and enum types in `Release`.
 pub mod release {
     /// Set of requirements to be fulfilled on the Unit when using this Release.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReleaseRequirements {
         /// Optional. A list of releases from which a unit can be upgraded to this
@@ -1436,6 +1470,7 @@ pub mod release {
 }
 /// Mapping of input variables to their respective output variable for
 /// depedenencies
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VariableMapping {
     /// Required. name of the variable
@@ -1446,6 +1481,7 @@ pub struct VariableMapping {
 }
 /// Nested message and enum types in `VariableMapping`.
 pub mod variable_mapping {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum MappingType {
         /// Optional. Output variables which will get their values from dependencies
@@ -1457,6 +1493,7 @@ pub mod variable_mapping {
     }
 }
 /// Output variables whose values will be passed on to dependencies
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FromMapping {
     /// Required. Alias of the dependency that the outputVariable will pass its
@@ -1468,6 +1505,7 @@ pub struct FromMapping {
     pub output_variable: ::prost::alloc::string::String,
 }
 /// Input variables whose values will be passed on to dependencies
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ToMapping {
     /// Required. Alias of the dependency that the inputVariable will pass its
@@ -1483,6 +1521,7 @@ pub struct ToMapping {
     pub ignore_for_lookup: bool,
 }
 /// Dependency represent a single dependency with another unit kind by alias.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Dependency {
     /// Required. Immutable. The unit kind of the dependency.
@@ -1494,6 +1533,7 @@ pub struct Dependency {
 }
 /// CompositeRef represents a reference to a composite resource.
 /// Next ID: 4
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompositeRef {
     /// Required. Reference to the ApplicationTemplate resource.
@@ -1512,6 +1552,7 @@ pub struct CompositeRef {
 }
 /// ComponentRef represents a reference to a component resource.
 /// Next ID: 4
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComponentRef {
     /// Reference to the Composite ApplicationTemplate.
@@ -1527,6 +1568,7 @@ pub struct ComponentRef {
     pub revision: ::prost::alloc::string::String,
 }
 /// AppParams contains the parameters for creating an AppHub Application.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppParams {
     /// Grouping used to construct the name of the AppHub Application.
@@ -1544,6 +1586,7 @@ pub struct AppParams {
 /// Nested message and enum types in `AppParams`.
 pub mod app_params {
     /// Scope of an application.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Scope {
         /// Required. Scope Type.
@@ -1553,6 +1596,7 @@ pub mod app_params {
     /// Nested message and enum types in `Scope`.
     pub mod scope {
         /// Scope Type.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1598,6 +1642,7 @@ pub mod app_params {
     }
 }
 /// The request structure for the ListSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSaasRequest {
     /// Required. The parent of the saas.
@@ -1618,6 +1663,7 @@ pub struct ListSaasRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSaasResponse {
     /// The resulting saas.
@@ -1633,6 +1679,7 @@ pub struct ListSaasResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSaasRequest {
     /// Required. The resource name of the resource within a service.
@@ -1640,6 +1687,7 @@ pub struct GetSaasRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSaasRequest {
     /// Required. The parent of the saas.
@@ -1672,6 +1720,7 @@ pub struct CreateSaasRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSaasRequest {
     /// Required. The desired state for the saas.
@@ -1708,6 +1757,7 @@ pub struct UpdateSaasRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteSaas method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSaasRequest {
     /// Required. The resource name of the resource within a service.
@@ -1744,6 +1794,7 @@ pub struct DeleteSaasRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListTenants method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTenantsRequest {
     /// Required. The parent of the tenant.
@@ -1764,6 +1815,7 @@ pub struct ListTenantsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListTenants method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTenantsResponse {
     /// The resulting tenants.
@@ -1779,6 +1831,7 @@ pub struct ListTenantsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetTenant method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTenantRequest {
     /// Required. The resource name of the resource within a service.
@@ -1786,6 +1839,7 @@ pub struct GetTenantRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateTenant method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTenantRequest {
     /// Required. The parent of the tenant.
@@ -1818,6 +1872,7 @@ pub struct CreateTenantRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateTenant method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTenantRequest {
     /// Required. The desired state for the tenant.
@@ -1854,6 +1909,7 @@ pub struct UpdateTenantRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteTenant method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTenantRequest {
     /// Required. The resource name of the resource within a service.
@@ -1890,6 +1946,7 @@ pub struct DeleteTenantRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListUnitKinds method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUnitKindsRequest {
     /// Required. The parent of the unit kind.
@@ -1910,6 +1967,7 @@ pub struct ListUnitKindsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListUnitKinds method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUnitKindsResponse {
     /// The resulting unit kinds.
@@ -1925,6 +1983,7 @@ pub struct ListUnitKindsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetUnitKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUnitKindRequest {
     /// Required. The resource name of the resource within a service.
@@ -1932,6 +1991,7 @@ pub struct GetUnitKindRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateUnitKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUnitKindRequest {
     /// Required. The parent of the unit kind.
@@ -1964,6 +2024,7 @@ pub struct CreateUnitKindRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateUnitKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUnitKindRequest {
     /// Required. The desired state for the unit kind.
@@ -2000,6 +2061,7 @@ pub struct UpdateUnitKindRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteUnitKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUnitKindRequest {
     /// Required. The resource name of the resource within a service.
@@ -2036,6 +2098,7 @@ pub struct DeleteUnitKindRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListUnits method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUnitsRequest {
     /// Required. The parent of the unit.
@@ -2056,6 +2119,7 @@ pub struct ListUnitsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListUnits method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUnitsResponse {
     /// The resulting units.
@@ -2071,6 +2135,7 @@ pub struct ListUnitsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetUnit method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUnitRequest {
     /// Required. The resource name of the resource within a service.
@@ -2078,6 +2143,7 @@ pub struct GetUnitRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateUnit method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUnitRequest {
     /// Required. The parent of the unit.
@@ -2110,6 +2176,7 @@ pub struct CreateUnitRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateUnit method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUnitRequest {
     /// Required. The desired state for the unit.
@@ -2146,6 +2213,7 @@ pub struct UpdateUnitRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteUnit method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUnitRequest {
     /// Required. The resource name of the resource within a service.
@@ -2182,6 +2250,7 @@ pub struct DeleteUnitRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListUnitOperations method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUnitOperationsRequest {
     /// Required. The parent of the unit operation.
@@ -2202,6 +2271,7 @@ pub struct ListUnitOperationsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListUnitOperations method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUnitOperationsResponse {
     /// The resulting unit operations.
@@ -2217,6 +2287,7 @@ pub struct ListUnitOperationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetUnitOperation method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUnitOperationRequest {
     /// Required. The resource name of the resource within a service.
@@ -2224,6 +2295,7 @@ pub struct GetUnitOperationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateUnitOperation method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUnitOperationRequest {
     /// Required. The parent of the unit operation.
@@ -2256,6 +2328,7 @@ pub struct CreateUnitOperationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateUnitOperation method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUnitOperationRequest {
     /// Required. The desired state for the unit operation.
@@ -2292,6 +2365,7 @@ pub struct UpdateUnitOperationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteUnitOperation method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUnitOperationRequest {
     /// Required. The resource name of the resource within a service.
@@ -2328,6 +2402,7 @@ pub struct DeleteUnitOperationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListReleases method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReleasesRequest {
     /// Required. The parent of the release.
@@ -2348,6 +2423,7 @@ pub struct ListReleasesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListReleases method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReleasesResponse {
     /// The resulting releases.
@@ -2363,6 +2439,7 @@ pub struct ListReleasesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetRelease method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReleaseRequest {
     /// Required. The resource name of the resource within a service.
@@ -2370,6 +2447,7 @@ pub struct GetReleaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateRelease method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReleaseRequest {
     /// Required. The parent of the release.
@@ -2402,6 +2480,7 @@ pub struct CreateReleaseRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateRelease method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReleaseRequest {
     /// Required. The desired state for the release.
@@ -2438,6 +2517,7 @@ pub struct UpdateReleaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteRelease method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReleaseRequest {
     /// Required. The resource name of the resource within a service.
@@ -3396,6 +3476,7 @@ pub mod saas_deployments_client {
     }
 }
 /// Represents a single rollout execution and its results
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rollout {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -3534,6 +3615,7 @@ pub struct Rollout {
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
     /// The current state of the rollout.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3607,6 +3689,7 @@ pub mod rollout {
 }
 /// An object that describes various settings of Rollout execution. Includes
 /// built-in policies across GCP and GDC, and customizable policies.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutKind {
     /// Identifier. The resource name (full URI of the resource) following the
@@ -3690,6 +3773,7 @@ pub struct RolloutKind {
 }
 /// Nested message and enum types in `RolloutKind`.
 pub mod rollout_kind {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3735,6 +3819,7 @@ pub mod rollout_kind {
 }
 /// The configuration for error budget. If the number of failed units exceeds
 /// max(allowed_count, allowed_ratio * total_units), the rollout will be paused.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorBudget {
     /// Optional. The maximum number of failed units allowed in a location without
@@ -3747,6 +3832,7 @@ pub struct ErrorBudget {
     pub allowed_percentage: ::core::option::Option<i32>,
 }
 /// RolloutStats contains information about the progress of a rollout.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutStats {
     /// Optional. Output only. Unordered list. A breakdown of the progress of
@@ -3772,6 +3858,7 @@ pub struct RolloutStats {
 }
 /// RolloutControl provides a way to request a change to the execution of a
 /// Rollout by pausing or canceling it.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutControl {
     /// Required. Action to be performed on the Rollout.
@@ -3789,6 +3876,7 @@ pub struct RolloutControl {
 pub mod rollout_control {
     /// Parameters for the RUN action controlling the behavior of the rollout
     /// when it is resumed from a PAUSED state.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RunRolloutActionParams {
         /// Required. If true, the rollout will retry failed operations when resumed.
@@ -3800,6 +3888,7 @@ pub mod rollout_control {
     /// Setting for the action. The setting must match the action
     /// e.g.: action=RUN may only set run_params or omit all parameters.
     /// It is an error to set a setting that is not applicable to the action.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ActionParams {
         /// Optional. Parameters for the RUN action. It is an error to specify this
@@ -3810,6 +3899,7 @@ pub mod rollout_control {
     }
 }
 /// RolloutAction indicates the action to be performed on the Rollout.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RolloutAction {
@@ -3852,6 +3942,7 @@ impl RolloutAction {
     }
 }
 /// The request structure for the ListRollouts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolloutsRequest {
     /// Required. The parent of the rollout.
@@ -3872,6 +3963,7 @@ pub struct ListRolloutsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListRollouts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolloutsResponse {
     /// The resulting rollouts.
@@ -3887,6 +3979,7 @@ pub struct ListRolloutsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetRollout method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRolloutRequest {
     /// Required. The resource name of the resource within a service.
@@ -3894,6 +3987,7 @@ pub struct GetRolloutRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateRollout method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRolloutRequest {
     /// Required. The parent of the rollout.
@@ -3926,6 +4020,7 @@ pub struct CreateRolloutRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateRollout method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRolloutRequest {
     /// Required. The desired state for the rollout.
@@ -3962,6 +4057,7 @@ pub struct UpdateRolloutRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteRollout method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRolloutRequest {
     /// Required. The resource name of the resource within a service.
@@ -3998,6 +4094,7 @@ pub struct DeleteRolloutRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the ListRolloutKinds method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolloutKindsRequest {
     /// Required. The parent of the rollout kind.
@@ -4018,6 +4115,7 @@ pub struct ListRolloutKindsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response structure for the ListRolloutKinds method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolloutKindsResponse {
     /// The resulting rollout kinds.
@@ -4033,6 +4131,7 @@ pub struct ListRolloutKindsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request structure for the GetRolloutKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRolloutKindRequest {
     /// Required. The resource name of the resource within a service.
@@ -4040,6 +4139,7 @@ pub struct GetRolloutKindRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request structure for the CreateRolloutKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRolloutKindRequest {
     /// Required. The parent of the rollout kind.
@@ -4072,6 +4172,7 @@ pub struct CreateRolloutKindRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request structure for the UpdateRolloutKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRolloutKindRequest {
     /// Required. The desired state for the rollout kind.
@@ -4108,6 +4209,7 @@ pub struct UpdateRolloutKindRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request structure for the DeleteRolloutKind method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRolloutKindRequest {
     /// Required. The resource name of the resource within a service.

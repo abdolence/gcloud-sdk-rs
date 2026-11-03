@@ -3,6 +3,7 @@
 /// This can be used in conjunction with the `first_simple` field in the
 /// containing prompt to speak to the user in addition to displaying a
 /// interactive canvas response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticCanvasPrompt {
     /// Required. URL of the web view to load.
@@ -30,6 +31,7 @@ pub struct StaticCanvasPrompt {
     pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticImagePrompt {
     /// Required. The source url of the image. Images can be JPG, PNG and GIF (animated and
@@ -52,6 +54,7 @@ pub mod static_image_prompt {
     /// Possible image display options for affecting the presentation of the image.
     /// This should be used for when the image's aspect ratio does not match the
     /// image container's aspect ratio.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -106,6 +109,7 @@ pub mod static_image_prompt {
 }
 /// Defines a link which will be displayed as a suggestion chip and can be opened
 /// by the user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticLinkPrompt {
     /// Name of the link
@@ -116,6 +120,7 @@ pub struct StaticLinkPrompt {
     pub open: ::core::option::Option<OpenUrl>,
 }
 /// Defines behavior when the user opens the link.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenUrl {
     /// The url field which could be any of:
@@ -128,6 +133,7 @@ pub struct OpenUrl {
     pub hint: i32,
 }
 /// Different types of url hints.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum UrlHint {
@@ -158,6 +164,7 @@ impl UrlHint {
     }
 }
 /// A basic card for displaying some information, e.g. an image and/or text.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticCardPrompt {
     /// Optional. Overall title of the card.
@@ -182,6 +189,7 @@ pub struct StaticCardPrompt {
 }
 /// Presents a set of web documents as a collection of large-tile items. Items
 /// may be selected to launch their associated web document in a web viewer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticCollectionBrowsePrompt {
     /// Items in the browse collection. The list size should be in the range \[2,
@@ -197,6 +205,7 @@ pub struct StaticCollectionBrowsePrompt {
 /// Nested message and enum types in `StaticCollectionBrowsePrompt`.
 pub mod static_collection_browse_prompt {
     /// Item in the collection.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CollectionBrowseItem {
         /// Required. Title of the collection item.
@@ -218,6 +227,7 @@ pub mod static_collection_browse_prompt {
     }
 }
 /// A card for presenting a collection of options to select from.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticCollectionPrompt {
     /// Optional. Title of the collection.
@@ -236,6 +246,7 @@ pub struct StaticCollectionPrompt {
 /// Nested message and enum types in `StaticCollectionPrompt`.
 pub mod static_collection_prompt {
     /// An item in the collection.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CollectionItem {
         /// Required. The NLU key that matches the entry key name in the associated
@@ -257,6 +268,7 @@ pub mod static_collection_prompt {
     }
 }
 /// A card for presenting a list of options to select from.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticListPrompt {
     /// Optional. Title of the list.
@@ -272,6 +284,7 @@ pub struct StaticListPrompt {
 /// Nested message and enum types in `StaticListPrompt`.
 pub mod static_list_prompt {
     /// An item in the list.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListItem {
         /// Required. The NLU key that matches the entry key name in the associated type. When
@@ -293,6 +306,7 @@ pub mod static_list_prompt {
 }
 /// Contains information about the media, such as name, description, url, etc.
 /// Next id: 11
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticMediaPrompt {
     /// Media type of this response.
@@ -321,6 +335,7 @@ pub struct StaticMediaPrompt {
 /// Nested message and enum types in `StaticMediaPrompt`.
 pub mod static_media_prompt {
     /// Media type of this response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -364,6 +379,7 @@ pub mod static_media_prompt {
         }
     }
     /// Media control types the media response can supported optionally
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -407,6 +423,7 @@ pub mod static_media_prompt {
         }
     }
     /// The types of repeat mode for a list of media objects.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -452,6 +469,7 @@ pub mod static_media_prompt {
     }
 }
 /// Represents a single media object.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaObject {
     /// Name of this media object.
@@ -468,6 +486,7 @@ pub struct MediaObject {
     pub image: ::core::option::Option<MediaImage>,
 }
 /// Image to be shown inside a MediaPrompt.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaImage {
     /// Only one type of MediaImage is allowed.
@@ -477,6 +496,7 @@ pub struct MediaImage {
 /// Nested message and enum types in `MediaImage`.
 pub mod media_image {
     /// Only one type of MediaImage is allowed.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Image {
         /// A large image, such as the cover of the album, etc.
@@ -489,6 +509,7 @@ pub mod media_image {
     }
 }
 /// A table card for displaying a table of text.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticTablePrompt {
     /// Optional. Overall title of the table. Must be set if subtitle is set.
@@ -515,6 +536,7 @@ pub struct StaticTablePrompt {
     pub button: ::core::option::Option<StaticLinkPrompt>,
 }
 /// Describes a column in the table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableColumn {
     /// Header text for the column.
@@ -528,6 +550,7 @@ pub struct TableColumn {
 /// Nested message and enum types in `TableColumn`.
 pub mod table_column {
     /// The alignment of the content within the cell.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -576,6 +599,7 @@ pub mod table_column {
     }
 }
 /// Describes a cell in a row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableCell {
     /// Text content of the cell.
@@ -583,6 +607,7 @@ pub struct TableCell {
     pub text: ::prost::alloc::string::String,
 }
 /// Describes a row in the table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableRow {
     /// Cells in this row. The first 3 cells are guaranteed to be shown but
@@ -595,6 +620,7 @@ pub struct TableRow {
     pub divider: bool,
 }
 /// A placeholder for the Content part of a StaticPrompt.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticContentPrompt {
     /// Only one type of content can be present in a Prompt.
@@ -604,6 +630,7 @@ pub struct StaticContentPrompt {
 /// Nested message and enum types in `StaticContentPrompt`.
 pub mod static_content_prompt {
     /// Only one type of content can be present in a Prompt.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// A basic card.
@@ -630,6 +657,7 @@ pub mod static_content_prompt {
     }
 }
 /// Represents a simple prompt to be send to a user.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticSimplePrompt {
     /// List of possible variants.
@@ -639,6 +667,7 @@ pub struct StaticSimplePrompt {
 /// Nested message and enum types in `StaticSimplePrompt`.
 pub mod static_simple_prompt {
     /// Represents a variant which is part of the simple prompt.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Variant {
         /// Optional. Represents the speech to be spoken to the user.  Can be SSML or text to
@@ -659,6 +688,7 @@ pub mod static_simple_prompt {
     }
 }
 /// Represents a suggestion chip, a UI element shown to the user for convenience.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Suggestion {
     /// Required. The text shown in the suggestion chip. When tapped, this text will be
@@ -669,6 +699,7 @@ pub struct Suggestion {
     pub title: ::prost::alloc::string::String,
 }
 /// Represents the surface the user is using to make a request to the Action.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SurfaceCapabilities {
     /// Required. The capabilities of the surface making a request to the Action.
@@ -683,6 +714,7 @@ pub struct SurfaceCapabilities {
 /// Nested message and enum types in `SurfaceCapabilities`.
 pub mod surface_capabilities {
     /// Capabilities the device surface supports at the time of the request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -745,6 +777,7 @@ pub mod surface_capabilities {
 /// Represents a list of prompt candidates, one of which will be selected as the
 /// prompt to be shown in the response to the user.
 /// **This message is localizable.**
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticPrompt {
     /// The list of candidate prompts to be sent to the client. Each prompt has a
@@ -756,6 +789,7 @@ pub struct StaticPrompt {
 /// Nested message and enum types in `StaticPrompt`.
 pub mod static_prompt {
     /// Represents a static prompt candidate.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StaticPromptCandidate {
         /// Optional. The criteria for whether this prompt matches a request. If the selector
@@ -772,6 +806,7 @@ pub mod static_prompt {
     pub mod static_prompt_candidate {
         /// Represents structured responses to send to the user, such as text,
         /// speech, cards, canvas data, suggestion chips, etc.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct StaticPromptResponse {
             /// Optional. The first voice and text-only response.
@@ -813,6 +848,7 @@ pub mod static_prompt {
         }
     }
     /// Defines the criteria for whether a prompt matches a request.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Selector {
         /// The set of required surface capabilities.

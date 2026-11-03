@@ -10,6 +10,7 @@
 /// `FAILED`. The message for the error or failure will be on the `error` or the
 /// `value` if the Operation results in an error or if the `state` of the
 /// Deployment is `FAILED`, respectively.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteDeploymentEvent {
     /// The `state` of this deployment completion event.
@@ -24,6 +25,7 @@ pub struct CompleteDeploymentEvent {
 /// Nested message and enum types in `CompleteDeploymentEvent`.
 pub mod complete_deployment_event {
     /// State of the completed deployment.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -68,6 +70,7 @@ pub mod complete_deployment_event {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Result of the Deployment recorded upon completion.
@@ -79,6 +82,7 @@ pub mod complete_deployment_event {
     }
 }
 /// This message is used when the CompleteDeploymentEvent has a value.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompleteDeploymentResult {
     /// This is the Deployment that completed.

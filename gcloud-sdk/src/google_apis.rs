@@ -130,7 +130,6 @@ pub mod google {
                 feature = "google-apps-script-type-docs",
                 feature = "google-apps-script-type-sheets",
                 feature = "google-apps-script-type-slides",
-                feature = "google-area120-tables-v1alpha1",
                 feature = "google-assistant-embedded-v1alpha1",
                 feature = "google-assistant-embedded-v1alpha2",
                 feature = "google-bigtable-admin-v2",
@@ -223,6 +222,7 @@ pub mod google {
                 feature = "google-cloud-datastream-logging-v1",
                 feature = "google-cloud-datastream-v1",
                 feature = "google-cloud-deploy-v1",
+                feature = "google-cloud-designcenter-v1",
                 feature = "google-cloud-developerconnect-v1",
                 feature = "google-cloud-devicestreaming-v1",
                 feature = "google-cloud-dialogflow-cx-v3",
@@ -286,6 +286,7 @@ pub mod google {
                 feature = "google-cloud-notebooks-v1",
                 feature = "google-cloud-notebooks-v2",
                 feature = "google-cloud-numberregistry-v1alpha",
+                feature = "google-cloud-observability-v1",
                 feature = "google-cloud-optimization-v1",
                 feature = "google-cloud-orchestration-airflow-service-v1",
                 feature = "google-cloud-orgpolicy-v2",
@@ -429,6 +430,8 @@ pub mod google {
                 feature = "google-spanner-adapter-v1",
                 feature = "google-spanner-admin-database-v1",
                 feature = "google-spanner-admin-instance-v1",
+                feature = "google-spanner-admin-omni-v1",
+                feature = "google-spanner-auth-v1",
                 feature = "google-spanner-executor-v1",
                 feature = "google-spanner-v1",
                 feature = "google-storage-control-v2",
@@ -626,14 +629,6 @@ pub mod google {
                     )]
                     include_proto!("google.apps.script.r#type.slides");
                 }
-            }
-        }
-    }
-    pub mod area120 {
-        pub mod tables {
-            pub mod v1alpha1 {
-                #[cfg(any(feature = "google-area120-tables-v1alpha1"))]
-                include_proto!("google.area120.tables.v1alpha1");
             }
         }
     }
@@ -889,7 +884,12 @@ pub mod google {
         }
         pub mod apphub {
             pub mod v1 {
-                #[cfg(any(feature = "google-cloud-apphub-v1"))]
+                #[cfg(
+                    any(
+                        feature = "google-cloud-apphub-v1",
+                        feature = "google-cloud-designcenter-v1",
+                    )
+                )]
                 include_proto!("google.cloud.apphub.v1");
             }
         }
@@ -1228,7 +1228,12 @@ pub mod google {
         }
         pub mod config {
             pub mod v1 {
-                #[cfg(any(feature = "google-cloud-config-v1"))]
+                #[cfg(
+                    any(
+                        feature = "google-cloud-config-v1",
+                        feature = "google-cloud-designcenter-v1",
+                    )
+                )]
                 include_proto!("google.cloud.config.v1");
             }
         }
@@ -1361,6 +1366,12 @@ pub mod google {
             pub mod v1 {
                 #[cfg(any(feature = "google-cloud-deploy-v1"))]
                 include_proto!("google.cloud.deploy.v1");
+            }
+        }
+        pub mod designcenter {
+            pub mod v1 {
+                #[cfg(any(feature = "google-cloud-designcenter-v1"))]
+                include_proto!("google.cloud.designcenter.v1");
             }
         }
         pub mod developerconnect {
@@ -1785,6 +1796,12 @@ pub mod google {
             pub mod v1alpha {
                 #[cfg(any(feature = "google-cloud-numberregistry-v1alpha"))]
                 include_proto!("google.cloud.numberregistry.v1alpha");
+            }
+        }
+        pub mod observability {
+            pub mod v1 {
+                #[cfg(any(feature = "google-cloud-observability-v1"))]
+                include_proto!("google.cloud.observability.v1");
             }
         }
         pub mod optimization {
@@ -2644,6 +2661,7 @@ pub mod google {
                     feature = "google-identity-accesscontextmanager-v1",
                     feature = "google-spanner-admin-database-v1",
                     feature = "google-spanner-admin-instance-v1",
+                    feature = "google-spanner-admin-omni-v1",
                     feature = "google-spanner-executor-v1",
                     feature = "google-storage-control-v2",
                     feature = "google-storage-v1",
@@ -2768,6 +2786,7 @@ pub mod google {
                 feature = "google-cloud-datastream-logging-v1",
                 feature = "google-cloud-datastream-v1",
                 feature = "google-cloud-deploy-v1",
+                feature = "google-cloud-designcenter-v1",
                 feature = "google-cloud-developerconnect-v1",
                 feature = "google-cloud-dialogflow-cx-v3",
                 feature = "google-cloud-dialogflow-v2",
@@ -2807,6 +2826,7 @@ pub mod google {
                 feature = "google-cloud-notebooks-v1",
                 feature = "google-cloud-notebooks-v2",
                 feature = "google-cloud-numberregistry-v1alpha",
+                feature = "google-cloud-observability-v1",
                 feature = "google-cloud-optimization-v1",
                 feature = "google-cloud-orchestration-airflow-service-v1",
                 feature = "google-cloud-osconfig-v1",
@@ -2874,6 +2894,7 @@ pub mod google {
                 feature = "google-partner-aistreams-v1alpha1",
                 feature = "google-spanner-admin-database-v1",
                 feature = "google-spanner-admin-instance-v1",
+                feature = "google-spanner-admin-omni-v1",
                 feature = "google-spanner-executor-v1",
                 feature = "google-storage-control-v2",
                 feature = "google-storagetransfer-v1",
@@ -3206,6 +3227,7 @@ pub mod google {
                 feature = "google-privacy-dlp-v2",
                 feature = "google-spanner-admin-database-v1",
                 feature = "google-spanner-admin-instance-v1",
+                feature = "google-spanner-admin-omni-v1",
                 feature = "google-spanner-executor-v1",
                 feature = "google-storage-control-v2",
                 feature = "google-storage-v1",
@@ -3304,6 +3326,7 @@ pub mod google {
                 feature = "google-cloud-datastream-logging-v1",
                 feature = "google-cloud-datastream-v1",
                 feature = "google-cloud-deploy-v1",
+                feature = "google-cloud-designcenter-v1",
                 feature = "google-cloud-developerconnect-v1",
                 feature = "google-cloud-dialogflow-cx-v3",
                 feature = "google-cloud-dialogflow-v2",
@@ -3353,6 +3376,7 @@ pub mod google {
                 feature = "google-cloud-notebooks-v1",
                 feature = "google-cloud-notebooks-v2",
                 feature = "google-cloud-numberregistry-v1alpha",
+                feature = "google-cloud-observability-v1",
                 feature = "google-cloud-optimization-v1",
                 feature = "google-cloud-orchestration-airflow-service-v1",
                 feature = "google-cloud-osconfig-v1",
@@ -3444,6 +3468,7 @@ pub mod google {
                 feature = "google-rpc",
                 feature = "google-spanner-admin-database-v1",
                 feature = "google-spanner-admin-instance-v1",
+                feature = "google-spanner-admin-omni-v1",
                 feature = "google-spanner-executor-v1",
                 feature = "google-spanner-v1",
                 feature = "google-storage-control-v2",
@@ -3505,6 +3530,7 @@ pub mod google {
                     #[cfg(
                         any(
                             feature = "google-spanner-admin-database-v1",
+                            feature = "google-spanner-admin-omni-v1",
                             feature = "google-spanner-executor-v1",
                         )
                     )]
@@ -3521,6 +3547,18 @@ pub mod google {
                     )]
                     include_proto!("google.spanner.admin.instance.v1");
                 }
+            }
+            pub mod omni {
+                pub mod v1 {
+                    #[cfg(any(feature = "google-spanner-admin-omni-v1"))]
+                    include_proto!("google.spanner.admin.omni.v1");
+                }
+            }
+        }
+        pub mod auth {
+            pub mod v1 {
+                #[cfg(any(feature = "google-spanner-auth-v1"))]
+                include_proto!("google.spanner.auth.v1");
             }
         }
         pub mod executor {

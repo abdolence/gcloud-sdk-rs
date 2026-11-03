@@ -4,6 +4,7 @@
 /// `pubsub_export_config`, or `pubsublite_export_config`
 /// is set, then the subscriber will pull and ack messages using API methods. At
 /// most one of these fields may be set.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubSubSubscription {
     /// Required. Name of the subscription.
@@ -153,6 +154,7 @@ pub struct PubSubSubscription {
 /// Retry Policy is implemented on a best effort basis. At times, the delay
 /// between consecutive deliveries may not match the configuration. That is,
 /// delay can be more or less than configured backoff.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryPolicy {
     /// Optional. The minimum delay between consecutive deliveries of a given
@@ -170,6 +172,7 @@ pub struct RetryPolicy {
 ///
 /// If validation on any of the fields fails at subscription creation/updation,
 /// the create/update subscription request will fail.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeadLetterPolicy {
     /// Optional. The name of the topic to which dead letter messages should be
@@ -201,6 +204,7 @@ pub struct DeadLetterPolicy {
 }
 /// A policy that specifies the conditions for resource expiration (i.e.,
 /// automatic resource deletion).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpirationPolicy {
     /// Optional. Specifies the "time-to-live" duration for an associated resource.
@@ -213,6 +217,7 @@ pub struct ExpirationPolicy {
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Configuration for a push delivery endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushConfig {
     /// Optional. A URL locating the endpoint to which messages should be pushed.
@@ -262,6 +267,7 @@ pub mod push_config {
     /// Contains information needed for generating an
     /// [OpenID Connect
     /// token](<https://developers.google.com/identity/protocols/OpenIDConnect>).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OidcToken {
         /// Optional. [Service account
@@ -284,9 +290,11 @@ pub mod push_config {
     /// The payload to the push endpoint is in the form of the JSON representation
     /// of a PubsubMessage
     /// (<https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage>).
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PubsubWrapper {}
     /// Sets the `data` field as the HTTP body for delivery.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NoWrapper {
         /// Optional. When true, writes the Pub/Sub message metadata to
@@ -300,6 +308,7 @@ pub mod push_config {
     /// default to allow requests only from the Pub/Sub system, for example.
     /// This field is optional and should be set only by users interested in
     /// authenticated push.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Optional. If specified, Pub/Sub will generate and attach an OIDC JWT
@@ -310,6 +319,7 @@ pub mod push_config {
     }
     /// The format of the delivered message to the push endpoint is defined by
     /// the chosen wrapper. When unset, `PubsubWrapper` is used.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Wrapper {
         /// Optional. When set, the payload to the push endpoint is in the form of
@@ -323,6 +333,7 @@ pub mod push_config {
     }
 }
 /// Configuration for a BigQuery subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryConfig {
     /// Optional. The name of the table to which to write data, of the form
@@ -363,6 +374,7 @@ pub struct BigQueryConfig {
     pub service_account_email: ::prost::alloc::string::String,
 }
 /// Configuration for a Cloud Storage subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudStorageConfig {
     /// Required. User-provided name for the Cloud Storage bucket.
@@ -421,10 +433,12 @@ pub mod cloud_storage_config {
     /// Configuration for writing message data in text format.
     /// Message payloads will be written to files as raw text, separated by a
     /// newline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TextConfig {}
     /// Configuration for writing message data in Avro format.
     /// Message payloads and metadata will be written to files as an Avro binary.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AvroConfig {
         /// Optional. When true, write the subscription name, message_id,
@@ -441,6 +455,7 @@ pub mod cloud_storage_config {
         pub use_topic_schema: bool,
     }
     /// Defaults to text format.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OutputFormat {
         /// Optional. If set, message data will be written to Cloud Storage in text
@@ -454,6 +469,7 @@ pub mod cloud_storage_config {
     }
 }
 /// All supported message transforms types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MessageTransform {
     /// Optional. This field is deprecated, use the `disabled` field to disable
@@ -472,6 +488,7 @@ pub struct MessageTransform {
 /// Nested message and enum types in `MessageTransform`.
 pub mod message_transform {
     /// The type of transform to apply to messages.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Transform {
         /// Optional. JavaScript User Defined Function. If multiple JavaScriptUDF's
@@ -482,6 +499,7 @@ pub mod message_transform {
 }
 /// User-defined JavaScript function that can transform or filter a Pub/Sub
 /// message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JavaScriptUdf {
     /// Required. Name of the JavasScript function that should applied to Pub/Sub
@@ -524,6 +542,7 @@ pub struct JavaScriptUdf {
 /// A data exchange is a container that lets you share data. Along with the
 /// descriptive information about the data exchange, it contains listings that
 /// reference shared datasets.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataExchange {
     /// Output only. The resource name of the data exchange.
@@ -575,6 +594,7 @@ pub struct DataExchange {
 }
 /// A query template is a container for sharing table-valued functions defined by
 /// contributors in a data clean room.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryTemplate {
     /// Output only. The resource name of the QueryTemplate.
@@ -621,6 +641,7 @@ pub struct QueryTemplate {
 /// Nested message and enum types in `QueryTemplate`.
 pub mod query_template {
     /// The QueryTemplate lifecycle state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -673,6 +694,7 @@ pub mod query_template {
     }
 }
 /// Represents a bigquery routine.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Routine {
     /// Required. The type of routine.
@@ -685,6 +707,7 @@ pub struct Routine {
 /// Nested message and enum types in `Routine`.
 pub mod routine {
     /// Represents the type of a given routine.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -725,6 +748,7 @@ pub mod routine {
     }
 }
 /// Message for creating a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateQueryTemplateRequest {
     /// Required. The parent resource path of the QueryTemplate.
@@ -742,6 +766,7 @@ pub struct CreateQueryTemplateRequest {
     pub query_template: ::core::option::Option<QueryTemplate>,
 }
 /// Message for creating a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQueryTemplateRequest {
     /// Required. The parent resource path of the QueryTemplate.
@@ -751,6 +776,7 @@ pub struct GetQueryTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting the list of QueryTemplates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQueryTemplatesRequest {
     /// Required. The parent resource path of the QueryTemplates.
@@ -767,6 +793,7 @@ pub struct ListQueryTemplatesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to the list of QueryTemplates.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueryTemplatesResponse {
     /// The list of QueryTemplates.
@@ -777,6 +804,7 @@ pub struct ListQueryTemplatesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for updating a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateQueryTemplateRequest {
     /// Optional. Field mask specifies the fields to update in the query template
@@ -789,6 +817,7 @@ pub struct UpdateQueryTemplateRequest {
     pub query_template: ::core::option::Option<QueryTemplate>,
 }
 /// Message for deleting a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteQueryTemplateRequest {
     /// Required. The resource path of the QueryTemplate.
@@ -798,6 +827,7 @@ pub struct DeleteQueryTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for submitting a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubmitQueryTemplateRequest {
     /// Required. The resource path of the QueryTemplate.
@@ -807,6 +837,7 @@ pub struct SubmitQueryTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for approving a QueryTemplate.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApproveQueryTemplateRequest {
     /// Required. The resource path of the QueryTemplate.
@@ -817,6 +848,7 @@ pub struct ApproveQueryTemplateRequest {
 }
 /// Sharing environment is a behavior model for sharing data within a
 /// data exchange. This option is configurable for a data exchange.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SharingEnvironmentConfig {
     #[prost(oneof = "sharing_environment_config::Environment", tags = "1, 2")]
@@ -825,9 +857,11 @@ pub struct SharingEnvironmentConfig {
 /// Nested message and enum types in `SharingEnvironmentConfig`.
 pub mod sharing_environment_config {
     /// Default Analytics Hub data exchange, used for secured data sharing.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DefaultExchangeConfig {}
     /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DcrExchangeConfig {
         /// Output only. If True, this DCR restricts the contributors to sharing
@@ -846,6 +880,7 @@ pub mod sharing_environment_config {
         #[prost(bool, optional, tag = "2")]
         pub single_linked_dataset_per_cleanroom: ::core::option::Option<bool>,
     }
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Environment {
         /// Default Analytics Hub data exchange, used for secured data sharing.
@@ -857,6 +892,7 @@ pub mod sharing_environment_config {
     }
 }
 /// Contains details of the data provider.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataProvider {
     /// Optional. Name of the data provider.
@@ -868,6 +904,7 @@ pub struct DataProvider {
     pub primary_contact: ::prost::alloc::string::String,
 }
 /// Contains details of the listing publisher.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Publisher {
     /// Optional. Name of the listing publisher.
@@ -878,6 +915,7 @@ pub struct Publisher {
     #[prost(string, tag = "2")]
     pub primary_contact: ::prost::alloc::string::String,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationDatasetReference {
     /// Required. A unique ID for this dataset, without the project name. The ID
@@ -890,6 +928,7 @@ pub struct DestinationDatasetReference {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Defines the destination bigquery dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationDataset {
     /// Required. A reference that identifies the destination dataset.
@@ -923,6 +962,7 @@ pub struct DestinationDataset {
     pub replica_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Defines the destination Pub/Sub subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationPubSubSubscription {
     /// Required. Destination Pub/Sub subscription resource.
@@ -933,6 +973,7 @@ pub struct DestinationPubSubSubscription {
 /// subscribe to. It contains a reference to the data source along with
 /// descriptive information that will help subscribers find and subscribe the
 /// data.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Listing {
     /// Output only. The resource name of the listing.
@@ -1024,6 +1065,7 @@ pub mod listing {
     /// dataset in
     /// the subscriber's project. A Linked dataset is an opaque, read-only BigQuery
     /// dataset that serves as a *symbolic link* to a shared dataset.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDatasetSource {
         /// Optional. Resource name of the dataset source for this listing.
@@ -1058,6 +1100,7 @@ pub mod listing {
     /// Nested message and enum types in `BigQueryDatasetSource`.
     pub mod big_query_dataset_source {
         /// Resource in this dataset that is selectively shared.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SelectedResource {
             #[prost(oneof = "selected_resource::Resource", tags = "1, 2")]
@@ -1065,6 +1108,7 @@ pub mod listing {
         }
         /// Nested message and enum types in `SelectedResource`.
         pub mod selected_resource {
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Resource {
                 /// Optional. Format:
@@ -1083,6 +1127,7 @@ pub mod listing {
         }
         /// Restricted export policy used to configure restricted export on linked
         /// dataset.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RestrictedExportPolicy {
             /// Optional. If true, enable restricted export.
@@ -1101,6 +1146,7 @@ pub mod listing {
         /// It includes the geographic location of the replica and
         /// system-computed, output-only fields indicating its replication state and
         /// whether it is the primary replica.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Replica {
             /// Output only. The geographic location where the replica resides. See
@@ -1119,6 +1165,7 @@ pub mod listing {
         /// Nested message and enum types in `Replica`.
         pub mod replica {
             /// Replica state of the shared dataset.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1163,6 +1210,7 @@ pub mod listing {
                 }
             }
             /// Primary state of the replica. Set only for the primary replica.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1204,6 +1252,7 @@ pub mod listing {
         }
     }
     /// Pub/Sub topic source.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PubSubTopicSource {
         /// Required. Resource name of the Pub/Sub topic source for this listing.
@@ -1220,6 +1269,7 @@ pub mod listing {
     }
     /// Restricted export config, used to configure restricted export on linked
     /// dataset.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RestrictedExportConfig {
         /// Optional. If true, enable restricted export.
@@ -1236,6 +1286,7 @@ pub mod listing {
     }
     /// Commercial info contains the information about the commercial data products
     /// associated with the listing.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommercialInfo {
         /// Output only. Details of the Marketplace Data Product associated with the
@@ -1249,6 +1300,7 @@ pub mod listing {
     pub mod commercial_info {
         /// Specifies the details of the Marketplace Data Product associated with the
         /// Listing.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleCloudMarketplaceInfo {
             /// Output only. Resource name of the commercial service associated with
@@ -1266,6 +1318,7 @@ pub mod listing {
         /// Nested message and enum types in `GoogleCloudMarketplaceInfo`.
         pub mod google_cloud_marketplace_info {
             /// Indicates whether this commercial access is currently active.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -1311,6 +1364,7 @@ pub mod listing {
         }
     }
     /// State of the listing.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1351,6 +1405,7 @@ pub mod listing {
         }
     }
     /// Listing categories.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1453,6 +1508,7 @@ pub mod listing {
         }
     }
     /// Listing source.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Shared dataset i.e. BigQuery dataset source.
@@ -1465,6 +1521,7 @@ pub mod listing {
 }
 /// Stored procedure configuration, used to configure stored procedure sharing
 /// on linked dataset.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StoredProcedureConfig {
     /// Optional. If true, enable sharing of stored procedure.
@@ -1482,6 +1539,7 @@ pub struct StoredProcedureConfig {
 /// Nested message and enum types in `StoredProcedureConfig`.
 pub mod stored_procedure_config {
     /// Enum to specify the type of stored procedure to share.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1524,6 +1582,7 @@ pub mod stored_procedure_config {
 /// A subscription represents a subscribers' access to a particular set of
 /// published data. It contains references to associated listings,
 /// data exchanges, and linked datasets.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// Output only. The resource name of the subscription.
@@ -1585,6 +1644,7 @@ pub struct Subscription {
 /// Nested message and enum types in `Subscription`.
 pub mod subscription {
     /// Reference to a linked resource tracked by this Subscription.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LinkedResource {
         /// Output only. Listing for which linked resource is created.
@@ -1595,6 +1655,7 @@ pub mod subscription {
     }
     /// Nested message and enum types in `LinkedResource`.
     pub mod linked_resource {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Reference {
             /// Output only. Name of the linked dataset, e.g.
@@ -1608,6 +1669,7 @@ pub mod subscription {
         }
     }
     /// Commercial info metadata for this subscription.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommercialInfo {
         /// Output only. This is set when the subscription is commercialised via
@@ -1620,6 +1682,7 @@ pub mod subscription {
     /// Nested message and enum types in `CommercialInfo`.
     pub mod commercial_info {
         /// Cloud Marketplace commercial metadata for this subscription.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleCloudMarketplaceInfo {
             /// Resource name of the Marketplace Order.
@@ -1628,6 +1691,7 @@ pub mod subscription {
         }
     }
     /// State of the subscription.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1676,6 +1740,7 @@ pub mod subscription {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceName {
         /// Output only. Resource name of the source Listing.
@@ -1689,6 +1754,7 @@ pub mod subscription {
     }
 }
 /// Message for requesting the list of data exchanges.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataExchangesRequest {
     /// Required. The parent resource path of the data exchanges.
@@ -1705,6 +1771,7 @@ pub struct ListDataExchangesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to the list of data exchanges.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataExchangesResponse {
     /// The list of data exchanges.
@@ -1716,6 +1783,7 @@ pub struct ListDataExchangesResponse {
 }
 /// Message for requesting the list of data exchanges from projects in an
 /// organization and location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
     /// Required. The organization resource path of the projects containing
@@ -1733,6 +1801,7 @@ pub struct ListOrgDataExchangesRequest {
 }
 /// Message for response to listing data exchanges in an organization and
 /// location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrgDataExchangesResponse {
     /// The list of data exchanges.
@@ -1743,6 +1812,7 @@ pub struct ListOrgDataExchangesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a data exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataExchangeRequest {
     /// Required. The resource name of the data exchange.
@@ -1751,6 +1821,7 @@ pub struct GetDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a data exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataExchangeRequest {
     /// Required. The parent resource path of the data exchange.
@@ -1767,6 +1838,7 @@ pub struct CreateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for updating a data exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataExchangeRequest {
     /// Required. Field mask specifies the fields to update in the data exchange
@@ -1779,6 +1851,7 @@ pub struct UpdateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for deleting a data exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
     /// Required. The full name of the data exchange resource that you want to
@@ -1787,6 +1860,7 @@ pub struct DeleteDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting the list of listings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListListingsRequest {
     /// Required. The parent resource path of the listing.
@@ -1803,6 +1877,7 @@ pub struct ListListingsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to the list of Listings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListListingsResponse {
     /// The list of Listing.
@@ -1813,6 +1888,7 @@ pub struct ListListingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetListingRequest {
     /// Required. The resource name of the listing.
@@ -1821,6 +1897,7 @@ pub struct GetListingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateListingRequest {
     /// Required. The parent resource path of the listing.
@@ -1837,6 +1914,7 @@ pub struct CreateListingRequest {
     pub listing: ::core::option::Option<Listing>,
 }
 /// Message for updating a Listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateListingRequest {
     /// Required. Field mask specifies the fields to update in the listing
@@ -1849,6 +1927,7 @@ pub struct UpdateListingRequest {
     pub listing: ::core::option::Option<Listing>,
 }
 /// Message for deleting a listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteListingRequest {
     /// Required. Resource name of the listing to delete.
@@ -1862,6 +1941,7 @@ pub struct DeleteListingRequest {
     pub delete_commercial: bool,
 }
 /// Message for subscribing to a listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeListingRequest {
     /// Required. Resource name of the listing that you want to subscribe to.
@@ -1875,6 +1955,7 @@ pub struct SubscribeListingRequest {
 /// Nested message and enum types in `SubscribeListingRequest`.
 pub mod subscribe_listing_request {
     /// Resulting destination of the listing that you subscribed to.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Input only. BigQuery destination dataset to create for the subscriber.
@@ -1887,6 +1968,7 @@ pub mod subscribe_listing_request {
     }
 }
 /// Message for response when you subscribe to a listing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeListingResponse {
     /// Subscription object created from this subscribe action.
@@ -1894,6 +1976,7 @@ pub struct SubscribeListingResponse {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// Message for subscribing to a Data Exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeDataExchangeRequest {
     /// Required. Resource name of the Data Exchange.
@@ -1916,6 +1999,7 @@ pub struct SubscribeDataExchangeRequest {
     pub subscriber_contact: ::prost::alloc::string::String,
 }
 /// Message for response when you subscribe to a Data Exchange.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeDataExchangeResponse {
     /// Subscription object created from this subscribe action.
@@ -1923,6 +2007,7 @@ pub struct SubscribeDataExchangeResponse {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// Message for refreshing a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RefreshSubscriptionRequest {
     /// Required. Resource name of the Subscription to refresh.
@@ -1931,6 +2016,7 @@ pub struct RefreshSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for response when you refresh a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RefreshSubscriptionResponse {
     /// The refreshed subscription resource.
@@ -1938,6 +2024,7 @@ pub struct RefreshSubscriptionResponse {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// Message for getting a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubscriptionRequest {
     /// Required. Resource name of the subscription.
@@ -1946,6 +2033,7 @@ pub struct GetSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for listing subscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
     /// Required. The parent resource path of the subscription.
@@ -1977,6 +2065,7 @@ pub struct ListSubscriptionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to the listing of subscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsResponse {
     /// The list of subscriptions.
@@ -1987,6 +2076,7 @@ pub struct ListSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for listing subscriptions of a shared resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSharedResourceSubscriptionsRequest {
     /// Required. Resource name of the requested target. This resource may be
@@ -2007,6 +2097,7 @@ pub struct ListSharedResourceSubscriptionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message for response to the listing of shared resource subscriptions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSharedResourceSubscriptionsResponse {
     /// The list of subscriptions.
@@ -2017,6 +2108,7 @@ pub struct ListSharedResourceSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for revoking a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevokeSubscriptionRequest {
     /// Required. Resource name of the subscription to revoke.
@@ -2031,9 +2123,11 @@ pub struct RevokeSubscriptionRequest {
 }
 /// Message for response when you revoke a subscription.
 /// Empty for now.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevokeSubscriptionResponse {}
 /// Message for deleting a subscription.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
     /// Required. Resource name of the subscription to delete.
@@ -2042,6 +2136,7 @@ pub struct DeleteSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation in Analytics Hub.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -2073,6 +2168,7 @@ pub struct OperationMetadata {
 /// Specifies the type of discovery on the discovery page. Note that
 /// this does not control the visibility of the exchange/listing which is
 /// defined by IAM permission.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DiscoveryType {
@@ -2108,6 +2204,7 @@ impl DiscoveryType {
     }
 }
 /// The underlying shared asset type shared in a listing by a publisher.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SharedResourceType {

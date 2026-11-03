@@ -2,6 +2,7 @@
 /// ExportStatusLog is used in a log entry to represent the status of a given
 /// BigQuery export job from Google Analytics. Typically, it is sent at the
 /// beginning of the day to indicate the completion of the previous day's export.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportStatusLog {
     /// The date of the export. Usually set to the collection date (YYYYMMDD).
@@ -20,6 +21,7 @@ pub struct ExportStatusLog {
 /// Nested message and enum types in `ExportStatusLog`.
 pub mod export_status_log {
     /// The status of the export.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,

@@ -11,6 +11,7 @@
 ///   |---------------------Trace----------------------|
 ///   Step1(State) Step2(State) ---  StepN(State(final))
 /// ```
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trace {
     /// Derived from the source and destination endpoints definition specified by
@@ -35,6 +36,7 @@ pub struct Trace {
 }
 /// A simulated forwarding path is composed of multiple steps.
 /// Each step has a well-defined state and an associated configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Step {
     /// A description of the step. Usually this is a summary of the state.
@@ -56,7 +58,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 45, 25, 26, 27, 28, 29, 42, 43"
+        tags = "5, 6, 7, 8, 24, 9, 36, 10, 11, 35, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 37, 38, 39, 40, 19, 30, 31, 20, 22, 23, 45, 25, 26, 27, 28, 29, 42, 43, 44"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -64,6 +66,7 @@ pub struct Step {
 pub mod step {
     /// Type of states that are defined in the network state machine.
     /// Each step in the packet trace is in a specific state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -133,6 +136,8 @@ pub mod step {
         StartFromServerlessNeg = 31,
         /// Initial state: packet originating from a DMS Private Connection.
         StartFromDmsPrivateConnection = 48,
+        /// Initial state: packet originating from a Datastream Private Connection.
+        StartFromDatastreamPrivateConnection = 49,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -235,6 +240,9 @@ pub mod step {
                 Self::StartFromDmsPrivateConnection => {
                     "START_FROM_DMS_PRIVATE_CONNECTION"
                 }
+                Self::StartFromDatastreamPrivateConnection => {
+                    "START_FROM_DATASTREAM_PRIVATE_CONNECTION"
+                }
                 Self::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
                 Self::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
                 Self::ApplyRoute => "APPLY_ROUTE",
@@ -296,6 +304,9 @@ pub mod step {
                 "START_FROM_DMS_PRIVATE_CONNECTION" => {
                     Some(Self::StartFromDmsPrivateConnection)
                 }
+                "START_FROM_DATASTREAM_PRIVATE_CONNECTION" => {
+                    Some(Self::StartFromDatastreamPrivateConnection)
+                }
                 "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
                 "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
                 "APPLY_ROUTE" => Some(Self::ApplyRoute),
@@ -351,6 +362,7 @@ pub mod step {
     /// has no permission to view the configuration in this step, for non-final
     /// states a special state is populated (VIEWER_PERMISSION_MISSING), and for
     /// final state the configuration is cleared.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StepInfo {
         /// Display information of a Compute Engine instance.
@@ -475,9 +487,13 @@ pub mod step {
         /// Display information of a DMS Private Connection.
         #[prost(message, tag = "43")]
         DmsPrivateConnection(super::PrivateConnectionInfo),
+        /// Display information of a Datastream Private Connection.
+        #[prost(message, tag = "44")]
+        DatastreamPrivateConnection(super::PrivateConnectionInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceInfo {
     /// Name of a Compute Engine instance.
@@ -521,6 +537,7 @@ pub struct InstanceInfo {
 pub mod instance_info {
     /// The status of the instance. We treat all states other than "RUNNING" as
     /// not running.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -565,6 +582,7 @@ pub mod instance_info {
     }
 }
 /// For display only. Metadata associated with a Compute Engine network.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkInfo {
     /// Name of a Compute Engine network.
@@ -585,6 +603,7 @@ pub struct NetworkInfo {
 }
 /// For display only. Metadata associated with a VPC firewall rule, an implied
 /// VPC firewall rule, or a firewall policy rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallInfo {
     /// The display name of the firewall rule. This field might be empty for
@@ -642,6 +661,7 @@ pub struct FirewallInfo {
 /// Nested message and enum types in `FirewallInfo`.
 pub mod firewall_info {
     /// The firewall rule's type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -763,6 +783,7 @@ pub mod firewall_info {
         }
     }
     /// Target type of the firewall rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -808,6 +829,7 @@ pub mod firewall_info {
     }
 }
 /// For display only. Metadata associated with a Compute Engine route.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteInfo {
     /// Type of route.
@@ -911,6 +933,7 @@ pub struct RouteInfo {
 /// Nested message and enum types in `RouteInfo`.
 pub mod route_info {
     /// Type of route:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -980,6 +1003,7 @@ pub mod route_info {
         }
     }
     /// Type of next hop:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1076,6 +1100,7 @@ pub mod route_info {
         }
     }
     /// Indicates where routes are applicable.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1124,6 +1149,7 @@ pub mod route_info {
 /// some Google Services use special routes within Google production
 /// infrastructure to reach Compute Engine Instances.
 /// <https://cloud.google.com/vpc/docs/routes#special_return_paths>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleServiceInfo {
     /// Source IP address.
@@ -1136,6 +1162,7 @@ pub struct GoogleServiceInfo {
 /// Nested message and enum types in `GoogleServiceInfo`.
 pub mod google_service_info {
     /// Recognized type of a Google Service.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1213,6 +1240,7 @@ pub mod google_service_info {
     }
 }
 /// For display only. Metadata associated with a Compute Engine forwarding rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardingRuleInfo {
     /// Name of the forwarding rule.
@@ -1252,6 +1280,7 @@ pub struct ForwardingRuleInfo {
     pub psc_google_api_target: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a load balancer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadBalancerInfo {
     /// Type of the load balancer.
@@ -1276,6 +1305,7 @@ pub struct LoadBalancerInfo {
 /// Nested message and enum types in `LoadBalancerInfo`.
 pub mod load_balancer_info {
     /// The type definition for a load balancer:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1331,6 +1361,7 @@ pub mod load_balancer_info {
         }
     }
     /// The type definition for a load balancer backend configuration:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1379,6 +1410,7 @@ pub mod load_balancer_info {
     }
 }
 /// For display only. Metadata associated with a specific load balancer backend.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoadBalancerBackend {
     /// Name of a Compute Engine instance or network endpoint.
@@ -1404,6 +1436,7 @@ pub struct LoadBalancerBackend {
 /// Nested message and enum types in `LoadBalancerBackend`.
 pub mod load_balancer_backend {
     /// State of a health check firewall configuration:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1453,6 +1486,7 @@ pub mod load_balancer_backend {
     }
 }
 /// For display only. Metadata associated with a hybrid subnet.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HybridSubnetInfo {
     /// Name of a hybrid subnet.
@@ -1466,6 +1500,7 @@ pub struct HybridSubnetInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Compute Engine VPN gateway.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnGatewayInfo {
     /// Name of a VPN gateway.
@@ -1490,6 +1525,7 @@ pub struct VpnGatewayInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Compute Engine VPN tunnel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpnTunnelInfo {
     /// Name of a VPN tunnel.
@@ -1524,6 +1560,7 @@ pub struct VpnTunnelInfo {
 pub mod vpn_tunnel_info {
     /// Types of VPN routing policy. For details, refer to [Networks and Tunnel
     /// routing](<https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/>).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1572,6 +1609,7 @@ pub mod vpn_tunnel_info {
     }
 }
 /// For display only. Metadata associated with an Interconnect attachment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterconnectAttachmentInfo {
     /// Name of an Interconnect attachment.
@@ -1601,6 +1639,7 @@ pub struct InterconnectAttachmentInfo {
 /// Nested message and enum types in `InterconnectAttachmentInfo`.
 pub mod interconnect_attachment_info {
     /// What type of interconnect attachment this is.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1655,6 +1694,7 @@ pub mod interconnect_attachment_info {
 /// For display only. The specification of the endpoints for the test.
 /// EndpointInfo is derived from source and destination Endpoint and validated
 /// by the backend data plane model.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndpointInfo {
     /// Source IP address.
@@ -1683,6 +1723,7 @@ pub struct EndpointInfo {
     pub source_agent_uri: ::prost::alloc::string::String,
 }
 /// Details of the final state "deliver" and associated resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeliverInfo {
     /// Target type where the packet is delivered to.
@@ -1709,6 +1750,7 @@ pub struct DeliverInfo {
 /// Nested message and enum types in `DeliverInfo`.
 pub mod deliver_info {
     /// Deliver target types:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1767,6 +1809,8 @@ pub mod deliver_info {
         CloudRunJob = 20,
         /// Target is a DMS Private Connection. Used only for return traces.
         DmsPrivateConnection = 21,
+        /// Target is a Datastream Private Connection. Used only for return traces.
+        DatastreamPrivateConnection = 22,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1796,6 +1840,7 @@ pub mod deliver_info {
                 Self::GkePod => "GKE_POD",
                 Self::CloudRunJob => "CLOUD_RUN_JOB",
                 Self::DmsPrivateConnection => "DMS_PRIVATE_CONNECTION",
+                Self::DatastreamPrivateConnection => "DATASTREAM_PRIVATE_CONNECTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1822,11 +1867,15 @@ pub mod deliver_info {
                 "GKE_POD" => Some(Self::GkePod),
                 "CLOUD_RUN_JOB" => Some(Self::CloudRunJob),
                 "DMS_PRIVATE_CONNECTION" => Some(Self::DmsPrivateConnection),
+                "DATASTREAM_PRIVATE_CONNECTION" => {
+                    Some(Self::DatastreamPrivateConnection)
+                }
                 _ => None,
             }
         }
     }
     /// Recognized type of a Google Service.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1896,6 +1945,7 @@ pub mod deliver_info {
     }
 }
 /// Details of the final state "forward" and associated resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardInfo {
     /// Target type where this packet is forwarded to.
@@ -1911,6 +1961,7 @@ pub struct ForwardInfo {
 /// Nested message and enum types in `ForwardInfo`.
 pub mod forward_info {
     /// Forward target types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1993,6 +2044,7 @@ pub mod forward_info {
     }
 }
 /// Details of the final state "abort" and associated resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AbortInfo {
     /// Causes that the analysis is aborted.
@@ -2014,6 +2066,7 @@ pub struct AbortInfo {
 /// Nested message and enum types in `AbortInfo`.
 pub mod abort_info {
     /// Abort cause types:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2358,6 +2411,7 @@ pub mod abort_info {
     }
 }
 /// Details of the final state "drop" and associated resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DropInfo {
     /// Cause that the packet is dropped.
@@ -2385,6 +2439,7 @@ pub struct DropInfo {
 /// Nested message and enum types in `DropInfo`.
 pub mod drop_info {
     /// Drop cause types:
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2510,6 +2565,8 @@ pub mod drop_info {
         DroppedInsideCloudSqlService = 19,
         /// Packet was dropped inside DMS Private Connection.
         DroppedInsideDmsPrivateConnection = 114,
+        /// Packet was dropped inside Datastream Private Connection.
+        DroppedInsideDatastreamPrivateConnection = 115,
         /// Packet was dropped because there is no peering between the originating
         /// network and the Google Managed Services Network.
         GoogleManagedServiceNoPeering = 20,
@@ -2795,6 +2852,9 @@ pub mod drop_info {
                 Self::DroppedInsideDmsPrivateConnection => {
                     "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION"
                 }
+                Self::DroppedInsideDatastreamPrivateConnection => {
+                    "DROPPED_INSIDE_DATASTREAM_PRIVATE_CONNECTION"
+                }
                 Self::GoogleManagedServiceNoPeering => {
                     "GOOGLE_MANAGED_SERVICE_NO_PEERING"
                 }
@@ -3028,6 +3088,9 @@ pub mod drop_info {
                 "DROPPED_INSIDE_DMS_PRIVATE_CONNECTION" => {
                     Some(Self::DroppedInsideDmsPrivateConnection)
                 }
+                "DROPPED_INSIDE_DATASTREAM_PRIVATE_CONNECTION" => {
+                    Some(Self::DroppedInsideDatastreamPrivateConnection)
+                }
                 "GOOGLE_MANAGED_SERVICE_NO_PEERING" => {
                     Some(Self::GoogleManagedServiceNoPeering)
                 }
@@ -3201,6 +3264,7 @@ pub mod drop_info {
 }
 /// For display only. Metadata associated with a Google Kubernetes Engine (GKE)
 /// cluster master.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeMasterInfo {
     /// URI of a GKE cluster.
@@ -3221,6 +3285,7 @@ pub struct GkeMasterInfo {
 }
 /// For display only. Metadata associated with a Google Kubernetes Engine (GKE)
 /// Pod.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkePodInfo {
     /// URI of a GKE Pod.
@@ -3240,6 +3305,7 @@ pub struct GkePodInfo {
 }
 /// For display only. Contains information about why IP masquerading was skipped
 /// for the packet.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IpMasqueradingSkippedInfo {
     /// Reason why IP masquerading was not applied.
@@ -3254,6 +3320,7 @@ pub struct IpMasqueradingSkippedInfo {
 /// Nested message and enum types in `IpMasqueradingSkippedInfo`.
 pub mod ip_masquerading_skipped_info {
     /// Reason why IP masquerading was skipped.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3336,6 +3403,7 @@ pub mod ip_masquerading_skipped_info {
     }
 }
 /// For display only. Metadata associated with a GKE Network Policy.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeNetworkPolicyInfo {
     /// The name of the Network Policy.
@@ -3357,6 +3425,7 @@ pub struct GkeNetworkPolicyInfo {
 }
 /// For display only. Contains information about why GKE Network Policy
 /// evaluation was skipped.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeNetworkPolicySkippedInfo {
     /// Reason why Network Policy evaluation was skipped.
@@ -3365,6 +3434,7 @@ pub struct GkeNetworkPolicySkippedInfo {
 }
 /// Nested message and enum types in `GkeNetworkPolicySkippedInfo`.
 pub mod gke_network_policy_skipped_info {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3438,6 +3508,7 @@ pub mod gke_network_policy_skipped_info {
     }
 }
 /// For display only. Metadata associated with a Cloud SQL instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudSqlInstanceInfo {
     /// Name of a Cloud SQL instance.
@@ -3461,6 +3532,7 @@ pub struct CloudSqlInstanceInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud Redis Instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RedisInstanceInfo {
     /// Name of a Cloud Redis Instance.
@@ -3483,6 +3555,7 @@ pub struct RedisInstanceInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Redis Cluster.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RedisClusterInfo {
     /// Name of a Redis Cluster.
@@ -3508,6 +3581,7 @@ pub struct RedisClusterInfo {
     pub location: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud Function.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudFunctionInfo {
     /// Name of a Cloud Function.
@@ -3524,6 +3598,7 @@ pub struct CloudFunctionInfo {
     pub version_id: i64,
 }
 /// For display only. Metadata associated with a Cloud Run revision.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunRevisionInfo {
     /// Name of a Cloud Run revision.
@@ -3540,6 +3615,7 @@ pub struct CloudRunRevisionInfo {
     pub service_uri: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud Run job.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunJobInfo {
     /// Name of a Cloud Run job.
@@ -3553,6 +3629,7 @@ pub struct CloudRunJobInfo {
     pub location: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with an App Engine version.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppEngineVersionInfo {
     /// Name of an App Engine version.
@@ -3569,6 +3646,7 @@ pub struct AppEngineVersionInfo {
     pub environment: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a VPC connector.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpcConnectorInfo {
     /// Name of a VPC connector.
@@ -3583,6 +3661,7 @@ pub struct VpcConnectorInfo {
 }
 /// For display only. Metadata associated with a serverless direct VPC egress
 /// connection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DirectVpcEgressConnectionInfo {
     /// URI of direct access network.
@@ -3602,6 +3681,7 @@ pub struct DirectVpcEgressConnectionInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a serverless public connection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerlessExternalConnectionInfo {
     /// Selected starting IP address, from the Google dynamic address pool.
@@ -3609,6 +3689,7 @@ pub struct ServerlessExternalConnectionInfo {
     pub selected_ip_address: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with NAT.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NatInfo {
     /// Type of NAT.
@@ -3659,6 +3740,7 @@ pub struct NatInfo {
 /// Nested message and enum types in `NatInfo`.
 pub mod nat_info {
     /// Types of NAT.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3714,6 +3796,7 @@ pub mod nat_info {
         }
     }
     /// Types of Cloud NAT gateway.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3770,6 +3853,7 @@ pub mod nat_info {
     }
 }
 /// For display only. Metadata associated with ProxyConnection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProxyConnectionInfo {
     /// IP protocol in string format, for example: "TCP", "UDP", "ICMP".
@@ -3810,6 +3894,7 @@ pub struct ProxyConnectionInfo {
     pub network_uri: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with the load balancer backend.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoadBalancerBackendInfo {
     /// Display name of the backend. For example, it might be an instance name for
@@ -3858,6 +3943,7 @@ pub struct LoadBalancerBackendInfo {
 /// Nested message and enum types in `LoadBalancerBackendInfo`.
 pub mod load_balancer_backend_info {
     /// Health check firewalls configuration state enum.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3922,6 +4008,7 @@ pub mod load_balancer_backend_info {
     }
 }
 /// For display only. Metadata associated with Storage Bucket.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageBucketInfo {
     /// Cloud Storage Bucket name.
@@ -3930,6 +4017,7 @@ pub struct StorageBucketInfo {
 }
 /// For display only. Metadata associated with the serverless network endpoint
 /// group backend.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerlessNegInfo {
     /// URI of the serverless network endpoint group.
@@ -3938,6 +4026,7 @@ pub struct ServerlessNegInfo {
 }
 /// For display only. Metadata associated with a layer 7 packet inspection by the
 /// firewall.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NgfwPacketInspectionInfo {
     /// URI of the security profile group associated with this firewall packet
@@ -3946,6 +4035,7 @@ pub struct NgfwPacketInspectionInfo {
     pub security_profile_group_uri: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Private Connection.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivateConnectionInfo {
     /// URI of the Private Connection in format
@@ -3956,6 +4046,7 @@ pub struct PrivateConnectionInfo {
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load
 /// balancers](<https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LoadBalancerType {
@@ -4024,6 +4115,7 @@ impl LoadBalancerType {
     }
 }
 /// A Connectivity Test for a network reachability analysis.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectivityTest {
     /// Identifier. Unique name of the resource using the form:
@@ -4102,6 +4194,7 @@ pub struct ConnectivityTest {
     pub bypass_firewall_checks: bool,
 }
 /// Source or destination of the Connectivity Test.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Endpoint {
     /// The IP address of the endpoint, which can be an external or internal IP.
@@ -4164,6 +4257,12 @@ pub struct Endpoint {
     /// projects/{project}/locations/{location}/privateConnections/{privateConnection}.
     #[prost(string, tag = "22")]
     pub dms_private_connection: ::prost::alloc::string::String,
+    /// A [Datastream Private
+    /// Connection](<https://docs.cloud.google.com/datastream/docs/reference/rest/v1/projects.locations.privateConnections>)
+    /// name format:
+    /// projects/{project}/locations/{location}/privateConnections/{privateConnection}.
+    #[prost(string, tag = "23")]
+    pub datastream_private_connection: ::prost::alloc::string::String,
     /// A [Cloud Function](<https://cloud.google.com/functions>). Applicable only to
     /// source endpoint.
     #[prost(message, optional, tag = "10")]
@@ -4203,6 +4302,7 @@ pub struct Endpoint {
 /// Nested message and enum types in `Endpoint`.
 pub mod endpoint {
     /// Wrapper for Cloud Function attributes.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CloudFunctionEndpoint {
         /// A [Cloud Function](<https://cloud.google.com/functions>) name.
@@ -4210,6 +4310,7 @@ pub mod endpoint {
         pub uri: ::prost::alloc::string::String,
     }
     /// Wrapper for the App Engine service version attributes.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppEngineVersionEndpoint {
         /// An [App Engine](<https://cloud.google.com/appengine>) [service
@@ -4219,6 +4320,7 @@ pub mod endpoint {
         pub uri: ::prost::alloc::string::String,
     }
     /// Wrapper for Cloud Run revision attributes.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CloudRunRevisionEndpoint {
         /// A [Cloud Run](<https://cloud.google.com/run>)
@@ -4235,6 +4337,7 @@ pub mod endpoint {
     }
     /// The type of the network of the IP address endpoint. Relevant for the source
     /// IP address endpoints.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4299,6 +4402,7 @@ pub mod endpoint {
         }
     }
     /// Type of the target of a forwarding rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4352,6 +4456,7 @@ pub mod endpoint {
     }
 }
 /// Results of the configuration analysis from the last run of the test.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachabilityDetails {
     /// The overall result of the test's configuration analysis.
@@ -4372,6 +4477,7 @@ pub struct ReachabilityDetails {
 /// Nested message and enum types in `ReachabilityDetails`.
 pub mod reachability_details {
     /// The overall result of the test's configuration analysis.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4442,6 +4548,7 @@ pub mod reachability_details {
     }
 }
 /// Latency percentile rank and value.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LatencyPercentile {
     /// Percentage of samples this data point applies to.
@@ -4454,6 +4561,7 @@ pub struct LatencyPercentile {
     pub latency_micros: i64,
 }
 /// Describes measured latency distribution.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatencyDistribution {
     /// Representative latency percentiles.
@@ -4461,6 +4569,7 @@ pub struct LatencyDistribution {
     pub latency_percentiles: ::prost::alloc::vec::Vec<LatencyPercentile>,
 }
 /// Results of active probing from the last run of the test.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProbingDetails {
     /// The overall result of active probing.
@@ -4510,6 +4619,7 @@ pub struct ProbingDetails {
 pub mod probing_details {
     /// Representation of a network edge location as per
     /// <https://cloud.google.com/vpc/docs/edge-locations.>
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EdgeLocation {
         /// Name of the metropolitan area.
@@ -4517,6 +4627,7 @@ pub mod probing_details {
         pub metropolitan_area: ::prost::alloc::string::String,
     }
     /// Probing results for a single edge device.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SingleEdgeResponse {
         /// The overall result of active probing for this egress device.
@@ -4546,6 +4657,7 @@ pub mod probing_details {
         pub destination_router: ::prost::alloc::string::String,
     }
     /// Overall probing result of the test.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4602,6 +4714,7 @@ pub mod probing_details {
         }
     }
     /// Abort cause types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4647,6 +4760,7 @@ pub mod probing_details {
     }
 }
 /// Request for the `ListConnectivityTests` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConnectivityTestsRequest {
     /// Required. The parent resource of the Connectivity Tests:
@@ -4686,6 +4800,7 @@ pub struct ListConnectivityTestsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListConnectivityTests` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectivityTestsResponse {
     /// List of Connectivity Tests.
@@ -4699,6 +4814,7 @@ pub struct ListConnectivityTestsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetConnectivityTest` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConnectivityTestRequest {
     /// Required. `ConnectivityTest` resource name using the form:
@@ -4707,6 +4823,7 @@ pub struct GetConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateConnectivityTest` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectivityTestRequest {
     /// Required. The parent resource of the Connectivity Test to create:
@@ -4728,6 +4845,7 @@ pub struct CreateConnectivityTestRequest {
     pub resource: ::core::option::Option<ConnectivityTest>,
 }
 /// Request for the `UpdateConnectivityTest` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectivityTestRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -4739,6 +4857,7 @@ pub struct UpdateConnectivityTestRequest {
     pub resource: ::core::option::Option<ConnectivityTest>,
 }
 /// Request for the `DeleteConnectivityTest` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConnectivityTestRequest {
     /// Required. Connectivity Test resource name using the form:
@@ -4747,6 +4866,7 @@ pub struct DeleteConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `RerunConnectivityTest` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RerunConnectivityTestRequest {
     /// Required. Connectivity Test resource name using the form:
@@ -4755,6 +4875,7 @@ pub struct RerunConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata describing an \[Operation\]\[google.longrunning.Operation\]
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -5098,6 +5219,7 @@ pub mod reachability_service_client {
     }
 }
 /// A configuration to generate VPC Flow Logs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcFlowLogsConfig {
     /// Identifier. Unique name of the configuration. The name can have one of the
@@ -5185,6 +5307,7 @@ pub struct VpcFlowLogsConfig {
 /// Nested message and enum types in `VpcFlowLogsConfig`.
 pub mod vpc_flow_logs_config {
     /// Determines whether this configuration will be generating logs.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5228,6 +5351,7 @@ pub mod vpc_flow_logs_config {
         }
     }
     /// Toggles the aggregation interval for collecting flow logs by 5-tuple.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5287,6 +5411,7 @@ pub mod vpc_flow_logs_config {
         }
     }
     /// Configures which log fields would be included.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5335,6 +5460,7 @@ pub mod vpc_flow_logs_config {
     }
     /// Determines whether to include cross project annotations in the logs.
     /// Project configurations will always have CROSS_PROJECT_METADATA_DISABLED.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5381,6 +5507,7 @@ pub mod vpc_flow_logs_config {
     }
     /// Output only. Indicates whether the target resource exists, for diagnostic
     /// purposes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5429,6 +5556,7 @@ pub mod vpc_flow_logs_config {
     /// which traffic is logged. The target resource must belong to the same
     /// project as the configuration.
     /// This field is not supported for organization level configurations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TargetResource {
         /// Traffic will be logged from VMs, VPN tunnels and Interconnect Attachments
@@ -5453,6 +5581,7 @@ pub mod vpc_flow_logs_config {
 }
 /// A configuration to generate a response for GetEffectiveVpcFlowLogsConfig
 /// request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveVpcFlowLogsConfig {
     /// Unique name of the configuration. The name can have one of the following
@@ -5526,6 +5655,7 @@ pub struct EffectiveVpcFlowLogsConfig {
 /// Nested message and enum types in `EffectiveVpcFlowLogsConfig`.
 pub mod effective_vpc_flow_logs_config {
     /// The scope for this flow log configuration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -5589,6 +5719,7 @@ pub mod effective_vpc_flow_logs_config {
     /// which traffic is logged. The target resource must belong to the same
     /// project as the configuration.
     /// This field is not supported for organization level configurations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TargetResource {
         /// Traffic will be logged from VMs, VPN tunnels and Interconnect Attachments
@@ -5612,6 +5743,7 @@ pub mod effective_vpc_flow_logs_config {
     }
 }
 /// Request for the `ListVpcFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpcFlowLogsConfigsRequest {
     /// Required. The parent resource of the VpcFlowLogsConfig,
@@ -5640,6 +5772,7 @@ pub struct ListVpcFlowLogsConfigsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListVpcFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpcFlowLogsConfigsResponse {
     /// List of VPC Flow Log configurations.
@@ -5653,6 +5786,7 @@ pub struct ListVpcFlowLogsConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetVpcFlowLogsConfig` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpcFlowLogsConfigRequest {
     /// Required. The resource name of the VpcFlowLogsConfig,
@@ -5667,6 +5801,7 @@ pub struct GetVpcFlowLogsConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateVpcFlowLogsConfig` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVpcFlowLogsConfigRequest {
     /// Required. The parent resource of the VpcFlowLogsConfig to create,
@@ -5686,6 +5821,7 @@ pub struct CreateVpcFlowLogsConfigRequest {
     pub vpc_flow_logs_config: ::core::option::Option<VpcFlowLogsConfig>,
 }
 /// Request for the `UpdateVpcFlowLogsConfig` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVpcFlowLogsConfigRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -5700,6 +5836,7 @@ pub struct UpdateVpcFlowLogsConfigRequest {
     pub vpc_flow_logs_config: ::core::option::Option<VpcFlowLogsConfig>,
 }
 /// Request for the `DeleteVpcFlowLogsConfig` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVpcFlowLogsConfigRequest {
     /// Required. The resource name of the VpcFlowLogsConfig,
@@ -5714,6 +5851,7 @@ pub struct DeleteVpcFlowLogsConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `QueryOrgVpcFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryOrgVpcFlowLogsConfigsRequest {
     /// Required. The parent resource of the VpcFlowLogsConfig, specified in
@@ -5734,6 +5872,7 @@ pub struct QueryOrgVpcFlowLogsConfigsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `QueryVpcFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryOrgVpcFlowLogsConfigsResponse {
     /// List of VPC Flow Log configurations.
@@ -5747,6 +5886,7 @@ pub struct QueryOrgVpcFlowLogsConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `ShowEffectiveFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShowEffectiveFlowLogsConfigsRequest {
     /// Required. The parent resource of the VpcFlowLogsConfig, specified in
@@ -5774,6 +5914,7 @@ pub struct ShowEffectiveFlowLogsConfigsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `ShowEffectiveFlowLogsConfigs` method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowEffectiveFlowLogsConfigsResponse {
     /// List of Effective Vpc Flow Logs configurations.

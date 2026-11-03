@@ -3,6 +3,7 @@
 ///
 /// Defines a group of workstations in a particular region and the
 /// VPC network they're attached to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkstationCluster {
     /// Identifier. Full name of this workstation cluster.
@@ -116,6 +117,7 @@ pub struct WorkstationCluster {
 /// Nested message and enum types in `WorkstationCluster`.
 pub mod workstation_cluster {
     /// Configuration options for private workstation clusters.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PrivateClusterConfig {
         /// Immutable. Whether Workstations endpoint is private.
@@ -142,6 +144,7 @@ pub mod workstation_cluster {
         pub allowed_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Configuration options for a custom domain.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DomainConfig {
         /// Immutable. Domain used by Workstations for HTTP ingress.
@@ -149,6 +152,7 @@ pub mod workstation_cluster {
         pub domain: ::prost::alloc::string::String,
     }
     /// Configuration options for Cluster HTTP Gateway.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GatewayConfig {
         /// Optional. Whether HTTP/2 is enabled for this workstation cluster.
@@ -166,6 +170,7 @@ pub mod workstation_cluster {
 /// can also use [Identity and Access Management
 /// (IAM)](<https://cloud.google.com/iam/docs/overview>) rules to grant access to
 /// teams or to individual developers.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkstationConfig {
     /// Identifier. Full name of this workstation configuration.
@@ -370,6 +375,7 @@ pub struct WorkstationConfig {
 /// Nested message and enum types in `WorkstationConfig`.
 pub mod workstation_config {
     /// Runtime host for a workstation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Host {
         /// Type of host to be used for the workstation's runtime.
@@ -379,6 +385,7 @@ pub mod workstation_config {
     /// Nested message and enum types in `Host`.
     pub mod host {
         /// A runtime using a Compute Engine instance.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GceInstance {
             /// Optional. The type of machine to use for VM instances—for example,
@@ -531,6 +538,7 @@ pub mod workstation_config {
         /// Nested message and enum types in `GceInstance`.
         pub mod gce_instance {
             /// A set of Compute Engine Shielded instance options.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct GceShieldedInstanceConfig {
                 /// Optional. Whether the instance has Secure Boot enabled.
@@ -544,6 +552,7 @@ pub mod workstation_config {
                 pub enable_integrity_monitoring: bool,
             }
             /// A set of Compute Engine Confidential VM instance options.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct GceConfidentialInstanceConfig {
                 /// Optional. Whether the instance has confidential compute enabled.
@@ -551,6 +560,7 @@ pub mod workstation_config {
                 pub enable_confidential_compute: bool,
             }
             /// An accelerator card attached to the instance.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Accelerator {
                 /// Optional. Type of accelerator resource to attach to the instance, for
@@ -569,6 +579,7 @@ pub mod workstation_config {
             /// the workstation user does not provide a boost config ID  in the start
             /// request, the system will choose a VM from the pool provisioned under
             /// the default config.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct BoostConfig {
                 /// Required. The ID to be used for the boost configuration.
@@ -624,6 +635,7 @@ pub mod workstation_config {
             }
         }
         /// Type of host to be used for the workstation's runtime.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Config {
             /// Specifies a Compute Engine instance as the host.
@@ -634,6 +646,7 @@ pub mod workstation_config {
     /// A directory to persist across workstation sessions. Updates to this field
     /// will not update existing workstations and will only take effect on new
     /// workstations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PersistentDirectory {
         /// Optional. Location of this directory in the running workstation.
@@ -655,6 +668,7 @@ pub mod workstation_config {
         /// detaches when the session ends. If this field is empty, workstations
         /// created with this configuration do not have a persistent home
         /// directory.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GceRegionalPersistentDisk {
             /// Optional. The GB capacity of a persistent home directory for each
@@ -716,6 +730,7 @@ pub mod workstation_config {
         pub mod gce_regional_persistent_disk {
             /// Value representing what should happen to the disk after the workstation
             /// is deleted.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -765,6 +780,7 @@ pub mod workstation_config {
         /// Disk](<https://cloud.google.com/compute/docs/disks/hd-types/hyperdisk-balanced-ha>).
         /// This is a high-availability block storage solution that offers a balance
         /// between performance and cost for most general-purpose workloads.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GceHyperdiskBalancedHighAvailability {
             /// Optional. The GB capacity of a persistent home directory for each
@@ -809,6 +825,7 @@ pub mod workstation_config {
         pub mod gce_hyperdisk_balanced_high_availability {
             /// Value representing what should happen to the disk after the workstation
             /// is deleted.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -854,6 +871,7 @@ pub mod workstation_config {
             }
         }
         /// How a persistent directory should be implemented.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DirectoryType {
             /// A PersistentDirectory backed by a Compute Engine persistent disk.
@@ -867,6 +885,7 @@ pub mod workstation_config {
     }
     /// An ephemeral directory which won't persist across workstation sessions. It
     /// is freshly created on every workstation start operation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EphemeralDirectory {
         /// Required. Location of this directory in the running workstation.
@@ -879,6 +898,7 @@ pub mod workstation_config {
     /// Nested message and enum types in `EphemeralDirectory`.
     pub mod ephemeral_directory {
         /// An EphemeralDirectory is backed by a Compute Engine persistent disk.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GcePersistentDisk {
             /// Optional. Type of the disk to use. Defaults to `"pd-standard"`.
@@ -926,6 +946,7 @@ pub mod workstation_config {
             pub read_only: bool,
         }
         /// How an ephemeral directory should be implemented.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DirectoryType {
             /// An EphemeralDirectory backed by a Compute Engine persistent disk.
@@ -934,6 +955,7 @@ pub mod workstation_config {
         }
     }
     /// A Docker container.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Container {
         /// Optional. A Docker container image that defines a custom environment.
@@ -980,6 +1002,7 @@ pub mod workstation_config {
     /// We recommend that you use a separate service account and follow
     /// [Cloud KMS best
     /// practices](<https://cloud.google.com/kms/docs/separation-of-duties>).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomerEncryptionKey {
         /// Immutable. The name of the Google Cloud KMS encryption key. For example,
@@ -998,6 +1021,7 @@ pub mod workstation_config {
         pub kms_key_service_account: ::prost::alloc::string::String,
     }
     /// A readiness check to be performed on a workstation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReadinessCheck {
         /// Optional. Path to which the request should be sent.
@@ -1015,6 +1039,7 @@ pub mod workstation_config {
     /// \[first\]\[google.cloud.workstations.v1.WorkstationConfig.PortRange.first\] and
     /// \[last\]\[google.cloud.workstations.v1.WorkstationConfig.PortRange.last\]
     /// should be the same.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PortRange {
         /// Required. Starting port number for the current range of ports.
@@ -1028,6 +1053,7 @@ pub mod workstation_config {
     }
 }
 /// A single instance of a developer workstation with its own persistent storage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workstation {
     /// Identifier. Full name of this workstation.
@@ -1117,6 +1143,7 @@ pub struct Workstation {
 pub mod workstation {
     /// A directory to persist across workstation sessions. Updates to this field
     /// will only take effect on this workstation after it is restarted.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct WorkstationPersistentDirectory {
         /// Optional. The mount path of the persistent directory.
@@ -1128,6 +1155,7 @@ pub mod workstation {
         pub size_gb: i32,
     }
     /// Runtime host for the workstation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RuntimeHost {
         /// Type of host used by the workstation.
@@ -1137,6 +1165,7 @@ pub mod workstation {
     /// Nested message and enum types in `RuntimeHost`.
     pub mod runtime_host {
         /// The Compute Engine instance host.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GceInstanceHost {
             /// Optional. Output only. The name of the Compute Engine instance.
@@ -1150,6 +1179,7 @@ pub mod workstation {
             pub zone: ::prost::alloc::string::String,
         }
         /// Type of host used by the workstation.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum HostType {
             /// Specifies a Compute Engine instance as the host.
@@ -1158,6 +1188,7 @@ pub mod workstation {
         }
     }
     /// Whether a workstation is running and ready to receive user requests.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1212,6 +1243,7 @@ pub mod workstation {
     }
 }
 /// Request message for GetWorkstationCluster.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationClusterRequest {
     /// Required. Name of the requested resource.
@@ -1219,6 +1251,7 @@ pub struct GetWorkstationClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstationClusters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationClustersRequest {
     /// Required. Parent resource name.
@@ -1237,6 +1270,7 @@ pub struct ListWorkstationClustersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListWorkstationClusters.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkstationClustersResponse {
     /// The requested workstation clusters.
@@ -1251,6 +1285,7 @@ pub struct ListWorkstationClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for creating a CreateWorkstationCluster.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkstationClusterRequest {
     /// Required. Parent resource name.
@@ -1268,6 +1303,7 @@ pub struct CreateWorkstationClusterRequest {
     pub validate_only: bool,
 }
 /// Request message for UpdateWorkstationCluster.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkstationClusterRequest {
     /// Required. Workstation cluster to update.
@@ -1288,6 +1324,7 @@ pub struct UpdateWorkstationClusterRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a workstation cluster.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationClusterRequest {
     /// Required. Name of the workstation cluster to delete.
@@ -1308,6 +1345,7 @@ pub struct DeleteWorkstationClusterRequest {
     pub force: bool,
 }
 /// Request message for GetWorkstationConfig.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationConfigRequest {
     /// Required. Name of the requested resource.
@@ -1315,6 +1353,7 @@ pub struct GetWorkstationConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstationConfigs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationConfigsRequest {
     /// Required. Parent resource name.
@@ -1333,6 +1372,7 @@ pub struct ListWorkstationConfigsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListWorkstationConfigs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkstationConfigsResponse {
     /// The requested configs.
@@ -1347,6 +1387,7 @@ pub struct ListWorkstationConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListUsableWorkstationConfigs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableWorkstationConfigsRequest {
     /// Required. Parent resource name.
@@ -1361,6 +1402,7 @@ pub struct ListUsableWorkstationConfigsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListUsableWorkstationConfigs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsableWorkstationConfigsResponse {
     /// The requested configs.
@@ -1375,6 +1417,7 @@ pub struct ListUsableWorkstationConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for creating a CreateWorkstationConfig.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkstationConfigRequest {
     /// Required. Parent resource name.
@@ -1392,6 +1435,7 @@ pub struct CreateWorkstationConfigRequest {
     pub validate_only: bool,
 }
 /// Request message for UpdateWorkstationConfig.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkstationConfigRequest {
     /// Required. Workstation configuration to update.
@@ -1412,6 +1456,7 @@ pub struct UpdateWorkstationConfigRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a workstation configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationConfigRequest {
     /// Required. Name of the workstation configuration to delete.
@@ -1432,6 +1477,7 @@ pub struct DeleteWorkstationConfigRequest {
     pub force: bool,
 }
 /// Request message for GetWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationRequest {
     /// Required. Name of the requested resource.
@@ -1439,6 +1485,7 @@ pub struct GetWorkstationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationsRequest {
     /// Required. Parent resource name.
@@ -1457,6 +1504,7 @@ pub struct ListWorkstationsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListWorkstations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkstationsResponse {
     /// The requested workstations.
@@ -1471,6 +1519,7 @@ pub struct ListWorkstationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListUsableWorkstations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableWorkstationsRequest {
     /// Required. Parent resource name.
@@ -1485,6 +1534,7 @@ pub struct ListUsableWorkstationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListUsableWorkstations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsableWorkstationsResponse {
     /// The requested workstations.
@@ -1499,6 +1549,7 @@ pub struct ListUsableWorkstationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for creating a CreateWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkstationRequest {
     /// Required. Parent resource name.
@@ -1520,6 +1571,7 @@ pub struct CreateWorkstationRequest {
     pub validate_only: bool,
 }
 /// Request message for UpdateWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkstationRequest {
     /// Required. Workstation to update.
@@ -1539,6 +1591,7 @@ pub struct UpdateWorkstationRequest {
     pub allow_missing: bool,
 }
 /// Request message for DeleteWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationRequest {
     /// Required. Name of the workstation to delete.
@@ -1554,6 +1607,7 @@ pub struct DeleteWorkstationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for StartWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartWorkstationRequest {
     /// Required. Name of the workstation to start.
@@ -1573,6 +1627,7 @@ pub struct StartWorkstationRequest {
     pub boost_config: ::prost::alloc::string::String,
 }
 /// Request message for StopWorkstation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopWorkstationRequest {
     /// Required. Name of the workstation to stop.
@@ -1588,6 +1643,7 @@ pub struct StopWorkstationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for GenerateAccessToken.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. Name of the workstation for which the access token should be
@@ -1608,6 +1664,7 @@ pub struct GenerateAccessTokenRequest {
 /// Nested message and enum types in `GenerateAccessTokenRequest`.
 pub mod generate_access_token_request {
     /// Desired expiration or lifetime of the access token.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Expiration {
         /// Desired expiration time of the access token. This value must
@@ -1624,6 +1681,7 @@ pub mod generate_access_token_request {
     }
 }
 /// Response message for GenerateAccessToken.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// The generated bearer access token. To use this token, include it in an
@@ -1636,6 +1694,7 @@ pub struct GenerateAccessTokenResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for long-running operations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Time that the operation was created.

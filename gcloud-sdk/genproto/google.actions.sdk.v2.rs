@@ -12,6 +12,7 @@
 /// must provide a username and password for a test account in
 /// Settings.testing_instructions for the review team to review the app (they
 /// will not be visible to users).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountLinking {
     /// Required. If `true`, users are allowed to sign up for new accounts via voice.
@@ -74,6 +75,7 @@ pub struct AccountLinking {
 /// Nested message and enum types in `AccountLinking`.
 pub mod account_linking {
     /// The type of Account Linking to perform.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -123,6 +125,7 @@ pub mod account_linking {
     }
     /// The OAuth2 grant type Google uses to guide the user to sign in to your
     /// App's web service.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -170,6 +173,7 @@ pub mod account_linking {
 }
 /// Information about the encrypted OAuth client secret used in account linking
 /// flows (for AUTH_CODE grant type).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountLinkingSecret {
     /// Encrypted account linking client secret ciphertext.
@@ -183,6 +187,7 @@ pub struct AccountLinkingSecret {
     pub encryption_key_version: ::prost::alloc::string::String,
 }
 /// Represents the list of Actions defined in a project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Actions {
     /// Map from intents to custom Actions to configure invocation for the project.
@@ -200,6 +205,7 @@ pub struct Actions {
 pub mod actions {
     /// Defines the engagement mechanisms associated with this action. This
     /// allows end users to subscribe to push notification and daily update.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Engagement {
         /// The title of the engagement that will be sent to end users asking for
@@ -232,15 +238,18 @@ pub mod actions {
     /// Nested message and enum types in `Engagement`.
     pub mod engagement {
         /// Defines push notification settings that this engagement supports.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PushNotification {}
         /// Defines daily update settings that this engagement supports.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DailyUpdate {}
         /// Indicates whether sharing links is enabled for this action and the
         /// corresponding settings. Action links are used to deep link a user into a
         /// specific action.
         /// ActionLink is deprecated. Use AssistantLink instead.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ActionLink {
             /// User friendly display title for the link.
@@ -250,6 +259,7 @@ pub mod actions {
         /// Indicates whether sharing links is enabled for this action and the
         /// corresponding settings. Assistant links are used to deep link a user into
         /// a specific action.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AssistantLink {
             /// User friendly display title for the link.
@@ -257,6 +267,7 @@ pub mod actions {
             pub title: ::prost::alloc::string::String,
         }
         /// Recurring update settings that this engagement supports.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum RecurringUpdate {
             /// Daily update settings that this engagement supports.
@@ -265,6 +276,7 @@ pub mod actions {
         }
     }
     /// Details regarding a custom action.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomAction {
         /// Engagement mechanisms associated with the action to help end users
@@ -278,6 +290,7 @@ pub mod actions {
 }
 /// Contains information that's "transportable" i.e. not specific to any given
 /// project and can be moved between projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Manifest {
     /// Version of the file format. The current file format version is 1.0
@@ -286,6 +299,7 @@ pub struct Manifest {
     pub version: ::prost::alloc::string::String,
 }
 /// Styles applied to cards that are presented to users
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ThemeCustomization {
     /// Background color of cards. Acts as a fallback if `background_image` is
@@ -339,6 +353,7 @@ pub struct ThemeCustomization {
 /// Nested message and enum types in `ThemeCustomization`.
 pub mod theme_customization {
     /// Describes how the borders of images should be rendered.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -385,6 +400,7 @@ pub mod theme_customization {
 /// Represents settings of an Actions project that are specific to a user locale.
 /// In this instance, user means the end user who invokes your Actions.
 /// **This message is localizable.**
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedSettings {
     /// Required. The default display name for this Actions project (if there is no
@@ -452,6 +468,7 @@ pub struct LocalizedSettings {
 }
 /// Contains a set of requirements that the client surface must support to invoke
 /// Actions in your project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SurfaceRequirements {
     /// The minimum set of capabilities needed to invoke the Actions in your
@@ -461,6 +478,7 @@ pub struct SurfaceRequirements {
     pub minimum_requirements: ::prost::alloc::vec::Vec<CapabilityRequirement>,
 }
 /// Represents a requirement about the availability of a given capability.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapabilityRequirement {
     /// The type of capability.
@@ -470,6 +488,7 @@ pub struct CapabilityRequirement {
 /// Nested message and enum types in `CapabilityRequirement`.
 pub mod capability_requirement {
     /// Possible set of surface capabilities.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -534,6 +553,7 @@ pub mod capability_requirement {
     }
 }
 /// Represents settings of an Actions project that are not locale specific.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// Actions project id.
@@ -633,6 +653,7 @@ pub struct Settings {
 /// Nested message and enum types in `Settings`.
 pub mod settings {
     /// The category choices for an Actions project.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -757,6 +778,7 @@ pub mod settings {
 /// * `/webhooks/my_webhook.yaml`
 /// * `/webhooks/my_webhook/index.js`
 /// * `/webhooks/my_webhook/package.json`
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Webhook {
     /// List of handlers for this webhook.
@@ -771,6 +793,7 @@ pub mod webhook {
     /// Declares the name of the webhoook handler. A webhook can have
     /// multiple handlers registered. These handlers can be called from multiple
     /// places in your Actions project.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Handler {
         /// Required. Name of the handler. Must be unique across all handlers the Actions
@@ -780,6 +803,7 @@ pub mod webhook {
         pub name: ::prost::alloc::string::String,
     }
     /// REST endpoint to notify if you're not using the inline editor.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HttpsEndpoint {
         /// The HTTPS base URL for your fulfillment endpoint (HTTP is not supported).
@@ -803,6 +827,7 @@ pub mod webhook {
     }
     /// Holds the metadata of an inline Cloud Function deployed from the
     /// webhooks folder.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InlineCloudFunction {
         /// The name of the Cloud Function entry point. The value of this field
@@ -811,6 +836,7 @@ pub mod webhook {
         pub execute_function: ::prost::alloc::string::String,
     }
     /// Only one webhook type is supported.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WebhookType {
         /// Custom webhook HTTPS endpoint.
@@ -822,6 +848,7 @@ pub mod webhook {
     }
 }
 /// Wrapper for repeated config files. Repeated fields cannot exist in a oneof.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigFiles {
     /// Multiple config files.
@@ -831,6 +858,7 @@ pub struct ConfigFiles {
 /// Represents a single file which contains structured data. Developers can
 /// define most of their project using structured config including Actions,
 /// Settings, Fulfillment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigFile {
     /// Relative path of the config file from the project root in the SDK file
@@ -848,6 +876,7 @@ pub struct ConfigFile {
 /// Nested message and enum types in `ConfigFile`.
 pub mod config_file {
     /// Each type of config file should have a corresponding field in the oneof.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum File {
         /// Single manifest file.
@@ -910,6 +939,7 @@ pub mod config_file {
     }
 }
 /// Wrapper for repeated data file. Repeated fields cannot exist in a oneof.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataFiles {
     /// Multiple data files.
@@ -918,6 +948,7 @@ pub struct DataFiles {
 }
 /// Represents a single file which contains unstructured data. Examples include
 /// image files, audio files, and cloud function source code.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataFile {
     /// Relative path of the data file from the project root in the SDK file
@@ -947,6 +978,7 @@ pub struct DataFile {
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// Wrapper for a list of files.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Files {
     /// Only one type of files can be sent to the server at a time, config files or
@@ -958,6 +990,7 @@ pub struct Files {
 pub mod files {
     /// Only one type of files can be sent to the server at a time, config files or
     /// data files.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FileType {
         /// List of config files. This includes manifest, settings, interaction model
@@ -971,6 +1004,7 @@ pub mod files {
     }
 }
 /// Definition of release channel resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseChannel {
     /// The unique name of the release channel in the following format.
@@ -987,6 +1021,7 @@ pub struct ReleaseChannel {
     pub pending_version: ::prost::alloc::string::String,
 }
 /// Wrapper for repeated validation result.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidationResults {
     /// Multiple validation results.
@@ -994,6 +1029,7 @@ pub struct ValidationResults {
     pub results: ::prost::alloc::vec::Vec<ValidationResult>,
 }
 /// Represents a validation result associated with the app content.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidationResult {
     /// Holds the validation message.
@@ -1006,6 +1042,7 @@ pub struct ValidationResult {
 /// Nested message and enum types in `ValidationResult`.
 pub mod validation_result {
     /// Context to identify the resource the validation message relates to.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ValidationContext {
         /// Language code of the lozalized resource.
@@ -1017,6 +1054,7 @@ pub mod validation_result {
     }
 }
 /// Definition of version resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Version {
     /// The unique identifier of the version in the following format.
@@ -1036,6 +1074,7 @@ pub struct Version {
 /// Nested message and enum types in `Version`.
 pub mod version {
     /// Represents the current state of the version.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VersionState {
         /// The current state of the version.
@@ -1049,6 +1088,7 @@ pub mod version {
     pub mod version_state {
         /// Enum indicating the states that a Version can take. This enum is not yet
         /// frozen and values maybe added later.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1124,6 +1164,7 @@ pub mod version {
     }
 }
 /// Streaming RPC request for WriteDraft.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteDraftRequest {
     /// Required. The parent resource name in the format `projects/{project}`. The
@@ -1142,6 +1183,7 @@ pub struct WriteDraftRequest {
     pub files: ::core::option::Option<Files>,
 }
 /// Definition of draft resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Draft {
     /// The unique identifier of the draft in the following format.
@@ -1155,6 +1197,7 @@ pub struct Draft {
     pub validation_results: ::core::option::Option<ValidationResults>,
 }
 /// Streaming RPC request for WritePreview.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WritePreviewRequest {
     /// Required. The parent resource name in the format `projects/{project}`. The
@@ -1171,9 +1214,11 @@ pub struct WritePreviewRequest {
 /// Nested message and enum types in `WritePreviewRequest`.
 pub mod write_preview_request {
     /// Indicates the preview content will be coming from the Draft.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContentFromDraft {}
     /// Indicates the preview content will be coming from an exiting version.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContentFromSubmittedVersion {
         /// Required. Submitted version of the project to be used to create a preview.
@@ -1182,6 +1227,7 @@ pub mod write_preview_request {
         pub version: ::prost::alloc::string::String,
     }
     /// Settings for updating the preview.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PreviewSettings {
         /// Indicates whether or not to run certain operations, such as transactions,
@@ -1191,6 +1237,7 @@ pub mod write_preview_request {
         pub sandbox: ::core::option::Option<bool>,
     }
     /// Data source used to created the preview.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// List of files sent to the server at a time. This is a list of config
@@ -1212,6 +1259,7 @@ pub mod write_preview_request {
     }
 }
 /// Definition of preview resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Preview {
     /// The unique identifier of the preview.
@@ -1226,6 +1274,7 @@ pub struct Preview {
     pub simulator_url: ::prost::alloc::string::String,
 }
 /// Streaming RPC request for CreateVersion.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionRequest {
     /// Required. The parent resource name in the format `projects/{project}`. The
@@ -1250,6 +1299,7 @@ pub struct CreateVersionRequest {
     pub release_channel: ::prost::alloc::string::String,
 }
 /// RPC request for ReadDraft.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadDraftRequest {
     /// Required. The name of the resource in the format `projects/{project}/draft`. The
@@ -1264,6 +1314,7 @@ pub struct ReadDraftRequest {
     pub client_secret_encryption_key_version: ::prost::alloc::string::String,
 }
 /// Streaming RPC response for ReadDraft.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadDraftResponse {
     /// List of files sent from the server at a time.
@@ -1271,6 +1322,7 @@ pub struct ReadDraftResponse {
     pub files: ::core::option::Option<Files>,
 }
 /// RPC request for ReadVersion.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadVersionRequest {
     /// Required. The name of the version resource in the format
@@ -1287,6 +1339,7 @@ pub struct ReadVersionRequest {
     pub client_secret_encryption_key_version: ::prost::alloc::string::String,
 }
 /// Streaming RPC response for ReadVersion.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadVersionResponse {
     /// List of files sent from the server at a time.
@@ -1294,6 +1347,7 @@ pub struct ReadVersionResponse {
     pub files: ::core::option::Option<Files>,
 }
 /// RPC request for EncryptSecret.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptSecretRequest {
     /// Required. The account linking client secret plaintext.
@@ -1301,6 +1355,7 @@ pub struct EncryptSecretRequest {
     pub client_secret: ::prost::alloc::string::String,
 }
 /// RPC response for EncryptSecret.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptSecretResponse {
     /// Contains the encrypted account linking client secret and the key version
@@ -1309,6 +1364,7 @@ pub struct EncryptSecretResponse {
     pub account_linking_secret: ::core::option::Option<AccountLinkingSecret>,
 }
 /// RPC request for DecryptSecret.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecryptSecretRequest {
     /// Required. The account linking client secret ciphertext.
@@ -1316,6 +1372,7 @@ pub struct DecryptSecretRequest {
     pub encrypted_client_secret: ::prost::alloc::vec::Vec<u8>,
 }
 /// RPC response for DecryptSecret.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecryptSecretResponse {
     /// The account linking client secret plaintext.
@@ -1323,6 +1380,7 @@ pub struct DecryptSecretResponse {
     pub client_secret: ::prost::alloc::string::String,
 }
 /// RPC request for ListSampleProjects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSampleProjectsRequest {
     /// Optional. The maximum number of sample projects to return. The service may return
@@ -1337,6 +1395,7 @@ pub struct ListSampleProjectsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// RPC response for ListSampleProjects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSampleProjectsResponse {
     /// The list of sample projects supported.
@@ -1348,6 +1407,7 @@ pub struct ListSampleProjectsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Definition of sample project resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleProject {
     /// The name of the sample project.
@@ -1362,6 +1422,7 @@ pub struct SampleProject {
     pub description: ::prost::alloc::string::String,
 }
 /// RPC request for listing release channels
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReleaseChannelsRequest {
     /// Required. The name of the resource in the format `projects/{project}`. The
@@ -1381,6 +1442,7 @@ pub struct ListReleaseChannelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// RPC response for listing release channels
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReleaseChannelsResponse {
     /// List of the release channels for the given project id.
@@ -1392,6 +1454,7 @@ pub struct ListReleaseChannelsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// RPC request for listing versions
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// Required. The name of the resource in the format `projects/{project}`. The
@@ -1411,6 +1474,7 @@ pub struct ListVersionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// RPC response for listing versions
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
     /// List of the versions for the given project id.
@@ -1796,6 +1860,7 @@ pub mod actions_sdk_client {
 /// Actions Builder conversation request. For an overview of the stages involved
 /// in a conversation request, see
 /// <https://developers.google.com/assistant/conversational/actions.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionEvent {
     /// Timestamp when the event happened.
@@ -1829,6 +1894,7 @@ pub mod execution_event {
     /// Detailed information specific to different of events that may be involved
     /// in processing a conversation round. The field set here defines the type of
     /// this event.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EventData {
         /// User input handling event.
@@ -1873,6 +1939,7 @@ pub mod execution_event {
     }
 }
 /// Current state of the execution.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionState {
     /// ID of the scene which is currently  active.
@@ -1900,6 +1967,7 @@ pub struct ExecutionState {
     pub household_storage: ::core::option::Option<::prost_types::Struct>,
 }
 /// Represents the current state of a the scene's slots.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Slots {
     /// The current status of slot filling.
@@ -1913,6 +1981,7 @@ pub struct Slots {
     >,
 }
 /// Information related to user input.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserConversationInput {
     /// Type of user input. E.g. keyboard, voice, touch, etc.
@@ -1924,6 +1993,7 @@ pub struct UserConversationInput {
 }
 /// Information about triggered intent match (global or within a scene):
 /// <https://developers.google.com/assistant/conversational/intents>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentMatch {
     /// Intent id which triggered this interaction.
@@ -1944,6 +2014,7 @@ pub struct IntentMatch {
 }
 /// Results of conditions evaluation:
 /// <https://developers.google.com/assistant/conversational/scenes#conditions>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConditionsEvaluated {
     /// List of conditions which were evaluated to 'false'.
@@ -1954,6 +2025,7 @@ pub struct ConditionsEvaluated {
     pub success_condition: ::core::option::Option<Condition>,
 }
 /// Evaluated condition.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Condition {
     /// Expression specified in this condition.
@@ -1968,6 +2040,7 @@ pub struct Condition {
 }
 /// Information about execution of onSceneEnter stage:
 /// <https://developers.google.com/assistant/conversational/scenes#on_enter>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnSceneEnter {
     /// Handler name specified in onSceneEnter event.
@@ -1976,6 +2049,7 @@ pub struct OnSceneEnter {
 }
 /// Event triggered by destination scene returned from webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#transition_scenes>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookInitiatedTransition {
     /// ID of the scene the transition is leading to.
@@ -1984,6 +2058,7 @@ pub struct WebhookInitiatedTransition {
 }
 /// Information about a request dispatched to the Action webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#payloads>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookRequest {
     /// Payload of the webhook request.
@@ -1992,6 +2067,7 @@ pub struct WebhookRequest {
 }
 /// Information about a response received from the Action webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#payloads>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookResponse {
     /// Payload of the webhook response.
@@ -2000,6 +2076,7 @@ pub struct WebhookResponse {
 }
 /// Information about matched slot(s):
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotMatch {
     /// Parameters extracted by NLU from user input.
@@ -2011,6 +2088,7 @@ pub struct SlotMatch {
 }
 /// Information about currently requested slot:
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotRequested {
     /// Name of the requested slot.
@@ -2022,20 +2100,25 @@ pub struct SlotRequested {
 }
 /// Event which happens after webhook validation was finished for slot(s):
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SlotValidated {}
 /// Event which happens when form is fully filled:
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FormFilled {}
 /// Event which happens when system needs user input:
 /// <https://developers.google.com/assistant/conversational/scenes#input>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitingForUserInput {}
 /// Event which informs that conversation with agent was ended.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndConversation {}
 /// Request for playing a round of the conversation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendInteractionRequest {
     /// Required. The project being tested, indicated by the Project ID.
@@ -2056,6 +2139,7 @@ pub struct SendInteractionRequest {
     pub conversation_token: ::prost::alloc::string::String,
 }
 /// User input provided on a conversation round.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserInput {
     /// Content of the input sent by the user.
@@ -2068,6 +2152,7 @@ pub struct UserInput {
 /// Nested message and enum types in `UserInput`.
 pub mod user_input {
     /// Indicates the input source, typed query or voice query.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2120,6 +2205,7 @@ pub mod user_input {
     }
 }
 /// Properties of device relevant to a conversation round.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceProperties {
     /// Surface used for interacting with the Action.
@@ -2144,6 +2230,7 @@ pub struct DeviceProperties {
 pub mod device_properties {
     /// Possible surfaces used to interact with the Action.
     /// Additional values may be included in the future.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2200,6 +2287,7 @@ pub mod device_properties {
     }
 }
 /// Container that represents a location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// Geo coordinates.
@@ -2228,6 +2316,7 @@ pub struct Location {
     pub city: ::prost::alloc::string::String,
 }
 /// Response to a round of the conversation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendInteractionResponse {
     /// Output provided to the user.
@@ -2242,6 +2331,7 @@ pub struct SendInteractionResponse {
     pub conversation_token: ::prost::alloc::string::String,
 }
 /// User-visible output to the conversation round.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Output {
     /// Spoken response sent to user as a plain string.
@@ -2261,6 +2351,7 @@ pub struct Output {
     pub actions_builder_prompt: ::core::option::Option<conversation::Prompt>,
 }
 /// Diagnostics information related to the conversation round.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Diagnostics {
     /// List of events with details about processing of the conversation round
@@ -2270,6 +2361,7 @@ pub struct Diagnostics {
     pub actions_builder_events: ::prost::alloc::vec::Vec<ExecutionEvent>,
 }
 /// Request for finding matching intents.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MatchIntentsRequest {
     /// Required. The project being tested, indicated by the Project ID.
@@ -2287,6 +2379,7 @@ pub struct MatchIntentsRequest {
     pub locale: ::prost::alloc::string::String,
 }
 /// Response for finding matching intents.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchIntentsResponse {
     /// Intents matched, ordered from most to least relevant. Only the first
@@ -2295,6 +2388,7 @@ pub struct MatchIntentsResponse {
     pub matched_intents: ::prost::alloc::vec::Vec<conversation::Intent>,
 }
 /// Request for setting Web & App Activity preferences.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetWebAndAppActivityControlRequest {
     /// Whether the setting should be set to an enabled or disabled state.

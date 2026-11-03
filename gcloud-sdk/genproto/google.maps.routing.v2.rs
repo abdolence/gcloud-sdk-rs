@@ -2,6 +2,7 @@
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
@@ -16,6 +17,7 @@ pub struct FallbackInfo {
     pub reason: i32,
 }
 /// Reasons for using fallback response.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FallbackReason {
@@ -53,6 +55,7 @@ impl FallbackReason {
     }
 }
 /// Actual routing mode used for returned fallback response.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FallbackRoutingMode {
@@ -92,6 +95,7 @@ impl FallbackRoutingMode {
 /// Contains \[`GeocodedWaypoints`\]\[google.maps.routing.v2.GeocodedWaypoint\] for
 /// origin, destination and intermediate waypoints. Only populated for address
 /// waypoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeocodingResults {
     /// Origin geocoded waypoint.
@@ -109,6 +113,7 @@ pub struct GeocodingResults {
 /// Details about the locations used as waypoints. Only populated for address
 /// waypoints. Includes details about the geocoding results for the purposes of
 /// determining what the address was geocoded to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeocodedWaypoint {
     /// Indicates the status code resulting from the geocoding operation.
@@ -135,6 +140,7 @@ pub struct GeocodedWaypoint {
     pub place_id: ::prost::alloc::string::String,
 }
 /// Localized description of time.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedTime {
     /// The time specified as a string in a given time zone.
@@ -147,6 +153,7 @@ pub struct LocalizedTime {
     pub time_zone: ::prost::alloc::string::String,
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
@@ -163,6 +170,7 @@ pub struct Location {
 }
 /// A set of values that specify the navigation action to take for the current
 /// step (for example, turn left, merge, or straight).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Maneuver {
@@ -269,6 +277,7 @@ impl Maneuver {
 }
 /// Encapsulates navigation instructions for a
 /// \[`RouteLegStep`\]\[google.maps.routing.v2.RouteLegStep\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (for example,
@@ -281,6 +290,7 @@ pub struct NavigationInstruction {
     pub instructions: ::prost::alloc::string::String,
 }
 /// Encapsulates an encoded polyline.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
@@ -290,6 +300,7 @@ pub struct Polyline {
 /// Nested message and enum types in `Polyline`.
 pub mod polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
@@ -303,6 +314,7 @@ pub mod polyline {
     }
 }
 /// A set of values that specify the quality of the polyline.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PolylineQuality {
@@ -341,6 +353,7 @@ impl PolylineQuality {
     }
 }
 /// Specifies the preferred type of polyline to be returned.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PolylineEncoding {
@@ -378,6 +391,7 @@ impl PolylineEncoding {
 /// Details corresponding to a given index or contiguous segment of a polyline.
 /// Given a polyline with points P_0, P_1, ... , P_N (zero-based index), the
 /// `PolylineDetails` defines an interval and associated metadata.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolylineDetails {
     /// Tunnel details along the polyline. This field is populated if the request
@@ -404,6 +418,7 @@ pub mod polyline_details {
     /// Encapsulates the start and end indexes for a polyline detail.
     /// For instances where the data corresponds to a single point, `start_index`
     /// and `end_index` will be equal.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PolylinePointIndex {
         /// The start index of this detail in the polyline.
@@ -414,6 +429,7 @@ pub mod polyline_details {
         pub end_index: ::core::option::Option<i32>,
     }
     /// Encapsulates information about tunnels along the polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TunnelInfo {
         /// Denotes whether a tunnel exists for a given stretch of the polyline.
@@ -424,6 +440,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about bridges along the polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BridgeInfo {
         /// Denotes whether a bridge exists for a given stretch of the polyline.
@@ -434,6 +451,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about skyways along the polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkywayInfo {
         /// Denotes whether a skyway exists for a given stretch of the polyline.
@@ -444,6 +462,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about flyovers along the polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FlyoverInfo {
         /// Output only. Denotes whether a flyover exists for a given stretch of the
@@ -455,6 +474,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about narrow roads along the polyline.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NarrowRoadInfo {
         /// Output only. Denotes whether a narrow road exists for a given stretch of
@@ -466,6 +486,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates the states of road features along a stretch of polyline.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -511,6 +532,7 @@ pub mod polyline_details {
 }
 /// Labels for the \[`Route`\]\[google.maps.routing.v2.Route\] that are useful to
 /// identify specific properties of the route to compare against others.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RouteLabel {
@@ -560,6 +582,7 @@ impl RouteLabel {
 /// sometimes be missing clear sidewalks, pedestrian paths, or bicycling paths.
 /// You must display this warning to the user for all walking, bicycling, and
 /// two-wheel routes that you display in your app.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RouteTravelMode {
@@ -609,6 +632,7 @@ impl RouteTravelMode {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// `SpeedReadingInterval` defines an interval and describes its traffic using
 /// the following categories.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
@@ -624,6 +648,7 @@ pub struct SpeedReadingInterval {
 /// Nested message and enum types in `SpeedReadingInterval`.
 pub mod speed_reading_interval {
     /// The classification of polyline speed based on traffic data.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -671,6 +696,7 @@ pub mod speed_reading_interval {
         }
     }
     /// The type of speed in this interval.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SpeedType {
         /// Traffic speed in this interval.
@@ -680,6 +706,7 @@ pub mod speed_reading_interval {
 }
 /// Encapsulates toll information on a \[`Route`\]\[google.maps.routing.v2.Route\] or
 /// on a \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TollInfo {
     /// The monetary amount of tolls for the corresponding
@@ -693,6 +720,7 @@ pub struct TollInfo {
     pub estimated_price: ::prost::alloc::vec::Vec<super::super::super::r#type::Money>,
 }
 /// A transit agency that operates a transit line.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitAgency {
     /// The name of this transit agency.
@@ -706,6 +734,7 @@ pub struct TransitAgency {
     pub uri: ::prost::alloc::string::String,
 }
 /// Contains information about the transit line used in this step.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitLine {
     /// The transit agency (or agencies) that operates this transit line.
@@ -737,6 +766,7 @@ pub struct TransitLine {
     pub vehicle: ::core::option::Option<TransitVehicle>,
 }
 /// Information about a transit stop.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitStop {
     /// The name of the transit stop.
@@ -747,6 +777,7 @@ pub struct TransitStop {
     pub location: ::core::option::Option<Location>,
 }
 /// Information about a vehicle used in transit routes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitVehicle {
     /// The name of this vehicle, capitalized.
@@ -766,6 +797,7 @@ pub struct TransitVehicle {
 /// Nested message and enum types in `TransitVehicle`.
 pub mod transit_vehicle {
     /// The type of vehicles for transit routes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -879,6 +911,7 @@ pub mod transit_vehicle {
 }
 /// Contains a route, which consists of a series of connected road segments
 /// that join beginning, ending, and intermediate waypoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// Labels for the `Route` that are useful to identify specific properties
@@ -958,6 +991,7 @@ pub struct Route {
 /// Nested message and enum types in `Route`.
 pub mod route {
     /// Text representations of certain properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLocalizedValues {
         /// Travel distance represented in text form.
@@ -988,6 +1022,7 @@ pub mod route {
 }
 /// Contains the additional information that the user should be informed
 /// about, such as possible traffic zone restrictions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteTravelAdvisory {
     /// Contains information about tolls on the route. This field is only populated
@@ -1034,6 +1069,7 @@ pub struct RouteTravelAdvisory {
 }
 /// Contains the additional information that the user should be informed
 /// about on a leg step, such as possible traffic zone restrictions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegTravelAdvisory {
     /// Contains information about tolls on the specific `RouteLeg`.
@@ -1067,6 +1103,7 @@ pub struct RouteLegTravelAdvisory {
 }
 /// Contains the additional information that the user should be informed
 /// about, such as possible traffic zone restrictions on a leg step.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTravelAdvisory {
     /// NOTE: This field is not currently populated.
@@ -1074,6 +1111,7 @@ pub struct RouteLegStepTravelAdvisory {
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
 /// Contains a segment between non-`via` waypoints.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLeg {
     /// The travel distance of the route leg, in meters.
@@ -1123,6 +1161,7 @@ pub struct RouteLeg {
 /// Nested message and enum types in `RouteLeg`.
 pub mod route_leg {
     /// Text representations of certain properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLegLocalizedValues {
         /// Travel distance represented in text form.
@@ -1146,6 +1185,7 @@ pub mod route_leg {
         >,
     }
     /// Provides overview information about a list of `RouteLegStep`s.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StepsOverview {
         /// Summarized information about different multi-modal segments of
@@ -1163,6 +1203,7 @@ pub mod route_leg {
         /// contiguous `RouteLegStep` that have the same `RouteTravelMode`.
         /// This field is not populated if the `RouteLeg` does not contain any
         /// multi-modal segments in the steps.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct MultiModalSegment {
             /// The corresponding `RouteLegStep` index that is the start of a
@@ -1187,6 +1228,7 @@ pub mod route_leg {
 /// Contains a segment of a \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\]. A
 /// step corresponds to a single navigation instruction. Route legs are made up
 /// of steps.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStep {
     /// The travel distance of this step, in meters. In some circumstances, this
@@ -1229,6 +1271,7 @@ pub struct RouteLegStep {
 /// Nested message and enum types in `RouteLegStep`.
 pub mod route_leg_step {
     /// Text representations of certain properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLegStepLocalizedValues {
         /// Travel distance represented in text form.
@@ -1245,6 +1288,7 @@ pub mod route_leg_step {
     }
 }
 /// Additional information for the `RouteLegStep` related to `TRANSIT` routes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTransitDetails {
     /// Information about the arrival and departure stops for the step.
@@ -1286,6 +1330,7 @@ pub struct RouteLegStepTransitDetails {
 /// Nested message and enum types in `RouteLegStepTransitDetails`.
 pub mod route_leg_step_transit_details {
     /// Details about the transit stops for the `RouteLegStep`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TransitStopDetails {
         /// Information about the arrival stop for the step.
@@ -1302,6 +1347,7 @@ pub mod route_leg_step_transit_details {
         pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Localized descriptions of values for `RouteTransitDetails`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TransitDetailsLocalizedValues {
         /// Time in its formatted text representation with a corresponding time zone.
@@ -1313,6 +1359,7 @@ pub mod route_leg_step_transit_details {
     }
 }
 /// List of toll passes around the world that we support.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TollPass {
@@ -1785,6 +1832,7 @@ impl TollPass {
 /// A set of values describing the vehicle's emission type.
 /// Applies only to the `DRIVE`
 /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum VehicleEmissionType {
@@ -1826,6 +1874,7 @@ impl VehicleEmissionType {
     }
 }
 /// Contains the vehicle information, such as the vehicle emission type.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VehicleInfo {
     /// Describes the vehicle's emission type.
@@ -1836,6 +1885,7 @@ pub struct VehicleInfo {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteModifiers {
     /// When set to true, avoids toll roads where reasonable, giving preference to
@@ -1881,6 +1931,7 @@ pub struct RouteModifiers {
 }
 /// A set of values that specify factors to take into consideration when
 /// calculating the route.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RoutingPreference {
@@ -1940,6 +1991,7 @@ impl RoutingPreference {
 /// set \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\] to
 /// `TRAFFIC_AWARE_OPTIMAL` and
 /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] to `DRIVE`.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TrafficModel {
@@ -1985,6 +2037,7 @@ impl TrafficModel {
 }
 /// Preferences for `TRANSIT` based routes that influence the route that is
 /// returned.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitPreferences {
     /// A set of travel modes to use when getting a `TRANSIT` route. Defaults to
@@ -1999,6 +2052,7 @@ pub struct TransitPreferences {
 /// Nested message and enum types in `TransitPreferences`.
 pub mod transit_preferences {
     /// A set of values used to specify the mode of transit.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2055,6 +2109,7 @@ pub mod transit_preferences {
         }
     }
     /// Specifies routing preferences for transit routes.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2101,6 +2156,7 @@ pub mod transit_preferences {
     }
 }
 /// A set of values that specify the unit of measure used in the display.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Units {
@@ -2136,6 +2192,7 @@ impl Units {
 }
 /// Encapsulates a waypoint. Waypoints mark both the beginning and end of a
 /// route, and include intermediate stops along the route.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Waypoint {
     /// Marks this waypoint as a milestone rather a stopping point. For
@@ -2174,6 +2231,7 @@ pub struct Waypoint {
 /// Nested message and enum types in `Waypoint`.
 pub mod waypoint {
     /// Different ways to represent a location.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
         /// A point specified using geographic coordinates, including an optional
@@ -2195,6 +2253,7 @@ pub mod waypoint {
     }
 }
 /// ComputeRoutes request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
@@ -2333,6 +2392,7 @@ pub struct ComputeRoutesRequest {
 /// Nested message and enum types in `ComputeRoutesRequest`.
 pub mod compute_routes_request {
     /// A supported reference route on the ComputeRoutesRequest.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2390,6 +2450,7 @@ pub mod compute_routes_request {
     }
     /// Extra computations to perform while completing the request.
     /// Additional values may be added in the future.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2483,6 +2544,7 @@ pub mod compute_routes_request {
     }
 }
 /// ComputeRoutes the response message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
     /// Contains an array of computed routes (up to three) when you specify
@@ -2503,6 +2565,7 @@ pub struct ComputeRoutesResponse {
     pub geocoding_results: ::core::option::Option<GeocodingResults>,
 }
 /// ComputeRouteMatrix request message
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
     /// Required. Array of origins, which determines the rows of the response
@@ -2597,6 +2660,7 @@ pub struct ComputeRouteMatrixRequest {
 /// Nested message and enum types in `ComputeRouteMatrixRequest`.
 pub mod compute_route_matrix_request {
     /// Extra computations to perform while completing the request.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2637,6 +2701,7 @@ pub mod compute_route_matrix_request {
     }
 }
 /// A single origin for ComputeRouteMatrixRequest
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixOrigin {
     /// Required. Origin waypoint
@@ -2647,6 +2712,7 @@ pub struct RouteMatrixOrigin {
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
 }
 /// A single destination for ComputeRouteMatrixRequest
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixDestination {
     /// Required. Destination waypoint
@@ -2655,6 +2721,7 @@ pub struct RouteMatrixDestination {
 }
 /// Contains route information computed for an origin/destination pair in the
 /// ComputeRouteMatrix API. This proto can be streamed to the client.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixElement {
     /// Zero-based index of the origin in the request.
@@ -2702,6 +2769,7 @@ pub struct RouteMatrixElement {
 /// Nested message and enum types in `RouteMatrixElement`.
 pub mod route_matrix_element {
     /// Text representations of certain properties.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LocalizedValues {
         /// Travel distance represented in text form.
@@ -2730,6 +2798,7 @@ pub mod route_matrix_element {
     }
 }
 /// The condition of the route being returned.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RouteMatrixElementCondition {

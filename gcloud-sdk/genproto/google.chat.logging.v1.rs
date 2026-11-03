@@ -2,6 +2,7 @@
 /// JSON payload of error messages. If the Cloud Logging API is enabled, these
 /// error messages are logged to
 /// [Google Cloud Logging](<https://cloud.google.com/logging/docs>).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChatAppLogEntry {
     /// The deployment that caused the error. For Chat bots built in Apps Script,

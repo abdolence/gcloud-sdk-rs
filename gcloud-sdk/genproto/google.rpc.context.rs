@@ -16,6 +16,7 @@
 /// NOTE: Different system may generate different subset of attributes. Please
 /// verify the system specification before relying on an attribute generated
 /// a system.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributeContext {
     /// The origin of a network activity. In a multi hop network activity,
@@ -57,6 +58,7 @@ pub mod attribute_context {
     /// The node can be either a service or an application that sends, forwards,
     /// or receives the request. Service peers should fill in
     /// `principal` and `labels` as appropriate.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Peer {
         /// The IP address of the peer.
@@ -85,6 +87,7 @@ pub mod attribute_context {
     /// This message defines attributes associated with API operations, such as
     /// a network API request. The terminology is based on the conventions used
     /// by Google APIs, Istio, and OpenAPI.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Api {
         /// The API service name. It is a logical identifier for a networked API,
@@ -109,6 +112,7 @@ pub mod attribute_context {
     /// This message defines request authentication attributes. Terminology is
     /// based on the JSON Web Token (JWT) standard, but the terms also
     /// correlate to concepts in other standards.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Auth {
         /// The authenticated principal. Reflects the issuer (`iss`) and subject
@@ -172,6 +176,7 @@ pub mod attribute_context {
     /// This message defines attributes for an HTTP request. If the actual
     /// request is not an HTTP request, the runtime system should try to map
     /// the actual request to an equivalent HTTP request.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Request {
         /// The unique ID for a request, which can be propagated to downstream
@@ -233,6 +238,7 @@ pub mod attribute_context {
     }
     /// This message defines attributes for a typical network response. It
     /// generally models semantics of an HTTP response.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Response {
         /// The HTTP response status code, such as `200` and `404`.
@@ -263,6 +269,7 @@ pub mod attribute_context {
     /// This message defines core attributes for a resource. A resource is an
     /// addressable (named) entity provided by the destination service. For
     /// example, a file stored on a network storage service.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Resource {
         /// The name of the service that this resource belongs to, such as
@@ -350,6 +357,7 @@ pub mod attribute_context {
     }
 }
 /// `AuditContext` provides information that is needed for audit logging.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditContext {
     /// Serialized audit log.

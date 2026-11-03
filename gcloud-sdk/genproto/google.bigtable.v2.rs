@@ -21,6 +21,7 @@
 /// modes. For example, when encoding INT64 as a numeric STRING, negative numbers
 /// cannot be encoded in sorted mode. This is because `INT64(1) > INT64(-1)`, but
 /// `STRING("-00001") > STRING("00001")`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
@@ -34,6 +35,7 @@ pub struct Type {
 pub mod r#type {
     /// Bytes
     /// Values of type `Bytes` are stored in `Value.bytes_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bytes {
         /// The encoding to use when converting to or from lower level types.
@@ -43,6 +45,7 @@ pub mod r#type {
     /// Nested message and enum types in `Bytes`.
     pub mod bytes {
         /// Rules used to convert to or from lower level types.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -56,6 +59,7 @@ pub mod r#type {
             /// Sorted mode: all values are supported.
             ///
             /// Distinct mode: all values are supported.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Raw {
                 /// If set, allows NULL values to be encoded as the empty string "".
@@ -66,6 +70,7 @@ pub mod r#type {
                 pub escape_nulls: bool,
             }
             /// Which encoding to use.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `Raw` encoding.
@@ -76,6 +81,7 @@ pub mod r#type {
     }
     /// String
     /// Values of type `String` are stored in `Value.string_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct String {
         /// The encoding to use when converting to or from lower level types.
@@ -85,6 +91,7 @@ pub mod r#type {
     /// Nested message and enum types in `String`.
     pub mod string {
         /// Rules used to convert to or from lower level types.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -94,6 +101,7 @@ pub mod r#type {
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
             /// Deprecated: prefer the equivalent `Utf8Bytes`.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Utf8Raw {}
             /// UTF-8 encoding.
@@ -110,6 +118,7 @@ pub mod r#type {
             /// * BigQuery `TEXT` encoding
             /// * HBase `Bytes.toBytes`
             /// * Java `String#getBytes(StandardCharsets.UTF_8)`
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Utf8Bytes {
                 /// Single-character escape sequence used to support NULL values.
@@ -127,6 +136,7 @@ pub mod r#type {
                 pub null_escape_char: ::prost::alloc::string::String,
             }
             /// Which encoding to use.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Deprecated: if set, converts to an empty `utf8_bytes`.
@@ -141,6 +151,7 @@ pub mod r#type {
     }
     /// Int64
     /// Values of type `Int64` are stored in `Value.int_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Int64 {
         /// The encoding to use when converting to or from lower level types.
@@ -150,6 +161,7 @@ pub mod r#type {
     /// Nested message and enum types in `Int64`.
     pub mod int64 {
         /// Rules used to convert to or from lower level types.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -169,6 +181,7 @@ pub mod r#type {
             /// * BigQuery `BINARY` encoding
             /// * HBase `Bytes.toBytes`
             /// * Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct BigEndianBytes {
                 /// Deprecated: ignored if set.
@@ -182,9 +195,11 @@ pub mod r#type {
             /// Sorted mode: all values are supported.
             ///
             /// Distinct mode: all values are supported.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OrderedCodeBytes {}
             /// Which encoding to use.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `BigEndianBytes` encoding.
@@ -198,18 +213,22 @@ pub mod r#type {
     }
     /// bool
     /// Values of type `Bool` are stored in `Value.bool_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bool {}
     /// Float32
     /// Values of type `Float32` are stored in `Value.float_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Float32 {}
     /// Float64
     /// Values of type `Float64` are stored in `Value.float_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Float64 {}
     /// Timestamp
     /// Values of type `Timestamp` are stored in `Value.timestamp_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Timestamp {
         /// The encoding to use when converting to or from lower level types.
@@ -219,6 +238,7 @@ pub mod r#type {
     /// Nested message and enum types in `Timestamp`.
     pub mod timestamp {
         /// Rules used to convert to or from lower level types.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -228,6 +248,7 @@ pub mod r#type {
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
             /// Which encoding to use.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Encodes the number of microseconds since the Unix epoch using the
@@ -243,12 +264,14 @@ pub mod r#type {
     }
     /// Date
     /// Values of type `Date` are stored in `Value.date_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Date {}
     /// A structured data value, consisting of fields which map to dynamically
     /// typed values.
     /// Values of type `Struct` are stored in `Value.array_value` where entries are
     /// in the same order and number as `field_types`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Struct {
         /// The names and types of the fields in this struct.
@@ -261,6 +284,7 @@ pub mod r#type {
     /// Nested message and enum types in `Struct`.
     pub mod r#struct {
         /// A struct field and its type.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Field {
             /// The field name (optional). Fields without a `field_name` are considered
@@ -272,6 +296,7 @@ pub mod r#type {
             pub r#type: ::core::option::Option<super::super::Type>,
         }
         /// Rules used to convert to or from lower level types.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
@@ -282,6 +307,7 @@ pub mod r#type {
         pub mod encoding {
             /// Uses the encoding of `fields\[0\].type` as-is.
             /// Only valid if `fields.size == 1`.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Singleton {}
             /// Fields are encoded independently and concatenated with a configurable
@@ -300,6 +326,7 @@ pub mod r#type {
             ///
             /// * Fields are encoded in distinct mode.
             /// * Encoded field values must not contain `delimiter\[0\]`.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct DelimitedBytes {
                 /// Byte sequence used to delimit concatenated fields. The delimiter must
@@ -349,9 +376,11 @@ pub mod r#type {
             ///
             /// * Fields are encoded in distinct mode.
             /// * All values supported by the field encodings are allowed.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OrderedCodeBytes {}
             /// Which encoding to use.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `Singleton` encoding.
@@ -368,6 +397,7 @@ pub mod r#type {
     }
     /// A protobuf message type.
     /// Values of type `Proto` are stored in `Value.bytes_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Proto {
         /// The ID of the schema bundle that this proto is defined in.
@@ -380,6 +410,7 @@ pub mod r#type {
     }
     /// A protobuf enum type.
     /// Values of type `Enum` are stored in `Value.int_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Enum {
         /// The ID of the schema bundle that this enum is defined in.
@@ -392,6 +423,7 @@ pub mod r#type {
     }
     /// An ordered list of elements of a given type.
     /// Values of type `Array` are stored in `Value.array_value`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Array {
         /// The type of the elements in the array. This must not be `Array`.
@@ -407,6 +439,7 @@ pub mod r#type {
     /// Normally encoded Map values won't have repeated keys, however, clients are
     /// expected to handle the case in which they do. If the same key appears
     /// multiple times, the *last* value takes precedence.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Map {
         /// The type of a map key.
@@ -422,6 +455,7 @@ pub mod r#type {
     /// Data is never directly written or read using type `Aggregate`. Writes
     /// provide either the `input_type` or `state_type`, and reads always return
     /// the `state_type` .
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregate {
         /// Type of the inputs that are accumulated by this `Aggregate`.
@@ -442,16 +476,19 @@ pub mod r#type {
         /// Computes the sum of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Sum {}
         /// Computes the max of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Max {}
         /// Computes the min of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Min {}
         /// Computes an approximate unique count over the input values. When using
@@ -461,9 +498,11 @@ pub mod r#type {
         /// Input: Any, or omit for Raw
         /// State: TBD
         /// Special state conversions: `Int64` (the unique count estimate)
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HyperLogLogPlusPlusUniqueCount {}
         /// Which aggregator function to use. The configured types must match.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Aggregator {
             /// Sum aggregator.
@@ -481,6 +520,7 @@ pub mod r#type {
         }
     }
     /// The kind of type that this represents.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// Bytes
@@ -529,6 +569,7 @@ pub mod r#type {
 }
 /// Specifies the complete (requested) contents of a single row of a table.
 /// Rows which exceed 256MiB in size cannot be read in full.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
     /// The unique key which identifies this row within its table. This is the same
@@ -543,6 +584,7 @@ pub struct Row {
 }
 /// Specifies (some of) the contents of a single row/column family intersection
 /// of a table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Family {
     /// The unique key which identifies this family within its row. This is the
@@ -559,6 +601,7 @@ pub struct Family {
 }
 /// Specifies (some of) the contents of a single row/column intersection of a
 /// table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Column {
     /// The unique key which identifies this column within its family. This is the
@@ -573,6 +616,7 @@ pub struct Column {
     pub cells: ::prost::alloc::vec::Vec<Cell>,
 }
 /// Specifies (some of) the contents of a single row/column/timestamp of a table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Cell {
     /// The cell's stored timestamp, which also uniquely identifies it within
@@ -596,6 +640,7 @@ pub struct Cell {
 /// The typed fields in `Value` are used as a transport encoding for the actual
 /// value (which may be of a more complex type). See the documentation of the
 /// `Type` message for more details.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// The verified `Type` of this `Value`, if it cannot be inferred.
@@ -629,6 +674,7 @@ pub mod value {
     ///
     /// The value is `NULL` if none of the fields in `kind` is set. If `type` is
     /// also omitted on write, we will infer it based on the schema.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// Represents a raw byte sequence with no type information.
@@ -671,6 +717,7 @@ pub mod value {
     }
 }
 /// `ArrayValue` is an ordered list of `Value`.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrayValue {
     /// The ordered elements in the array.
@@ -678,6 +725,7 @@ pub struct ArrayValue {
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// Specifies a contiguous range of rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowRange {
     /// The row key at which to start the range.
@@ -693,6 +741,7 @@ pub struct RowRange {
 pub mod row_range {
     /// The row key at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartKey {
         /// Used when giving an inclusive lower bound for the range.
@@ -704,6 +753,7 @@ pub mod row_range {
     }
     /// The row key at which to end the range.
     /// If neither field is set, interpreted as the infinite row key, exclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndKey {
         /// Used when giving an exclusive upper bound for the range.
@@ -715,6 +765,7 @@ pub mod row_range {
     }
 }
 /// Specifies a non-contiguous set of rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowSet {
     /// Single rows included in the set.
@@ -728,6 +779,7 @@ pub struct RowSet {
 /// The range spans from \<column_family\>:\<start_qualifier\> to
 /// \<column_family\>:\<end_qualifier\>, where both bounds can be either
 /// inclusive or exclusive.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ColumnRange {
     /// The name of the column family within which this range falls.
@@ -746,6 +798,7 @@ pub struct ColumnRange {
 pub mod column_range {
     /// The column qualifier at which to start the range (within `column_family`).
     /// If neither field is set, interpreted as the empty string, inclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartQualifier {
         /// Used when giving an inclusive lower bound for the range.
@@ -757,6 +810,7 @@ pub mod column_range {
     }
     /// The column qualifier at which to end the range (within `column_family`).
     /// If neither field is set, interpreted as the infinite string, exclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndQualifier {
         /// Used when giving an inclusive upper bound for the range.
@@ -768,6 +822,7 @@ pub mod column_range {
     }
 }
 /// Specified a contiguous range of microsecond timestamps.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimestampRange {
     /// Inclusive lower bound. If left empty, interpreted as 0.
@@ -778,6 +833,7 @@ pub struct TimestampRange {
     pub end_timestamp_micros: i64,
 }
 /// Specifies a contiguous range of raw byte values.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValueRange {
     /// The value at which to start the range.
@@ -793,6 +849,7 @@ pub struct ValueRange {
 pub mod value_range {
     /// The value at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartValue {
         /// Used when giving an inclusive lower bound for the range.
@@ -804,6 +861,7 @@ pub mod value_range {
     }
     /// The value at which to end the range.
     /// If neither field is set, interpreted as the infinite string, exclusive.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndValue {
         /// Used when giving an inclusive upper bound for the range.
@@ -815,6 +873,7 @@ pub mod value_range {
     }
 }
 /// Restricts the output to cells whose values match the given bitmask.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValueBitmask {
     /// Required. Mask applied to the value.
@@ -857,6 +916,7 @@ pub struct ValueBitmask {
 /// The total serialized size of a RowFilter message must not
 /// exceed 20480 bytes, and RowFilters may not be nested within each other
 /// (in Chains or Interleaves) to a depth of more than 20.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowFilter {
     /// Which of the possible RowFilter types to apply. If none are set, this
@@ -870,6 +930,7 @@ pub struct RowFilter {
 /// Nested message and enum types in `RowFilter`.
 pub mod row_filter {
     /// A RowFilter which sends rows through several RowFilters in sequence.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Chain {
         /// The elements of "filters" are chained together to process the input row:
@@ -880,6 +941,7 @@ pub mod row_filter {
     }
     /// A RowFilter which sends each row to each of several component
     /// RowFilters and interleaves the results.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Interleave {
         /// The elements of "filters" all process a copy of the input row, and the
@@ -919,6 +981,7 @@ pub mod row_filter {
     /// true and false filters, which may lead to inconsistent or unexpected
     /// results. Additionally, Condition filters have poor performance, especially
     /// when filters are set for the false condition.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Condition {
         /// If `predicate_filter` outputs any cells, then `true_filter` will be
@@ -943,6 +1006,7 @@ pub mod row_filter {
     }
     /// Which of the possible RowFilter types to apply. If none are set, this
     /// RowFilter returns all cells in the input row.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
         /// Applies several RowFilters to the data in sequence, progressively
@@ -1117,6 +1181,7 @@ pub mod row_filter {
     }
 }
 /// Specifies a particular change to be made to the contents of a row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mutation {
     /// Optional. The origin of the timestamp in this mutation.
@@ -1129,6 +1194,7 @@ pub struct Mutation {
 /// Nested message and enum types in `Mutation`.
 pub mod mutation {
     /// A Mutation which sets the value of the specified cell.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetCell {
         /// The name of the family into which new data should be written.
@@ -1151,6 +1217,7 @@ pub mod mutation {
         pub value: ::prost::alloc::vec::Vec<u8>,
     }
     /// A Mutation which incrementally updates a cell in an `Aggregate` family.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AddToCell {
         /// The name of the `Aggregate` family into which new data should be added.
@@ -1173,6 +1240,7 @@ pub mod mutation {
     }
     /// A Mutation which merges accumulated state into a cell in an `Aggregate`
     /// family.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MergeToCell {
         /// The name of the `Aggregate` family into which new data should be added.
@@ -1196,6 +1264,7 @@ pub mod mutation {
     }
     /// A Mutation which deletes cells from the specified column, optionally
     /// restricting the deletions to a given timestamp range.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromColumn {
         /// The name of the family from which cells should be deleted.
@@ -1211,6 +1280,7 @@ pub mod mutation {
         pub time_range: ::core::option::Option<super::TimestampRange>,
     }
     /// A Mutation which deletes all cells from the specified column family.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromFamily {
         /// The name of the family from which cells should be deleted.
@@ -1219,9 +1289,11 @@ pub mod mutation {
         pub family_name: ::prost::alloc::string::String,
     }
     /// A Mutation which deletes all cells from the containing row.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromRow {}
     /// Represents the origin of the timestamp in the mutation.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1273,6 +1345,7 @@ pub mod mutation {
         }
     }
     /// Which of the possible Mutation types to apply.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mutation {
         /// Set a cell's value.
@@ -1297,6 +1370,7 @@ pub mod mutation {
 }
 /// Specifies an atomic read/modify/write operation on the latest value of the
 /// specified column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadModifyWriteRule {
     /// The name of the family to which the read/modify/write should be applied.
@@ -1317,6 +1391,7 @@ pub struct ReadModifyWriteRule {
 pub mod read_modify_write_rule {
     /// The rule used to determine the column's new latest value from its current
     /// latest value.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Rule {
         /// Rule specifying that `append_value` be appended to the existing value.
@@ -1334,6 +1409,7 @@ pub mod read_modify_write_rule {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// A partition of a change stream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamPartition {
     /// The row range covered by this partition and is specified by
@@ -1344,6 +1420,7 @@ pub struct StreamPartition {
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// The information required to continue reading the data from multiple
 /// `StreamPartitions` from where a previous read left off.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamContinuationTokens {
     /// List of continuation tokens.
@@ -1353,6 +1430,7 @@ pub struct StreamContinuationTokens {
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// The information required to continue reading the data from a
 /// `StreamPartition` from where a previous read left off.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamContinuationToken {
     /// The partition that this token applies to.
@@ -1364,9 +1442,11 @@ pub struct StreamContinuationToken {
 }
 /// Protocol buffers format descriptor, as described by Messages ProtoSchema and
 /// ProtoRows
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProtoFormat {}
 /// Describes a column in a Bigtable Query Language result set.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnMetadata {
     /// The name of the column.
@@ -1377,6 +1457,7 @@ pub struct ColumnMetadata {
     pub r#type: ::core::option::Option<Type>,
 }
 /// ResultSet schema in proto format
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoSchema {
     /// The columns in the result set.
@@ -1384,6 +1465,7 @@ pub struct ProtoSchema {
     pub columns: ::prost::alloc::vec::Vec<ColumnMetadata>,
 }
 /// Describes the structure of a Bigtable result set.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResultSetMetadata {
     /// The schema of the ResultSet, contains ordered list of column names
@@ -1395,6 +1477,7 @@ pub struct ResultSetMetadata {
 pub mod result_set_metadata {
     /// The schema of the ResultSet, contains ordered list of column names
     /// with types
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Schema in proto format
@@ -1407,6 +1490,7 @@ pub mod result_set_metadata {
 /// This should be constructed by concatenating the `batch_data` from each
 /// of the relevant `ProtoRowsBatch` messages and parsing the result as a
 /// `ProtoRows` message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoRows {
     /// A proto rows message consists of a list of values. Every N complete values
@@ -1416,6 +1500,7 @@ pub struct ProtoRows {
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A part of a serialized `ProtoRows` message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProtoRowsBatch {
     /// Part of a serialized `ProtoRows` message.
@@ -1460,6 +1545,7 @@ pub struct ProtoRowsBatch {
 ///   save `p.resume_token` in `resume_token`
 ///   }
 ///   }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PartialResultSet {
     /// CRC32C checksum of concatenated `partial_rows` data for the current batch.
@@ -1536,6 +1622,7 @@ pub mod partial_result_set {
     /// response. The client should buffer data constructed from the fields in
     /// `partial_rows` until a non-empty `resume_token` is received. Each
     /// sub-message documents the appropriate way to combine results.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PartialRows {
         /// Partial rows in serialized ProtoRows format.
@@ -1546,6 +1633,7 @@ pub mod partial_result_set {
 /// Parameters on mutations where clients want to ensure idempotency (i.e.
 /// at-most-once semantics). This is currently only needed for certain aggregate
 /// types.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Idempotency {
     /// Unique token used to identify replays of this mutation.
@@ -1564,6 +1652,7 @@ pub struct Idempotency {
 /// ReadIterationStats captures information about the iteration of rows or cells
 /// over the course of a read, e.g. how many results were scanned in a read
 /// operation versus the results returned.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadIterationStats {
     /// The rows seen (scanned) as part of the request. This includes the count of
@@ -1584,6 +1673,7 @@ pub struct ReadIterationStats {
 /// RequestLatencyStats provides a measurement of the latency of the request as
 /// it interacts with different systems over its lifetime, e.g. how long the
 /// request took to execute within a frontend server.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestLatencyStats {
     /// The latency measured by the frontend server handling this request, from
@@ -1607,6 +1697,7 @@ pub struct RequestLatencyStats {
     pub frontend_server_latency: ::core::option::Option<::prost_types::Duration>,
 }
 /// FullReadStatsView captures all known information about a read.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FullReadStatsView {
     /// Iteration stats describe how efficient the read is, e.g. comparing
@@ -1623,6 +1714,7 @@ pub struct FullReadStatsView {
 /// RequestStats is the container for additional information pertaining to a
 /// single request, helpful for evaluating the performance of the sent request.
 /// Currently, the following method is supported: google.bigtable.v2.ReadRows
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestStats {
     /// Information pertaining to each request type received. The type is chosen
@@ -1638,6 +1730,7 @@ pub mod request_stats {
     /// based on the requested view.
     ///
     /// See the messages above for additional context.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StatsView {
         /// Available with the ReadRowsRequest.RequestStatsView.REQUEST_STATS_FULL
@@ -1654,6 +1747,7 @@ pub mod request_stats {
 /// HTTP2's HPACK compression, the request overhead will be tiny.
 /// This is an internal implementation detail and should not be used by end users
 /// directly.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeatureFlags {
     /// Notify the server that the client supports reverse scans. The server will
@@ -1706,6 +1800,7 @@ pub struct FeatureFlags {
     pub microsecond_timestamp: bool,
 }
 /// See GetClientConfiguration() RPC in bigtable.proto. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClientConfigurationRequest {
     /// Required. The unique name of the instance for which the client will target
@@ -1722,6 +1817,7 @@ pub struct GetClientConfigurationRequest {
     pub app_profile_id: ::prost::alloc::string::String,
 }
 /// Configuration for how to balance vRPCs over sessions. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoadBalancingOptions {
     #[prost(oneof = "load_balancing_options::LoadBalancingStrategy", tags = "1, 2, 4")]
@@ -1733,6 +1829,7 @@ pub struct LoadBalancingOptions {
 pub mod load_balancing_options {
     /// Balances vRPCs over backends, preferring to send new vRPCs to AFEs with the
     /// least number of active vRPCs.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LeastInFlight {
         /// Of all connected AFEs, the size of the random subset to run the algorithm
@@ -1746,6 +1843,7 @@ pub mod load_balancing_options {
     ///
     /// See:
     /// <https://linkerd.io/2016/03/16/beyond-round-robin-load-balancing-for-latency>
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PeakEwma {
         /// Of all connected AFEs, the size of the random subset to compare costs
@@ -1754,8 +1852,10 @@ pub mod load_balancing_options {
         pub random_subset_size: i64,
     }
     /// Balances vRPCs over backends, by randomly selecting a backend.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Random {}
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum LoadBalancingStrategy {
         #[prost(message, tag = "1")]
@@ -1768,6 +1868,7 @@ pub mod load_balancing_options {
 }
 /// Configuration for how a given slice of traffic is diverted to sessions.
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SessionScopeDiversionConfiguration {
     /// What share of in-scope requests should operate on a session, \[0, 1\].
@@ -1776,6 +1877,7 @@ pub struct SessionScopeDiversionConfiguration {
     pub session_load: f32,
 }
 /// Configuration for how to divert load to sessions. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionDiversionConfiguration {
     #[prost(oneof = "session_diversion_configuration::DiversionStrategy", tags = "1, 2")]
@@ -1786,6 +1888,7 @@ pub struct SessionDiversionConfiguration {
 /// Nested message and enum types in `SessionDiversionConfiguration`.
 pub mod session_diversion_configuration {
     /// Configuration for how to balance sessions per method. Internal usage only.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PerScopeDiversion {
         /// Keys: Attributes of the request scope that can impact the diversion.
@@ -1798,6 +1901,7 @@ pub mod session_diversion_configuration {
             super::SessionScopeDiversionConfiguration,
         >,
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DiversionStrategy {
         /// If provided, all scopes should use this diversion config.
@@ -1809,6 +1913,7 @@ pub mod session_diversion_configuration {
     }
 }
 /// Configuration for the Session API. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionClientConfiguration {
     /// Deprecated: Prefer session_diversion_configuration. If both are provided,
@@ -1847,6 +1952,7 @@ pub struct SessionClientConfiguration {
 /// Nested message and enum types in `SessionClientConfiguration`.
 pub mod session_client_configuration {
     /// Configuration for the channel pool.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ChannelPoolConfiguration {
         /// The minimum number of distcint servers to connect to in the channel pool.
@@ -1874,6 +1980,7 @@ pub mod session_client_configuration {
     pub mod channel_pool_configuration {
         /// A channel mode which allows DirectAccess with a fallback to CloudPath if
         /// DirectAccess is unavailable.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DirectAccessWithFallback {
             /// The threshold for errors on DirectAccess to trigger CloudPath fallback.
@@ -1888,12 +1995,15 @@ pub mod session_client_configuration {
             pub check_interval: ::core::option::Option<::prost_types::Duration>,
         }
         /// A channel mode which only allows DirectAccess.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DirectAccessOnly {}
         /// A channel mode which only allows CloudPath.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CloudPathOnly {}
         /// The fallback mode of the channel pool.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Mode {
             /// DirectAccess with a fallback to CloudPath.
@@ -1909,6 +2019,7 @@ pub mod session_client_configuration {
     }
     /// Configuration for the session pools. Session pools are tied to a scope
     /// like a table, an app profile, and a permission.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SessionPoolConfiguration {
         /// Fraction of idle sessions to keep in order to manage an increase in
@@ -1960,6 +2071,7 @@ pub mod session_client_configuration {
 }
 /// Server provided instructions for enabling finer grained observability on
 /// the client to help diagnose customer issues. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TelemetryConfiguration {
     /// Selector for the debug counters that should be uploaded.
@@ -1969,6 +2081,7 @@ pub struct TelemetryConfiguration {
 /// Nested message and enum types in `TelemetryConfiguration`.
 pub mod telemetry_configuration {
     /// The level of detail of telemetry to be sent from the client.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2021,6 +2134,7 @@ pub mod telemetry_configuration {
     }
 }
 /// Configuration for the Session API. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientConfiguration {
     /// The configuration for Bigtable Sessions.
@@ -2035,6 +2149,7 @@ pub struct ClientConfiguration {
 }
 /// Nested message and enum types in `ClientConfiguration`.
 pub mod client_configuration {
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PollingConfiguration {
         /// A duration describing the time between GetClientConfiguration RPCs.
@@ -2057,6 +2172,7 @@ pub mod client_configuration {
         pub max_rpc_retry_count: i32,
     }
     /// How often the client should refresh this configuration.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Polling {
         /// If the client should cease to check for new configurations, e.g. a
@@ -2076,6 +2192,7 @@ pub mod client_configuration {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionRequest {
     #[prost(oneof = "session_request::Payload", tags = "1, 2, 3, 4, 5")]
@@ -2083,6 +2200,7 @@ pub struct SessionRequest {
 }
 /// Nested message and enum types in `SessionRequest`.
 pub mod session_request {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2098,6 +2216,7 @@ pub mod session_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionResponse {
     #[prost(oneof = "session_response::Payload", tags = "1, 2, 3, 4, 5, 6, 7")]
@@ -2105,6 +2224,7 @@ pub struct SessionResponse {
 }
 /// Nested message and enum types in `SessionResponse`.
 pub mod session_response {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2127,6 +2247,7 @@ pub mod session_response {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenSessionRequest {
     /// A version indicator from the client stating its understanding of the
@@ -2154,6 +2275,7 @@ pub struct OpenSessionRequest {
 /// perspective. This information may be used to make choices about session
 /// re-establishment en-masse for sessions with the same backend identifiers.
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackendIdentifier {
     /// An opaque identifier for the Google Frontend which serviced this request.
@@ -2169,6 +2291,7 @@ pub struct BackendIdentifier {
     pub application_frontend_zone: ::prost::alloc::string::String,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenSessionResponse {
     /// Information on the backend(s) that are hosting this session.
@@ -2180,6 +2303,7 @@ pub struct OpenSessionResponse {
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloseSessionRequest {
     #[prost(enumeration = "close_session_request::CloseSessionReason", tag = "1")]
@@ -2192,6 +2316,7 @@ pub mod close_session_request {
     /// Client-generated reason for terminating the session, including a
     /// plain-text description of why.
     /// 'reason' may be used for metrics, while both may be logged (server-side).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2242,6 +2367,7 @@ pub mod close_session_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenTableRequest {
     #[prost(string, tag = "1")]
@@ -2253,6 +2379,7 @@ pub struct OpenTableRequest {
 }
 /// Nested message and enum types in `OpenTableRequest`.
 pub mod open_table_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2297,9 +2424,11 @@ pub mod open_table_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenTableResponse {}
 /// Open sessions for an AuthorizedView. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenAuthorizedViewRequest {
     /// The Authorized view name to read and write from. Values are of the form
@@ -2315,6 +2444,7 @@ pub struct OpenAuthorizedViewRequest {
 }
 /// Nested message and enum types in `OpenAuthorizedViewRequest`.
 pub mod open_authorized_view_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2359,9 +2489,11 @@ pub mod open_authorized_view_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenAuthorizedViewResponse {}
 /// Open sessions for a MaterializedView. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenMaterializedViewRequest {
     /// The Materialized view name to read and write from. Values are of the form
@@ -2377,6 +2509,7 @@ pub struct OpenMaterializedViewRequest {
 }
 /// Nested message and enum types in `OpenMaterializedViewRequest`.
 pub mod open_materialized_view_request {
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2415,9 +2548,11 @@ pub mod open_materialized_view_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenMaterializedViewResponse {}
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VirtualRpcRequest {
     /// Client chosen, monotonically increasing identifier for the request.
@@ -2440,6 +2575,7 @@ pub struct VirtualRpcRequest {
 /// Nested message and enum types in `VirtualRpcRequest`.
 pub mod virtual_rpc_request {
     /// Container for all vRPC Metadata.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Metadata {
         /// Track retry attempts for this vRPC at the AFE.
@@ -2461,12 +2597,14 @@ pub mod virtual_rpc_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContinueVirtualRpcRequest {
     #[prost(int64, tag = "1")]
     pub rpc_id: i64,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelVirtualRpcRequest {
     #[prost(int64, tag = "1")]
@@ -2474,6 +2612,7 @@ pub struct CancelVirtualRpcRequest {
 }
 /// Information on which Cluster served a vRPC, e.g. for Client-Side metrics.
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClusterInformation {
     #[prost(string, tag = "1")]
@@ -2482,6 +2621,7 @@ pub struct ClusterInformation {
     pub zone_id: ::prost::alloc::string::String,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionRequestStats {
     /// Backend (critical section) latency for the request.
@@ -2489,6 +2629,7 @@ pub struct SessionRequestStats {
     pub backend_latency: ::core::option::Option<::prost_types::Duration>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VirtualRpcResponse {
     /// Which vRPC this response is for.
@@ -2506,6 +2647,7 @@ pub struct VirtualRpcResponse {
     pub has_more: bool,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorResponse {
     /// Which vRPC this response is for.
@@ -2520,6 +2662,7 @@ pub struct ErrorResponse {
     pub retry_info: ::core::option::Option<super::super::rpc::RetryInfo>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableRequest {
     /// Note in V1 we target only pure point operations.
@@ -2529,6 +2672,7 @@ pub struct TableRequest {
 /// Nested message and enum types in `TableRequest`.
 pub mod table_request {
     /// Note in V1 we target only pure point operations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2546,6 +2690,7 @@ pub mod table_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableResponse {
     #[prost(oneof = "table_response::Payload", tags = "1, 2, 3, 4, 5, 6")]
@@ -2553,6 +2698,7 @@ pub struct TableResponse {
 }
 /// Nested message and enum types in `TableResponse`.
 pub mod table_response {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2570,6 +2716,7 @@ pub mod table_response {
     }
 }
 /// A request wrapper for operations on an authorized view. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedViewRequest {
     /// Note in V1 we target only pure point operations.
@@ -2579,6 +2726,7 @@ pub struct AuthorizedViewRequest {
 /// Nested message and enum types in `AuthorizedViewRequest`.
 pub mod authorized_view_request {
     /// Note in V1 we target only pure point operations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2596,6 +2744,7 @@ pub mod authorized_view_request {
     }
 }
 /// A response wrapper for operations on an authorized view. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedViewResponse {
     /// Note in V1 we target only pure point operations.
@@ -2605,6 +2754,7 @@ pub struct AuthorizedViewResponse {
 /// Nested message and enum types in `AuthorizedViewResponse`.
 pub mod authorized_view_response {
     /// Note in V1 we target only pure point operations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2622,6 +2772,7 @@ pub mod authorized_view_response {
     }
 }
 /// A request wrapper for operations on a materialized view. Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializedViewRequest {
     /// Note in V1 we target only pure point operations.
@@ -2631,6 +2782,7 @@ pub struct MaterializedViewRequest {
 /// Nested message and enum types in `MaterializedViewRequest`.
 pub mod materialized_view_request {
     /// Note in V1 we target only pure point operations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2641,6 +2793,7 @@ pub mod materialized_view_request {
 }
 /// A response wrapper for operations on a materialized view. Internal usage
 /// only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializedViewResponse {
     /// Note in V1 we target only pure point operations.
@@ -2650,6 +2803,7 @@ pub struct MaterializedViewResponse {
 /// Nested message and enum types in `MaterializedViewResponse`.
 pub mod materialized_view_response {
     /// Note in V1 we target only pure point operations.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "1")]
@@ -2659,6 +2813,7 @@ pub mod materialized_view_response {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadRowRequest {
     #[prost(bytes = "vec", tag = "1")]
@@ -2667,6 +2822,7 @@ pub struct SessionReadRowRequest {
     pub filter: ::core::option::Option<RowFilter>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadRowResponse {
     #[prost(message, optional, tag = "1")]
@@ -2675,6 +2831,7 @@ pub struct SessionReadRowResponse {
     pub stats: ::core::option::Option<RequestStats>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadRowsRequest {
     #[prost(message, optional, tag = "1")]
@@ -2687,6 +2844,7 @@ pub struct SessionReadRowsRequest {
     pub reversed: bool,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadRowsResponse {
     #[prost(message, repeated, tag = "1")]
@@ -2695,6 +2853,7 @@ pub struct SessionReadRowsResponse {
     pub stats: ::core::option::Option<RequestStats>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionMutateRowRequest {
     #[prost(bytes = "vec", tag = "1")]
@@ -2703,9 +2862,11 @@ pub struct SessionMutateRowRequest {
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionMutateRowResponse {}
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionCheckAndMutateRowRequest {
     #[prost(bytes = "vec", tag = "1")]
@@ -2718,12 +2879,14 @@ pub struct SessionCheckAndMutateRowRequest {
     pub false_mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionCheckAndMutateRowResponse {
     #[prost(bool, tag = "1")]
     pub predicate_matched: bool,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadModifyWriteRowRequest {
     #[prost(bytes = "vec", tag = "1")]
@@ -2732,12 +2895,14 @@ pub struct SessionReadModifyWriteRowRequest {
     pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionReadModifyWriteRowResponse {
     #[prost(message, optional, tag = "1")]
     pub row: ::core::option::Option<Row>,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionMutateRowsRequest {
     /// The row keys and corresponding mutations to be applied in bulk.
@@ -2747,6 +2912,7 @@ pub struct SessionMutateRowsRequest {
 /// Nested message and enum types in `SessionMutateRowsRequest`.
 pub mod session_mutate_rows_request {
     /// A mutation for a given row.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The key of the row to which the `mutations` should be applied.
@@ -2761,6 +2927,7 @@ pub mod session_mutate_rows_request {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionMutateRowsResponse {
     /// One or more results for Entries from the batch request.
@@ -2775,6 +2942,7 @@ pub struct SessionMutateRowsResponse {
 /// Nested message and enum types in `SessionMutateRowsResponse`.
 pub mod session_mutate_rows_response {
     /// The result of applying a passed mutation in the original request.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The index into the original request's `entries` list of the Entry
@@ -2786,6 +2954,7 @@ pub mod session_mutate_rows_response {
         pub status: ::core::option::Option<super::super::super::rpc::Status>,
     }
     /// Rate limiting information for batched mutations.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RateLimitInfo {
         /// Time that must pass before the client should adjust its rate again.
@@ -2797,6 +2966,7 @@ pub mod session_mutate_rows_response {
     }
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionParametersResponse {
     /// Maximum time between messages that the AFE will send to the client. The
@@ -2814,9 +2984,11 @@ pub struct SessionParametersResponse {
     pub softmax_streaming_prefetch_buffer_bytes: i32,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HeartbeatResponse {}
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoAwayResponse {
     /// Server-generated reason for GOAWAY, including a plain-text description of
@@ -2832,6 +3004,7 @@ pub struct GoAwayResponse {
     pub last_rpc_id_admitted: i64,
 }
 /// Internal usage only.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionRefreshConfig {
     /// An optimized Open request that the session may use on a retry when
@@ -2847,6 +3020,7 @@ pub struct SessionRefreshConfig {
 pub mod session_refresh_config {
     /// Any additional metadata to include when reconnecting. Not a `map<>` type as
     /// this can be a multimap.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Metadata {
         /// Output only. The key for the metadata entry.
@@ -2858,6 +3032,7 @@ pub mod session_refresh_config {
     }
 }
 /// Supported session types.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SessionType {
@@ -2895,6 +3070,7 @@ impl SessionType {
     }
 }
 /// Request message for Bigtable.ReadRows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
     /// Optional. The unique name of the table from which to read.
@@ -2956,6 +3132,7 @@ pub mod read_rows_request {
     /// The desired view into RequestStats that should be returned in the response.
     ///
     /// See also: RequestStats message.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3002,6 +3179,7 @@ pub mod read_rows_request {
     }
 }
 /// Response message for Bigtable.ReadRows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
     /// A collection of a row's contents as part of the read request.
@@ -3028,6 +3206,7 @@ pub struct ReadRowsResponse {
 pub mod read_rows_response {
     /// Specifies a piece of a row's contents returned as part of the read
     /// response stream.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CellChunk {
         /// The row key for this chunk of data.  If the row key is empty,
@@ -3086,6 +3265,7 @@ pub mod read_rows_response {
     /// Nested message and enum types in `CellChunk`.
     pub mod cell_chunk {
         /// Signals to the client concerning previous CellChunks received.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum RowStatus {
             /// Indicates that the client should drop all previous chunks for
@@ -3100,6 +3280,7 @@ pub mod read_rows_response {
     }
 }
 /// Request message for Bigtable.SampleRowKeys.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleRowKeysRequest {
     /// Optional. The unique name of the table from which to sample row keys.
@@ -3133,6 +3314,7 @@ pub struct SampleRowKeysRequest {
     pub row_range: ::core::option::Option<RowRange>,
 }
 /// Response message for Bigtable.SampleRowKeys.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleRowKeysResponse {
     /// Sorted streamed sequence of sample row keys in the table, restricted to
@@ -3156,6 +3338,7 @@ pub struct SampleRowKeysResponse {
     pub offset_bytes: i64,
 }
 /// Request message for Bigtable.MutateRow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowRequest {
     /// Optional. The unique name of the table to which the mutation should be
@@ -3190,9 +3373,11 @@ pub struct MutateRowRequest {
     pub idempotency: ::core::option::Option<Idempotency>,
 }
 /// Response message for Bigtable.MutateRow.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MutateRowResponse {}
 /// Request message for BigtableService.MutateRows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowsRequest {
     /// Optional. The unique name of the table to which the mutations should be
@@ -3224,6 +3409,7 @@ pub struct MutateRowsRequest {
 /// Nested message and enum types in `MutateRowsRequest`.
 pub mod mutate_rows_request {
     /// A mutation for a given row.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The key of the row to which the `mutations` should be applied.
@@ -3241,6 +3427,7 @@ pub mod mutate_rows_request {
     }
 }
 /// Response message for BigtableService.MutateRows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowsResponse {
     /// One or more results for Entries from the batch request.
@@ -3255,6 +3442,7 @@ pub struct MutateRowsResponse {
 /// Nested message and enum types in `MutateRowsResponse`.
 pub mod mutate_rows_response {
     /// The result of applying a passed mutation in the original request.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The index into the original request's `entries` list of the Entry
@@ -3270,6 +3458,7 @@ pub mod mutate_rows_response {
     }
 }
 /// Information about how client should adjust the load to Bigtable.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RateLimitInfo {
     /// Time that clients should wait before adjusting the target rate again.
@@ -3293,6 +3482,7 @@ pub struct RateLimitInfo {
     pub factor: f64,
 }
 /// Request message for Bigtable.CheckAndMutateRow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckAndMutateRowRequest {
     /// Optional. The unique name of the table to which the conditional mutation
@@ -3339,6 +3529,7 @@ pub struct CheckAndMutateRowRequest {
     pub false_mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Response message for Bigtable.CheckAndMutateRow.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckAndMutateRowResponse {
     /// Whether or not the request's `predicate_filter` yielded any results for
@@ -3347,6 +3538,7 @@ pub struct CheckAndMutateRowResponse {
     pub predicate_matched: bool,
 }
 /// Request message for client connection keep-alive and warming.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PingAndWarmRequest {
     /// Required. The unique name of the instance to check permissions for as well
@@ -3360,9 +3552,11 @@ pub struct PingAndWarmRequest {
     pub app_profile_id: ::prost::alloc::string::String,
 }
 /// Response message for Bigtable.PingAndWarm connection keepalive and warming.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PingAndWarmResponse {}
 /// Request message for Bigtable.ReadModifyWriteRow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadModifyWriteRowRequest {
     /// Optional. The unique name of the table to which the read/modify/write rules
@@ -3395,6 +3589,7 @@ pub struct ReadModifyWriteRowRequest {
     pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
 }
 /// Response message for Bigtable.ReadModifyWriteRow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadModifyWriteRowResponse {
     /// A Row containing the new contents of all cells modified by the request.
@@ -3403,6 +3598,7 @@ pub struct ReadModifyWriteRowResponse {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Request message for Bigtable.GenerateInitialChangeStreamPartitions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateInitialChangeStreamPartitionsRequest {
     /// Required. The unique name of the table from which to get change stream
@@ -3419,6 +3615,7 @@ pub struct GenerateInitialChangeStreamPartitionsRequest {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Response message for Bigtable.GenerateInitialChangeStreamPartitions.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateInitialChangeStreamPartitionsResponse {
     /// A partition of the change stream.
@@ -3427,6 +3624,7 @@ pub struct GenerateInitialChangeStreamPartitionsResponse {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Request message for Bigtable.ReadChangeStream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadChangeStreamRequest {
     /// Required. The unique name of the table from which to read a change stream.
@@ -3459,6 +3657,7 @@ pub struct ReadChangeStreamRequest {
 /// Nested message and enum types in `ReadChangeStreamRequest`.
 pub mod read_change_stream_request {
     /// Options for describing where we want to start reading from the stream.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StartFrom {
         /// Start reading the stream at the specified timestamp. This timestamp must
@@ -3483,6 +3682,7 @@ pub mod read_change_stream_request {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Response message for Bigtable.ReadChangeStream.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadChangeStreamResponse {
     /// The data or control message on the stream.
@@ -3492,6 +3692,7 @@ pub struct ReadChangeStreamResponse {
 /// Nested message and enum types in `ReadChangeStreamResponse`.
 pub mod read_change_stream_response {
     /// A partial or complete mutation.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MutationChunk {
         /// If set, then the mutation is a `SetCell` with a chunked value across
@@ -3509,6 +3710,7 @@ pub mod read_change_stream_response {
         /// Information about the chunking of this mutation.
         /// Only `SetCell` mutations can be chunked, and all chunks for a `SetCell`
         /// will be delivered contiguously with no other mutation types interleaved.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ChunkInfo {
             /// The total value size of all the chunks that make up the `SetCell`.
@@ -3529,6 +3731,7 @@ pub mod read_change_stream_response {
     /// the first in a sequence will only have the `type` and `chunks` fields
     /// populated, with the final message in the sequence also containing `done`
     /// set to true.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataChange {
         /// The type of the mutation.
@@ -3580,6 +3783,7 @@ pub mod read_change_stream_response {
     /// Nested message and enum types in `DataChange`.
     pub mod data_change {
         /// The type of mutation.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -3630,6 +3834,7 @@ pub mod read_change_stream_response {
     }
     /// A periodic message with information that can be used to checkpoint
     /// the state of a stream.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Heartbeat {
         /// A token that can be provided to a subsequent `ReadChangeStream` call
@@ -3669,6 +3874,7 @@ pub mod read_change_stream_response {
     /// To read the new partition \[A,C), supply the continuation tokens whose
     /// ranges cover the new partition, for example ContinuationToken\[A,B) &
     /// ContinuationToken\[B,C).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloseStream {
         /// The status of the stream.
@@ -3687,6 +3893,7 @@ pub mod read_change_stream_response {
         pub new_partitions: ::prost::alloc::vec::Vec<super::StreamPartition>,
     }
     /// The data or control message on the stream.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamRecord {
         /// A mutation to the partition.
@@ -3701,6 +3908,7 @@ pub mod read_change_stream_response {
     }
 }
 /// Request message for Bigtable.ExecuteQuery
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteQueryRequest {
     /// Required. The unique name of the instance against which the query should be
@@ -3791,6 +3999,7 @@ pub mod execute_query_request {
     /// If `prepared_query` is set, then the `data_format` is fixed by the
     /// `PrepareQueryRequest`, and a non-empty `data_format` in the
     /// `ExecuteQueryRequest` will be rejected with `INVALID_ARGUMENT`.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
@@ -3801,6 +4010,7 @@ pub mod execute_query_request {
     }
 }
 /// Response message for Bigtable.ExecuteQuery
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteQueryResponse {
     /// The first response streamed from the server is of type `ResultSetMetadata`
@@ -3820,6 +4030,7 @@ pub mod execute_query_response {
     /// information. `PartialResultSet` will contain `resume_token` to restart the
     /// response if query interrupts. In case of resumption with `resume_token`,
     /// the server will not resend the ResultSetMetadata.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Structure of rows in this response stream. The first (and only the first)
@@ -3834,6 +4045,7 @@ pub mod execute_query_response {
     }
 }
 /// Request message for Bigtable.PrepareQuery
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrepareQueryRequest {
     /// Required. The unique name of the instance against which the query should be
@@ -3874,6 +4086,7 @@ pub mod prepare_query_request {
     /// Required. Requested data format for the response. Note that the selected
     /// data format is binding for all `ExecuteQuery` rpcs that use the prepared
     /// query.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
@@ -3883,6 +4096,7 @@ pub mod prepare_query_request {
     }
 }
 /// Response message for Bigtable.PrepareQueryResponse
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrepareQueryResponse {
     /// Structure of rows in the response stream of `ExecuteQueryResponse` for the
@@ -4431,6 +4645,7 @@ pub mod bigtable_client {
 }
 /// PeerInfo contains information about the peer that the client is
 /// connecting to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PeerInfo {
     /// An opaque identifier for the Google Frontend which serviced this request.
@@ -4459,6 +4674,7 @@ pub struct PeerInfo {
 /// Nested message and enum types in `PeerInfo`.
 pub mod peer_info {
     /// The transport type that the client used to connect to this peer.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4527,6 +4743,7 @@ pub mod peer_info {
     }
 }
 /// Response metadata proto
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResponseParams {
     /// The cloud bigtable zone associated with the cluster.

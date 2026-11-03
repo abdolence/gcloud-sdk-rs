@@ -4,6 +4,7 @@
 /// module settings. Service settings can be configured at the organization,
 /// folder, or project level. Service settings at the organization or folder
 /// level are inherited by those in descendant folders and projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityCenterService {
     /// Identifier. The name of the service, in one of the following formats:
@@ -54,6 +55,7 @@ pub struct SecurityCenterService {
 /// Nested message and enum types in `SecurityCenterService`.
 pub mod security_center_service {
     /// The settings for individual modules.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModuleSettings {
         /// Optional. The intended enablement state for the module at its level of
@@ -69,6 +71,7 @@ pub mod security_center_service {
         pub effective_enablement_state: i32,
     }
     /// Represents the possible enablement states for a service or module.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -131,6 +134,7 @@ pub mod security_center_service {
 /// to `INHERITED`. For example, if the module is enabled in an organization or
 /// folder, then the effective enablement state for the module is `ENABLED` in
 /// all descendant folders or projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveSecurityHealthAnalyticsCustomModule {
     /// Identifier. The full resource name of the custom module, in one of the
@@ -160,6 +164,7 @@ pub struct EffectiveSecurityHealthAnalyticsCustomModule {
 /// Nested message and enum types in `EffectiveSecurityHealthAnalyticsCustomModule`.
 pub mod effective_security_health_analytics_custom_module {
     /// The enablement state of the module.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -205,6 +210,7 @@ pub mod effective_security_health_analytics_custom_module {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of parent to list effective custom modules, in one of the
@@ -229,6 +235,7 @@ pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of effective Security Health Analytics custom modules.
@@ -243,6 +250,7 @@ pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The full resource name of the custom module, specified in one of
@@ -259,6 +267,7 @@ pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
 /// updated time. You can create a custom module at the organization, folder, or
 /// project level. Custom modules that you create at the organization or folder
 /// level are inherited by the descendant folders and projects.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityHealthAnalyticsCustomModule {
     /// Identifier. The full resource name of the custom module, in one of the
@@ -301,6 +310,7 @@ pub struct SecurityHealthAnalyticsCustomModule {
 /// Nested message and enum types in `SecurityHealthAnalyticsCustomModule`.
 pub mod security_health_analytics_custom_module {
     /// Possible enablement states of a custom module.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -355,6 +365,7 @@ pub mod security_health_analytics_custom_module {
 /// Defines the properties in a custom module configuration for Security
 /// Health Analytics. Use the custom module configuration to create custom
 /// detectors that generate custom findings for resources that you specify.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomConfig {
     /// Optional. The Common Expression Language (CEL) expression to evaluate to
@@ -391,6 +402,7 @@ pub mod custom_config {
     /// A set of optional name-value pairs that define custom source properties to
     /// return with each finding that is generated by the custom module. The custom
     /// source properties that are defined here are included in the finding.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomOutputSpec {
         /// Optional. A list of custom output properties to add to the finding.
@@ -400,6 +412,7 @@ pub mod custom_config {
     /// Nested message and enum types in `CustomOutputSpec`.
     pub mod custom_output_spec {
         /// An individual name-value pair that defines a custom source property.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Property {
             /// Optional. Name of the property for the custom output.
@@ -415,6 +428,7 @@ pub mod custom_config {
         }
     }
     /// Resource for selecting resource type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSelector {
         /// Optional. The resource types to run the detector on.
@@ -422,6 +436,7 @@ pub mod custom_config {
         pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Defines the valid value options for the severity of a finding.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -475,6 +490,7 @@ pub mod custom_config {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of the parent organization, folder, or project in which to
@@ -499,6 +515,7 @@ pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of Security Health Analytics custom modules.
@@ -513,6 +530,7 @@ pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of the parent organization, folder, or project in which to
@@ -537,6 +555,7 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of SecurityHealthAnalyticsCustomModules
@@ -551,6 +570,7 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. Name of the resource, in the format
@@ -560,6 +580,7 @@ pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. Name of the parent organization, folder, or project of the
@@ -593,6 +614,7 @@ pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The fields to update. The following values are valid:
@@ -627,6 +649,7 @@ pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The resource name of the SHA custom module, in one of the
@@ -656,6 +679,7 @@ pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
 /// Request message for
 /// \[SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\].
 /// The maximum size of the request is 4 MiB.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The relative resource name of the organization, project, or
@@ -676,6 +700,7 @@ pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
 /// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleRequest`.
 pub mod simulate_security_health_analytics_custom_module_request {
     /// Manually constructed information about a resource.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SimulatedResource {
         /// Required. The type of the resource. For example,
@@ -701,6 +726,7 @@ pub mod simulate_security_health_analytics_custom_module_request {
 }
 /// The minimum set of fields needed to represent a simulated finding from a
 /// Security Health Analytics custom module.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulatedFinding {
     /// Identifier. The [relative resource name](<https://google.aip.dev/122>) of the
@@ -764,6 +790,7 @@ pub struct SimulatedFinding {
 /// Nested message and enum types in `SimulatedFinding`.
 pub mod simulated_finding {
     /// The state of the finding.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -808,6 +835,7 @@ pub mod simulated_finding {
         }
     }
     /// The severity of the finding.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -895,6 +923,7 @@ pub mod simulated_finding {
         }
     }
     /// Represents what kind of finding it is.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -965,6 +994,7 @@ pub mod simulated_finding {
 }
 /// Response message for
 /// \[SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
     /// Result for test case in the corresponding request.
@@ -976,6 +1006,7 @@ pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
 /// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleResponse`.
 pub mod simulate_security_health_analytics_custom_module_response {
     /// Possible test result.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SimulatedResult {
         /// The result of the simulation.
@@ -985,6 +1016,7 @@ pub mod simulate_security_health_analytics_custom_module_response {
     /// Nested message and enum types in `SimulatedResult`.
     pub mod simulated_result {
         /// The result of the simulation.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Result {
             /// Finding that would be published for the test case if a violation is
@@ -1007,6 +1039,7 @@ pub mod simulate_security_health_analytics_custom_module_response {
 /// then effective modules at all descendant levels will have their enablement
 /// state set to `ENABLED`. Similarly, if `module.inherited` is set, then the
 /// effective module's configuration will reflect the ancestor's configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveEventThreatDetectionCustomModule {
     /// Identifier. The resource name of the Event Threat Detection custom module,
@@ -1040,6 +1073,7 @@ pub struct EffectiveEventThreatDetectionCustomModule {
 /// Nested message and enum types in `EffectiveEventThreatDetectionCustomModule`.
 pub mod effective_event_threat_detection_custom_module {
     /// The enablement state of the module.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1085,6 +1119,7 @@ pub mod effective_event_threat_detection_custom_module {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list effective custom modules, in one of the
@@ -1109,6 +1144,7 @@ pub struct ListEffectiveEventThreatDetectionCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
     /// The list of effective Event Threat Detection custom modules.
@@ -1123,6 +1159,7 @@ pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
@@ -1137,6 +1174,7 @@ pub struct GetEffectiveEventThreatDetectionCustomModuleRequest {
 /// A Security Command Center resource that contains the configuration and
 /// enablement state of a custom module, which enables Event Threat Detection to
 /// write certain findings to Security Command Center.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventThreatDetectionCustomModule {
     /// Identifier. The resource name of the Event Threat Detection custom module,
@@ -1184,6 +1222,7 @@ pub struct EventThreatDetectionCustomModule {
 /// Nested message and enum types in `EventThreatDetectionCustomModule`.
 pub mod event_threat_detection_custom_module {
     /// The enablement state of the module.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1237,6 +1276,7 @@ pub mod event_threat_detection_custom_module {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list custom modules, in one of the following
@@ -1262,6 +1302,7 @@ pub struct ListEventThreatDetectionCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesResponse {
     /// The list of custom modules.
@@ -1276,6 +1317,7 @@ pub struct ListEventThreatDetectionCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list custom modules, in one of the following
@@ -1301,6 +1343,7 @@ pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesResponse {
     /// The list of custom modules.
@@ -1315,6 +1358,7 @@ pub struct ListDescendantEventThreatDetectionCustomModulesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.GetEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
@@ -1328,6 +1372,7 @@ pub struct GetEventThreatDetectionCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.CreateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventThreatDetectionCustomModuleRequest {
     /// Required. Name of parent for the module, in one of the following formats:
@@ -1361,6 +1406,7 @@ pub struct CreateEventThreatDetectionCustomModuleRequest {
     pub validate_only: bool,
 }
 /// Message for updating a EventThreatDetectionCustomModule
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEventThreatDetectionCustomModuleRequest {
     /// Required. The fields to update. If omitted, then all fields are updated.
@@ -1389,6 +1435,7 @@ pub struct UpdateEventThreatDetectionCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.DeleteEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
@@ -1417,6 +1464,7 @@ pub struct DeleteEventThreatDetectionCustomModuleRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleRequest {
     /// Required. Resource name of the parent to validate the custom modules under,
@@ -1435,6 +1483,7 @@ pub struct ValidateEventThreatDetectionCustomModuleRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleResponse {
     /// A list of errors returned by the validator. If the list is empty, there
@@ -1448,6 +1497,7 @@ pub struct ValidateEventThreatDetectionCustomModuleResponse {
 pub mod validate_event_threat_detection_custom_module_response {
     /// An error encountered while validating the uploaded configuration of an
     /// Event Threat Detection custom module.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomModuleValidationError {
         /// A human-readable description of the error.
@@ -1470,6 +1520,7 @@ pub mod validate_event_threat_detection_custom_module_response {
         pub end: ::core::option::Option<Position>,
     }
     /// A position in the uploaded text version of a module.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Position {
         /// The line position in the text.
@@ -1482,6 +1533,7 @@ pub mod validate_event_threat_detection_custom_module_response {
 }
 /// Request message for
 /// \[SecurityCenterManagement.GetSecurityCenterService\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityCenterService\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecurityCenterServiceRequest {
     /// Required. The Security Command Center service to retrieve, in one of the
@@ -1507,6 +1559,7 @@ pub struct GetSecurityCenterServiceRequest {
 }
 /// Request message for
 /// \[SecurityCenterManagement.ListSecurityCenterServices\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSecurityCenterServicesRequest {
     /// Required. The name of the parent to list Security Command Center services,
@@ -1535,6 +1588,7 @@ pub struct ListSecurityCenterServicesRequest {
 }
 /// Response message for
 /// \[SecurityCenterManagement.ListSecurityCenterServices\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityCenterServicesResponse {
     /// The list of services.
@@ -1547,6 +1601,7 @@ pub struct ListSecurityCenterServicesResponse {
 }
 /// Request message for
 /// \[SecurityCenterManagement.UpdateSecurityCenterService\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityCenterService\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityCenterServiceRequest {
     /// Required. The updated service.

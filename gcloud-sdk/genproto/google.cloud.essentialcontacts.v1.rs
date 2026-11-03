@@ -3,6 +3,7 @@
 /// Each notification will be categorized by the sender into one of the following
 /// categories. All contacts that are subscribed to that category will receive
 /// the notification.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NotificationCategory {
@@ -68,6 +69,7 @@ impl NotificationCategory {
 }
 /// A contact's validation state indicates whether or not it is the correct
 /// contact to be receiving notifications for a particular resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ValidationState {
@@ -103,6 +105,7 @@ impl ValidationState {
     }
 }
 /// A contact that will receive notifications from Google Cloud.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Contact {
     /// Output only. The identifier for the contact.
@@ -134,6 +137,7 @@ pub struct Contact {
     pub validate_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for the ListContacts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListContactsRequest {
     /// Required. The parent resource name.
@@ -155,6 +159,7 @@ pub struct ListContactsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the ListContacts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContactsResponse {
     /// The contacts for the specified resource.
@@ -168,6 +173,7 @@ pub struct ListContactsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetContact method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetContactRequest {
     /// Required. The name of the contact to retrieve.
@@ -178,6 +184,7 @@ pub struct GetContactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteContact method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteContactRequest {
     /// Required. The name of the contact to delete.
@@ -188,6 +195,7 @@ pub struct DeleteContactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the CreateContact method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateContactRequest {
     /// Required. The resource to save this contact for.
@@ -201,6 +209,7 @@ pub struct CreateContactRequest {
     pub contact: ::core::option::Option<Contact>,
 }
 /// Request message for the UpdateContact method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateContactRequest {
     /// Required. The contact resource to replace the existing saved contact. Note:
@@ -214,6 +223,7 @@ pub struct UpdateContactRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the ComputeContacts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComputeContactsRequest {
     /// Required. The name of the resource to compute contacts for.
@@ -240,6 +250,7 @@ pub struct ComputeContactsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the ComputeContacts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeContactsResponse {
     /// All contacts for the resource that are subscribed to the specified
@@ -255,6 +266,7 @@ pub struct ComputeContactsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the SendTestMessage method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendTestMessageRequest {
     /// Required. The list of names of the contacts to send a test message to.

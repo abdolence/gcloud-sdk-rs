@@ -2,6 +2,7 @@
 /// A relational description of a location. Includes a ranked set of nearby
 /// landmarks and precise containing areas and their relationship to the target
 /// location.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressDescriptor {
     /// A ranked list of nearby landmarks. The most recognizable and nearby
@@ -19,6 +20,7 @@ pub mod address_descriptor {
     /// target location.
     ///
     /// Landmarks are prominent places that can be used to describe a location.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Landmark {
         /// The landmark's resource name.
@@ -56,6 +58,7 @@ pub mod address_descriptor {
     pub mod landmark {
         /// Defines the spatial relationship between the target location and the
         /// landmark.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -123,6 +126,7 @@ pub mod address_descriptor {
     ///
     /// Areas includes precise sublocality, neighborhoods, and large compounds that
     /// are useful for describing a location.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Area {
         /// The area's resource name.
@@ -145,6 +149,7 @@ pub mod address_descriptor {
     pub mod area {
         /// Defines the spatial relationship between the target location and the
         /// area.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -197,6 +202,7 @@ pub mod address_descriptor {
 /// Information about the author of the UGC data. Used in
 /// \[Photo\]\[google.maps.places.v1.Photo\], and
 /// \[Review\]\[google.maps.places.v1.Review\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuthorAttribution {
     /// Name of the author of the \[Photo\]\[google.maps.places.v1.Photo\] or
@@ -214,6 +220,7 @@ pub struct AuthorAttribution {
     pub photo_uri: ::prost::alloc::string::String,
 }
 /// A block of content that can be served individually.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContentBlock {
     /// Content related to the topic.
@@ -225,6 +232,7 @@ pub struct ContentBlock {
     pub referenced_places: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information about a photo of a place.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Photo {
     /// Identifier. A reference representing this place photo which may be used to
@@ -249,6 +257,7 @@ pub struct Photo {
     pub google_maps_uri: ::prost::alloc::string::String,
 }
 /// Information about a review of a place.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Review {
     /// A reference representing this place review which may be used to look up
@@ -293,6 +302,7 @@ pub struct Review {
 /// for more details.
 ///
 /// Content that is contextual to the place query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContextualContent {
     /// List of reviews about this place, contextual to the place query.
@@ -318,6 +328,7 @@ pub mod contextual_content {
     ///
     /// Justifications for the place. Justifications answers the question of why a
     /// place could interest an end user.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Justification {
         #[prost(oneof = "justification::Justification", tags = "1, 2")]
@@ -333,6 +344,7 @@ pub mod contextual_content {
         /// that would interest an end user. For instance, if the search query is
         /// "firewood pizza", the review justification highlights the text relevant
         /// to the search query.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ReviewJustification {
             #[prost(message, optional, tag = "1")]
@@ -349,6 +361,7 @@ pub mod contextual_content {
             /// review itself. The exact word to highlight is marked by the
             /// HighlightedTextRange. There could be several words in the text being
             /// highlighted.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct HighlightedText {
                 #[prost(string, tag = "1")]
@@ -362,6 +375,7 @@ pub mod contextual_content {
             /// Nested message and enum types in `HighlightedText`.
             pub mod highlighted_text {
                 /// The range of highlighted text.
+                #[allow(clippy::all)]
                 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct HighlightedTextRange {
                     #[prost(int32, tag = "1")]
@@ -376,6 +390,7 @@ pub mod contextual_content {
         /// for more details.
         /// BusinessAvailabilityAttributes justifications. This shows some attributes
         /// a business has that could interest an end user.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BusinessAvailabilityAttributesJustification {
             /// If a place provides takeout.
@@ -388,6 +403,7 @@ pub mod contextual_content {
             #[prost(bool, tag = "3")]
             pub dine_in: bool,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Justification {
             /// Experimental: See
@@ -410,6 +426,7 @@ pub mod contextual_content {
 /// <https://afdc.energy.gov/fuels/electricity_infrastructure.html> One port
 /// could charge one car at a time. One port has one or more connectors. One
 /// station has one or more ports.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvChargeOptions {
     /// Number of connectors at this station. However, because some ports can have
@@ -430,6 +447,7 @@ pub mod ev_charge_options {
     /// EV charging information grouped by \[type, max_charge_rate_kw\].
     /// Shows EV charge aggregation of connectors that have the same type and max
     /// charge rate in kw.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConnectorAggregation {
         /// The connector type of this aggregation.
@@ -458,6 +476,7 @@ pub mod ev_charge_options {
 }
 /// See <http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6872107> for
 /// additional information/context on EV charging connector types.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EvConnectorType {
@@ -533,6 +552,7 @@ impl EvConnectorType {
 }
 /// The most recent information about fuel options in a gas station. This
 /// information is updated regularly.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FuelOptions {
     /// The last known fuel price for each type of fuel this station has. There is
@@ -543,6 +563,7 @@ pub struct FuelOptions {
 /// Nested message and enum types in `FuelOptions`.
 pub mod fuel_options {
     /// Fuel price information for a given type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FuelPrice {
         /// The type of fuel.
@@ -558,6 +579,7 @@ pub mod fuel_options {
     /// Nested message and enum types in `FuelPrice`.
     pub mod fuel_price {
         /// Types of fuel.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -675,6 +697,7 @@ pub mod fuel_options {
     }
 }
 /// Circle with a LatLng as center and radius.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Circle {
     /// Required. Center latitude and longitude.
@@ -690,6 +713,7 @@ pub struct Circle {
 }
 /// The price range associated with a Place. `end_price` could be unset, which
 /// indicates a range without upper bound (e.g. "More than $100").
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PriceRange {
     /// The low end of the price range (inclusive). Price should be at or above
@@ -702,6 +726,7 @@ pub struct PriceRange {
     pub end_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
 /// Represents transit-specific information for a place.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitStation {
     /// The name of the station in the local language.
@@ -715,6 +740,7 @@ pub struct TransitStation {
     pub stops: ::prost::alloc::vec::Vec<TransitStop>,
 }
 /// Represents a transit agency.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitAgency {
     /// Agency name (e.g. "VTA") in the requested language.
@@ -736,6 +762,7 @@ pub struct TransitAgency {
     pub lines: ::prost::alloc::vec::Vec<TransitLine>,
 }
 /// Represents a single transit line.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitLine {
     /// The id of the transit line that can be used to uniquely identify the line
@@ -776,6 +803,7 @@ pub struct TransitLine {
 /// Nested message and enum types in `TransitLine`.
 pub mod transit_line {
     /// The type of vehicle for a transit line.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -899,6 +927,7 @@ pub mod transit_line {
 /// where passengers board and alight transit vehicles, such as a platform or
 /// bus bay. This is distinct from a `Departure`, which is an event of a vehicle
 /// leaving a stop at a specific time.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitStop {
     /// The id of the transit stop that can be used to uniquely identify the stop
@@ -935,6 +964,7 @@ pub struct TransitStop {
     pub wheelchair_accessible_entrance: ::core::option::Option<bool>,
 }
 /// Icon for a transit line, vehicle, or agency.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitIcon {
     /// The URL of the icon.
@@ -946,6 +976,7 @@ pub struct TransitIcon {
     pub name_included: bool,
 }
 /// All the information representing a Place.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
     /// This Place's resource name, in `places/{place_id}` format.  Can be used to
@@ -1285,6 +1316,7 @@ pub struct Place {
 pub mod place {
     /// The structured components that form the formatted address, if this
     /// information is available.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AddressComponent {
         /// The full text description or name of the address component. For example,
@@ -1307,6 +1339,7 @@ pub mod place {
     /// Plus code (<http://plus.codes>) is a location reference with two formats:
     /// global code defining a 14mx14m (1/8000th of a degree) or smaller rectangle,
     /// and compound code, replacing the prefix with a reference location.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PlusCode {
         /// Place's global (full) code, such as "9FWM33GV+HQ", representing an
@@ -1320,6 +1353,7 @@ pub mod place {
         pub compound_code: ::prost::alloc::string::String,
     }
     /// Information about business hour of the place.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OpeningHours {
         /// Whether the opening hours period is currently active. For regular opening
@@ -1382,6 +1416,7 @@ pub mod place {
     /// Nested message and enum types in `OpeningHours`.
     pub mod opening_hours {
         /// A period the place remains in open_now status.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Period {
             /// The time that the place starts to be open.
@@ -1394,6 +1429,7 @@ pub mod place {
         /// Nested message and enum types in `Period`.
         pub mod period {
             /// Status changing points.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Point {
                 /// A day of the week, as an integer in the range 0-6.  0 is Sunday, 1 is
@@ -1423,6 +1459,7 @@ pub mod place {
         /// Structured information for special days that fall within the period that
         /// the returned opening hours cover. Special days are days that could impact
         /// the business hours of a place, e.g. Christmas day.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SpecialDay {
             /// The date of this special day.
@@ -1432,6 +1469,7 @@ pub mod place {
             >,
         }
         /// A type used to identify the type of secondary hours.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1520,6 +1558,7 @@ pub mod place {
         }
     }
     /// Information about data providers of this place.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Attribution {
         /// Name of the Place's data provider.
@@ -1530,6 +1569,7 @@ pub mod place {
         pub provider_uri: ::prost::alloc::string::String,
     }
     /// Payment options the place accepts.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PaymentOptions {
         /// Place accepts credit cards as payment.
@@ -1548,6 +1588,7 @@ pub mod place {
     }
     /// Information about parking options for the place. A parking lot could
     /// support more than one option at the same time.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ParkingOptions {
         /// Place offers free parking lots.
@@ -1580,6 +1621,7 @@ pub mod place {
     /// and place resource name, which can be used in subsequent Place Details
     /// (New) requests to fetch richer details, including the sub-destination's
     /// display name and location.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SubDestination {
         /// The resource name of the sub-destination.
@@ -1590,6 +1632,7 @@ pub mod place {
         pub id: ::prost::alloc::string::String,
     }
     /// Information about the accessibility options a place offers.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AccessibilityOptions {
         /// Place offers wheelchair accessible parking.
@@ -1606,6 +1649,7 @@ pub mod place {
         pub wheelchair_accessible_seating: ::core::option::Option<bool>,
     }
     /// AI-generated summary of the place.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GenerativeSummary {
         /// The overview of the place.
@@ -1625,6 +1669,7 @@ pub mod place {
         >,
     }
     /// Info about the place in which this place is located.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContainingPlace {
         /// The resource name of the place in which this place is located.
@@ -1635,6 +1680,7 @@ pub mod place {
         pub id: ::prost::alloc::string::String,
     }
     /// Links to trigger different Google Maps actions.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GoogleMapsLinks {
         /// A link to show the directions to the place. The link only populates the
@@ -1655,6 +1701,7 @@ pub mod place {
         pub photos_uri: ::prost::alloc::string::String,
     }
     /// AI-generated summary of the place using user reviews.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReviewSummary {
         /// The summary of user reviews.
@@ -1679,6 +1726,7 @@ pub mod place {
     /// The summary of amenities near the EV charging station. This only applies to
     /// places with type `electric_vehicle_charging_station`. The `overview` field
     /// is guaranteed to be provided while the other fields are optional.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EvChargeAmenitySummary {
         /// An overview of the available amenities. This is guaranteed to be
@@ -1706,6 +1754,7 @@ pub mod place {
         >,
     }
     /// A summary of points of interest near the place.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NeighborhoodSummary {
         /// An overview summary of the neighborhood.
@@ -1727,6 +1776,7 @@ pub mod place {
     }
     /// The consumer alert message for the place when we detect suspicious review
     /// activity on a business or a business violates our policies.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConsumerAlert {
         /// The overview of the consumer alert message.
@@ -1743,6 +1793,7 @@ pub mod place {
     /// Nested message and enum types in `ConsumerAlert`.
     pub mod consumer_alert {
         /// The details of the consumer alert message.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Details {
             /// The title to show together with the description.
@@ -1760,6 +1811,7 @@ pub mod place {
         pub mod details {
             /// The link to show together with the description to provide more
             /// information.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Link {
                 /// The title to show for the link.
@@ -1772,6 +1824,7 @@ pub mod place {
         }
     }
     /// Business status for the place.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1824,6 +1877,7 @@ pub mod place {
     }
 }
 /// Price level of the place.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PriceLevel {
@@ -1872,6 +1926,7 @@ impl PriceLevel {
 /// polyline](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>),
 /// which can be passed as a string and includes compression with minimal
 /// lossiness. This is the Routes API default output.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Routes API output defaults to
@@ -1883,6 +1938,7 @@ pub struct Polyline {
 pub mod polyline {
     /// Encapsulates the type of polyline. Routes API output defaults to
     /// `encoded_polyline`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PolylineType {
         /// An [encoded
@@ -1900,6 +1956,7 @@ pub mod polyline {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteModifiers {
     /// Optional. When set to true, avoids toll roads where reasonable, giving
@@ -1925,6 +1982,7 @@ pub struct RouteModifiers {
 }
 /// A set of values that specify factors to take into consideration when
 /// calculating the route.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RoutingPreference {
@@ -1982,6 +2040,7 @@ impl RoutingPreference {
 /// either the `routingParameters.origin` parameter or the
 /// `searchAlongRouteParameters.polyline.encodedPolyline` parameter in the
 /// request causes an error.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutingSummary {
     /// The legs of the trip.
@@ -2005,6 +2064,7 @@ pub struct RoutingSummary {
 /// Nested message and enum types in `RoutingSummary`.
 pub mod routing_summary {
     /// A leg is a single portion of a journey from one location to another.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Leg {
         /// The time it takes to complete this leg of the trip.
@@ -2018,6 +2078,7 @@ pub mod routing_summary {
 /// Travel mode options.
 /// These options map to what [Routes API
 /// offers](<https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteTravelMode>).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TravelMode {
@@ -2066,6 +2127,7 @@ impl TravelMode {
 /// Parameters to configure the routing calculations to the places in the
 /// response, both along a route (where result ranking will be influenced) and
 /// for calculating travel times on results.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RoutingParameters {
     /// Optional. An explicit routing origin that overrides the origin defined in
@@ -2086,6 +2148,7 @@ pub struct RoutingParameters {
     pub routing_preference: i32,
 }
 /// Request proto for Search Nearby.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyRequest {
     /// Place details will be displayed with the preferred language if available.
@@ -2211,6 +2274,7 @@ pub struct SearchNearbyRequest {
 /// Nested message and enum types in `SearchNearbyRequest`.
 pub mod search_nearby_request {
     /// The region to search.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "2")]
@@ -2218,6 +2282,7 @@ pub mod search_nearby_request {
     }
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A circle defined by center point and radius.
@@ -2226,6 +2291,7 @@ pub mod search_nearby_request {
         }
     }
     /// How results will be ranked in the response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2270,6 +2336,7 @@ pub mod search_nearby_request {
     }
 }
 /// Response proto for Search Nearby.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyResponse {
     /// A list of places that meets user's requirements like places
@@ -2285,6 +2352,7 @@ pub struct SearchNearbyResponse {
     pub routing_summaries: ::prost::alloc::vec::Vec<RoutingSummary>,
 }
 /// Request proto for SearchText.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTextRequest {
     /// Required. The text query for textual search.
@@ -2385,6 +2453,7 @@ pub struct SearchTextRequest {
 pub mod search_text_request {
     /// The region to search. This location serves as a bias which means results
     /// around given location might be returned.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationBias {
         #[prost(oneof = "location_bias::Type", tags = "1, 2")]
@@ -2392,6 +2461,7 @@ pub mod search_text_request {
     }
     /// Nested message and enum types in `LocationBias`.
     pub mod location_bias {
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
@@ -2409,6 +2479,7 @@ pub mod search_text_request {
     }
     /// The region to search. This location serves as a restriction which means
     /// results outside given location will not be returned.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "1")]
@@ -2416,6 +2487,7 @@ pub mod search_text_request {
     }
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
@@ -2429,6 +2501,7 @@ pub mod search_text_request {
         }
     }
     /// Searchable EV options of a place search request.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EvOptions {
         /// Optional. Minimum required charging rate in kilowatts. A place with a
@@ -2459,6 +2532,7 @@ pub mod search_text_request {
     /// from origin to destination. The results might be along an alternate route,
     /// especially if the provided polyline does not define an optimal route from
     /// origin to destination.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SearchAlongRouteParameters {
         /// Required. The route polyline.
@@ -2466,6 +2540,7 @@ pub mod search_text_request {
         pub polyline: ::core::option::Option<super::Polyline>,
     }
     /// How results will be ranked in the response.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2513,6 +2588,7 @@ pub mod search_text_request {
     }
 }
 /// Response proto for SearchText.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTextResponse {
     /// A list of places that meet the user's text search criteria.
@@ -2540,6 +2616,7 @@ pub struct SearchTextResponse {
     pub contextual_contents: ::prost::alloc::vec::Vec<ContextualContent>,
 }
 /// Request for fetching a photo of a place using a photo resource name.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPhotoMediaRequest {
     /// Required. The resource name of a photo media in the format:
@@ -2585,6 +2662,7 @@ pub struct GetPhotoMediaRequest {
     pub skip_http_redirect: bool,
 }
 /// A photo media from Places API.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PhotoMedia {
     /// The resource name of a photo media in the format:
@@ -2597,6 +2675,7 @@ pub struct PhotoMedia {
 }
 /// Request for fetching a Place based on its resource name, which is a string in
 /// the `places/{place_id}` format.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPlaceRequest {
     /// Required. The resource name of a place, in the `places/{place_id}` format.
@@ -2649,6 +2728,7 @@ pub struct GetPlaceRequest {
     pub session_token: ::prost::alloc::string::String,
 }
 /// Request proto for AutocompletePlaces.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutocompletePlacesRequest {
     /// Required. The text string on which to search.
@@ -2760,6 +2840,7 @@ pub struct AutocompletePlacesRequest {
 pub mod autocomplete_places_request {
     /// The region to search. The results may be biased around the specified
     /// region.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationBias {
         #[prost(oneof = "location_bias::Type", tags = "1, 2")]
@@ -2767,6 +2848,7 @@ pub mod autocomplete_places_request {
     }
     /// Nested message and enum types in `LocationBias`.
     pub mod location_bias {
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A viewport defined by a northeast and a southwest corner.
@@ -2779,6 +2861,7 @@ pub mod autocomplete_places_request {
     }
     /// The region to search. The results will be restricted to the specified
     /// region.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "1, 2")]
@@ -2786,6 +2869,7 @@ pub mod autocomplete_places_request {
     }
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A viewport defined by a northeast and a southwest corner.
@@ -2798,6 +2882,7 @@ pub mod autocomplete_places_request {
     }
 }
 /// Response proto for AutocompletePlaces.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutocompletePlacesResponse {
     /// Contains a list of suggestions, ordered in descending order of relevance.
@@ -2807,6 +2892,7 @@ pub struct AutocompletePlacesResponse {
 /// Nested message and enum types in `AutocompletePlacesResponse`.
 pub mod autocomplete_places_response {
     /// An Autocomplete suggestion result.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Suggestion {
         #[prost(oneof = "suggestion::Kind", tags = "1, 2")]
@@ -2815,6 +2901,7 @@ pub mod autocomplete_places_response {
     /// Nested message and enum types in `Suggestion`.
     pub mod suggestion {
         /// Identifies a substring within a given text.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StringRange {
             /// Zero-based offset of the first Unicode character of the string
@@ -2827,6 +2914,7 @@ pub mod autocomplete_places_response {
         }
         /// Text representing a Place or query prediction. The text may be used as is
         /// or formatted.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FormattableText {
             /// Text that may be used as is or formatted with `matches`.
@@ -2851,6 +2939,7 @@ pub mod autocomplete_places_response {
         ///
         /// The secondary text contains additional disambiguating features (such as a
         /// city or region) to further identify the Place or refine the query.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct StructuredFormat {
             /// Represents the name of the Place or query.
@@ -2862,6 +2951,7 @@ pub mod autocomplete_places_response {
             pub secondary_text: ::core::option::Option<FormattableText>,
         }
         /// Prediction results for a Place Autocomplete prediction.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PlacePrediction {
             /// The resource name of the suggested Place. This name can be used in
@@ -2914,6 +3004,7 @@ pub mod autocomplete_places_response {
             pub distance_meters: i32,
         }
         /// Prediction results for a Query Autocomplete prediction.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct QueryPrediction {
             /// The predicted text. This text does not represent a Place, but rather a
@@ -2943,6 +3034,7 @@ pub mod autocomplete_places_response {
             #[prost(message, optional, tag = "2")]
             pub structured_format: ::core::option::Option<StructuredFormat>,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// A prediction for a Place.
@@ -3182,6 +3274,7 @@ pub mod places_client {
 /// for more details.
 ///
 /// Reference that the generative content is related to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct References {
     /// Reviews that serve as references.

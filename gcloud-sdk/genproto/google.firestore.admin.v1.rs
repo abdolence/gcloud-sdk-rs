@@ -3,6 +3,7 @@
 ///
 /// The backup contains all documents and index configurations for the given
 /// database at a specific point in time.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Backup {
     /// Output only. The unique resource name of the Backup.
@@ -44,6 +45,7 @@ pub struct Backup {
 /// Nested message and enum types in `Backup`.
 pub mod backup {
     /// Backup specific statistics.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Stats {
         /// Output only. Summation of the size of all documents and index entries in
@@ -58,6 +60,7 @@ pub mod backup {
         pub index_count: i64,
     }
     /// Indicate the current state of the backup.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -107,6 +110,7 @@ pub mod backup {
     }
 }
 /// The Realtime Updates mode.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RealtimeUpdatesMode {
@@ -142,6 +146,7 @@ impl RealtimeUpdatesMode {
     }
 }
 /// A Cloud Firestore Database.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
     /// The resource name of the Database.
@@ -282,6 +287,7 @@ pub mod database {
     /// The CMEK (Customer Managed Encryption Key) configuration for a Firestore
     /// database. If not present, the database is secured by the default Google
     /// encryption key.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CmekConfig {
         /// Required. Only keys in the same location as this database are allowed to
@@ -307,6 +313,7 @@ pub mod database {
         pub active_key_version: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Information about the provenance of this database.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceInfo {
         /// The associated long-running operation. This field may not be set after
@@ -321,6 +328,7 @@ pub mod database {
     /// Nested message and enum types in `SourceInfo`.
     pub mod source_info {
         /// Information about a backup that was used to restore a database.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BackupSource {
             /// The resource name of the backup that was used to restore this
@@ -330,6 +338,7 @@ pub mod database {
             pub backup: ::prost::alloc::string::String,
         }
         /// The source from which this database is derived.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Source {
             /// If set, this database was restored from the specified backup (or a
@@ -343,6 +352,7 @@ pub mod database {
     ///
     /// The source could be a \[Backup\]\[google.firestore.admin.v1.Backup\] or a
     /// \[PitrSnapshot\]\[google.firestore.admin.v1.PitrSnapshot\].
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EncryptionConfig {
         /// The method for encrypting the database.
@@ -352,14 +362,17 @@ pub mod database {
     /// Nested message and enum types in `EncryptionConfig`.
     pub mod encryption_config {
         /// The configuration options for using Google default encryption.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleDefaultEncryptionOptions {}
         /// The configuration options for using the same encryption method as the
         /// source.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SourceEncryptionOptions {}
         /// The configuration options for using CMEK (Customer Managed Encryption
         /// Key) encryption.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomerManagedEncryptionOptions {
             /// Required. Only keys in the same location as the database are allowed to
@@ -376,6 +389,7 @@ pub mod database {
             pub kms_key_name: ::prost::alloc::string::String,
         }
         /// The method for encrypting the database.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum EncryptionType {
             /// Use Google default encryption.
@@ -394,6 +408,7 @@ pub mod database {
     /// information about how to choose.
     ///
     /// Mode changes are only allowed if the database is empty.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -437,6 +452,7 @@ pub mod database {
         }
     }
     /// The type of concurrency control mode for transactions.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -498,6 +514,7 @@ pub mod database {
         }
     }
     /// Point In Time Recovery feature enablement.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -555,6 +572,7 @@ pub mod database {
         }
     }
     /// The type of App Engine integration mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -604,6 +622,7 @@ pub mod database {
         }
     }
     /// The delete protection state of the database.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -647,6 +666,7 @@ pub mod database {
         }
     }
     /// The edition of the database.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -692,6 +712,7 @@ pub mod database {
         }
     }
     /// The data access mode.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -737,6 +758,7 @@ pub mod database {
 }
 /// Cloud Firestore indexes enable simple and complex queries against
 /// documents in a database.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// Output only. A server defined name for this index.
@@ -804,6 +826,7 @@ pub mod index {
     /// A field in an index.
     /// The field_path describes which field is indexed, the value_mode describes
     /// how the field value is indexed.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexField {
         /// Can be **name**.
@@ -818,6 +841,7 @@ pub mod index {
     /// Nested message and enum types in `IndexField`.
     pub mod index_field {
         /// The index configuration to support vector search operations
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct VectorConfig {
             /// Required. The vector dimension this configuration applies to.
@@ -834,9 +858,11 @@ pub mod index {
         pub mod vector_config {
             /// An index that stores vectors in a flat data structure, and supports
             /// exhaustive search.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct FlatIndex {}
             /// The type of index used.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Type {
                 /// Indicates the vector index is a flat index.
@@ -845,6 +871,7 @@ pub mod index {
             }
         }
         /// The configuration for how to index a field for search.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SearchConfig {
             /// Optional. The specification for building a text search index for a
@@ -860,6 +887,7 @@ pub mod index {
         pub mod search_config {
             /// Specification of how the field should be indexed for search text
             /// indexes.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct SearchTextIndexSpec {
                 /// Required. How to index the text field value.
@@ -870,6 +898,7 @@ pub mod index {
                 pub match_type: i32,
             }
             /// The specification for how to build a text search index for a field.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct SearchTextSpec {
                 /// Required. Specifications for how the field should be indexed.
@@ -878,6 +907,7 @@ pub mod index {
                 pub index_specs: ::prost::alloc::vec::Vec<SearchTextIndexSpec>,
             }
             /// The specification for how to build a geo search index for a field.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct SearchGeoSpec {
                 /// Optional. Disables geoJSON indexing for the field. By default,
@@ -886,6 +916,7 @@ pub mod index {
                 pub geo_json_indexing_disabled: bool,
             }
             /// Ways to index the text field value.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -927,6 +958,7 @@ pub mod index {
             }
             /// Types of text matches that are supported for the
             /// field.
+            #[allow(clippy::all)]
             #[derive(
                 Clone,
                 Copy,
@@ -968,6 +1000,7 @@ pub mod index {
             }
         }
         /// The supported orderings.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1011,6 +1044,7 @@ pub mod index {
             }
         }
         /// The supported array value configurations.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1050,6 +1084,7 @@ pub mod index {
             }
         }
         /// How the field value is indexed.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
@@ -1071,6 +1106,7 @@ pub mod index {
         }
     }
     /// Options for search indexes at the definition level.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SearchIndexOptions {
         /// Optional. The language to use for text search indexes. Used as the
@@ -1092,6 +1128,7 @@ pub mod index {
     }
     /// Query Scope defines the scope at which a query is run. This is specified on
     /// a StructuredQuery's `from` field.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1145,6 +1182,7 @@ pub mod index {
     }
     /// API Scope defines the APIs (Firestore Native, or Firestore in
     /// Datastore Mode) that are supported for queries.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1192,6 +1230,7 @@ pub mod index {
     /// `CREATING` state. If the index is created successfully, it will transition
     /// to the `READY` state. If the index creation encounters a problem, the index
     /// will transition to the `NEEDS_REPAIR` state.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1251,6 +1290,7 @@ pub mod index {
         }
     }
     /// The density configuration for the index.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -1355,6 +1395,7 @@ pub mod index {
 ///
 /// Fields are grouped by their "Collection Group", which represent all
 /// collections in the database with the same ID.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
     /// Required. A field name of the form:
@@ -1398,6 +1439,7 @@ pub struct Field {
 /// Nested message and enum types in `Field`.
 pub mod field {
     /// The index configuration for this field.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfig {
         /// The indexes supported for this field.
@@ -1435,6 +1477,7 @@ pub mod field {
     /// An expiration time in the past indicates that the document is eligible for
     /// immediate expiration. Using any other data type or leaving the field absent
     /// will disable expiration for the individual document.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TtlConfig {
         /// Output only. The state of the TTL configuration.
@@ -1454,6 +1497,7 @@ pub mod field {
     /// Nested message and enum types in `TtlConfig`.
     pub mod ttl_config {
         /// The state of applying the TTL configuration to all documents.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1514,6 +1558,7 @@ pub mod field {
 /// database's data is available for every minute up to the associated database's
 /// data retention period. If the PITR feature is enabled, the retention period
 /// is 7 days; otherwise, it is one hour.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PitrSnapshot {
     /// Required. The name of the database that this was a snapshot of. Format:
@@ -1530,6 +1575,7 @@ pub struct PitrSnapshot {
 /// Metadata for \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// results from
 /// \[FirestoreAdmin.CreateIndex\]\[google.firestore.admin.v1.FirestoreAdmin.CreateIndex\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time this operation started.
@@ -1556,6 +1602,7 @@ pub struct IndexOperationMetadata {
 /// Metadata for \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// results from
 /// \[FirestoreAdmin.UpdateField\]\[google.firestore.admin.v1.FirestoreAdmin.UpdateField\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldOperationMetadata {
     /// The time this operation started.
@@ -1594,6 +1641,7 @@ pub struct FieldOperationMetadata {
 /// Nested message and enum types in `FieldOperationMetadata`.
 pub mod field_operation_metadata {
     /// Information about an index configuration change.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfigDelta {
         /// Specifies how the index is changing.
@@ -1606,6 +1654,7 @@ pub mod field_operation_metadata {
     /// Nested message and enum types in `IndexConfigDelta`.
     pub mod index_config_delta {
         /// Specifies how the index is changing.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1650,6 +1699,7 @@ pub mod field_operation_metadata {
         }
     }
     /// Information about a TTL configuration change.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TtlConfigDelta {
         /// Specifies how the TTL configuration is changing.
@@ -1663,6 +1713,7 @@ pub mod field_operation_metadata {
     /// Nested message and enum types in `TtlConfigDelta`.
     pub mod ttl_config_delta {
         /// Specifies how the TTL config is changing.
+        #[allow(clippy::all)]
         #[derive(
             Clone,
             Copy,
@@ -1710,6 +1761,7 @@ pub mod field_operation_metadata {
 /// Metadata for \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// results from
 /// \[FirestoreAdmin.ExportDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.ExportDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
     /// The time this operation started.
@@ -1746,6 +1798,7 @@ pub struct ExportDocumentsMetadata {
 /// Metadata for \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// results from
 /// \[FirestoreAdmin.ImportDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.ImportDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// The time this operation started.
@@ -1777,6 +1830,7 @@ pub struct ImportDocumentsMetadata {
 /// Metadata for \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// results from
 /// \[FirestoreAdmin.BulkDeleteDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkDeleteDocumentsMetadata {
     /// The time this operation started.
@@ -1810,6 +1864,7 @@ pub struct BulkDeleteDocumentsMetadata {
 }
 /// Returned in the \[google.longrunning.Operation\]\[google.longrunning.Operation\]
 /// response field.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
@@ -1820,6 +1875,7 @@ pub struct ExportDocumentsResponse {
 }
 /// Metadata for the \[long-running operation\]\[google.longrunning.Operation\] from
 /// the \[RestoreDatabase\]\[google.firestore.admin.v1.RestoreDatabase\] request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestoreDatabaseMetadata {
     /// The time the restore was started.
@@ -1843,6 +1899,7 @@ pub struct RestoreDatabaseMetadata {
 }
 /// Metadata for the \[long-running operation\]\[google.longrunning.Operation\] from
 /// the \[CloneDatabase\]\[google.firestore.admin.v1.CloneDatabase\] request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloneDatabaseMetadata {
     /// The time the clone was started.
@@ -1867,6 +1924,7 @@ pub struct CloneDatabaseMetadata {
 /// Describes the progress of the operation.
 /// Unit of work is generic and must be interpreted based on where
 /// \[Progress\]\[google.firestore.admin.v1.Progress\] is used.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Progress {
     /// The amount of work estimated.
@@ -1877,6 +1935,7 @@ pub struct Progress {
     pub completed_work: i64,
 }
 /// Describes the state of the operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperationState {
@@ -1935,6 +1994,7 @@ impl OperationState {
 ///
 /// This resource is owned by the database it is backing up, and is deleted along
 /// with the database. The actual backups are not though.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupSchedule {
     /// Output only. The unique backup schedule identifier across all locations and
@@ -1970,6 +2030,7 @@ pub struct BackupSchedule {
 /// Nested message and enum types in `BackupSchedule`.
 pub mod backup_schedule {
     /// A oneof field to represent when backups will be taken.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Recurrence {
         /// For a schedule that runs daily.
@@ -1983,11 +2044,13 @@ pub mod backup_schedule {
 /// Represents a recurring schedule that runs every day.
 ///
 /// The time zone is UTC.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyRecurrence {}
 /// Represents a recurring schedule that runs on a specified day of the week.
 ///
 /// The time zone is UTC.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WeeklyRecurrence {
     /// The day of week to run.
@@ -1997,6 +2060,7 @@ pub struct WeeklyRecurrence {
     pub day: i32,
 }
 /// A Cloud Firestore User Creds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserCreds {
     /// Identifier. The resource name of the UserCreds.
@@ -2025,6 +2089,7 @@ pub struct UserCreds {
 /// Nested message and enum types in `UserCreds`.
 pub mod user_creds {
     /// Describes a Resource Identity principal.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceIdentity {
         /// Output only. Principal identifier string.
@@ -2033,6 +2098,7 @@ pub mod user_creds {
         pub principal: ::prost::alloc::string::String,
     }
     /// The state of the user creds (ENABLED or DISABLED).
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -2076,6 +2142,7 @@ pub mod user_creds {
         }
     }
     /// Identity associated with this User Creds.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum UserCredsIdentity {
         /// Resource Identity descriptor.
@@ -2084,6 +2151,7 @@ pub mod user_creds {
     }
 }
 /// A request to list the Firestore Databases in all locations for a project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatabasesRequest {
     /// Required. A parent name of the form
@@ -2096,6 +2164,7 @@ pub struct ListDatabasesRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.CreateDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.CreateDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatabaseRequest {
     /// Required. A parent name of the form
@@ -2117,9 +2186,11 @@ pub struct CreateDatabaseRequest {
     pub database_id: ::prost::alloc::string::String,
 }
 /// Metadata related to the create database operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDatabaseMetadata {}
 /// The list of databases for a project.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
     /// The databases in the project.
@@ -2139,6 +2210,7 @@ pub struct ListDatabasesResponse {
 }
 /// The request for
 /// \[FirestoreAdmin.GetDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.GetDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDatabaseRequest {
     /// Required. A name of the form
@@ -2148,6 +2220,7 @@ pub struct GetDatabaseRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.UpdateDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseRequest {
     /// Required. The database to update.
@@ -2158,10 +2231,12 @@ pub struct UpdateDatabaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Metadata related to the update database operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDatabaseMetadata {}
 /// The request for
 /// \[FirestoreAdmin.DeleteDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.DeleteDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDatabaseRequest {
     /// Required. A name of the form
@@ -2175,10 +2250,12 @@ pub struct DeleteDatabaseRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Metadata related to the delete database operation.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDatabaseMetadata {}
 /// The request for
 /// \[FirestoreAdmin.CreateUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.CreateUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateUserCredsRequest {
     /// Required. A parent name of the form
@@ -2199,6 +2276,7 @@ pub struct CreateUserCredsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.GetUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.GetUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserCredsRequest {
     /// Required. A name of the form
@@ -2208,6 +2286,7 @@ pub struct GetUserCredsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ListUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.ListUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUserCredsRequest {
     /// Required. A parent database name of the form
@@ -2217,6 +2296,7 @@ pub struct ListUserCredsRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.ListUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.ListUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserCredsResponse {
     /// The user creds for the database.
@@ -2225,6 +2305,7 @@ pub struct ListUserCredsResponse {
 }
 /// The request for
 /// \[FirestoreAdmin.EnableUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.EnableUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableUserCredsRequest {
     /// Required. A name of the form
@@ -2234,6 +2315,7 @@ pub struct EnableUserCredsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.DisableUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.DisableUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableUserCredsRequest {
     /// Required. A name of the form
@@ -2243,6 +2325,7 @@ pub struct DisableUserCredsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ResetUserPassword\]\[google.firestore.admin.v1.FirestoreAdmin.ResetUserPassword\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetUserPasswordRequest {
     /// Required. A name of the form
@@ -2252,6 +2335,7 @@ pub struct ResetUserPasswordRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.DeleteUserCreds\]\[google.firestore.admin.v1.FirestoreAdmin.DeleteUserCreds\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUserCredsRequest {
     /// Required. A name of the form
@@ -2261,6 +2345,7 @@ pub struct DeleteUserCredsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.CreateBackupSchedule\]\[google.firestore.admin.v1.FirestoreAdmin.CreateBackupSchedule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateBackupScheduleRequest {
     /// Required. The parent database.
@@ -2274,6 +2359,7 @@ pub struct CreateBackupScheduleRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.GetBackupSchedule\]\[google.firestore.admin.v1.FirestoreAdmin.GetBackupSchedule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupScheduleRequest {
     /// Required. The name of the backup schedule.
@@ -2285,6 +2371,7 @@ pub struct GetBackupScheduleRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.UpdateBackupSchedule\]\[google.firestore.admin.v1.FirestoreAdmin.UpdateBackupSchedule\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBackupScheduleRequest {
     /// Required. The backup schedule to update.
@@ -2296,6 +2383,7 @@ pub struct UpdateBackupScheduleRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ListBackupSchedules\]\[google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupSchedulesRequest {
     /// Required. The parent database.
@@ -2306,6 +2394,7 @@ pub struct ListBackupSchedulesRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.ListBackupSchedules\]\[google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupSchedulesResponse {
     /// List of all backup schedules.
@@ -2313,6 +2402,7 @@ pub struct ListBackupSchedulesResponse {
     pub backup_schedules: ::prost::alloc::vec::Vec<BackupSchedule>,
 }
 /// The request for \[FirestoreAdmin.DeleteBackupSchedules\]\[\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackupScheduleRequest {
     /// Required. The name of the backup schedule.
@@ -2324,6 +2414,7 @@ pub struct DeleteBackupScheduleRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.CreateIndex\]\[google.firestore.admin.v1.FirestoreAdmin.CreateIndex\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// Required. A parent name of the form
@@ -2336,6 +2427,7 @@ pub struct CreateIndexRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ListIndexes\]\[google.firestore.admin.v1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Required. A parent name of the form
@@ -2356,6 +2448,7 @@ pub struct ListIndexesRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.ListIndexes\]\[google.firestore.admin.v1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The requested indexes.
@@ -2368,6 +2461,7 @@ pub struct ListIndexesResponse {
 }
 /// The request for
 /// \[FirestoreAdmin.GetIndex\]\[google.firestore.admin.v1.FirestoreAdmin.GetIndex\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Required. A name of the form
@@ -2377,6 +2471,7 @@ pub struct GetIndexRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.DeleteIndex\]\[google.firestore.admin.v1.FirestoreAdmin.DeleteIndex\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Required. A name of the form
@@ -2386,6 +2481,7 @@ pub struct DeleteIndexRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.UpdateField\]\[google.firestore.admin.v1.FirestoreAdmin.UpdateField\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
     /// Required. The field to be updated.
@@ -2398,6 +2494,7 @@ pub struct UpdateFieldRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.GetField\]\[google.firestore.admin.v1.FirestoreAdmin.GetField\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFieldRequest {
     /// Required. A name of the form
@@ -2407,6 +2504,7 @@ pub struct GetFieldRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ListFields\]\[google.firestore.admin.v1.FirestoreAdmin.ListFields\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFieldsRequest {
     /// Required. A parent name of the form
@@ -2433,6 +2531,7 @@ pub struct ListFieldsRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.ListFields\]\[google.firestore.admin.v1.FirestoreAdmin.ListFields\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
     /// The requested fields.
@@ -2445,6 +2544,7 @@ pub struct ListFieldsResponse {
 }
 /// The request for
 /// \[FirestoreAdmin.ExportDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.ExportDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDocumentsRequest {
     /// Required. Database to export. Should be of the form:
@@ -2485,6 +2585,7 @@ pub struct ExportDocumentsRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ImportDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.ImportDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Required. Database to import into. Should be of the form:
@@ -2522,6 +2623,7 @@ pub struct ImportDocumentsRequest {
 /// Please use
 /// \[FirestoreAdmin.DeleteDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.DeleteDatabase\]
 /// instead.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkDeleteDocumentsRequest {
     /// Required. Database to operate. Should be of the form:
@@ -2549,10 +2651,12 @@ pub struct BulkDeleteDocumentsRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.BulkDeleteDocuments\]\[google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkDeleteDocumentsResponse {}
 /// The request for
 /// \[FirestoreAdmin.GetBackup\]\[google.firestore.admin.v1.FirestoreAdmin.GetBackup\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Name of the backup to fetch.
@@ -2563,6 +2667,7 @@ pub struct GetBackupRequest {
 }
 /// The request for
 /// \[FirestoreAdmin.ListBackups\]\[google.firestore.admin.v1.FirestoreAdmin.ListBackups\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The location to list backups from.
@@ -2590,6 +2695,7 @@ pub struct ListBackupsRequest {
 }
 /// The response for
 /// \[FirestoreAdmin.ListBackups\]\[google.firestore.admin.v1.FirestoreAdmin.ListBackups\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// List of all backups for the project.
@@ -2606,6 +2712,7 @@ pub struct ListBackupsResponse {
 }
 /// The request for
 /// \[FirestoreAdmin.DeleteBackup\]\[google.firestore.admin.v1.FirestoreAdmin.DeleteBackup\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the backup to delete.
@@ -2616,6 +2723,7 @@ pub struct DeleteBackupRequest {
 }
 /// The request message for
 /// \[FirestoreAdmin.RestoreDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatabaseRequest {
     /// Required. The project to restore the database in. Format is
@@ -2661,6 +2769,7 @@ pub struct RestoreDatabaseRequest {
 }
 /// The request message for
 /// \[FirestoreAdmin.CloneDatabase\]\[google.firestore.admin.v1.FirestoreAdmin.CloneDatabase\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneDatabaseRequest {
     /// Required. The project to clone the database in. Format is
@@ -3820,5 +3929,6 @@ pub mod firestore_admin_client {
 }
 /// The metadata message for
 /// \[google.cloud.location.Location.metadata\]\[google.cloud.location.Location.metadata\].
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationMetadata {}

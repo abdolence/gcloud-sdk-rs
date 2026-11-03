@@ -2,6 +2,7 @@
 /// A Document represents a page of documentation in the Developer Knowledge
 /// corpus, like the page at
 /// <https://docs.cloud.google.com/storage/docs/creating-buckets.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Document {
     /// Identifier. Contains the resource name of the document.
@@ -10,7 +11,7 @@ pub struct Document {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Provides the URI of the content, such as
-    /// `docs.cloud.google.com/storage/docs/creating-buckets`.
+    /// `<https://docs.cloud.google.com/storage/docs/creating-buckets`.>
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Output only. Contains the full content of the document in Markdown format.
@@ -41,6 +42,7 @@ pub struct Document {
 }
 /// Request message for
 /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchDocumentChunksRequest {
     /// Required. Provides the raw query string provided by the user, such as "How
@@ -116,6 +118,7 @@ pub struct SearchDocumentChunksRequest {
 }
 /// Response message for
 /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDocumentChunksResponse {
     /// Contains the search results for the given query. Each
@@ -137,6 +140,7 @@ pub struct SearchDocumentChunksResponse {
 }
 /// Request message for
 /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1.DeveloperKnowledge.GetDocument\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDocumentRequest {
     /// Required. Specifies the name of the document to retrieve.
@@ -157,6 +161,7 @@ pub struct GetDocumentRequest {
 }
 /// Request message for
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetDocumentsRequest {
     /// Required. Specifies the names of the documents to retrieve. A maximum of 20
@@ -180,6 +185,7 @@ pub struct BatchGetDocumentsRequest {
 }
 /// Response message for
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsResponse {
     /// Contains the documents requested.
@@ -188,6 +194,7 @@ pub struct BatchGetDocumentsResponse {
 }
 /// Request message for
 /// \[DeveloperKnowledge.AnswerQuery\]\[google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnswerQueryRequest {
     /// Required. The query to answer.
@@ -241,6 +248,7 @@ pub struct AnswerQueryRequest {
 }
 /// Response message for
 /// \[DeveloperKnowledge.AnswerQuery\]\[google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnswerQueryResponse {
     /// The answer to the query.
@@ -248,6 +256,7 @@ pub struct AnswerQueryResponse {
     pub answer: ::core::option::Option<Answer>,
 }
 /// An answer to a query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Answer {
     /// Contains the text of the answer.
@@ -263,6 +272,7 @@ pub struct Answer {
 /// Nested message and enum types in `Answer`.
 pub mod answer {
     /// Citation info for a segment.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnswerCitation {
         /// Output only. Indicates the start of the segment, measured in bytes (UTF-8
@@ -282,6 +292,7 @@ pub mod answer {
         pub sources: ::prost::alloc::vec::Vec<CitationSource>,
     }
     /// Citation source.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CitationSource {
         /// Output only. Contains the index of the
@@ -291,6 +302,7 @@ pub mod answer {
         pub reference_index: i32,
     }
     /// Represents a reference to a source.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnswerReference {
         /// Contains the content of the reference.
@@ -300,6 +312,7 @@ pub mod answer {
     /// Nested message and enum types in `AnswerReference`.
     pub mod answer_reference {
         /// Contains the content of the reference.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Content {
             /// Output only. The reference document.
@@ -308,6 +321,7 @@ pub mod answer {
         }
     }
     /// Represents a reference to a document.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DocumentReference {
         /// Output only. Contains the document chunk. The `document_chunk.id` field
@@ -322,6 +336,7 @@ pub mod answer {
 /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1.DeveloperKnowledge.GetDocument\]
 /// or
 /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments\].
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentChunk {
     /// Output only. Contains the resource name of the document this chunk is from.
@@ -361,6 +376,7 @@ pub struct DocumentChunk {
 }
 /// Specifies which fields of the
 /// \[Document\]\[google.developers.knowledge.v1.Document\] are included.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DocumentView {
@@ -436,11 +452,14 @@ pub mod developer_knowledge_client {
     ///
     /// A typical use case is to first use
     /// \[DeveloperKnowledge.SearchDocumentChunks\]\[google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks\]
-    /// to find relevant page URIs based on a query, and then use
+    /// to find relevant document chunks based on a query, and then use
     /// \[DeveloperKnowledge.GetDocument\]\[google.developers.knowledge.v1.DeveloperKnowledge.GetDocument\]
     /// or
     /// \[DeveloperKnowledge.BatchGetDocuments\]\[google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments\]
-    /// to fetch the full content of the top results.
+    /// with document resource names (such as
+    /// \[DocumentChunk.parent\]\[google.developers.knowledge.v1.DocumentChunk.parent\]
+    /// or `documents/{uri_without_scheme}`) to fetch the full content of the top
+    /// results.
     ///
     /// All document content is provided in Markdown format.
     #[derive(Debug, Clone)]

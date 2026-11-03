@@ -5,6 +5,7 @@
 /// The sole purpose of this message is for the use of AlloyDB connectors.
 /// Clients should not rely on this message directly as there can be breaking
 /// changes in the future.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MetadataExchangeRequest {
     /// Optional. Connector information.
@@ -21,6 +22,7 @@ pub struct MetadataExchangeRequest {
 /// Nested message and enum types in `MetadataExchangeRequest`.
 pub mod metadata_exchange_request {
     /// AuthType contains all supported authentication types.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -67,6 +69,7 @@ pub mod metadata_exchange_request {
 /// Message for response to metadata exchange request. The sole purpose of this
 /// message is for the use of AlloyDB connectors. Clients should not rely on this
 /// message directly as there can be breaking changes in the future.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MetadataExchangeResponse {
     /// Response code.
@@ -79,6 +82,7 @@ pub struct MetadataExchangeResponse {
 /// Nested message and enum types in `MetadataExchangeResponse`.
 pub mod metadata_exchange_response {
     /// Response code.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,

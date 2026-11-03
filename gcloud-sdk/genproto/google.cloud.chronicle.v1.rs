@@ -2,6 +2,7 @@
 /// This resource represents the BigQuery export configuration for a Chronicle
 /// instance which includes Google Cloud Platform resources like Cloud Storage
 /// buckets, BigQuery datasets etc and the export settings for each data source.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryExport {
     /// Identifier. The resource name of the BigQueryExport.
@@ -33,6 +34,7 @@ pub struct BigQueryExport {
     pub udm_events_settings: ::core::option::Option<DataSourceExportSettings>,
 }
 /// The export settings for a data source.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSourceExportSettings {
     /// Required. Whether the data source is enabled for export.
@@ -53,6 +55,7 @@ pub struct DataSourceExportSettings {
     pub data_volume: i64,
 }
 /// The request message to fetch BigQuery Export configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBigQueryExportRequest {
     /// Required. The resource name of the BigqueryExport to retrieve.
@@ -62,6 +65,7 @@ pub struct GetBigQueryExportRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message to update BigQuery Export configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBigQueryExportRequest {
     /// Required. The BigQueryExport settings to update.
@@ -74,6 +78,7 @@ pub struct UpdateBigQueryExportRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message to provision BigQuery Export configuration.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisionBigQueryExportRequest {
     /// Required. The instance for which BigQuery export is being provisioned.
@@ -82,6 +87,7 @@ pub struct ProvisionBigQueryExportRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// The BigQueryExportPackage entitled for the Chronicle instance.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum BigQueryExportPackage {
@@ -115,6 +121,7 @@ impl BigQueryExportPackage {
     }
 }
 /// The state of the latest data source export job.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LatestExportJobState {
@@ -325,6 +332,7 @@ pub mod big_query_export_service_client {
     }
 }
 /// DashboardQuery resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DashboardQuery {
     /// Output only. Name of the dashboardQuery.
@@ -348,6 +356,7 @@ pub struct DashboardQuery {
 /// Nested message and enum types in `DashboardQuery`.
 pub mod dashboard_query {
     /// Input to the query like time window.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Input {
         #[prost(oneof = "input::TimeInput", tags = "1, 3")]
@@ -356,6 +365,7 @@ pub mod dashboard_query {
     /// Nested message and enum types in `Input`.
     pub mod input {
         /// time representation for last x units.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RelativeTime {
             #[prost(enumeration = "super::super::TimeUnit", tag = "1")]
@@ -363,6 +373,7 @@ pub mod dashboard_query {
             #[prost(int64, tag = "2")]
             pub start_time_val: i64,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum TimeInput {
             /// time range to fetch the data for.
@@ -375,6 +386,7 @@ pub mod dashboard_query {
     }
 }
 /// Request message to get a dashboard query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDashboardQueryRequest {
     /// Required. The name of the dashboardQuery to retrieve.
@@ -384,6 +396,7 @@ pub struct GetDashboardQueryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to execute a dashboard query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteDashboardQueryRequest {
     /// Required. The parent, under which to run this dashboardQuery.
@@ -409,6 +422,7 @@ pub struct ExecuteDashboardQueryRequest {
     pub use_previous_time_range: bool,
 }
 /// Runtime error for a dashboard query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRuntimeError {
     /// Short Description of the error.
@@ -432,6 +446,7 @@ pub struct QueryRuntimeError {
 /// Nested message and enum types in `QueryRuntimeError`.
 pub mod query_runtime_error {
     /// Metadata for the error.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct QueryRuntimeErrorMetadata {
         /// Metadata key.
@@ -442,6 +457,7 @@ pub mod query_runtime_error {
         pub value: ::prost::alloc::string::String,
     }
     /// Based on ErrorSeverity, UI will choose to format the error differently.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -485,6 +501,7 @@ pub mod query_runtime_error {
         }
     }
     /// Metadata enum to identify the metadata key.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -524,6 +541,7 @@ pub mod query_runtime_error {
         }
     }
     /// Warning reason.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -576,6 +594,7 @@ pub mod query_runtime_error {
     }
 }
 /// Response message for executing a dashboard query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteDashboardQueryResponse {
     /// Result rows that are queried.
@@ -604,6 +623,7 @@ pub struct ExecuteDashboardQueryResponse {
 pub mod execute_dashboard_query_response {
     /// LINT.IfChange(stats_data)
     /// Value of the column based on data type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ColumnValue {
         #[prost(message, optional, tag = "11")]
@@ -613,6 +633,7 @@ pub mod execute_dashboard_query_response {
     }
     /// Nested message and enum types in `ColumnValue`.
     pub mod column_value {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ValueMetadata {
             /// "Auto" generated In-app links.
@@ -625,6 +646,7 @@ pub mod execute_dashboard_query_response {
             #[prost(message, optional, tag = "3")]
             pub timestamp_val: ::core::option::Option<::prost_types::Timestamp>,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// True if the value is NULL.
@@ -660,6 +682,7 @@ pub mod execute_dashboard_query_response {
         }
     }
     /// Singular vs list of values in a column.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ColumnType {
         #[prost(oneof = "column_type::Type", tags = "1, 2")]
@@ -668,11 +691,13 @@ pub mod execute_dashboard_query_response {
     /// Nested message and enum types in `ColumnType`.
     pub mod column_type {
         /// Store list of values in a column.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct List {
             #[prost(message, repeated, tag = "1")]
             pub values: ::prost::alloc::vec::Vec<super::ColumnValue>,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// Single value in a column.
@@ -683,6 +708,7 @@ pub mod execute_dashboard_query_response {
             List(List),
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ColumnData {
         /// Used to store column names.
@@ -698,6 +724,7 @@ pub mod execute_dashboard_query_response {
 }
 /// Dashboard level filter that can be used in native dashboards as well as
 /// inputs to execute query.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DashboardFilter {
     /// ID of the filter.
@@ -737,6 +764,7 @@ pub struct DashboardFilter {
     #[prost(message, optional, tag = "10")]
     pub advanced_filter_config: ::core::option::Option<AdvancedFilterConfig>,
 }
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FilterOperatorAndValues {
     /// Operator for a single filter modifier.
@@ -749,6 +777,7 @@ pub struct FilterOperatorAndValues {
     pub field_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Advanced filter configuration for the filter widget.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvancedFilterConfig {
     /// Required. The token name to look for in the query (e.g., "hostname").
@@ -785,6 +814,7 @@ pub struct AdvancedFilterConfig {
 /// Nested message and enum types in `AdvancedFilterConfig`.
 pub mod advanced_filter_config {
     /// Source of the values for the filter.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ValueSource {
         /// Source of the values for the filter.
@@ -794,6 +824,7 @@ pub mod advanced_filter_config {
     /// Nested message and enum types in `ValueSource`.
     pub mod value_source {
         /// Source of the values for the filter.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Source {
             /// Optional. Manual options provided by the user.
@@ -806,6 +837,7 @@ pub mod advanced_filter_config {
         }
     }
     /// Manual options provided by the user.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ManualOptions {
         /// Optional. The options provided by the user.
@@ -815,6 +847,7 @@ pub mod advanced_filter_config {
     }
     /// Query options to fetch the values from the query engine.
     /// This is used for the filter's population query.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct QueryOptions {
         /// Required. The query to execute to fetch the values.
@@ -833,6 +866,7 @@ pub mod advanced_filter_config {
     }
 }
 /// In app linking start
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InAppLink {
     /// URL to redirect to.
@@ -846,6 +880,7 @@ pub struct InAppLink {
     pub icon_url: ::prost::alloc::string::String,
 }
 /// Metadata of the column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ColumnMetadata {
     /// Name of the column.
@@ -880,6 +915,7 @@ pub struct ColumnMetadata {
     pub unselected: bool,
 }
 /// Metadata of the timestamp column.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimestampMetadata {
     /// Time format of the timestamp column.
@@ -901,6 +937,7 @@ pub struct TimestampMetadata {
 /// A language feature describes a specific capability or syntax of the query
 /// language used in a dashboard query, such as `JOINS`, `STAGES`, or
 /// `DATA_TABLES`.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LanguageFeature {
@@ -937,6 +974,7 @@ impl LanguageFeature {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FilterOperator {
@@ -1018,6 +1056,7 @@ impl FilterOperator {
     }
 }
 /// LINT.IfChange(data_sources)
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataSource {
@@ -1097,6 +1136,7 @@ impl DataSource {
     }
 }
 /// TimeUnit supported for PAST filter operator.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TimeUnit {
@@ -1294,6 +1334,7 @@ pub mod dashboard_query_service_client {
     }
 }
 /// DashboardChart resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DashboardChart {
     /// Output only. Name of the dashboardChart.
@@ -1337,6 +1378,7 @@ pub struct DashboardChart {
 /// Nested message and enum types in `DashboardChart`.
 pub mod dashboard_chart {
     /// Datasource of the chart including the query reference and source name.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ChartDatasource {
         /// Reference to dashboard query resource used in the chart.
@@ -1348,6 +1390,7 @@ pub mod dashboard_chart {
     }
     /// Visualization config for a chart.
     /// <https://echarts.apache.org/en/option.html#series>
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Visualization {
         #[prost(message, repeated, tag = "7")]
@@ -1392,6 +1435,7 @@ pub mod dashboard_chart {
     }
     /// Nested message and enum types in `Visualization`.
     pub mod visualization {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Axis {
             #[prost(enumeration = "super::super::AxisType", tag = "4")]
@@ -1407,6 +1451,7 @@ pub mod dashboard_chart {
             #[prost(int32, optional, tag = "7")]
             pub max: ::core::option::Option<i32>,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Series {
             #[prost(enumeration = "super::super::SeriesType", tag = "8")]
@@ -1456,6 +1501,7 @@ pub mod dashboard_chart {
         }
         /// Nested message and enum types in `Series`.
         pub mod series {
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Encode {
                 #[prost(string, tag = "1")]
@@ -1472,6 +1518,7 @@ pub mod dashboard_chart {
                 pub item_name: ::prost::alloc::string::String,
             }
             /// Data label config for a series.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct DataLabel {
                 /// Optional. Whether to show data label.
@@ -1479,6 +1526,7 @@ pub mod dashboard_chart {
                 pub show: bool,
             }
             /// Custom styling for chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct ItemStyle {
                 /// Optional. Used to add border width
@@ -1492,6 +1540,7 @@ pub mod dashboard_chart {
                 pub color: ::prost::alloc::string::String,
             }
             /// Custom styling for area chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct AreaStyle {
                 /// Optional. Used to add color
@@ -1517,6 +1566,7 @@ pub mod dashboard_chart {
                 pub opacity: i32,
             }
             /// User selected color and label for the slice of the chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct UserSelectedValues {
                 /// Optional. User specified color of a pie slice
@@ -1527,6 +1577,7 @@ pub mod dashboard_chart {
                 pub label: ::prost::alloc::string::String,
             }
             /// Slice containing the key and value for a slice in the chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct ChartSliceColor {
                 /// Optional. Key for the slice
@@ -1537,6 +1588,7 @@ pub mod dashboard_chart {
                 pub value: ::core::option::Option<UserSelectedValues>,
             }
             /// Field to be saved for retrieving slice colors for the chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ItemColors {
                 /// Optional. Slice colors array
@@ -1544,6 +1596,7 @@ pub mod dashboard_chart {
                 pub colors: ::prost::alloc::vec::Vec<ChartSliceColor>,
             }
             /// Field to be saved for retrieving value and color for gauge chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct GaugeValue {
                 /// Optional. Value for gauge chart
@@ -1554,6 +1607,7 @@ pub mod dashboard_chart {
                 pub color: ::prost::alloc::string::String,
             }
             /// Field to be saved for retrieving value and color for gauge chart
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct GaugeConfig {
                 /// Optional. Base value for gauge chart
@@ -1567,6 +1621,7 @@ pub mod dashboard_chart {
                 pub threshold_values: ::prost::alloc::vec::Vec<GaugeValue>,
             }
             /// Metric trend config for displaying trend value in Metrics chart
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct MetricTrendConfig {
                 /// Optional. Metric chart configuration to display metric trend
@@ -1588,6 +1643,7 @@ pub mod dashboard_chart {
                 pub metric_trend_type: i32,
             }
         }
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Tooltip {
             #[prost(bool, tag = "1")]
@@ -1595,6 +1651,7 @@ pub mod dashboard_chart {
             #[prost(enumeration = "super::super::ToolTipTrigger", tag = "3")]
             pub tooltip_trigger: i32,
         }
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Legend {
             #[prost(string, tag = "1")]
@@ -1621,6 +1678,7 @@ pub mod dashboard_chart {
             pub padding: ::prost::alloc::vec::Vec<i32>,
         }
         /// Column Definition.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ColumnDef {
             /// Field key in data.
@@ -1632,6 +1690,7 @@ pub mod dashboard_chart {
         }
         /// Column render type settings. This is used to determine the data render
         /// type of the column in the table.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ColumnRenderTypeSettings {
             /// Optional. Field key in data.
@@ -1642,6 +1701,7 @@ pub mod dashboard_chart {
             pub column_render_type: i32,
         }
         /// Settings for tooltip for column header and cell.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ColumnTooltipSettings {
             /// Required. Field key in data.
@@ -1655,6 +1715,7 @@ pub mod dashboard_chart {
             pub cell_tooltip_text: ::prost::alloc::string::String,
         }
         /// Configuration for table appearance.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TableConfig {
             /// Optional. Whether to show the table.
@@ -1670,6 +1731,7 @@ pub mod dashboard_chart {
             pub column_tooltip_settings: ::prost::alloc::vec::Vec<ColumnTooltipSettings>,
         }
         /// Google Maps config for a chart if chart type is map.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GoogleMapsConfig {
             /// Optional. Data settings for the map.
@@ -1691,6 +1753,7 @@ pub mod dashboard_chart {
         /// Nested message and enum types in `GoogleMapsConfig`.
         pub mod google_maps_config {
             /// Data settings for the map.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct DataSettings {
                 /// Optional. Latitude column.
@@ -1704,6 +1767,7 @@ pub mod dashboard_chart {
                 pub count_column: ::prost::alloc::string::String,
             }
             /// Map position settings for the map.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct MapPosition {
                 /// Optional. Whether to fit the map to the data.
@@ -1722,6 +1786,7 @@ pub mod dashboard_chart {
                 pub zoom_scale_value: f64,
             }
             /// Point settings for the map.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct PointSettings {
                 /// Optional. Point size type for the map. This is used to
@@ -1735,6 +1800,7 @@ pub mod dashboard_chart {
         }
         /// Conveys what range of values should be rendered in what color. This field
         /// is used when threshold_coloring_enabled is true.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualMap {
             /// Optional. Contains one of the valid visual map types such as
@@ -1749,6 +1815,7 @@ pub mod dashboard_chart {
         pub mod visual_map {
             /// An ECharts visual map of type 'piecewise' contain many pieces. Each
             /// piece has a min, max, and color with which it's rendered.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct VisualMapPiece {
                 /// Optional. Minimum value for the piece.
@@ -1768,6 +1835,7 @@ pub mod dashboard_chart {
         }
     }
     /// Drill down configuration.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DrillDownConfig {
         /// Required. Left click drill downs.
@@ -1780,6 +1848,7 @@ pub mod dashboard_chart {
     /// Nested message and enum types in `DrillDownConfig`.
     pub mod drill_down_config {
         /// Drill down config.
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DrillDown {
             /// Required. ID of the drill down.
@@ -1795,6 +1864,7 @@ pub mod dashboard_chart {
         /// Nested message and enum types in `DrillDown`.
         pub mod drill_down {
             /// Default drill down settings.
+            #[allow(clippy::all)]
             #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct DefaultDrillDownSettings {
                 /// Required. Whether the default drill down is enabled.
@@ -1802,6 +1872,7 @@ pub mod dashboard_chart {
                 pub enabled: bool,
             }
             /// Custom drill down settings.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct CustomDrillDownSettings {
                 /// Required. Whether to open the drill down action in a new tab.
@@ -1818,6 +1889,7 @@ pub mod dashboard_chart {
             /// Nested message and enum types in `CustomDrillDownSettings`.
             pub mod custom_drill_down_settings {
                 /// Drill down query config.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct DrillDownQuery {
                     /// Required. Search query to be executed on drill down.
@@ -1825,6 +1897,7 @@ pub mod dashboard_chart {
                     pub query: ::prost::alloc::string::String,
                 }
                 /// Drill down filter config.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct DrillDownFilter {
                     /// Required. Dashboard filters to be applied on drill down.
@@ -1836,6 +1909,7 @@ pub mod dashboard_chart {
                 /// Nested message and enum types in `DrillDownFilter`.
                 pub mod drill_down_filter {
                     /// Drill down dashboard filter config.
+                    #[allow(clippy::all)]
                     #[derive(Clone, PartialEq, ::prost::Message)]
                     pub struct DrillDownDashboardFilter {
                         /// Required. ID of the dashboard filter.
@@ -1850,6 +1924,7 @@ pub mod dashboard_chart {
                     }
                 }
                 /// Drill down external link config.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct DrillDownExternalLink {
                     /// Required. External link the drill down action should redirect to.
@@ -1860,6 +1935,7 @@ pub mod dashboard_chart {
                     pub description: ::prost::alloc::string::String,
                 }
                 /// Action to be performed on drill down.
+                #[allow(clippy::all)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Action {
                     /// Drill down query action config.
@@ -1874,6 +1950,7 @@ pub mod dashboard_chart {
                 }
             }
             /// Drill down settings.
+            #[allow(clippy::all)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Settings {
                 /// Default drill down settings.
@@ -1887,6 +1964,7 @@ pub mod dashboard_chart {
     }
 }
 /// Button config for a chart.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Button {
     #[prost(string, tag = "1")]
@@ -1903,6 +1981,7 @@ pub struct Button {
 }
 /// Nested message and enum types in `Button`.
 pub mod button {
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Properties {
         #[prost(string, tag = "1")]
@@ -1912,6 +1991,7 @@ pub mod button {
     }
 }
 /// Markdown config for a dashboard tile.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Markdown {
     /// Required. Markdown content.
@@ -1924,6 +2004,7 @@ pub struct Markdown {
 /// Nested message and enum types in `Markdown`.
 pub mod markdown {
     /// Properties for the markdown.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MarkdownProperties {
         /// Optional. Background color of the markdown.
@@ -1932,6 +2013,7 @@ pub mod markdown {
     }
 }
 /// Request message to get a dashboard chart.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDashboardChartRequest {
     /// Required. The name of the dashboardChart to retrieve.
@@ -1941,6 +2023,7 @@ pub struct GetDashboardChartRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to get dashboard charts in batch.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetDashboardChartsRequest {
     /// Required. The parent resource shared by all dashboard charts being
@@ -1955,6 +2038,7 @@ pub struct BatchGetDashboardChartsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for getting dashboard charts in batch.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDashboardChartsResponse {
     /// The dashboardCharts from the specified chronicle instance.
@@ -1963,6 +2047,7 @@ pub struct BatchGetDashboardChartsResponse {
 }
 /// TileType indicates what type of chart tile it is i.e., visualization chart,
 /// button or text.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TileType {
@@ -2000,6 +2085,7 @@ impl TileType {
     }
 }
 /// Render type of the data in the chart.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RenderType {
@@ -2036,6 +2122,7 @@ impl RenderType {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AxisType {
@@ -2071,6 +2158,7 @@ impl AxisType {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SeriesType {
@@ -2118,6 +2206,7 @@ impl SeriesType {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SeriesStackStrategy {
@@ -2153,6 +2242,7 @@ impl SeriesStackStrategy {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ToolTipTrigger {
@@ -2185,6 +2275,7 @@ impl ToolTipTrigger {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LegendOrient {
@@ -2214,6 +2305,7 @@ impl LegendOrient {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LegendAlign {
@@ -2246,6 +2338,7 @@ impl LegendAlign {
         }
     }
 }
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ButtonStyle {
@@ -2279,6 +2372,7 @@ impl ButtonStyle {
     }
 }
 /// Plot mode for the map.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PlotMode {
@@ -2316,6 +2410,7 @@ impl PlotMode {
     }
 }
 /// Point size type for the map.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PointSizeType {
@@ -2349,6 +2444,7 @@ impl PointSizeType {
     }
 }
 /// Metric format to be displayed for the metric charts.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MetricFormat {
@@ -2382,6 +2478,7 @@ impl MetricFormat {
     }
 }
 /// Trend to be displayed for the metric charts as.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MetricDisplayTrend {
@@ -2423,6 +2520,7 @@ impl MetricDisplayTrend {
     }
 }
 /// Trend to be displayed for the metric charts as.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MetricTrendType {
@@ -2457,6 +2555,7 @@ impl MetricTrendType {
 }
 /// Visual map for various charts. More info:
 /// <https://echarts.apache.org/en/option.html#visualMap>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum VisualMapType {
@@ -2641,6 +2740,7 @@ pub mod dashboard_chart_service_client {
     }
 }
 /// Request message for CreateDataAccessLabel.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataAccessLabelRequest {
     /// Required. The parent resource where this Data Access Label will be created.
@@ -2658,6 +2758,7 @@ pub struct CreateDataAccessLabelRequest {
     pub data_access_label_id: ::prost::alloc::string::String,
 }
 /// Request message to retrieve a data access label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataAccessLabelRequest {
     /// Required. The ID of the data access label to retrieve.
@@ -2667,6 +2768,7 @@ pub struct GetDataAccessLabelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataAccessLabels.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataAccessLabelsRequest {
     /// Required. The parent resource where this data access label will be created.
@@ -2692,6 +2794,7 @@ pub struct ListDataAccessLabelsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListDataAccessLabels.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataAccessLabelsResponse {
     /// List of data access labels.
@@ -2703,6 +2806,7 @@ pub struct ListDataAccessLabelsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataAccessLabel method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataAccessLabelRequest {
     /// Required. The data access label to update.
@@ -2720,6 +2824,7 @@ pub struct UpdateDataAccessLabelRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message to delete a data access label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataAccessLabelRequest {
     /// Required. The ID of the data access label to delete.
@@ -2729,6 +2834,7 @@ pub struct DeleteDataAccessLabelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateDataAccessScope.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataAccessScopeRequest {
     /// Required. The parent resource where this Data Access Scope will be created.
@@ -2745,6 +2851,7 @@ pub struct CreateDataAccessScopeRequest {
     pub data_access_scope_id: ::prost::alloc::string::String,
 }
 /// Request message to retrieve a data access scope.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataAccessScopeRequest {
     /// Required. The ID of the data access scope to retrieve.
@@ -2754,6 +2861,7 @@ pub struct GetDataAccessScopeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataAccessScopes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataAccessScopesRequest {
     /// Required. The parent resource where this data access scope will be created.
@@ -2779,6 +2887,7 @@ pub struct ListDataAccessScopesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListDataAccessScopes.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataAccessScopesResponse {
     /// List of data access scopes.
@@ -2793,6 +2902,7 @@ pub struct ListDataAccessScopesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataAccessScope method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataAccessScopeRequest {
     /// Required. The data access scope to update.
@@ -2811,6 +2921,7 @@ pub struct UpdateDataAccessScopeRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message to delete a data access scope.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataAccessScopeRequest {
     /// Required. The ID of the data access scope to delete.
@@ -2820,6 +2931,7 @@ pub struct DeleteDataAccessScopeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A DataAccessLabel is a label on events to define user access to data.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataAccessLabel {
     /// The unique resource name of the data access label.
@@ -2855,6 +2967,7 @@ pub mod data_access_label {
     /// Required.
     /// The definition of the data access label that determines which
     /// data gets tagged with this label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Definition {
         /// A UDM query over event data.
@@ -2864,6 +2977,7 @@ pub mod data_access_label {
 }
 /// A DataAccessScope is a boolean expression of data access labels used
 /// to restrict access to data for users.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataAccessScope {
     /// Required. The unique full name of the data access scope.
@@ -2917,6 +3031,7 @@ pub struct DataAccessScope {
     pub allow_all: bool,
 }
 /// Reference object to a data access label.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataAccessLabelReference {
     /// Output only. The display name of the label.
@@ -2933,6 +3048,7 @@ pub struct DataAccessLabelReference {
 /// Nested message and enum types in `DataAccessLabelReference`.
 pub mod data_access_label_reference {
     /// The unique identifier for the label.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Label {
         /// The name of the data access label.
@@ -2951,6 +3067,7 @@ pub mod data_access_label_reference {
     }
 }
 /// Representation of an ingestion label type.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IngestionLabel {
     /// Required. The key of the ingestion label. Always required.
@@ -3366,6 +3483,7 @@ pub mod data_access_control_service_client {
     }
 }
 /// A request to create DataTable.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataTableRequest {
     /// Required. The parent resource where this data table will be created.
@@ -3385,6 +3503,7 @@ pub struct CreateDataTableRequest {
     pub data_table_id: ::prost::alloc::string::String,
 }
 /// A request to get details about a data table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataTableRequest {
     /// Required. The resource name of the data table to retrieve.
@@ -3394,6 +3513,7 @@ pub struct GetDataTableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to update details of data table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataTableRequest {
     /// Required. This field is used to identify the datatable to update.
@@ -3409,6 +3529,7 @@ pub struct UpdateDataTableRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A request for a list of data tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataTablesRequest {
     /// Required. The parent resource where this data table will be created.
@@ -3434,6 +3555,7 @@ pub struct ListDataTablesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for deleting data tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataTableRequest {
     /// Required. The resource name of the data table to delete.
@@ -3448,6 +3570,7 @@ pub struct DeleteDataTableRequest {
     pub force: bool,
 }
 /// Response message for listing data tables.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataTablesResponse {
     /// The list of the data tables returned.
@@ -3459,6 +3582,7 @@ pub struct ListDataTablesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to create data table row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataTableRowRequest {
     /// Required. The resource id of the data table.
@@ -3471,6 +3595,7 @@ pub struct CreateDataTableRowRequest {
     pub data_table_row: ::core::option::Option<DataTableRow>,
 }
 /// Request to update data table row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataTableRowRequest {
     /// Required. Format:
@@ -3485,6 +3610,7 @@ pub struct UpdateDataTableRowRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataTableRowsRequest {
     /// Required. The resource id of the data table.
@@ -3511,6 +3637,7 @@ pub struct ListDataTableRowsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for listing data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataTableRowsResponse {
     /// The list of the data table rows returned.
@@ -3522,6 +3649,7 @@ pub struct ListDataTableRowsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to get data table row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataTableRowRequest {
     /// Required. The resource name of the data table row i,e row_id.
@@ -3531,6 +3659,7 @@ pub struct GetDataTableRowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to delete data table row.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataTableRowRequest {
     /// Required. The resource name of the data table row i,e row_id.
@@ -3540,6 +3669,7 @@ pub struct DeleteDataTableRowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create data table rows in bulk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkCreateDataTableRowsRequest {
     /// Required. The resource id of the data table.
@@ -3554,6 +3684,7 @@ pub struct BulkCreateDataTableRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateDataTableRowRequest>,
 }
 /// Response message with created data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkCreateDataTableRowsResponse {
     /// DataTableRows created
@@ -3561,6 +3692,7 @@ pub struct BulkCreateDataTableRowsResponse {
     pub data_table_rows: ::prost::alloc::vec::Vec<DataTableRow>,
 }
 /// Request to get data table rows in bulk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkGetDataTableRowsRequest {
     /// Required. The resource id of the data table.
@@ -3574,6 +3706,7 @@ pub struct BulkGetDataTableRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<GetDataTableRowRequest>,
 }
 /// Response message with data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkGetDataTableRowsResponse {
     /// The requested data table rows.
@@ -3581,6 +3714,7 @@ pub struct BulkGetDataTableRowsResponse {
     pub data_table_rows: ::prost::alloc::vec::Vec<DataTableRow>,
 }
 /// Request to replace data table rows in bulk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkReplaceDataTableRowsRequest {
     /// Required. The resource id of the data table.
@@ -3596,6 +3730,7 @@ pub struct BulkReplaceDataTableRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateDataTableRowRequest>,
 }
 /// Response message with data table rows that replaced existing data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkReplaceDataTableRowsResponse {
     /// DataTableRows that replaced existing data table rows
@@ -3603,6 +3738,7 @@ pub struct BulkReplaceDataTableRowsResponse {
     pub data_table_rows: ::prost::alloc::vec::Vec<DataTableRow>,
 }
 /// Request to update data table rows in bulk.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkUpdateDataTableRowsRequest {
     /// Required. The resource id of the data table.
@@ -3616,6 +3752,7 @@ pub struct BulkUpdateDataTableRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<UpdateDataTableRowRequest>,
 }
 /// Response message with updated data table rows.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkUpdateDataTableRowsResponse {
     /// DataTableRows updated
@@ -3623,6 +3760,7 @@ pub struct BulkUpdateDataTableRowsResponse {
     pub data_table_rows: ::prost::alloc::vec::Vec<DataTableRow>,
 }
 /// DataTableScopeInfo specifies the scope info of the data table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataTableScopeInfo {
     /// Required. Contains the list of scope names of the data table. If the list
@@ -3633,6 +3771,7 @@ pub struct DataTableScopeInfo {
     pub data_access_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// DataTable represents the data table resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataTable {
     /// Identifier. The resource name of the data table
@@ -3688,6 +3827,7 @@ pub struct DataTable {
     pub row_time_to_live_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// DataTableRow represents a single row in a data table.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataTableRow {
     /// Identifier. The resource name of the data table
@@ -3712,6 +3852,7 @@ pub struct DataTableRow {
 /// DataTableColumnInfo represents the column metadata of the
 /// datatable. The column_index represents the ordering of the
 /// values in DataTableRow.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataTableColumnInfo {
     /// Required. Column Index. 0,1,2...
@@ -3741,6 +3882,7 @@ pub struct DataTableColumnInfo {
 pub mod data_table_column_info {
     /// DataTableColumnType denotes the type of the column to be referenced in the
     /// rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -3791,6 +3933,7 @@ pub mod data_table_column_info {
             }
         }
     }
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PathOrType {
         /// Entity proto field path that the column is mapped to
@@ -3802,6 +3945,7 @@ pub mod data_table_column_info {
     }
 }
 /// The request message for GetDataTableOperationErrors.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataTableOperationErrorsRequest {
     /// Required. Resource name for the data table operation errors.
@@ -3811,6 +3955,7 @@ pub struct GetDataTableOperationErrorsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The message containing the errors for a data table operation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataTableOperationErrors {
     /// Identifier. Resource name for the data table operation errors.
@@ -3824,6 +3969,7 @@ pub struct DataTableOperationErrors {
     pub rpc_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// DataTableUpdateSource denotes the source that updated the data table.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataTableUpdateSource {
@@ -4382,6 +4528,7 @@ pub mod data_table_service_client {
 }
 /// A watchlist is a list of entities that allows for bulk operations over the
 /// included entities.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Watchlist {
     /// Identifier. Resource name of the watchlist.
@@ -4423,6 +4570,7 @@ pub struct Watchlist {
 /// Nested message and enum types in `Watchlist`.
 pub mod watchlist {
     /// Mechanism to populate entities in the watchlist.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EntityPopulationMechanism {
         /// Ways to populate entities in watchlist.
@@ -4433,10 +4581,12 @@ pub mod watchlist {
     /// Nested message and enum types in `EntityPopulationMechanism`.
     pub mod entity_population_mechanism {
         /// Entities are added manually.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Manual {}
         /// Ways to populate entities in watchlist.
         /// Currently, only manual is supported.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Mechanism {
             /// Optional. Entities are added manually.
@@ -4445,6 +4595,7 @@ pub mod watchlist {
         }
     }
     /// Count of different types of entities in the watchlist.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EntityCount {
         /// Output only. Count of user type entities in the watchlist.
@@ -4456,6 +4607,7 @@ pub mod watchlist {
     }
 }
 /// A collection of user preferences for watchlist UI configuration.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WatchlistUserPreferences {
     /// Optional. Whether the watchlist is pinned on the dashboard.
@@ -4463,6 +4615,7 @@ pub struct WatchlistUserPreferences {
     pub pinned: bool,
 }
 /// Request message for getting a watchlist.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWatchlistRequest {
     /// Required. The parent, which owns this collection of watchlists.
@@ -4473,6 +4626,7 @@ pub struct GetWatchlistRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing watchlists.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWatchlistsRequest {
     /// Required. The parent, which owns this collection of watchlists.
@@ -4503,6 +4657,7 @@ pub struct ListWatchlistsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for listing watchlists.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWatchlistsResponse {
     /// Optional. The watchlists from the specified instance.
@@ -4514,6 +4669,7 @@ pub struct ListWatchlistsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for creating watchlist.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWatchlistRequest {
     /// Required. The parent resource where this watchlist will be created.
@@ -4532,6 +4688,7 @@ pub struct CreateWatchlistRequest {
     pub watchlist: ::core::option::Option<Watchlist>,
 }
 /// Request message for updating watchlist.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWatchlistRequest {
     /// Required. The watchlist to update.
@@ -4546,6 +4703,7 @@ pub struct UpdateWatchlistRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for deleting watchlist.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWatchlistRequest {
     /// Required. The name of the watchlist to delete.
@@ -4793,6 +4951,7 @@ pub mod entity_service_client {
     }
 }
 /// FeaturedContentMetadata holds metadata about the Featured Content.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeaturedContentMetadata {
     /// Required. Unique identifier of the featured content.
@@ -4834,6 +4993,7 @@ pub struct FeaturedContentMetadata {
 /// Nested message and enum types in `FeaturedContentMetadata`.
 pub mod featured_content_metadata {
     /// ContentSourceType specifying the content source of origin
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -4882,6 +5042,7 @@ pub mod featured_content_metadata {
     }
 }
 /// Request message to export list of dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportNativeDashboardsRequest {
     /// Required. The parent resource that the dashboards to be exported belong to.
@@ -4893,6 +5054,7 @@ pub struct ExportNativeDashboardsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for exporting a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportNativeDashboardsResponse {
     /// Destination for the exported data.
@@ -4904,6 +5066,7 @@ pub struct ExportNativeDashboardsResponse {
 /// Nested message and enum types in `ExportNativeDashboardsResponse`.
 pub mod export_native_dashboards_response {
     /// Destination for the exported data.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The data for the exported dashboards included directly in the response.
@@ -4912,6 +5075,7 @@ pub mod export_native_dashboards_response {
     }
 }
 /// InlineDestination for exporting a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InlineDestination {
     /// Dashboards with charts and queries.
@@ -4919,6 +5083,7 @@ pub struct InlineDestination {
     pub dashboards: ::prost::alloc::vec::Vec<NativeDashboardWithChartsAndQueries>,
 }
 /// NativeDashboardWithChartsAndQueries for exporting a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NativeDashboardWithChartsAndQueries {
     /// Optional. Native dashboard.
@@ -4932,6 +5097,7 @@ pub struct NativeDashboardWithChartsAndQueries {
     pub dashboard_queries: ::prost::alloc::vec::Vec<DashboardQuery>,
 }
 /// Request message to import dashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportNativeDashboardsRequest {
     /// Required. The parent resource where this dashboard will be created.
@@ -4943,6 +5109,7 @@ pub struct ImportNativeDashboardsRequest {
     pub source: ::core::option::Option<ImportNativeDashboardsInlineSource>,
 }
 /// Inline source for importing dashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportNativeDashboardsInlineSource {
     /// Required. Dashboards with charts and queries.
@@ -4950,6 +5117,7 @@ pub struct ImportNativeDashboardsInlineSource {
     pub dashboards: ::prost::alloc::vec::Vec<NativeDashboardWithChartsAndQueries>,
 }
 /// Response message for importing dashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportNativeDashboardsResponse {
     /// Output only. Represents the status of an import operation for multiple
@@ -4963,6 +5131,7 @@ pub struct ImportNativeDashboardsResponse {
     pub results: ::prost::alloc::vec::Vec<ImportExportStatus>,
 }
 /// ImportExportStatus is a wrapper for dashboard name and status.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportExportStatus {
     /// The resource name of the dashboard if it was supplied in the request.
@@ -4973,6 +5142,7 @@ pub struct ImportExportStatus {
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// NativeDashboard resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NativeDashboard {
     /// Output only. Name of the dashboard.
@@ -5016,6 +5186,7 @@ pub struct NativeDashboard {
     pub access: i32,
 }
 /// Request message to create a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNativeDashboardRequest {
     /// Required. The parent resource where this dashboard will be created.
@@ -5027,6 +5198,7 @@ pub struct CreateNativeDashboardRequest {
     pub native_dashboard: ::core::option::Option<NativeDashboard>,
 }
 /// Request message to get a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNativeDashboardRequest {
     /// Required. The dashboard name to fetch.
@@ -5040,6 +5212,7 @@ pub struct GetNativeDashboardRequest {
     pub view: i32,
 }
 /// Request message to list dashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNativeDashboardsRequest {
     /// Required. The parent owning this dashboard collection.
@@ -5063,6 +5236,7 @@ pub struct ListNativeDashboardsRequest {
     pub view: i32,
 }
 /// Response message for listing dashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNativeDashboardsResponse {
     /// The dashboards from the specified chronicle instance.
@@ -5074,6 +5248,7 @@ pub struct ListNativeDashboardsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to update a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNativeDashboardRequest {
     /// Required. The dashboard to update.
@@ -5097,6 +5272,7 @@ pub struct UpdateNativeDashboardRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message to duplicate a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DuplicateNativeDashboardRequest {
     /// Required. The dashboard name to duplicate.
@@ -5110,6 +5286,7 @@ pub struct DuplicateNativeDashboardRequest {
     pub native_dashboard: ::core::option::Option<NativeDashboard>,
 }
 /// Request message to delete a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNativeDashboardRequest {
     /// Required. The dashboard name to delete.
@@ -5119,6 +5296,7 @@ pub struct DeleteNativeDashboardRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to add chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddChartRequest {
     /// Required. The dashboard name to add chart in.
@@ -5139,6 +5317,7 @@ pub struct AddChartRequest {
     >,
 }
 /// Response message for adding chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddChartResponse {
     /// Dashboard with chart added in definition.
@@ -5149,6 +5328,7 @@ pub struct AddChartResponse {
     pub dashboard_chart: ::core::option::Option<DashboardChart>,
 }
 /// Request message to edit chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EditChartRequest {
     /// Required. The dashboard name to edit chart in.
@@ -5181,6 +5361,7 @@ pub struct EditChartRequest {
     pub language_features: ::prost::alloc::vec::Vec<i32>,
 }
 /// Response message for editing chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EditChartResponse {
     /// Edited dashboard.
@@ -5191,6 +5372,7 @@ pub struct EditChartResponse {
     pub dashboard_chart: ::core::option::Option<DashboardChart>,
 }
 /// Request message to remove chart from a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveChartRequest {
     /// Required. The dashboard name to remove chart from.
@@ -5203,6 +5385,7 @@ pub struct RemoveChartRequest {
     pub dashboard_chart: ::prost::alloc::string::String,
 }
 /// Request message to duplicate chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DuplicateChartRequest {
     /// Required. The dashboard name that involves chart duplication.
@@ -5215,6 +5398,7 @@ pub struct DuplicateChartRequest {
     pub dashboard_chart: ::prost::alloc::string::String,
 }
 /// Response message for duplicating chart in a dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DuplicateChartResponse {
     /// Dashboard with chart added in definition.
@@ -5225,6 +5409,7 @@ pub struct DuplicateChartResponse {
     pub dashboard_chart: ::core::option::Option<DashboardChart>,
 }
 /// User Data for Native Dashboard
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DashboardUserData {
     /// time when this dashboard is last viewed
@@ -5236,6 +5421,7 @@ pub struct DashboardUserData {
 }
 /// Definition of the dashboard including filters, layout, charts'
 /// configurations.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DashboardDefinition {
     /// Filters for the dashboard.
@@ -5251,6 +5437,7 @@ pub struct DashboardDefinition {
 /// Nested message and enum types in `DashboardDefinition`.
 pub mod dashboard_definition {
     /// Configuration of the chart including chart reference, layout and filters.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ChartConfig {
         #[prost(string, tag = "1")]
@@ -5264,6 +5451,7 @@ pub mod dashboard_definition {
     /// Nested message and enum types in `ChartConfig`.
     pub mod chart_config {
         /// Layout of the chart.
+        #[allow(clippy::all)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ChartLayout {
             #[prost(int32, optional, tag = "9")]
@@ -5278,6 +5466,7 @@ pub mod dashboard_definition {
     }
 }
 /// Type of the dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DashboardType {
@@ -5323,6 +5512,7 @@ impl DashboardType {
     }
 }
 /// AccessType of the dashboard.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DashboardAccess {
@@ -5357,6 +5547,7 @@ impl DashboardAccess {
 }
 /// NativeDashboardView indicates the scope of fields to populate when returning
 /// the dashboard resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NativeDashboardView {
@@ -5843,6 +6034,7 @@ pub mod native_dashboard_service_client {
     }
 }
 /// FeaturedContentNativeDashboard resource.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeaturedContentNativeDashboard {
     /// Identifier. The resource name of the FeaturedContentNativeDashboard.
@@ -5858,6 +6050,7 @@ pub struct FeaturedContentNativeDashboard {
     pub dashboard_content: ::core::option::Option<NativeDashboardWithChartsAndQueries>,
 }
 /// Request message to get a FeaturedContentNativeDashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFeaturedContentNativeDashboardRequest {
     /// Required. The resource name of the FeaturedContentNativeDashboard to
@@ -5867,6 +6060,7 @@ pub struct GetFeaturedContentNativeDashboardRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to list FeaturedContentNativeDashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeaturedContentNativeDashboardsRequest {
     /// Required. The parent, which owns this collection of
@@ -5913,6 +6107,7 @@ pub struct ListFeaturedContentNativeDashboardsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for listing FeaturedContentNativeDashboards.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturedContentNativeDashboardsResponse {
     /// The list of FeaturedContentNativeDashboards.
@@ -5927,6 +6122,7 @@ pub struct ListFeaturedContentNativeDashboardsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to install a FeaturedContentNativeDashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallFeaturedContentNativeDashboardRequest {
     /// Required. The resource name of the FeaturedContentNativeDashboard to
@@ -5941,6 +6137,7 @@ pub struct InstallFeaturedContentNativeDashboardRequest {
     >,
 }
 /// Response message for installing a FeaturedContentNativeDashboard.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstallFeaturedContentNativeDashboardResponse {
     /// Optional. The resource name of the NativeDashboard created.
@@ -6144,6 +6341,7 @@ pub mod featured_content_native_dashboard_service_client {
 }
 /// FeedPack is a logical container for related LogTypes for which feeds can be
 /// configured.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedPack {
     /// Identifier. The resource name of the feed pack.
@@ -6180,6 +6378,7 @@ pub struct FeedPack {
 /// Nested message and enum types in `FeedPack`.
 pub mod feed_pack {
     /// Type of feed pack. Feeds Page currently only lists PRODUCT_BASED packs.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6228,6 +6427,7 @@ pub mod feed_pack {
     }
 }
 /// PackLogtype is a log type featured in the feed pack.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PackLogType {
     /// Log Type featured in the feed pack.
@@ -6255,6 +6455,7 @@ pub struct PackLogType {
     pub additional_documentation: ::prost::alloc::string::String,
 }
 /// Feed is a resource that contains feed information needed to create a feed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feed {
     /// The resource name of the feed.
@@ -6298,6 +6499,7 @@ pub struct Feed {
 /// Nested message and enum types in `Feed`.
 pub mod feed {
     /// List of states a feed can have.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6366,6 +6568,7 @@ pub mod feed {
 /// FeedFailureDetails contains details about the errors thrown by chronicle for
 /// the feeds. These are user visible details. These details help user identify
 /// the root cause and take appropriate action for the feed errors.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeedFailureDetails {
     /// Output only. error_code contains the error code for the feed. The field is
@@ -6386,6 +6589,7 @@ pub struct FeedFailureDetails {
     pub error_action: ::prost::alloc::string::String,
 }
 /// FeedServiceAccount is a resource that wraps the feed service account's name.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeedServiceAccount {
     /// The resource name of the feedServiceAccount.
@@ -6399,6 +6603,7 @@ pub struct FeedServiceAccount {
 }
 /// Additional details of the feed, these details are dynamic and will be
 /// different for each of the feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedDetails {
     /// Source Type of the feed.
@@ -6435,6 +6640,7 @@ pub struct FeedDetails {
 /// Nested message and enum types in `FeedDetails`.
 pub mod feed_details {
     /// Different types of feed sources.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6561,6 +6767,7 @@ pub mod feed_details {
         }
     }
     /// Whether the feed is ready for STS migration.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6608,6 +6815,7 @@ pub mod feed_details {
         }
     }
     /// Additional details of the feed. Depends on the feed type.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Anomali IOC settings.
@@ -6849,6 +7057,7 @@ pub mod feed_details {
     }
 }
 /// Settings required by Feeds of DummyLogType(used for testing purposes).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DummyLogTypeSettings {
     /// Input only. Authentication.
@@ -6859,6 +7068,7 @@ pub struct DummyLogTypeSettings {
     pub api_endpoint: ::prost::alloc::string::String,
 }
 /// Settings required by Google Cloud Platform Pub/Sub Feeds(HTTPS-Push V2).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpsPushGoogleCloudPubSubSettings {
     /// Optional. Delimiter to split on for the feed.
@@ -6866,6 +7076,7 @@ pub struct HttpsPushGoogleCloudPubSubSettings {
     pub split_delimiter: ::prost::alloc::string::String,
 }
 /// Settings required by Amazon Kinesis Firehose Feeds(HTTPS-Push V2).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpsPushAmazonKinesisFirehoseSettings {
     /// Optional. Delimiter to split on for the feed.
@@ -6873,6 +7084,7 @@ pub struct HttpsPushAmazonKinesisFirehoseSettings {
     pub split_delimiter: ::prost::alloc::string::String,
 }
 /// Settings required by Webhook Feeds(HTTPS-Push V2).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpsPushWebhookSettings {
     /// Optional. Delimiter to split on for the feed.
@@ -6880,6 +7092,7 @@ pub struct HttpsPushWebhookSettings {
     pub split_delimiter: ::prost::alloc::string::String,
 }
 /// SentinelOne Alert settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SentineloneAlertSettings {
     /// Input only. Authentication.
@@ -6896,6 +7109,7 @@ pub struct SentineloneAlertSettings {
     pub is_alert_api_subscribed: bool,
 }
 /// Qualys Scan settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QualysScanSettings {
     /// Input only. Authentication
@@ -6911,6 +7125,7 @@ pub struct QualysScanSettings {
 /// Nested message and enum types in `QualysScanSettings`.
 pub mod qualys_scan_settings {
     /// API Type
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -6961,6 +7176,7 @@ pub mod qualys_scan_settings {
     }
 }
 /// Settings required by Google Cloud Pub/Sub Feeds(HTTP-Push).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PubsubSettings {
     /// Google Service Account Email.
@@ -6968,12 +7184,15 @@ pub struct PubsubSettings {
     pub google_service_account_email: ::prost::alloc::string::String,
 }
 /// Settings required by Amazon Kinesis Firehose Feeds(HTTP-Push).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AmazonKinesisFirehoseSettings {}
 /// Settings required by Webhook Feeds(HTTP-Push).
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookSettings {}
 /// Amazon SQS settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AmazonSqsSettings {
     /// S3 Region.
@@ -6993,6 +7212,7 @@ pub struct AmazonSqsSettings {
     pub source_deletion_option: i32,
 }
 /// Anomali IOC settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnomaliIocSettings {
     /// Input only. Authentication.
@@ -7003,6 +7223,7 @@ pub struct AnomaliIocSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Azure AD settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureAdSettings {
     /// Input only. Authentication.
@@ -7019,6 +7240,7 @@ pub struct AzureAdSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// Azure AD Audit settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureAdAuditSettings {
     /// Input only. Authentication.
@@ -7035,6 +7257,7 @@ pub struct AzureAdAuditSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// Azure AD Context settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureAdContextSettings {
     /// Input only. Authentication.
@@ -7057,6 +7280,7 @@ pub struct AzureAdContextSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// CloudPassage settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudPassageSettings {
     /// Input only. Authentication.
@@ -7067,6 +7291,7 @@ pub struct CloudPassageSettings {
     pub event_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// PAN Cortex XDR settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CortexXdrSettings {
     /// Input only. Authentication.
@@ -7080,6 +7305,7 @@ pub struct CortexXdrSettings {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// CrowdStrike Detects settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CrowdStrikeDetectsSettings {
     /// Input only. OAuthClientCredentials.
@@ -7095,6 +7321,7 @@ pub struct CrowdStrikeDetectsSettings {
 /// Nested message and enum types in `CrowdStrikeDetectsSettings`.
 pub mod crowd_strike_detects_settings {
     /// Ingestion Type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7139,6 +7366,7 @@ pub mod crowd_strike_detects_settings {
     }
 }
 /// CrowdStrike Alerts settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CrowdStrikeAlertsSettings {
     /// Required. OAuthClientCredentials.
@@ -7154,6 +7382,7 @@ pub struct CrowdStrikeAlertsSettings {
 /// Nested message and enum types in `CrowdStrikeAlertsSettings`.
 pub mod crowd_strike_alerts_settings {
     /// Ingestion Type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7198,6 +7427,7 @@ pub mod crowd_strike_alerts_settings {
     }
 }
 /// Duo Authentication settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DuoAuthSettings {
     /// Input only. Authentication.
@@ -7208,6 +7438,7 @@ pub struct DuoAuthSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Duo User Context settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DuoUserContextSettings {
     /// Input only. Authentication.
@@ -7218,6 +7449,7 @@ pub struct DuoUserContextSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Microsoft Graph Alert settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MicrosoftGraphAlertSettings {
     /// Input only. Authentication.
@@ -7234,6 +7466,7 @@ pub struct MicrosoftGraphAlertSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// Microsoft Security Center alert settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MicrosoftSecurityCenterAlertSettings {
     /// Input only. Authentication.
@@ -7253,6 +7486,7 @@ pub struct MicrosoftSecurityCenterAlertSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// Mimecast Mail settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MimecastMailSettings {
     /// Input only. Authentication.
@@ -7263,6 +7497,7 @@ pub struct MimecastMailSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Mimecast Mail V2 Settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MimecastMailV2Settings {
     /// Required. Mimecast OAuthClientCredentials.
@@ -7270,6 +7505,7 @@ pub struct MimecastMailV2Settings {
     pub auth_credentials: ::core::option::Option<MimecastV2oAuthClientCredentials>,
 }
 /// Office 365 settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Office365Settings {
     /// Input only. Authentication.
@@ -7292,6 +7528,7 @@ pub struct Office365Settings {
 pub mod office365_settings {
     /// Office 365 supported content types:
     /// <https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#working-with-the-office-365-management-activity-api>
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7348,6 +7585,7 @@ pub mod office365_settings {
     }
 }
 /// Proofpoint Mail settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProofpointMailSettings {
     /// Input only. Authentication.
@@ -7355,6 +7593,7 @@ pub struct ProofpointMailSettings {
     pub authentication: ::core::option::Option<UsernameSecretAuth>,
 }
 /// Proofpoint On-demand settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProofpointOnDemandSettings {
     /// Input only. Authentication.
@@ -7365,6 +7604,7 @@ pub struct ProofpointOnDemandSettings {
     pub cluster_id: ::prost::alloc::string::String,
 }
 /// Recorded Future IOC settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordedFutureIocSettings {
     /// Input only. Authentication.
@@ -7372,6 +7612,7 @@ pub struct RecordedFutureIocSettings {
     pub authentication: ::core::option::Option<HttpHeaderAuth>,
 }
 /// Workday settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkdaySettings {
     /// Input only. Authentication.
@@ -7385,6 +7626,7 @@ pub struct WorkdaySettings {
     pub tenant_id: ::prost::alloc::string::String,
 }
 /// PAN IOC settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PanIocSettings {
     /// Input only. Authentication.
@@ -7398,6 +7640,7 @@ pub struct PanIocSettings {
     pub feed: ::prost::alloc::string::String,
 }
 /// Okta settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OktaSettings {
     /// Input only. Authentication.
@@ -7408,6 +7651,7 @@ pub struct OktaSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Okta user context settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OktaUserContextSettings {
     /// Input only. Authentication.
@@ -7421,6 +7665,7 @@ pub struct OktaUserContextSettings {
     pub manager_id_reference_field: ::prost::alloc::string::String,
 }
 /// Fox-IT STIX settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FoxItStixSettings {
     /// Input only. Authentication.
@@ -7437,6 +7682,7 @@ pub struct FoxItStixSettings {
     pub collection: ::prost::alloc::string::String,
 }
 /// ThreatConnect IOC Settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ThreatConnectIoCSettings {
     /// Input only. Authentication.
@@ -7450,6 +7696,7 @@ pub struct ThreatConnectIoCSettings {
     pub owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// ThreatConnectIoCV3Settings
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ThreatConnectIoCv3Settings {
     /// Required. Input only. UsernameSecretAuth.
@@ -7472,6 +7719,7 @@ pub struct ThreatConnectIoCv3Settings {
     pub schedule: i32,
 }
 /// ServiceNow CMDB settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceNowCmdbSettings {
     /// Input only. Authentication.
@@ -7485,6 +7733,7 @@ pub struct ServiceNowCmdbSettings {
     pub feedname: ::prost::alloc::string::String,
 }
 /// Imperva WAF settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImpervaWafSettings {
     /// Input only. Authentication.
@@ -7492,6 +7741,7 @@ pub struct ImpervaWafSettings {
     pub authentication: ::core::option::Option<HttpHeaderAuth>,
 }
 /// Thinkst Canary settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThinkstCanarySettings {
     /// Input only. Authentication.
@@ -7502,6 +7752,7 @@ pub struct ThinkstCanarySettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// RH-ISAC settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RhIsacIocSettings {
     /// Input only. Authentication.
@@ -7509,6 +7760,7 @@ pub struct RhIsacIocSettings {
     pub authentication: ::core::option::Option<OAuthClientCredentials>,
 }
 /// Rapid7 Insight settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rapid7InsightSettings {
     /// Input only. Authentication.
@@ -7522,6 +7774,7 @@ pub struct Rapid7InsightSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// Salesforce settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SalesforceSettings {
     /// API hostname.
@@ -7534,6 +7787,7 @@ pub struct SalesforceSettings {
 /// Nested message and enum types in `SalesforceSettings`.
 pub mod salesforce_settings {
     /// Possible types of authentication.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Authentication {
         /// Input only. OAuthPasswordGrantCredentials auth.
@@ -7545,6 +7799,7 @@ pub mod salesforce_settings {
     }
 }
 /// Mandiant IOC settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MandiantIoCSettings {
     /// Input only. Authentication.
@@ -7555,6 +7810,7 @@ pub struct MandiantIoCSettings {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Netskope Alert settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetskopeAlertSettings {
     /// Input only. Authentication.
@@ -7571,6 +7827,7 @@ pub struct NetskopeAlertSettings {
     pub content_type: ::prost::alloc::string::String,
 }
 /// Netskope Alert V2 settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetskopeAlertV2Settings {
     /// Input only. Authentication.
@@ -7587,6 +7844,7 @@ pub struct NetskopeAlertV2Settings {
     pub content_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Azure MDM Intune settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureMdmIntuneSettings {
     /// Input only. Authentication.
@@ -7603,6 +7861,7 @@ pub struct AzureMdmIntuneSettings {
     pub auth_endpoint: ::prost::alloc::string::String,
 }
 /// Workspace Users settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceUsersSettings {
     /// Input only. Authentication.
@@ -7618,6 +7877,7 @@ pub struct WorkspaceUsersSettings {
 /// Nested message and enum types in `WorkspaceUsersSettings`.
 pub mod workspace_users_settings {
     /// Projection Type.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7662,6 +7922,7 @@ pub mod workspace_users_settings {
     }
 }
 /// Workspace Activity settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceActivitySettings {
     /// Input only. Authentication.
@@ -7675,6 +7936,7 @@ pub struct WorkspaceActivitySettings {
     pub applications: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Workspace Alert settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceAlertsSettings {
     /// Input only. Authentication.
@@ -7685,6 +7947,7 @@ pub struct WorkspaceAlertsSettings {
     pub workspace_customer_id: ::prost::alloc::string::String,
 }
 /// Workspace Privileges settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspacePrivilegesSettings {
     /// Input only. Authentication.
@@ -7695,6 +7958,7 @@ pub struct WorkspacePrivilegesSettings {
     pub workspace_customer_id: ::prost::alloc::string::String,
 }
 /// Workspace Mobile settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceMobileSettings {
     /// Input only. Authentication.
@@ -7705,6 +7969,7 @@ pub struct WorkspaceMobileSettings {
     pub workspace_customer_id: ::prost::alloc::string::String,
 }
 /// Workspace Chrome OS settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceChromeOsSettings {
     /// Input only. Authentication.
@@ -7715,6 +7980,7 @@ pub struct WorkspaceChromeOsSettings {
     pub workspace_customer_id: ::prost::alloc::string::String,
 }
 /// Workspace Groups settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkspaceGroupsSettings {
     /// Input only. Authentication.
@@ -7725,6 +7991,7 @@ pub struct WorkspaceGroupsSettings {
     pub workspace_customer_id: ::prost::alloc::string::String,
 }
 /// Google Cloud Identity Devices settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudIdentityDevicesSettings {
     /// Input only. Authentication
@@ -7735,6 +8002,7 @@ pub struct GoogleCloudIdentityDevicesSettings {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Google Cloud Identity Device Users settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudIdentityDeviceUsersSettings {
     /// Input only. Authentication.
@@ -7742,6 +8010,7 @@ pub struct GoogleCloudIdentityDeviceUsersSettings {
     pub authentication: ::core::option::Option<OAuthJwtCredentials>,
 }
 /// Symantec Event Export settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SymantecEventExportSettings {
     /// Input only. Authentication.
@@ -7749,6 +8018,7 @@ pub struct SymantecEventExportSettings {
     pub authentication: ::core::option::Option<OAuthRefreshToken>,
 }
 /// Qualys VM settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QualysVmSettings {
     /// Input only. Authentication.
@@ -7759,6 +8029,7 @@ pub struct QualysVmSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// PAN Prisma Cloud settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PanPrismaCloudSettings {
     /// Input only. Authentication.
@@ -7769,6 +8040,7 @@ pub struct PanPrismaCloudSettings {
     pub hostname: ::prost::alloc::string::String,
 }
 /// SFTP settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SftpSettings {
     /// Input only. Authentication.
@@ -7785,6 +8057,7 @@ pub struct SftpSettings {
     pub source_deletion_option: i32,
 }
 /// Google Cloud Storage settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudStorageSettings {
     /// Bucket URI.
@@ -7801,6 +8074,7 @@ pub struct GoogleCloudStorageSettings {
     pub chronicle_service_account: ::prost::alloc::string::String,
 }
 /// HTTP settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpSettings {
     /// HTTP URI.
@@ -7814,6 +8088,7 @@ pub struct HttpSettings {
     pub source_deletion_option: i32,
 }
 /// Amazon S3 settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AmazonS3Settings {
     /// Input only. Authentication.
@@ -7830,6 +8105,7 @@ pub struct AmazonS3Settings {
     pub source_deletion_option: i32,
 }
 /// Azure Blob Storage settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureBlobStoreSettings {
     /// Input only. Authentication.
@@ -7846,6 +8122,7 @@ pub struct AzureBlobStoreSettings {
     pub source_deletion_option: i32,
 }
 /// AWS EC2 Hosts Settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Awsec2HostsSettings {
     /// Input only. UsernameSecretAuth.
@@ -7853,6 +8130,7 @@ pub struct Awsec2HostsSettings {
     pub authentication: ::core::option::Option<UsernameSecretAuth>,
 }
 /// AWS EC2 Instances Settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Awsec2InstancesSettings {
     /// Input only. UsernameSecretAuth.
@@ -7860,6 +8138,7 @@ pub struct Awsec2InstancesSettings {
     pub authentication: ::core::option::Option<UsernameSecretAuth>,
 }
 /// AWS EC2 Vpcs Settings.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Awsec2VpcsSettings {
     /// Input only. UsernameSecretAuth.
@@ -7867,6 +8146,7 @@ pub struct Awsec2VpcsSettings {
     pub authentication: ::core::option::Option<UsernameSecretAuth>,
 }
 /// AWSIAMSettings contains details needed for creating an AWS IAM feed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AwsiamSettings {
     /// Input only. Authentication
@@ -7879,6 +8159,7 @@ pub struct AwsiamSettings {
 /// Nested message and enum types in `AWSIAMSettings`.
 pub mod awsiam_settings {
     /// API Type
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -7927,6 +8208,7 @@ pub mod awsiam_settings {
     }
 }
 /// Azure auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureAuth {
     /// Type of auth used with Azure.
@@ -7936,6 +8218,7 @@ pub struct AzureAuth {
 /// Nested message and enum types in `AzureAuth`.
 pub mod azure_auth {
     /// Type of auth used with Azure.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthType {
         /// Shared Key.
@@ -7947,6 +8230,7 @@ pub mod azure_auth {
     }
 }
 /// Amazon SQS auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqsAuth {
     /// SQS access key secret auth.
@@ -7961,6 +8245,7 @@ pub struct SqsAuth {
     >,
 }
 /// A message containing fields used to authenticate with Amazon SQS.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqsAuthV2 {
     /// auth tyoe for the SQS queue.
@@ -7970,6 +8255,7 @@ pub struct SqsAuthV2 {
 /// Nested message and enum types in `SQSAuthV2`.
 pub mod sqs_auth_v2 {
     /// auth tyoe for the SQS queue.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthType {
         /// Required. Auth key and secret for the SQS queue.
@@ -7981,6 +8267,7 @@ pub mod sqs_auth_v2 {
     }
 }
 /// AWS IAM Role Auth for SQS V2.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Sqsv2AwsIamRoleAuth {
     /// AWS IAM Role for Identity Federation.
@@ -7991,6 +8278,7 @@ pub struct Sqsv2AwsIamRoleAuth {
     pub subject_id: ::prost::alloc::string::String,
 }
 /// SQS V2 access key and secret auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Sqsv2AccessKeySecretAuth {
     /// Access key ID of the S3 bucket.  Ex: AKIABCDEFGHIJKL.
@@ -8001,6 +8289,7 @@ pub struct Sqsv2AccessKeySecretAuth {
     pub secret_access_key: ::prost::alloc::string::String,
 }
 /// Amazon SQS access key and secret auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqsAccessKeySecretAuth {
     /// Access key ID.
@@ -8011,6 +8300,7 @@ pub struct SqsAccessKeySecretAuth {
     pub secret_access_key: ::prost::alloc::string::String,
 }
 /// Additional S3 access key secret auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdditionalS3AccessKeySecretAuth {
     /// Access key ID.
@@ -8021,6 +8311,7 @@ pub struct AdditionalS3AccessKeySecretAuth {
     pub secret_access_key: ::prost::alloc::string::String,
 }
 /// Amazon S3 auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct S3Auth {
     /// Access key ID. Used when using access key auth.
@@ -8043,6 +8334,7 @@ pub struct S3Auth {
     pub region: i32,
 }
 /// OAuth 2.0 refresh token grant. See <https://tools.ietf.org/html/rfc6749.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OAuthRefreshToken {
     /// Token endpoint to get the OAuth token from.
@@ -8059,6 +8351,7 @@ pub struct OAuthRefreshToken {
     pub refresh_token: ::prost::alloc::string::String,
 }
 /// SFTP Auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SftpAuth {
     /// Username. Used for username and password authentication.
@@ -8075,6 +8368,7 @@ pub struct SftpAuth {
     pub private_key_passphrase: ::prost::alloc::string::String,
 }
 /// HTTP header based authentication.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeaderAuth {
     /// Header key-value pairs.
@@ -8082,6 +8376,7 @@ pub struct HttpHeaderAuth {
     pub header_key_values: ::prost::alloc::vec::Vec<HeaderKeyValue>,
 }
 /// Header key-value pairs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HeaderKeyValue {
     /// Key.
@@ -8092,6 +8387,7 @@ pub struct HeaderKeyValue {
     pub value: ::prost::alloc::string::String,
 }
 /// Info for username and secret based authentication.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UsernameSecretAuth {
     /// Username of an identity used for authentication.
@@ -8102,6 +8398,7 @@ pub struct UsernameSecretAuth {
     pub secret: ::prost::alloc::string::String,
 }
 /// Microsoft OAuth 2.0 client credentials grant.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MicrosoftOAuthClientCredentials {
     /// Client ID.
@@ -8112,6 +8409,7 @@ pub struct MicrosoftOAuthClientCredentials {
     pub client_secret: ::prost::alloc::string::String,
 }
 /// OAuth 2.0 client credentials grant. See <https://tools.ietf.org/html/rfc6749.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OAuthClientCredentials {
     /// Token endpoint.
@@ -8125,6 +8423,7 @@ pub struct OAuthClientCredentials {
     pub client_secret: ::prost::alloc::string::String,
 }
 /// OAuth 2.0 password grant. See <https://tools.ietf.org/html/rfc6749.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OAuthPasswordGrantCredentials {
     /// Token endpoint to get the OAuth token from.
@@ -8144,6 +8443,7 @@ pub struct OAuthPasswordGrantCredentials {
     pub password: ::prost::alloc::string::String,
 }
 /// PAN Prisma Cloud auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PanPrismaAuth {
     /// Username.
@@ -8154,6 +8454,7 @@ pub struct PanPrismaAuth {
     pub password: ::prost::alloc::string::String,
 }
 /// OAuth 2.0 JWT grant. See, <https://tools.ietf.org/html/rfc7519>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OAuthJwtCredentials {
     /// Token endpoint to get the OAuth token from.
@@ -8169,6 +8470,7 @@ pub struct OAuthJwtCredentials {
 /// Nested message and enum types in `OAuthJWTCredentials`.
 pub mod o_auth_jwt_credentials {
     /// Credentials.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Credentials {
         /// RS credentials.
@@ -8177,6 +8479,7 @@ pub mod o_auth_jwt_credentials {
     }
 }
 /// RS credentials.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RsCredentials {
     /// Private key in PEM format.
@@ -8184,6 +8487,7 @@ pub struct RsCredentials {
     pub private_key: ::prost::alloc::string::String,
 }
 /// Claims identifying a specific customer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Claims {
     /// Issuer. Usually the client_id.
@@ -8197,6 +8501,7 @@ pub struct Claims {
     pub audience: ::prost::alloc::string::String,
 }
 /// An SSL client certificate keypair.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SslClientKeypair {
     /// The encoded private key. The string should be a private key in PEM format,
@@ -8224,6 +8529,7 @@ pub struct SslClientKeypair {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// Authentication for Workday.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkdayAuth {
     /// Username. This is unused: Workday feeds were originally configured using a
@@ -8253,6 +8559,7 @@ pub struct WorkdayAuth {
 }
 /// GoogleCloudStorageV2Settings is the settings proto for Omniflow Google Cloud
 /// Storage feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudStorageV2Settings {
     /// Required. Google Cloud Storage Bucket URI for the feed.
@@ -8275,6 +8582,7 @@ pub struct GoogleCloudStorageV2Settings {
 }
 /// GoogleCloudStorageEventDrivenSettings is the settings proto for Omniflow
 /// Google Cloud Storage feeds driven by pubsub events.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudStorageEventDrivenSettings {
     /// Required. Google Cloud Storage Bucket URI for the feed.
@@ -8299,6 +8607,7 @@ pub struct GoogleCloudStorageEventDrivenSettings {
     pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A message containing fields used to authenticate with Amazon S3.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct S3AuthV2 {
     /// auth type for S3.
@@ -8308,6 +8617,7 @@ pub struct S3AuthV2 {
 /// Nested message and enum types in `S3AuthV2`.
 pub mod s3_auth_v2 {
     /// auth type for S3.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthType {
         /// Access Key ID and Secret Access Key for an AWS account.
@@ -8319,6 +8629,7 @@ pub mod s3_auth_v2 {
     }
 }
 /// AWS IAM Role Auth for S3 V2.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct S3v2AwsIamRoleAuth {
     /// AWS IAM Role for Identity Federation.
@@ -8329,6 +8640,7 @@ pub struct S3v2AwsIamRoleAuth {
     pub subject_id: ::prost::alloc::string::String,
 }
 /// S3 V2 access key and secret auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct S3v2AccessKeySecretAuth {
     /// Required. Access Key ID for an AWS account (a 20-character, alphanumeric
@@ -8340,6 +8652,7 @@ pub struct S3v2AccessKeySecretAuth {
     pub secret_access_key: ::prost::alloc::string::String,
 }
 /// AmazonS3V2Settings is the settings proto for Omniflow S3 feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AmazonS3v2Settings {
     /// Required. Authentication.
@@ -8364,6 +8677,7 @@ pub struct AmazonS3v2Settings {
 }
 /// Info for MssoAuthentication using a username, password, and login api
 /// endpoint.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MssoAuthentication {
     /// Required. Username for MSSO authentication.
@@ -8388,6 +8702,7 @@ pub struct MssoAuthentication {
     pub api_endpoint: ::prost::alloc::string::String,
 }
 /// OAuth 2.0 client credentials grant. See <https://tools.ietf.org/html/rfc6749.>
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MimecastV2oAuthClientCredentials {
     /// Required. Client ID.
@@ -8398,6 +8713,7 @@ pub struct MimecastV2oAuthClientCredentials {
     pub client_secret: ::prost::alloc::string::String,
 }
 /// Settings for TrellixIAMAuthentication.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixIamAuthentication {
     /// Required. Client ID generated in Trellix IAM.
@@ -8424,6 +8740,7 @@ pub struct TrellixIamAuthentication {
 }
 /// Info for TrellixLocalAuthentication using a username, password, endpoint,
 /// and header name.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixLocalAuthentication {
     /// Required. Username for Trellix Local authentication.
@@ -8450,6 +8767,7 @@ pub struct TrellixLocalAuthentication {
 }
 /// TrellixStarXAuthentication contains a oneof with all of the authentication
 /// types supported by Trellix \*X devices.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixStarXAuthentication {
     /// One of multiple potential auth types.
@@ -8459,6 +8777,7 @@ pub struct TrellixStarXAuthentication {
 /// Nested message and enum types in `TrellixStarXAuthentication`.
 pub mod trellix_star_x_authentication {
     /// One of multiple potential auth types.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthType {
         /// Input only. MssoAuthentication auth type.
@@ -8473,6 +8792,7 @@ pub mod trellix_star_x_authentication {
     }
 }
 /// Settings required by Feeds of TrellixHxHosts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixHxHostsSettings {
     /// Required. Authentication.
@@ -8489,6 +8809,7 @@ pub struct TrellixHxHostsSettings {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Settings required by Feeds of TrellixHxAlerts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixHxAlertsSettings {
     /// Required. Authentication.
@@ -8505,6 +8826,7 @@ pub struct TrellixHxAlertsSettings {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Settings required by Feeds of TrellixHxBulkAcqs.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrellixHxBulkAcqsSettings {
     /// Required. Authentication.
@@ -8521,6 +8843,7 @@ pub struct TrellixHxBulkAcqsSettings {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Settings required by Azure Event Hub Feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureEventHubSettings {
     /// Required. Event hub to read from.
@@ -8546,6 +8869,7 @@ pub struct AzureEventHubSettings {
     pub event_hub_namespace: ::prost::alloc::string::String,
 }
 /// AmazonSQSV2Settings is the settings proto for Omniflow SQS feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AmazonSqsv2Settings {
     /// Required. Amazon Resource Name(ARN) of the queue.
@@ -8572,6 +8896,7 @@ pub struct AmazonSqsv2Settings {
     pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// AzureBlobStoreV2Settings is the settings proto for Azure Blob Storage feeds.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureBlobStoreV2Settings {
     /// Required. Azure URI.
@@ -8595,6 +8920,7 @@ pub struct AzureBlobStoreV2Settings {
     pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Azure V2 Workload Identity Federation.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureV2WorkloadIdentityFederation {
     /// Required. OAuth client ID.
@@ -8608,6 +8934,7 @@ pub struct AzureV2WorkloadIdentityFederation {
     pub subject_id: ::prost::alloc::string::String,
 }
 /// A message containing fields used to authenticate with Azure Blob Storage.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureAuthV2 {
     /// Possible types of authentication.
@@ -8617,6 +8944,7 @@ pub struct AzureAuthV2 {
 /// Nested message and enum types in `AzureAuthV2`.
 pub mod azure_auth_v2 {
     /// Possible types of authentication.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthType {
         /// Required. Access Key also known as shared key.
@@ -8633,6 +8961,7 @@ pub mod azure_auth_v2 {
 /// Metadata that pertains to feed source types (see
 /// Feed.FeedDetails.FeedSourceType) that is useful for building interfaces to
 /// construct valid Feed messages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeedSourceTypeSchema {
     /// The resource name for this FeedSourceTypeSchema.
@@ -8657,6 +8986,7 @@ pub struct FeedSourceTypeSchema {
 }
 /// Metadata that pertains to a log type in the context of Feeds, and is useful
 /// for building interfaces to construct valid Feed messages.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogTypeSchema {
     /// The resource name.
@@ -8696,6 +9026,7 @@ pub struct LogTypeSchema {
 pub mod log_type_schema {
     /// A collection of `details` field schema sets. The user must provide values
     /// for only one set of fields within an alternative.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetailsFieldSchemaAlternative {
         /// The schemas for each alternative set of fields.
@@ -8703,6 +9034,7 @@ pub mod log_type_schema {
         pub details_field_schema_sets: ::prost::alloc::vec::Vec<DetailsFieldSchemaSet>,
     }
     /// A collection of schemas for related fields within `details`.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetailsFieldSchemaSet {
         /// A human-readable name for this collection of `details` fields.
@@ -8716,6 +9048,7 @@ pub mod log_type_schema {
         pub details_field_schemas: ::prost::alloc::vec::Vec<DetailsFieldSchema>,
     }
     /// A schema for a particular `details` field on the Feed proto message.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetailsFieldSchema {
         /// The protocol buffer field path. For example,
@@ -8748,6 +9081,7 @@ pub mod log_type_schema {
     }
     /// A schema for a particular value, for a particular enum `details` field on
     /// the Feed proto message.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnumFieldSchema {
         /// The value to assign to the field.
@@ -8762,6 +9096,7 @@ pub mod log_type_schema {
     }
 }
 /// Request message for FetchServiceAccountForCustomer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchServiceAccountForCustomerRequest {
     /// Required. The parent resource where this FeedServiceAccount will be
@@ -8772,6 +9107,7 @@ pub struct FetchServiceAccountForCustomerRequest {
 }
 /// ListFeedSourceTypeSchemas request message. Note that Feed schemas do not
 /// contain customer data, so are not scoped to a particular customer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeedSourceTypeSchemasRequest {
     /// Required. The parent, which owns this collection of FeedSourceTypeSchemas.
@@ -8791,6 +9127,7 @@ pub struct ListFeedSourceTypeSchemasRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// ListFeedSourceTypeSchemas response message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedSourceTypeSchemasResponse {
     /// Schemas describing each FeedSourceType.
@@ -8803,6 +9140,7 @@ pub struct ListFeedSourceTypeSchemasResponse {
 }
 /// ListLogTypeSchemas request message. Note that feed schemas do not contain
 /// customer data, so are not scoped to a particular customer.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLogTypeSchemasRequest {
     /// Required. The parent, which owns this collection of LogTypeSchemas.
@@ -8822,6 +9160,7 @@ pub struct ListLogTypeSchemasRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// ListLogTypeSchemas response message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLogTypeSchemasResponse {
     /// LogTypeSchemas.
@@ -8833,6 +9172,7 @@ pub struct ListLogTypeSchemasResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// ImportPushLogsRequest request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportPushLogsRequest {
     /// Required. The parent, which owns this collection of logs.
@@ -8850,6 +9190,7 @@ pub struct ImportPushLogsRequest {
     pub secret: ::prost::alloc::string::String,
 }
 /// Request message for UpdateFeed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeedRequest {
     /// Required. Feed to update. Updates full feed object.
@@ -8864,6 +9205,7 @@ pub struct UpdateFeedRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListFeed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeedsRequest {
     /// Required. The parent resource where this Feed will be created.
@@ -8882,6 +9224,7 @@ pub struct ListFeedsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListFeed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsResponse {
     /// List of feeds.
@@ -8893,6 +9236,7 @@ pub struct ListFeedsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListFeedPacks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeedPacksRequest {
     /// Required. The parent resource where this content pack will be created.
@@ -8913,6 +9257,7 @@ pub struct ListFeedPacksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListFeedPacks.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedPacksResponse {
     /// List of feeds packs.
@@ -8924,6 +9269,7 @@ pub struct ListFeedPacksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetFeedPack.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFeedPackRequest {
     /// Required. The ID of the feed pack to retrieve.
@@ -8933,6 +9279,7 @@ pub struct GetFeedPackRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateFeed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeedRequest {
     /// Required. The parent resource where this Feed will be created.
@@ -8944,6 +9291,7 @@ pub struct CreateFeedRequest {
     pub feed: ::core::option::Option<Feed>,
 }
 /// Request message to retrieve a feed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFeedRequest {
     /// Required. The ID of the feed to retrieve.
@@ -8953,6 +9301,7 @@ pub struct GetFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to delete a feed.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFeedRequest {
     /// Required. The ID of the feed to retrieve.
@@ -8966,6 +9315,7 @@ pub struct DeleteFeedRequest {
     pub delete_backlog: bool,
 }
 /// EnableFeed request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableFeedRequest {
     /// Required. The name of the feed to enable.
@@ -8975,6 +9325,7 @@ pub struct EnableFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// GenerateSecret request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateSecretRequest {
     /// Required. The name of the feed to for which to generate secret.
@@ -8984,6 +9335,7 @@ pub struct GenerateSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// GenerateSecret response message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateSecretResponse {
     /// The generated secret. Store the secret value at a safe place and use it
@@ -8992,6 +9344,7 @@ pub struct GenerateSecretResponse {
     pub secret: ::prost::alloc::string::String,
 }
 /// DisableFeed request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableFeedRequest {
     /// Required. The name of the feed to disable.
@@ -9001,6 +9354,7 @@ pub struct DisableFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// CustomAPIHeaderKeyValue defines dynamic headers key-values for Custom API.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiHeaderKeyValue {
     /// Required. Enter the name of the HTTP Request header (e.g., Authorization or
@@ -9013,6 +9367,7 @@ pub struct CustomApiHeaderKeyValue {
     pub value: ::prost::alloc::string::String,
 }
 /// CustomAPIHeaderAuth lists HTTP headers for custom API auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiHeaderAuth {
     /// Optional. Add HTTP request header key-value pairs.
@@ -9021,6 +9376,7 @@ pub struct CustomApiHeaderAuth {
 }
 /// CustomAPIQueryKeyValue defines dynamic query parameters key-values for Custom
 /// API Auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiQueryKeyValue {
     /// Required. Enter the name of the URL Query Parameter (e.g., api_key or
@@ -9033,6 +9389,7 @@ pub struct CustomApiQueryKeyValue {
     pub value: ::prost::alloc::string::String,
 }
 /// CustomAPIQueryAuth lists URL Query parameters for custom API auth.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiQueryAuth {
     /// Optional. Add URL Query parameter key-value pairs.
@@ -9040,11 +9397,13 @@ pub struct CustomApiQueryAuth {
     pub query_key_values: ::prost::alloc::vec::Vec<CustomApiQueryKeyValue>,
 }
 /// Info for No-Authentication custom API feeds.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiNoAuth {}
 /// Settings required by Feeds of Custom API (Codeless).
 /// Supports fetching data from third-party APIs with configurable pagination,
 /// authentication, and response parsing.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiSettings {
     /// Required. Enter the primary web address of the third-party API (e.g.,
@@ -9068,6 +9427,7 @@ pub struct CustomApiSettings {
 pub mod custom_api_settings {
     /// Choose the method and credentials used to securely authorize access to the
     /// API.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Authentication {
         /// Authenticate without credentials or secrets.
@@ -9088,6 +9448,7 @@ pub mod custom_api_settings {
     }
 }
 /// Container for a specific API interaction.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiTransferNode {
     /// Required. Define the technical parameters for the outgoing API call,
@@ -9113,6 +9474,7 @@ pub struct CustomApiTransferNode {
     >,
 }
 /// Configuration for dependent requests (child chaining).
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiDependentRequestsConfig {
     /// Required. Enter the specific field in the response that uniquely identifies
@@ -9130,6 +9492,7 @@ pub struct CustomApiDependentRequestsConfig {
     pub dependent_requests: ::prost::alloc::vec::Vec<CustomApiTransferNode>,
 }
 /// Configuration for the outgoing API request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomApiRequestConfig {
     /// Required. Enter the specific API route appended to the Base URL to fetch
@@ -9160,6 +9523,7 @@ pub struct CustomApiRequestConfig {
 /// Nested message and enum types in `CustomAPIRequestConfig`.
 pub mod custom_api_request_config {
     /// HTTPS methods supported.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -9204,6 +9568,7 @@ pub mod custom_api_request_config {
     }
 }
 /// Configuration for handling the API response.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiResponseConfig {
     /// Required. Enter the exact path in the API's response payload where the list
@@ -9212,6 +9577,7 @@ pub struct CustomApiResponseConfig {
     pub target_data_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Checkpoint configuration to enable sequential (cursor-based) polling.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiCheckpointConfig {
     /// Select the specific checkpointing mechanism the third-party API requires.
@@ -9221,9 +9587,11 @@ pub struct CustomApiCheckpointConfig {
 /// Nested message and enum types in `CustomAPICheckpointConfig`.
 pub mod custom_api_checkpoint_config {
     /// Fetch all available data in one go without tracking progress.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NoneStrategy {}
     /// Track the timestamp of the newest record to fetch newer ones next.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LatestTimestampStrategy {
         /// Required. Enter the exact location within a log record where the
@@ -9236,6 +9604,7 @@ pub mod custom_api_checkpoint_config {
         pub checkpoint_variable: ::prost::alloc::string::String,
     }
     /// Track the highest record ID to fetch only new records next.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LatestRecordStrategy {
         /// Required. Enter the exact location within a log record where the
@@ -9248,6 +9617,7 @@ pub mod custom_api_checkpoint_config {
         pub checkpoint_variable: ::prost::alloc::string::String,
     }
     /// Use progress tokens provided by the API.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IteratorStrategy {
         /// Required. Enter the exact location within a log record where the
@@ -9260,6 +9630,7 @@ pub mod custom_api_checkpoint_config {
         pub checkpoint_variable: ::prost::alloc::string::String,
     }
     /// Select the specific checkpointing mechanism the third-party API requires.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Strategy {
         /// Fetch all available data in one go without tracking progress.
@@ -9277,6 +9648,7 @@ pub mod custom_api_checkpoint_config {
     }
 }
 /// Pagination strategy for the request.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomApiPagination {
     /// Select the specific paging mechanism the third-party API requires.
@@ -9288,9 +9660,11 @@ pub struct CustomApiPagination {
 /// Nested message and enum types in `CustomAPIPagination`.
 pub mod custom_api_pagination {
     /// Fetch data in a single request without paging.
+    #[allow(clippy::all)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NonePagination {}
     /// Use tokens (custom keys) to get the next page of data.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TokenPagination {
         /// Required. Enter the field in the API response that contains the URL or
@@ -9303,6 +9677,7 @@ pub mod custom_api_pagination {
         pub query_param: ::prost::alloc::string::String,
     }
     /// Follow links provided in the response to get more data.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LinkPagination {
         /// Required. Enter the field in the API response that contains the URL or
@@ -9311,6 +9686,7 @@ pub mod custom_api_pagination {
         pub next_page_link_json_path: ::prost::alloc::string::String,
     }
     /// Skip a set number of records to get the next set.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OffsetPagination {
         /// Required. Specify the name of the query parameter for offset in request.
@@ -9318,6 +9694,7 @@ pub mod custom_api_pagination {
         pub offset_query_param: ::prost::alloc::string::String,
     }
     /// Go to the next page number (e.g., page 2).
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PageNumberPagination {
         /// Required. Specify the name of the query parameter for page number in
@@ -9326,6 +9703,7 @@ pub mod custom_api_pagination {
         pub page_number_query_param: ::prost::alloc::string::String,
     }
     /// Select the specific paging mechanism the third-party API requires.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PaginationStrategy {
         /// Fetch data in a single request without paging.
@@ -9346,6 +9724,7 @@ pub mod custom_api_pagination {
     }
 }
 /// The type of URIs specified in the source URIs.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum UriSourceType {
@@ -9386,6 +9765,7 @@ impl UriSourceType {
 }
 /// Source deletion option controls whether source files should be deleted after
 /// transferring.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SourceDeletionOption {
@@ -9430,6 +9810,7 @@ impl SourceDeletionOption {
 }
 /// Source deletion option determines whether source files should be deleted
 /// after transferring.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SourceDeletionOptionV2 {
@@ -9465,6 +9846,7 @@ impl SourceDeletionOptionV2 {
 }
 /// AWS S3 regions:
 /// <https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region.>
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum S3Region {
@@ -9633,6 +10015,7 @@ impl S3Region {
 /// An enumeration of the possible types of a `Feed.details` field, where type
 /// implies both encoding and semantics. This is used in constructing a schema in
 /// order to construct a UI for creating well formed feeds.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SemanticType {
@@ -10206,6 +10589,7 @@ pub mod feeds_service_client {
 }
 /// Represents a set of logic conditions used to refine various types of
 /// findings such as curated rule detections.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindingsRefinement {
     /// Full resource name for the findings refinement.
@@ -10242,6 +10626,7 @@ pub struct FindingsRefinement {
 }
 /// The FindingsRefinementDeployment resource represents the deployment state of
 /// a findings refinement.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindingsRefinementDeployment {
     /// Required. The resource name of the findings refinement deployment.
@@ -10276,6 +10661,7 @@ pub struct FindingsRefinementDeployment {
 pub mod findings_refinement_deployment {
     /// The resources which the findings refinement is applied to. Corresponds to
     /// the type of the findings refinement.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FindingsRefinementApplication {
         /// The resources which the detection exclusion is applied to.
@@ -10284,6 +10670,7 @@ pub mod findings_refinement_deployment {
     }
 }
 /// Describes the detectors a detection exclusion is applied to.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetectionExclusionApplication {
     /// The CuratedRuleSets this detection exclusion applies to.
@@ -10312,6 +10699,7 @@ pub struct DetectionExclusionApplication {
     >,
 }
 /// The activity for a specific findings refinement.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindingsRefinementActivity {
     /// Required. Full resource name for the findings refinement this activity
@@ -10326,6 +10714,7 @@ pub struct FindingsRefinementActivity {
 /// Nested message and enum types in `FindingsRefinementActivity`.
 pub mod findings_refinement_activity {
     /// The activity for the findings refinement.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Activity {
         /// The activity for the detection exclusion.
@@ -10335,6 +10724,7 @@ pub mod findings_refinement_activity {
 }
 /// The activity for a findings refinement that is a detection exclusion. The
 /// activity is broken down per detector.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectionExclusionActivity {
     /// The activity for the detection exclusion broken down by detector.
@@ -10347,6 +10737,7 @@ pub struct DetectionExclusionActivity {
 pub mod detection_exclusion_activity {
     /// The activity for a findings refinement that is a detection exclusion broken
     /// down for one specific detector.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DetectionExclusionDetectorActivity {
         /// The number of detections for the detector that were excluded by the
@@ -10367,6 +10758,7 @@ pub mod detection_exclusion_activity {
     }
     /// Nested message and enum types in `DetectionExclusionDetectorActivity`.
     pub mod detection_exclusion_detector_activity {
+        #[allow(clippy::all)]
         #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DetectorName {
             /// Full resource name for the curated rule this activity corresponds to.
@@ -10397,6 +10789,7 @@ pub mod detection_exclusion_activity {
     }
 }
 /// Request message for GetFindingsRefinement method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFindingsRefinementRequest {
     /// Required. The name of the findings refinement to retrieve.
@@ -10406,6 +10799,7 @@ pub struct GetFindingsRefinementRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListFindingsRefinements method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingsRefinementsRequest {
     /// Required. The parent, which owns this collection of findings refinements.
@@ -10425,6 +10819,7 @@ pub struct ListFindingsRefinementsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListFindingsRefinements method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRefinementsResponse {
     /// List of findings refinements.
@@ -10436,6 +10831,7 @@ pub struct ListFindingsRefinementsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateFindingsRefinement method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingsRefinementRequest {
     /// Required. The parent resource where this findings refinement will be
@@ -10448,6 +10844,7 @@ pub struct CreateFindingsRefinementRequest {
     pub findings_refinement: ::core::option::Option<FindingsRefinement>,
 }
 /// Request message for UpdateFindingsRefinement method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFindingsRefinementRequest {
     /// Required. The findings refinement to update.
@@ -10464,6 +10861,7 @@ pub struct UpdateFindingsRefinementRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetFindingsRefinementDeployment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFindingsRefinementDeploymentRequest {
     /// Required. The name of the findings refinement to retrieve.
@@ -10473,6 +10871,7 @@ pub struct GetFindingsRefinementDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateFindingsRefinementDeployment method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateFindingsRefinementDeploymentRequest {
     /// Required. The findings refinement deployment to update.
@@ -10491,6 +10890,7 @@ pub struct UpdateFindingsRefinementDeploymentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListAllFindingsRefinementDeployments method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAllFindingsRefinementDeploymentsRequest {
     /// Required. The name of the parent resource, which is the SecOps instance to
@@ -10522,6 +10922,7 @@ pub struct ListAllFindingsRefinementDeploymentsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListAllFindingsRefinementDeployments method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAllFindingsRefinementDeploymentsResponse {
     /// List of all findings refinement deployments.
@@ -10536,6 +10937,7 @@ pub struct ListAllFindingsRefinementDeploymentsResponse {
 }
 /// Outcome filter for the findings refinement. This is used to filter the
 /// findings refinement based on the outcome variable values.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutcomeFilter {
     /// Required. The outcome variable name.
@@ -10552,6 +10954,7 @@ pub struct OutcomeFilter {
 pub mod outcome_filter {
     /// The operator to compare the outcome variable value with the outcome value
     /// in the outcome filter.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -10608,6 +11011,7 @@ pub mod outcome_filter {
     }
 }
 /// Request message for ComputeFindingsRefinementActivity method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComputeFindingsRefinementActivityRequest {
     /// Required. Full resource name for the findings refinement to fetch the
@@ -10620,6 +11024,7 @@ pub struct ComputeFindingsRefinementActivityRequest {
     pub interval: ::core::option::Option<super::super::super::r#type::Interval>,
 }
 /// Response message for ComputeFindingsRefinementActivity method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeFindingsRefinementActivityResponse {
     /// The activity for the findings refinement.
@@ -10627,6 +11032,7 @@ pub struct ComputeFindingsRefinementActivityResponse {
     pub activity: ::core::option::Option<FindingsRefinementActivity>,
 }
 /// Request message for ComputeAllFindingsRefinementActivities method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComputeAllFindingsRefinementActivitiesRequest {
     /// Required. The ID of the Instance to retrieve counts for.
@@ -10639,6 +11045,7 @@ pub struct ComputeAllFindingsRefinementActivitiesRequest {
     pub interval: ::core::option::Option<super::super::super::r#type::Interval>,
 }
 /// Response message for ComputeAllFindingsRefinementActivities method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeAllFindingsRefinementActivitiesResponse {
     /// The activities of all findings refinements.
@@ -10647,6 +11054,7 @@ pub struct ComputeAllFindingsRefinementActivitiesResponse {
 }
 /// The type of findings refinement, which determines what the findings
 /// refinement runs over and the mechanism by which it runs.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FindingsRefinementType {
@@ -11055,6 +11463,7 @@ pub mod findings_refinement_service_client {
     }
 }
 /// A Instance represents an instantiation of the Instance product.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Instance {
     /// Identifier. The resource name of this instance.
@@ -11063,6 +11472,7 @@ pub struct Instance {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get a Instance.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The name of the instance to retrieve.
@@ -11193,6 +11603,7 @@ pub mod instance_service_client {
     }
 }
 /// ScopeInfo specifies the scope info of the reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScopeInfo {
     /// Required. The list of scope names of the reference list, if the list is
@@ -11201,6 +11612,7 @@ pub struct ScopeInfo {
     pub reference_list_scope: ::core::option::Option<ReferenceListScope>,
 }
 /// ReferenceListScope specifies the list of scope names of the reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReferenceListScope {
     /// Optional. The list of scope names of the reference list. The scope names
@@ -11210,6 +11622,7 @@ pub struct ReferenceListScope {
     pub scope_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get details about a reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReferenceListRequest {
     /// Required. The resource name of the reference list to retrieve.
@@ -11223,6 +11636,7 @@ pub struct GetReferenceListRequest {
     pub view: i32,
 }
 /// A request for a list of reference lists.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReferenceListsRequest {
     /// Required. The parent, which owns this collection of reference lists.
@@ -11248,6 +11662,7 @@ pub struct ListReferenceListsRequest {
     pub view: i32,
 }
 /// A response to a request for a list of reference lists.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferenceListsResponse {
     /// The reference lists.
@@ -11260,6 +11675,7 @@ pub struct ListReferenceListsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to create a reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReferenceListRequest {
     /// Required. The parent resource where this reference list will be created.
@@ -11280,6 +11696,7 @@ pub struct CreateReferenceListRequest {
     pub reference_list_id: ::prost::alloc::string::String,
 }
 /// A request to update a reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReferenceListRequest {
     /// Required. The reference list to update.
@@ -11297,6 +11714,7 @@ pub struct UpdateReferenceListRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// VerifyReferenceList request message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyReferenceListRequest {
     /// Required. The name of the parent resource, which is the SecOps instance
@@ -11313,6 +11731,7 @@ pub struct VerifyReferenceListRequest {
     pub entries: ::prost::alloc::vec::Vec<ReferenceListEntry>,
 }
 /// VerifyListResponse response message.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyReferenceListResponse {
     /// Validity of list - true if no errors found.
@@ -11325,6 +11744,7 @@ pub struct VerifyReferenceListResponse {
 /// A reference list.
 /// Reference lists are user-defined lists of values which users can
 /// use in multiple Rules.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceList {
     /// Identifier. The resource name of the reference list.
@@ -11368,6 +11788,7 @@ pub struct ReferenceList {
     pub scope_info: ::core::option::Option<ScopeInfo>,
 }
 /// An entry in a reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReferenceListEntry {
     /// Required. The value of the entry. Maximum length is 512 characters.
@@ -11375,6 +11796,7 @@ pub struct ReferenceListEntry {
     pub value: ::prost::alloc::string::String,
 }
 /// The error generated when verifying the reference list.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReferenceListError {
     /// 1-indexed line number where the error occurs.
@@ -11386,6 +11808,7 @@ pub struct ReferenceListError {
     pub error_message: ::prost::alloc::string::String,
 }
 /// The syntax type indicating how list entries should be validated.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ReferenceListSyntaxType {
@@ -11424,6 +11847,7 @@ impl ReferenceListSyntaxType {
 }
 /// ReferenceListView is a mechanism for viewing partial responses of the
 /// ReferenceList resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ReferenceListView {
@@ -11698,6 +12122,7 @@ pub mod reference_list_service_client {
 }
 /// The Rule resource represents a user-created rule.
 /// NEXT TAG: 21
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
     /// Identifier. Full resource name for the rule.
@@ -11792,6 +12217,7 @@ pub struct Rule {
 /// Nested message and enum types in `Rule`.
 pub mod rule {
     /// The current compilation state of the rule.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11838,6 +12264,7 @@ pub mod rule {
     }
 }
 /// The RuleDeployment resource represents the deployment state of a Rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuleDeployment {
     /// Required. The resource name of the rule deployment.
@@ -11895,6 +12322,7 @@ pub struct RuleDeployment {
 /// Nested message and enum types in `RuleDeployment`.
 pub mod rule_deployment {
     /// The possible execution states the rule deployment can be in.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -11943,6 +12371,7 @@ pub mod rule_deployment {
     }
 }
 /// Retrohunt is an execution of a Rule over a time range in the past.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Retrohunt {
     /// The resource name of the retrohunt.
@@ -11974,6 +12403,7 @@ pub struct Retrohunt {
 /// Nested message and enum types in `Retrohunt`.
 pub mod retrohunt {
     /// The possible states a retrohunt can be in.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12026,6 +12456,7 @@ pub mod retrohunt {
     }
 }
 /// Request message for CreateRule method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRuleRequest {
     /// Required. The parent resource where this rule will be created.
@@ -12037,6 +12468,7 @@ pub struct CreateRuleRequest {
     pub rule: ::core::option::Option<Rule>,
 }
 /// Request message for GetRule method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleRequest {
     /// Required. The name of the rule to retrieve.
@@ -12050,6 +12482,7 @@ pub struct GetRuleRequest {
     pub view: i32,
 }
 /// Request message for ListRules method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRulesRequest {
     /// Required. The parent, which owns this collection of rules.
@@ -12081,6 +12514,7 @@ pub struct ListRulesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListRules method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
     /// The rules from the specified instance.
@@ -12092,6 +12526,7 @@ pub struct ListRulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateRule method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRuleRequest {
     /// Required. The rule to update.
@@ -12107,6 +12542,7 @@ pub struct UpdateRuleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the DeleteRule method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRuleRequest {
     /// Required. The name of the rule to delete. A rule revision timestamp cannot
@@ -12125,6 +12561,7 @@ pub struct DeleteRuleRequest {
     pub force: bool,
 }
 /// Request message for VerifyRuleText method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VerifyRuleTextRequest {
     /// Required. The name of the parent resource, which is the SecOps instance
@@ -12137,6 +12574,7 @@ pub struct VerifyRuleTextRequest {
     pub rule_text: ::prost::alloc::string::String,
 }
 /// Response message for VerifyRuleText method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyRuleTextResponse {
     /// Whether or not the rule text was successfully verified.
@@ -12148,6 +12586,7 @@ pub struct VerifyRuleTextResponse {
     pub compilation_diagnostics: ::prost::alloc::vec::Vec<CompilationDiagnostic>,
 }
 /// Request message for ListRuleRevisions method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuleRevisionsRequest {
     /// Required. The name of the rule to list revisions for.
@@ -12174,6 +12613,7 @@ pub struct ListRuleRevisionsRequest {
     pub view: i32,
 }
 /// Response message for ListRuleRevisions method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleRevisionsResponse {
     /// The revisions of the rule.
@@ -12185,6 +12625,7 @@ pub struct ListRuleRevisionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateRetrohunt method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRetrohuntRequest {
     /// Required. The parent of retrohunt, which is a rule.
@@ -12197,6 +12638,7 @@ pub struct CreateRetrohuntRequest {
     pub retrohunt: ::core::option::Option<Retrohunt>,
 }
 /// Request message for GetRetrohunt method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRetrohuntRequest {
     /// Required. The name of the retrohunt to retrieve.
@@ -12206,6 +12648,7 @@ pub struct GetRetrohuntRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListRetrohunts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRetrohuntsRequest {
     /// Required. The rule that the retrohunts belong to.
@@ -12233,6 +12676,7 @@ pub struct ListRetrohuntsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListRetrohunts method.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRetrohuntsResponse {
     /// The retrohunts from the specified rule.
@@ -12244,6 +12688,7 @@ pub struct ListRetrohuntsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetRuleDeployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuleDeploymentRequest {
     /// Required. The name of the rule deployment to retrieve.
@@ -12253,6 +12698,7 @@ pub struct GetRuleDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListRuleDeployments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuleDeploymentsRequest {
     /// Required. The collection of all parents which own all rule deployments. The
@@ -12281,6 +12727,7 @@ pub struct ListRuleDeploymentsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListRuleDeployments.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleDeploymentsResponse {
     /// The rule deployments from all rules.
@@ -12292,6 +12739,7 @@ pub struct ListRuleDeploymentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateRuleDeployment.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateRuleDeploymentRequest {
     /// Required. The rule deployment to update.
@@ -12307,6 +12755,7 @@ pub struct UpdateRuleDeploymentRequest {
 }
 /// CompilationPosition represents the location of a compilation diagnostic in
 /// rule text.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompilationPosition {
     /// Output only. Start line number, beginning at 1.
@@ -12325,6 +12774,7 @@ pub struct CompilationPosition {
 /// CompilationDiagnostic represents a compilation diagnostic generated
 /// during a rule's compilation, such as a compilation error or a compilation
 /// warning.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompilationDiagnostic {
     /// Output only. The diagnostic message.
@@ -12346,6 +12796,7 @@ pub struct CompilationDiagnostic {
 /// Nested message and enum types in `CompilationDiagnostic`.
 pub mod compilation_diagnostic {
     /// The severity level of the compilation diagnostic.
+    #[allow(clippy::all)]
     #[derive(
         Clone,
         Copy,
@@ -12390,6 +12841,7 @@ pub mod compilation_diagnostic {
     }
 }
 /// Severity represents the severity level of the rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Severity {
     /// The display name of the severity level. Extracted from the meta section of
@@ -12398,6 +12850,7 @@ pub struct Severity {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Operation Metadata for Retrohunts.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrohuntMetadata {
     /// The name of the retrohunt.
@@ -12418,6 +12871,7 @@ pub struct RetrohuntMetadata {
 /// InputsUsed is a convenience field that tells us which sources
 /// of events (if any) were used in the rule.
 /// NEXT TAG: 4
+#[allow(clippy::all)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InputsUsed {
     /// Optional. Whether the rule queries UDM events.
@@ -12432,6 +12886,7 @@ pub struct InputsUsed {
 }
 /// RunFrequency indicates the run frequency at which a YARA-L 2 rule will run if
 /// enabled.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RunFrequency {
@@ -12470,6 +12925,7 @@ impl RunFrequency {
 }
 /// RuleType indicates the YARA-L rule type of user-created and Google Cloud
 /// Threat Intelligence (GCTI) authored rules.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RuleType {
@@ -12504,6 +12960,7 @@ impl RuleType {
 }
 /// RuleView indicates the scope of fields to populate when returning the Rule
 /// resource.
+#[allow(clippy::all)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RuleView {
@@ -13009,6 +13466,7 @@ pub mod rule_service_client {
     }
 }
 /// Request message for ListRuleExecutionErrors.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuleExecutionErrorsRequest {
     /// Required. The instance to list rule execution errors from.
@@ -13057,6 +13515,7 @@ pub struct ListRuleExecutionErrorsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListRuleExecutionErrors.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleExecutionErrorsResponse {
     /// List of rule execution errors.
@@ -13069,6 +13528,7 @@ pub struct ListRuleExecutionErrorsResponse {
 }
 /// The RuleExecutionError resource represents an error generated from
 /// running/deploying a rule.
+#[allow(clippy::all)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleExecutionError {
     /// Output only. The resource name of the rule execution error.
@@ -13090,6 +13550,7 @@ pub struct RuleExecutionError {
 /// Nested message and enum types in `RuleExecutionError`.
 pub mod rule_execution_error {
     /// The resource name of the source that generated the rule execution error.
+    #[allow(clippy::all)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Output only. The resource name of the rule that generated the rule
