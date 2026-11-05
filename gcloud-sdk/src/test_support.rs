@@ -112,6 +112,7 @@ fn bearer_headers(token: &str) -> HeaderMap {
     headers
 }
 
+// redacter:allow-begin
 /// A 2048-bit RSA key generated for these tests; it signs nothing outside them.
 pub(crate) const TEST_RSA_PRIVATE_KEY: &str = r"-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDfuSBdVqRqLKTk
@@ -141,6 +142,7 @@ xcOguBDd9RXvGAI0v2ZdC1CF/MLsHRT8+COxaVb60NRRiyVTbyQ2BDfR5B6Tb8L1
 qv0DqY+7mrGKzFdVr3Uf2lJJYFipabaL1GrD5FkZYPW21eNfBj2QRorgLf70n7L+
 VPNvPfZ32mJr45YUokuFcGU=
 -----END PRIVATE KEY-----";
+// redacter:allow-end
 
 /// A JWT signed with [`TEST_RSA_PRIVATE_KEY`] under key ID `kid`.
 #[cfg(feature = "id-token-verify")]
