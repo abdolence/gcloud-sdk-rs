@@ -53,7 +53,7 @@ The official SDK still leaves gaps, and closes them slowly. As of October 2026:
 gcloud-sdk makes choices the official SDK leaves to you:
 - `VerifyIdTokenLayer` verifies Google ID tokens in axum and tonic servers, with typed claims and an `authorize` check;
 - `GoogleAuthMiddlewareLayer` and `GoogleAuthReqwestMiddleware` attach credentials to tonic and reqwest calls;
-- the higher-level crates listed in [High-level APIs](#high-level-apis) build on these clients: Firestore, BigQuery, Secret Manager, KMS, Cloud Trace.
+- the higher-level crates listed in [High-level APIs](#high-level-apis) build on these clients: Firestore, BigQuery, Secret Manager, KMS, Cloud Logging, Cloud Trace and Error Reporting.
 
 ### Which one to use
 - The official crates, when a high-level client exists for your service and you need nothing from the list above.
@@ -461,7 +461,7 @@ Sometimes using proto generated APIs are tedious and cumbersome, so you may need
 * [bigquery](https://github.com/abdolence/bigquery-rs) - to work with BigQuery;
 * [secret-vault](https://github.com/abdolence/secret-vault-rs) - to read secrets from Google Secret Manager;
 * [kms-aead](https://github.com/abdolence/kms-aead-rs) - envelope encryption using Google KMS and Ring AEAD;
-* [opentelemetry-gcloud-trace](https://github.com/abdolence/opentelemetry-gcloud-trace-rs) - Google Cloud Trace support for OpenTelemetry project.
+* [gcloud-observability](https://github.com/abdolence/gcloud-observability-rs) - Cloud Logging, Cloud Trace and Error Reporting for `tracing` and OpenTelemetry, including OTLP export to the Telemetry API (formerly `opentelemetry-gcloud-trace`).
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
