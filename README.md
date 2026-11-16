@@ -63,8 +63,8 @@ gcloud-sdk makes choices the official SDK leaves to you:
 The two combine in one application. The authentication of gcloud-sdk is `google-cloud-auth`, re-exported as `gcloud_sdk::google_cloud_auth`,
 so one `Credentials` serves the official clients and the gcloud-sdk clients.
 
-## Migrating from 0.32
-0.33 is a breaking release: see [MIGRATING.md](MIGRATING.md) for the API mapping, removed features, behaviour changes and the REST APIs that moved to the official crates.
+## Migrating
+0.34 and 0.33 are breaking releases: see [MIGRATING.md](MIGRATING.md) for the API changes, removed features, behaviour changes and the REST APIs that moved to the official crates.
 
 ## Getting started
 
@@ -87,7 +87,7 @@ The library features:
 
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.33", features = ["google-firestore-v1"] }
+gcloud-sdk = { version = "0.34", features = ["google-firestore-v1"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
 
@@ -157,7 +157,7 @@ with the same `rustls` version as `google-cloud-auth` (0.23):
 
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.33", default-features = false, features = ["tls-roots", "google-firestore-v1"] }
+gcloud-sdk = { version = "0.34", default-features = false, features = ["tls-roots", "google-firestore-v1"] }
 rustls = { version = "0.23", features = ["ring"] }
 ```
 
@@ -299,7 +299,7 @@ let orders_client: GoogleApi<OrdersClient<GoogleAuthMiddleware>> =
 HTTP with `reqwest-middleware` feature:
 
 ```toml
-gcloud-sdk = { version = "0.33", features = ["reqwest-middleware"] }
+gcloud-sdk = { version = "0.34", features = ["reqwest-middleware"] }
 reqwest = "0.13"
 reqwest-middleware = "0.5"
 ```
@@ -370,7 +370,7 @@ The keys are cached for the `max-age` of the response. A token signed with an un
 at most once every 30 seconds. When a fetch fails, the cached keys stay in use until their `max-age` passes.
 
 ```toml
-gcloud-sdk = { version = "0.33", features = ["id-token-verify"] }
+gcloud-sdk = { version = "0.34", features = ["id-token-verify"] }
 ```
 
 The verifier fetches the keys over HTTPS, so it needs `tls-roots` or `tls-webpki-roots`, or a TLS feature of reqwest in your application.
@@ -408,7 +408,7 @@ The verifier checks signatures with the [JWT crypto provider](#jwt-crypto-provid
 Handlers receive the verified claims as `VerifiedIdToken`:
 
 ```toml
-gcloud-sdk = { version = "0.33", features = ["id-token-verify", "axum"] }
+gcloud-sdk = { version = "0.34", features = ["id-token-verify", "axum"] }
 axum = "0.8"
 ```
 
