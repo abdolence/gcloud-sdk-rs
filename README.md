@@ -64,7 +64,7 @@ The two combine in one application. The authentication of gcloud-sdk is `google-
 so one `Credentials` serves the official clients and the gcloud-sdk clients.
 
 ## Migrating
-0.34 and 0.33 are breaking releases: see [MIGRATING.md](MIGRATING.md) for the API changes, removed features, behaviour changes and the REST APIs that moved to the official crates.
+Breaking releases are described in [MIGRATING.md](MIGRATING.md): the API changes, removed features, behaviour changes and the REST APIs that moved to the official crates.
 
 ## Getting started
 
