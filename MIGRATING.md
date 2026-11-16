@@ -2,6 +2,16 @@
 
 Breaking changes between minor versions, newest first.
 
+## From 0.33 to 0.34
+0.34 is a breaking release. gcloud-sdk moves from jiff 0.2 to jiff 1.0, and `jiff::Timestamp` is part of its public API.
+
+### API changes
+- `VerifiedIdToken::expires_at` returns a `jiff::Timestamp` of jiff 1.0. Depend on `jiff = "1"` to name the type.
+- Nothing else in the gcloud-sdk API changes.
+
+### Known limits
+- `google-cloud-auth` still depends on jiff 0.2, so both versions are compiled into a build. Their types are not interchangeable.
+
 ## From 0.32 to 0.33
 0.33 is a breaking release. The token sources of gcloud-sdk are replaced by `google-cloud-auth`, and the REST clients are removed.
 

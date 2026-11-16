@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.33.3"
+version = "0.34.0"
 authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -310,7 +310,7 @@ prost = "0.14"
 prost-types = "0.14"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
-jiff = { version = "0.2.35", features = ["std", "serde"], default-features = false }
+jiff = { version = "1", features = ["std", "serde"], default-features = false }
 jsonwebtoken = { version = "11.1", optional = true }
 google-cloud-auth = { version = "1.17", default-features = false, features = ["idtoken"] }
 rustls = { version = "0.23.38", default-features = false, features = ["std"] }
