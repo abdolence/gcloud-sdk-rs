@@ -402,8 +402,9 @@ The verifier checks signatures with the [JWT crypto provider](#jwt-crypto-provid
 ### Protecting an axum service
 `VerifyIdTokenLayer` from `axum` feature verifies the bearer token of every request:
 - 401 for a missing or invalid token;
-- 403 when the token is valid, but your `authorize` check refuses the caller;
-- 503 when Google keys are not available.
+- 403 when the token is valid, but your `authorize` or `authorize_async` check refuses the caller;
+- 503 when Google keys are not available;
+- 503 when your `authorize_async` check returns an error, which is logged and never sent to the caller.
 
 Handlers receive the verified claims as `VerifiedIdToken`:
 
@@ -437,6 +438,24 @@ let app = Router::new()
 async fn list_orders(caller: VerifiedIdToken) -> String {
     format!("Orders for {:?}", caller.verified_email())
 }
+```
+
+When the check needs async calls, for example to Firestore or a database, use `authorize_async` instead.
+The check returns a future of `Result<bool, E>`: `Ok(true)` lets the request through, `Ok(false)` answers 403 and `Err` answers 503.
+The future cannot borrow the token, so copy what the check needs before `async move`:
+
+```rust
+// `callers` is your own async lookup of allowed callers, in an `Arc`
+let layer = VerifyIdTokenLayer::new(verifier).authorize_async(move |token| {
+    let callers = callers.clone();
+    let email = token.verified_email().cloned();
+    async move {
+        match email {
+            Some(email) => callers.is_allowed(&email).await,
+            None => Ok(false),
+        }
+    }
+});
 ```
 
 The layer is a tower layer, so it works the same way for tonic servers.
