@@ -19,22 +19,25 @@
 //! }
 //! ```
 
+use std::convert::Infallible;
 use std::pin::Pin;
 use std::sync::Arc;
 use std::task::{Context, Poll};
 
 use axum_core::extract::FromRequestParts;
-use futures::Future;
+use futures::future::BoxFuture;
+use futures::{Future, FutureExt};
 use hyper::header::{HeaderMap, HeaderValue, AUTHORIZATION, WWW_AUTHENTICATE};
 use hyper::http::request::Parts;
 use hyper::{Request, Response, StatusCode};
-use tower::Service;
+use tower::{BoxError, Service};
 use tower_layer::Layer;
 use tracing::*;
 
 use crate::id_token_verify::{IdTokenVerifier, IdTokenVerifyError, VerifiedIdToken};
 
-type Authorize = dyn Fn(&VerifiedIdToken) -> bool + Send + Sync;
+type Authorize =
+    dyn Fn(&VerifiedIdToken) -> BoxFuture<'static, Result<bool, BoxError>> + Send + Sync;
 
 /// A tower layer that lets a request through only with a valid Google ID token in its
 /// `authorization: Bearer` header, and puts the token's claims into the request's
@@ -44,8 +47,10 @@ type Authorize = dyn Fn(&VerifiedIdToken) -> bool + Send + Sync;
 /// - 401 with `www-authenticate: Bearer` when there is no bearer token;
 /// - 401 with `www-authenticate: Bearer error="invalid_token"` when the token does not
 ///   verify;
-/// - 503 when the signing keys cannot be fetched;
-/// - 403 when the token verifies but [`authorize`](Self::authorize) refuses it.
+/// - 503 when the signing keys cannot be fetched, or when
+///   [`authorize_async`](Self::authorize_async) fails;
+/// - 403 when the token verifies but [`authorize`](Self::authorize) or
+///   [`authorize_async`](Self::authorize_async) refuses it.
 #[derive(Clone)]
 pub struct VerifyIdTokenLayer {
     verifier: Arc<IdTokenVerifier>,
@@ -62,12 +67,33 @@ impl VerifyIdTokenLayer {
     }
 
     /// Admits only the verified tokens for which `authorize` returns true, such as those
-    /// of an allowlist of callers; the others get 403. Replaces any earlier `authorize`.
+    /// of an allowlist of callers; the others get 403. Replaces any earlier `authorize` or
+    /// [`authorize_async`](Self::authorize_async).
     pub fn authorize(
-        mut self,
+        self,
         authorize: impl Fn(&VerifiedIdToken) -> bool + Send + Sync + 'static,
     ) -> Self {
-        self.authorize = Some(Arc::new(authorize));
+        self.authorize_async(move |token| std::future::ready(Ok::<_, Infallible>(authorize(token))))
+    }
+
+    /// Admits only the verified tokens for which the future returned by `check`
+    /// resolves to `Ok(true)`, for checks that need async calls, such as an allowlist kept
+    /// in a database. `Ok(false)` gets 403. `Err` gets 503: the error is logged with
+    /// `warn!` and never goes into the response. Replaces any earlier
+    /// [`authorize`](Self::authorize) or `authorize_async`.
+    ///
+    /// The future is `'static`, so it cannot borrow the token: copy what the check needs,
+    /// such as the email, before the `async move` block.
+    pub fn authorize_async<F, Fut, E>(mut self, check: F) -> Self
+    where
+        F: Fn(&VerifiedIdToken) -> Fut + Send + Sync + 'static,
+        Fut: Future<Output = Result<bool, E>> + Send + 'static,
+        E: Into<BoxError>,
+    {
+        self.authorize = Some(Arc::new(move |token: &VerifiedIdToken| {
+            let verdict = check(token);
+            async move { verdict.await.map_err(Into::into) }.boxed()
+        }));
         self
     }
 
@@ -83,9 +109,16 @@ impl VerifyIdTokenLayer {
                 Refusal::KeysUnavailable
             }
         })?;
-        match &self.authorize {
-            Some(authorize) if !authorize(&verified) => Err(Refusal::Forbidden),
-            _ => Ok(verified),
+        let Some(authorize) = &self.authorize else {
+            return Ok(verified);
+        };
+        match authorize(&verified).await {
+            Ok(true) => Ok(verified),
+            Ok(false) => Err(Refusal::Forbidden),
+            Err(error) => {
+                warn!(%error, "Refusing a request: the authorize_async check failed");
+                Err(Refusal::AuthorizationUnavailable)
+            }
         }
     }
 }
@@ -148,6 +181,7 @@ enum Refusal {
     MissingToken,
     InvalidToken,
     KeysUnavailable,
+    AuthorizationUnavailable,
     Forbidden,
 }
 
@@ -159,7 +193,9 @@ impl<B: Default> From<Refusal> for Response<B> {
                 StatusCode::UNAUTHORIZED,
                 Some(r#"Bearer error="invalid_token""#),
             ),
-            Refusal::KeysUnavailable => (StatusCode::SERVICE_UNAVAILABLE, None),
+            Refusal::KeysUnavailable | Refusal::AuthorizationUnavailable => {
+                (StatusCode::SERVICE_UNAVAILABLE, None)
+            }
             Refusal::Forbidden => (StatusCode::FORBIDDEN, None),
         };
         let mut response = Response::new(B::default());
@@ -207,7 +243,6 @@ mod tests {
     use crate::IdTokenAudience;
     use async_trait::async_trait;
     use jiff::{SignedDuration, Timestamp};
-    use std::convert::Infallible;
     use std::time::Duration;
 
     const AUDIENCE: &str = "https://orders-abc123-ew.a.run.app";
@@ -372,6 +407,45 @@ mod tests {
         assert_eq!(response.status(), StatusCode::OK);
         let claims = response.extensions().get::<VerifiedIdToken>().unwrap();
         assert_eq!(claims.verified_email(), Some(&PrincipalEmail::new(CALLER)));
+    }
+
+    #[tokio::test]
+    async fn principal_admitted_by_async_check_reaches_the_inner_service() {
+        let layer =
+            VerifyIdTokenLayer::new(verifier(TestKeys::Published)).authorize_async(|token| {
+                let email = token.verified_email().cloned();
+                async move {
+                    tokio::task::yield_now().await;
+                    Ok::<_, Infallible>(email == Some(PrincipalEmail::new(CALLER)))
+                }
+            });
+
+        let response = send(
+            layer,
+            request(Some(format!("Bearer {}", token_for(AUDIENCE)))),
+        )
+        .await;
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let claims = response.extensions().get::<VerifiedIdToken>().unwrap();
+        assert_eq!(claims.verified_email(), Some(&PrincipalEmail::new(CALLER)));
+    }
+
+    #[tokio::test]
+    async fn failed_async_check_is_service_unavailable() {
+        let layer = VerifyIdTokenLayer::new(verifier(TestKeys::Published))
+            .authorize_async(|_| async { Err::<bool, _>("the allowlist is unavailable") });
+
+        let response = send(
+            layer,
+            request(Some(format!("Bearer {}", token_for(AUDIENCE)))),
+        )
+        .await;
+
+        assert_eq!(response.status(), StatusCode::SERVICE_UNAVAILABLE);
+        assert!(response.headers().get(WWW_AUTHENTICATE).is_none());
+        assert!(response.body().is_empty());
+        assert!(response.extensions().get::<VerifiedIdToken>().is_none());
     }
 
     #[tokio::test]
